@@ -1,0 +1,96 @@
+name: Deploy Marp Slides to GitHub Pages
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Marp CLI
+        run: npm install -g @marp-team/marp-cli
+
+      - name: Create output directory
+        run: mkdir -p output
+
+      - name: Convert all Marp files to HTML
+        run: |
+          find clases -name "*.md" -type f | while read file; do
+            echo "Converting $file"
+            # Create subdirectory structure in output
+            mkdir -p "output/$(dirname "$file")"
+            marp "$file" --html --output "output/${file%.md}.html"
+          done
+
+      - name: Copy assets
+        run: |
+          mkdir -p output/assets
+          cp -r assets/* output/assets/ 2>/dev/null || true
+
+      - name: Create index
+        run: |
+          cat > output/index.html << 'EOF'
+          <!DOCTYPE html>
+          <html>
+          <head>
+            <meta charset="UTF-8">
+            <title>IF0099 - Sistemas Operativos I</title>
+            <style>
+              body { font-family: Arial, sans-serif; max-width: 800px; margin: 50px auto; padding: 20px; }
+              h1 { color: #333; }
+              .slide-link { display: block; padding: 10px; margin: 5px 0; text-decoration: none; color: #0066cc; border-left: 3px solid #0066cc; padding-left: 10px; }
+              .slide-link:hover { background: #f5f5f5; }
+              .unit { margin-top: 30px; font-weight: bold; color: #666; }
+            </style>
+          </head>
+          <body>
+            <h1>IF0099 - Sistemas Operativos I</h1>
+            <p>UNAULA - Ingeniería Informática - 2026-I</p>
+            <h2>Clases</h2>
+          EOF
+
+          # Add links to all slides
+          find clases -name "*.html" -type f | sort | while read file; do
+            title=$(basename "$file" .html | sed 's/-/ /g' | sed 's/\b\(.\)/\u\1/g')
+            echo "<a href=\"$file\" class=\"slide-link\">$title</a>" >> output/index.html
+          done
+
+          cat >> output/index.html << 'EOF'
+          </body>
+          </html>
+          EOF
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./output
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
