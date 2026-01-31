@@ -93,31 +93,13 @@ Cada pestaña de Chrome es un **proceso separado** con su propio PID.
 
 ## 2. Estructura de un Proceso en Memoria
 
-```
     Direcciones altas
          │
          ▼
-┌─────────────────┐
-│      STACK      │ ← Variables locales, llamadas a funciones
-│        ↓        │    Crece hacia abajo
-├─────────────────┤
-│                 │
-│    (espacio     │
-│     libre)      │
-│                 │
-├─────────────────┤
-│        ↑        │
-│      HEAP       │ ← Memoria dinámica (malloc, new)
-│                 │    Crece hacia arriba
-├─────────────────┤
-│      DATA       │ ← Variables globales inicializadas
-├─────────────────┤
-│      BSS        │ ← Variables globales sin inicializar
-├─────────────────┤
-│      TEXT       │ ← Código del programa (instrucciones)
-└─────────────────┘
+
+![Estructura de Memoria de un Proceso](../../assets/infografias/clase-03-estructura-memoria.png)
+
     Direcciones bajas
-```
 
 ---
 
@@ -195,23 +177,7 @@ El SO mantiene un **PCB** por cada proceso. Contiene TODA la información necesa
 
 ### Cuando el SO cambia de un proceso a otro
 
-```
- Proceso A          SO              Proceso B
-     │                                   │
-     │ interrupción                      │
-     │─────────────→│                    │
-     │              │ guardar PCB_A      │
-     │              │                    │
-     │              │ cargar PCB_B       │
-     │              │────────────────────│
-     │                                   │ ejecuta
-     │                                   │
-     │              │←───────────────────│
-     │              │ guardar PCB_B      │
-     │              │ cargar PCB_A       │
-     │←─────────────│                    │
-     │ continúa                          │
-```
+![Diagrama de Context Switch](../../assets/infografias/clase-03-cswitch-timeline.png)
 
 **El context switch tiene costo** (overhead)
 

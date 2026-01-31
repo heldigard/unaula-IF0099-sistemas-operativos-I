@@ -377,6 +377,8 @@ Quantum óptimo:
 
 ## Comparación de Algoritmos
 
+![Comparación de Algoritmos - Gantt](../../assets/infografias/clase-04-comparacion-algoritmos-gantt.png)
+
 | Algoritmo | Tipo | Starvation | Turnaround | Respuesta |
 |-----------|------|------------|------------|-----------|
 | **FCFS** | Non-preemptive | No | Alto si hay convoy | Variable |
@@ -440,16 +442,6 @@ Quantum óptimo:
 - Sección crítica
 - Condiciones de carrera
 - Semáforos y Mutex
-- Problema del productor-consumidor
-
-**¡Nos vemos!**
-Sección crítica
-- Condiciones de carrera
-- Semáforos y Mutex
-- Problema del productor-consumidor
-
-**¡Nos vemos!**
- y Mutex
 - Problema del productor-consumidor
 
 **¡Nos vemos!**
