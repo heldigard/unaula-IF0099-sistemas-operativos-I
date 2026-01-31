@@ -1,173 +1,172 @@
-# IF0040 - Sistemas Operativos
+# IF0099 - Sistemas Operativos I
 
-**Curso:** IF0040 - Sistemas Operativos
-**Pensum:** 302 Pensum 2014-2
-**Créditos:** 3
-**Semestre:** 2026-I (Enero - Junio)
-
----
-
-## Descripción del Curso
-
-Este curso de Sistemas Operativos tiene como objetivo que los estudiantes comprendan los conceptos fundamentales de los sistemas operativos modernos, su evolución histórica, y los componentes principales que los conforman. Los estudiantes desarrollarán habilidades prácticas para trabajar con sistemas operativos actuales (Windows, Linux, macOS) y aplicarán estos conocimientos en la resolución de problemas prácticos.
+**Programa:** Ingeniería Informática  
+**Semestre:** 6° (2026-I)  
+**Créditos:** 3  
+**Horario:** Miércoles 06:00 - 09:00  
 
 ---
 
-## Contenido del Repositorio
+## 📚 Descripción del Curso
+
+Este curso proporciona los fundamentos teóricos y prácticos de los sistemas operativos modernos. El estudiante comprenderá cómo funcionan los componentes internos de un SO (procesos, memoria, archivos, E/S) y desarrollará habilidades para administrar sistemas Linux.
+
+---
+
+## 📁 Contenido del Repositorio
 
 ```
 .
-├── .gitignore              # Ignora evaluaciones/
 ├── README.md               # Este archivo
 ├── planificacion/
-│   ├── syllabus.md         # Programa oficial del curso
-│   ├── cronograma.md       # Calendario de clases y evaluaciones
-│   └── competencias.md     # Objetivos de aprendizaje
-├── clases/
+│   ├── syllabus.md         # Programa del curso
+│   └── cronograma.md       # Calendario académico
+├── clases/                 # Material de clase (16 clases)
 │   ├── unidad-01-introduccion/
 │   ├── unidad-02-procesos/
-│   ├── unidad-03-memoria/
-│   ├── unidad-04-archivos/
-│   ├── unidad-05-e-s/
-│   └── unidad-06-so-actuales/
-├── proyectos/
-│   ├── proyecto-01-linux/
-│   ├── proyecto-02-scheduler/
-│   ├── proyecto-03-memoria/
-│   ├── proyecto-04-archivos/
-│   └── proyecto-final-comparativa/
-├── laboratorios/
-├── recursos/
-│   ├── bibliografia.md
-│   ├── herramientas.md
-│   └── enlaces-externos.md
-└── memory-bank/
-    ├── projectbrief.md
-    ├── productContext.md
-    ├── systemPatterns.md
-    ├── techContext.md
-    ├── activeContext.md
-    └── progress.md
+│   ├── unidad-03-planificacion/
+│   ├── unidad-04-sincronizacion/
+│   ├── unidad-05-memoria/
+│   ├── unidad-06-archivos/
+│   ├── unidad-07-io/
+│   └── unidad-08-proteccion/
+├── laboratorios/           # Guías prácticas
+├── proyectos/              # Enunciados de proyectos
+├── recursos/               # Bibliografía y herramientas
+└── assets/                 # Imágenes y recursos visuales
 ```
 
 ---
 
-## Unidades Temáticas
+## 📖 Unidades Temáticas
 
-1. **Introducción a los Sistemas Operativos** (5 temas)
-2. **Gestión de Procesos** (6 temas)
-3. **Gestión de Memoria** (6 temas)
-4. **Gestión de Archivos** (6 temas)
-5. **Gestión de Entrada/Salida** (6 temas)
-6. **Sistemas Operativos Actuales** (5 temas)
-
----
-
-## Cronograma de Evaluaciones
-
-| Evaluación | % | Semana | Tipo | Límite |
-|------------|---|--------|------|--------|
-| Eval 1 | 15% | 4 | Quiz + Taller | Feb 02-06 |
-| Eval 2 | 15% | 7 | Laboratorio + sustentación | Feb 23-27 |
-| Eval 3 | 20% | 10 | Proyecto integrador | Mar 16-20 |
-| Eval 4 | 15% | 14 | Laboratorio + sustentación | Abr 20-24 |
-| Eval 5 | 15% | 16 | Proyecto + presentación | May 04-08 |
-| Examen Final | 20% | 19 | Examen integral | May 25-28 |
+| Unidad | Tema | Clases |
+|--------|------|--------|
+| 1 | Introducción a Sistemas Operativos | 1-2 |
+| 2 | Gestión de Procesos | 3 |
+| 3 | Planificación de CPU | 4 |
+| 4 | Sincronización de Procesos | 5 |
+| 5 | Gestión de Memoria | 6-8 |
+| 6 | Sistemas de Archivos | 9-11 |
+| 7 | Gestión de E/S | 10 |
+| 8 | Protección, Seguridad y Sistemas Distribuidos | 12-16 |
 
 ---
 
-## Tecnologías Utilizadas
+## 📅 Cronograma de Evaluaciones
 
-- **Sistemas Operativos:** Linux (Ubuntu), Windows 11, macOS
-- **Lenguajes:** Python, Bash, C (opcional)
-- **Virtualización:** VirtualBox
-- **Herramientas:** VS Code, GCC, make
+| Evaluación | Peso | Semana | Fecha Aproximada |
+|------------|------|--------|------------------|
+| E1 | 15% | 4 | Febrero |
+| E2 | 15% | 7 | Febrero |
+| E3 (Parcial) | 20% | 10 | Marzo |
+| E4 | 15% | 14 | Abril |
+| E5 | 15% | 16 | Abril/Mayo |
+| E6 (Final) | 20% | 19 | Mayo |
+
+> 📌 Las fechas exactas se publicarán en el cronograma oficial del curso.
 
 ---
 
-## Instalación
+## 🛠️ Tecnologías y Herramientas
 
-### Requisitos Previos
+- **Sistemas Operativos:** Linux (Ubuntu), Windows
+- **Lenguajes:** C, Python, Bash Scripting
+- **Virtualización:** VirtualBox, VMware
+- **Herramientas:** VS Code, GCC, Git, Terminal Linux
 
-- Computadora con 4GB RAM mínimo (8GB recomendado)
-- 20GB de espacio libre en disco
-- Conexión a internet
+---
 
-### Pasos de Instalación
+## 🚀 Cómo Usar Este Repositorio
 
-1. Instalar VirtualBox
-2. Descargar Ubuntu Server/Desktop ISO
-3. Crear máquina virtual
-4. Instalar Ubuntu
-5. Instalar herramientas adicionales:
+### Para Estudiar
+
+1. **Clonar el repositorio:**
    ```bash
-   sudo apt update
-   sudo apt install build-essential python3 python3-pip git vim htop
+   git clone https://github.com/tu-usuario/IF0099-sistemas-operativos-I.git
    ```
 
----
+2. **Navegar a las clases:**
+   ```bash
+   cd IF0099-sistemas-operativos-I/clases/
+   ```
 
-## Uso del Repositorio
+3. **Ver las presentaciones:**
+   - Las clases están en formato Markdown (Marp)
+   - Se pueden ver con la extensión Marp en VS Code
+   - O exportar a PDF/HTML desde VS Code
 
-### Para Estudiantes
-
-Este repositorio contiene:
-- **Material de clase:** Slides, ejemplos de código, ejercicios
-- **Guías de laboratorio:** Instrucciones paso a paso
-- **Proyectos:** Enunciados y rúbricas
-- **Recursos adicionales:** Bibliografía, enlaces, herramientas
-
-**Nota:** Las evaluaciones están en una carpeta separada (oculta) por seguridad.
-
-### Para el Docente
-
-- **Memory Bank:** Ver `memory-bank/` para contexto completo del curso
-- **Progreso:** Ver `memory-bank/progress.md` para estado actual
-- **Tareas:** Ver `memory-bank/tasks/` para seguimiento de trabajo
+4. **Practicar:**
+   - Seguir las guías de laboratorio
+   - Completar los proyectos asignados
+   - Revisar los ejemplos de código
 
 ---
 
-## Pedagogía
+## 📋 Requisitos del Curso
 
-### Enfoque
+### Conocimientos Previos
+- Programación básica (C/Python)
+- Estructuras de datos
+- Fundamentos de computación
 
-- **Learning by Doing:** Proyectos prácticos desde la primera semana
-- **Flipped Classroom:** Teoría antes de clase, práctica durante clase
-- **Talleres en Parejas:** Colaboración + sustentación oral
-
-### Anti-IA
-
-Para evitar el uso deshonesto de IA:
-- Sustentaciones orales obligatorias
-- Preguntas sobre decisiones de implementación
-- Code review en vivo
+### Software Necesario
+- VirtualBox (gratuito)
+- Ubuntu Server ISO
+- VS Code con extensiones:
+  - Marp for VS Code
+  - C/C++
+  - Python
 
 ---
 
-## Convenciones
-
-### Commits
+## 📊 Sistema de Evaluación
 
 ```
-feat: agregar clase 01 de introducción
-fix: corregir error en algoritmo de scheduler
-docs: actualizar syllabus
-eval: crear evaluación 1 (oculta)
+E1 (15%) + E2 (15%) + E3 (20%) + E4 (15%) + E5 (15%) + E6 (20%) = 100%
 ```
 
-### Branches
-
-- `main`: Rama principal
-- `develop`: Desarrollo
-- `feature/unidad-X`: Desarrollo por unidad
-
----
-
-## Licencia
-
-Este material es para uso educativo en el curso IF0040 de la UNAULA.
+**Tipos de evaluación:**
+- Quizzes teóricos
+- Laboratorios prácticos
+- Proyectos integradores
+- Sustentaciones orales
 
 ---
 
-**Docente:** [Nombre]
-**Última actualización:** 2026-01-31
+## 📚 Recursos Adicionales
+
+### Bibliografía Principal
+- *Sistemas Operativos Modernos* - Andrew S. Tanenbaum
+- *Operating System Concepts* - Silberschatz, Galvin, Gagne
+- *Linux Command Line and Shell Scripting Bible*
+
+### Enlaces Útiles
+- [Linux Command Reference](https://ss64.com/bash/)
+- [OS Dev Wiki](https://wiki.osdev.org/)
+- [Linux Foundation](https://www.linuxfoundation.org/)
+
+---
+
+## 🤝 Normas del Curso
+
+1. **Asistencia:** Mínimo 80% de asistencia obligatoria
+2. **Trabajo en clase:** Participación activa requerida
+3. **Proyectos:** Entregas puntuales según cronograma
+4. **Integridad académica:** Trabajo original, citar fuentes
+
+---
+
+## 📧 Contacto
+
+**Docente:** [Por definir]  
+**Email:** [Por definir]  
+**Horario de atención:** [Por definir]  
+
+---
+
+**UNAULA - Ingeniería Informática - 2026-I**
+
+---
+
+*Este material es para uso educativo exclusivo de los estudiantes matriculados en IF0099.*
