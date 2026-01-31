@@ -12,8 +12,8 @@ footer: 'UNAULA - Ingeniería Informática - 2026-I'
 ---
 <style>
 img {
-  max-width: 70% !important;
-  max-height: 50vh !important;
+  max-width: 65% !important;
+  max-height: 45vh !important;
   object-fit: contain !important;
   height: auto !important;
 }
@@ -412,9 +412,24 @@ Programa malicioso → Pide al kernel → Kernel DENIEGA → Sistema seguro
 
 ### En parejas, investiguen en su computador:
 
-### En Windows (PowerShell):
+> **⚠️ IMPORTANTE - Para estudiantes con Windows:**
+> Los comandos de Linux que usaremos en este curso NO funcionan directamente en Windows.
+> Tienes **dos opciones** para practicar:
+> 
+> **Opción 1: WSL (Recomendada)** - Linux dentro de Windows
+> 1. Abre PowerShell como administrador
+> 2. Ejecuta: `wsl --install`
+> 3. Reinicia el computador
+> 4. Una vez instalado, abre "Ubuntu" desde el menú de inicio
+> 
+> **Opción 2: Máquina Virtual**
+> 1. Instala VirtualBox: https://www.virtualbox.org/
+> 2. Descarga Ubuntu 24.04 ISO: https://ubuntu.com/download
+> 3. Sigue el tutorial del Laboratorio 1 para crear la VM
+>
+> **En este curso usaremos exclusivamente Linux (Ubuntu)**
 
-Abran PowerShell y ejecuten:
+### En Windows (PowerShell) - Comandos nativos:
 
 ```powershell
 # Ver información del sistema operativo
@@ -427,22 +442,20 @@ Get-Process | Select-Object -First 10 Name, CPU, PM | Sort-Object CPU -Descendin
 systeminfo | findstr /C:"Total Physical Memory" /C:"Available Physical Memory"
 ```
 
-### En Linux/macOS (Terminal):
+### En Linux/Ubuntu (Terminal) - Lo que usaremos en el curso:
 
-Abran Terminal y ejecuten:
+Abre Terminal (en WSL o VM) y ejecuta:
 
 ```bash
 # Ver información del sistema
 uname -a                # Información del kernel
-cat /etc/os-release     # Distribución Linux (solo Linux)
-sw_vers                 # Versión de macOS (solo macOS)
+cat /etc/os-release     # Distribución Linux
 
 # Ver procesos (top 10)
 ps aux | head -11       # Incluye encabezado
 
 # Ver memoria
-free -h                 # Linux
-vm_stat                 # macOS
+free -h                 # Muestra memoria RAM y swap
 ```
 
 3. **Discutan**: ¿Qué información les da cada comando?

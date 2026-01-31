@@ -12,8 +12,8 @@ footer: 'UNAULA - Ingeniería Informática - 2026-I'
 ---
 <style>
 img {
-  max-width: 70% !important;
-  max-height: 50vh !important;
+  max-width: 65% !important;
+  max-height: 45vh !important;
   object-fit: contain !important;
   height: auto !important;
 }
