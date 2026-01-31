@@ -63,9 +63,11 @@ jobs:
             <h2>Clases</h2>
           EOF
 
-          find clases -name "*.html" -type f | sort | while read file; do
+          find output/clases -name "*.html" -type f | sort | while read file; do
             title=$(basename "$file" .html | sed 's/-/ /g' | sed 's/\b\(.\)/\u\1/g')
-            echo "<a href=\"$file\" class=\"slide-link\">$title</a>" >> output/index.html
+            # Remove 'output/' prefix for the href
+            href="${file#output/}"
+            echo "<a href=\"$href\" class=\"slide-link\">$title</a>" >> output/index.html
           done
 
           cat >> output/index.html << 'EOF'
