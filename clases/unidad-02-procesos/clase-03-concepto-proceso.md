@@ -4,6 +4,17 @@ theme: default
 paginate: true
 header: 'IF0099 - Sistemas Operativos I | Unidad 2'
 footer: 'UNAULA - Ingeniería Informática - 2026-I'
+
+style: |
+  img {
+    max-width: 85%;
+    max-height: 60vh;
+    object-fit: contain;
+  }
+  section {
+    font-size: 24px;
+  }
+
 ---
 
 <!--
@@ -316,7 +327,10 @@ pstree -p
 
 ### En parejas, ejecuten:
 
-**Linux/Mac (Terminal):**
+> **Nota para usuarios Windows:** Se recomienda usar **WSL** (Windows Subsystem for Linux) o una Máquina Virtual con Ubuntu.
+> Para instalar WSL, abre PowerShell como administrador y ejecuta: `wsl --install`
+
+**Linux (WSL/Ubuntu/VirtualBox):**
 ```bash
 # Ver procesos con estados
 ps aux | head -20

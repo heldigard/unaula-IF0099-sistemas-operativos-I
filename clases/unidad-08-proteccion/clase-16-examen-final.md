@@ -4,6 +4,17 @@ theme: default
 paginate: true
 header: 'IF0099 - Sistemas Operativos I | Examen Final'
 footer: 'UNAULA - Ingeniería Informática - 2026-I'
+
+style: |
+  img {
+    max-width: 85%;
+    max-height: 60vh;
+    object-fit: contain;
+  }
+  section {
+    font-size: 24px;
+  }
+
 ---
 
 # Clase 16: Examen Final
