@@ -103,6 +103,7 @@ IMÁGENES GENERADAS:
 -->
 
 # Clase 7: Paginación y Memoria Virtual
+---
 ## Páginas, Marcos, Tablas y Page Faults
 
 **IF0099 - Sistemas Operativos I**
@@ -479,6 +480,124 @@ CPU → TLB (caché) → Si hit: Memoria física (1 acceso)
 **TLB típico:** 64-1024 entradas, tiempo de acceso ~1 ns
 
 ---
+
+
+---
+
+## Ejercicio Resuelto: Traducción Completa
+
+### Datos:
+- Memoria física: 32 KB (8 marcos de 4 KB)
+- Proceso con 3 páginas
+- Tabla de páginas: P0→M5, P1→M2, P2→M7
+
+```
+Traducir las siguientes direcciones lógicas:
+1) 2048
+2) 5000  
+3) 10240
+
+SOLUCIÓN:
+Tamaño de página = 4096 bytes
+
+1) Dirección 2048:
+   Página = 2048 / 4096 = 0
+   Desplazamiento = 2048 % 4096 = 2048
+   Marco = 5 (desde tabla)
+   Dir. Física = 5 × 4096 + 2048 = 22528 ✓
+
+2) Dirección 5000:
+   Página = 5000 / 4096 = 1
+   Desplazamiento = 5000 % 4096 = 904
+   Marco = 2 (desde tabla)
+   Dir. Física = 2 × 4096 + 904 = 9096 ✓
+
+3) Dirección 10240:
+   Página = 10240 / 4096 = 2
+   Desplazamiento = 10240 % 4096 = 2048
+   Marco = 7 (desde tabla)
+   Dir. Física = 7 × 4096 + 2048 = 30720 ✓
+```
+
+---
+
+## Working Set: Ejemplo Detallado
+
+### Secuencia de referencias a páginas:
+```
+1 2 3 4 1 2 5 1 2 3 4 5 | Ventana Δ=4
+
+Posición  Referencias       Working Set    Tamaño
+   4:     {1, 2, 3, 4}     {1, 2, 3, 4}      4
+   5:     {2, 3, 4, 1}     {1, 2, 3, 4}      4
+   6:     {3, 4, 1, 2}     {1, 2, 3, 4}      4
+   7:     {4, 1, 2, 5}     {1, 2, 4, 5}      4
+   8:     {1, 2, 5, 1}     {1, 2, 5}         3
+   9:     {2, 5, 1, 2}     {1, 2, 5}         3
+  10:     {5, 1, 2, 3}     {1, 2, 3, 5}      4
+```
+
+**Observación:** El proceso necesita al menos 4 marcos para
+evitar thrashing en este patrón de acceso.
+
+
+---
+
+## Ejercicio Resuelto: Traducción Completa
+
+### Datos:
+- Memoria física: 32 KB (8 marcos de 4 KB)
+- Proceso con 3 páginas
+- Tabla de páginas: P0→M5, P1→M2, P2→M7
+
+```
+Traducir las siguientes direcciones lógicas:
+1) 2048
+2) 5000  
+3) 10240
+
+SOLUCIÓN:
+Tamaño de página = 4096 bytes
+
+1) Dirección 2048:
+   Página = 2048 / 4096 = 0
+   Desplazamiento = 2048 % 4096 = 2048
+   Marco = 5 (desde tabla)
+   Dir. Física = 5 × 4096 + 2048 = 22528 ✓
+
+2) Dirección 5000:
+   Página = 5000 / 4096 = 1
+   Desplazamiento = 5000 % 4096 = 904
+   Marco = 2 (desde tabla)
+   Dir. Física = 2 × 4096 + 904 = 9096 ✓
+
+3) Dirección 10240:
+   Página = 10240 / 4096 = 2
+   Desplazamiento = 10240 % 4096 = 2048
+   Marco = 7 (desde tabla)
+   Dir. Física = 7 × 4096 + 2048 = 30720 ✓
+```
+
+---
+
+## Working Set: Ejemplo Detallado
+
+### Secuencia de referencias a páginas:
+```
+1 2 3 4 1 2 5 1 2 3 4 5 | Ventana Δ=4
+
+Posición  Referencias       Working Set    Tamaño
+   4:     {1, 2, 3, 4}     {1, 2, 3, 4}      4
+   5:     {2, 3, 4, 1}     {1, 2, 3, 4}      4
+   6:     {3, 4, 1, 2}     {1, 2, 3, 4}      4
+   7:     {4, 1, 2, 5}     {1, 2, 4, 5}      4
+   8:     {1, 2, 5, 1}     {1, 2, 5}         3
+   9:     {2, 5, 1, 2}     {1, 2, 5}         3
+  10:     {5, 1, 2, 3}     {1, 2, 3, 5}      4
+```
+
+**Observación:** El proceso necesita al menos 4 marcos para
+evitar thrashing en este patrón de acceso.
 
 ## Actividad Práctica (10 min)
 

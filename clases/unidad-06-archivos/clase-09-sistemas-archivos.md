@@ -103,6 +103,7 @@ IMÁGENES GENERADAS:
 -->
 
 # Clase 9: Sistemas de Archivos
+---
 ## Organización, Directorios y Sistemas de Archivos Modernos
 
 **IF0099 - Sistemas Operativos I**
@@ -454,6 +455,276 @@ Cifrado      │     ❌      │  EFS ✅     │ ext./LUKS   │
 ```
 
 ---
+
+
+---
+
+## Profundizando en Inodos (ext4)
+
+### Estructura detallada de un inodo
+
+```
+INODO #12345 (128 bytes)
+┌────────────────────────────────────────────────┐
+│ Modo: -rw-r--r-- (0644)                        │
+│ UID: 1000 (juan)    GID: 1000 (juan)           │
+│ Tamaño: 15360 bytes (4 bloques)                │
+│ Timestamps:                                    │
+│   - Creación:    2026-01-15 10:30:00          │
+│   - Modificación: 2026-01-20 15:45:30          │
+│   - Acceso:      2026-01-31 09:12:00          │
+│ Links: 1                                       │
+│                                                │
+│ PUNTEROS A BLOQUES:                            │
+│ [0-11]  Directos: 1024, 1025, 1026, 1027      │
+│ [12]    Indirecto simple: 2048                 │
+│ [13]    Indirecto doble: 0 (sin usar)          │
+│ [14]    Indirecto triple: 0 (sin usar)         │
+└────────────────────────────────────────────────┘
+```
+
+### Ventajas del sistema de inodos:
+1. **Nombre separado del inodo:** Múltiples nombres (hard links)
+2. **Punteros indirectos:** Archivos gigantes sin desperdiciar espacio
+3. **Metadata rica:** Timestamps precisos, permisos Unix
+
+---
+
+## Ejemplo: Hard Links vs Soft Links
+
+```
+SITUACIÓN INICIAL:
+/home/juan/original.txt → Inodo #100
+
+1. HARD LINK:
+$ ln /home/juan/original.txt /home/maria/copia.txt
+
+   /home/juan/original.txt ──┐
+                             ├──→ Inodo #100 (Links: 2)
+   /home/maria/copia.txt ────┘
+
+   ✅ Mismo archivo, dos nombres
+   ✅ Si se borra original.txt, copia.txt sigue funcionando
+   ❌ Solo en la misma partición
+
+2. SOFT LINK (simbólico):
+$ ln -s /home/juan/original.txt /home/maria/enlace.txt
+
+   /home/juan/original.txt → Inodo #100
+   /home/maria/enlace.txt  → Inodo #200 → "/home/juan/original.txt"
+
+   ✅ Puede cruzar particiones
+   ✅ Puede apuntar a directorios
+   ❌ Si se borra original.txt, enlace.txt queda "roto"
+```
+
+
+---
+
+## Caso Práctico: Recuperación de Archivos
+
+### Escenario: "Borré un archivo importante"
+
+```
+$ rm importante.txt
+
+¿Qué pasa realmente?
+
+PASO 1: El directorio elimina la entrada
+┌──────────────────────────────────────┐
+│ Directorio /home/juan                │
+├──────────────────────────────────────┤
+│ documento.txt → Inodo #50            │
+│ foto.jpg      → Inodo #51            │
+│ [ELIMINADO importante.txt]           │ ← Solo se borra el nombre
+└──────────────────────────────────────┘
+
+PASO 2: El inodo reduce contador de links
+Inodo #52: Links: 1 → 0
+
+PASO 3: El sistema marca bloques como "libres"
+(pero NO sobrescribe los datos inmediatamente)
+
+┌──────────────────────────────────────┐
+│ Bloques de datos:                    │
+│ 1024: [foto.jpg data]                │
+│ 1025: [importante.txt data] ← AÚN AQUÍ!
+│ 1026: [documento.txt data]           │
+└──────────────────────────────────────┘
+```
+
+**Recuperación posible con:**
+- `extundelete` (ext3/ext4)
+- `TestDisk` (múltiples FS)
+- `photorec` (archivos multimedia)
+
+⚠️ **REGLA DE ORO:** ¡Dejar de escribir en el disco inmediatamente!
+
+---
+
+## Fragmentación en Diferentes Sistemas
+
+### Comparación visual
+
+```
+FAT32 después de 6 meses de uso:
+Archivo A: [1][5][9][15][22][31][44]...
+           ↑  ↑  ↑   ↑   ↑   ↑   ↑
+           Bloques muy dispersos
+           ⏱️ Tiempo de lectura: LENTO
+
+ext4 con Extents:
+Archivo A: [1-7][50-60][100-115]
+           └───┘ └────┘ └──────┘
+           Rangos contiguos
+           ⏱️ Tiempo de lectura: RÁPIDO
+
+NTFS con Desfragmentación automática:
+Archivo A: [10-25][26-40]
+           └────┘ └────┘
+           Mantiene contiguidad
+           ⏱️ Tiempo de lectura: RÁPIDO
+```
+
+**Conclusión:**
+- FAT32: Requiere desfragmentación manual frecuente
+- NTFS: Desfragmentación automática en segundo plano
+- ext4: Alocación retardada previene fragmentación
+
+
+---
+
+## Profundizando en Inodos (ext4)
+
+### Estructura detallada de un inodo
+
+```
+INODO #12345 (128 bytes)
+┌────────────────────────────────────────────────┐
+│ Modo: -rw-r--r-- (0644)                        │
+│ UID: 1000 (juan)    GID: 1000 (juan)           │
+│ Tamaño: 15360 bytes (4 bloques)                │
+│ Timestamps:                                    │
+│   - Creación:    2026-01-15 10:30:00          │
+│   - Modificación: 2026-01-20 15:45:30          │
+│   - Acceso:      2026-01-31 09:12:00          │
+│ Links: 1                                       │
+│                                                │
+│ PUNTEROS A BLOQUES:                            │
+│ [0-11]  Directos: 1024, 1025, 1026, 1027      │
+│ [12]    Indirecto simple: 2048                 │
+│ [13]    Indirecto doble: 0 (sin usar)          │
+│ [14]    Indirecto triple: 0 (sin usar)         │
+└────────────────────────────────────────────────┘
+```
+
+### Ventajas del sistema de inodos:
+1. **Nombre separado del inodo:** Múltiples nombres (hard links)
+2. **Punteros indirectos:** Archivos gigantes sin desperdiciar espacio
+3. **Metadata rica:** Timestamps precisos, permisos Unix
+
+---
+
+## Ejemplo: Hard Links vs Soft Links
+
+```
+SITUACIÓN INICIAL:
+/home/juan/original.txt → Inodo #100
+
+1. HARD LINK:
+$ ln /home/juan/original.txt /home/maria/copia.txt
+
+   /home/juan/original.txt ──┐
+                             ├──→ Inodo #100 (Links: 2)
+   /home/maria/copia.txt ────┘
+
+   ✅ Mismo archivo, dos nombres
+   ✅ Si se borra original.txt, copia.txt sigue funcionando
+   ❌ Solo en la misma partición
+
+2. SOFT LINK (simbólico):
+$ ln -s /home/juan/original.txt /home/maria/enlace.txt
+
+   /home/juan/original.txt → Inodo #100
+   /home/maria/enlace.txt  → Inodo #200 → "/home/juan/original.txt"
+
+   ✅ Puede cruzar particiones
+   ✅ Puede apuntar a directorios
+   ❌ Si se borra original.txt, enlace.txt queda "roto"
+```
+
+
+---
+
+## Caso Práctico: Recuperación de Archivos
+
+### Escenario: "Borré un archivo importante"
+
+```
+$ rm importante.txt
+
+¿Qué pasa realmente?
+
+PASO 1: El directorio elimina la entrada
+┌──────────────────────────────────────┐
+│ Directorio /home/juan                │
+├──────────────────────────────────────┤
+│ documento.txt → Inodo #50            │
+│ foto.jpg      → Inodo #51            │
+│ [ELIMINADO importante.txt]           │ ← Solo se borra el nombre
+└──────────────────────────────────────┘
+
+PASO 2: El inodo reduce contador de links
+Inodo #52: Links: 1 → 0
+
+PASO 3: El sistema marca bloques como "libres"
+(pero NO sobrescribe los datos inmediatamente)
+
+┌──────────────────────────────────────┐
+│ Bloques de datos:                    │
+│ 1024: [foto.jpg data]                │
+│ 1025: [importante.txt data] ← AÚN AQUÍ!
+│ 1026: [documento.txt data]           │
+└──────────────────────────────────────┘
+```
+
+**Recuperación posible con:**
+- `extundelete` (ext3/ext4)
+- `TestDisk` (múltiples FS)
+- `photorec` (archivos multimedia)
+
+⚠️ **REGLA DE ORO:** ¡Dejar de escribir en el disco inmediatamente!
+
+---
+
+## Fragmentación en Diferentes Sistemas
+
+### Comparación visual
+
+```
+FAT32 después de 6 meses de uso:
+Archivo A: [1][5][9][15][22][31][44]...
+           ↑  ↑  ↑   ↑   ↑   ↑   ↑
+           Bloques muy dispersos
+           ⏱️ Tiempo de lectura: LENTO
+
+ext4 con Extents:
+Archivo A: [1-7][50-60][100-115]
+           └───┘ └────┘ └──────┘
+           Rangos contiguos
+           ⏱️ Tiempo de lectura: RÁPIDO
+
+NTFS con Desfragmentación automática:
+Archivo A: [10-25][26-40]
+           └────┘ └────┘
+           Mantiene contiguidad
+           ⏱️ Tiempo de lectura: RÁPIDO
+```
+
+**Conclusión:**
+- FAT32: Requiere desfragmentación manual frecuente
+- NTFS: Desfragmentación automática en segundo plano
+- ext4: Alocación retardada previene fragmentación
 
 ## Montaje de Sistemas de Archivos
 

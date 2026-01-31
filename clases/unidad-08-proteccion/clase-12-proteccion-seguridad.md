@@ -100,15 +100,19 @@ section {
 <!--
 IMÁGENES GENERADAS:
 - clase-12-proteccion-seguridad.png: Infografía sobre protección y seguridad en sistemas operativos
+- clase-12-proteccion-seguridad-v2.png: Versión corregida sin errores tipográficos
 -->
 
 # Clase 12: Protección y Seguridad
+---
 ## Dominios, Control de Acceso y Amenazas
 
 **IF0099 - Sistemas Operativos I**
 *4° Semestre - Ingeniería Informática*
 
-![Protección vs Seguridad](../../assets/infografias/clase-12-proteccion-seguridad.png){: style="max-width: 80%; max-height: 500px; display: block; margin: 0 auto;"}
+![Protección vs Seguridad](../../assets/infografias/clase-12-proteccion-seguridad-v2.png){: style="max-width: 80%; max-height: 500px; display: block; margin: 0 auto;"}
+
+> **Nota:** Esta infografía muestra la diferencia entre Protección (mecanismos internos del SO) y Seguridad (defensa contra amenazas externas).
 
 ---
 

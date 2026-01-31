@@ -59,6 +59,8 @@ section table {
   margin: 0.5em auto;
   table-layout: auto;
 }
+---
+## APIs del sistema operativo y llamadas al sistema
 section th {
   background-color: #1e40af;
   color: white;
@@ -107,7 +109,6 @@ IMÁGENES GENERADAS:
 
 **IF0099 - Sistemas Operativos I**
 *4° Semestre - Ingeniería Informática*
-
 ---
 
 ## Objetivos

@@ -103,6 +103,7 @@ IMÁGENES GENERADAS:
 -->
 
 # Clase 8: Memoria Secundaria y Discos
+---
 ## Estructura, planificación y rendimiento
 
 **IF0099 - Sistemas Operativos I**

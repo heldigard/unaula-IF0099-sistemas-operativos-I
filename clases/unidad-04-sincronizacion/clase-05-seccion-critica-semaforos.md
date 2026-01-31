@@ -103,6 +103,7 @@ section {
 IMÁGENES GENERADAS:
 - clase-05-seccion-critica.png: Diagrama del problema de sección crítica
 - clase-05-semaforos.png: Visualización de semáforos y operaciones wait/signal
+- clase-05-semaforos-mutex.png: Comparación visual entre semáforos y mutex
 -->
 
 # Clase 5: Sincronización de Procesos
@@ -258,6 +259,14 @@ void salir(int i) {
 
 ### ¿Funciona?
 ✅ Cumple los 3 requisitos (para 2 procesos)
+
+---
+
+## Semáforos vs Mutex
+
+### Comparación de mecanismos de sincronización
+
+![Semáforos vs Mutex](../../assets/infografias/clase-05-semaforos-mutex.png){: style="max-width: 80%; max-height: 500px; display: block; margin: 0 auto;"}
 
 ---
 

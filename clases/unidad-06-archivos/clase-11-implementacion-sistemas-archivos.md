@@ -103,6 +103,7 @@ IMÁGENES GENERADAS:
 -->
 
 # Clase 11: Implementación de Sistemas de Archivos
+---
 ## Inodos, bloques y estructuras internas
 
 **IF0099 - Sistemas Operativos I**

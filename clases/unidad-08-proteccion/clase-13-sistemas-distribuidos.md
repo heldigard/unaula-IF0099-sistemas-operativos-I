@@ -59,6 +59,8 @@ section table {
   margin: 0.5em auto;
   table-layout: auto;
 }
+---
+## Conceptos, ventajas y desafíos
 section th {
   background-color: #1e40af;
   color: white;
@@ -107,7 +109,6 @@ IMÁGENES GENERADAS:
 
 **IF0099 - Sistemas Operativos I**
 *4° Semestre - Ingeniería Informática*
-
 ---
 
 ## Objetivos de la Clase
@@ -134,6 +135,18 @@ Al finalizar esta clase, el estudiante será capaz de:
 ---
 
 ## 1. ¿Qué es un Sistema Distribuido?
+
+### Ejemplos cotidianos de sistemas distribuidos
+
+**En tu día a día:**
+- 🌐 **Google:** Miles de servidores trabajando juntos
+- 📱 **WhatsApp:** Mensajes sincronizados en múltiples dispositivos
+- 🎮 **Juegos online:** Jugadores conectados desde todo el mundo
+- 💰 **Blockchain:** Bitcoin y criptomonedas
+- 📧 **Email:** Servidores distribuidos globalmente
+
+💡 **La nube (AWS, Azure, Google Cloud) son sistemas distribuidos masivos.**
+
 
 > Conjunto de computadores independientes que se presentan como un solo sistema coherente.
 

@@ -56,6 +56,8 @@ section table {
   max-width: 100%;
   font-size: 0.85em;
   border-collapse: collapse;
+---
+## Evaluación Integral
   margin: 0.5em auto;
   table-layout: auto;
 }
@@ -102,7 +104,6 @@ section {
 
 **IF0099 - Sistemas Operativos I**
 *4° Semestre - Ingeniería Informática*
-
 ---
 
 ## Indicaciones Generales

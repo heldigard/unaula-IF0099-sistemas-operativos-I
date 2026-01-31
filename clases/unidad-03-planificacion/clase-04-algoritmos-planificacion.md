@@ -103,6 +103,7 @@ section {
 IMÁGENES GENERADAS:
 - clase-04-algoritmos-planificacion.png: Comparación visual de FCFS, SJF, Prioridad, Round Robin
 - clase-04-round-robin.png: Diagrama circular del algoritmo Round Robin
+- clase-04-gantt-algoritmos.png: Diagrama de Gantt comparativo de algoritmos
 -->
 
 # Clase 4: Planificación de Procesos
@@ -213,6 +214,12 @@ Esto es exactamente lo que hace el scheduler del SO con la CPU.
 │  Usado en sistemas modernos                             │
 └─────────────────────────────────────────────────────────┘
 ```
+
+---
+
+## Diagrama de Gantt Comparativo
+
+![Diagrama de Gantt - Algoritmos de Planificación](../../assets/infografias/clase-04-gantt-algoritmos.png){: style="max-width: 80%; max-height: 500px; display: block; margin: 0 auto;"}
 
 ---
 

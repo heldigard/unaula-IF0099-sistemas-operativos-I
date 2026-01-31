@@ -103,6 +103,7 @@ IMÁGENES GENERADAS:
 -->
 
 # Clase 10: Gestión de Entrada/Salida
+---
 ## Dispositivos, Controladores y DMA
 
 **IF0099 - Sistemas Operativos I**
