@@ -437,9 +437,9 @@ Programa malicioso → Pide al kernel → Kernel DENIEGA → Sistema seguro
 ```
 
 ---
-
 ## Actividad Práctica (10 min)
-
+---
+## Actividad Práctica (10 min)
 ### En parejas, investiguen en su computador:
 
 > **⚠️ IMPORTANTE - Para estudiantes con Windows:**
@@ -458,7 +458,8 @@ Programa malicioso → Pide al kernel → Kernel DENIEGA → Sistema seguro
 > 3. Sigue el tutorial del Laboratorio 1 para crear la VM
 >
 > **En este curso usaremos exclusivamente Linux (Ubuntu)**
-
+---
+## Actividad Práctica (10 min)
 ### En Windows (PowerShell) - Comandos nativos:
 
 ```powershell
@@ -471,7 +472,8 @@ Get-Process | Select-Object -First 10 Name, CPU, PM | Sort-Object CPU -Descendin
 # Ver memoria disponible
 systeminfo | findstr /C:"Total Physical Memory" /C:"Available Physical Memory"
 ```
-
+---
+## Actividad Práctica (10 min)
 ### En Linux/Ubuntu (Terminal) - Lo que usaremos en el curso:
 
 Abre Terminal (en WSL o VM) y ejecuta:
@@ -489,7 +491,6 @@ free -h                 # Muestra memoria RAM y swap
 ```
 
 3. **Discutan**: ¿Qué información les da cada comando?
-
 ---
 
 ## Resumen de la Clase

@@ -311,16 +311,26 @@ C:\ (o /)
 
 ### En parejas, respondan:
 
-1. **Identifiquen** 3 procesos que estén ejecutándose ahora en su computador
+**Tarea 1:** Identifiquen 3 procesos ejecutándose en su computador
 
-   **En Windows:**
-   - Opción 1: `Ctrl + Shift + Esc` (abre directo el Administrador de Tareas)
-   - Opción 2: `Ctrl + Alt + Supr` → seleccionar "Administrador de Tareas"
-   - Opción 3: Click derecho en la Barra de Tareas → "Administrador de Tareas"
-   
-   **En Linux (WSL o Máquina Virtual):**
-   - Terminal: `top`, `htop`, o `ps aux`
-   - Interfaz gráfica: Monitor del Sistema (varía según distribución)
+---
+
+## Actividad Práctica - Visualizar Procesos
+
+### ¿Cómo ver los procesos?
+
+**En Windows:**
+- Opción 1: `Ctrl + Shift + Esc` (abre directo el Administrador de Tareas)
+- Opción 2: `Ctrl + Alt + Supr` → seleccionar "Administrador de Tareas"
+- Opción 3: Click derecho en la Barra de Tareas → "Administrador de Tareas"
+
+**En Linux:**
+- Terminal: `top`, `htop`, o `ps aux`
+- Interfaz gráfica: Monitor del Sistema
+
+---
+
+## Actividad Práctica - Linux en el Curso
 
 > **⚠️ IMPORTANTE:** En este curso usaremos exclusivamente **Linux (Ubuntu)** a través de:
 > - **WSL (Windows Subsystem for Linux)** - Recomendado
@@ -328,9 +338,9 @@ C:\ (o /)
 > 
 > Ver guía de instalación en el Laboratorio 1.
 
-2. **Investiguen**: ¿Cuánta RAM tiene su computador y cuánta está en uso?
+**Tarea 2:** ¿Cuánta RAM tiene su computador y cuánta está en uso?
 
-3. **Discutan**: ¿Por qué creen que Linux domina en servidores pero Windows en escritorios?
+**Tarea 3:** ¿Por qué creen que Linux domina en servidores pero Windows en escritorios?
 
 ---
 
