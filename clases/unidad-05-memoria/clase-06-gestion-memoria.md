@@ -2,7 +2,7 @@
 marp: true
 theme: default
 paginate: true
-header: 'IF0099 - Sistemas Operativos I | Unidad 5'
+| header: 'IF0099 - Sistemas Operativos I | Unidad 5' |
 footer: 'UNAULA - Ingeniería Informática - 2026-I'
 
   section {
@@ -49,6 +49,50 @@ section code {
 }
 section p {
   margin: 0.5em 0;
+}
+/* Estilos para tablas responsivas */
+section table {
+  width: 100%;
+  max-width: 100%;
+  font-size: 0.85em;
+  border-collapse: collapse;
+  margin: 0.5em auto;
+  table-layout: auto;
+}
+section th {
+  background-color: #1e40af;
+  color: white;
+  padding: 0.4em 0.6em;
+  text-align: left;
+  font-size: 0.9em;
+  border: 1px solid #ddd;
+}
+section td {
+  padding: 0.4em 0.6em;
+  border: 1px solid #ddd;
+  vertical-align: top;
+  word-wrap: break-word;
+  font-size: 0.85em;
+}
+section tbody tr:nth-child(even) {
+  background-color: #f8f9fa;
+}
+section tbody tr:hover {
+  background-color: #e9ecef;
+}
+/* Asegurar que el contenido no desborde */
+section {
+  padding: 1em 2em;
+  box-sizing: border-box;
+}
+/* Responsividad para tablas anchas */
+@media screen and (max-width: 1280px) {
+  section table {
+    font-size: 0.75em;
+  }
+  section th, section td {
+    padding: 0.3em 0.4em;
+  }
 }
 </style>
 
@@ -266,7 +310,7 @@ INICIAL:                    DESPUÉS DE LIBERAR B:
 ---
 
 | Tipo | Causa | Dónde ocurre |
-|------|-------|--------------|
+| ------ | ------- | -------------- |
 | **Interna** | Proceso no usa toda su partición | Partición fija |
 | **Externa** | Huecos entre procesos | Partición variable |
 
@@ -303,7 +347,7 @@ Huecos disponibles: 100KB, 200KB, 90KB, 150KB
 ```
 
 | Estrategia | Descripción | Elige |
-|------------|-------------|-------|
+| ------------ | ------------- | ------- |
 | **First Fit** | Primer hueco suficiente | 100KB |
 | **Best Fit** | Hueco más pequeño suficiente | 90KB |
 | **Worst Fit** | Hueco más grande | 200KB |
@@ -438,7 +482,7 @@ Llegan procesos en orden:
 ## Resumen de la Clase
 
 | Concepto | Descripción |
-|----------|-------------|
+| ---------- | ------------- |
 | **Dir. Lógica** | Dirección generada por CPU |
 | **Dir. Física** | Dirección real en RAM |
 | **MMU** | Traduce direcciones |

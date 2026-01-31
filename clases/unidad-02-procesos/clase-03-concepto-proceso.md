@@ -2,7 +2,7 @@
 marp: true
 theme: default
 paginate: true
-header: 'IF0099 - Sistemas Operativos I | Unidad 2'
+| header: 'IF0099 - Sistemas Operativos I | Unidad 2' |
 footer: 'UNAULA - Ingeniería Informática - 2026-I'
 
   section {
@@ -49,6 +49,50 @@ section code {
 }
 section p {
   margin: 0.5em 0;
+}
+/* Estilos para tablas responsivas */
+section table {
+  width: 100%;
+  max-width: 100%;
+  font-size: 0.85em;
+  border-collapse: collapse;
+  margin: 0.5em auto;
+  table-layout: auto;
+}
+section th {
+  background-color: #1e40af;
+  color: white;
+  padding: 0.4em 0.6em;
+  text-align: left;
+  font-size: 0.9em;
+  border: 1px solid #ddd;
+}
+section td {
+  padding: 0.4em 0.6em;
+  border: 1px solid #ddd;
+  vertical-align: top;
+  word-wrap: break-word;
+  font-size: 0.85em;
+}
+section tbody tr:nth-child(even) {
+  background-color: #f8f9fa;
+}
+section tbody tr:hover {
+  background-color: #e9ecef;
+}
+/* Asegurar que el contenido no desborde */
+section {
+  padding: 1em 2em;
+  box-sizing: border-box;
+}
+/* Responsividad para tablas anchas */
+@media screen and (max-width: 1280px) {
+  section table {
+    font-size: 0.75em;
+  }
+  section th, section td {
+    padding: 0.3em 0.4em;
+  }
 }
 </style>
 
@@ -97,7 +141,7 @@ Al finalizar esta clase, el estudiante será capaz de:
 ### Definiciones
 
 | Concepto | Descripción |
-|----------|-------------|
+| ---------- | ------------- |
 | **Programa** | Código ejecutable almacenado en disco (estático) |
 | **Proceso** | Programa en ejecución (dinámico) |
 
@@ -153,7 +197,7 @@ Cada pestaña de Chrome es un **proceso separado** con su propio PID.
 ## Segmentos de Memoria
 
 | Segmento | Contenido | Tamaño |
-|----------|-----------|--------|
+| ---------- | ----------- | -------- |
 | **TEXT** | Código ejecutable | Fijo |
 | **DATA** | Variables globales inicializadas | Fijo |
 | **BSS** | Variables globales no inicializadas | Fijo |
@@ -208,7 +252,7 @@ El SO mantiene un **PCB** por cada proceso. Contiene TODA la información necesa
 ## Campos del PCB
 
 | Campo | Descripción |
-|-------|-------------|
+| ------- | ------------- |
 | **PID** | Identificador único del proceso |
 | **Estado** | Running, Ready, Blocked, etc. |
 | **Program Counter** | Siguiente instrucción a ejecutar |
@@ -241,7 +285,7 @@ El SO mantiene un **PCB** por cada proceso. Contiene TODA la información necesa
 ## Estados en Detalle
 
 | Estado | Descripción | Ejemplo |
-|--------|-------------|---------|
+| -------- | ------------- | --------- |
 | **NUEVO** | Proceso recién creado, aún no admitido | fork() acaba de ejecutarse |
 | **LISTO** | Esperando CPU para ejecutar | En cola de procesos listos |
 | **EJECUTANDO** | Usando la CPU actualmente | Solo 1 por CPU/núcleo |
@@ -253,7 +297,7 @@ El SO mantiene un **PCB** por cada proceso. Contiene TODA la información necesa
 ## Transiciones de Estado
 
 | Transición | Causa |
-|------------|-------|
+| ------------ | ------- |
 | Nuevo → Listo | SO admite el proceso |
 | Listo → Ejecutando | Planificador selecciona el proceso (**dispatch**) |
 | Ejecutando → Listo | Timeout, proceso cede CPU (**preemption**) |
@@ -291,8 +335,8 @@ user   5678   0.5  0.8 234567 65432 ?    Sl   10:15   0:10 /usr/bin/firefox
 
 ```
 ┌──────────────────────────────────────────────────────────┐
-│  CPU[|||||||||||||||                           45.2%]    │
-│  Mem[||||||||||||||||||||||||||||              62.5%]    │
+| │  CPU[ | 45.2%]    │ |
+| │  Mem[ |  | 62.5%]    │ |
 │  Swp[                                          0.0%]    │
 ├──────────────────────────────────────────────────────────┤
 │  PID USER      PRI  NI  VIRT   RES   SHR S CPU% MEM%    │
@@ -304,7 +348,7 @@ user   5678   0.5  0.8 234567 65432 ?    Sl   10:15   0:10 /usr/bin/firefox
 
 ### Comando equivalente en Windows:
 ```powershell
-Get-Process | Sort-Object CPU -Descending | Select-Object -First 10
+| Get-Process | Sort-Object CPU -Descending | Select-Object -First 10 |
 ```
 
 ---
@@ -369,10 +413,10 @@ pstree -p
 **Linux (WSL/Ubuntu/VirtualBox):**
 ```bash
 # Ver procesos con estados
-ps aux | head -20
+| ps aux | head -20 |
 
 # Ver árbol de procesos
-pstree -p | head -30
+| pstree -p | head -30 |
 
 # Información de un proceso específico
 cat /proc/self/status
@@ -381,10 +425,10 @@ cat /proc/self/status
 **Windows (PowerShell):**
 ```powershell
 # Ver procesos
-Get-Process | Select-Object -First 20
+| Get-Process | Select-Object -First 20 |
 
 # Información detallada
-Get-Process -Name explorer | Format-List *
+| Get-Process -Name explorer | Format-List * |
 ```
 
 ---
@@ -392,7 +436,7 @@ Get-Process -Name explorer | Format-List *
 ## Resumen de la Clase
 
 | Concepto | Descripción |
-|----------|-------------|
+| ---------- | ------------- |
 | **Programa** | Código estático en disco |
 | **Proceso** | Programa en ejecución |
 | **PCB** | Estructura con toda la info del proceso |

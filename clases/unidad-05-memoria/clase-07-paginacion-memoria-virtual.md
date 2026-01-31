@@ -2,7 +2,7 @@
 marp: true
 theme: default
 paginate: true
-header: 'IF0099 - Sistemas Operativos I | Unidad 5'
+| header: 'IF0099 - Sistemas Operativos I | Unidad 5' |
 footer: 'UNAULA - Ingeniería Informática - 2026-I'
 
   section {
@@ -49,6 +49,50 @@ section code {
 }
 section p {
   margin: 0.5em 0;
+}
+/* Estilos para tablas responsivas */
+section table {
+  width: 100%;
+  max-width: 100%;
+  font-size: 0.85em;
+  border-collapse: collapse;
+  margin: 0.5em auto;
+  table-layout: auto;
+}
+section th {
+  background-color: #1e40af;
+  color: white;
+  padding: 0.4em 0.6em;
+  text-align: left;
+  font-size: 0.9em;
+  border: 1px solid #ddd;
+}
+section td {
+  padding: 0.4em 0.6em;
+  border: 1px solid #ddd;
+  vertical-align: top;
+  word-wrap: break-word;
+  font-size: 0.85em;
+}
+section tbody tr:nth-child(even) {
+  background-color: #f8f9fa;
+}
+section tbody tr:hover {
+  background-color: #e9ecef;
+}
+/* Asegurar que el contenido no desborde */
+section {
+  padding: 1em 2em;
+  box-sizing: border-box;
+}
+/* Responsividad para tablas anchas */
+@media screen and (max-width: 1280px) {
+  section table {
+    font-size: 0.75em;
+  }
+  section th, section td {
+    padding: 0.3em 0.4em;
+  }
 }
 </style>
 
@@ -315,7 +359,7 @@ El resto está en DISCO (swap)
 ### Cuando no hay marcos libres, ¿cuál página sacar?
 
 | Algoritmo | Descripción | Optimalidad |
-|-----------|-------------|-------------|
+| ----------- | ------------- | ------------- |
 | **FIFO** | Primera en entrar, primera en salir | Simple pero malo |
 | **Óptimo** | Sacar la que se usará más tarde | Imposible de implementar |
 | **LRU** | Least Recently Used (menos usada recientemente) | Bueno pero costoso |
@@ -326,7 +370,7 @@ El resto está en DISCO (swap)
 ## Ejemplo: FIFO
 
 ```
-Marcos: 3 | Secuencia de páginas: 1, 2, 3, 4, 1, 2, 5, 1, 2, 3, 4, 5
+| Marcos: 3 | Secuencia de páginas: 1, 2, 3, 4, 1, 2, 5, 1, 2, 3, 4, 5 |
 
 Paso │ Página │ Marco1 │ Marco2 │ Marco3 │ Page Fault?
 ─────┼────────┼────────┼────────┼────────┼────────────
@@ -351,7 +395,7 @@ Page Faults: 9
 ## Ejemplo: LRU
 
 ```
-Marcos: 3 | Secuencia de páginas: 1, 2, 3, 4, 1, 2, 5, 1, 2, 3, 4, 5
+| Marcos: 3 | Secuencia de páginas: 1, 2, 3, 4, 1, 2, 5, 1, 2, 3, 4, 5 |
 
 Paso │ Página │ Marco1 │ Marco2 │ Marco3 │ Page Fault? │ Orden LRU
 ─────┼────────┼────────┼────────┼────────┼─────────────┼──────────
@@ -455,7 +499,7 @@ CPU → TLB (caché) → Si hit: Memoria física (1 acceso)
 ## Resumen de la Clase
 
 | Concepto | Descripción |
-|----------|-------------|
+| ---------- | ------------- |
 | **Página** | Bloque de memoria lógica (ej: 4KB) |
 | **Marco** | Bloque de memoria física |
 | **Page Fault** | Acceso a página no cargada |

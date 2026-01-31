@@ -2,7 +2,7 @@
 marp: true
 theme: default
 paginate: true
-header: 'IF0099 - Sistemas Operativos I | Unidad 1'
+| header: 'IF0099 - Sistemas Operativos I | Unidad 1' |
 footer: 'UNAULA - Ingeniería Informática - 2026-I'
 
   section {
@@ -50,6 +50,50 @@ section code {
 section p {
   margin: 0.5em 0;
 }
+/* Estilos para tablas responsivas */
+section table {
+  width: 100%;
+  max-width: 100%;
+  font-size: 0.85em;
+  border-collapse: collapse;
+  margin: 0.5em auto;
+  table-layout: auto;
+}
+section th {
+  background-color: #1e40af;
+  color: white;
+  padding: 0.4em 0.6em;
+  text-align: left;
+  font-size: 0.9em;
+  border: 1px solid #ddd;
+}
+section td {
+  padding: 0.4em 0.6em;
+  border: 1px solid #ddd;
+  vertical-align: top;
+  word-wrap: break-word;
+  font-size: 0.85em;
+}
+section tbody tr:nth-child(even) {
+  background-color: #f8f9fa;
+}
+section tbody tr:hover {
+  background-color: #e9ecef;
+}
+/* Asegurar que el contenido no desborde */
+section {
+  padding: 1em 2em;
+  box-sizing: border-box;
+}
+/* Responsividad para tablas anchas */
+@media screen and (max-width: 1280px) {
+  section table {
+    font-size: 0.75em;
+  }
+  section th, section td {
+    padding: 0.3em 0.4em;
+  }
+}
 </style>
 
 
@@ -93,6 +137,18 @@ Al finalizar esta clase, el estudiante será capaz de:
 ---
 
 ## Línea de Tiempo de los SO
+
+
+### ¿Por qué estudiar la evolución?
+
+Entender la historia nos ayuda a:
+- 📚 Comprender decisiones de diseño actuales
+- 🔍 Aprender de errores pasados
+- 🚀 Anticipar tendencias futuras
+- 💡 Valorar la complejidad actual
+
+**Cada generación resolvió problemas específicos de su época.**
+
 
 ![Evolución de los Sistemas Operativos](../../assets/infografias/so-evolucion-timeline.png){: style="max-width: 60%; max-height: 400px; display: block; margin: 0 auto;"}
 
@@ -218,7 +274,7 @@ Usuario 3 ──┘    Reparte tiempo
 ### La era del PC
 
 | Año | Sistema | Importancia |
-|-----|---------|-------------|
+| ----- | --------- | ------------- |
 | 1981 | MS-DOS | IBM PC |
 | 1984 | Mac OS | Primera GUI comercial exitosa |
 | 1985 | Windows 1.0 | Intento de GUI sobre DOS |
@@ -350,7 +406,7 @@ int fd = open("/home/user/archivo.txt", O_RDONLY);
 ### Categorías de system calls:
 
 | Categoría | Ejemplos |
-|-----------|----------|
+| ----------- | ---------- |
 | Procesos | fork(), exec(), exit(), wait() |
 | Archivos | open(), read(), write(), close() |
 | Dispositivos | ioctl(), read(), write() |
@@ -464,13 +520,13 @@ Programa malicioso → Pide al kernel → Kernel DENIEGA → Sistema seguro
 
 ```powershell
 # Ver información del sistema operativo
-Get-ComputerInfo | Select-Object CsName, WindowsVersion, OsArchitecture
+| Get-ComputerInfo | Select-Object CsName, WindowsVersion, OsArchitecture |
 
 # Ver procesos (top 10 por uso de CPU)
-Get-Process | Select-Object -First 10 Name, CPU, PM | Sort-Object CPU -Descending
+| Get-Process | Select-Object -First 10 Name, CPU, PM | Sort-Object CPU -Descending |
 
 # Ver memoria disponible
-systeminfo | findstr /C:"Total Physical Memory" /C:"Available Physical Memory"
+| systeminfo | findstr /C:"Total Physical Memory" /C:"Available Physical Memory" |
 ```
 ---
 ## Actividad Práctica (10 min)
@@ -484,7 +540,7 @@ uname -a                # Información del kernel
 cat /etc/os-release     # Distribución Linux
 
 # Ver procesos (top 10)
-ps aux | head -11       # Incluye encabezado
+| ps aux | head -11       # Incluye encabezado |
 
 # Ver memoria
 free -h                 # Muestra memoria RAM y swap
@@ -496,7 +552,7 @@ free -h                 # Muestra memoria RAM y swap
 ## Resumen de la Clase
 
 | Generación | Época | Característica |
-|------------|-------|----------------|
+| ------------ | ------- | ---------------- |
 | 0 | 1940s | Sin SO |
 | 1 | 1950s | Procesamiento por lotes |
 | 2 | 1960s | Multiprogramación |

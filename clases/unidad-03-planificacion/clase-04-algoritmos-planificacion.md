@@ -2,7 +2,7 @@
 marp: true
 theme: default
 paginate: true
-header: 'IF0099 - Sistemas Operativos I | Unidad 3'
+| header: 'IF0099 - Sistemas Operativos I | Unidad 3' |
 footer: 'UNAULA - Ingeniería Informática - 2026-I'
 
   section {
@@ -50,6 +50,50 @@ section code {
 section p {
   margin: 0.5em 0;
 }
+/* Estilos para tablas responsivas */
+section table {
+  width: 100%;
+  max-width: 100%;
+  font-size: 0.85em;
+  border-collapse: collapse;
+  margin: 0.5em auto;
+  table-layout: auto;
+}
+section th {
+  background-color: #1e40af;
+  color: white;
+  padding: 0.4em 0.6em;
+  text-align: left;
+  font-size: 0.9em;
+  border: 1px solid #ddd;
+}
+section td {
+  padding: 0.4em 0.6em;
+  border: 1px solid #ddd;
+  vertical-align: top;
+  word-wrap: break-word;
+  font-size: 0.85em;
+}
+section tbody tr:nth-child(even) {
+  background-color: #f8f9fa;
+}
+section tbody tr:hover {
+  background-color: #e9ecef;
+}
+/* Asegurar que el contenido no desborde */
+section {
+  padding: 1em 2em;
+  box-sizing: border-box;
+}
+/* Responsividad para tablas anchas */
+@media screen and (max-width: 1280px) {
+  section table {
+    font-size: 0.75em;
+  }
+  section th, section td {
+    padding: 0.3em 0.4em;
+  }
+}
 </style>
 
 
@@ -96,6 +140,19 @@ Al finalizar esta clase, el estudiante será capaz de:
 
 ## 1. ¿Qué es la Planificación de CPU?
 
+### El problema en el mundo real
+
+Imagina una ventanilla de banco con una sola persona atendiendo:
+- 👥 Múltiples clientes esperando (procesos)
+- 💼 Cada uno con diferentes necesidades (tiempo de ejecución)
+- ⏰ Algunos tienen urgencia (prioridad)
+- 🎯 Queremos atender a todos eficientemente
+
+**¿Cómo decidimos el orden de atención?**
+
+Esto es exactamente lo que hace el scheduler del SO con la CPU.
+
+
 ### El problema
 
 ![Algoritmos de Planificación](../../assets/infografias/clase-04-algoritmos-planificacion.png){: style="max-width: 60%; max-height: 400px; display: block; margin: 0 auto;"}
@@ -124,7 +181,7 @@ Al finalizar esta clase, el estudiante será capaz de:
 ### Según el momento de decisión
 
 | Tipo | Cuándo actúa | Frecuencia |
-|------|--------------|------------|
+| ------ | -------------- | ------------ |
 | **Largo plazo** | Admitir procesos nuevos | Minutos/horas |
 | **Mediano plazo** | Swap in/out de memoria | Segundos/minutos |
 | **Corto plazo** | Elegir proceso para CPU | Milisegundos |
@@ -164,7 +221,7 @@ Al finalizar esta clase, el estudiante será capaz de:
 ### Datos de entrada
 
 | Proceso | Tiempo de llegada | Tiempo de ráfaga (CPU) |
-|---------|-------------------|------------------------|
+| --------- | ------------------- | ------------------------ |
 | P1 | 0 | 5 |
 | P2 | 1 | 3 |
 | P3 | 2 | 8 |
@@ -172,7 +229,7 @@ Al finalizar esta clase, el estudiante será capaz de:
 ### Métricas a calcular
 
 | Métrica | Fórmula |
-|---------|---------|
+| --------- | --------- |
 | **Turnaround Time** | Tiempo de finalización - Tiempo de llegada |
 | **Waiting Time** | Turnaround Time - Tiempo de ráfaga |
 | **Response Time** | Primera ejecución - Tiempo de llegada |
@@ -203,7 +260,7 @@ Tiempo:  0    5    8         16
 ## FCFS - Cálculo de métricas
 
 | Proceso | Llegada | Ráfaga | Inicio | Fin | Turnaround | Waiting |
-|---------|---------|--------|--------|-----|------------|---------|
+| --------- | --------- | -------- | -------- | ----- | ------------ | --------- |
 | P1 | 0 | 5 | 0 | 5 | 5-0=**5** | 5-5=**0** |
 | P2 | 1 | 3 | 5 | 8 | 8-1=**7** | 7-3=**4** |
 | P3 | 2 | 8 | 8 | 16 | 16-2=**14** | 14-8=**6** |
@@ -260,11 +317,11 @@ Tiempo:  0    5    8         16
 
 ```
 | Proceso | Llegada | Ráfaga |
-|---------|---------|--------|
-| P1      | 0       | 7      |
-| P2      | 2       | 4      |
-| P3      | 4       | 1      |
-| P4      | 5       | 4      |
+| --------- | --------- | -------- |
+| P1 | 0 | 7 |
+| P2 | 2 | 4 |
+| P3 | 4 | 1 |
+| P4 | 5 | 4 |
 
 SJF Non-preemptive:
 t=0: Solo P1 disponible → ejecuta P1
@@ -284,7 +341,7 @@ Tiempo:  0       7  8    12      16
 ### SJF Preemptive
 
 ```
-| P1(0,7) | P2(2,4) | P3(4,1) | P4(5,4) |
+|  | P1(0,7) | P2(2,4) | P3(4,1) | P4(5,4) |  |
 
 t=0: P1 inicia (restante=7)
 t=2: P2 llega (restante=4), 4<7 → P2 interrumpe
@@ -309,10 +366,10 @@ Tiempo:  0    2    4 5    7       11      16
 
 ```
 | Proceso | Llegada | Ráfaga | Prioridad |
-|---------|---------|--------|-----------|
-| P1      | 0       | 5      | 3         |
-| P2      | 0       | 3      | 1 (alta)  |
-| P3      | 0       | 8      | 2         |
+| --------- | --------- | -------- | ----------- |
+| P1 | 0 | 5 | 3 |
+| P2 | 0 | 3 | 1 (alta) |
+| P3 | 0 | 8 | 2 |
 
 Orden de ejecución: P2 → P3 → P1
 
@@ -361,11 +418,11 @@ Aumentar gradualmente la prioridad de procesos que esperan mucho tiempo.
 ## Round Robin - Ejemplo
 
 ```
-| Proceso | Llegada | Ráfaga |  Quantum = 4
-|---------|---------|--------|
-| P1      | 0       | 10     |
-| P2      | 0       | 4      |
-| P3      | 0       | 5      |
+| Proceso | Llegada | Ráfaga | Quantum = 4 |
+| --------- | --------- | -------- |  |
+| P1 | 0 | 10 |  |
+| P2 | 0 | 4 |  |
+| P3 | 0 | 5 |  |
 
 Cola inicial: [P1, P2, P3]
 
@@ -387,10 +444,10 @@ Tiempo: 0    4    8    12   16 17   19
 
 ```
 | Proceso | Llegada | Ráfaga | Fin | Turnaround | Waiting |
-|---------|---------|--------|-----|------------|---------|
-| P1      | 0       | 10     | 19  | 19         | 9       |
-| P2      | 0       | 4      | 8   | 8          | 4       |
-| P3      | 0       | 5      | 17  | 17         | 12      |
+| --------- | --------- | -------- | ----- | ------------ | --------- |
+| P1 | 0 | 10 | 19 | 19 | 9 |
+| P2 | 0 | 4 | 8 | 8 | 4 |
+| P3 | 0 | 5 | 17 | 17 | 12 |
 
 Promedios:
 - Turnaround: (19+8+17)/3 = 14.67
@@ -404,7 +461,7 @@ Promedios:
 ### Trade-off importante
 
 | Quantum | Efecto |
-|---------|--------|
+| --------- | -------- |
 | **Muy pequeño** | Muchos context switches → overhead |
 | **Muy grande** | Se comporta como FCFS |
 | **Típico** | 10-100 ms |
@@ -427,7 +484,7 @@ Quantum óptimo:
 ![Comparación de Algoritmos - Gantt](../../assets/infografias/clase-04-comparacion-algoritmos-gantt.png){: style="max-width: 60%; max-height: 400px; display: block; margin: 0 auto;"}
 
 | Algoritmo | Tipo | Starvation | Turnaround | Respuesta |
-|-----------|------|------------|------------|-----------|
+| ----------- | ------ | ------------ | ------------ | ----------- |
 | **FCFS** | Non-preemptive | No | Alto si hay convoy | Variable |
 | **SJF** | Ambos | Sí (procesos largos) | Óptimo | Variable |
 | **Prioridad** | Ambos | Sí | Variable | Alta prioridad: buena |
@@ -440,7 +497,7 @@ Quantum óptimo:
 ### En parejas, calculen para Round Robin (Q=3):
 
 | Proceso | Llegada | Ráfaga |
-|---------|---------|--------|
+| --------- | --------- | -------- |
 | P1 | 0 | 8 |
 | P2 | 1 | 4 |
 | P3 | 2 | 9 |
@@ -457,7 +514,7 @@ Quantum óptimo:
 ## Resumen de la Clase
 
 | Algoritmo | Idea principal |
-|-----------|----------------|
+| ----------- | ---------------- |
 | **FCFS** | Orden de llegada |
 | **SJF** | El más corto primero |
 | **Prioridad** | Según importancia asignada |

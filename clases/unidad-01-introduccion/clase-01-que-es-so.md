@@ -2,9 +2,9 @@
 marp: true
 theme: default
 paginate: true
-header: 'IF0099 - Sistemas Operativos I | Unidad 1'
+| header: 'IF0099 - Sistemas Operativos I | Unidad 1' |
 footer: 'UNAULA - Ingeniería Informática - 2026-I'
-style: |
+| style: |  |
   img {
     max-width: 85%;
     max-height: 60vh;
@@ -54,6 +54,50 @@ section code {
 }
 section p {
   margin: 0.5em 0;
+}
+/* Estilos para tablas responsivas */
+section table {
+  width: 100%;
+  max-width: 100%;
+  font-size: 0.85em;
+  border-collapse: collapse;
+  margin: 0.5em auto;
+  table-layout: auto;
+}
+section th {
+  background-color: #1e40af;
+  color: white;
+  padding: 0.4em 0.6em;
+  text-align: left;
+  font-size: 0.9em;
+  border: 1px solid #ddd;
+}
+section td {
+  padding: 0.4em 0.6em;
+  border: 1px solid #ddd;
+  vertical-align: top;
+  word-wrap: break-word;
+  font-size: 0.85em;
+}
+section tbody tr:nth-child(even) {
+  background-color: #f8f9fa;
+}
+section tbody tr:hover {
+  background-color: #e9ecef;
+}
+/* Asegurar que el contenido no desborde */
+section {
+  padding: 1em 2em;
+  box-sizing: border-box;
+}
+/* Responsividad para tablas anchas */
+@media screen and (max-width: 1280px) {
+  section table {
+    font-size: 0.75em;
+  }
+  section th, section td {
+    padding: 0.3em 0.4em;
+  }
 }
 </style>
 
@@ -108,6 +152,17 @@ Al finalizar esta clase, el estudiante será capaz de:
 > Un **Sistema Operativo (SO)** es el software que actúa como intermediario entre el usuario y el hardware del computador, gestionando los recursos y proporcionando servicios a las aplicaciones.
 
 ![Capas del Sistema](../../assets/infografias/so-capas-sistema.png){: style="max-width: 60%; max-height: 400px; display: block; margin: 0 auto;"}
+
+### ¿Por qué necesitamos un SO?
+
+Sin un SO, cada programa tendría que:
+- 🔧 Manejar directamente el hardware (¡muy complejo!)
+- 🔄 Gestionar su propia memoria
+- 📁 Implementar su propio sistema de archivos
+- 🚫 No podría ejecutarse con otros programas
+
+**El SO hace todo esto por nosotros.**
+
 
 ---
 
@@ -196,7 +251,7 @@ C:\ (o /)
 ### Dispositivos de E/S
 
 | Entrada | Salida | Ambos |
-|---------|--------|-------|
+| --------- | -------- | ------- |
 | Teclado | Monitor | Disco duro |
 | Mouse | Impresora | USB |
 | Micrófono | Parlantes | Red |
@@ -233,7 +288,7 @@ C:\ (o /)
 ## GUI vs CLI
 
 | Aspecto | GUI | CLI |
-|---------|-----|-----|
+| --------- | ----- | ----- |
 | Facilidad | ⭐⭐⭐⭐⭐ | ⭐⭐ |
 | Potencia | ⭐⭐⭐ | ⭐⭐⭐⭐⭐ |
 | Automatización | ⭐⭐ | ⭐⭐⭐⭐⭐ |
@@ -248,7 +303,7 @@ C:\ (o /)
 
 ### Escritorio/Laptop
 | SO | Cuota de mercado |
-|----|------------------|
+| ---- | ------------------ |
 | Windows 11 | ~70% |
 | macOS | ~16% |
 | Linux | ~4% |
@@ -256,7 +311,7 @@ C:\ (o /)
 
 ### Servidores
 | SO | Uso |
-|----|-----|
+| ---- | ----- |
 | **Linux** | ~96% de servidores web |
 | Windows Server | ~4% |
 
@@ -347,7 +402,7 @@ C:\ (o /)
 ## Resumen de la Clase
 
 | Concepto | Descripción |
-|----------|-------------|
+| ---------- | ------------- |
 | **Sistema Operativo** | Software intermediario entre usuario y hardware |
 | **Funciones** | Gestión de procesos, memoria, archivos y E/S |
 | **Interfaz** | GUI (gráfica) y CLI (comandos) |
