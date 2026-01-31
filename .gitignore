@@ -1,9 +1,14 @@
-# Ignorar todas las evaluaciones (contenido confidencial)
+# Ignorar evaluaciones (contenido confidencial - respuestas, soluciones)
 evaluaciones/
 
-# Documentos internos del profesor (no visibles para estudiantes)
+# Documentos internos del docente (notas, seguimiento, tareas pendientes)
 memory-bank/
-planificacion/
+
+# Configuración sensible de MCP / Claude
+**/.claude/
+**/.claude/config.json
+**/mcp.local.json
+mcp.local.json
 
 # Archivos temporales
 *.tmp
@@ -43,12 +48,6 @@ venv/
 
 # C
 *.out
-
-# Sensitive MCP / Claude config
-**/.claude/
-**/.claude/config.json
-**/mcp.local.json
-mcp.local.json
 
 # Git backups
 .git.backup/
