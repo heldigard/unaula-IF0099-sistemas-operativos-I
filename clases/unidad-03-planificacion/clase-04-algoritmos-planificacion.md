@@ -68,7 +68,7 @@ Al finalizar esta clase, el estudiante será capaz de:
 
 ### El problema
 
-![Algoritmos de Planificación](../../assets/infografias/clase-04-algoritmos-planificacion.png)
+![Algoritmos de Planificación](../../assets/infografias/clase-04-algoritmos-planificacion.png){: style="max-width: 80%; max-height: 500px; display: block; margin: 0 auto;"}
 
 ---
 
@@ -316,7 +316,7 @@ Aumentar gradualmente la prioridad de procesos que esperan mucho tiempo.
 
 ### "Turnos rotativos" - El más usado
 
-![Round Robin](../../assets/infografias/clase-04-round-robin.png)
+![Round Robin](../../assets/infografias/clase-04-round-robin.png){: style="max-width: 80%; max-height: 500px; display: block; margin: 0 auto;"}
 
 ---
 
@@ -394,7 +394,7 @@ Quantum óptimo:
 
 ## Comparación de Algoritmos
 
-![Comparación de Algoritmos - Gantt](../../assets/infografias/clase-04-comparacion-algoritmos-gantt.png)
+![Comparación de Algoritmos - Gantt](../../assets/infografias/clase-04-comparacion-algoritmos-gantt.png){: style="max-width: 80%; max-height: 500px; display: block; margin: 0 auto;"}
 
 | Algoritmo | Tipo | Starvation | Turnaround | Respuesta |
 |-----------|------|------------|------------|-----------|

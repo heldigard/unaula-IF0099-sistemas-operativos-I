@@ -64,7 +64,7 @@ Al finalizar esta clase, el estudiante será capaz de:
 
 ## Línea de Tiempo de los SO
 
-![Evolución de los Sistemas Operativos](../../assets/infografias/so-evolucion-timeline.png)
+![Evolución de los Sistemas Operativos](../../assets/infografias/so-evolucion-timeline.png){: style="max-width: 80%; max-height: 500px; display: block; margin: 0 auto;"}
 
 ---
 
@@ -219,7 +219,7 @@ Usuario 3 ──┘    Reparte tiempo
 
 ## Componentes de un SO Moderno
 
-![Arquitectura del Sistema Operativo](../../assets/infografias/so-componentes-arquitectura.png)
+![Arquitectura del Sistema Operativo](../../assets/infografias/so-componentes-arquitectura.png){: style="max-width: 80%; max-height: 500px; display: block; margin: 0 auto;"}
 
 ---
 

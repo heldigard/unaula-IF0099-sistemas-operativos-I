@@ -34,7 +34,7 @@ IMÁGENES GENERADAS:
 **IF0099 - Sistemas Operativos I**
 *4° Semestre - Ingeniería Informática*
 
-![Paginación de Memoria](../../assets/infografias/clase-07-tabla-paginas.png)
+![Paginación de Memoria](../../assets/infografias/clase-07-tabla-paginas.png){: style="max-width: 80%; max-height: 500px; display: block; margin: 0 auto;"}
 
 ---
 

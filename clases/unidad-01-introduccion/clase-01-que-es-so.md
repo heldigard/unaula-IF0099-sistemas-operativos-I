@@ -77,7 +77,7 @@ Al finalizar esta clase, el estudiante será capaz de:
 
 > Un **Sistema Operativo (SO)** es el software que actúa como intermediario entre el usuario y el hardware del computador, gestionando los recursos y proporcionando servicios a las aplicaciones.
 
-![Capas del Sistema](../../assets/infografias/so-capas-sistema.png)
+![Capas del Sistema](../../assets/infografias/so-capas-sistema.png){: style="max-width: 80%; max-height: 500px; display: block; margin: 0 auto;"}
 
 ---
 
@@ -85,7 +85,7 @@ Al finalizar esta clase, el estudiante será capaz de:
 
 ### El SO como el "Gerente de un Hotel"
 
-![Analogía del Hotel](../../assets/infografias/so-analogia-hotel.png)
+![Analogía del Hotel](../../assets/infografias/so-analogia-hotel.png){: style="max-width: 80%; max-height: 500px; display: block; margin: 0 auto;"}
 
 ---
 
@@ -93,7 +93,7 @@ Al finalizar esta clase, el estudiante será capaz de:
 
 ### Las 4 funciones fundamentales
 
-![Funciones del SO](../../assets/infografias/so-funciones-principales.png)
+![Funciones del SO](../../assets/infografias/so-funciones-principales.png){: style="max-width: 80%; max-height: 500px; display: block; margin: 0 auto;"}
 
 ---
 

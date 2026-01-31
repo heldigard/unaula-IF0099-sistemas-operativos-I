@@ -76,7 +76,7 @@ El SO debe:
 
 ## Jerarquía de Memoria
 
-![Jerarquía de Memoria](../../assets/infografias/clase-06-jerarquia-memoria.png)
+![Jerarquía de Memoria](../../assets/infografias/clase-06-jerarquia-memoria.png){: style="max-width: 80%; max-height: 500px; display: block; margin: 0 auto;"}
 
 ---
 
@@ -111,7 +111,7 @@ El SO debe:
 
 ### Traducción de Direcciones con MMU
 
-![Traducción de Direcciones](../../assets/infografias/clase-06-traduccion-direcciones.png)
+![Traducción de Direcciones](../../assets/infografias/clase-06-traduccion-direcciones.png){: style="max-width: 80%; max-height: 500px; display: block; margin: 0 auto;"}
 
 ---
 
@@ -231,7 +231,7 @@ INICIAL:                    DESPUÉS DE LIBERAR B:
 
 ### Dos tipos de desperdicio de memoria
 
-![Tipos de Fragmentación](../../assets/infografias/clase-06-fragmentacion.png)
+![Tipos de Fragmentación](../../assets/infografias/clase-06-fragmentacion.png){: style="max-width: 80%; max-height: 500px; display: block; margin: 0 auto;"}
 
 ---
 

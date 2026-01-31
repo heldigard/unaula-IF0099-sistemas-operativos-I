@@ -114,7 +114,7 @@ Cada pestaña de Chrome es un **proceso separado** con su propio PID.
          │
          ▼
 
-![Estructura de Memoria de un Proceso](../../assets/infografias/clase-03-estructura-memoria.png)
+![Estructura de Memoria de un Proceso](../../assets/infografias/clase-03-estructura-memoria.png){: style="max-width: 80%; max-height: 500px; display: block; margin: 0 auto;"}
 
     Direcciones bajas
 
@@ -149,7 +149,7 @@ int main() {
 
 El SO mantiene un **PCB** por cada proceso. Contiene TODA la información necesaria para gestionar el proceso.
 
-![PCB - Bloque de Control de Proceso](../../assets/infografias/clase-03-pcb.png)
+![PCB - Bloque de Control de Proceso](../../assets/infografias/clase-03-pcb.png){: style="max-width: 80%; max-height: 500px; display: block; margin: 0 auto;"}
 
 ---
 
@@ -194,7 +194,7 @@ El SO mantiene un **PCB** por cada proceso. Contiene TODA la información necesa
 
 ### Cuando el SO cambia de un proceso a otro
 
-![Diagrama de Context Switch](../../assets/infografias/clase-03-cswitch-timeline.png)
+![Diagrama de Context Switch](../../assets/infografias/clase-03-cswitch-timeline.png){: style="max-width: 80%; max-height: 500px; display: block; margin: 0 auto;"}
 
 **El context switch tiene costo** (overhead)
 
@@ -204,7 +204,7 @@ El SO mantiene un **PCB** por cada proceso. Contiene TODA la información necesa
 
 ### Modelo de 5 estados
 
-![Estados de un Proceso](../../assets/infografias/so-estados-proceso.png)
+![Estados de un Proceso](../../assets/infografias/so-estados-proceso.png){: style="max-width: 80%; max-height: 500px; display: block; margin: 0 auto;"}
 
 ---
 

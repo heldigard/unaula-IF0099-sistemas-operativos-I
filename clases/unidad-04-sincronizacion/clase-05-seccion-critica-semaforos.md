@@ -95,7 +95,7 @@ Tiempo    Proceso A              Memoria          Proceso B
 
 ### Código que accede a recursos compartidos
 
-![Sección Crítica](../../assets/infografias/clase-05-seccion-critica.png)
+![Sección Crítica](../../assets/infografias/clase-05-seccion-critica.png){: style="max-width: 80%; max-height: 500px; display: block; margin: 0 auto;"}
 
 ---
 
@@ -191,7 +191,7 @@ void salir(int i) {
 
 ### Inventados por Dijkstra (1965)
 
-![Semáforos](../../assets/infografias/clase-05-semaforos.png)
+![Semáforos](../../assets/infografias/clase-05-semaforos.png){: style="max-width: 80%; max-height: 500px; display: block; margin: 0 auto;"}
 
 ---
 

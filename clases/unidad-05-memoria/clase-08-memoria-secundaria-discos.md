@@ -34,7 +34,7 @@ IMÁGENES GENERADAS:
 **IF0099 - Sistemas Operativos I**
 *4° Semestre - Ingeniería Informática*
 
-![Estructura de Disco Duro](../../assets/infografias/clase-08-estructura-disco.png)
+![Estructura de Disco Duro](../../assets/infografias/clase-08-estructura-disco.png){: style="max-width: 80%; max-height: 500px; display: block; margin: 0 auto;"}
 
 ---
 

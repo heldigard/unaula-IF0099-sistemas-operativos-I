@@ -34,7 +34,7 @@ IMÁGENES GENERADAS:
 **IF0099 - Sistemas Operativos I**
 *4° Semestre - Ingeniería Informática*
 
-![Protección vs Seguridad](../../assets/infografias/clase-12-proteccion-seguridad.png)
+![Protección vs Seguridad](../../assets/infografias/clase-12-proteccion-seguridad.png){: style="max-width: 80%; max-height: 500px; display: block; margin: 0 auto;"}
 
 ---
 
