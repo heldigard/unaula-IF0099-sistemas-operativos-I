@@ -12,13 +12,43 @@ footer: 'UNAULA - Ingeniería Informática - 2026-I'
 ---
 <style>
 img {
-  max-width: 65% !important;
-  max-height: 45vh !important;
+  max-width: 70% !important;
+  max-height: 50vh !important;
   object-fit: contain !important;
   height: auto !important;
+  display: block !important;
+  margin: 0 auto !important;
 }
 section {
-  font-size: 24px;
+  font-size: 20px;
+  overflow: hidden;
+}
+section h1 {
+  font-size: 1.8em;
+}
+section h2 {
+  font-size: 1.4em;
+}
+section h3 {
+  font-size: 1.2em;
+}
+section ul, section ol {
+  font-size: 0.9em;
+  margin-left: 1em;
+}
+section li {
+  margin-bottom: 0.3em;
+}
+section pre {
+  font-size: 0.7em;
+  max-height: 60vh;
+  overflow-y: auto;
+}
+section code {
+  font-size: 0.85em;
+}
+section p {
+  margin: 0.5em 0;
 }
 </style>
 
