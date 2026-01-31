@@ -6,6 +6,11 @@ header: 'IF0099 - Sistemas Operativos I | Unidad 8'
 footer: 'UNAULA - Ingeniería Informática - 2026-I'
 ---
 
+<!--
+IMÁGENES GENERADAS:
+- clase-13-sistemas-distribuidos.png: Arquitectura de sistemas distribuidos y teorema CAP
+-->
+
 # Clase 13: Sistemas Distribuidos
 ## Conceptos, ventajas y desafíos
 

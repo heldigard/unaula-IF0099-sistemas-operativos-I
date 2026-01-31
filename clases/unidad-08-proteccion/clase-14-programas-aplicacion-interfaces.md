@@ -6,6 +6,11 @@ header: 'IF0099 - Sistemas Operativos I | Unidad 8'
 footer: 'UNAULA - Ingeniería Informática - 2026-I'
 ---
 
+<!--
+IMÁGENES GENERADAS:
+- clase-14-llamadas-sistema.png: Arquitectura de llamadas al sistema y APIs
+-->
+
 # Clase 14: Programas de Aplicación e Interfaces
 ## APIs del sistema operativo y llamadas al sistema
 

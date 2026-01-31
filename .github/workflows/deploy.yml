@@ -34,11 +34,11 @@ jobs:
 
       - name: Convert all Marp files to HTML
         run: |
-          find clases -name "*.md" -type f | while read file; do
+          for file in $(find clases -name "*.md" -type f); do
             echo "Converting $file"
             # Create subdirectory structure in output
             mkdir -p "output/$(dirname "$file")"
-            marp "$file" --html --output "output/${file%.md}.html"
+            marp "$file" -o "output/${file%.md}.html"
           done
 
       - name: Copy assets
