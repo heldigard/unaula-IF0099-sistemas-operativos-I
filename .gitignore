@@ -49,3 +49,6 @@ venv/
 **/.claude/config.json
 **/mcp.local.json
 mcp.local.json
+
+# Git backups
+.git.backup/
