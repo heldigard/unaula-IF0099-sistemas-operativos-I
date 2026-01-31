@@ -100,29 +100,12 @@
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="6" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 2" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="6" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 2;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="22">
 <header>IF0099 - Sistemas Operativos I | Unidad 2</header>
 <h2 id="2-estructura-de-un-proceso-en-memoria">2. Estructura de un Proceso en Memoria</h2>
-<pre is="marp-pre" data-auto-scaling="downscale-only"><code>    Direcciones altas
-         │
-         ▼
-┌─────────────────┐
-│      STACK      │ ← Variables locales, llamadas a funciones
-│        ↓        │    Crece hacia abajo
-├─────────────────┤
-│                 │
-│    (espacio     │
-│     libre)      │
-│                 │
-├─────────────────┤
-│        ↑        │
-│      HEAP       │ ← Memoria dinámica (malloc, new)
-│                 │    Crece hacia arriba
-├─────────────────┤
-│      DATA       │ ← Variables globales inicializadas
-├─────────────────┤
-│      BSS        │ ← Variables globales sin inicializar
-├─────────────────┤
-│      TEXT       │ ← Código del programa (instrucciones)
-└─────────────────┘
-    Direcciones bajas
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code>Direcciones altas
+     │
+     ▼
+</code></pre>
+<p><img src="../../assets/infografias/clase-03-estructura-memoria.png" alt="Estructura de Memoria de un Proceso" /></p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code>Direcciones bajas
 </code></pre>
 <footer>UNAULA - Ingeniería Informática - 2026-I</footer>
 </section>
@@ -256,22 +239,7 @@
 <header>IF0099 - Sistemas Operativos I | Unidad 2</header>
 <h2 id="context-switch-cambio-de-contexto">Context Switch (Cambio de Contexto)</h2>
 <h3 id="cuando-el-so-cambia-de-un-proceso-a-otro">Cuando el SO cambia de un proceso a otro</h3>
-<pre is="marp-pre" data-auto-scaling="downscale-only"><code> Proceso A          SO              Proceso B
-     │                                   │
-     │ interrupción                      │
-     │─────────────→│                    │
-     │              │ guardar PCB_A      │
-     │              │                    │
-     │              │ cargar PCB_B       │
-     │              │────────────────────│
-     │                                   │ ejecuta
-     │                                   │
-     │              │←───────────────────│
-     │              │ guardar PCB_B      │
-     │              │ cargar PCB_A       │
-     │←─────────────│                    │
-     │ continúa                          │
-</code></pre>
+<p><img src="../../assets/infografias/clase-03-cswitch-timeline.png" alt="Diagrama de Context Switch" /></p>
 <p><strong>El context switch tiene costo</strong> (overhead)</p>
 <footer>UNAULA - Ingeniería Informática - 2026-I</footer>
 </section>
