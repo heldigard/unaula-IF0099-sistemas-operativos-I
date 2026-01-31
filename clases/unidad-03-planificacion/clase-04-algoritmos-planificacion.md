@@ -6,6 +6,14 @@ header: 'IF0099 - Sistemas Operativos I | Unidad 3'
 footer: 'UNAULA - Ingeniería Informática - 2026-I'
 ---
 
+<!--
+[2026-01-31] - Clase enriquecida con infografías
+
+IMÁGENES GENERADAS:
+- clase-04-algoritmos-planificacion.png: Comparación visual de FCFS, SJF, Prioridad, Round Robin
+- clase-04-round-robin.png: Diagrama circular del algoritmo Round Robin
+-->
+
 # Clase 4: Planificación de Procesos
 ## Algoritmos FCFS, SJF, Prioridad y Round Robin
 
@@ -43,6 +51,11 @@ Al finalizar esta clase, el estudiante será capaz de:
 
 ### El problema
 
+![Algoritmos de Planificación](../../assets/infografias/clase-04-algoritmos-planificacion.png)
+
+---
+
+### Representación ASCII:
 ```
         Cola de procesos LISTOS
 ┌─────┐ ┌─────┐ ┌─────┐ ┌─────┐
