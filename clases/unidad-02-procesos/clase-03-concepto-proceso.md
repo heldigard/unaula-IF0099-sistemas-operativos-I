@@ -11,6 +11,7 @@ footer: 'UNAULA - Ingeniería Informática - 2026-I'
 
 IMÁGENES GENERADAS:
 - so-estados-proceso.png: Diagrama de estados de un proceso
+- clase-03-pcb.png: Infografía del Bloque de Control de Proceso
 -->
 
 # Clase 3: Concepto de Proceso
@@ -148,6 +149,12 @@ int main() {
 ### La "ficha" de cada proceso
 
 El SO mantiene un **PCB** por cada proceso. Contiene TODA la información necesaria para gestionar el proceso.
+
+![PCB - Bloque de Control de Proceso](../../assets/infografias/clase-03-pcb.png)
+
+---
+
+### Representación ASCII:
 
 ```
 ┌─────────────────────────────────────┐

@@ -11,6 +11,7 @@ footer: 'UNAULA - Ingeniería Informática - 2026-I'
 
 IMÁGENES GENERADAS:
 - so-evolucion-timeline.png: Línea de tiempo de la evolución de SO
+- so-componentes-arquitectura.png: Diagrama de arquitectura en capas (Hardware, Kernel, Servicios, Apps)
 -->
 
 # Clase 2: Evolución Histórica y Componentes del SO
@@ -201,6 +202,11 @@ Usuario 3 ──┘    Reparte tiempo
 
 ## Componentes de un SO Moderno
 
+![Arquitectura del Sistema Operativo](../../assets/infografias/so-componentes-arquitectura.png)
+
+---
+
+### Representación ASCII:
 ```
 ┌─────────────────────────────────────────────────┐
 │                  APLICACIONES                   │
