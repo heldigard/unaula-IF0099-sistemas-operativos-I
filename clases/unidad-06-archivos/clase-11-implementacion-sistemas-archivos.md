@@ -17,7 +17,7 @@ IMÁGENES GENERADAS:
 **IF0099 - Sistemas Operativos I**
 *4° Semestre - Ingeniería Informática*
 
-![Estructura Interna FS - Inodos](../../../assets/infografias/clase-11-inodos.png)
+![Estructura Interna FS - Inodos](../../assets/infografias/clase-11-inodos.png)
 
 ---
 

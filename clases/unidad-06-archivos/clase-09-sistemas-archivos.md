@@ -17,7 +17,7 @@ IMÁGENES GENERADAS:
 **IF0099 - Sistemas Operativos I**
 *4° Semestre - Ingeniería Informática*
 
-![Comparación de Sistemas de Archivos](../../../assets/infografias/clase-09-sistemas-archivos.png)
+![Comparación de Sistemas de Archivos](../../assets/infografias/clase-09-sistemas-archivos.png)
 
 ---
 

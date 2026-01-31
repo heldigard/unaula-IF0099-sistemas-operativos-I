@@ -17,7 +17,7 @@ IMÁGENES GENERADAS:
 **IF0099 - Sistemas Operativos I**
 *4° Semestre - Ingeniería Informática*
 
-![DMA - Acceso Directo a Memoria](../../../assets/infografias/clase-10-dma.png)
+![DMA - Acceso Directo a Memoria](../../assets/infografias/clase-10-dma.png)
 
 ---
 
