@@ -5,17 +5,23 @@ paginate: true
 header: 'IF0099 - Sistemas Operativos I | Unidad 1'
 footer: 'UNAULA - Ingeniería Informática - 2026-I'
 
-style: |
-  img {
-    max-width: 85%;
-    max-height: 60vh;
-    object-fit: contain;
-  }
   section {
     font-size: 24px;
   }
 
 ---
+<style>
+img {
+  max-width: 70% !important;
+  max-height: 50vh !important;
+  object-fit: contain !important;
+  height: auto !important;
+}
+section {
+  font-size: 24px;
+}
+</style>
+
 
 <!--
 [2026-01-31] - Clase enriquecida con infografías
@@ -406,16 +412,38 @@ Programa malicioso → Pide al kernel → Kernel DENIEGA → Sistema seguro
 
 ### En parejas, investiguen en su computador:
 
-1. **Windows**: Abran PowerShell y ejecuten:
-   ```powershell
-   Get-ComputerInfo | Select-Object OsName, OsVersion
-   ```
+### En Windows (PowerShell):
 
-2. **Linux/Mac**: Abran Terminal y ejecuten:
-   ```bash
-   uname -a
-   cat /etc/os-release  # Solo Linux
-   ```
+Abran PowerShell y ejecuten:
+
+```powershell
+# Ver información del sistema operativo
+Get-ComputerInfo | Select-Object CsName, WindowsVersion, OsArchitecture
+
+# Ver procesos (top 10 por uso de CPU)
+Get-Process | Select-Object -First 10 Name, CPU, PM | Sort-Object CPU -Descending
+
+# Ver memoria disponible
+systeminfo | findstr /C:"Total Physical Memory" /C:"Available Physical Memory"
+```
+
+### En Linux/macOS (Terminal):
+
+Abran Terminal y ejecuten:
+
+```bash
+# Ver información del sistema
+uname -a                # Información del kernel
+cat /etc/os-release     # Distribución Linux (solo Linux)
+sw_vers                 # Versión de macOS (solo macOS)
+
+# Ver procesos (top 10)
+ps aux | head -11       # Incluye encabezado
+
+# Ver memoria
+free -h                 # Linux
+vm_stat                 # macOS
+```
 
 3. **Discutan**: ¿Qué información les da cada comando?
 

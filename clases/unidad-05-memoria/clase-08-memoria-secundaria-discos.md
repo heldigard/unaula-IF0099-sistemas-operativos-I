@@ -5,17 +5,23 @@ paginate: true
 header: 'IF0099 - Sistemas Operativos I | Unidad 5'
 footer: 'UNAULA - Ingeniería Informática - 2026-I'
 
-style: |
-  img {
-    max-width: 85%;
-    max-height: 60vh;
-    object-fit: contain;
-  }
   section {
     font-size: 24px;
   }
 
 ---
+<style>
+img {
+  max-width: 70% !important;
+  max-height: 50vh !important;
+  object-fit: contain !important;
+  height: auto !important;
+}
+section {
+  font-size: 24px;
+}
+</style>
+
 
 <!--
 IMÁGENES GENERADAS:
