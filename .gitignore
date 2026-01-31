@@ -1,0 +1,51 @@
+# Ignorar todas las evaluaciones (contenido confidencial)
+evaluaciones/
+
+# Documentos internos del profesor (no visibles para estudiantes)
+memory-bank/
+planificacion/
+
+# Archivos temporales
+*.tmp
+*.bak
+*~
+
+# Archivos de sistemas operativos
+.DS_Store
+Thumbs.db
+
+# Archivos de compilación
+*.class
+*.pyc
+*.o
+*.exe
+
+# Dependencias
+node_modules/
+__pycache__/
+
+# Archivos personales
+*.local
+.env
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+
+# C
+*.out
+
+# Sensitive MCP / Claude config
+**/.claude/
+**/.claude/config.json
+**/mcp.local.json
+mcp.local.json

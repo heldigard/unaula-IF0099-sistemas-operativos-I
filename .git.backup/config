@@ -1,0 +1,13 @@
+[core]
+	repositoryformatversion = 0
+	filemode = false
+	bare = false
+	logallrefupdates = true
+	symlinks = false
+	ignorecase = true
+[user]
+	name = Docente UNAULA
+	email = docente@unaula.edu.co
+[branch "master"]
+	gk-last-accessed = 2026-01-31T19:45:59.092Z
+	gk-last-modified = 2026-01-31T19:45:59.092Z

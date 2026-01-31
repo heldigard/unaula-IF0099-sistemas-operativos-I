@@ -1,0 +1,164 @@
+---
+marp: true
+theme: default
+paginate: true
+header: 'IF0099 - Sistemas Operativos I | Unidad 6'
+footer: 'UNAULA - Ingeniería Informática - 2026-I'
+---
+
+# Clase 11: Implementación de Sistemas de Archivos
+## Inodos, bloques y estructuras internas
+
+**IF0099 - Sistemas Operativos I**
+*4° Semestre - Ingeniería Informática*
+
+![Estructura Interna FS - Inodos](../../../assets/infografias/clase-11-inodos.png)
+
+---
+
+## Objetivos de la Clase
+
+Al finalizar esta clase, el estudiante será capaz de:
+
+1. **Explicar** la estructura interna de un sistema de archivos
+2. **Describir** el rol de inodos, directorios y bloques
+3. **Analizar** la asignación de espacio (contigua, enlazada, indexada)
+4. **Relacionar** el diseño con el rendimiento
+
+**Duración:** 90 minutos
+
+---
+
+## Agenda
+
+1. Estructuras de un FS (20 min)
+2. Inodos y metadatos (20 min)
+3. Asignación de espacio (25 min)
+4. Caso ext4 (15 min)
+5. Actividad práctica (10 min)
+
+---
+
+## 1. Estructura Interna del FS
+
+```
+┌──────────────────────────────────────┐
+│ Superblock                           │
+├──────────────────────────────────────┤
+│ Bitmaps (bloques / inodos libres)    │
+├──────────────────────────────────────┤
+│ Tabla de Inodos                      │
+├──────────────────────────────────────┤
+│ Bloques de Datos                     │
+└──────────────────────────────────────┘
+```
+
+- **Superblock:** tamaño, FS, estado, conteos
+- **Bitmaps:** qué está libre/ocupado
+- **Inodos:** metadatos de archivos
+- **Datos:** contenido real
+
+---
+
+## 2. ¿Qué es un Inodo?
+
+```
+INODO:
+- Permisos (rwx)
+- Propietario / grupo
+- Tamaño
+- Timestamps (atime, mtime, ctime)
+- Punteros a bloques de datos
+```
+
+**Regla clave:** El nombre del archivo está en el directorio, no en el inodo.
+
+---
+
+## Directorios como Tablas
+
+```
+Directorio:
++----------------------+---------+
+| Nombre               | Inodo   |
++----------------------+---------+
+| documento.txt        | 1052    |
+| foto.jpg             | 2048    |
+| proyecto/            | 3021    |
++----------------------+---------+
+```
+
+- Directorio = archivo especial
+- Mapea nombre → inodo
+
+---
+
+## 3. Asignación de Espacio
+
+### Contigua
+- Rápida, pero difícil de expandir
+
+### Enlazada
+- Fácil crecer, acceso lento
+
+### Indexada
+- Acceso directo, usa bloques índice
+
+```
+[Inodo] -> [Bloque índice] -> [Bloques de datos]
+```
+
+---
+
+## 4. Ejemplo ext4 (Linux)
+
+- **Journaling** para consistencia
+- **Extents** para reducir fragmentación
+- **Bloques** típicos: 4KB
+
+**Ventaja:** rápido y confiable en servidores
+
+---
+
+## Actividad Práctica (10 min)
+
+### En parejas (Linux):
+```bash
+ls -li
+stat archivo.txt
+```
+
+Preguntas:
+1. ¿Cuál es el inodo del archivo?
+2. ¿Qué metadatos muestra `stat`?
+
+---
+
+## Resumen de la Clase
+
+| Concepto | Idea clave |
+|----------|------------|
+| **Superblock** | Información global del FS |
+| **Inodo** | Metadatos y punteros a datos |
+| **Directorio** | Tabla nombre → inodo |
+| **Asignación** | Contigua, enlazada, indexada |
+| **ext4** | Journaling y extents |
+
+---
+
+## Tarea
+
+1. Comparar FAT32 vs ext4 (3 diferencias)
+2. Explicar qué es journaling y por qué ayuda
+
+---
+
+## Próxima Clase
+
+### Clase 13: Sistemas Distribuidos
+
+- Conceptos básicos
+- Ventajas y retos
+- Ejemplos reales
+
+**¡Nos vemos!**
