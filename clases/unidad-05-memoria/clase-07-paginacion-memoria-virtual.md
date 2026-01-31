@@ -6,6 +6,11 @@ header: 'IF0099 - Sistemas Operativos I | Unidad 5'
 footer: 'UNAULA - Ingeniería Informática - 2026-I'
 ---
 
+<!--
+IMÁGENES GENERADAS:
+- clase-07-tabla-paginas.png: Infografía sobre paginación, tabla de páginas y memoria virtual
+-->
+
 # Clase 7: Paginación y Memoria Virtual
 ## Páginas, Marcos, Tablas y Page Faults
 

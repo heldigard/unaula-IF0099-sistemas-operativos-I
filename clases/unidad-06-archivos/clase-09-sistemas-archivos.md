@@ -6,7 +6,12 @@ header: 'IF0099 - Sistemas Operativos I | Unidad 6'
 footer: 'UNAULA - Ingeniería Informática - 2026-I'
 ---
 
-# Clase 8: Sistemas de Archivos
+<!--
+IMÁGENES GENERADAS:
+- clase-09-sistemas-archivos.png: Comparación de sistemas de archivos FAT32, NTFS y ext4
+-->
+
+# Clase 9: Sistemas de Archivos
 ## Organización, Directorios y Sistemas de Archivos Modernos
 
 **IF0099 - Sistemas Operativos I**

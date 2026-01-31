@@ -6,6 +6,11 @@ header: 'IF0099 - Sistemas Operativos I | Unidad 5'
 footer: 'UNAULA - Ingeniería Informática - 2026-I'
 ---
 
+<!--
+IMÁGENES GENERADAS:
+- clase-08-estructura-disco.png: Infografía sobre estructura de disco duro y algoritmos de planificación
+-->
+
 # Clase 8: Memoria Secundaria y Discos
 ## Estructura, planificación y rendimiento
 

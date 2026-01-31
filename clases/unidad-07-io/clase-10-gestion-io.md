@@ -6,7 +6,12 @@ header: 'IF0099 - Sistemas Operativos I | Unidad 7'
 footer: 'UNAULA - Ingeniería Informática - 2026-I'
 ---
 
-# Clase 9: Gestión de Entrada/Salida
+<!--
+IMÁGENES GENERADAS:
+- clase-10-dma.png: Infografía sobre DMA y gestión de E/S
+-->
+
+# Clase 10: Gestión de Entrada/Salida
 ## Dispositivos, Controladores y DMA
 
 **IF0099 - Sistemas Operativos I**

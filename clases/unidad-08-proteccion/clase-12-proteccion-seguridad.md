@@ -6,7 +6,12 @@ header: 'IF0099 - Sistemas Operativos I | Unidad 8'
 footer: 'UNAULA - Ingeniería Informática - 2026-I'
 ---
 
-# Clase 10: Protección y Seguridad
+<!--
+IMÁGENES GENERADAS:
+- clase-12-proteccion-seguridad.png: Infografía sobre protección y seguridad en sistemas operativos
+-->
+
+# Clase 12: Protección y Seguridad
 ## Dominios, Control de Acceso y Amenazas
 
 **IF0099 - Sistemas Operativos I**

@@ -6,6 +6,11 @@ header: 'IF0099 - Sistemas Operativos I | Unidad 6'
 footer: 'UNAULA - Ingeniería Informática - 2026-I'
 ---
 
+<!--
+IMÁGENES GENERADAS:
+- clase-11-inodos.png: Infografía sobre implementación de sistemas de archivos con inodos
+-->
+
 # Clase 11: Implementación de Sistemas de Archivos
 ## Inodos, bloques y estructuras internas
 
