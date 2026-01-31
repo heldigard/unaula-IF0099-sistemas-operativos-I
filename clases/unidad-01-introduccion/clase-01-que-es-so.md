@@ -107,7 +107,7 @@ Al finalizar esta clase, el estudiante será capaz de:
 
 > Un **Sistema Operativo (SO)** es el software que actúa como intermediario entre el usuario y el hardware del computador, gestionando los recursos y proporcionando servicios a las aplicaciones.
 
-![Capas del Sistema](../../assets/infografias/so-capas-sistema.png){: style="max-width: 80%; max-height: 500px; display: block; margin: 0 auto;"}
+![Capas del Sistema](../../assets/infografias/so-capas-sistema.png){: style="max-width: 60%; max-height: 400px; display: block; margin: 0 auto;"}
 
 ---
 
@@ -115,7 +115,7 @@ Al finalizar esta clase, el estudiante será capaz de:
 
 ### El SO como el "Gerente de un Hotel"
 
-![Analogía del Hotel](../../assets/infografias/so-analogia-hotel.png){: style="max-width: 80%; max-height: 500px; display: block; margin: 0 auto;"}
+![Analogía del Hotel](../../assets/infografias/so-analogia-hotel.png){: style="max-width: 60%; max-height: 400px; display: block; margin: 0 auto;"}
 
 ---
 
@@ -123,7 +123,7 @@ Al finalizar esta clase, el estudiante será capaz de:
 
 ### Las 4 funciones fundamentales
 
-![Funciones del SO](../../assets/infografias/so-funciones-principales.png){: style="max-width: 80%; max-height: 500px; display: block; margin: 0 auto;"}
+![Funciones del SO](../../assets/infografias/so-funciones-principales.png){: style="max-width: 60%; max-height: 400px; display: block; margin: 0 auto;"}
 
 ---
 
@@ -318,12 +318,15 @@ C:\ (o /)
    - Opción 2: `Ctrl + Alt + Supr` → seleccionar "Administrador de Tareas"
    - Opción 3: Click derecho en la Barra de Tareas → "Administrador de Tareas"
    
-   **En Linux:**
+   **En Linux (WSL o Máquina Virtual):**
    - Terminal: `top`, `htop`, o `ps aux`
    - Interfaz gráfica: Monitor del Sistema (varía según distribución)
-   
-   **En macOS:**
-   - `Cmd + Space` → escribir "Monitor de Actividad"
+
+> **⚠️ IMPORTANTE:** En este curso usaremos exclusivamente **Linux (Ubuntu)** a través de:
+> - **WSL (Windows Subsystem for Linux)** - Recomendado
+> - **Máquina Virtual con VirtualBox**
+> 
+> Ver guía de instalación en el Laboratorio 1.
 
 2. **Investiguen**: ¿Cuánta RAM tiene su computador y cuánta está en uso?
 
