@@ -10,7 +10,7 @@ footer: 'UNAULA - Ingeniería Informática - 2026-I'
   }
 
 ---
-<style>
+## De las tarjetas perforadas a la nube
 img {
   max-width: 70% !important;
   max-height: 50vh !important;
@@ -96,6 +96,11 @@ section {
 }
 </style>
 
+---
+## De las tarjetas perforadas a la nube
+
+*(continuación...)*
+
 
 <!--
 [2026-01-31] - Clase enriquecida con infografías
@@ -105,8 +110,6 @@ IMÁGENES GENERADAS:
 - so-componentes-arquitectura.png: Diagrama de arquitectura en capas (Hardware, Kernel, Servicios, Apps)
 -->
 
-# Clase 2: Evolución Histórica y Componentes del SO
-## De las tarjetas perforadas a la nube
 
 **IF0099 - Sistemas Operativos I**
 *4° Semestre - Ingeniería Informática*
@@ -463,7 +466,6 @@ Programa malicioso → Pide al kernel → Kernel DENIEGA → Sistema seguro
   - Acceder al disco sin permiso
 
 ---
-
 ## Transición entre modos
 
 ```
@@ -491,6 +493,11 @@ Programa malicioso → Pide al kernel → Kernel DENIEGA → Sistema seguro
 │   programa continúa con datos en buffer         │
 └─────────────────────────────────────────────────┘
 ```
+
+---
+## Transición entre modos
+
+*(continuación...)*
 
 ---
 ## Actividad Práctica (10 min)

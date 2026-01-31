@@ -10,7 +10,7 @@ footer: 'UNAULA - Ingeniería Informática - 2026-I'
   }
 
 ---
-<style>
+## Conceptos, Partición y Fragmentación
 img {
   max-width: 70% !important;
   max-height: 50vh !important;
@@ -96,6 +96,11 @@ section {
 }
 </style>
 
+---
+## Conceptos, Partición y Fragmentación
+
+*(continuación...)*
+
 
 <!--
 [2026-01-31] - Clase enriquecida con infografías
@@ -106,8 +111,6 @@ IMÁGENES GENERADAS:
 - clase-06-traduccion-direcciones.png: Diagrama de traducción lógica a física
 -->
 
-# Clase 6: Gestión de Memoria
-## Conceptos, Partición y Fragmentación
 
 **IF0099 - Sistemas Operativos I**
 *4° Semestre - Ingeniería Informática*
@@ -153,7 +156,6 @@ El SO debe:
 ![Jerarquía de Memoria](../../assets/infografias/clase-06-jerarquia-memoria.png){: style="max-width: 60%; max-height: 400px; display: block; margin: 0 auto;"}
 
 ---
-
 ### Representación ASCII:
                     ▲
                     │  Más rápido
@@ -178,6 +180,11 @@ El SO debe:
                     │  Mayor capacidad
                     ▼
 ```
+
+---
+### Representación ASCII:
+
+*(continuación...)*
 
 ---
 
@@ -308,7 +315,6 @@ INICIAL:                    DESPUÉS DE LIBERAR B:
 ![Tipos de Fragmentación](../../assets/infografias/clase-06-fragmentacion.png){: style="max-width: 60%; max-height: 400px; display: block; margin: 0 auto;"}
 
 ---
-
 | Tipo | Causa | Dónde ocurre |
 | ------ | ------- | -------------- |
 | **Interna** | Proceso no usa toda su partición | Partición fija |
@@ -329,6 +335,11 @@ FRAGMENTACIÓN EXTERNA:
 ├──────┤
 │HUECO │ ← 40KB libre
 └──────┘
+
+---
+
+
+*(continuación...)*
 
 Total libre: 120KB
 Pero NO podemos cargar un proceso de 100KB

@@ -10,7 +10,7 @@ footer: 'UNAULA - Ingeniería Informática - 2026-I'
   }
 
 ---
-<style>
+# Clase 10: Gestión de Entrada/Salida
 img {
   max-width: 70% !important;
   max-height: 50vh !important;
@@ -96,13 +96,17 @@ section {
 }
 </style>
 
+---
+# Clase 10: Gestión de Entrada/Salida
+
+*(continuación...)*
+
 
 <!--
 IMÁGENES GENERADAS:
 - clase-10-dma.png: Infografía sobre DMA y gestión de E/S
 -->
 
-# Clase 10: Gestión de Entrada/Salida
 ---
 ## Dispositivos, Controladores y DMA
 
@@ -442,7 +446,6 @@ ESCRITURA (write-back):
 ```
 
 ---
-
 ## Spooling (Print Spooler)
 
 ```
@@ -468,6 +471,11 @@ ESCRITURA (write-back):
              │(exclusiva)│
              └──────────┘
 ```
+
+---
+## Spooling (Print Spooler)
+
+*(continuación...)*
 
 ✅ Múltiples usuarios pueden "imprimir" simultáneamente
 ✅ Cola gestionada con prioridades

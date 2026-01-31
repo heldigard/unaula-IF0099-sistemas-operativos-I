@@ -98,14 +98,17 @@ section {
 }
 </style>
 
+---
+## APIs del sistema operativo y llamadas al sistema
+
+*(continuación...)*
+
 
 <!--
 IMÁGENES GENERADAS:
 - clase-14-llamadas-sistema.png: Arquitectura de llamadas al sistema y APIs
 -->
 
-# Clase 14: Programas de Aplicación e Interfaces
-## APIs del sistema operativo y llamadas al sistema
 
 **IF0099 - Sistemas Operativos I**
 *4° Semestre - Ingeniería Informática*
@@ -218,3 +221,291 @@ En parejas:
 - Preparación examen final
 
 **¡Nos vemos!**
+
+
+---
+
+
+## 🔧 System Calls: La Interfaz con el Kernel
+
+### ¿Qué son las System Calls?
+
+Las **llamadas al sistema** (syscalls) son la única forma en que un programa puede pedirle al kernel que haga algo privilegiado.
+
+```
+┌───────────────────────────────────┐
+│      MODO USUARIO                 │
+│                                   │
+│  Aplicación                       │
+│    ↓ (open, read, write...)       │
+│  Biblioteca C (libc)              │
+│    ↓ (syscall wrapper)            │
+├───────────────────────────────────┤ ← CPU cambia a Modo Kernel
+│      MODO KERNEL                  │
+│                                   │
+│  Despachador de Syscalls          │
+│    ↓ (tabla de syscalls)          │
+│  Función del Kernel               │
+│    ↓ (acceso a hardware)          │
+│  Controladores (drivers)          │
+│    ↓                              │
+│  HARDWARE                         │
+└───────────────────────────────────┘
+```
+
+---
+#### ¿Qué pasa internamente?
+
+
+```c
+
+int main() {
+    // 1. Llamada a open() en modo usuario
+    int fd = open("/tmp/test.txt", O_RDONLY);
+    
+    if (fd == -1) {
+        perror("Error abriendo archivo");
+        return 1;
+    }
+    
+    printf("Archivo abierto con descriptor: %d\n", fd);
+    close(fd);
+    return 0;
+}
+```
+
+
+**Paso 1:** `open()` en libc prepara parámetros
+```c
+// libc traduce a syscall #2 (en x86-64)
+syscall(__NR_open, "/tmp/test.txt", O_RDONLY, 0);
+```
+
+---
+#### ¿Qué pasa internamente?
+
+*(continuación...)*
+
+**Paso 2:** Instrucción especial de CPU
+```asm
+mov rax, 2              ; Número de syscall (open = 2)
+mov rdi, path           ; Parámetro 1: ruta del archivo
+mov rsi, O_RDONLY       ; Parámetro 2: flags
+syscall                 ; ← CPU cambia a modo kernel
+```
+
+**Paso 3:** Kernel ejecuta `sys_open()`
+```c
+// En el kernel de Linux:
+asmlinkage long sys_open(const char __user *filename, 
+                         int flags, umode_t mode)
+{
+    // 1. Validar ruta (¿existe?, ¿permisos?)
+    // 2. Buscar inodo en filesystem
+    // 3. Crear entrada en tabla de archivos abiertos
+    // 4. Asignar file descriptor (fd)
+    // 5. Retornar fd al programa
+}
+```
+
+---
+#### ¿Qué pasa internamente?
+
+*(continuación...)*
+
+**Paso 4:** Retorno a modo usuario
+```c
+// El valor de retorno está en rax
+// libc retorna ese valor como int
+return fd;  // Ej: 3 (0,1,2 están reservados para stdin/out/err)
+```
+
+---
+
+### 📋 Syscalls Comunes en Linux
+
+| Syscall | Número | Descripción | Ejemplo en C |
+|---------|--------|-------------|--------------|
+| `read` | 0 | Leer de fd | `read(fd, buf, count)` |
+| `write` | 1 | Escribir a fd | `write(fd, "hola", 4)` |
+| `open` | 2 | Abrir archivo | `open("/file", O_RDONLY)` |
+| `close` | 3 | Cerrar fd | `close(fd)` |
+| `stat` | 4 | Info de archivo | `stat("/file", &statbuf)` |
+| `fork` | 57 | Crear proceso | `fork()` |
+| `execve` | 59 | Ejecutar programa | `execve("/bin/ls", ...)` |
+| `exit` | 60 | Terminar proceso | `exit(0)` |
+| `getpid` | 39 | Obtener PID | `getpid()` |
+| `socket` | 41 | Crear socket | `socket(AF_INET, ...)` |
+
+**Nota:** Los números varían según arquitectura (x86-64 vs ARM).
+
+---
+
+### 🛠️ Herramienta `strace`: Espiar Syscalls
+
+**strace** muestra todas las syscalls que hace un programa.
+
+#### Ejemplo 1: `ls`
+
+```bash
+strace ls /tmp 2>&1 | head -20
+```
+
+**Salida:**
+```
+execve("/bin/ls", ["ls", "/tmp"], ...) = 0
+brk(NULL)                               = 0x55a8f4b4a000
+openat(AT_FDCWD, "/tmp", O_RDONLY|O_DIRECTORY) = 3
+getdents64(3, /* 15 entries */, 32768) = 480
+write(1, "archivo1.txt  archivo2.txt\n", 28) = 28
+close(3)                                = 0
+exit_group(0)                           = ?
+```
+
+**Interpretación:**
+1. `execve`: Ejecuta `/bin/ls`
+2. `openat`: Abre directorio `/tmp` (fd=3)
+3. `getdents64`: Lee entradas del directorio
+4. `write`: Escribe a stdout (fd=1)
+5. `close`: Cierra fd 3
+6. `exit_group`: Termina proceso
+
+---
+
+#### Ejemplo 2: Programa Propio
+
+```bash
+# Compilar programa
+gcc -o test test.c
+
+# Ejecutar con strace
+strace ./test
+```
+
+**Ejercicio:** Escribe un programa que:
+1. Abra un archivo
+2. Lea 10 bytes
+3. Escriba en otro archivo
+4. Cierre ambos
+
+Luego ejecuta con `strace` y cuenta cuántas syscalls hace.
+
+---
+
+### 🪟 System Calls en Windows
+
+Windows usa **Native API** (ntdll.dll), no POSIX.
+
+| Linux Syscall | Windows Native API | Descripción |
+|---------------|-------------------|-------------|
+| `open()` | `NtCreateFile()` | Abrir archivo |
+| `read()` | `NtReadFile()` | Leer |
+| `write()` | `NtWriteFile()` | Escribir |
+| `fork()` | ❌ (no existe) | Usar `CreateProcess()` |
+| `getpid()` | `NtGetCurrentProcessId()` | Obtener PID |
+
+**Herramienta equivalente a strace:** **Process Monitor** (de Sysinternals)
+
+---
+# Python (alto nivel)
+
+
+```c
+
+int main() {
+    // Sin printf - usamos write directo
+    const char msg[] = "Hola desde syscalls\n";
+    
+    // 1. Escribir a stdout (fd=1)
+    write(1, msg, sizeof(msg) - 1);
+    
+    // 2. Crear y escribir archivo
+    int fd = open("/tmp/syscall_test.txt", 
+                  O_WRONLY | O_CREAT | O_TRUNC, 
+                  0644);
+    
+    if (fd != -1) {
+        write(fd, msg, sizeof(msg) - 1);
+        close(fd);
+    }
+    
+    return 0;
+}
+```
+
+
+```bash
+gcc -o syscall_test syscall_test.c
+
+---
+# Python (alto nivel)
+
+*(continuación...)*
+
+strace -c ./syscall_test
+
+cat /tmp/syscall_test.txt
+```
+
+
+```python
+with open("/tmp/test.txt", "w") as f:
+    f.write("Hola\n")
+```
+
+**Pregunta:** ¿Cuántas syscalls hace Python vs el programa en C?
+
+```bash
+strace -c python3 -c "open('/tmp/test.txt','w').write('Hola\n')"
+strace -c ./syscall_test
+```
+
+**Análisis:** Python hace muchas más syscalls (imports, inicialización, etc.).
+
+---
+### Tiempo estimado: 60 minutos
+
+Implementa un programa que replique `cat`:
+
+```c
+
+int main(int argc, char *argv[]) {
+    if (argc != 2) {
+        const char usage[] = "Uso: micat <archivo>\n";
+        write(2, usage, sizeof(usage) - 1);  // stderr
+        return 1;
+    }
+    
+    int fd = open(argv[1], O_RDONLY);
+    if (fd == -1) {
+        const char err[] = "Error: archivo no existe\n";
+        write(2, err, sizeof(err) - 1);
+        return 1;
+    }
+    
+    char buffer[4096];
+    ssize_t bytes;
+    
+    while ((bytes = read(fd, buffer, sizeof(buffer))) > 0) {
+        write(1, buffer, bytes);  // stdout
+    }
+    
+---
+### Tiempo estimado: 60 minutos
+
+*(continuación...)*
+
+    close(fd);
+    return 0;
+}
+```
+
+**Compilar y probar:**
+```bash
+gcc -o micat micat.c
+./micat /etc/passwd
+strace ./micat /etc/passwd
+```
+
+
+---

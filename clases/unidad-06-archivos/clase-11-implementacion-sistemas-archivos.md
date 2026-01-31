@@ -10,7 +10,7 @@ footer: 'UNAULA - Ingeniería Informática - 2026-I'
   }
 
 ---
-<style>
+# Clase 11: Implementación de Sistemas de Archivos
 img {
   max-width: 70% !important;
   max-height: 50vh !important;
@@ -96,13 +96,17 @@ section {
 }
 </style>
 
+---
+# Clase 11: Implementación de Sistemas de Archivos
+
+*(continuación...)*
+
 
 <!--
 IMÁGENES GENERADAS:
 - clase-11-inodos.png: Infografía sobre implementación de sistemas de archivos con inodos
 -->
 
-# Clase 11: Implementación de Sistemas de Archivos
 ---
 ## Inodos, bloques y estructuras internas
 
@@ -259,3 +263,295 @@ Preguntas:
 - Ejemplos reales
 
 **¡Nos vemos!**
+
+
+---
+### ¿Qué es un Inodo?
+
+
+
+Un **inodo** (index node) es una estructura de datos que contiene metadatos sobre un archivo, **excepto su nombre y datos reales**.
+
+```
+┌─────────────────────────────────┐
+│         INODO #12345            │
+├─────────────────────────────────┤
+│ Tipo: Archivo regular           │
+│ Permisos: -rw-r--r-- (644)      │
+│ Propietario: UID 1000           │
+│ Grupo: GID 1000                 │
+│ Tamaño: 4,096 bytes             │
+│ Fecha creación: 2026-01-31      │
+│ Fecha modificación: 2026-01-31  │
+│ Último acceso: 2026-01-31       │
+│ Links: 1                        │
+│ Bloques usados: 8               │
+│ ┌─────────────────────────────┐ │
+│ │  PUNTEROS A BLOQUES:        │ │
+│ │  • Directos (12): → Bloques │ │
+│ │  • Indirecto simple: → Tabla│ │
+│ │  • Indirecto doble: → Tabla │ │
+│ │  • Indirecto triple: → Tabla│ │
+│ └─────────────────────────────┘ │
+└─────────────────────────────────┘
+```
+
+---
+### ¿Qué es un Inodo?
+
+*(continuación...)*
+
+---
+
+### 📦 Punteros de Inodo en Detalle
+
+#### 1. Punteros Directos (12)
+
+Apuntan directamente a bloques de datos.
+
+```
+Inodo
+ │
+ ├─→ Bloque 1001  [4KB de datos]
+ ├─→ Bloque 1002  [4KB de datos]
+ ├─→ Bloque 1003  [4KB de datos]
+ ...
+ └─→ Bloque 1012  [4KB de datos]
+
+Capacidad: 12 × 4KB = 48 KB
+```
+
+**Uso:** Archivos pequeños (< 48 KB) se acceden directamente, muy rápido.
+
+---
+
+#### 2. Puntero Indirecto Simple
+
+Apunta a un bloque que contiene punteros a bloques de datos.
+
+```
+Inodo
+ │
+ └─→ Bloque Indirecto (1024 punteros)
+      ├─→ Bloque 2001  [4KB]
+      ├─→ Bloque 2002  [4KB]
+      ...
+      └─→ Bloque 3024  [4KB]
+
+Capacidad adicional: 1024 × 4KB = 4 MB
+Total hasta aquí: 48 KB + 4 MB = 4.048 MB
+```
+
+---
+
+#### 3. Puntero Indirecto Doble
+
+Apunta a un bloque con punteros a bloques de punteros.
+
+```
+Inodo
+ │
+ └─→ Bloque Indirecto Doble
+      ├─→ Bloque Indirecto 1 (1024 punteros)
+      │    ├─→ Bloque datos
+      │    ├─→ Bloque datos
+      │    ...
+      │    └─→ Bloque datos (1024 bloques)
+      │
+      ├─→ Bloque Indirecto 2 (1024 punteros)
+      ...
+      └─→ Bloque Indirecto 1024
+
+Capacidad: 1024 × 1024 × 4KB = 4 GB
+```
+
+---
+
+#### 4. Puntero Indirecto Triple
+
+Para archivos MUY grandes (>4 GB).
+
+```
+Capacidad: 1024³ × 4KB = 4 TB
+```
+
+**Total máximo teórico:** 48 KB + 4 MB + 4 GB + 4 TB ≈ **4 TB por archivo**
+
+---
+
+### 🔍 Ver Inodos en Linux
+
+#### Listar Inodos
+
+```bash
+# Ver número de inodo de archivos
+ls -i
+
+# Salida ejemplo:
+# 12345 documento.txt
+# 67890 foto.jpg
+```
+
+#### Ver Detalles de Inodo
+
+```bash
+stat documento.txt
+```
+
+**Salida:**
+```
+  File: documento.txt
+  Size: 4096          Blocks: 8          IO Block: 4096   regular file
+Device: 802h/2050d    Inode: 12345       Links: 1
+Access: (0644/-rw-r--r--)  Uid: ( 1000/ usuario)   Gid: ( 1000/ usuario)
+Access: 2026-01-31 10:00:00.000000000 -0500
+Modify: 2026-01-31 10:00:00.000000000 -0500
+Change: 2026-01-31 10:00:00.000000000 -0500
+ Birth: -
+```
+
+---
+
+### 🛠️ Comando `debugfs` - Exploración Avanzada
+
+**Requiere permisos root**
+
+```bash
+# Entrar en modo debug del filesystem
+sudo debugfs /dev/sda1
+
+# Comandos útiles:
+debugfs> stat <12345>          # Ver inodo 12345 en detalle
+debugfs> ls -l                 # Listar con inodos
+debugfs> blocks <12345>        # Ver bloques usados por inodo
+debugfs> imap documento.txt    # Encontrar inodo de archivo
+```
+
+---
+
+### 📊 Tabla Comparativa: Nombre vs Inodo
+
+| Aspecto | Nombre del Archivo | Inodo |
+|---------|-------------------|-------|
+| **Ubicación** | En directorio | En tabla de inodos |
+| **Contiene** | Cadena de texto + ptr a inodo | Metadatos + punteros a bloques |
+| **Puede cambiar** | Sí (con `mv`) | No (es un número fijo) |
+| **Hard links** | Múltiples nombres | Un solo inodo |
+| **Tamaño** | Variable (hasta 255 chars) | Fijo (128 o 256 bytes) |
+
+---
+
+### 🔗 Hard Links vs Symbolic Links
+
+#### Hard Link
+```bash
+ln archivo.txt hardlink.txt
+```
+
+```
+Directorio:
+  "archivo.txt"    → Inodo 12345
+  "hardlink.txt"   → Inodo 12345  (mismo inodo!)
+
+Inodo 12345:
+  Links: 2  ← Contador aumenta
+```
+
+**Eliminación:**
+Solo se borra el archivo cuando Links = 0
+
+---
+
+#### Symbolic Link (Soft Link)
+```bash
+ln -s archivo.txt symlink.txt
+```
+
+```
+Directorio:
+  "archivo.txt"  → Inodo 12345
+  "symlink.txt"  → Inodo 67890  (inodo diferente!)
+
+Inodo 67890 (tipo: enlace simbólico):
+  Datos: "ruta/a/archivo.txt"  ← Contiene ruta como texto
+```
+
+**Si se borra `archivo.txt`:**
+El symlink queda "roto" (broken link)
+
+---
+
+## 💻 Actividad Práctica: Explorando Inodos
+
+### Ejercicio 1: Observar Inodos
+
+```bash
+# 1. Crear archivo de prueba
+echo "Hola mundo" > test.txt
+
+# 2. Ver su inodo
+ls -i test.txt
+# Anota el número: __________
+
+# 3. Ver detalles completos
+stat test.txt
+
+# 4. Crear hard link
+ln test.txt test_hardlink.txt
+
+# 5. Verificar que tienen el mismo inodo
+ls -i test*.txt
+
+# 6. Ver contador de links
+stat test.txt | grep Links
+# Debe mostrar: Links: 2
+```
+
+---
+
+### Ejercicio 2: Hard Link vs Soft Link
+
+```bash
+# 1. Crear archivo original
+echo "Contenido original" > original.txt
+
+# 2. Crear hard link y soft link
+ln original.txt hard.txt
+ln -s original.txt soft.txt
+
+# 3. Ver inodos (¿cuáles son iguales?)
+ls -i original.txt hard.txt soft.txt
+
+# 4. Eliminar el original
+rm original.txt
+
+# 5. Intentar leer ambos links
+cat hard.txt      # ¿Funciona?
+cat soft.txt      # ¿Funciona?
+
+# 6. Explica: ¿Por qué uno funciona y otro no?
+```
+
+---
+
+### Ejercicio 3: Límite de Inodos
+
+```bash
+# Ver total de inodos en el filesystem
+df -i
+
+# Salida ejemplo:
+# Filesystem      Inodes  IUsed   IFree IUse% Mounted on
+# /dev/sda1      6000000 500000 5500000    9% /
+
+# Pregunta: ¿Qué pasa si IUse% llega a 100%,
+#           aunque haya espacio en disco?
+```
+
+**Respuesta:** No se pueden crear más archivos, aunque haya espacio libre. Cada archivo necesita un inodo.
+
+---
+
+### Tiempo estimado: 30 minutos
+
+---

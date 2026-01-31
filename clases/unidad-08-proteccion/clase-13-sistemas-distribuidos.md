@@ -98,14 +98,17 @@ section {
 }
 </style>
 
+---
+## Conceptos, ventajas y desafíos
+
+*(continuación...)*
+
 
 <!--
 IMÁGENES GENERADAS:
 - clase-13-sistemas-distribuidos.png: Arquitectura de sistemas distribuidos y teorema CAP
 -->
 
-# Clase 13: Sistemas Distribuidos
-## Conceptos, ventajas y desafíos
 
 **IF0099 - Sistemas Operativos I**
 *4° Semestre - Ingeniería Informática*
@@ -233,3 +236,256 @@ En parejas:
 - Ejemplos en Linux/Windows
 
 **¡Nos vemos!**
+
+
+---
+### 1. Kubernetes - Orquestación de Contenedores
+
+
+
+**¿Qué es?**
+Sistema distribuido para gestionar contenedores Docker en múltiples máquinas.
+
+**Arquitectura:**
+```
+┌─────────────────────────────────────────┐
+│          KUBERNETES CLUSTER             │
+├─────────────────────────────────────────┤
+│                                         │
+│  ┌──────────────┐    ┌──────────────┐  │
+│  │   Master     │    │    etcd      │  │
+│  │   (Control   │◄──►│  (Registro   │  │
+│  │    Plane)    │    │ Distribuido) │  │
+│  └──────┬───────┘    └──────────────┘  │
+│         │                               │
+│    ┌────┴────┬────────┬────────┐       │
+│    │         │        │        │       │
+│  ┌─▼──┐   ┌─▼──┐  ┌─▼──┐  ┌─▼──┐     │
+│  │Node│   │Node│  │Node│  │Node│     │
+│  │  1 │   │  2 │  │  3 │  │  4 │     │
+│  └────┘   └────┘  └────┘  └────┘     │
+│                                         │
+└─────────────────────────────────────────┘
+```
+
+---
+### 1. Kubernetes - Orquestación de Contenedores
+
+*(continuación...)*
+
+**Características Distribuidas:**
+- **Replicación:** Copia automática de pods en múltiples nodos
+- **Balanceo de carga:** Distribuye tráfico entre réplicas
+- **Auto-recuperación:** Si un nodo falla, mueve pods a otro nodo
+- **Escalado horizontal:** Añade/quita nodos dinámicamente
+
+---
+
+### 2. Apache Cassandra - Base de Datos Distribuida
+
+**Arquitectura sin Maestro:**
+```
+     Nodo A
+     /    \
+   /        \
+Nodo B ─── Nodo C
+   \        /
+    \      /
+     Nodo D
+```
+
+**Características:**
+- **Sin single point of failure:** Todos los nodos son iguales
+- **Replicación configurable:** Datos en N nodos (ej: N=3)
+- **Consistencia eventual:** Escribe en algunos, lee de algunos
+- **Particionamiento:** Hash ring divide datos entre nodos
+
+**Ejemplo de Escritura:**
+
+```python
+# Cliente escribe "usuario123" con RF=3 (Replication Factor)
+cassandra.insert("usuarios", "usuario123", datos)
+
+# Cassandra automáticamente:
+# 1. Calcula hash(usuario123) = 0x8A3F...
+# 2. Ubica en el anillo: Nodo B es responsable
+# 3. Replica en Nodos C y D (siguientes en el anillo)
+# 4. Escritura exitosa si 2 de 3 nodos confirman (Quorum)
+```
+
+---
+### 3. Google File System (GFS) / HDFS
+
+**Problema que resuelve:**
+Almacenar archivos de **petabytes** en miles de máquinas comunes (no servidores caros).
+
+**Arquitectura:**
+
+```
+┌────────────────────────────────────────┐
+│           GFS MASTER                   │
+│  • Almacena metadata (nombres, etc)   │
+│  • Coordina operaciones                │
+└────────┬───────────────────────────────┘
+         │
+    ┌────┴────┬────────┬────────┐
+    │         │        │        │
+┌───▼───┐ ┌──▼───┐ ┌──▼───┐ ┌──▼───┐
+│Chunk  │ │Chunk │ │Chunk │ │Chunk │
+│Server │ │Server│ │Server│ │Server│
+│   1   │ │  2   │ │  3   │ │  4   │
+└───────┘ └──────┘ └──────┘ └──────┘
+  Datos    Datos    Datos    Datos
+```
+
+---
+### 3. Google File System (GFS) / HDFS
+
+*(continuación...)*
+
+**Proceso de Lectura:**
+
+1. Cliente: "Quiero leer `video.mp4` desde byte 1GB"
+2. Master: "Los chunks están en Servers 2, 3, 4"
+3. Cliente lee directamente de esos servidores (paralelo!)
+
+**Replicación:**
+Cada chunk (64 MB) se replica en 3 servidores diferentes.
+Si uno falla, Master ordena replicar desde otro.
+
+---
+### 4. Netflix - CDN Distribuido
+
+**Problema:** Entregar video HD a 200M usuarios simultáneos sin lag.
+
+**Solución: Open Connect**
+
+```
+        Usuario en Medellín
+              │
+              ↓
+      ┌──────────────┐
+      │   CDN Cache  │  ← Servidor en Medellín (local)
+      │   Colombia   │     Tiene películas populares
+      └──────┬───────┘
+             │ (si no está)
+             ↓
+      ┌──────────────┐
+      │  CDN Regional│  ← Servidor en Miami
+      │   Latinoamérica│
+      └──────┬───────┘
+             │ (si no está)
+             ↓
+      ┌──────────────┐
+      │  Origen AWS  │  ← Servidor origen en Virginia
+      │   EE.UU.     │
+      └──────────────┘
+```
+
+---
+### 4. Netflix - CDN Distribuido
+
+*(continuación...)*
+
+**Métricas Reales:**
+- **90% del tráfico** se sirve desde cache local
+- **Latencia promedio:** <50 ms
+- **Throughput:** 100 Gbps por servidor edge
+
+---
+
+### 5. WhatsApp - Sistema de Mensajería Distribuido
+
+**Arquitectura (Simplificada):**
+
+```
+Usuario A (Colombia)             Usuario B (Japón)
+      │                                │
+      ↓                                ↓
+┌──────────┐                    ┌──────────┐
+│ Servidor │                    │ Servidor │
+│ Colombia │────Sincronización──│  Japón   │
+└──────────┘                    └──────────┘
+      │                                │
+      └────────► Ejabberd ◄────────────┘
+              (Protocolo XMPP)
+```
+
+**Tecnología:**
+- **Erlang:** Lenguaje diseñado para sistemas distribuidos
+- **Actor model:** Cada conversación es un proceso ligero
+- **50M mensajes/segundo** en infraestructura distribuida
+
+**Garantías:**
+- **Entrega garantizada:** Aunque el receptor esté offline
+- **Ordenamiento:** Mensajes llegan en orden enviado
+- **Cifrado E2E:** Solo emisor y receptor descifran
+
+---
+
+### 📊 Comparación de Estrategias
+
+| Sistema | Consistencia | Disponibilidad | Particionamiento |
+|---------|--------------|----------------|------------------|
+| **Kubernetes** | Fuerte (etcd) | Alta | Sí |
+| **Cassandra** | Eventual | Muy alta | Sí |
+| **GFS/HDFS** | Eventual | Alta | Sí |
+| **Netflix CDN** | Eventual | Muy alta | Geográfico |
+| **WhatsApp** | Fuerte | Alta | Por usuario |
+
+---
+
+### 💡 Teorema CAP en Práctica
+
+**CAP:** Solo puedes garantizar 2 de 3 (Consistency, Availability, Partition tolerance)
+
+**Elecciones:**
+- **Cassandra:** AP (Disponibilidad + Particionamiento) → Eventual consistency
+- **etcd (Kubernetes):** CP (Consistencia + Particionamiento) → Menor disponibilidad
+- **DNS:** AP → Por eso a veces ves info desactualizada
+
+---
+
+## 💻 Actividad Práctica: Explorar Kubernetes Local
+
+### Requisitos: Docker Desktop + Habilitar Kubernetes
+
+```bash
+# 1. Verificar que Kubernetes esté corriendo
+kubectl version --short
+
+# 2. Crear un deployment simple (3 réplicas)
+kubectl create deployment hello --image=nginx --replicas=3
+
+# 3. Ver los pods distribuidos
+kubectl get pods -o wide
+# Observa en qué nodos están
+
+# 4. Exponer el servicio
+kubectl expose deployment hello --port=80 --type=LoadBalancer
+
+# 5. Simular falla: eliminar un pod
+kubectl delete pod <nombre-de-un-pod>
+
+# 6. Ver auto-recuperación
+kubectl get pods -w  # (-w = watch en tiempo real)
+# Kubernetes automáticamente crea un nuevo pod!
+
+# 7. Escalar horizontalmente
+kubectl scale deployment hello --replicas=5
+
+# 8. Limpiar
+kubectl delete deployment hello
+kubectl delete service hello
+```
+
+### Preguntas de Reflexión:
+
+1. ¿Qué pasó cuando eliminaste un pod?
+2. ¿En cuánto tiempo se creó el reemplazo?
+3. ¿Los pods están en el mismo nodo o distribuidos?
+4. ¿Cómo garantiza Kubernetes alta disponibilidad?
+
+### Tiempo estimado: 45 minutos
+
+---

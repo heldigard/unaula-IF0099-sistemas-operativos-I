@@ -10,7 +10,7 @@ footer: 'UNAULA - Ingeniería Informática - 2026-I'
   }
 
 ---
-<style>
+## Algoritmos FCFS, SJF, Prioridad y Round Robin
 img {
   max-width: 70% !important;
   max-height: 50vh !important;
@@ -96,6 +96,11 @@ section {
 }
 </style>
 
+---
+## Algoritmos FCFS, SJF, Prioridad y Round Robin
+
+*(continuación...)*
+
 
 <!--
 [2026-01-31] - Clase enriquecida con infografías
@@ -106,8 +111,6 @@ IMÁGENES GENERADAS:
 - clase-04-gantt-algoritmos.png: Diagrama de Gantt comparativo de algoritmos
 -->
 
-# Clase 4: Planificación de Procesos
-## Algoritmos FCFS, SJF, Prioridad y Round Robin
 
 **IF0099 - Sistemas Operativos I**
 *4° Semestre - Ingeniería Informática*

@@ -10,7 +10,7 @@ footer: 'UNAULA - Ingeniería Informática - 2026-I'
   }
 
 ---
-<style>
+## Sección Crítica, Semáforos y Mutex
 img {
   max-width: 70% !important;
   max-height: 50vh !important;
@@ -96,6 +96,11 @@ section {
 }
 </style>
 
+---
+## Sección Crítica, Semáforos y Mutex
+
+*(continuación...)*
+
 
 <!--
 [2026-01-31] - Clase enriquecida con infografías
@@ -106,8 +111,6 @@ IMÁGENES GENERADAS:
 - clase-05-semaforos-mutex.png: Comparación visual entre semáforos y mutex
 -->
 
-# Clase 5: Sincronización de Procesos
-## Sección Crítica, Semáforos y Mutex
 
 **IF0099 - Sistemas Operativos I**
 *4° Semestre - Ingeniería Informática*

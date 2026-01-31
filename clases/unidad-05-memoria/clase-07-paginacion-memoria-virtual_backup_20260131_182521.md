@@ -1,5 +1,4 @@
 ---
-
 marp: true
 theme: default
 paginate: true
@@ -11,7 +10,6 @@ footer: 'UNAULA - Ingeniería Informática - 2026-I'
   }
 
 ---
-# Clase 7: Paginación y Memoria Virtual
 <style>
 img {
   max-width: 70% !important;
@@ -98,19 +96,13 @@ section {
 }
 </style>
 
----
-# Clase 7: Paginación y Memoria Virtual
-
-*(continuación...)*
-
-
-
 
 <!--
 IMÁGENES GENERADAS:
 - clase-07-tabla-paginas.png: Infografía sobre paginación, tabla de páginas y memoria virtual
 -->
 
+# Clase 7: Paginación y Memoria Virtual
 ---
 ## Páginas, Marcos, Tablas y Page Faults
 
@@ -405,8 +397,6 @@ Page Faults: 9
 
 ```
 | Marcos: 3 | Secuencia de páginas: 1, 2, 3, 4, 1, 2, 5, 1, 2, 3, 4, 5 |
----
-## Ejemplo: LRU (Continuación)
 
 Paso │ Página │ Marco1 │ Marco2 │ Marco3 │ Page Fault? │ Orden LRU
 ─────┼────────┼────────┼────────┼────────┼─────────────┼──────────
@@ -493,8 +483,10 @@ CPU → TLB (caché) → Si hit: Memoria física (1 acceso)
 
 
 ---
-### Datos:
 
+## Ejercicio Resuelto: Traducción Completa
+
+### Datos:
 - Memoria física: 32 KB (8 marcos de 4 KB)
 - Proceso con 3 páginas
 - Tabla de páginas: P0→M5, P1→M2, P2→M7
@@ -519,11 +511,6 @@ Tamaño de página = 4096 bytes
    Desplazamiento = 5000 % 4096 = 904
    Marco = 2 (desde tabla)
    Dir. Física = 2 × 4096 + 904 = 9096 ✓
-
----
-### Datos:
-
-*(continuación...)*
 
 3) Dirección 10240:
    Página = 10240 / 4096 = 2
@@ -553,123 +540,64 @@ Posición  Referencias       Working Set    Tamaño
 **Observación:** El proceso necesita al menos 4 marcos para
 evitar thrashing en este patrón de acceso.
 
----
-
-## 🎯 Ventajas y Desventajas de la Paginación
-
-### ✅ Ventajas
-
-| Ventaja | Explicación |
-|---------|-------------|
-| **No fragmentación externa** | Cualquier marco puede alojar cualquier página |
-| **Multiprogramación eficiente** | Procesos comparten memoria fácilmente |
-| **Protección simple** | Bits de control en tabla de páginas |
-| **Memoria virtual** | Procesos más grandes que RAM |
-
-### ❌ Desventajas
-
-| Desventaja | Explicación |
-|-----------|-------------|
-| **Fragmentación interna** | Última página puede no usar todo el marco |
-| **Sobrecarga de tabla** | Tablas grandes consumen memoria |
-| **Tiempo de acceso** | Doble acceso: tabla + dato |
 
 ---
 
-## 💡 Ejemplo Real: Linux vs Windows
+## Ejercicio Resuelto: Traducción Completa
 
-### Gestión de Memoria Virtual
-
-**Linux (sistema ext4):**
-```bash
-# Ver uso de memoria virtual
-$ free -h
-              total   usado   libre   compartido   búfer/caché   disponible
-Memoria:      8.0Gi   4.2Gi   1.1Gi   256Mi        2.7Gi         3.8Gi
-Swap:         2.0Gi   128Mi   1.9Gi
-
-# Ver page faults
-$ vmstat 1 5
-procs -----------memoria---------- ---swap-- -----io---- -sistema- ------cpu-----
-r  b   swpd   free   buff  cache   si   so    bi    bo   in   cs us sy id wa st
-1  0 131072 1048576  ...   ...     0    4     50   100  200  500 10  5 80  5  0
-```
-
-**Windows (Task Manager):**
-- Memoria confirmada vs física
-- Caché en espera vs modificada
-- Page file: `C:\pagefile.sys`
-
----
-
-## 🔍 Comparación de Algoritmos de Reemplazo
-
-### Análisis Visual
-
-| Algoritmo | Complejidad | Eficiencia | Uso Real |
-|-----------|-------------|------------|----------|
-| **Óptimo** | O(n²) | ⭐⭐⭐⭐⭐ | Solo teórico |
-| **FIFO** | O(1) | ⭐⭐ | Sistemas simples |
-| **LRU** | O(n) | ⭐⭐⭐⭐ | Linux, BSD |
-| **Clock** | O(n) | ⭐⭐⭐⭐ | Windows |
-| **LFU** | O(n log n) | ⭐⭐⭐ | Cachés especializadas |
-
-### 💡 Observación
-LRU es el más usado en producción por su balance
-eficiencia/complejidad.
-
----
-
-## 📊 Cálculo de Overhead de Paginación
-
-### Ejemplo Real: Sistema de 32 bits
-
-**Datos:**
-- Espacio de direcciones: 4 GB (2³² bytes)
-- Tamaño de página: 4 KB (2¹² bytes)
-- Número de páginas: 4GB / 4KB = 1M páginas
-- Entrada de tabla: 4 bytes (32 bits)
-
-**Overhead:**
-```
-Tamaño de tabla = 1M páginas × 4 bytes = 4 MB por proceso
-
-Con 100 procesos:
-Memoria solo para tablas = 100 × 4 MB = 400 MB 😱
-```
-
-**Solución:** Tablas de páginas multinivel
-(usadas por Intel x86)
-
----
-
-## 🔧 Ejercicio Guiado: TLB Miss Rate
-
-### Escenario
-- TLB: 64 entradas
-- Tiempo acceso TLB: 2 ns
-- Tiempo acceso RAM: 100 ns
-- Hit rate TLB: 95%
-
-### Cálculo del EMAT (Effective Memory Access Time)
+### Datos:
+- Memoria física: 32 KB (8 marcos de 4 KB)
+- Proceso con 3 páginas
+- Tabla de páginas: P0→M5, P1→M2, P2→M7
 
 ```
-Caso TLB hit (95%):
-  Tiempo = 2 ns (TLB) + 100 ns (RAM) = 102 ns
+Traducir las siguientes direcciones lógicas:
+1) 2048
+2) 5000  
+3) 10240
 
-Caso TLB miss (5%):
-  Tiempo = 2 ns (TLB) + 100 ns (Tabla) + 100 ns (RAM) = 202 ns
+SOLUCIÓN:
+Tamaño de página = 4096 bytes
 
-EMAT = 0.95 × 102 + 0.05 × 202
-     = 96.9 + 10.1
-     = 107 ns
+1) Dirección 2048:
+   Página = 2048 / 4096 = 0
+   Desplazamiento = 2048 % 4096 = 2048
+   Marco = 5 (desde tabla)
+   Dir. Física = 5 × 4096 + 2048 = 22528 ✓
+
+2) Dirección 5000:
+   Página = 5000 / 4096 = 1
+   Desplazamiento = 5000 % 4096 = 904
+   Marco = 2 (desde tabla)
+   Dir. Física = 2 × 4096 + 904 = 9096 ✓
+
+3) Dirección 10240:
+   Página = 10240 / 4096 = 2
+   Desplazamiento = 10240 % 4096 = 2048
+   Marco = 7 (desde tabla)
+   Dir. Física = 7 × 4096 + 2048 = 30720 ✓
 ```
 
-**Sin TLB:** 200 ns  
-**Con TLB:** 107 ns  
-**Mejora:** 46.5% más rápido 🚀
-
 ---
+
+## Working Set: Ejemplo Detallado
+
+### Secuencia de referencias a páginas:
+```
+1 2 3 4 1 2 5 1 2 3 4 5 | Ventana Δ=4
+
+Posición  Referencias       Working Set    Tamaño
+   4:     {1, 2, 3, 4}     {1, 2, 3, 4}      4
+   5:     {2, 3, 4, 1}     {1, 2, 3, 4}      4
+   6:     {3, 4, 1, 2}     {1, 2, 3, 4}      4
+   7:     {4, 1, 2, 5}     {1, 2, 4, 5}      4
+   8:     {1, 2, 5, 1}     {1, 2, 5}         3
+   9:     {2, 5, 1, 2}     {1, 2, 5}         3
+  10:     {5, 1, 2, 3}     {1, 2, 3, 5}      4
+```
+
+**Observación:** El proceso necesita al menos 4 marcos para
+evitar thrashing en este patrón de acceso.
 
 ## Actividad Práctica (10 min)
 

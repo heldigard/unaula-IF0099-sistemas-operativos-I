@@ -10,7 +10,7 @@ footer: 'UNAULA - Ingeniería Informática - 2026-I'
   }
 
 ---
-<style>
+## Programa vs Proceso, PCB y Estados
 img {
   max-width: 70% !important;
   max-height: 50vh !important;
@@ -96,6 +96,11 @@ section {
 }
 </style>
 
+---
+## Programa vs Proceso, PCB y Estados
+
+*(continuación...)*
+
 
 <!--
 [2026-01-31] - Clase enriquecida con infografías
@@ -105,8 +110,6 @@ IMÁGENES GENERADAS:
 - clase-03-pcb.png: Infografía del Bloque de Control de Proceso
 -->
 
-# Clase 3: Concepto de Proceso
-## Programa vs Proceso, PCB y Estados
 
 **IF0099 - Sistemas Operativos I**
 *4° Semestre - Ingeniería Informática*

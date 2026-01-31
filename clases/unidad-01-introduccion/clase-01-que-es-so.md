@@ -14,7 +14,7 @@ footer: 'UNAULA - Ingeniería Informática - 2026-I'
     font-size: 24px;
   }
 ---
-
+## Definición, Funciones y Propósito
 <style>
 img {
   max-width: 70% !important;
@@ -101,6 +101,11 @@ section {
 }
 </style>
 
+---
+## Definición, Funciones y Propósito
+
+*(continuación...)*
+
 <!--
 [2026-01-31] - Clase enriquecida con infografías
 
@@ -114,8 +119,6 @@ IMÁGENES GENERADAS:
 - so-analogia-hotel.png: Analogía del hotel para explicar el SO
 -->
 
-# Clase 1: ¿Qué es un Sistema Operativo?
-## Definición, Funciones y Propósito
 
 **IF0099 - Sistemas Operativos I**
 *4° Semestre - Ingeniería Informática*
@@ -301,22 +304,134 @@ C:\ (o /)
 
 ## 4. Sistemas Operativos Actuales (2026)
 
-### Escritorio/Laptop
-| SO | Cuota de mercado |
-| ---- | ------------------ |
-| Windows 11 | ~70% |
-| macOS | ~16% |
-| Linux | ~4% |
-| Chrome OS | ~10% |
+### Panorama Global por Segmento
 
-### Servidores
-| SO | Uso |
-| ---- | ----- |
-| **Linux** | ~96% de servidores web |
-| Windows Server | ~4% |
+```
+ESCRITORIO/LAPTOP          SERVIDORES WEB          MÓVILES
+┌─────────────┐            ┌─────────────┐          ┌─────────────┐
+│ Windows 70% │            │ Linux  96%  │          │Android 71%  │
+│ macOS   16% │            │ Windows 4%  │          │ iOS    28%  │
+│ ChromeOS 10%│            │             │          │ Otros   1%  │
+│ Linux    4% │            │             │          │             │
+└─────────────┘            └─────────────┘          └─────────────┘
+```
+
+### Observación clave:
+**Linux domina servidores (96%) pero solo tiene 4% en escritorio.**
+¿Por qué? Lo veremos a continuación...
 
 ---
 
+## ¿Por qué cada SO domina su nicho?
+
+### Windows: Rey del escritorio corporativo
+
+**Fortalezas:**
+- ✅ Compatibilidad con software empresarial (Office, SAP, Adobe)
+- ✅ Soporte técnico global
+- ✅ Interfaz familiar para usuarios no técnicos
+- ✅ Ecosistema de drivers amplio
+
+**Casos de uso:**
+- 🏢 Oficinas corporativas (95% usan Windows)
+- 🎮 Gaming (80% de juegos para PC)
+- 🏫 Educación básica y media
+- 🏭 Industria con software propietario
+
+---
+
+## Linux: Dominio absoluto en servidores
+
+### ¿Por qué Linux domina el 96% de servidores web?
+
+**Ventajas técnicas:**
+1. **Gratuito**: Sin costos de licencia (ahorro masivo)
+2. **Estable**: Uptime de años sin reinicios
+3. **Seguro**: Menos vulnerabilidades que Windows
+4. **Ligero**: Consume menos recursos (más eficiente)
+5. **Automatizable**: Scripts y configuración por código
+
+### Ejemplos del mundo real:
+```
+🌐 Google: 100% Linux (Ubuntu modificado)
+🛒 Amazon: 100% Linux (AWS corre en Linux)
+📘 Facebook: 100% Linux (CentOS/RedHat)
+🎬 Netflix: 100% Linux (FreeBSD en CDN)
+🔎 Wikipedia: 100% Linux (Ubuntu)
+```
+
+**Conclusión:** Si un servidor web NO usa Linux, es la excepción.
+
+---
+
+## macOS: Ecosistema cerrado pero potente
+
+### Nicho específico: Desarrollo y creatividad
+
+**Fortalezas:**
+- 🎨 **Industria creativa**: Video, música, diseño (Final Cut, Logic Pro)
+- 💻 **Desarrollo iOS**: Único SO donde se puede desarrollar apps iOS
+- 🔒 **Integración**: Funciona perfectamente con iPhone, iPad, Apple Watch
+- 🛡️ **Seguridad**: Menos malware que Windows
+
+**Estadísticas interesantes:**
+- 40% de desarrolladores profesionales usan macOS
+- 90% de diseñadores gráficos profesionales usan macOS
+- 100% de desarrollo iOS requiere macOS
+
+---
+
+## Chrome OS: El SO de la nube
+
+### Concepto: "Todo en el navegador"
+
+**Características:**
+- 🌐 Basado en Chrome browser
+- ☁️ Todo en la nube (Google Drive, Docs, etc.)
+- 💰 Chromebooks muy económicos ($200-$400)
+- ⚡ Arranque en 8 segundos
+
+**Casos de uso:**
+- 📚 Educación primaria y secundaria (50% de escuelas en USA)
+- 🏠 Uso personal básico (email, navegación, streaming)
+- ⚠️ **Limitación**: Requiere conexión a Internet constante
+
+---
+
+## Sistemas Operativos Móviles
+
+### Duopolio Android vs iOS
+
+| Aspecto | Android (71%) | iOS (28%) |
+| --------- | --------------- | ----------- |
+| Fabricantes | Samsung, Xiaomi, Huawei, etc. | Solo Apple |
+| Precio | $100 - $1500 | $400 - $1600 |
+| Apertura | Código abierto | Cerrado |
+| Tienda apps | Google Play | App Store |
+| Cuota global | **71%** | **28%** |
+| Cuota en USA | 40% | **60%** |
+
+**Dato curioso:** Android es Linux modificado (kernel Linux + capa Android)
+
+---
+
+## Sistemas Operativos Embebidos
+
+### SO que no ves pero usas todos los días
+
+```
+🚗 Automóviles:        Linux, QNX, Android Automotive
+🏠 Smart TVs:          Android TV, webOS, Tizen
+⌚ Smartwatches:       watchOS, Wear OS (Android)
+🎮 Consolas:          PlayStation OS, Xbox OS (Windows modificado)
+📡 Routers:           OpenWrt, DD-WRT (Linux)
+✈️  Aviones:           VxWorks, Linux (sistemas críticos)
+🏥 Equipo médico:     QNX, Linux (certificado)
+```
+
+**Observación:** Linux está en todas partes, incluso donde no lo imaginas.
+
+---
 ## Familias de Sistemas Operativos
 
 ```
@@ -346,6 +461,11 @@ C:\ (o /)
       │ (1985-hoy)  │
       └─────────────┘
 ```
+
+---
+## Familias de Sistemas Operativos
+
+*(continuación...)*
 
 ---
 

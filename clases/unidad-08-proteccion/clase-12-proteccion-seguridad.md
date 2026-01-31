@@ -10,7 +10,7 @@ footer: 'UNAULA - Ingeniería Informática - 2026-I'
   }
 
 ---
-<style>
+# Clase 12: Protección y Seguridad
 img {
   max-width: 70% !important;
   max-height: 50vh !important;
@@ -96,6 +96,11 @@ section {
 }
 </style>
 
+---
+# Clase 12: Protección y Seguridad
+
+*(continuación...)*
+
 
 <!--
 IMÁGENES GENERADAS:
@@ -103,7 +108,6 @@ IMÁGENES GENERADAS:
 - clase-12-proteccion-seguridad-v2.png: Versión corregida sin errores tipográficos
 -->
 
-# Clase 12: Protección y Seguridad
 ---
 ## Dominios, Control de Acceso y Amenazas
 
