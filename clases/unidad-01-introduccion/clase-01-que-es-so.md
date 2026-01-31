@@ -15,6 +15,18 @@ style: |
   }
 ---
 
+<style>
+img {
+  max-width: 70% !important;
+  max-height: 50vh !important;
+  object-fit: contain !important;
+  height: auto !important;
+}
+section {
+  font-size: 24px;
+}
+</style>
+
 <!--
 [2026-01-31] - Clase enriquecida con infografías
 
@@ -270,8 +282,18 @@ C:\ (o /)
 ### En parejas, respondan:
 
 1. **Identifiquen** 3 procesos que estén ejecutándose ahora en su computador
-   - Windows: `Ctrl + Shift + Esc`
-   - Mac: `Cmd + Space` → "Monitor de Actividad"
+
+   **En Windows:**
+   - Opción 1: `Ctrl + Shift + Esc` (abre directo el Administrador de Tareas)
+   - Opción 2: `Ctrl + Alt + Supr` → seleccionar "Administrador de Tareas"
+   - Opción 3: Click derecho en la Barra de Tareas → "Administrador de Tareas"
+   
+   **En Linux:**
+   - Terminal: `top`, `htop`, o `ps aux`
+   - Interfaz gráfica: Monitor del Sistema (varía según distribución)
+   
+   **En macOS:**
+   - `Cmd + Space` → escribir "Monitor de Actividad"
 
 2. **Investiguen**: ¿Cuánta RAM tiene su computador y cuánta está en uso?
 
