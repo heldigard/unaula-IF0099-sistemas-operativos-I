@@ -170,3 +170,4 @@ E1 (15%) + E2 (15%) + E3 (20%) + E4 (15%) + E5 (15%) + E6 (20%) = 100%
 ---
 
 *Este material es para uso educativo exclusivo de los estudiantes matriculados en IF0099.*
+# Force rebuild
