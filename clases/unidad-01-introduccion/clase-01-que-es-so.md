@@ -171,6 +171,9 @@ Sin un SO, cada programa tendría que:
 
 **¿Por qué un hotel?** Ambos deben gestionar recursos finitos (habitaciones/RAM) entre múltiples usuarios concurrentes de forma segura y eficiente.
 
+### 💡 Insight Clave
+> El huésped no necesita saber cómo funciona la caldera ni la red eléctrica; solo pide agua caliente. Igualmente, el programador no necesita saber cómo funciona el disco duro; solo pide "abrir archivo".
+
 ---
 
 ## Analogía del Hotel: Equivalencias Detalladas
@@ -203,8 +206,6 @@ Sin un SO, cada programa tendría que:
 
 </div>
 
-> **💡 Insight:** El huésped no necesita saber cómo funciona la caldera ni la red eléctrica; solo pide agua caliente. Igualmente, el programador no necesita saber cómo funciona el disco duro; solo pide "abrir archivo".
-
 ---
 
 ## Analogía en Acción: Escenarios
@@ -227,6 +228,9 @@ Sin un SO, cada programa tendría que:
 
 ![Funciones del SO](../../assets/infografias/so-funciones-principales.png)
 
+### ¿Por qué son importantes?
+Estas funciones permiten que **múltiples programas** se ejecuten simultáneamente sin conflictos, maximizando el uso de recursos y protegiendo la integridad del sistema.
+
 ---
 
 ## Resumen de las 4 Funciones
@@ -237,8 +241,6 @@ Sin un SO, cada programa tendría que:
 | **Gestión de Memoria** | Asignar y liberar RAM, proteger memoria |
 | **Gestión de Archivos** | Organizar, almacenar y recuperar datos |
 | **Gestión de E/S** | Controlar dispositivos (teclado, disco, red) |
-
-Estas cuatro funciones permiten que **múltiples programas** se ejecuten simultáneamente sin conflictos.
 
 ---
 
@@ -263,28 +265,24 @@ Estas cuatro funciones permiten que **múltiples programas** se ejecuten simult�
 - 🔹 **Sincronizar** procesos (evitar conflictos)
 - 🔹 **Comunicar** procesos entre sí (IPC)
 
+---
+
+## Gestión de Procesos: Analogía y Ejemplos
+
 ### Analogía: Programa = Receta, Proceso = Cocinando
 
-```
-PROGRAMA                    PROCESO
-─────────                  ─────────
-La receta de pasta    →   Alguien cocinando pasta
-(en papel)                  (usando ingredientes, fuego, tiempo)
-```
+| Programa | Proceso |
+|----------|---------|
+| La receta de pasta (en papel) | Alguien cocinando pasta (usando ingredientes, fuego, tiempo) |
 
 ### Ejemplo en Windows
-```
-Ctrl + Shift + Esc → Administrador de Tareas
-```
+`Ctrl + Shift + Esc` → Administrador de Tareas  
 Verás: chrome.exe (5 procesos), spotify.exe, vscode.exe, etc.
 
 ### Ejemplo en Linux
 ```bash
-# Ver todos los procesos
-ps aux
-
-# Ver procesos en tiempo real
-top
+ps aux      # Ver todos los procesos
+top         # Ver procesos en tiempo real
 ```
 
 ---
@@ -313,12 +311,18 @@ top
 - 🔹 **Proteger** la memoria (que Chrome no lea datos de Spotify)
 - 🔹 **Memoria virtual** (swap: usar disco como RAM extendida)
 
+---
+
+## Gestión de Memoria: Importancia y Ejemplos
+
 ### ¿Por qué es importante?
 Sin gestión de memoria, un programa podría escribir en la memoria de otro → **crash** o **brecha de seguridad**
 
 ### Ejemplo: Ver uso de memoria
-**Windows:** `Ctrl + Shift + Esc` → pestaña "Rendimiento"
-**Linux:** `free -h` o `top`
+| Sistema | Comando |
+|---------|---------|
+| Windows | `Ctrl + Shift + Esc` → pestaña "Rendimiento" |
+| Linux | `free -h` o `top` |
 
 ---
 
@@ -348,14 +352,16 @@ Sin gestión de memoria, un programa podría escribir en la memoria de otro → 
 - 🔹 **Permisos**: quién puede leer/escribir (chmod, chown)
 - 🔹 **Gestionar espacio**: ubicación física en disco
 
+---
+
+## Gestión de Archivos: Analogía y Comandos
+
 ### Analogía: Sistema de archivos = Archivo físico
-```
-Disco duro          Archivo de oficinas
-─────────          ──────────────────
-Directorios        Carpetas y archivadores
-Archivos           Documentos individuales
-Permisos           Cerrojos y llaves
-```
+| Disco duro | Archivo de oficinas |
+|------------|---------------------|
+| Directorios | Carpetas y archivadores |
+| Archivos | Documentos individuales |
+| Permisos | Cerrojos y llaves |
 
 ### Ejemplo: Comandos básicos
 | Acción | Windows | Linux |
@@ -390,6 +396,10 @@ Permisos           Cerrojos y llaves
 3. **Interrupciones**: El dispositivo avisa "¡tengo datos listos!"
 4. **Buffering**: Datos temporales mientras se procesan
 
+---
+
+## Gestión de E/S: Analogía y Ejemplos
+
 ### Analogía: El SO como traductor universal
 ```
 Programa       →   SO (driver)   →   Impresora
@@ -397,8 +407,10 @@ Programa       →   SO (driver)   →   Impresora
 ```
 
 ### Ejemplo: Ver dispositivos
-**Windows:** `Administrador de dispositivos` (devmgmt.msc)
-**Linux:** `lsusb`, `lspci`, `lsblk`
+| Sistema | Comando/Herramienta |
+|---------|---------------------|
+| Windows | `Administrador de dispositivos` (devmgmt.msc) |
+| Linux | `lsusb`, `lspci`, `lsblk` |
 
 ---
 
