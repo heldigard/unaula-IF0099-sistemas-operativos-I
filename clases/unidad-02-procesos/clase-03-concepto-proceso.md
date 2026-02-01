@@ -186,13 +186,21 @@ Cada pestaña de Chrome es un **proceso separado** con su propio PID.
 
 ## 2. Estructura de un Proceso en Memoria
 
-    Direcciones altas
+El espacio de direcciones de un proceso se divide en segmentos con propósitos específicos:
+
+### Vista general de la memoria:
+
+    Direcciones altas (Stack)
          │
          ▼
 
 ![Estructura de Memoria de un Proceso](../../assets/infografias/clase-03-estructura-memoria.png)
 
-    Direcciones bajas
+    Direcciones bajas (Text)
+
+**Crecimiento:**
+- Stack crece hacia abajo (direcciones decrecientes)
+- Heap crece hacia arriba (direcciones crecientes)
 
 ---
 
@@ -227,7 +235,16 @@ El SO mantiene un **PCB** por cada proceso. Contiene TODA la información necesa
 
 ![PCB - Bloque de Control de Proceso](../../assets/infografias/clase-03-pcb.png)
 
+### Importancia del PCB
+
+> 💡 **El PCB es la estructura de datos más importante en la gestión de procesos**
+> - Sin PCB, el SO no podría suspender y reanudar procesos
+> - El contexto switch es básicamente guardar/cargar PCBs
+> - Cada proceso tiene exactamente un PCB
+
 ---
+
+## PCB: Estructura Detallada
 
 ### Representación ASCII:
 
@@ -247,6 +264,21 @@ El SO mantiene un **PCB** por cada proceso. Contiene TODA la información necesa
 │  Puntero a PCB del padre            │
 │  Puntero a PCBs de hijos            │
 └─────────────────────────────────────┘
+```
+
+### Ver PCB real en Linux
+
+```bash
+# El PCB de un proceso está expuesto en /proc/[PID]/
+$ cat /proc/self/status
+Name:   cat
+State:  R (running)
+Pid:    1234
+PPid:   5678
+Uid:    1000(1000)   1000(1000)   1000(1000)   1000(1000)
+VmSize:     12345 kB
+VmRSS:        678 kB
+...
 ```
 
 ---
@@ -303,7 +335,11 @@ Jugador A sale           ↓             Jugador B entra
                         ¡El árbitro silba!
 ```
 
-### Costo del context switch
+---
+
+## Costo del Context Switch
+
+### Impacto en el rendimiento
 
 | Aspecto | Impacto |
 |---------|---------|
@@ -312,6 +348,24 @@ Jugador A sale           ↓             Jugador B entra
 | **Frecuencia** | Cientos o miles de veces por segundo |
 
 > 💡 **Por qué importa**: Demasiados context switches = bajo rendimiento
+
+### Causas de Context Switch
+
+1. **Timeout**: Proceso agotó su quantum de tiempo
+2. **E/S**: Proceso solicita entrada/salida (se bloquea)
+3. **Interrupción**: Evento de hardware requiere atención
+4. **Prioridad**: Proceso de mayor prioridad debe ejecutarse
+
+### Optimización
+
+```bash
+# Ver context switches en Linux
+$ vmstat 1
+procs -----------memory---------- ---swap-- -----io---- -system-- ----cpu----
+ r  b   swpd   free   buff  cache   si   so    bi    bo   in   cs us sy id wa
+ 1  0      0 524288  81920 786432    0    0    10     5  120  250  5  2 92  1
+# ↑ cs = context switches por segundo
+```
 
 ![Diagrama de Context Switch](../../assets/infografias/clase-03-cswitch-timeline.png)
 
@@ -324,6 +378,17 @@ Jugador A sale           ↓             Jugador B entra
 > Un proceso **siempre está en uno de estos 5 estados** durante su vida útil
 
 ![Estados de un Proceso](../../assets/infografias/so-estados-proceso.png)
+
+### Transiciones principales:
+- **Admisión**: Nuevo → Listo
+- **Dispatch**: Listo → Ejecutando
+- **Preemption/Timeout**: Ejecutando → Listo
+- **Solicitud E/S**: Ejecutando → Bloqueado
+- **E/S completada**: Bloqueado → Listo
+
+---
+
+## Estados de un Proceso: Diagrama Detallado
 
 ### Resumen visual de los estados:
 
@@ -360,7 +425,11 @@ Jugador A sale           ↓             Jugador B entra
      └───────────┘
 ```
 
-### Ciclo de vida de un proceso (ejemplo real):
+---
+
+## Estados de un Proceso: Ejemplo Real
+
+### Ciclo de vida de Firefox:
 
 ```bash
 1. NUEVO      → $ firefox &          # fork() crea proceso
@@ -371,6 +440,8 @@ Jugador A sale           ↓             Jugador B entra
 6. EJECUTANDO  → [renderizando]       # CPU de nuevo
 7. TERMINADO   → $ exit               # Usuario cierra
 ```
+
+> 💡 **Nota**: Un proceso puede pasar de Ejecutando a Listo **múltiples veces** antes de completar su tarea
 
 ---
 
@@ -510,49 +581,82 @@ pstree -p
 
 ---
 
-## Modelos de Threads
+## Modelos de Threads: Comparación
 
-### Modelo de 1 a 1 (One-to-One)
+| Modelo | Threads Usuario | Threads Kernel | ¿Concurrencia Múltiples Núcleos? | ¿Bloqueo Afecta a Todos? |
+|--------|----------------|----------------|-----------------------------------|---------------------------|
+| **1:1** | 1 → 1 | Igual cantidad | ✅ Sí | ❌ No |
+| **M:1** | Muchos → 1 | 1 solo | ❌ No | ✅ Sí |
+| **M:N** | Muchos → Muchos | Pool variable | ✅ Sí | ❌ No |
+
+---
+
+## Modelo 1:1 (One-to-One)
+
 ```
 Proceso
 ├── Thread 1 (user) ────────► Thread 1 (kernel)
 ├── Thread 2 (user) ────────► Thread 2 (kernel)
 └── Thread 3 (user) ────────► Thread 3 (kernel)
-
-✅ Concurrencia real en múltiples núcleos
-✅ Si un thread se bloquea, otros continúan
-❌ Mayor overhead (cada thread es un proceso ligero)
-
-Ejemplo: Linux (NPTL), Windows
 ```
 
-### Modelo de Muchos a 1 (Many-to-One)
+**Ventajas:**
+- ✅ Concurrencia real en múltiples núcleos
+- ✅ Si un thread se bloquea, otros continúan
+- ✅ Escalabilidad en sistemas multi-core
+
+**Desventajas:**
+- ❌ Mayor overhead (cada thread es un proceso ligero)
+- ❌ Costoso crear y destruir threads
+
+**Sistemas que lo usan:** Linux (NPTL), Windows, macOS
+
+---
+
+## Modelo M:1 (Many-to-One)
+
 ```
 Proceso
 ├── Thread 1 ──┐
 ├── Thread 2 ──┼──► Thread único en kernel
 └── Thread 3 ──┘
-
-✅ Rápido cambio entre threads (no requiere kernel)
-❌ Bloqueo de un thread bloquea todos
-❌ No aprovecha múltiples núcleos
-
-Ejemplo: Green threads (Java antiguo)
 ```
 
-### Modelo de Muchos a Muchos
+**Ventajas:**
+- ✅ Rápido cambio entre threads (no requiere kernel)
+- ✅ Bajo overhead de gestión
+- ✅ Portabilidad (no depende del SO)
+
+**Desventajas:**
+- ❌ Bloqueo de un thread bloquea todos
+- ❌ No aprovecha múltiples núcleos
+- ❌ No puede ejecutar en paralelo
+
+**Sistemas que lo usan:** Green threads (Java antiguo), Ruby (antiguo)
+
+---
+
+## Modelo M:N (Many-to-Many)
+
 ```
 Proceso
 ├── Thread 1 ──┐
 ├── Thread 2 ──┼──► Threads kernel (pool)
 ├── Thread 3 ──┤      (menos que user threads)
 └── Thread 4 ──┘
-
-✅ Balance entre concurrencia y eficiencia
-✅ Threads en kernel < Threads en usuario
-
-Ejemplo: Solaris, IRIX
 ```
+
+**Ventajas:**
+- ✅ Balance entre concurrencia y eficiencia
+- ✅ Threads en kernel < Threads en usuario
+- ✅ Aprovecha múltiples núcleos
+- ✅ Flexible y eficiente
+
+**Desventajas:**
+- ❌ Complejo de implementar
+- ❌ Requiere scheduler a nivel de usuario
+
+**Sistemas que lo usan:** Solaris, IRIX, GNU Pth
 
 ---
 
@@ -633,36 +737,92 @@ ls -la | grep "\.txt" | wc -l
 
 ---
 
-## Problemas Clásicos de IPC
+## Problemas Clásicos de IPC: Productor-Consumidor
 
-### 1. Productor-Consumidor (con pipe)
+### Problema Productor-Consumidor (Bounded Buffer)
+
 ```
 ┌──────────┐      Pipe      ┌──────────┐
 │ Productor│ ─────────────► │Consumidor│
 │ (escribe)│   (buffer)     │ (lee)    │
 └──────────┘                └──────────┘
-
-Problema: ¿Qué pasa si el buffer está lleno o vacío?
-Solución: Sincronización con semáforos
 ```
 
-### 2. Problema de los Filósofos Comensales
-```
-5 filósofos, 5 tenedores (recursos)
-Cada filósofo necesita 2 tenedores para comer
+**El problema:**
+- Productor escribe datos en un buffer finito
+- Consumidor lee datos del mismo buffer
+- ¿Qué pasa si el buffer está **lleno** y el productor quiere escribir?
+- ¿Qué pasa si el buffer está **vacío** y el consumidor quiere leer?
 
-Problema: Deadlock si todos toman el tenedor izquierdo
-Solución: Orden de adquisición de recursos
+**Solución:**
+- Sincronización con semáforos:
+  - `empty`: cuenta espacios libres en buffer
+  - `full`: cuenta elementos disponibles
+  - `mutex`: protege acceso exclusivo al buffer
+
+---
+
+## Problemas Clásicos de IPC: Filósofos Comensales
+
+### Problema de los Filósofos Comensales
+
+```
+      Tenedor 1
+         │
+   Filósofo 1 ─── Tenedor 2 ─── Filósofo 2
+        │                           │
+   Tenedor 5                   Tenedor 3
+        │                           │
+   Filósofo 5 ─── Tenedor 4 ─── Filósofo 3
 ```
 
-### 3. Lectores-Escritores
-```
-Múltiples lectores pueden acceder simultáneamente
-Solo un escritor puede acceder (y sin lectores)
+**El escenario:**
+- 5 filósofos sentados en una mesa redonda
+- 5 tenedores entre ellos (recursos compartidos)
+- Cada filósofo necesita **2 tenedores** para comer
+- Solo puede tomar los tenedores a su izquierda y derecha
 
-Problema: Inanición de escritores si llegan lectores constantemente
-Solución: Prioridad a escritores o fairness
+**El problema: Deadlock**
+- Si todos toman el tenedor izquierdo simultáneamente
+- Nadie puede tomar el derecho (está ocupado)
+- Todos esperan para siempre → **Deadlock**
+
+**Soluciones:**
+1. Orden de adquisición de recursos (siempre tomar primero el tenedor con número menor)
+2. Límite de filósofos comiendo simultáneamente (máximo 4)
+3. Asimetría: un filósofo toma izquierda primero, otro derecha primero
+
+---
+
+## Problemas Clásicos de IPC: Lectores-Escritores
+
+### Problema de Lectores-Escritores
+
+**El escenario:**
+- Base de datos compartida por múltiples procesos
+- Dos tipos de procesos:
+  - **Lectores**: solo leen datos (no modifican)
+  - **Escritores**: leen y modifican datos
+
+**Reglas de acceso:**
+- ✅ Múltiples lectores pueden acceder **simultáneamente**
+- ❌ Solo **un escritor** puede acceder (exclusión mutua)
+- ❌ Escritor no puede acceder si hay lectores activos
+
+**El problema: Inanición (Starvation)**
+
 ```
+Caso: Escritores esperan mientras lectores llegan constantemente
+
+[Escritor esperando] ← [Lector1] [Lector2] [Lector3] ...
+                        ↓ nuevos lectores llegan
+                        Escritor nunca escribe
+```
+
+**Soluciones:**
+1. **Prioridad a escritores**: Cuando un escritor espera, no se admiten nuevos lectores
+2. **Fairness**: Cola FIFO, primero en llegar es atendido (lector o escritor)
+3. **Lectores con prioridad**: Escritores esperan a que todos los lectores actuales terminen
 
 ---
 

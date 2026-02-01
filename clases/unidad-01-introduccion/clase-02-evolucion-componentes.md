@@ -490,9 +490,20 @@ Programa malicioso → Pide al kernel → Kernel DENIEGA → Sistema seguro
 
 ---
 ## Transición entre modos
-### Puntos clave de la transición:- **TRAP (Interrupción de software)**: Mecanismo que permite cambiar de modo usuario a kernel- **Validación**: El kernel verifica permisos antes de ejecutar cualquier operación- **Retorno**: Se restaura el contexto del programa y se vuelve al modo usuario- **Seguridad**: Este mecanismo es fundamental para la protección del sistema### Analogía:```Usuario (modo usuario)  →  Llama a recepción (system call)                              ↓Recepcionista (kernel)    →  Verifica permisos                              ↓Gerente (kernel)          →  Ejecuta operación privilegiada                              ↓Usuario (modo usuario)    →  Recibe resultado```
+### Puntos clave de la transición:
+
+- **TRAP (Interrupción de software)**: Mecanismo que permite cambiar de modo usuario a kernel
+- **Validación**: El kernel verifica permisos antes de ejecutar cualquier operación
+- **Retorno**: Se restaura el contexto del programa y se vuelve al modo usuario
+- **Seguridad**: Este mecanismo es fundamental para la protección del sistema
+
+### Analogía:
 
 
+
+
+```Usuario (modo usuario)  →  Llama a recepcion (system call)                              ↓Recepcionista (kernel)    →  Verifica permisos                              ↓Gerente (kernel)          →  Ejecuta operacion privilegiada                              ↓Usuario (modo usuario)    →  Recibe resultado```
+Usuario (modo usuario)  →  Llama a recepcion (system call)                              ↓Recepcionista (kernel)    →  Verifica permisos                              ↓Gerente (kernel)          →  Ejecuta operacion privilegiada                              ↓Usuario (modo usuario)    →  Recibe resultado```
 ---
 ## Actividad Práctica (10 min)
 ### En parejas, investiguen en su computador:
