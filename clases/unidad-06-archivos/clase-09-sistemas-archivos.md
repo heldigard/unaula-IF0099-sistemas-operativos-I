@@ -198,7 +198,7 @@ Desde el punto de vista del SO:
 
 int main() {
     // Crear y abrir archivo
-| int fd = open("datos.txt", O_CREAT | O_WRONLY, 0644); |
+    int fd = open("datos.txt", O_CREAT | O_WRONLY, 0644);
     
     // Escribir
     char *texto = "Hola Mundo\n";
@@ -650,13 +650,13 @@ ls -la /
 
 ---
 
-## Para la Próxima Clase
+## Proxima Clase
 
-### Clase 9: Gestión de E/S y Protección
+### Clase 10: Gestion de E/S
 
 - Dispositivos de E/S
 - Controladores (drivers)
 - DMA (Direct Memory Access)
-- Protección y seguridad básica
+- Buffering y caching
 
-**¡Nos vemos!**
+**Nos vemos!**

@@ -335,6 +335,8 @@ Flujo: Base carga → Fase 1 → (reemplaza) → Fase 3
     └─────────────────────┘ 1MB
 ```
 
+**Idea clave:** el proceso ocupa un bloque seguido, lo que **simplifica** la traducción de direcciones, pero **dificulta** la entrada de procesos grandes cuando hay huecos dispersos.
+
 ---
 
 ## Partición Fija
@@ -540,13 +542,21 @@ $ cat /proc/self/maps
 00652000-00653000 rw-p  /bin/cat     (datos)
 7f8a...          r-xp  /lib/libc.so  (biblioteca)
 7ffc...          rw-p  [stack]       (pila)
+```
 
+---
+
+## Ejemplo Práctico: Estadísticas rápidas
+
+```bash
 # Ver estadísticas de memoria
 $ vmstat 1
 procs -----------memory---------- ---swap--
  r  b   swpd   free   buff  cache   si   so
  1  0      0 3887264 234567 7340928   0    0
 ```
+
+**Lectura rápida:** `free` y `cache` muestran memoria disponible; `si/so` indica swapping.
 
 ---
 

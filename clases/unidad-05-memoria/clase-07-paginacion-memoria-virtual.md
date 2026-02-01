@@ -370,7 +370,7 @@ El resto está en DISCO (swap)
 
 ---
 
-## Ejemplo: FIFO
+## Ejemplo: FIFO (Parte 1)
 
 ```
 | Marcos: 3 | Secuencia de páginas: 1, 2, 3, 4, 1, 2, 5, 1, 2, 3, 4, 5 |
@@ -383,6 +383,15 @@ Paso │ Página │ Marco1 │ Marco2 │ Marco3 │ Page Fault?
   4  │   4    │   4    │   2    │   3    │    ✓ (sale 1)
   5  │   1    │   4    │   1    │   3    │    ✓ (sale 2)
   6  │   2    │   4    │   1    │   2    │    ✓ (sale 3)
+```
+
+---
+
+## Ejemplo: FIFO (Parte 2)
+
+```
+Paso │ Página │ Marco1 │ Marco2 │ Marco3 │ Page Fault?
+─────┼────────┼────────┼────────┼────────┼────────────
   7  │   5    │   5    │   1    │   2    │    ✓ (sale 4)
   8  │   1    │   5    │   1    │   2    │    ✗
   9  │   2    │   5    │   1    │   2    │    ✗
@@ -403,7 +412,7 @@ Page Faults: 9
 
 ---
 
-## Ejemplo: LRU (Continuación)
+## Ejemplo: LRU (Parte 1)
 
 ```
 Paso │ Página │ Marco1 │ Marco2 │ Marco3 │ Page Fault? │ Orden LRU
@@ -414,6 +423,15 @@ Paso │ Página │ Marco1 │ Marco2 │ Marco3 │ Page Fault? │ Orden LRU
   4  │   4    │   4    │   2    │   3    │    ✓        │ 2,3,4 (1 era LRU)
   5  │   1    │   4    │   1    │   3    │    ✓        │ 3,4,1 (2 era LRU)
   6  │   2    │   4    │   1    │   2    │    ✓        │ 4,1,2 (3 era LRU)
+```
+
+---
+
+## Ejemplo: LRU (Parte 2)
+
+```
+Paso │ Página │ Marco1 │ Marco2 │ Marco3 │ Page Fault? │ Orden LRU
+─────┼────────┼────────┼────────┼────────┼─────────────┼──────────
   7  │   5    │   5    │   1    │   2    │    ✓        │ 1,2,5 (4 era LRU)
   8  │   1    │   5    │   1    │   2    │    ✗        │ 2,5,1
   9  │   2    │   5    │   1    │   2    │    ✗        │ 5,1,2
@@ -574,7 +592,7 @@ evitar thrashing en este patrón de acceso.
 
 ### Gestión de Memoria Virtual
 
-**Linux (sistema ext4):**
+**Linux:**
 ```bash
 # Ver uso de memoria virtual
 $ free -h
@@ -604,8 +622,8 @@ r  b   swpd   free   buff  cache   si   so    bi    bo   in   cs us sy id wa st
 |-----------|-------------|------------|----------|
 | **Óptimo** | O(n²) | 5/5 | Solo teórico |
 | **FIFO** | O(1) | 2/5 | Sistemas simples |
-| **LRU** | O(n) | 4/5 | Linux, BSD |
-| **Clock** | O(n) | 4/5 | Windows |
+| **LRU** | O(n) | 4/5 | Variantes tipo LRU/Clock |
+| **Clock** | O(n) | 4/5 | Sistemas modernos |
 | **LFU** | O(n log n) | 3/5 | Cachés especializadas |
 
 ### 💡 Observación
@@ -709,11 +727,11 @@ EMAT = 0.95 × 102 + 0.05 × 202
 
 ## Próxima Clase
 
-### Clase 8: Sistemas de Archivos
+### Clase 8: Memoria Secundaria y Discos
 
-- Concepto de archivo y atributos
-- Operaciones sobre archivos
-- Estructura de directorios
-- FAT, NTFS, ext4
+- Discos magnéticos y SSD
+- Tiempo de acceso y latencia
+- Planificación de disco
+- RAID y almacenamiento
 
 **¡Nos vemos!**

@@ -106,6 +106,11 @@ section {
 
 ![DMA - Acceso Directo a Memoria](../../assets/infografias/clase-10-dma.png)
 
+**Idea clave:**
+- El CPU no debe mover cada byte manualmente
+- DMA transfiere bloques grandes sin cargar al procesador
+- La CPU solo recibe una interrupcion al finalizar
+
 ---
 
 ## Objetivos de la Clase

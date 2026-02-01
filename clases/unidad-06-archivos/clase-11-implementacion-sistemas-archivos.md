@@ -106,6 +106,11 @@ section {
 
 ![Estructura Interna FS - Inodos](../../assets/infografias/clase-11-inodos.png)
 
+**Idea clave:**
+- El FS separa **metadatos** (inodos) de **datos** (bloques)
+- Directorios solo apuntan a inodos
+- El rendimiento depende de la asignacion de bloques
+
 ---
 
 ## Objetivos de la Clase

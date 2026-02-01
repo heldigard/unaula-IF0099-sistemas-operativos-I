@@ -1,9 +1,9 @@
-﻿---
+---
 marp: true
 theme: default
 paginate: true
 header: 'IF0099 - Sistemas Operativos I | Unidad 5'
-footer: 'UNAULA - IngenierÃ­a InformÃ¡tica - 2026-I'
+footer: 'UNAULA - Ingenieria Informatica - 2026-I'
 ---
 
 # Clase 8: Memoria Secundaria y Discos
@@ -48,7 +48,6 @@ section code {
 section p {
   margin: 0.5em 0;
 }
-/* Estilos para tablas responsivas */
 section table {
   width: 100%;
   max-width: 100%;
@@ -78,12 +77,10 @@ section tbody tr:nth-child(even) {
 section tbody tr:hover {
   background-color: #e9ecef;
 }
-/* Asegurar que el contenido no desborde */
 section {
   padding: 1em 2em;
   box-sizing: border-box;
 }
-/* Responsividad para tablas anchas */
 @media screen and (max-width: 1280px) {
   section table {
     font-size: 0.75em;
@@ -95,46 +92,32 @@ section {
 </style>
 
 ---
-# Clase 8: Memoria Secundaria y Discos
 
-**En esta clase exploraremos:**
-- Estructura fÃ­sica de discos duros y SSDs
-- Algoritmos de planificaciÃ³n de disco
-- Configuraciones RAID para redundancia
-- OptimizaciÃ³n del rendimiento de almacenamiento
-
-
-<!--
-IMÃGENES GENERADAS:
-- clase-08-estructura-disco.png: InfografÃ­a sobre estructura de disco duro y algoritmos de planificaciÃ³n
--->
-
----
-## Estructura, planificaciÃ³n y rendimiento
+## Estructura, planificacion y rendimiento
 
 **IF0099 - Sistemas Operativos I**
-*4Â° Semestre - IngenierÃ­a InformÃ¡tica*
+*4 Semestre - Ingenieria Informatica*
 
 ![Estructura de Disco Duro](../../assets/infografias/clase-08-estructura-disco.png)
 
-**Componentes clave que veremos:**
-- Pistas, sectores y cilindros (organizaciÃ³n fÃ­sica)
-- Tiempos de acceso: seek, latencia rotacional y transferencia
-- Algoritmos para optimizar el movimiento del cabezal
-- RAID: redundancia y rendimiento combinados
+**En esta clase veremos:**
+- Estructura fisica de HDD y SSD
+- Tiempo de acceso y rendimiento
+- Algoritmos de planificacion de disco
+- RAID y almacenamiento moderno
 
 ---
 
 ## Objetivos de la Clase
 
-Al finalizar esta clase, el estudiante serÃ¡ capaz de:
+Al finalizar esta clase, el estudiante sera capaz de:
 
-1. **Describir** la estructura fÃ­sica de un disco
+1. **Describir** la estructura fisica de un disco
 2. **Explicar** el tiempo de acceso y sus componentes
-3. **Comparar** algoritmos de planificaciÃ³n de discos
-4. **Evaluar** estrategias de optimizaciÃ³n y caching
+3. **Comparar** algoritmos de planificacion de discos
+4. **Evaluar** estrategias de optimizacion y caching
 
-**DuraciÃ³n:** 90 minutos
+**Duracion:** 90 minutos
 
 ---
 
@@ -142,539 +125,133 @@ Al finalizar esta clase, el estudiante serÃ¡ capaz de:
 
 1. Estructura de discos (15 min)
 2. Tiempo de acceso y rendimiento (15 min)
-3. Algoritmos de planificaciÃ³n (30 min)
-4. RAID y almacenamiento moderno (20 min)
-5. Actividad prÃ¡ctica (10 min)
+3. Algoritmos de planificacion (25 min)
+4. RAID y SSD (25 min)
+5. Actividad practica (10 min)
 
 ---
 
-## 1. Estructura de un Disco
+## 1. Estructura de un Disco (HDD)
 
-```
-Platos â”€â–º Pistas â”€â–º Sectores
-
-â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
-â”‚   PLATO 0     â”‚
-â”‚ â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â” â”‚
-â”‚ â”‚  PISTA 0  â”‚ â”‚
-â”‚ â”‚  PISTA 1  â”‚ â”‚
-â”‚ â”‚  PISTA 2  â”‚ â”‚
-â”‚ â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜ â”‚
-â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
-```
-
-- **Pista:** circunferencia concÃ©ntrica
-- **Sector:** porciÃ³n de una pista (unidad mÃ­nima)
-- **Cabezal:** lee/escribe sobre la superficie
-- **Cilindro:** conjunto de pistas alineadas entre platos
+- **Platos:** superficies magneticas que giran
+- **Pistas:** circunferencias concentricas en cada plato
+- **Sectores:** porciones de una pista (unidad minima)
+- **Cabezal:** lee y escribe datos
+- **Cilindro:** conjunto de pistas alineadas en todos los platos
 
 ---
 
 ## 2. Tiempo de Acceso
 
-**Tiempo total = seek + latencia + transferencia**
+**Tiempo total = seek + latencia rotacional + transferencia**
 
-| Componente | DescripciÃ³n |
+| Componente | Descripcion |
 | ----------- | ------------- |
-| **Seek** | Mover cabezal a la pista correcta |
-| **Latencia rotacional** | Esperar que el sector gire hasta el cabezal |
-| **Transferencia** | Leer/escribir datos |
+| **Seek** | Mover el cabezal a la pista correcta |
+| **Latencia** | Esperar que el sector gire hasta el cabezal |
+| **Transferencia** | Leer o escribir datos |
 
-```
-Ejemplo: 8ms (seek) + 4ms (latencia) + 1ms (transfer) = 13ms
-```
+**Ejemplo:** 8 ms (seek) + 4 ms (latencia) + 1 ms (transfer) = 13 ms
 
 ---
 
-## 3. Algoritmos de PlanificaciÃ³n de Discos
+## 3. Algoritmos de Planificacion de Discos
 
-### FCFS (First-Come, First-Served)
-- Simple, pero puede ser ineficiente
-
-### SSTF (Shortest Seek Time First)
-- Minimiza el movimiento del cabezal
-- Puede causar starvation
-
-### SCAN (Elevator)
-- Cabezal se mueve en una direcciÃ³n y luego regresa
-
-### C-SCAN
-- Solo atiende en una direcciÃ³n
+- **FCFS:** atiende en orden de llegada, simple pero ineficiente
+- **SSTF:** atiende la solicitud mas cercana, puede causar inanicion
+- **SCAN (Elevator):** atiende en una direccion y luego regresa
+- **C-SCAN:** atiende en una direccion y regresa sin servir
+- **LOOK / C-LOOK:** como SCAN pero sin ir al extremo
 
 ---
 
 ## Ejemplo Visual (SCAN)
 
-```
-Solicitudes: 98, 183, 37, 122, 14, 124, 65, 67
-Cabezal inicia en 53
+**Solicitudes:** 98, 183, 37, 122, 14, 124, 65, 67
+**Cabezal inicia en:** 53
 
-Movimiento (SCAN): 53 â†’ 65 â†’ 67 â†’ 98 â†’ 122 â†’ 124 â†’ 183 â†’ (regresa) â†’ 37 â†’ 14
+```
+Movimiento (SCAN):
+53 -> 65 -> 67 -> 98 -> 122 -> 124 -> 183 -> 199
+(regresa) -> 37 -> 14
 ```
 
-**Ventaja:** tiempo de espera mÃ¡s uniforme
+**Ventaja:** tiempo de espera mas uniforme que FCFS y SSTF
 
 ---
 
-## 4. RAID y Almacenamiento Moderno
+## Tabla Comparativa de Algoritmos
 
-| Tipo | DescripciÃ³n | Beneficio |
-| ------ | ------------- | ----------- |
-| **RAID 0** | Striping | Velocidad (sin redundancia) |
-| **RAID 1** | Mirroring | Redundancia |
-| **RAID 5** | Paridad distribuida | Balance rendimiento/seguridad |
-| **RAID 10** | 0 + 1 | Rendimiento y redundancia |
-
-**SSD:** sin partes mecÃ¡nicas, menor latencia
-
----
-
-## ðŸ’¡ Conceptos Clave de Discos Duros
-
-### AnatomÃ­a Detallada de un Disco
-
-Un disco duro (HDD) es un dispositivo de almacenamiento magnÃ©tico con componentes mecÃ¡nicos:
-
-```
-â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
-â”‚  COMPONENTES FÃSICOS DE UN HDD                          â”‚
-â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
-â”‚                                                         â”‚
-â”‚  1. PLATOS (Platters)                                   â”‚
-â”‚     - Material: aluminio o vidrio                       â”‚
-â”‚     - Recubrimiento: Ã³xido magnÃ©tico                    â”‚
-â”‚     - TÃ­pico: 2-5 platos por disco                      â”‚
-â”‚                                                         â”‚
-â”‚  2. CABEZALES (Read/Write Heads)                        â”‚
-â”‚     - Flotan a 3-6 nanÃ³metros de la superficie          â”‚
-â”‚     - 1 cabezal por superficie (2 por plato)            â”‚
-â”‚                                                         â”‚
-â”‚  3. BRAZO ACTUADOR (Actuator Arm)                       â”‚
-â”‚     - Mueve cabezales radialmente                       â”‚
-â”‚     - Velocidad: 10-15ms tÃ­pico                         â”‚
-â”‚                                                         â”‚
-â”‚  4. MOTOR DE HUSILLO (Spindle Motor)                    â”‚
-â”‚     - Velocidad: 5400, 7200, 10000 RPM                  â”‚
-â”‚     - MÃ¡s RPM = menor latencia rotacional               â”‚
-â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
-```
+| Algoritmo | Ventaja | Desventaja | Uso recomendado |
+|-----------|---------|------------|-----------------|
+| **FCFS** | Simple | Alto movimiento | Sistemas simples |
+| **SSTF** | Eficiente | Inanicion posible | Carga baja |
+| **SCAN** | Justo | Espera variable | Uso general |
+| **C-SCAN** | Uniforme | Regreso sin servicio | Servidores |
+| **LOOK** | Eficiente | Mas complejo | Alta carga |
+| **C-LOOK** | Muy eficiente | Mas complejo | Produccion |
 
 ---
 
-## ðŸ” CÃ¡lculo Detallado del Tiempo de Acceso
+## 4. RAID (Resumen)
 
-### FÃ³rmula Completa
+| Nivel | Idea | Ventaja | Riesgo |
+|------|------|---------|--------|
+| **RAID 0** | Striping | Velocidad | Sin redundancia |
+| **RAID 1** | Mirroring | Redundancia | 50% capacidad |
+| **RAID 5** | Paridad distribuida | Balance | Escritura mas lenta |
+| **RAID 10** | 0 + 1 | Rendimiento y redundancia | Costoso |
 
-```
-T_acceso = T_seek + T_latencia + T_transferencia + T_controller
-```
-
-### Componentes Explicados
-
-1. **Tiempo de Seek (bÃºsqueda)**
-   - Promedio: 8-12ms en HDDs modernos
-   - Depende de la distancia entre pistas
-   - FÃ³rmula: `T_seek = a + b Ã— âˆšdistancia`
-
-2. **Latencia Rotacional**
-   - Promedio: la mitad de una rotaciÃ³n completa
-   - FÃ³rmula: `T_latencia = (60 / RPM) / 2`
-   - Ejemplo 7200 RPM: `(60 / 7200) / 2 = 4.17ms`
-
-3. **Tiempo de Transferencia**
-   - Depende del tamaÃ±o del bloque
-   - FÃ³rmula: `T_trans = (tamaÃ±o_bloque / tasa_transferencia)`
-   - Ejemplo: `(4KB / 100MB/s) = 0.04ms`
-
-### Ejemplo Completo
-
-```python
-# Disco: 7200 RPM, tasa 150MB/s, seek promedio 9ms
-# Leer bloque de 8KB
-
-T_seek = 9  # ms (promedio)
-T_latencia = (60 / 7200) / 2 * 1000  # = 4.17 ms
-T_transferencia = (8 / 1024 / 150) * 1000  # = 0.05 ms
-T_controller = 0.1  # overhead del controlador
-
-T_total = 9 + 4.17 + 0.05 + 0.1 = 13.32 ms
-```
-
-**ConclusiÃ³n:** El seek y latencia dominan (>99% del tiempo)
+**Idea clave:** RAID combina discos para mejorar rendimiento o tolerancia a fallos.
 
 ---
 
-## ðŸ“Š Algoritmos de PlanificaciÃ³n - AnÃ¡lisis Comparativo
+## HDD vs SSD (Resumen)
 
-### Escenario de Ejemplo
-
-ConfiguraciÃ³n:
-- **Cola de solicitudes:** 98, 183, 37, 122, 14, 124, 65, 67
-- **PosiciÃ³n inicial del cabezal:** 53
-- **Rango de cilindros:** 0-199
-
-### 1. FCFS (First-Come, First-Served)
-
-**Secuencia:** 53 â†’ 98 â†’ 183 â†’ 37 â†’ 122 â†’ 14 â†’ 124 â†’ 65 â†’ 67
-
-```
-Movimiento total:
-|98-53| + |183-98| + |37-183| + |122-37| + |14-122| + |124-14| + |65-124| + |67-65|
-= 45 + 85 + 146 + 85 + 108 + 110 + 59 + 2
-= 640 cilindros
-```
-
-**Ventajas:** Simple, justo (no inaniciÃ³n)
-**Desventajas:** Muy ineficiente, movimiento errÃ¡tico
-
----
-
-### 2. SSTF (Shortest Seek Time First)
-
-**Secuencia:** 53 â†’ 65 â†’ 67 â†’ 37 â†’ 14 â†’ 98 â†’ 122 â†’ 124 â†’ 183
-
-```
-Movimiento total:
-|65-53| + |67-65| + |37-67| + |14-37| + |98-14| + |122-98| + |124-122| + |183-124|
-= 12 + 2 + 30 + 23 + 84 + 24 + 2 + 59
-= 236 cilindros
-```
-
-**Ventajas:** Mejor rendimiento que FCFS
-**Desventajas:** Puede causar inaniciÃ³n (starvation)
-
-**Ejemplo de inaniciÃ³n:**
-```
-Si llegan constantemente solicitudes cerca del cabezal,
-las solicitudes lejanas nunca se atienden.
-```
-
----
-
-### 3. SCAN (Algoritmo del Ascensor)
-
-**Secuencia:** 53 â†’ 65 â†’ 67 â†’ 98 â†’ 122 â†’ 124 â†’ 183 â†’ 199 (extremo) â†’ 37 â†’ 14
-
-```
-Movimiento total (hasta extremo):
-|65-53| + |67-65| + |98-67| + |122-98| + |124-122| + |183-124| + |199-183|
-+ |37-199| + |14-37|
-= 12 + 2 + 31 + 24 + 2 + 59 + 16 + 162 + 23
-= 331 cilindros
-```
-
-**Ventajas:** Sin inaniciÃ³n, predecible
-**Desventajas:** Tiempo de espera variable
-
----
-
-### 4. C-SCAN (Circular SCAN)
-
-**Secuencia:** 53 â†’ 65 â†’ 67 â†’ 98 â†’ 122 â†’ 124 â†’ 183 â†’ 199 â†’ 0 (salto) â†’ 14 â†’ 37
-
-```
-Movimiento efectivo (sin contar salto circular):
-= 146 + 14 + 23 = 183 cilindros
-(El salto de 199 â†’ 0 no cuenta como servicio)
-```
-
-**Ventajas:** Tiempo de espera mÃ¡s uniforme
-**Desventajas:** Overhead del regreso
-
----
-
-### 5. LOOK y C-LOOK
-
-**Diferencia con SCAN:** No llegan hasta el extremo, solo hasta Ãºltima solicitud.
-
-**C-LOOK Secuencia:** 53 â†’ 65 â†’ 67 â†’ 98 â†’ 122 â†’ 124 â†’ 183 â†’ (salta a 14) â†’ 14 â†’ 37
-
-```
-Movimiento: 130 + 23 = 153 cilindros (mÃ¡s eficiente)
-```
-
----
-
-## ðŸ“ˆ Tabla Comparativa de Algoritmos
-
-| Algoritmo | Mov. Total | Ventaja | Desventaja | Uso Recomendado |
-|-----------|------------|---------|------------|-----------------|
-| **FCFS** | 640 | Simple | Ineficiente | Sistemas simples |
-| **SSTF** | 236 | RÃ¡pido | InaniciÃ³n | Carga baja |
-| **SCAN** | 331 | Justo | Irregular | Uso general |
-| **C-SCAN** | 183 | Uniforme | Overhead | Servidores |
-| **LOOK** | 208 | Eficiente | Complejo | Alta carga |
-| **C-LOOK** | 153 | Ã“ptimo | MÃ¡s complejo | ProducciÃ³n |
-
----
-
-## ðŸš€ SSD vs HDD: EvoluciÃ³n del Almacenamiento
-
-### ComparaciÃ³n TÃ©cnica
-
-| CaracterÃ­stica | HDD | SSD |
+| Caracteristica | HDD | SSD |
 |----------------|-----|-----|
-| **TecnologÃ­a** | MagnÃ©tica, mecÃ¡nica | Flash NAND, electrÃ³nica |
-| **Latencia** | 10-15ms | 0.1-0.2ms (100Ã— mÃ¡s rÃ¡pido) |
-| **IOPS** | 100-200 | 50,000-100,000 |
-| **Velocidad seq.** | 100-200 MB/s | 500-7000 MB/s |
-| **Durabilidad** | FrÃ¡gil (golpes) | Resistente |
-| **Vida Ãºtil** | 3-5 aÃ±os | 5-10 aÃ±os (por escrituras) |
-| **Costo/GB** | $0.02 | $0.10 |
+| **Latencia** | 5-15 ms | 0.1-0.2 ms |
+| **IOPS** | 100-200 | 10k-100k |
 | **Ruido** | Audible | Silencioso |
-| **EnergÃ­a** | 6-7W | 2-3W |
+| **Resistencia** | Sensible a golpes | Mas resistente |
+| **Costo/GB** | Bajo | Mayor |
 
-### Arquitectura SSD
-
-```
-â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
-â”‚  SSD (Solid State Drive)                   â”‚
-â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
-â”‚  Controlador SSD                           â”‚
-â”‚  â”œâ”€ FTL (Flash Translation Layer)          â”‚
-â”‚  â”œâ”€ Wear Leveling (distribuir escrituras)  â”‚
-â”‚  â”œâ”€ Garbage Collection                     â”‚
-â”‚  â””â”€ ECC (Error Correction)                 â”‚
-â”‚                                            â”‚
-â”‚  Chips NAND Flash                          â”‚
-â”‚  â”œâ”€ SLC (1 bit/celda) - mÃ¡s rÃ¡pido        â”‚
-â”‚  â”œâ”€ MLC (2 bits/celda) - balance           â”‚
-â”‚  â”œâ”€ TLC (3 bits/celda) - mÃ¡s capacidad    â”‚
-â”‚  â””â”€ QLC (4 bits/celda) - mÃ¡s econÃ³mico    â”‚
-â”‚                                            â”‚
-â”‚  Cache DRAM (opcional)                     â”‚
-â”‚  â””â”€ Acelera operaciones pequeÃ±as           â”‚
-â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
-```
+**Regla practica:** SSD para sistema y apps, HDD para almacenamiento masivo.
 
 ---
 
-## ðŸ’¾ RAID: Redundancia y Rendimiento
+## NVMe vs SATA SSD
 
-### Niveles RAID Explicados
+| Aspecto | SATA SSD | NVMe SSD |
+|---------|----------|----------|
+| **Interfaz** | SATA | PCIe |
+| **Colas** | 32 | 65k |
+| **Latencia** | Mayor | Menor |
+| **IOPS** | 100k | 1M+ |
 
-#### RAID 0 - Striping (DivisiÃ³n)
-
-```
-Datos: [A1][A2][A3][A4][A5][A6]
-
-Disco 1: [A1][A3][A5]
-Disco 2: [A2][A4][A6]
-
-Ventajas:
-- Velocidad 2Ã— (lectura/escritura paralela)
-- Capacidad total = suma de discos
-
-Desventajas:
-- SIN redundancia (1 disco falla â†’ todo perdido)
-- Fiabilidad: 1/n (empeora con mÃ¡s discos)
-```
-
-**Caso de uso:** EdiciÃ³n de video, scratch space
+**Por que es mas rapido?**
+- Menos capas de protocolo
+- Mas paralelismo en colas
+- Mayor ancho de banda PCIe
 
 ---
 
-#### RAID 1 - Mirroring (Espejo)
+## Optimizacion de Rendimiento
 
-```
-Datos: [A1][A2][A3][A4]
+**Para HDD:**
+- Evitar desorden de archivos (defrag)
+- Reducir movimientos del cabezal (SCAN/LOOK)
 
-Disco 1: [A1][A2][A3][A4]
-Disco 2: [A1][A2][A3][A4] (copia exacta)
-
-Ventajas:
-- Tolerancia a fallo (1 disco puede fallar)
-- Lectura 2Ã— mÃ¡s rÃ¡pida
-
-Desventajas:
-- Capacidad Ãºtil = 50%
-- Escritura igual velocidad (ambos discos)
-```
-
-**Caso de uso:** Datos crÃ­ticos, servidores
+**Para SSD:**
+- Habilitar TRIM
+- Evitar desfragmentacion
+- Dejar espacio libre (over-provisioning)
 
 ---
 
-#### RAID 5 - Paridad Distribuida
+## Actividad Practica (10 min)
 
-```
-Con 3 discos:
-
-Bloque 1:  [A1] [A2] [P(A1,A2)]
-Bloque 2:  [B1] [P(B1,B2)] [B2]
-Bloque 3:  [P(C1,C2)] [C1] [C2]
-
-P = XOR de los bloques de datos
-
-Ventajas:
-- Balance rendimiento/redundancia
-- Capacidad Ãºtil = (n-1) discos
-- Tolerancia: 1 disco puede fallar
-
-Desventajas:
-- Escritura lenta (cÃ¡lculo paridad)
-- ReconstrucciÃ³n lenta tras fallo
-```
-
-**Caso de uso:** Servidores de archivos, NAS
-
----
-
-## ðŸŽ¯ Ejercicio PrÃ¡ctico 1: CÃ¡lculo de Tiempos
-
-### Problema
-
-Un disco duro tiene las siguientes caracterÃ­sticas:
-- 7200 RPM
-- Seek time promedio: 9ms
-- Tasa de transferencia: 180 MB/s
-- TamaÃ±o de sector: 512 bytes
-
-**Pregunta:** Â¿CuÃ¡nto tiempo toma leer 100 sectores secuenciales?
-
-### SoluciÃ³n Paso a Paso
-
-```python
-# Datos
-RPM = 7200
-T_seek = 9  # ms
-tasa = 180  # MB/s
-tam_sector = 512  # bytes
-num_sectores = 100
-
-# Paso 1: Seek inicial
-tiempo_seek = 9  # ms
-
-# Paso 2: Latencia rotacional (solo inicial)
-T_latencia = (60 / RPM) / 2 * 1000
-T_latencia = (60 / 7200) / 2 * 1000 = 4.17  # ms
-
-# Paso 3: Transferencia (todos los sectores son secuenciales)
-tamaÃ±o_total = num_sectores * tam_sector / (1024 * 1024)  # MB
-tamaÃ±o_total = 100 * 512 / (1024 * 1024) = 0.0488 MB
-
-T_transferencia = (tamaÃ±o_total / tasa) * 1000
-T_transferencia = (0.0488 / 180) * 1000 = 0.27 ms
-
-# Tiempo total
-T_total = tiempo_seek + T_latencia + T_transferencia
-T_total = 9 + 4.17 + 0.27 = 13.44 ms
-```
-
-**Respuesta:** 13.44 ms
-
-**Nota clave:** Acceso secuencial es MUY eficiente (1 seek para 100 sectores)
-
----
-
-## ðŸŽ¯ Ejercicio PrÃ¡ctico 2: Comparar Algoritmos
-
-### Problema
-
-Cola de solicitudes: **95, 180, 34, 119, 11, 123, 62, 64**
-PosiciÃ³n inicial: **50**
-DirecciÃ³n inicial: **hacia arriba (â†’)**
-
-**Calcular movimiento total para:**
-1. FCFS
-2. SSTF
-3. SCAN
-4. C-LOOK
-
-### SoluciÃ³n
-
-#### 1. FCFS
-
-```
-Secuencia: 50 â†’ 95 â†’ 180 â†’ 34 â†’ 119 â†’ 11 â†’ 123 â†’ 62 â†’ 64
-
-Movimiento:
-45 + 85 + 146 + 85 + 108 + 112 + 61 + 2 = 644 cilindros
-```
-
-#### 2. SSTF
-
-```
-Secuencia: 50 â†’ 62 â†’ 64 â†’ 34 â†’ 11 â†’ 95 â†’ 119 â†’ 123 â†’ 180
-
-Movimiento:
-12 + 2 + 30 + 23 + 84 + 24 + 4 + 57 = 236 cilindros
-```
-
-#### 3. SCAN (hasta extremo 199)
-
-```
-Secuencia: 50 â†’ 62 â†’ 64 â†’ 95 â†’ 119 â†’ 123 â†’ 180 â†’ 199 â†’ 34 â†’ 11
-
-Movimiento:
-12 + 2 + 31 + 24 + 4 + 57 + 19 + 165 + 23 = 337 cilindros
-```
-
-#### 4. C-LOOK
-
-```
-Secuencia: 50 â†’ 62 â†’ 64 â†’ 95 â†’ 119 â†’ 123 â†’ 180 â†’ (salta) â†’ 11 â†’ 34
-
-Movimiento (sin contar salto):
-12 + 2 + 31 + 24 + 4 + 57 + 169 + 23 = 322 cilindros
-```
-
-**Ganador:** SSTF (236), pero con riesgo de inaniciÃ³n
-
----
-
-## ðŸ  Tarea para Casa
-
-### InvestigaciÃ³n: NVMe vs SATA SSD
-
-**Instrucciones:**
-1. Investiga las diferencias entre NVMe y SATA (protocolos)
-2. Compara velocidades tÃ­picas
-3. Explica por quÃ© NVMe es mÃ¡s rÃ¡pido (arquitectura)
-4. Â¿CuÃ¡ndo vale la pena NVMe sobre SATA SSD?
-
-**Formato:** 1-2 pÃ¡ginas, entregar vÃ­a plataforma
-
-**Fecha lÃ­mite:** PrÃ³xima clase
-
----
-
-## ðŸ“š Referencias y Recursos
-
-### Lecturas Recomendadas
-
-- Silberschatz, Cap. 10: "Mass-Storage Structure"
-- Tanenbaum, Cap. 5.4: "Disks"
-- [How HDDs Work](https://www.youtube.com/watch?v=wteUW2sL7bc) - Video
-
-### Herramientas para Explorar
-
-**Linux:**
-```bash
-# Ver discos y particiones
-lsblk
-
-# InformaciÃ³n detallada de disco
-sudo hdparm -I /dev/sda
-
-# Benchmark de disco
-sudo hdparm -t /dev/sda
-```
-
-**Windows:**
-```powershell
-# InformaciÃ³n de discos
-Get-PhysicalDisk | Format-Table
-
-# FragmentaciÃ³n
-Optimize-Volume -DriveLetter C -Analyze
-```
-
----
-
-## Actividad PrÃ¡ctica (10 min)
-
-### En parejas:
+### En parejas
 
 **Linux:**
 ```bash
@@ -688,268 +265,37 @@ Get-Disk
 Get-PhysicalDisk
 ```
 
-**Pregunta:** Â¿QuÃ© tipo de disco usa tu equipo y cÃ³mo afecta el rendimiento?
-
----
-
-## ðŸ’¾ SSD vs HDD: Comparativa TÃ©cnica Profunda
-
-### TecnologÃ­a Interna
-
-| Aspecto | HDD (MecÃ¡nico) | SSD (Estado SÃ³lido) |
-|---------|----------------|---------------------|
-| **TecnologÃ­a** | Discos magnÃ©ticos giratorios | Memoria NAND Flash |
-| **Velocidad lectura** | 80-160 MB/s | 200-3500 MB/s |
-| **Velocidad escritura** | 80-160 MB/s | 200-3000 MB/s |
-| **Latencia** | 5-10 ms | 0.1 ms |
-| **IOPS** | 100-200 | 10,000-100,000 |
-| **Durabilidad** | Sensible a golpes | Resistente golpes |
-| **Ruido** | Audible (motor) | Silencioso |
-| **Consumo energÃ­a** | 6-7 W | 2-3 W |
-| **Vida Ãºtil** | 3-5 aÃ±os | 5-10 aÃ±os |
-| **Costo por GB** | $0.03-0.05 | $0.10-0.20 |
-
-### ðŸŽ¯ CuÃ¡ndo Usar Cada Uno
-
-**HDD:** Almacenamiento masivo, backups, archivos poco usados  
-**SSD:** Sistema operativo, aplicaciones, bases de datos
-
----
-
-## ðŸ”¬ Estructura Interna de un SSD
-
-### Arquitectura NAND Flash
-
-```
-â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
-â”‚                  CONTROLADOR SSD                        â”‚
-â”‚  â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”         â”‚
-â”‚  â”‚ Wear       â”‚  Garbage      â”‚   Cache      â”‚         â”‚
-â”‚  â”‚ Leveling   â”‚  Collection   â”‚   DRAM       â”‚         â”‚
-â”‚  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜         â”‚
-â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
-â”‚                     BLOQUES NAND                        â”‚
-â”‚  â”Œâ”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”    â”‚
-â”‚  â”‚Blockâ”‚Blockâ”‚Blockâ”‚Blockâ”‚Blockâ”‚Blockâ”‚Blockâ”‚Blockâ”‚    â”‚
-â”‚  â”‚  0  â”‚  1  â”‚  2  â”‚  3  â”‚  4  â”‚  5  â”‚  6  â”‚  7  â”‚    â”‚
-â”‚  â””â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”˜    â”‚
-â”‚         Cada bloque: 128-256 pÃ¡ginas                    â”‚
-â”‚         Cada pÃ¡gina: 4-16 KB                            â”‚
-â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
-```
-
-### Limitaciones de SSD
-- **Write Amplification:** Reescrituras multiplican desgaste
-- **TRIM necesario:** Para mantener rendimiento
-- **Writes limitados:** ~3000-10000 ciclos P/E por celda
-
----
-
-## ðŸ“Š Configuraciones RAID Avanzadas
-
-### RAID 0 (Striping)
-
-```
-Datos: A B C D E F G H
-
-Disco 1: [A][C][E][G]
-Disco 2: [B][D][F][H]
-
-âœ… Velocidad: 2x
-âŒ Tolerancia fallas: 0 (cualquier disco falla = pÃ©rdida total)
-```
-
-### RAID 1 (Mirroring)
-
-```
-Disco 1: [A][B][C][D]
-Disco 2: [A][B][C][D]  â† Copia exacta
-
-âœ… Tolerancia: 1 disco puede fallar
-âŒ Capacidad: 50% del total
-```
-
-### RAID 5 (Paridad Distribuida)
-
-```
-     Disco 1   Disco 2   Disco 3
-      [A]       [B]      [Parity AB]
-      [C]      [Parity CD] [D]
-   [Parity EF]  [E]       [F]
-
-âœ… Balance: Velocidad + redundancia
-âœ… Capacidad: (n-1) discos
-âŒ MÃ­nimo 3 discos
-```
-
-### RAID 10 (1+0)
-
-```
-      RAID 1          RAID 1
-   â”Œâ”€â”€â”€â”€â”´â”€â”€â”€â”€â”    â”Œâ”€â”€â”€â”€â”´â”€â”€â”€â”€â”
-Disco1  Disco2  Disco3  Disco4
-  [A]    [A]     [B]     [B]
-        â””â”€â”€â”€â”€â”€â”€RAID 0â”€â”€â”€â”€â”€â”€â”˜
-
-âœ… MÃ¡xima velocidad + redundancia
-âŒ Costo: 50% capacidad
-```
-
----
-
-## ðŸ”¥ NVMe: El Futuro del Almacenamiento
-
-### NVMe vs SATA
-
-```
-                SATA SSD          NVMe SSD
-              â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”      â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
-Interfaz:     â”‚   SATA   â”‚      â”‚   PCIe   â”‚
-              â”‚  3.0/3.1 â”‚      â”‚ 3.0/4.0  â”‚
-              â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜      â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
-                   â”‚                 â”‚
-Ancho banda:      600 MB/s        4000 MB/s
-Latencia:         50 Âµs           25 Âµs
-Colas:            32               65536
-IOPS:             100K             1M+
-```
-
-### Ventajas NVMe
-- âœ… **Protocolo optimizado** para flash
-- âœ… **ConexiÃ³n directa** a PCIe
-- âœ… **Menor latencia** de software
-- âœ… **MÃ¡s colas paralelas** (65K vs 32)
-
----
-
-## ðŸ’» Comandos PrÃ¡cticos de DiagnÃ³stico
-
-### Linux: AnÃ¡lisis de Disco
-
-```bash
-# Ver informaciÃ³n de discos
-lsblk
-sudo fdisk -l
-
-# Velocidad de lectura/escritura
-sudo hdparm -tT /dev/sda
-
-# InformaciÃ³n SMART (salud del disco)
-sudo smartctl -a /dev/sda
-
-# I/O actual en tiempo real
-sudo iotop
-
-# EstadÃ­sticas de I/O
-iostat -x 2
-
-# Ver tipo de disco (HDD/SSD)
-cat /sys/block/sda/queue/rotational
-# 0 = SSD, 1 = HDD
-```
-
-### Windows: PowerShell
-
-```powershell
-# InformaciÃ³n de discos
-Get-PhysicalDisk | Format-Table FriendlyName, MediaType, Size
-
-# Velocidad de transferencia
-Get-PhysicalDisk | Get-StorageReliabilityCounter
-
-# OptimizaciÃ³n SSD (TRIM)
-Optimize-Volume -DriveLetter C -Defrag
-
-# InformaciÃ³n SMART
-Get-PhysicalDisk | Get-StorageReliabilityCounter | Select Wear
-```
-
----
-
-## ðŸŽ¯ OptimizaciÃ³n de Rendimiento de Disco
-
-### Para HDD
-
-1. **DesfragmentaciÃ³n regular**
-   ```bash
-   # Windows
-   defrag C: /O
-   ```
-
-2. **Alinear particiones** (importante en RAID)
-3. **Deshabilitar indexaciÃ³n** en volÃºmenes de datos
-4. **Usar write-back cache** (con UPS)
-
-### Para SSD
-
-1. **Habilitar TRIM**
-   ```bash
-   # Linux
-   sudo systemctl enable fstrim.timer
-   
-   # Windows (automÃ¡tico si soporta)
-   fsutil behavior query DisableDeleteNotify
-   ```
-
-2. **NO desfragmentar** (desgasta innecesariamente)
-3. **AlineaciÃ³n de 4K** en particiones
-4. **Over-provisioning:** Dejar 10-20% sin particionar
-
----
-
-## ðŸ“ CÃ¡lculo de Throughput en RAID
-
-### Ejemplo: RAID 5 con 4 discos
-
-**Datos:**
-- 4 discos de 1TB @ 150 MB/s cada uno
-- 1 disco para paridad
-
-**Lectura:**
-```
-Throughput = 3 Ã— 150 MB/s = 450 MB/s
-(lee de 3 discos en paralelo)
-```
-
-**Escritura:**
-```
-Throughput â‰ˆ 150-200 MB/s
-(bottleneck por cÃ¡lculo de paridad)
-```
-
-**Capacidad:**
-```
-Total = 3 Ã— 1TB = 3TB
-(n-1 discos Ãºtiles)
-```
+**Pregunta:** Que tipo de disco usa tu equipo y como afecta el rendimiento?
 
 ---
 
 ## Resumen de la Clase
 
 | Concepto | Idea clave |
-| ---------- | ------------ |
+|----------|-----------|
 | **Disco** | Pistas, sectores, cabezales |
-| **Tiempo de acceso** | Seek + latencia + transferencia |
-| **PlanificaciÃ³n** | FCFS, SSTF, SCAN, C-SCAN |
+| **Acceso** | Seek + latencia + transferencia |
+| **Planificacion** | FCFS, SSTF, SCAN, C-SCAN |
 | **RAID** | Redundancia y rendimiento |
+| **SSD** | Menor latencia, mayor IOPS |
 
 ---
 
 ## Tarea
 
-1. Comparar SSD vs HDD (3 diferencias tÃ©cnicas)
-2. Explicar por quÃ© SCAN reduce el tiempo promedio
-3. Investigar quÃ© RAID usa un data center moderno
+1. Comparar SSD vs HDD (3 diferencias tecnicas)
+2. Explicar por que SCAN reduce el tiempo promedio
+3. Investigar que RAID usa un data center moderno
 
 ---
 
-## PrÃ³xima Clase
+## Proxima Clase
 
-### Clase 11: ImplementaciÃ³n de Sistemas de Archivos
+### Clase 9: Sistemas de Archivos
 
-- Estructuras internas
-- Inodos y bloques
-- Ejemplo ext4
+- Concepto de archivo y atributos
+- Operaciones sobre archivos
+- Estructura de directorios
+- FAT, NTFS, ext4
 
-**Â¡Nos vemos!**
+**Nos vemos!**
