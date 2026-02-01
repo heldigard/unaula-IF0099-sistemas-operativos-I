@@ -20,8 +20,35 @@
 <p><strong>IF0099 - Sistemas Operativos I</strong><br />
 <em>4° Semestre - Ingeniería Informática</em></p>
 <p><img src="../../assets/infografias/clase-12-proteccion-seguridad-v2.png" alt="Protección vs Seguridad" /></p>
+<p><strong>Conceptos Clave de esta Clase:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Área</th>
+<th>Pregunta Fundamental</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Protección</strong></td>
+<td>¿Cómo controla el SO quién accede a qué?</td>
+</tr>
+<tr>
+<td><strong>Seguridad</strong></td>
+<td>¿Cómo defendemos el sistema de amenazas?</td>
+</tr>
+<tr>
+<td><strong>Dominios</strong></td>
+<td>¿Cómo agrupamos permisos lógicamente?</td>
+</tr>
+<tr>
+<td><strong>Amenazas</strong></td>
+<td>¿Qué puede atacar nuestro sistema?</td>
+</tr>
+</tbody>
+</table>
 <blockquote>
-<p><strong>Nota:</strong> Esta infografía muestra la diferencia entre Protección (mecanismos internos del SO) y Seguridad (defensa contra amenazas externas).</p>
+<p><strong>Nota:</strong> Esta infografía muestra la diferencia entre <strong>Protección</strong> (mecanismos internos del SO para controlar acceso) y <strong>Seguridad</strong> (defensa contra amenazas externas e internas).</p>
 </blockquote>
 <footer>UNAULA - Ingeniería Informática - 2026-I</footer>
 </section>
@@ -41,6 +68,7 @@
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="4" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 8" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="4" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 8;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="22">
 <header>IF0099 - Sistemas Operativos I | Unidad 8</header>
 <h2 id="protecci%C3%B3n-vs-seguridad">Protección vs Seguridad</h2>
+<h3 id="dos-caras-de-la-misma-moneda">Dos caras de la misma moneda</h3>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code>┌─────────────────────────────────────────────────────────────┐
 │                      PROTECCIÓN                             │
 │  &quot;Mecanismo interno del SO para controlar acceso            │
@@ -49,6 +77,8 @@
 │  • Control de acceso a archivos                             │
 │  • Separación de memoria entre procesos                     │
 │  • Permisos de ejecución                                    │
+│                                                             │
+│  Ejemplo: chmod 755 archivo.txt                             │
 └─────────────────────────────────────────────────────────────┘
 
 ┌─────────────────────────────────────────────────────────────┐
@@ -60,8 +90,18 @@
 │  • Cifrado de datos                                         │
 │  • Defensa contra malware                                   │
 │  • Auditoría y logs                                         │
+│                                                             │
+│  Ejemplo: SSH key + contraseñas hasheadas                   │
 └─────────────────────────────────────────────────────────────┘
 </code></pre>
+<p><strong>Analogía:</strong></p>
+<ul>
+<li><strong>Protección</strong> = Cerraduras en las puertas de tu casa</li>
+<li><strong>Seguridad</strong> = Sistema de alarma + vigilancia + seguro</li>
+</ul>
+<blockquote>
+<p><strong>Insight:</strong> La protección es interna (el SO controla); la seguridad es externa (defenderse de atacantes).</p>
+</blockquote>
 <footer>UNAULA - Ingeniería Informática - 2026-I</footer>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="5" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 8" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="5" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 8;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="22">
@@ -105,8 +145,18 @@ para realizar su tarea, nada más.&quot;</p>
 R = Leer    W = Escribir    X = Ejecutar
 F1, F2, F3 = Archivos       Imp = Impresora
 </code></pre>
-<p>Un proceso ejecuta en un dominio.<br />
-Un usuario puede tener múltiples dominios.</p>
+<p><strong>Conceptos clave:</strong></p>
+<ul>
+<li><strong>Un proceso ejecuta en un dominio</strong> específico</li>
+<li><strong>Un usuario puede tener múltiples dominios</strong> (cambia según contexto)</li>
+<li><strong>Cambios de dominio</strong> = Transiciones de privilegio (ej: <code>sudo</code>)</li>
+</ul>
+<p><strong>Ejemplo real:</strong></p>
+<ul>
+<li>Usuario normal → Dominio D0 (leer documentos)</li>
+<li>Ejecuta <code>sudo</code> → Dominio D2 (administrar sistema)</li>
+<li>Ejecuta compilador → Dominio D1 (acceso a herramientas)</li>
+</ul>
 <footer>UNAULA - Ingeniería Informática - 2026-I</footer>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="7" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 8" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="7" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 8;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="22">
@@ -127,8 +177,18 @@ Un usuario puede tener múltiples dominios.</p>
 
 &quot;switch&quot; = puede cambiar a otro dominio (ej: sudo)
 </code></pre>
-<p><strong>Problema:</strong> Matriz muy grande y dispersa<br />
-<strong>Solución:</strong> No almacenarla completa</p>
+<p><strong>El problema de la matriz:</strong></p>
+<ul>
+<li>Sistemas reales: miles de usuarios × millones de objetos</li>
+<li>Matriz <strong>enorme y dispersa</strong> (la mayoría está vacía)</li>
+<li>Almacenarla completa es ineficiente</li>
+</ul>
+<p><strong>Soluciones prácticas:</strong></p>
+<ol>
+<li><strong>ACL (Access Control Lists)</strong> - Lista por cada objeto</li>
+<li><strong>Capabilities</strong> - Token que porta cada proceso</li>
+<li><strong>Roles</strong> - Agrupar permisos por función (RBAC)</li>
+</ol>
 <footer>UNAULA - Ingeniería Informática - 2026-I</footer>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="8" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 8" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="8" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 8;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="22">
@@ -147,6 +207,7 @@ Un usuario puede tener múltiples dominios.</p>
 Ventaja: Fácil ver quién accede a un archivo
 Desventaja: Difícil ver a qué accede un usuario
 </code></pre>
+<p><strong>Uso típico:</strong> Unix/Linux (chmod, Windows ACLs)</p>
 <h3 id="capabilities---por-dominioproceso">Capabilities - Por dominio/proceso</h3>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code>Proceso: usuario juan
 ┌────────────────────────────────┐
@@ -159,6 +220,10 @@ Desventaja: Difícil ver a qué accede un usuario
 Ventaja: Fácil ver permisos de un proceso
 Desventaja: Difícil auditar un archivo
 </code></pre>
+<p><strong>Uso típico:</strong> Distribuciones Linux (capsicum), KeyKOS (historioco)</p>
+<blockquote>
+<p><strong>Insight:</strong> ACL = &quot;¿Quién puede entrar aquí?&quot; vs Capabilities = &quot;¿A dónde puedo ir yo?&quot;</p>
+</blockquote>
 <footer>UNAULA - Ingeniería Informática - 2026-I</footer>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="9" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 8" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="9" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 8;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="22">
@@ -176,12 +241,39 @@ Desventaja: Difícil auditar un archivo
  └┴┴──────── user: rw- (lectura y escritura)
  │
  └────────── tipo: - (archivo regular)
-
-Notación octal: 644
-  6 (rw-) = 4+2+0 = 110 binario
-  4 (r--) = 4+0+0 = 100 binario
-  4 (r--) = 4+0+0 = 100 binario
 </code></pre>
+<p><strong>Notación octal: 644</strong></p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code>  6 (rw-) = 4+2+0 = 110 binario = leer + escribir
+  4 (r--) = 4+0+0 = 100 binario = solo leer
+  4 (r--) = 4+0+0 = 100 binario = solo leer
+</code></pre>
+<p><strong>Valores octales comunes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Código</th>
+<th>Significado</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>777</code></td>
+<td>Todos pueden todo (¡peligroso!)</td>
+</tr>
+<tr>
+<td><code>755</code></td>
+<td>Propietario: todo; otros: leer+ejecutar</td>
+</tr>
+<tr>
+<td><code>644</code></td>
+<td>Propietario: leer/escribir; otros: leer</td>
+</tr>
+<tr>
+<td><code>600</code></td>
+<td>Solo el propietario puede leer/escribir</td>
+</tr>
+</tbody>
+</table>
 <footer>UNAULA - Ingeniería Informática - 2026-I</footer>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="10" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 8" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="10" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 8;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="22">
@@ -193,18 +285,30 @@ Notación octal: 644
     ^
     El proceso ejecuta con permisos del PROPIETARIO (root)
     Permite a usuarios cambiar su password en /etc/shadow
-
-SGID (Set Group ID):
+</code></pre>
+<p><strong>¿Por qué SUID es necesario?</strong></p>
+<ul>
+<li><code>/etc/shadow</code> solo es escribible por root</li>
+<li>Los usuarios necesitan cambiar su contraseña</li>
+<li><code>passwd</code> tiene SUID → se ejecuta como root temporalmente</li>
+</ul>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code>SGID (Set Group ID):
 drwxrws--- 2 juan proyecto /proyecto/
        ^
        Nuevos archivos heredan el grupo del directorio
-
-Sticky Bit:
+</code></pre>
+<p><strong>Uso práctico:</strong> Directorios compartidos por equipos</p>
+<ul>
+<li>Todos los archivos creados pertenecen al grupo del proyecto</li>
+<li>Facilita la colaboración sin cambiar permisos manualmente</li>
+</ul>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code>Sticky Bit:
 drwxrwxrwt 10 root root /tmp/
           ^
           Solo el propietario puede borrar sus archivos
           (aunque /tmp sea escribible por todos)
 </code></pre>
+<p><strong>Problema que resuelve:</strong> Sin sticky bit, cualquiera podría borrar archivos de otros en <code>/tmp</code></p>
 <footer>UNAULA - Ingeniería Informática - 2026-I</footer>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="11" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 8" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="11" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 8;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="22">
@@ -222,18 +326,57 @@ drwxrwxrwt 10 root root /tmp/
 │      ├── DOMAIN\Users: Read                             │
 │      └── Everyone: (denegado)                           │
 └─────────────────────────────────────────────────────────┘
-
-Permisos granulares:
-- Read, Write, Execute
-- Read Attributes, Write Attributes
-- Delete, Change Permissions
-- Take Ownership
 </code></pre>
+<p><strong>Permisos granulares de Windows:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Permiso</th>
+<th>Descripción</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Read</strong></td>
+<td>Leer contenido</td>
+</tr>
+<tr>
+<td><strong>Write</strong></td>
+<td>Modificar contenido</td>
+</tr>
+<tr>
+<td><strong>Execute</strong></td>
+<td>Ejecutar programa</td>
+</tr>
+<tr>
+<td><strong>Delete</strong></td>
+<td>Borrar archivo</td>
+</tr>
+<tr>
+<td><strong>Read Permissions</strong></td>
+<td>Ver permisos</td>
+</tr>
+<tr>
+<td><strong>Change Permissions</strong></td>
+<td>Modificar permisos</td>
+</tr>
+<tr>
+<td><strong>Take Ownership</strong></td>
+<td>Convertirse en propietario</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Diferencia clave con Unix:</strong></p>
+<ul>
+<li>Unix: 3 categorías fijas (User, Group, Others)</li>
+<li>Windows: ACL arbitraria con tantos usuarios como se necesite</li>
+</ul>
 <footer>UNAULA - Ingeniería Informática - 2026-I</footer>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="12" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 8" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="12" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 8;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="22">
 <header>IF0099 - Sistemas Operativos I | Unidad 8</header>
 <h2 id="amenazas-de-seguridad">Amenazas de Seguridad</h2>
+<h3 id="clasificaci%C3%B3n-de-ataques">Clasificación de ataques</h3>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code>┌─────────────────────────────────────────────────────────────┐
 │                    TIPOS DE AMENAZAS                        │
 ├─────────────────────────────────────────────────────────────┤
@@ -252,40 +395,111 @@ Permisos granulares:
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
 </code></pre>
+<p><strong>Amenazas más comunes en SO:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Tipo</th>
+<th>Descripción</th>
+<th>Ejemplo</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Buffer Overflow</strong></td>
+<td>Sobrescribir memoria</td>
+<td>Código inyectado</td>
+</tr>
+<tr>
+<td><strong>Privilege Escalation</strong></td>
+<td>Obtener más permisos</td>
+<td>exploit de sudo</td>
+</tr>
+<tr>
+<td><strong>DoS/DDoS</strong></td>
+<td>Sobrecargar servicio</td>
+<td>Ataque a servidor web</td>
+</tr>
+<tr>
+<td><strong>Malware</strong></td>
+<td>Código malicioso</td>
+<td>Ransomware WannaCry</td>
+</tr>
+</tbody>
+</table>
 <footer>UNAULA - Ingeniería Informática - 2026-I</footer>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="13" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 8" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="13" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 8;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="22">
 <header>IF0099 - Sistemas Operativos I | Unidad 8</header>
 <h2 id="amenaza-buffer-overflow">Amenaza: Buffer Overflow</h2>
-<h3 id="c%C3%B3mo-funciona">Cómo funciona</h3>
+<h3 id="c%C3%B3mo-funciona-el-ataque">Cómo funciona el ataque</h3>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-c"><span class="hljs-type">void</span> <span class="hljs-title function_">funcion_vulnerable</span><span class="hljs-params">(<span class="hljs-type">char</span> *entrada)</span> {
     <span class="hljs-type">char</span> buffer[<span class="hljs-number">64</span>];
     <span class="hljs-built_in">strcpy</span>(buffer, entrada);  <span class="hljs-comment">// ¡No verifica tamaño!</span>
 }
-
-STACK:                           STACK DESPUÉS DEL ATAQUE:
-┌───────────────────┐            ┌───────────────────┐
-│ Dirección retorno │            │ Dirección maliciosa│ ← Sobrescrito
-├───────────────────┤            ├───────────────────┤
-│ Variables locales │            │   Código malicioso│
-├───────────────────┤            ├───────────────────┤
-│   buffer[<span class="hljs-number">64</span>]      │            │   AAAAAAAAAAAAA...│
-└───────────────────┘            └───────────────────┘
-
-Entrada: <span class="hljs-number">100</span>+ bytes incluyendo dirección a código malicioso
 </code></pre>
-<p><strong>Defensa:</strong> Stack canaries, ASLR, NX bit, funciones seguras</p>
+<p><strong>Antes del ataque:</strong></p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code>STACK:
+┌───────────────────┐
+│ Dirección retorno │ ← Return address (pila de ejecución)
+├───────────────────┤
+│ Variables locales │
+├───────────────────┤
+│   buffer[64]      │ ← 64 bytes reservados
+└───────────────────┘
+</code></pre>
+<p><strong>Después del ataque:</strong></p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code>STACK:
+┌─────────────────────────────────────┐
+│ Dirección del código malicioso │ ← ¡Sobrescrito!
+├─────────────────────────────────────┤
+│   NOP NOP NOP ...                   │
+├─────────────────────────────────────┤
+│   CÓDIGO MALICIOSO (shellcode)      │ ← Payload
+├─────────────────────────────────────┤
+│   AAAAAAAAAAAAA...                  │ ← Padding
+└─────────────────────────────────────┘
+</code></pre>
+<p><strong>Defensas modernas:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Mecanismo</th>
+<th>Qué hace</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Stack Canary</strong></td>
+<td>Valor secreto antes del return address</td>
+</tr>
+<tr>
+<td><strong>ASLR</strong></td>
+<td>Direcciones de memoria aleatorias</td>
+</tr>
+<tr>
+<td><strong>NX Bit</strong></td>
+<td>No ejecutar código en la pila</td>
+</tr>
+<tr>
+<td><strong>Fortify Source</strong></td>
+<td>Funciones que verifican tamaño</td>
+</tr>
+</tbody>
+</table>
 <footer>UNAULA - Ingeniería Informática - 2026-I</footer>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="14" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 8" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="14" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 8;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="22">
 <header>IF0099 - Sistemas Operativos I | Unidad 8</header>
 <h2 id="mecanismos-de-defensa">Mecanismos de Defensa</h2>
+<h3 id="estrategias-multicapa">Estrategias multicapa</h3>
 <table>
 <thead>
 <tr>
 <th>Mecanismo</th>
 <th>Descripción</th>
 <th>Protege contra</th>
+<th>Ejemplo</th>
 </tr>
 </thead>
 <tbody>
@@ -293,39 +507,58 @@ Entrada: <span class="hljs-number">100</span>+ bytes incluyendo dirección a có
 <td><strong>Autenticación</strong></td>
 <td>Verificar identidad</td>
 <td>Acceso no autorizado</td>
+<td>Contraseñas, 2FA</td>
 </tr>
 <tr>
 <td><strong>Cifrado</strong></td>
 <td>Datos ilegibles sin clave</td>
 <td>Intercepción</td>
+<td>TLS, AES</td>
 </tr>
 <tr>
 <td><strong>Firewall</strong></td>
 <td>Filtrar tráfico de red</td>
 <td>Ataques remotos</td>
+<td>iptables, pf</td>
 </tr>
 <tr>
 <td><strong>Antivirus</strong></td>
 <td>Detectar malware</td>
 <td>Virus, trojans</td>
+<td>ClamAV, Defender</td>
 </tr>
 <tr>
 <td><strong>ASLR</strong></td>
 <td>Direcciones aleatorias</td>
 <td>Buffer overflow</td>
+<td>Windows, Linux</td>
 </tr>
 <tr>
 <td><strong>Sandbox</strong></td>
 <td>Proceso aislado</td>
 <td>Malware</td>
+<td>Contenedores, jails</td>
 </tr>
 <tr>
 <td><strong>Auditoría</strong></td>
 <td>Registro de acciones</td>
 <td>Detectar intrusos</td>
+<td>auth.log</td>
 </tr>
 </tbody>
 </table>
+<p><strong>Defensa en profundidad:</strong></p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code>┌─────────────────────────────────────────────────────────────┐
+│  CAPA 1: Perímetro         Firewall, IDS/IPS               │
+│  CAPA 2: Red               VLAN, Segmentación               │
+│  CAPA 3: Host              Antivirus, Hardening             │
+│  CAPA 4: Aplicación        Validación inputs, Code review   │
+│  CAPA 5: Datos             Cifrado, Backups                 │
+└─────────────────────────────────────────────────────────────┘
+</code></pre>
+<blockquote>
+<p><strong>Principio:</strong> Si una capa falla, las siguientes siguen protegiendo.</p>
+</blockquote>
 <footer>UNAULA - Ingeniería Informática - 2026-I</footer>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="15" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 8" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="15" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 8;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="22">
@@ -350,170 +583,412 @@ Entrada: <span class="hljs-number">100</span>+ bytes incluyendo dirección a có
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
 </code></pre>
+<p><strong>Ejemplos de MFA (Multi-Factor Authentication):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Factores</th>
+<th>Seguridad</th>
+<th>Ejemplo</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1 factor</td>
+<td>Baja</td>
+<td>Solo contraseña</td>
+</tr>
+<tr>
+<td>2 factores</td>
+<td>Media</td>
+<td>Contraseña + SMS</td>
+</tr>
+<tr>
+<td>2+ factores</td>
+<td>Alta</td>
+<td>Contraseña + YubiKey + Huella</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Consideraciones:</strong></p>
+<ul>
+<li><strong>Algo que sabes:</strong> Puede ser robado o adivinado</li>
+<li><strong>Algo que tienes:</strong> Puede ser robado físicamente</li>
+<li><strong>Algo que eres:</strong> Difícil de falsificar pero requiere hardware especial</li>
+</ul>
 <footer>UNAULA - Ingeniería Informática - 2026-I</footer>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="16" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 8" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="16" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 8;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="22">
 <header>IF0099 - Sistemas Operativos I | Unidad 8</header>
 <h2 id="hash-de-contrase%C3%B1as">Hash de Contraseñas</h2>
 <h3 id="nunca-almacenar-contrase%C3%B1as-en-texto-plano">Nunca almacenar contraseñas en texto plano</h3>
-<pre is="marp-pre" data-auto-scaling="downscale-only"><code>INCORRECTO:                    CORRECTO:
-┌─────────────────────┐        ┌─────────────────────────────────┐
-│ usuario │ password  │        │ usuario │ salt  │ hash          │
-├─────────┼───────────┤        ├─────────┼───────┼───────────────┤
-│ juan    │ 12345     │        │ juan    │ x7Kg  │ a3f2d1...     │
-│ maria   │ password  │        │ maria   │ mN8p  │ 7b2c4e...     │
-└─────────┴───────────┘        └─────────┴───────┴───────────────┘
-
-hash = SHA256(salt + password)
-
-Si BD es robada:              Si BD es robada:
-¡Todas las contraseñas        Atacante debe romper
-expuestas!                    cada hash individualmente
+<p><strong>INCORRECTO (texto plano):</strong></p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code>┌─────────────────────┐
+│ usuario │ password  │
+├─────────┼───────────┤
+│ juan    │ 12345     │  ← ¡Visible si la BD es robada!
+│ maria   │ password  │
+└─────────┴───────────┘
 </code></pre>
-<p><strong>Algoritmos recomendados:</strong> bcrypt, scrypt, Argon2</p>
+<p><strong>CORRECTO (hash con salt):</strong></p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code>┌─────────────────────────────────┐
+│ usuario │ salt  │ hash          │
+├─────────┼───────┼───────────────┤
+│ juan    │ x7Kg  │ a3f2d1...     │  ← Irreversible
+│ maria   │ mN8p  │ 7b2c4e...     │
+└─────────┴───────┴───────────────┘
+</code></pre>
+<p><strong>Si la base de datos es robada:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Enfoque</th>
+<th>Consecuencia</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Texto plano</td>
+<td>¡Todas las contraseñas expuestas!</td>
+</tr>
+<tr>
+<td>Hash + salt</td>
+<td>Atacante debe crackear cada hash individualmente</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Algoritmos recomendados (2026):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Algoritmo</th>
+<th>Ventajas</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>bcrypt</strong></td>
+<td>Probado, factor de trabajo ajustable</td>
+</tr>
+<tr>
+<td><strong>scrypt</strong></td>
+<td>Resistente a hardware especializado (ASIC)</td>
+</tr>
+<tr>
+<td><strong>Argon2</strong></td>
+<td>Ganador de Password Hashing Competition 2015</td>
+</tr>
+</tbody>
+</table>
 <footer>UNAULA - Ingeniería Informática - 2026-I</footer>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="17" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 8" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="17" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 8;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="22">
 <header>IF0099 - Sistemas Operativos I | Unidad 8</header>
 <h2 id="linux-seguridad-de-contrase%C3%B1as">Linux: Seguridad de Contraseñas</h2>
+<h3 id="separaci%C3%B3n-de-archivos-etcpasswd-y-etcshadow">Separación de archivos /etc/passwd y /etc/shadow</h3>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-bash"><span class="hljs-comment"># /etc/passwd (legible por todos)</span>
 juan:x:1000:1000:Juan Garcia:/home/juan:/bin/bash
      ^
      <span class="hljs-string">&quot;x&quot;</span> indica que el <span class="hljs-built_in">hash</span> está en /etc/shadow
-
-<span class="hljs-comment"># /etc/shadow (solo root)</span>
+</code></pre>
+<p><strong>¿Por qué /etc/passwd es legible por todos?</strong></p>
+<ul>
+<li>Contiene información necesaria para el funcionamiento del sistema</li>
+<li>UID, GID, home directory, shell</li>
+<li>Programes necesitan leer estos datos (ls, whoami, etc.)</li>
+</ul>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-bash"><span class="hljs-comment"># /etc/shadow (solo root)</span>
 juan:$6<span class="hljs-variable">$rounds</span>=5000$salt<span class="hljs-variable">$hash</span>...:19000:0:99999:7:::
      │  │              │
-     │  │              └── Hash de contraseña
-     │  └──────────────── Sal (salt)
-     └─────────────────── $6$ = SHA-512
-
-<span class="hljs-comment"># Verificar permisos</span>
-$ <span class="hljs-built_in">ls</span> -l /etc/shadow
--rw-r----- 1 root shadow 1234 Feb 15 10:30 /etc/shadow
+     │  │              └── Hash de contraseña (SHA-512)
+     │  └──────────────── Sal aleatoria (salt)
+     └─────────────────── $6$ = SHA-512, $5$ = SHA-256, $1$ = MD5
 </code></pre>
+<p><strong>Verificación de permisos:</strong></p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-bash">$ <span class="hljs-built_in">ls</span> -l /etc/shadow
+-rw-r----- 1 root shadow 1234 Feb 15 10:30 /etc/shadow
+      │    │    │
+      │    │    └── Solo root puede leer/escribir
+      │    └──────── Grupo shadow puede leer
+      └────────────── Propietario root
+</code></pre>
+<blockquote>
+<p><strong>Insight:</strong> La separación permite que programas lean info del usuario sin exponer las contraseñas.</p>
+</blockquote>
 <footer>UNAULA - Ingeniería Informática - 2026-I</footer>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="18" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 8" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="18" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 8;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="22">
 <header>IF0099 - Sistemas Operativos I | Unidad 8</header>
 <h2 id="actividad-pr%C3%A1ctica-10-min">Actividad Práctica (10 min)</h2>
-<h3 id="en-parejas">En parejas:</h3>
-<ol>
-<li>En Linux (o WSL), ejecutar:</li>
-</ol>
-<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-bash"><span class="hljs-comment"># Ver permisos de passwd y shadow</span>
+<h3 id="explorando-permisos-en-linux">Explorando permisos en Linux</h3>
+<p><strong>En parejas, realizar:</strong></p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-bash"><span class="hljs-comment"># 1. Ver permisos de passwd y shadow</span>
 <span class="hljs-built_in">ls</span> -l /etc/passwd /etc/shadow
 
-<span class="hljs-comment"># Ver tu usuario y grupos</span>
+<span class="hljs-comment"># 2. Ver tu usuario y grupos</span>
 <span class="hljs-built_in">id</span>
 
-<span class="hljs-comment"># Crear archivo y cambiar permisos</span>
+<span class="hljs-comment"># 3. Crear archivo y cambiar permisos</span>
 <span class="hljs-built_in">touch</span> prueba.txt
 <span class="hljs-built_in">chmod</span> 750 prueba.txt
 <span class="hljs-built_in">ls</span> -l prueba.txt
-
-<span class="hljs-comment"># Interpretar el permiso 750</span>
-<span class="hljs-comment"># ¿Qué puede hacer el propietario?</span>
-<span class="hljs-comment"># ¿Y el grupo? ¿Y otros?</span>
 </code></pre>
-<ol start="2">
-<li><strong>Discutir:</strong> ¿Por qué <code>/etc/passwd</code> es legible pero <code>/etc/shadow</code> no?</li>
+<p><strong>Interpretar el permiso 750:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Categoría</th>
+<th>Permisos</th>
+<th>Significado</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Propietario</strong></td>
+<td>rwx (7)</td>
+<td>Leer, escribir, ejecutar</td>
+</tr>
+<tr>
+<td><strong>Grupo</strong></td>
+<td>r-- (5)</td>
+<td>Solo leer</td>
+</tr>
+<tr>
+<td><strong>Otros</strong></td>
+<td>--- (0)</td>
+<td>Sin permisos</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Preguntas de discusión:</strong></p>
+<ol>
+<li>¿Por qué <code>/etc/passwd</code> es legible pero <code>/etc/shadow</code> no?</li>
+<li>¿Qué pasaría si <code>/etc/shadow</code> tuviera permisos 644?</li>
+<li>¿Cómo se vería el permiso 755 en formato rwx?</li>
 </ol>
 <footer>UNAULA - Ingeniería Informática - 2026-I</footer>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="19" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 8" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="19" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 8;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="22">
 <header>IF0099 - Sistemas Operativos I | Unidad 8</header>
 <h2 id="resumen-de-la-clase">Resumen de la Clase</h2>
+<h3 id="conceptos-fundamentales-de-protecci%C3%B3n-y-seguridad">Conceptos fundamentales de protección y seguridad</h3>
 <table>
 <thead>
 <tr>
 <th>Concepto</th>
 <th>Descripción</th>
+<th>Ejemplo práctico</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><strong>Protección</strong></td>
-<td>Mecanismos internos del SO</td>
+<td>Mecanismos internos del SO para controlar acceso</td>
+<td><code>chmod 644 archivo.txt</code></td>
 </tr>
 <tr>
 <td><strong>Seguridad</strong></td>
-<td>Defensa contra amenazas</td>
+<td>Defensa contra amenazas internas y externas</td>
+<td>Firewall, antivirus</td>
 </tr>
 <tr>
 <td><strong>Dominio</strong></td>
 <td>Conjunto de derechos de acceso</td>
+<td>Usuario, root, desarrollador</td>
 </tr>
 <tr>
 <td><strong>ACL</strong></td>
 <td>Lista de permisos por objeto</td>
+<td>Windows ACLs</td>
 </tr>
 <tr>
 <td><strong>UGO</strong></td>
 <td>Modelo User-Group-Others de Unix</td>
+<td><code>rwxr-xr-x</code></td>
 </tr>
 <tr>
 <td><strong>SUID</strong></td>
 <td>Ejecutar con permisos del propietario</td>
+<td><code>/usr/bin/passwd</code></td>
 </tr>
 <tr>
 <td><strong>Hash</strong></td>
 <td>Nunca almacenar contraseñas en texto plano</td>
+<td>bcrypt, Argon2</td>
 </tr>
 </tbody>
 </table>
+<p><strong>Puntos clave para recordar:</strong></p>
+<ol>
+<li><strong>Protección ≠ Seguridad:</strong> La protección es interna; la seguridad incluye defensa externa</li>
+<li><strong>Principio de mínimo privilegio:</strong> Dar solo los permisos necesarios</li>
+<li><strong>Defensa en profundidad:</strong> Múltiples capas de seguridad</li>
+<li><strong>Autenticación fuerte:</strong> MFA + contraseñas hasheadas con salt</li>
+</ol>
 <footer>UNAULA - Ingeniería Informática - 2026-I</footer>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="20" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 8" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="20" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 8;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="22">
 <header>IF0099 - Sistemas Operativos I | Unidad 8</header>
 <h2 id="evaluaci%C3%B3n-final">Evaluación Final</h2>
 <h3 id="examen-te%C3%B3rico-pr%C3%A1ctico---semana-17-18">Examen Teórico-Práctico - Semana 17-18</h3>
-<p><strong>Contenido:</strong> Unidades 5-8</p>
-<ul>
-<li>Paginación y memoria virtual</li>
-<li>Sistemas de archivos</li>
-<li>Gestión de E/S</li>
-<li>Protección y seguridad</li>
-</ul>
-<p><strong>Formato:</strong></p>
-<ul>
-<li>40% Preguntas conceptuales</li>
-<li>40% Ejercicios prácticos</li>
-<li>20% Casos de análisis</li>
-</ul>
+<p><strong>Contenido: Unidades 5-8</strong></p>
+<table>
+<thead>
+<tr>
+<th>Unidad</th>
+<th>Temas clave</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>5</strong></td>
+<td>Paginación, memoria virtual, marcos de página</td>
+</tr>
+<tr>
+<td><strong>6</strong></td>
+<td>Sistemas de archivos (FAT32, NTFS, ext4)</td>
+</tr>
+<tr>
+<td><strong>7</strong></td>
+<td>E/S (polling, interrupciones, DMA)</td>
+</tr>
+<tr>
+<td><strong>8</strong></td>
+<td>Protección, seguridad, autenticación</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Formato del examen:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Componente</th>
+<th>Porcentaje</th>
+<th>Tipo de preguntas</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Conceptual</td>
+<td>40%</td>
+<td>Definiciones, comparaciones</td>
+</tr>
+<tr>
+<td>Práctico</td>
+<td>40%</td>
+<td>Ejercicios de permisos, cálculos</td>
+</tr>
+<tr>
+<td>Análisis</td>
+<td>20%</td>
+<td>Casos de estudio, escenarios</td>
+</tr>
+</tbody>
+</table>
 <footer>UNAULA - Ingeniería Informática - 2026-I</footer>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="21" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 8" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="21" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 8;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="22">
 <header>IF0099 - Sistemas Operativos I | Unidad 8</header>
 <h2 id="cierre-del-curso">Cierre del Curso</h2>
-<h3 id="%C2%BFqu%C3%A9-aprendimos">¿Qué aprendimos?</h3>
+<h3 id="recorrido-completo-del-semestre">Recorrido completo del semestre</h3>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code>Unidad 1: ¿Qué es un SO?
+    ├─ Estructura y componentes
+    └─ Evolución histórica
     ↓
 Unidad 2-3: Procesos y Planificación
+    ├─ Estados del proceso
+    ├─ PCB, context switch
+    └─ Algoritmos: FCFS, SJF, RR, Priority
     ↓
-Unidad 4: Sincronización (semáforos, deadlock)
+Unidad 4: Sincronización
+    ├─ Sección crítica
+    ├─ Semáforos y mutex
+    └─ Deadlocks: prevención y detección
     ↓
-Unidad 5: Memoria (paginación, virtual)
+Unidad 5: Memoria
+    ├─ Particiónamiento
+    ├─ Paginación y marcos de página
+    └─ Memoria virtual y swapping
     ↓
 Unidad 6: Sistemas de archivos
+    ├─ Estructura (FAT32, NTFS, ext4)
+    ├─ Inodos y bloques de datos
+    └─ Montaje y desmontaje
     ↓
-Unidad 7: E/S (polling, interrupciones, DMA)
+Unidad 7: E/S
+    ├─ Polling vs interrupciones
+    ├─ DMA (Direct Memory Access)
+    └─ Drivers de dispositivo
     ↓
 Unidad 8: Protección y Seguridad
+    ├─ Dominios de protección
+    ├─ ACL vs Capabilities
+    ├─ Permisos (Unix UGO, Windows ACL)
+    └─ Autenticación y defensas
 </code></pre>
-<p><strong>¡El SO es el corazón de todo sistema computacional!</strong></p>
+<blockquote>
+<p><strong>El SO es el corazón de todo sistema computacional!</strong></p>
+</blockquote>
 <footer>UNAULA - Ingeniería Informática - 2026-I</footer>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="22" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 8" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="22" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 8;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="22">
 <header>IF0099 - Sistemas Operativos I | Unidad 8</header>
 <h2 id="recursos-para-seguir-aprendiendo">Recursos para Seguir Aprendiendo</h2>
-<ul>
-<li><strong>Libro:</strong> Operating System Concepts (Silberschatz)</li>
-<li><strong>Práctica:</strong> Escribir un kernel mínimo (xv6, OSDev)</li>
-<li><strong>Certificaciones:</strong> LPIC-1, CompTIA Linux+</li>
-<li><strong>Cursos avanzados:</strong> Sistemas distribuidos, Virtualización</li>
-</ul>
+<h3 id="continuar-el-viaje-en-sistemas-operativos">Continuar el viaje en sistemas operativos</h3>
+<table>
+<thead>
+<tr>
+<th>Tipo</th>
+<th>Recurso</th>
+<th>Descripción</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Libro</strong></td>
+<td>Operating System Concepts (Silberschatz)</td>
+<td>El &quot;dinosaurio azul&quot; - referencia clásica</td>
+</tr>
+<tr>
+<td><strong>Libro</strong></td>
+<td>Modern Operating Systems (Tanenbaum)</td>
+<td>Enfoque práctico y actualizado</td>
+</tr>
+<tr>
+<td><strong>Práctica</strong></td>
+<td>xv6</td>
+<td>Unix V6 reescrito en C (MIT)</td>
+</tr>
+<tr>
+<td><strong>Práctica</strong></td>
+<td>OSDev wiki</td>
+<td>Comunidad de desarrollo de SO</td>
+</tr>
+<tr>
+<td><strong>Certificación</strong></td>
+<td>LPIC-1</td>
+<td>Linux Professional Institute</td>
+</tr>
+<tr>
+<td><strong>Certificación</strong></td>
+<td>CompTIA Linux+</td>
+<td>Certificación de Linux</td>
+</tr>
+<tr>
+<td><strong>Cursos</strong></td>
+<td>Sistemas distribuidos</td>
+<td>Próximo nivel académico</td>
+</tr>
+<tr>
+<td><strong>Cursos</strong></td>
+<td>Virtualización y contenedores</td>
+<td>Docker, KVM, Xen</td>
+</tr>
+</tbody>
+</table>
 <h3 id="%C2%A1gracias-por-su-participaci%C3%B3n">¡Gracias por su participación!</h3>
+<p><strong>Sistemas Operativos I - 2026-I</strong><br />
+UNAULA - Ingeniería Informática</p>
 <footer>UNAULA - Ingeniería Informática - 2026-I</footer>
 </section>
 <script>!function(){"use strict";const t={h1:{proto:()=>HTMLHeadingElement,attrs:{role:"heading","aria-level":"1"},style:"display: block; font-size: 2em; margin-block-start: 0.67em; margin-block-end: 0.67em; margin-inline-start: 0px; margin-inline-end: 0px; font-weight: bold;"},h2:{proto:()=>HTMLHeadingElement,attrs:{role:"heading","aria-level":"2"},style:"display: block; font-size: 1.5em; margin-block-start: 0.83em; margin-block-end: 0.83em; margin-inline-start: 0px; margin-inline-end: 0px; font-weight: bold;"},h3:{proto:()=>HTMLHeadingElement,attrs:{role:"heading","aria-level":"3"},style:"display: block; font-size: 1.17em; margin-block-start: 1em; margin-block-end: 1em; margin-inline-start: 0px; margin-inline-end: 0px; font-weight: bold;"},h4:{proto:()=>HTMLHeadingElement,attrs:{role:"heading","aria-level":"4"},style:"display: block; margin-block-start: 1.33em; margin-block-end: 1.33em; margin-inline-start: 0px; margin-inline-end: 0px; font-weight: bold;"},h5:{proto:()=>HTMLHeadingElement,attrs:{role:"heading","aria-level":"5"},style:"display: block; font-size: 0.83em; margin-block-start: 1.67em; margin-block-end: 1.67em; margin-inline-start: 0px; margin-inline-end: 0px; font-weight: bold;"},h6:{proto:()=>HTMLHeadingElement,attrs:{role:"heading","aria-level":"6"},style:"display: block; font-size: 0.67em; margin-block-start: 2.33em; margin-block-end: 2.33em; margin-inline-start: 0px; margin-inline-end: 0px; font-weight: bold;"},span:{proto:()=>HTMLSpanElement},pre:{proto:()=>HTMLElement,style:"display: block; font-family: monospace; white-space: pre; margin: 1em 0; --marp-auto-scaling-white-space: pre;"}},e="data-marp-auto-scaling-wrapper",i="data-marp-auto-scaling-svg",n="data-marp-auto-scaling-container";class s extends HTMLElement{container;containerSize;containerObserver;svg;svgComputedStyle;svgPreserveAspectRatio="xMinYMid meet";wrapper;wrapperSize;wrapperObserver;constructor(){super();const t=t=>([e])=>{const{width:i,height:n}=e.contentRect;this[t]={width:i,height:n},this.updateSVGRect()};this.attachShadow({mode:"open"}),this.containerObserver=new ResizeObserver(t("containerSize")),this.wrapperObserver=new ResizeObserver((...e)=>{t("wrapperSize")(...e),this.flushSvgDisplay()})}static get observedAttributes(){return["data-downscale-only"]}connectedCallback(){this.shadowRoot.innerHTML=`\n<style>\n  svg[${i}] { display: block; width: 100%; height: auto; vertical-align: top; }\n  span[${n}] { display: table; white-space: var(--marp-auto-scaling-white-space, nowrap); width: max-content; }\n</style>\n<div ${e}>\n  <svg part="svg" ${i}>\n    <foreignObject><span ${n}><slot></slot></span></foreignObject>\n  </svg>\n</div>\n    `.split(/\n\s*/).join(""),this.wrapper=this.shadowRoot.querySelector(`div[${e}]`)??void 0;const t=this.svg;this.svg=this.wrapper?.querySelector(`svg[${i}]`)??void 0,this.svg!==t&&(this.svgComputedStyle=this.svg?window.getComputedStyle(this.svg):void 0),this.container=this.svg?.querySelector(`span[${n}]`)??void 0,this.observe()}disconnectedCallback(){this.svg=void 0,this.svgComputedStyle=void 0,this.wrapper=void 0,this.container=void 0,this.observe()}attributeChangedCallback(){this.observe()}flushSvgDisplay(){const{svg:t}=this;t&&(t.style.display="inline",requestAnimationFrame(()=>{t.style.display=""}))}observe(){this.containerObserver.disconnect(),this.wrapperObserver.disconnect(),this.wrapper&&this.wrapperObserver.observe(this.wrapper),this.container&&this.containerObserver.observe(this.container),this.svgComputedStyle&&this.observeSVGStyle(this.svgComputedStyle)}observeSVGStyle(t){const e=()=>{const i=(()=>{const e=t.getPropertyValue("--preserve-aspect-ratio");if(e)return e.trim();return`x${(({textAlign:t,direction:e})=>{if(t.endsWith("left"))return"Min";if(t.endsWith("right"))return"Max";if("start"===t||"end"===t){let i="rtl"===e;return"end"===t&&(i=!i),i?"Max":"Min"}return"Mid"})(t)}YMid meet`})();i!==this.svgPreserveAspectRatio&&(this.svgPreserveAspectRatio=i,this.updateSVGRect()),t===this.svgComputedStyle&&requestAnimationFrame(e)};e()}updateSVGRect(){let t=Math.ceil(this.containerSize?.width??0);const e=Math.ceil(this.containerSize?.height??0);void 0!==this.dataset.downscaleOnly&&(t=Math.max(t,this.wrapperSize?.width??0));const i=this.svg?.querySelector(":scope > foreignObject");if(i?.setAttribute("width",`${t}`),i?.setAttribute("height",`${e}`),this.svg&&(this.svg.setAttribute("viewBox",`0 0 ${t} ${e}`),this.svg.setAttribute("preserveAspectRatio",this.svgPreserveAspectRatio),this.svg.style.height=t<=0||e<=0?"0":""),this.container){const t=this.svgPreserveAspectRatio.toLowerCase();this.container.style.marginLeft=t.startsWith("xmid")||t.startsWith("xmax")?"auto":"0",this.container.style.marginRight=t.startsWith("xmi")?"auto":"0"}}}const r=(t,{attrs:e={},style:i})=>class extends t{constructor(...t){super(...t);for(const[t,i]of Object.entries(e))this.hasAttribute(t)||this.setAttribute(t,i);this._shadow()}static get observedAttributes(){return["data-auto-scaling"]}connectedCallback(){this._update()}attributeChangedCallback(){this._update()}_shadow(){if(!this.shadowRoot)try{this.attachShadow({mode:"open"})}catch(t){if(!(t instanceof Error&&"NotSupportedError"===t.name))throw t}return this.shadowRoot}_update(){const t=this._shadow();if(t){const e=i?`<style>:host { ${i} }</style>`:"";let n="<slot></slot>";const{autoScaling:s}=this.dataset;if(void 0!==s){n=`<marp-auto-scaling exportparts="svg:auto-scaling" ${"downscale-only"===s?"data-downscale-only":""}>${n}</marp-auto-scaling>`}t.innerHTML=e+n}}};let o;const a=Symbol(),l=()=>o??(o=!!document.createElement("div",{is:"marp-auto-scaling"}).outerHTML.startsWith("<div is"),o);let c;const d="marpitSVGPolyfill:setZoomFactor,",h=Symbol(),g=Symbol();const p=()=>{const t="Apple Computer, Inc."===navigator.vendor,e=t?[v]:[],i={then:e=>(t?(async()=>{if(void 0===c){const t=document.createElement("canvas");t.width=10,t.height=10;const e=t.getContext("2d"),i=new Image(10,10),n=new Promise(t=>{i.addEventListener("load",()=>t())});i.crossOrigin="anonymous",i.src="data:image/svg+xml;charset=utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2210%22%20height%3D%2210%22%20viewBox%3D%220%200%201%201%22%3E%3CforeignObject%20width%3D%221%22%20height%3D%221%22%20requiredExtensions%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxhtml%22%3E%3Cdiv%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxhtml%22%20style%3D%22width%3A%201px%3B%20height%3A%201px%3B%20background%3A%20red%3B%20position%3A%20relative%22%3E%3C%2Fdiv%3E%3C%2FforeignObject%3E%3C%2Fsvg%3E",await n,e.drawImage(i,0,0),c=e.getImageData(5,5,1,1).data[3]<128}return c})().then(t=>{null==e||e(t?[v]:[])}):null==e||e([]),i)};return Object.assign(e,i)};let m,u;function v(t){const e="object"==typeof t&&t.target||document,i="object"==typeof t?t.zoom:t;window[g]||(Object.defineProperty(window,g,{configurable:!0,value:!0}),document.body.style.zoom=1.0001,document.body.offsetHeight,document.body.style.zoom=1,window.addEventListener("message",({data:t,origin:e})=>{if(e===window.origin)try{if(t&&"string"==typeof t&&t.startsWith(d)){const[,e]=t.split(","),i=Number.parseFloat(e);Number.isNaN(i)||(u=i)}}catch(t){console.error(t)}}));let n=!1;Array.from(e.querySelectorAll("svg[data-marpit-svg]"),t=>{var e,s,r,o;t.style.transform||(t.style.transform="translateZ(0)");const a=i||u||t.currentScale||1;m!==a&&(m=a,n=a);const l=t.getBoundingClientRect(),{length:c}=t.children;for(let i=0;i<c;i+=1){const n=t.children[i];if(n.getScreenCTM){const t=n.getScreenCTM();if(t){const i=null!==(s=null===(e=n.x)||void 0===e?void 0:e.baseVal.value)&&void 0!==s?s:0,c=null!==(o=null===(r=n.y)||void 0===r?void 0:r.baseVal.value)&&void 0!==o?o:0,d=n.children.length;for(let e=0;e<d;e+=1){const s=n.children[e];if("SECTION"===s.tagName){const{style:e}=s;e.transformOrigin||(e.transformOrigin=`${-i}px ${-c}px`),e.transform=`scale(${a}) matrix(${t.a}, ${t.b}, ${t.c}, ${t.d}, ${t.e-l.left}, ${t.f-l.top}) translateZ(0.0001px)`;break}}}}}}),!1!==n&&Array.from(e.querySelectorAll("iframe"),({contentWindow:t})=>{null==t||t.postMessage(`${d}${n}`,"null"===window.origin?"*":window.origin)})}function w({once:t=!1,target:e=document}={}){const i=function(t=document){if(t[h])return t[h];let e=!0;const i=()=>{e=!1,delete t[h]};Object.defineProperty(t,h,{configurable:!0,value:i});let n=[],s=!1;(async()=>{try{n=await p()}finally{s=!0}})();const r=()=>{for(const e of n)e({target:t});s&&0===n.length||e&&window.requestAnimationFrame(r)};return r(),i}(e);return t?(i(),()=>{}):i}m=1,u=void 0;const b=Symbol(),y=(e=document)=>{if("undefined"==typeof window)throw new Error("Marp Core's browser script is valid only in browser context.");if(((e=document)=>{const i=window[a];i||customElements.define("marp-auto-scaling",s);for(const n of Object.keys(t)){const s=`marp-${n}`,o=t[n].proto();l()&&o!==HTMLElement?i||customElements.define(s,r(o,{style:t[n].style}),{extends:n}):(i||customElements.define(s,r(HTMLElement,t[n])),e.querySelectorAll(`${n}[is="${s}"]`).forEach(t=>{t.outerHTML=t.outerHTML.replace(new RegExp(`^<${n}`,"i"),`<${s}`).replace(new RegExp(`</${n}>$`,"i"),`</${s}>`)}))}window[a]=!0})(e),e[b])return e[b];const i=w({target:e}),n=()=>{i(),delete e[b]},o=Object.assign(n,{cleanup:n,update:()=>y(e)});return Object.defineProperty(e,b,{configurable:!0,value:o}),o},f=document.currentScript;y(f?f.getRootNode():document)}();
