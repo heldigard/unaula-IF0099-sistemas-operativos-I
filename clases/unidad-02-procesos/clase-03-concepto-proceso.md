@@ -174,6 +174,12 @@ Al finalizar esta clase, el estudiante será capaz de:
 
 ### Definiciones
 
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+
+<div>
+
+#### 📝 Conceptos clave
+
 | Concepto | Descripción |
 | ---------- | ------------- |
 | **Programa** | Código ejecutable almacenado en disco (estático) |
@@ -188,15 +194,29 @@ Al finalizar esta clase, el estudiante será capaz de:
 └─────────────┘          └─────────────┘
 ```
 
-### Analogía:
-- **Programa** = Receta de cocina (instrucciones)
-- **Proceso** = Acto de cocinar (ejecución)
+#### 🍳 Analogía culinaria
 
----
+- **Programa** = Receta de cocina (instrucciones en papel)
+- **Proceso** = Acto de cocinar (ejecución de la receta)
 
-## Un programa, múltiples procesos
+> La receta no cambia; la cocina sí.
+> El programa es inerte; el proceso está vivo.
 
-### Ejemplo: Chrome
+</div>
+
+<div>
+
+#### 🔑 Diferencias clave
+
+| Aspecto | Programa | Proceso |
+|---------|----------|---------|
+| **Ubicación** | Disco | Memoria RAM |
+| **Estado** | Estático | Dinámico |
+| **Recursos** | Ninguno | PCB, memoria, archivos |
+| **Vida** | Permanente | Temporal |
+| **Cantidad** | 1 archivo | N instancias |
+
+#### 💡 Un programa, múltiples procesos
 
 ```
 ┌───────────────────────────────────────────────┐
@@ -212,7 +232,11 @@ Al finalizar esta clase, el estudiante será capaz de:
 └───────────────────────────────────────────────┘
 ```
 
-Cada pestaña de Chrome es un **proceso separado** con su propio PID.
+Cada pestaña de Chrome es un **proceso separado**.
+
+</div>
+
+</div>
 
 ---
 
@@ -238,24 +262,95 @@ El espacio de direcciones de un proceso se divide en segmentos con propósitos e
 
 ## Segmentos de Memoria
 
+### Vista detallada del espacio de direcciones
+
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+
+<div>
+
+#### 🗂️ Los 5 segmentos
+
 | Segmento | Contenido | Tamaño |
 | ---------- | ----------- | -------- |
 | **TEXT** | Código ejecutable | Fijo |
 | **DATA** | Variables globales inicializadas | Fijo |
 | **BSS** | Variables globales no inicializadas | Fijo |
-| **HEAP** | Memoria dinámica (malloc/new) | Variable |
-| **STACK** | Variables locales, parámetros, retornos | Variable |
+| **HEAP** | Memoria dinámica (malloc/new) | Variable ↑ |
+| **STACK** | Variables locales, parámetros, retornos | Variable ↓ |
+
+#### 📈 Dirección de crecimiento
+
+```
+Direcciones ALTAS
+        ↓
+┌─────────────────────────┐
+│       STACK             │ ← Crece hacia ABAJO
+│      (locales)          │    (direcciones ↓)
+├─────────────────────────┤
+│         ↑               │
+│         │               │
+│    Espacio libre        │
+│         │               │
+│         ↓               │
+├─────────────────────────┤
+│       HEAP             │ ← Crece hacia ARRIBA
+│    (dinámica)           │    (direcciones ↑)
+├─────────────────────────┤
+│       BSS              │
+│    (no inicializadas)   │
+├─────────────────────────┤
+│      DATA             │
+│   (inicializadas)      │
+├─────────────────────────┤
+│      TEXT             │
+│    (código)            │
+└─────────────────────────┘
+        ↓
+Direcciones BAJAS
+```
+
+</div>
+
+<div>
+
+#### 💻 Ejemplo en código
 
 ```c
-int global = 5;         // DATA
-int sin_inicializar;    // BSS
+int global = 5;         // DATA (inicializada)
+int sin_inicializar;    // BSS (no inicializada)
 
 int main() {
-    int local = 10;     // STACK
-    int *ptr = malloc(100); // HEAP
+    int local = 10;     // STACK (variable local)
+    int *ptr = malloc(100); // puntero en STACK
+                          // memoria en HEAP
+
+    *ptr = 20;          // Escribir en HEAP
+    free(ptr);          // Liberar HEAP
+
     return 0;
 }
 ```
+
+#### 📊 Resumen de acceso
+
+| Segmento | Acceso | Vida útil |
+|----------|--------|-----------|
+| **TEXT** | Solo lectura | Toda la vida del proceso |
+| **DATA** | Lectura/Escritura | Toda la vida del proceso |
+| **BSS** | Lectura/Escritura | Toda la vida del proceso |
+| **HEAP** | Lectura/Escritura | Hasta `free()` |
+| **STACK** | Lectura/Escritura | Hasta retornar de función |
+
+#### ⚠️ Stack Overflow
+
+Si el stack crece demasiado → **Stack Overflow**
+- Ocurre con recursión infinita
+- Arrays locales muy grandes
+- Demasiadas funciones anidadas
+
+</div>
+
+</div>
 
 ---
 

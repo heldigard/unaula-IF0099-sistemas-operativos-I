@@ -146,6 +146,12 @@ Al finalizar esta clase, el estudiante será capaz de:
 
 ### El problema en el mundo real
 
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+
+<div>
+
+#### 🏦 La analogía del banco
+
 Imagina una ventanilla de banco con una sola persona atendiendo:
 - 👥 Múltiples clientes esperando (procesos)
 - 💼 Cada uno con diferentes necesidades (tiempo de ejecución)
@@ -156,14 +162,8 @@ Imagina una ventanilla de banco con una sola persona atendiendo:
 
 Esto es exactamente lo que hace el scheduler del SO con la CPU.
 
+#### 📊 Representación ASCII
 
-### El problema
-
-![Algoritmos de Planificación](../../assets/infografias/clase-04-algoritmos-planificacion.png)
-
----
-
-### Representación ASCII:
 ```
         Cola de procesos LISTOS
 ┌─────┐ ┌─────┐ ┌─────┐ ┌─────┐
@@ -173,28 +173,26 @@ Esto es exactamente lo que hace el scheduler del SO con la CPU.
                     ¿Quién va primero?
 ```
 
-### El planificador (scheduler) decide:
+#### 🎯 El planificador decide
 - **¿Qué proceso** ejecutar?
 - **¿Por cuánto tiempo?**
 - **¿Cuándo** cambiar de proceso?
 
----
+</div>
 
-## Tipos de Planificación
+<div>
 
-### Según el momento de decisión
+#### 📋 Tipos de Planificación
 
 | Tipo | Cuándo actúa | Frecuencia |
-| ------ | -------------- | ------------ |
+|------|--------------|-----------|
 | **Largo plazo** | Admitir procesos nuevos | Minutos/horas |
 | **Mediano plazo** | Swap in/out de memoria | Segundos/minutos |
 | **Corto plazo** | Elegir proceso para CPU | Milisegundos |
 
-### Nosotros nos enfocamos en **planificación de corto plazo**
+> **Nosotros enfocamos en planificación de corto plazo**
 
----
-
-## Preemptive vs Non-Preemptive
+#### ⚡ Preemptive vs Non-Preemptive
 
 ```
 ┌─────────────────────────────────────────────────────────┐
@@ -218,6 +216,10 @@ Esto es exactamente lo que hace el scheduler del SO con la CPU.
 └─────────────────────────────────────────────────────────┘
 ```
 
+</div>
+
+</div>
+
 ---
 
 ## Diagrama de Gantt Comparativo
@@ -230,19 +232,67 @@ Esto es exactamente lo que hace el scheduler del SO con la CPU.
 
 ### Datos de entrada
 
-| Proceso | Tiempo de llegada | Tiempo de ráfaga (CPU) |
-| --------- | ------------------- | ------------------------ |
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+
+<div>
+
+#### 📊 Tabla de procesos
+
+| Proceso | Llegada | Ráfaga |
+|---------|---------|---------|
 | P1 | 0 | 5 |
 | P2 | 1 | 3 |
 | P3 | 2 | 8 |
 
-### Métricas a calcular
+#### 📏 Métricas a calcular
 
 | Métrica | Fórmula |
-| --------- | --------- |
-| **Turnaround Time** | Tiempo de finalización - Tiempo de llegada |
-| **Waiting Time** | Turnaround Time - Tiempo de ráfaga |
-| **Response Time** | Primera ejecución - Tiempo de llegada |
+|---------|---------|
+| **Turnaround Time** | Fin - Llegada |
+| **Waiting Time** | Turnaround - Ráfaga |
+| **Response Time** | Primera ejecución - Llegada |
+
+</div>
+
+<div>
+
+#### 💡 Interpretación de métricas
+
+**Turnaround Time** (Tiempo de retorno)
+```
+Tiempo total desde que el proceso llega
+hasta que termina completely
+
+        Llegada                 Fin
+          │───────────────────────│
+                  Turnaround
+```
+
+**Waiting Time** (Tiempo de espera)
+```
+Tiempo que el proceso pasa en cola
+esperando CPU
+
+          Espera     Ejecuta    Espera
+              │────────│           │
+               Waiting
+```
+
+**Response Time** (Tiempo de respuesta)
+```
+Tiempo hasta la primera ejecución
+
+        Llegada   Primera CPU
+          │──────────│
+              Response
+```
+
+> **Objetivo:** Minimizar TODAS las métricas
+> (a veces hay trade-offs entre ellas)
+
+</div>
+
+</div>
 
 ---
 
