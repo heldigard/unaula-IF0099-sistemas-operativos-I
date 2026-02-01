@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="C"><head><title>Clase 2: Evolución y Componentes del SO</title><meta property="og:title" content="Clase 2: Evolución y Componentes del SO"><meta charset="UTF-8"><meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0"><meta name="apple-mobile-web-app-capable" content="yes"><meta http-equiv="X-UA-Compatible" content="ie=edge"><meta property="og:type" content="website"><meta name="twitter:card" content="summary"><style>@media screen{body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>button,body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>button,body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container button,body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container button{appearance:none;background-color:initial;border:0;color:inherit;cursor:pointer;font-size:inherit;opacity:.8;outline:none;padding:0;transition:opacity .2s linear;-webkit-tap-highlight-color:transparent}body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>button:disabled,body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>button:disabled,body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container button:disabled,body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container button:disabled{cursor:not-allowed;opacity:.15!important}body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>button:hover,body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>button:hover,body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container button:hover,body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container button:hover{opacity:1}body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>button:hover:active,body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>button:hover:active,body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container button:hover:active,body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container button:hover:active{opacity:.6}body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>button:hover:not(:disabled),body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>button:hover:not(:disabled),body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container button:hover:not(:disabled),body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container button:hover:not(:disabled){transition:none}body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=prev],body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=prev],body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container button.bespoke-marp-presenter-info-page-prev{background:#0000 url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cGF0aCBmaWxsPSJub25lIiBzdHJva2U9IiNmZmYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSI1IiBkPSJNNjggOTAgMjggNTBsNDAtNDAiLz48L3N2Zz4=") no-repeat 50%;background-size:contain;overflow:hidden;text-indent:100%;white-space:nowrap}body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=next],body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=next],body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container button.bespoke-marp-presenter-info-page-next{background:#0000 url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cGF0aCBmaWxsPSJub25lIiBzdHJva2U9IiNmZmYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSI1IiBkPSJtMzIgOTAgNDAtNDAtNDAtNDAiLz48L3N2Zz4=") no-repeat 50%;background-size:contain;overflow:hidden;text-indent:100%;white-space:nowrap}body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=fullscreen],body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=fullscreen]{background:#0000 url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48ZGVmcz48c3R5bGU+LmF7ZmlsbDpub25lO3N0cm9rZTojZmZmO3N0cm9rZS1saW5lY2FwOnJvdW5kO3N0cm9rZS1saW5lam9pbjpyb3VuZDtzdHJva2Utd2lkdGg6NXB4fTwvc3R5bGU+PC9kZWZzPjxyZWN0IHdpZHRoPSI4MCIgaGVpZ2h0PSI2MCIgeD0iMTAiIHk9IjIwIiBjbGFzcz0iYSIgcng9IjUuNjciLz48cGF0aCBkPSJNNDAgNzBIMjBWNTBtMjAgMEwyMCA3MG00MC00MGgyMHYyMG0tMjAgMCAyMC0yMCIgY2xhc3M9ImEiLz48L3N2Zz4=") no-repeat 50%;background-size:contain;overflow:hidden;text-indent:100%;white-space:nowrap}body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>button.exit[data-bespoke-marp-osc=fullscreen],body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>button.exit[data-bespoke-marp-osc=fullscreen]{background-image:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48ZGVmcz48c3R5bGU+LmF7ZmlsbDpub25lO3N0cm9rZTojZmZmO3N0cm9rZS1saW5lY2FwOnJvdW5kO3N0cm9rZS1saW5lam9pbjpyb3VuZDtzdHJva2Utd2lkdGg6NXB4fTwvc3R5bGU+PC9kZWZzPjxyZWN0IHdpZHRoPSI4MCIgaGVpZ2h0PSI2MCIgeD0iMTAiIHk9IjIwIiBjbGFzcz0iYSIgcng9IjUuNjciLz48cGF0aCBkPSJNMjAgNTBoMjB2MjBtLTIwIDAgMjAtMjBtNDAgMEg2MFYzMG0yMCAwTDYwIDUwIiBjbGFzcz0iYSIvPjwvc3ZnPg==")}body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=presenter],body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=presenter]{background:#0000 url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cGF0aCBmaWxsPSJub25lIiBzdHJva2U9IiNmZmYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSI1IiBkPSJNODcuOCA0Ny41Qzg5IDUwIDg3LjcgNTIgODUgNTJIMzVhOC43IDguNyAwIDAgMS03LjItNC41bC0xNS42LTMxQzExIDE0IDEyLjIgMTIgMTUgMTJoNTBhOC44IDguOCAwIDAgMSA3LjIgNC41ek02MCA1MnYzNm0tMTAgMGgyME00NSA0MmgyMCIvPjwvc3ZnPg==") no-repeat 50%;background-size:contain;overflow:hidden;text-indent:100%;white-space:nowrap}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container button.bespoke-marp-presenter-note-bigger{background:#0000 url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cGF0aCBzdHJva2U9IiNmZmYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSI1IiBkPSJNMTIgNTBoODBNNTIgOTBWMTAiLz48L3N2Zz4=") no-repeat 50%;background-size:contain;overflow:hidden;text-indent:100%;white-space:nowrap}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container button.bespoke-marp-presenter-note-smaller{background:#0000 url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cGF0aCBmaWxsPSJub25lIiBzdHJva2U9IiNmZmYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSI1IiBkPSJNMTIgNTBoODAiLz48L3N2Zz4=") no-repeat 50%;background-size:contain;overflow:hidden;text-indent:100%;white-space:nowrap}}@keyframes __bespoke_marp_transition_reduced_outgoing__{0%{opacity:1}to{opacity:0}}@keyframes __bespoke_marp_transition_reduced_incoming__{0%{mix-blend-mode:plus-lighter;opacity:0}to{mix-blend-mode:plus-lighter;opacity:1}}.bespoke-marp-note,.bespoke-marp-osc,.bespoke-progress-parent{display:none;transition:none}@media screen{::view-transition-group(*){animation-duration:var(--marp-bespoke-transition-animation-duration,.5s);animation-timing-function:ease}::view-transition-new(*),::view-transition-old(*){animation-delay:0s;animation-direction:var(--marp-bespoke-transition-animation-direction,normal);animation-duration:var(--marp-bespoke-transition-animation-duration,.5s);animation-fill-mode:both;animation-name:var(--marp-bespoke-transition-animation-name,var(--marp-bespoke-transition-animation-name-fallback,__bespoke_marp_transition_no_animation__));mix-blend-mode:normal}::view-transition-old(*){--marp-bespoke-transition-animation-name-fallback:__bespoke_marp_transition_reduced_outgoing__;animation-timing-function:ease}::view-transition-new(*){--marp-bespoke-transition-animation-name-fallback:__bespoke_marp_transition_reduced_incoming__;animation-timing-function:ease}::view-transition-new(root),::view-transition-old(root){animation-timing-function:linear}::view-transition-new(__bespoke_marp_transition_osc__),::view-transition-old(__bespoke_marp_transition_osc__){animation-duration:0s!important;animation-name:__bespoke_marp_transition_osc__!important}::view-transition-new(__bespoke_marp_transition_osc__){opacity:0!important}.bespoke-marp-transition-warming-up::view-transition-group(*),.bespoke-marp-transition-warming-up::view-transition-new(*),.bespoke-marp-transition-warming-up::view-transition-old(*){animation-play-state:paused!important}body,html{height:100%;margin:0}body{background:#000;overflow:hidden}svg.bespoke-marp-slide{content-visibility:hidden;opacity:0;pointer-events:none;z-index:-1}svg.bespoke-marp-slide:not(.bespoke-marp-active) *{view-transition-name:none!important}svg.bespoke-marp-slide.bespoke-marp-active{content-visibility:visible;opacity:1;pointer-events:auto;z-index:0}svg.bespoke-marp-slide.bespoke-marp-active.bespoke-marp-active-ready *{animation-name:__bespoke_marp__!important}@supports not (content-visibility:hidden){svg.bespoke-marp-slide[data-bespoke-marp-load=hideable]{display:none}svg.bespoke-marp-slide[data-bespoke-marp-load=hideable].bespoke-marp-active{display:block}}}@media screen and (prefers-reduced-motion:reduce){svg.bespoke-marp-slide *{view-transition-name:none!important}}@media screen{[data-bespoke-marp-fragment=inactive]{visibility:hidden}body[data-bespoke-view=""] .bespoke-marp-parent,body[data-bespoke-view=next] .bespoke-marp-parent{inset:0;position:absolute}body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc,body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc{background:#000000a6;border-radius:7px;bottom:50px;color:#fff;contain:paint;display:block;font-family:Helvetica,Arial,sans-serif;font-size:16px;left:50%;line-height:0;opacity:1;padding:12px;position:absolute;touch-action:manipulation;transform:translateX(-50%);transition:opacity .2s linear;-webkit-user-select:none;user-select:none;white-space:nowrap;will-change:transform;z-index:1;view-transition-name:__bespoke_marp_transition_osc__}body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>*,body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>*{margin-left:6px}body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>:first-child,body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>:first-child{margin-left:0}body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>span,body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>span{opacity:.8}body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>span[data-bespoke-marp-osc=page],body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>span[data-bespoke-marp-osc=page]{display:inline-block;min-width:140px;text-align:center}body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=fullscreen],body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=next],body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=presenter],body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=prev],body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=fullscreen],body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=next],body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=presenter],body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=prev]{height:32px;line-height:32px;width:32px}body[data-bespoke-view=""] .bespoke-marp-parent.bespoke-marp-inactive,body[data-bespoke-view=next] .bespoke-marp-parent.bespoke-marp-inactive{cursor:none}body[data-bespoke-view=""] .bespoke-marp-parent.bespoke-marp-inactive>.bespoke-marp-osc,body[data-bespoke-view=next] .bespoke-marp-parent.bespoke-marp-inactive>.bespoke-marp-osc{opacity:0;pointer-events:none}body[data-bespoke-view=""] svg.bespoke-marp-slide,body[data-bespoke-view=next] svg.bespoke-marp-slide{height:100%;left:0;position:absolute;top:0;width:100%}body[data-bespoke-view=""] .bespoke-progress-parent{background:#222;display:flex;height:5px;width:100%}body[data-bespoke-view=""] .bespoke-progress-parent+.bespoke-marp-parent{top:5px}body[data-bespoke-view=""] .bespoke-progress-parent .bespoke-progress-bar{background:#0288d1;flex:0 0 0;transition:flex-basis .2s cubic-bezier(0,1,1,1)}body[data-bespoke-view=next]{background:#0000}body[data-bespoke-view=presenter]{background:#161616}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container{display:grid;font-family:Helvetica,Arial,sans-serif;grid-template:"current dragbar next" minmax(140px,1fr) "current dragbar note" 2fr "info    dragbar note" 3em;grid-template-columns:minmax(3px,var(--bespoke-marp-presenter-split-ratio,66%)) 0 minmax(3px,1fr);height:100%;left:0;position:absolute;top:0;width:100%}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-parent{grid-area:current;overflow:hidden;position:relative}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-parent svg.bespoke-marp-slide{height:calc(100% - 40px);left:20px;pointer-events:none;position:absolute;top:20px;-webkit-user-select:none;user-select:none;width:calc(100% - 40px)}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-parent svg.bespoke-marp-slide.bespoke-marp-active{filter:drop-shadow(0 3px 10px rgba(0,0,0,.5))}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-dragbar-container{background:#0288d1;cursor:col-resize;grid-area:dragbar;margin-left:-3px;opacity:0;position:relative;transition:opacity .4s linear .1s;width:6px;z-index:10}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-dragbar-container:hover{opacity:1}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-dragbar-container.active{opacity:1;transition-delay:0s}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-next-container{background:#222;cursor:pointer;display:none;grid-area:next;overflow:hidden;position:relative}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-next-container.active{display:block}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-next-container iframe.bespoke-marp-presenter-next{background:#0000;border:0;display:block;filter:drop-shadow(0 3px 10px rgba(0,0,0,.5));height:calc(100% - 40px);left:20px;pointer-events:none;position:absolute;top:20px;-webkit-user-select:none;user-select:none;width:calc(100% - 40px)}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container{background:#222;color:#eee;grid-area:note;position:relative;z-index:1}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container button{height:1.5em;line-height:1.5em;width:1.5em}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container .bespoke-marp-presenter-note-wrapper{display:block;inset:0;position:absolute}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container .bespoke-marp-presenter-note-buttons{background:#000000a6;border-radius:4px;bottom:0;display:flex;gap:4px;margin:12px;opacity:0;padding:6px;pointer-events:none;position:absolute;right:0;transition:opacity .2s linear}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container .bespoke-marp-presenter-note-buttons:focus-within,body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container .bespoke-marp-presenter-note-wrapper:focus-within+.bespoke-marp-presenter-note-buttons,body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container:hover .bespoke-marp-presenter-note-buttons{opacity:1;pointer-events:auto}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container .bespoke-marp-note{box-sizing:border-box;font-size:calc(1.1em*var(--bespoke-marp-note-font-scale, 1));height:calc(100% - 40px);margin:20px;overflow:auto;padding-right:3px;white-space:pre-wrap;width:calc(100% - 40px);word-wrap:break-word;scrollbar-color:#eeeeee80 #0000;scrollbar-width:thin}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container .bespoke-marp-note::-webkit-scrollbar{width:6px}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container .bespoke-marp-note::-webkit-scrollbar-track{background:#0000}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container .bespoke-marp-note::-webkit-scrollbar-thumb{background:#eeeeee80;border-radius:6px}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container .bespoke-marp-note:empty{pointer-events:none}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container .bespoke-marp-note.active{display:block}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container .bespoke-marp-note p:first-child{margin-top:0}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container .bespoke-marp-note p:last-child{margin-bottom:0}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container{align-items:center;box-sizing:border-box;color:#eee;display:flex;flex-wrap:nowrap;grid-area:info;justify-content:center;overflow:hidden;padding:0 10px}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container .bespoke-marp-presenter-info-page,body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container .bespoke-marp-presenter-info-time,body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container .bespoke-marp-presenter-info-timer{box-sizing:border-box;display:block;padding:0 10px;white-space:nowrap;width:100%}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container button{height:1.5em;line-height:1.5em;width:1.5em}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container .bespoke-marp-presenter-info-page{order:2;text-align:center}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container .bespoke-marp-presenter-info-page .bespoke-marp-presenter-info-page-text{display:inline-block;min-width:120px;text-align:center}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container .bespoke-marp-presenter-info-time{color:#999;order:1;text-align:left}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container .bespoke-marp-presenter-info-timer{color:#999;order:3;text-align:right}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container .bespoke-marp-presenter-info-timer:hover{cursor:pointer}}@media print{.bespoke-marp-presenter-info-container,.bespoke-marp-presenter-next-container,.bespoke-marp-presenter-note-container{display:none}}</style><style>div#\:\$p > svg > foreignObject > section{width:1280px;height:720px;box-sizing:border-box;overflow:hidden;position:relative;scroll-snap-align:center center;-webkit-text-size-adjust:100%;text-size-adjust:100%}div#\:\$p > svg > foreignObject > section::after{bottom:0;content:attr(data-marpit-pagination);padding:inherit;pointer-events:none;position:absolute;right:0}div#\:\$p > svg > foreignObject > section:not([data-marpit-pagination])::after{display:none}div#\:\$p > svg > foreignObject > section :is(h1, marp-h1){font-size:2em;margin-block:0.67em}div#\:\$p > svg > foreignObject > section video::-webkit-media-controls{will-change:transform}@page {size:1280px 720px;margin:0}@media print{html, body{background-color:#fff;margin:0;page-break-inside:avoid;break-inside:avoid-page}div#\:\$p > svg > foreignObject > section{page-break-before:always;break-before:page}div#\:\$p > svg > foreignObject > section, div#\:\$p > svg > foreignObject > section *{-webkit-print-color-adjust:exact!important;animation-delay:0s!important;animation-duration:0s!important;color-adjust:exact!important;print-color-adjust:exact!important;transition:none!important}div#\:\$p > svg[data-marpit-svg]{display:block;height:100vh;width:100vw}}div#\:\$p > svg > foreignObject > :where(section){container-type:size}div#\:\$p > svg > foreignObject > section img[data-marp-twemoji]{background:transparent;height:1em;margin:0 .05em 0 .1em;vertical-align:-.1em;width:1em}div#\:\$p > svg > foreignObject > section{--focus-outlineColor:light-dark(#0969da, #1f6feb);--fgColor-default:light-dark(#1f2328, #f0f6fc);--fgColor-muted:light-dark(#59636e, #9198a1);--fgColor-accent:light-dark(#0969da, #4493f8);--fgColor-success:light-dark(#1a7f37, #3fb950);--fgColor-attention:light-dark(#9a6700, #d29922);--fgColor-danger:light-dark(#d1242f, #f85149);--fgColor-done:light-dark(#8250df, #ab7df8);--bgColor-default:light-dark(#fff, #0d1117);--bgColor-muted:light-dark(#f6f8fa, #151b23);--bgColor-neutral-muted:light-dark(#818b981f, #656c7633);--bgColor-attention-muted:light-dark(#fff8c5, #bb800926);--borderColor-default:light-dark(#d1d9e0, #3d444d);--borderColor-muted:light-dark(#d1d9e0b3, #3d444db3);--borderColor-neutral-muted:light-dark(#d1d9e0b3, #3d444db3);--borderColor-accent-emphasis:light-dark(#0969da, #1f6feb);--borderColor-success-emphasis:light-dark(#1a7f37, #238636);--borderColor-attention-emphasis:light-dark(#9a6700, #9e6a03);--borderColor-danger-emphasis:light-dark(#cf222e, #da3633);--borderColor-done-emphasis:light-dark(#8250df, #8957e5);--color-prettylights-syntax-comment:light-dark(#59636e, #9198a1);--color-prettylights-syntax-constant:light-dark(#0550ae, #79c0ff);--color-prettylights-syntax-constant-other-reference-link:light-dark(#0a3069, #a5d6ff);--color-prettylights-syntax-entity:light-dark(#6639ba, #d2a8ff);--color-prettylights-syntax-storage-modifier-import:light-dark(#1f2328, #f0f6fc);--color-prettylights-syntax-entity-tag:light-dark(#0550ae, #7ee787);--color-prettylights-syntax-keyword:light-dark(#cf222e, #ff7b72);--color-prettylights-syntax-string:light-dark(#0a3069, #a5d6ff);--color-prettylights-syntax-variable:light-dark(#953800, #ffa657);--color-prettylights-syntax-brackethighlighter-unmatched:light-dark(#82071e, #f85149);--color-prettylights-syntax-brackethighlighter-angle:light-dark(#59636e, #9198a1);--color-prettylights-syntax-invalid-illegal-text:light-dark(#f6f8fa, #f0f6fc);--color-prettylights-syntax-invalid-illegal-bg:light-dark(#82071e, #8e1519);--color-prettylights-syntax-carriage-return-text:light-dark(#f6f8fa, #f0f6fc);--color-prettylights-syntax-carriage-return-bg:light-dark(#cf222e, #b62324);--color-prettylights-syntax-string-regexp:light-dark(#116329, #7ee787);--color-prettylights-syntax-markup-list:light-dark(#3b2300, #f2cc60);--color-prettylights-syntax-markup-heading:light-dark(#0550ae, #1f6feb);--color-prettylights-syntax-markup-italic:light-dark(#1f2328, #f0f6fc);--color-prettylights-syntax-markup-bold:light-dark(#1f2328, #f0f6fc);--color-prettylights-syntax-markup-deleted-text:light-dark(#82071e, #ffdcd7);--color-prettylights-syntax-markup-deleted-bg:light-dark(#ffebe9, #67060c);--color-prettylights-syntax-markup-inserted-text:light-dark(#116329, #aff5b4);--color-prettylights-syntax-markup-inserted-bg:light-dark(#dafbe1, #033a16);--color-prettylights-syntax-markup-changed-text:light-dark(#953800, #ffdfb6);--color-prettylights-syntax-markup-changed-bg:light-dark(#ffd8b5, #5a1e02);--color-prettylights-syntax-markup-ignored-text:light-dark(#d1d9e0, #f0f6fc);--color-prettylights-syntax-markup-ignored-bg:light-dark(#0550ae, #1158c7);--color-prettylights-syntax-meta-diff-range:light-dark(#8250df, #d2a8ff);--color-prettylights-syntax-sublimelinter-gutter-mark:light-dark(#818b98, #3d444d);--base-size-4:calc(var(--marpit-root-font-size, 1rem) * 0.25);--base-size-8:calc(var(--marpit-root-font-size, 1rem) * 0.5);--base-size-16:calc(var(--marpit-root-font-size, 1rem) * 1);--base-size-24:calc(var(--marpit-root-font-size, 1rem) * 1.5);--base-size-40:calc(var(--marpit-root-font-size, 1rem) * 2.5);--base-text-weight-normal:400;--base-text-weight-medium:500;--base-text-weight-semibold:600;--fontStack-monospace:ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace;--fgColor-accent:Highlight;}/*!
+<!DOCTYPE html><html lang="C"><head><title>Clase 2: Evolución y Componentes del SO</title><meta property="og:title" content="Clase 2: Evolución y Componentes del SO"><meta charset="UTF-8"><meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0"><meta name="apple-mobile-web-app-capable" content="yes"><meta http-equiv="X-UA-Compatible" content="ie=edge"><meta property="og:type" content="website"><meta name="twitter:card" content="summary"><style>@media screen{body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>button,body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>button,body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container button,body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container button{appearance:none;background-color:initial;border:0;color:inherit;cursor:pointer;font-size:inherit;opacity:.8;outline:none;padding:0;transition:opacity .2s linear;-webkit-tap-highlight-color:transparent}body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>button:disabled,body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>button:disabled,body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container button:disabled,body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container button:disabled{cursor:not-allowed;opacity:.15!important}body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>button:hover,body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>button:hover,body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container button:hover,body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container button:hover{opacity:1}body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>button:hover:active,body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>button:hover:active,body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container button:hover:active,body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container button:hover:active{opacity:.6}body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>button:hover:not(:disabled),body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>button:hover:not(:disabled),body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container button:hover:not(:disabled),body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container button:hover:not(:disabled){transition:none}body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=prev],body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=prev],body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container button.bespoke-marp-presenter-info-page-prev{background:#0000 url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cGF0aCBmaWxsPSJub25lIiBzdHJva2U9IiNmZmYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSI1IiBkPSJNNjggOTAgMjggNTBsNDAtNDAiLz48L3N2Zz4=") no-repeat 50%;background-size:contain;overflow:hidden;text-indent:100%;white-space:nowrap}body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=next],body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=next],body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container button.bespoke-marp-presenter-info-page-next{background:#0000 url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cGF0aCBmaWxsPSJub25lIiBzdHJva2U9IiNmZmYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSI1IiBkPSJtMzIgOTAgNDAtNDAtNDAtNDAiLz48L3N2Zz4=") no-repeat 50%;background-size:contain;overflow:hidden;text-indent:100%;white-space:nowrap}body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=fullscreen],body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=fullscreen]{background:#0000 url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48ZGVmcz48c3R5bGU+LmF7ZmlsbDpub25lO3N0cm9rZTojZmZmO3N0cm9rZS1saW5lY2FwOnJvdW5kO3N0cm9rZS1saW5lam9pbjpyb3VuZDtzdHJva2Utd2lkdGg6NXB4fTwvc3R5bGU+PC9kZWZzPjxyZWN0IHdpZHRoPSI4MCIgaGVpZ2h0PSI2MCIgeD0iMTAiIHk9IjIwIiBjbGFzcz0iYSIgcng9IjUuNjciLz48cGF0aCBkPSJNNDAgNzBIMjBWNTBtMjAgMEwyMCA3MG00MC00MGgyMHYyMG0tMjAgMCAyMC0yMCIgY2xhc3M9ImEiLz48L3N2Zz4=") no-repeat 50%;background-size:contain;overflow:hidden;text-indent:100%;white-space:nowrap}body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>button.exit[data-bespoke-marp-osc=fullscreen],body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>button.exit[data-bespoke-marp-osc=fullscreen]{background-image:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48ZGVmcz48c3R5bGU+LmF7ZmlsbDpub25lO3N0cm9rZTojZmZmO3N0cm9rZS1saW5lY2FwOnJvdW5kO3N0cm9rZS1saW5lam9pbjpyb3VuZDtzdHJva2Utd2lkdGg6NXB4fTwvc3R5bGU+PC9kZWZzPjxyZWN0IHdpZHRoPSI4MCIgaGVpZ2h0PSI2MCIgeD0iMTAiIHk9IjIwIiBjbGFzcz0iYSIgcng9IjUuNjciLz48cGF0aCBkPSJNMjAgNTBoMjB2MjBtLTIwIDAgMjAtMjBtNDAgMEg2MFYzMG0yMCAwTDYwIDUwIiBjbGFzcz0iYSIvPjwvc3ZnPg==")}body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=presenter],body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=presenter]{background:#0000 url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cGF0aCBmaWxsPSJub25lIiBzdHJva2U9IiNmZmYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSI1IiBkPSJNODcuOCA0Ny41Qzg5IDUwIDg3LjcgNTIgODUgNTJIMzVhOC43IDguNyAwIDAgMS03LjItNC41bC0xNS42LTMxQzExIDE0IDEyLjIgMTIgMTUgMTJoNTBhOC44IDguOCAwIDAgMSA3LjIgNC41ek02MCA1MnYzNm0tMTAgMGgyME00NSA0MmgyMCIvPjwvc3ZnPg==") no-repeat 50%;background-size:contain;overflow:hidden;text-indent:100%;white-space:nowrap}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container button.bespoke-marp-presenter-note-bigger{background:#0000 url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cGF0aCBzdHJva2U9IiNmZmYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSI1IiBkPSJNMTIgNTBoODBNNTIgOTBWMTAiLz48L3N2Zz4=") no-repeat 50%;background-size:contain;overflow:hidden;text-indent:100%;white-space:nowrap}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container button.bespoke-marp-presenter-note-smaller{background:#0000 url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cGF0aCBmaWxsPSJub25lIiBzdHJva2U9IiNmZmYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSI1IiBkPSJNMTIgNTBoODAiLz48L3N2Zz4=") no-repeat 50%;background-size:contain;overflow:hidden;text-indent:100%;white-space:nowrap}}@keyframes __bespoke_marp_transition_reduced_outgoing__{0%{opacity:1}to{opacity:0}}@keyframes __bespoke_marp_transition_reduced_incoming__{0%{mix-blend-mode:plus-lighter;opacity:0}to{mix-blend-mode:plus-lighter;opacity:1}}.bespoke-marp-note,.bespoke-marp-osc,.bespoke-progress-parent{display:none;transition:none}@media screen{::view-transition-group(*){animation-duration:var(--marp-bespoke-transition-animation-duration,.5s);animation-timing-function:ease}::view-transition-new(*),::view-transition-old(*){animation-delay:0s;animation-direction:var(--marp-bespoke-transition-animation-direction,normal);animation-duration:var(--marp-bespoke-transition-animation-duration,.5s);animation-fill-mode:both;animation-name:var(--marp-bespoke-transition-animation-name,var(--marp-bespoke-transition-animation-name-fallback,__bespoke_marp_transition_no_animation__));mix-blend-mode:normal}::view-transition-old(*){--marp-bespoke-transition-animation-name-fallback:__bespoke_marp_transition_reduced_outgoing__;animation-timing-function:ease}::view-transition-new(*){--marp-bespoke-transition-animation-name-fallback:__bespoke_marp_transition_reduced_incoming__;animation-timing-function:ease}::view-transition-new(root),::view-transition-old(root){animation-timing-function:linear}::view-transition-new(__bespoke_marp_transition_osc__),::view-transition-old(__bespoke_marp_transition_osc__){animation-duration:0s!important;animation-name:__bespoke_marp_transition_osc__!important}::view-transition-new(__bespoke_marp_transition_osc__){opacity:0!important}.bespoke-marp-transition-warming-up::view-transition-group(*),.bespoke-marp-transition-warming-up::view-transition-new(*),.bespoke-marp-transition-warming-up::view-transition-old(*){animation-play-state:paused!important}body,html{height:100%;margin:0}body{background:#000;overflow:hidden}svg.bespoke-marp-slide{content-visibility:hidden;opacity:0;pointer-events:none;z-index:-1}svg.bespoke-marp-slide:not(.bespoke-marp-active) *{view-transition-name:none!important}svg.bespoke-marp-slide.bespoke-marp-active{content-visibility:visible;opacity:1;pointer-events:auto;z-index:0}svg.bespoke-marp-slide.bespoke-marp-active.bespoke-marp-active-ready *{animation-name:__bespoke_marp__!important}@supports not (content-visibility:hidden){svg.bespoke-marp-slide[data-bespoke-marp-load=hideable]{display:none}svg.bespoke-marp-slide[data-bespoke-marp-load=hideable].bespoke-marp-active{display:block}}}@media screen and (prefers-reduced-motion:reduce){svg.bespoke-marp-slide *{view-transition-name:none!important}}@media screen{[data-bespoke-marp-fragment=inactive]{visibility:hidden}body[data-bespoke-view=""] .bespoke-marp-parent,body[data-bespoke-view=next] .bespoke-marp-parent{inset:0;position:absolute}body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc,body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc{background:#000000a6;border-radius:7px;bottom:50px;color:#fff;contain:paint;display:block;font-family:Helvetica,Arial,sans-serif;font-size:16px;left:50%;line-height:0;opacity:1;padding:12px;position:absolute;touch-action:manipulation;transform:translateX(-50%);transition:opacity .2s linear;-webkit-user-select:none;user-select:none;white-space:nowrap;will-change:transform;z-index:1;view-transition-name:__bespoke_marp_transition_osc__}body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>*,body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>*{margin-left:6px}body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>:first-child,body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>:first-child{margin-left:0}body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>span,body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>span{opacity:.8}body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>span[data-bespoke-marp-osc=page],body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>span[data-bespoke-marp-osc=page]{display:inline-block;min-width:140px;text-align:center}body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=fullscreen],body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=next],body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=presenter],body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=prev],body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=fullscreen],body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=next],body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=presenter],body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=prev]{height:32px;line-height:32px;width:32px}body[data-bespoke-view=""] .bespoke-marp-parent.bespoke-marp-inactive,body[data-bespoke-view=next] .bespoke-marp-parent.bespoke-marp-inactive{cursor:none}body[data-bespoke-view=""] .bespoke-marp-parent.bespoke-marp-inactive>.bespoke-marp-osc,body[data-bespoke-view=next] .bespoke-marp-parent.bespoke-marp-inactive>.bespoke-marp-osc{opacity:0;pointer-events:none}body[data-bespoke-view=""] svg.bespoke-marp-slide,body[data-bespoke-view=next] svg.bespoke-marp-slide{height:100%;left:0;position:absolute;top:0;width:100%}body[data-bespoke-view=""] .bespoke-progress-parent{background:#222;display:flex;height:5px;width:100%}body[data-bespoke-view=""] .bespoke-progress-parent+.bespoke-marp-parent{top:5px}body[data-bespoke-view=""] .bespoke-progress-parent .bespoke-progress-bar{background:#0288d1;flex:0 0 0;transition:flex-basis .2s cubic-bezier(0,1,1,1)}body[data-bespoke-view=next]{background:#0000}body[data-bespoke-view=presenter]{background:#161616}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container{display:grid;font-family:Helvetica,Arial,sans-serif;grid-template:"current dragbar next" minmax(140px,1fr) "current dragbar note" 2fr "info    dragbar note" 3em;grid-template-columns:minmax(3px,var(--bespoke-marp-presenter-split-ratio,66%)) 0 minmax(3px,1fr);height:100%;left:0;position:absolute;top:0;width:100%}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-parent{grid-area:current;overflow:hidden;position:relative}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-parent svg.bespoke-marp-slide{height:calc(100% - 40px);left:20px;pointer-events:none;position:absolute;top:20px;-webkit-user-select:none;user-select:none;width:calc(100% - 40px)}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-parent svg.bespoke-marp-slide.bespoke-marp-active{filter:drop-shadow(0 3px 10px rgba(0,0,0,.5))}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-dragbar-container{background:#0288d1;cursor:col-resize;grid-area:dragbar;margin-left:-3px;opacity:0;position:relative;transition:opacity .4s linear .1s;width:6px;z-index:10}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-dragbar-container:hover{opacity:1}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-dragbar-container.active{opacity:1;transition-delay:0s}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-next-container{background:#222;cursor:pointer;display:none;grid-area:next;overflow:hidden;position:relative}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-next-container.active{display:block}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-next-container iframe.bespoke-marp-presenter-next{background:#0000;border:0;display:block;filter:drop-shadow(0 3px 10px rgba(0,0,0,.5));height:calc(100% - 40px);left:20px;pointer-events:none;position:absolute;top:20px;-webkit-user-select:none;user-select:none;width:calc(100% - 40px)}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container{background:#222;color:#eee;grid-area:note;position:relative;z-index:1}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container button{height:1.5em;line-height:1.5em;width:1.5em}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container .bespoke-marp-presenter-note-wrapper{display:block;inset:0;position:absolute}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container .bespoke-marp-presenter-note-buttons{background:#000000a6;border-radius:4px;bottom:0;display:flex;gap:4px;margin:12px;opacity:0;padding:6px;pointer-events:none;position:absolute;right:0;transition:opacity .2s linear}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container .bespoke-marp-presenter-note-buttons:focus-within,body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container .bespoke-marp-presenter-note-wrapper:focus-within+.bespoke-marp-presenter-note-buttons,body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container:hover .bespoke-marp-presenter-note-buttons{opacity:1;pointer-events:auto}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container .bespoke-marp-note{box-sizing:border-box;font-size:calc(1.1em*var(--bespoke-marp-note-font-scale, 1));height:calc(100% - 40px);margin:20px;overflow:auto;padding-right:3px;white-space:pre-wrap;width:calc(100% - 40px);word-wrap:break-word;scrollbar-color:#eeeeee80 #0000;scrollbar-width:thin}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container .bespoke-marp-note::-webkit-scrollbar{width:6px}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container .bespoke-marp-note::-webkit-scrollbar-track{background:#0000}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container .bespoke-marp-note::-webkit-scrollbar-thumb{background:#eeeeee80;border-radius:6px}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container .bespoke-marp-note:empty{pointer-events:none}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container .bespoke-marp-note.active{display:block}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container .bespoke-marp-note p:first-child{margin-top:0}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container .bespoke-marp-note p:last-child{margin-bottom:0}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container{align-items:center;box-sizing:border-box;color:#eee;display:flex;flex-wrap:nowrap;grid-area:info;justify-content:center;overflow:hidden;padding:0 10px}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container .bespoke-marp-presenter-info-page,body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container .bespoke-marp-presenter-info-time,body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container .bespoke-marp-presenter-info-timer{box-sizing:border-box;display:block;padding:0 10px;white-space:nowrap;width:100%}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container button{height:1.5em;line-height:1.5em;width:1.5em}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container .bespoke-marp-presenter-info-page{order:2;text-align:center}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container .bespoke-marp-presenter-info-page .bespoke-marp-presenter-info-page-text{display:inline-block;min-width:120px;text-align:center}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container .bespoke-marp-presenter-info-time{color:#999;order:1;text-align:left}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container .bespoke-marp-presenter-info-timer{color:#999;order:3;text-align:right}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container .bespoke-marp-presenter-info-timer:hover{cursor:pointer}}@media print{.bespoke-marp-presenter-info-container,.bespoke-marp-presenter-next-container,.bespoke-marp-presenter-note-container{display:none}}</style><style>div#\:\$p > svg > foreignObject > section{width:1280px;height:720px;box-sizing:border-box;overflow:hidden;position:relative;scroll-snap-align:center center;-webkit-text-size-adjust:100%;text-size-adjust:100%}div#\:\$p > svg > foreignObject > section::after{bottom:0;content:attr(data-marpit-pagination);padding:inherit;pointer-events:none;position:absolute;right:0}div#\:\$p > svg > foreignObject > section:not([data-marpit-pagination])::after{display:none}div#\:\$p > svg > foreignObject > section :is(h1, marp-h1){font-size:2em;margin-block:0.67em}div#\:\$p > svg > foreignObject > section video::-webkit-media-controls{will-change:transform}@page {size:1280px 720px;margin:0}@media print{html, body{background-color:#fff;margin:0;page-break-inside:avoid;break-inside:avoid-page}div#\:\$p > svg > foreignObject > section{page-break-before:always;break-before:page}div#\:\$p > svg > foreignObject > section, div#\:\$p > svg > foreignObject > section *{-webkit-print-color-adjust:exact!important;animation-delay:0s!important;animation-duration:0s!important;color-adjust:exact!important;print-color-adjust:exact!important;transition:none!important}div#\:\$p > svg[data-marpit-svg]{display:block;height:100vh;width:100vw}}div#\:\$p > svg > foreignObject > :where(section){container-type:size}div#\:\$p > svg > foreignObject > section mjx-container[jax="SVG"]{direction:ltr}div#\:\$p > svg > foreignObject > section mjx-container[jax="SVG"] > svg{overflow:visible;min-height:1px;min-width:1px}div#\:\$p > svg > foreignObject > section mjx-container[jax="SVG"] > svg a{fill:blue;stroke:blue}div#\:\$p > svg > foreignObject > section mjx-container[jax="SVG"][display="true"]{display:block;text-align:center;margin:1em 0}div#\:\$p > svg > foreignObject > section mjx-container[jax="SVG"][display="true"][width="full"]{display:flex}div#\:\$p > svg > foreignObject > section mjx-container[jax="SVG"][justify="left"]{text-align:left}div#\:\$p > svg > foreignObject > section mjx-container[jax="SVG"][justify="right"]{text-align:right}div#\:\$p > svg > foreignObject > section g[data-mml-node="merror"] > g{fill:red;stroke:red}div#\:\$p > svg > foreignObject > section g[data-mml-node="merror"] > rect[data-background]{fill:yellow;stroke:none}div#\:\$p > svg > foreignObject > section g[data-mml-node="mtable"] > line[data-line], div#\:\$p > svg > foreignObject > section svg[data-table] > g > line[data-line]{stroke-width:70px;fill:none}div#\:\$p > svg > foreignObject > section g[data-mml-node="mtable"] > rect[data-frame], div#\:\$p > svg > foreignObject > section svg[data-table] > g > rect[data-frame]{stroke-width:70px;fill:none}div#\:\$p > svg > foreignObject > section g[data-mml-node="mtable"] > .mjx-dashed, div#\:\$p > svg > foreignObject > section svg[data-table] > g > .mjx-dashed{stroke-dasharray:140}div#\:\$p > svg > foreignObject > section g[data-mml-node="mtable"] > .mjx-dotted, div#\:\$p > svg > foreignObject > section svg[data-table] > g > .mjx-dotted{stroke-linecap:round;stroke-dasharray:0,140}div#\:\$p > svg > foreignObject > section g[data-mml-node="mtable"] > g > svg{overflow:visible}div#\:\$p > svg > foreignObject > section [jax="SVG"] mjx-tool{display:inline-block;position:relative;width:0;height:0}div#\:\$p > svg > foreignObject > section [jax="SVG"] mjx-tool > mjx-tip{position:absolute;top:0;left:0}div#\:\$p > svg > foreignObject > section mjx-tool > mjx-tip{display:inline-block;padding:.2em;border:1px solid #888;font-size:70%;background-color:#F8F8F8;color:black;box-shadow:2px 2px 5px #AAAAAA}div#\:\$p > svg > foreignObject > section g[data-mml-node="maction"][data-toggle]{cursor:pointer}div#\:\$p > svg > foreignObject > section mjx-status{display:block;position:fixed;left:1em;bottom:1em;min-width:25%;padding:.2em .4em;border:1px solid #888;font-size:90%;background-color:#F8F8F8;color:black}div#\:\$p > svg > foreignObject > section foreignObject[data-mjx-xml]{font-family:initial;line-height:normal;overflow:visible}div#\:\$p > svg > foreignObject > section mjx-container[jax="SVG"] path[data-c], div#\:\$p > svg > foreignObject > section mjx-container[jax="SVG"] use[data-c]{stroke-width:3}@media print{div#\:\$p > svg > foreignObject > section mjx-container[jax=SVG] path[data-c],div#\:\$p > svg > foreignObject > section mjx-container[jax=SVG] use[data-c]{stroke-width:0}}div#\:\$p > svg > foreignObject > section img[data-marp-twemoji]{background:transparent;height:1em;margin:0 .05em 0 .1em;vertical-align:-.1em;width:1em}div#\:\$p > svg > foreignObject > section{--focus-outlineColor:light-dark(#0969da, #1f6feb);--fgColor-default:light-dark(#1f2328, #f0f6fc);--fgColor-muted:light-dark(#59636e, #9198a1);--fgColor-accent:light-dark(#0969da, #4493f8);--fgColor-success:light-dark(#1a7f37, #3fb950);--fgColor-attention:light-dark(#9a6700, #d29922);--fgColor-danger:light-dark(#d1242f, #f85149);--fgColor-done:light-dark(#8250df, #ab7df8);--bgColor-default:light-dark(#fff, #0d1117);--bgColor-muted:light-dark(#f6f8fa, #151b23);--bgColor-neutral-muted:light-dark(#818b981f, #656c7633);--bgColor-attention-muted:light-dark(#fff8c5, #bb800926);--borderColor-default:light-dark(#d1d9e0, #3d444d);--borderColor-muted:light-dark(#d1d9e0b3, #3d444db3);--borderColor-neutral-muted:light-dark(#d1d9e0b3, #3d444db3);--borderColor-accent-emphasis:light-dark(#0969da, #1f6feb);--borderColor-success-emphasis:light-dark(#1a7f37, #238636);--borderColor-attention-emphasis:light-dark(#9a6700, #9e6a03);--borderColor-danger-emphasis:light-dark(#cf222e, #da3633);--borderColor-done-emphasis:light-dark(#8250df, #8957e5);--color-prettylights-syntax-comment:light-dark(#59636e, #9198a1);--color-prettylights-syntax-constant:light-dark(#0550ae, #79c0ff);--color-prettylights-syntax-constant-other-reference-link:light-dark(#0a3069, #a5d6ff);--color-prettylights-syntax-entity:light-dark(#6639ba, #d2a8ff);--color-prettylights-syntax-storage-modifier-import:light-dark(#1f2328, #f0f6fc);--color-prettylights-syntax-entity-tag:light-dark(#0550ae, #7ee787);--color-prettylights-syntax-keyword:light-dark(#cf222e, #ff7b72);--color-prettylights-syntax-string:light-dark(#0a3069, #a5d6ff);--color-prettylights-syntax-variable:light-dark(#953800, #ffa657);--color-prettylights-syntax-brackethighlighter-unmatched:light-dark(#82071e, #f85149);--color-prettylights-syntax-brackethighlighter-angle:light-dark(#59636e, #9198a1);--color-prettylights-syntax-invalid-illegal-text:light-dark(#f6f8fa, #f0f6fc);--color-prettylights-syntax-invalid-illegal-bg:light-dark(#82071e, #8e1519);--color-prettylights-syntax-carriage-return-text:light-dark(#f6f8fa, #f0f6fc);--color-prettylights-syntax-carriage-return-bg:light-dark(#cf222e, #b62324);--color-prettylights-syntax-string-regexp:light-dark(#116329, #7ee787);--color-prettylights-syntax-markup-list:light-dark(#3b2300, #f2cc60);--color-prettylights-syntax-markup-heading:light-dark(#0550ae, #1f6feb);--color-prettylights-syntax-markup-italic:light-dark(#1f2328, #f0f6fc);--color-prettylights-syntax-markup-bold:light-dark(#1f2328, #f0f6fc);--color-prettylights-syntax-markup-deleted-text:light-dark(#82071e, #ffdcd7);--color-prettylights-syntax-markup-deleted-bg:light-dark(#ffebe9, #67060c);--color-prettylights-syntax-markup-inserted-text:light-dark(#116329, #aff5b4);--color-prettylights-syntax-markup-inserted-bg:light-dark(#dafbe1, #033a16);--color-prettylights-syntax-markup-changed-text:light-dark(#953800, #ffdfb6);--color-prettylights-syntax-markup-changed-bg:light-dark(#ffd8b5, #5a1e02);--color-prettylights-syntax-markup-ignored-text:light-dark(#d1d9e0, #f0f6fc);--color-prettylights-syntax-markup-ignored-bg:light-dark(#0550ae, #1158c7);--color-prettylights-syntax-meta-diff-range:light-dark(#8250df, #d2a8ff);--color-prettylights-syntax-sublimelinter-gutter-mark:light-dark(#818b98, #3d444d);--base-size-4:calc(var(--marpit-root-font-size, 1rem) * 0.25);--base-size-8:calc(var(--marpit-root-font-size, 1rem) * 0.5);--base-size-16:calc(var(--marpit-root-font-size, 1rem) * 1);--base-size-24:calc(var(--marpit-root-font-size, 1rem) * 1.5);--base-size-40:calc(var(--marpit-root-font-size, 1rem) * 2.5);--base-text-weight-normal:400;--base-text-weight-medium:500;--base-text-weight-semibold:600;--fontStack-monospace:ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace;--fgColor-accent:Highlight;}/*!
  * Marp default theme.
  *
  * @theme default
@@ -8,27 +8,73 @@
  * @size 16:9 1280px 720px
  * @size 4:3 960px 720px
  */div#\:\$p > svg > foreignObject > section [data-theme=light],div#\:\$p > svg > foreignObject > section{color-scheme:light}div#\:\$p > svg > foreignObject > section [data-theme=dark],div#\:\$p > svg > foreignObject > section:where(.invert){color-scheme:dark}div#\:\$p > svg > foreignObject > section{-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;background-color:var(--bgColor-default);color:var(--fgColor-default);font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Noto Sans,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji;font-size:16px;line-height:1.5;margin:0;word-wrap:break-word}div#\:\$p > svg > foreignObject > section{--marpit-root-font-size:16px}div#\:\$p > svg > foreignObject > section :is(h1, marp-h1):hover .anchor .octicon-link:before,div#\:\$p > svg > foreignObject > section :is(h2, marp-h2):hover .anchor .octicon-link:before,div#\:\$p > svg > foreignObject > section :is(h3, marp-h3):hover .anchor .octicon-link:before,div#\:\$p > svg > foreignObject > section :is(h4, marp-h4):hover .anchor .octicon-link:before,div#\:\$p > svg > foreignObject > section :is(h5, marp-h5):hover .anchor .octicon-link:before,div#\:\$p > svg > foreignObject > section :is(h6, marp-h6):hover .anchor .octicon-link:before{background-color:currentColor;content:" ";display:inline-block;height:16px;-webkit-mask-image:url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M7.775 3.275a.75.75 0 0 0 1.06 1.06l1.25-1.25a2 2 0 1 1 2.83 2.83l-2.5 2.5a2 2 0 0 1-2.83 0 .75.75 0 0 0-1.06 1.06 3.5 3.5 0 0 0 4.95 0l2.5-2.5a3.5 3.5 0 0 0-4.95-4.95zm-4.69 9.64a2 2 0 0 1 0-2.83l2.5-2.5a2 2 0 0 1 2.83 0 .75.75 0 0 0 1.06-1.06 3.5 3.5 0 0 0-4.95 0l-2.5 2.5a3.5 3.5 0 0 0 4.95 4.95l1.25-1.25a.75.75 0 0 0-1.06-1.06l-1.25 1.25a2 2 0 0 1-2.83 0"/></svg>');mask-image:url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M7.775 3.275a.75.75 0 0 0 1.06 1.06l1.25-1.25a2 2 0 1 1 2.83 2.83l-2.5 2.5a2 2 0 0 1-2.83 0 .75.75 0 0 0-1.06 1.06 3.5 3.5 0 0 0 4.95 0l2.5-2.5a3.5 3.5 0 0 0-4.95-4.95zm-4.69 9.64a2 2 0 0 1 0-2.83l2.5-2.5a2 2 0 0 1 2.83 0 .75.75 0 0 0 1.06-1.06 3.5 3.5 0 0 0-4.95 0l-2.5 2.5a3.5 3.5 0 0 0 4.95 4.95l1.25-1.25a.75.75 0 0 0-1.06-1.06l-1.25 1.25a2 2 0 0 1-2.83 0"/></svg>');width:16px}div#\:\$p > svg > foreignObject > section details,div#\:\$p > svg > foreignObject > section figcaption,div#\:\$p > svg > foreignObject > section figure{display:block}div#\:\$p > svg > foreignObject > section summary{display:list-item}div#\:\$p > svg > foreignObject > section [hidden]{display:none!important}div#\:\$p > svg > foreignObject > section a{background-color:transparent;color:var(--fgColor-accent);text-decoration:none}div#\:\$p > svg > foreignObject > section abbr[title]{border-bottom:none;-webkit-text-decoration:underline dotted;text-decoration:underline dotted}div#\:\$p > svg > foreignObject > section b,div#\:\$p > svg > foreignObject > section strong{font-weight:var(--base-text-weight-semibold, 600)}div#\:\$p > svg > foreignObject > section dfn{font-style:italic}div#\:\$p > svg > foreignObject > section :is(h1, marp-h1){border-bottom:1px solid var(--borderColor-muted);font-size:2em;font-weight:var(--base-text-weight-semibold, 600);margin:.67em 0;padding-bottom:.3em}div#\:\$p > svg > foreignObject > section mark{background-color:var(--bgColor-attention-muted);color:var(--fgColor-default)}div#\:\$p > svg > foreignObject > section small{font-size:90%}div#\:\$p > svg > foreignObject > section sub,div#\:\$p > svg > foreignObject > section sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}div#\:\$p > svg > foreignObject > section sub{bottom:-.25em}div#\:\$p > svg > foreignObject > section sup{top:-.5em}div#\:\$p > svg > foreignObject > section img{border-style:none;box-sizing:content-box;max-width:100%}div#\:\$p > svg > foreignObject > section code,div#\:\$p > svg > foreignObject > section kbd,div#\:\$p > svg > foreignObject > section :is(pre, marp-pre),div#\:\$p > svg > foreignObject > section samp{font-family:monospace;font-size:1em}div#\:\$p > svg > foreignObject > section figure{margin:1em var(--base-size-40)}div#\:\$p > svg > foreignObject > section hr{background:transparent;background-color:var(--borderColor-default);border:0;box-sizing:content-box;height:.25em;margin:var(--base-size-24) 0;overflow:hidden;padding:0}div#\:\$p > svg > foreignObject > section input{font:inherit;font-family:inherit;font-size:inherit;line-height:inherit;margin:0;overflow:visible}div#\:\$p > svg > foreignObject > section [type=button],div#\:\$p > svg > foreignObject > section [type=reset],div#\:\$p > svg > foreignObject > section [type=submit]{-webkit-appearance:button;-moz-appearance:button;appearance:button}div#\:\$p > svg > foreignObject > section [type=checkbox],div#\:\$p > svg > foreignObject > section [type=radio]{box-sizing:border-box;padding:0}div#\:\$p > svg > foreignObject > section [type=number]::-webkit-inner-spin-button,div#\:\$p > svg > foreignObject > section [type=number]::-webkit-outer-spin-button{height:auto}div#\:\$p > svg > foreignObject > section [type=search]::-webkit-search-cancel-button,div#\:\$p > svg > foreignObject > section [type=search]::-webkit-search-decoration{-webkit-appearance:none;appearance:none}div#\:\$p > svg > foreignObject > section ::-webkit-input-placeholder{color:inherit;opacity:.54}div#\:\$p > svg > foreignObject > section ::-webkit-file-upload-button{-webkit-appearance:button;appearance:button;font:inherit}div#\:\$p > svg > foreignObject > section a:hover{text-decoration:underline}div#\:\$p > svg > foreignObject > section ::-moz-placeholder{color:var(--fgColor-muted);opacity:1}div#\:\$p > svg > foreignObject > section ::placeholder{color:var(--fgColor-muted);opacity:1}div#\:\$p > svg > foreignObject > section hr:after,div#\:\$p > svg > foreignObject > section hr:before{content:"";display:table}div#\:\$p > svg > foreignObject > section hr:after{clear:both}div#\:\$p > svg > foreignObject > section table{border-collapse:collapse;border-spacing:0;display:block;font-variant:tabular-nums;max-width:100%;overflow:auto;width:-moz-max-content;width:max-content}div#\:\$p > svg > foreignObject > section td,div#\:\$p > svg > foreignObject > section th{padding:0}div#\:\$p > svg > foreignObject > section details summary{cursor:pointer}div#\:\$p > svg > foreignObject > section [role=button]:focus,div#\:\$p > svg > foreignObject > section a:focus,div#\:\$p > svg > foreignObject > section input[type=checkbox]:focus,div#\:\$p > svg > foreignObject > section input[type=radio]:focus{box-shadow:none;outline:2px solid var(--focus-outlineColor);outline-offset:-2px}div#\:\$p > svg > foreignObject > section [role=button]:focus:not(:focus-visible),div#\:\$p > svg > foreignObject > section a:focus:not(:focus-visible),div#\:\$p > svg > foreignObject > section input[type=checkbox]:focus:not(:focus-visible),div#\:\$p > svg > foreignObject > section input[type=radio]:focus:not(:focus-visible){outline:1px solid transparent}div#\:\$p > svg > foreignObject > section [role=button]:focus-visible,div#\:\$p > svg > foreignObject > section a:focus-visible,div#\:\$p > svg > foreignObject > section input[type=checkbox]:focus-visible,div#\:\$p > svg > foreignObject > section input[type=radio]:focus-visible{box-shadow:none;outline:2px solid var(--focus-outlineColor);outline-offset:-2px}div#\:\$p > svg > foreignObject > section a:not([class]):focus,div#\:\$p > svg > foreignObject > section a:not([class]):focus-visible,div#\:\$p > svg > foreignObject > section input[type=checkbox]:focus,div#\:\$p > svg > foreignObject > section input[type=checkbox]:focus-visible,div#\:\$p > svg > foreignObject > section input[type=radio]:focus,div#\:\$p > svg > foreignObject > section input[type=radio]:focus-visible{outline-offset:0}div#\:\$p > svg > foreignObject > section kbd{background-color:var(--bgColor-muted);border-bottom-color:var(--borderColor-neutral-muted);border:1px solid var(--borderColor-neutral-muted);border-radius:6px;box-shadow:inset 0 -1px 0 var(--borderColor-neutral-muted);color:var(--fgColor-default);display:inline-block;font:11px var(--fontStack-monospace, ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace);line-height:10px;padding:var(--base-size-4);vertical-align:middle}div#\:\$p > svg > foreignObject > section :is(h1, marp-h1),div#\:\$p > svg > foreignObject > section :is(h2, marp-h2),div#\:\$p > svg > foreignObject > section :is(h3, marp-h3),div#\:\$p > svg > foreignObject > section :is(h4, marp-h4),div#\:\$p > svg > foreignObject > section :is(h5, marp-h5),div#\:\$p > svg > foreignObject > section :is(h6, marp-h6){font-weight:var(--base-text-weight-semibold, 600);line-height:1.25;margin-bottom:var(--base-size-16);margin-top:var(--base-size-24)}div#\:\$p > svg > foreignObject > section :is(h2, marp-h2){border-bottom:1px solid var(--borderColor-muted);font-size:1.5em;padding-bottom:.3em}div#\:\$p > svg > foreignObject > section :is(h2, marp-h2),div#\:\$p > svg > foreignObject > section :is(h3, marp-h3){font-weight:var(--base-text-weight-semibold, 600)}div#\:\$p > svg > foreignObject > section :is(h3, marp-h3){font-size:1.25em}div#\:\$p > svg > foreignObject > section :is(h4, marp-h4){font-size:1em}div#\:\$p > svg > foreignObject > section :is(h4, marp-h4),div#\:\$p > svg > foreignObject > section :is(h5, marp-h5){font-weight:var(--base-text-weight-semibold, 600)}div#\:\$p > svg > foreignObject > section :is(h5, marp-h5){font-size:.875em}div#\:\$p > svg > foreignObject > section :is(h6, marp-h6){color:var(--fgColor-muted);font-size:.85em;font-weight:var(--base-text-weight-semibold, 600)}div#\:\$p > svg > foreignObject > section p{margin-bottom:10px;margin-top:0}div#\:\$p > svg > foreignObject > section blockquote{border-left:.25em solid var(--borderColor-default);color:var(--fgColor-muted);margin:0;padding:0 1em}div#\:\$p > svg > foreignObject > section ol,div#\:\$p > svg > foreignObject > section ul{margin-bottom:0;margin-top:0;padding-left:2em}div#\:\$p > svg > foreignObject > section ol ol,div#\:\$p > svg > foreignObject > section ul ol{list-style-type:lower-roman}div#\:\$p > svg > foreignObject > section ol ol ol,div#\:\$p > svg > foreignObject > section ol ul ol,div#\:\$p > svg > foreignObject > section ul ol ol,div#\:\$p > svg > foreignObject > section ul ul ol{list-style-type:lower-alpha}div#\:\$p > svg > foreignObject > section dd{margin-left:0}div#\:\$p > svg > foreignObject > section code,div#\:\$p > svg > foreignObject > section :is(pre, marp-pre),div#\:\$p > svg > foreignObject > section samp,div#\:\$p > svg > foreignObject > section tt{font-family:var(--fontStack-monospace, ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace);font-size:12px}div#\:\$p > svg > foreignObject > section :is(pre, marp-pre){margin-bottom:0;margin-top:0;word-wrap:normal}div#\:\$p > svg > foreignObject > section .octicon{display:inline-block;fill:currentColor;overflow:visible!important;vertical-align:text-bottom}div#\:\$p > svg > foreignObject > section input::-webkit-inner-spin-button,div#\:\$p > svg > foreignObject > section input::-webkit-outer-spin-button{-webkit-appearance:none;appearance:none;margin:0}div#\:\$p > svg > foreignObject > section .mr-2{margin-right:var(--base-size-8, 8px)!important}div#\:\$p > svg > foreignObject > section:after,div#\:\$p > svg > foreignObject > section:before{display:table}div#\:\$p > svg > foreignObject > section:after{clear:both}div#\:\$p > svg > foreignObject > section>:first-child{margin-top:0!important}div#\:\$p > svg > foreignObject > section>:last-child{margin-bottom:0!important}div#\:\$p > svg > foreignObject > section a:not([href]){color:inherit;text-decoration:none}div#\:\$p > svg > foreignObject > section .absent{color:var(--fgColor-danger)}div#\:\$p > svg > foreignObject > section .anchor{float:left;line-height:1;margin-left:-20px;padding-right:var(--base-size-4)}div#\:\$p > svg > foreignObject > section .anchor:focus{outline:none}div#\:\$p > svg > foreignObject > section blockquote,div#\:\$p > svg > foreignObject > section details,div#\:\$p > svg > foreignObject > section dl,div#\:\$p > svg > foreignObject > section ol,div#\:\$p > svg > foreignObject > section p,div#\:\$p > svg > foreignObject > section :is(pre, marp-pre),div#\:\$p > svg > foreignObject > section table,div#\:\$p > svg > foreignObject > section ul{margin-bottom:var(--base-size-16);margin-top:0}div#\:\$p > svg > foreignObject > section blockquote>:first-child{margin-top:0}div#\:\$p > svg > foreignObject > section blockquote>:last-child{margin-bottom:0}div#\:\$p > svg > foreignObject > section :is(h1, marp-h1) .octicon-link,div#\:\$p > svg > foreignObject > section :is(h2, marp-h2) .octicon-link,div#\:\$p > svg > foreignObject > section :is(h3, marp-h3) .octicon-link,div#\:\$p > svg > foreignObject > section :is(h4, marp-h4) .octicon-link,div#\:\$p > svg > foreignObject > section :is(h5, marp-h5) .octicon-link,div#\:\$p > svg > foreignObject > section :is(h6, marp-h6) .octicon-link{color:var(--fgColor-default);vertical-align:middle;visibility:hidden}div#\:\$p > svg > foreignObject > section :is(h1, marp-h1):hover .anchor,div#\:\$p > svg > foreignObject > section :is(h2, marp-h2):hover .anchor,div#\:\$p > svg > foreignObject > section :is(h3, marp-h3):hover .anchor,div#\:\$p > svg > foreignObject > section :is(h4, marp-h4):hover .anchor,div#\:\$p > svg > foreignObject > section :is(h5, marp-h5):hover .anchor,div#\:\$p > svg > foreignObject > section :is(h6, marp-h6):hover .anchor{text-decoration:none}div#\:\$p > svg > foreignObject > section :is(h1, marp-h1):hover .anchor .octicon-link,div#\:\$p > svg > foreignObject > section :is(h2, marp-h2):hover .anchor .octicon-link,div#\:\$p > svg > foreignObject > section :is(h3, marp-h3):hover .anchor .octicon-link,div#\:\$p > svg > foreignObject > section :is(h4, marp-h4):hover .anchor .octicon-link,div#\:\$p > svg > foreignObject > section :is(h5, marp-h5):hover .anchor .octicon-link,div#\:\$p > svg > foreignObject > section :is(h6, marp-h6):hover .anchor .octicon-link{visibility:visible}div#\:\$p > svg > foreignObject > section :is(h1, marp-h1) code,div#\:\$p > svg > foreignObject > section :is(h1, marp-h1) tt,div#\:\$p > svg > foreignObject > section :is(h2, marp-h2) code,div#\:\$p > svg > foreignObject > section :is(h2, marp-h2) tt,div#\:\$p > svg > foreignObject > section :is(h3, marp-h3) code,div#\:\$p > svg > foreignObject > section :is(h3, marp-h3) tt,div#\:\$p > svg > foreignObject > section :is(h4, marp-h4) code,div#\:\$p > svg > foreignObject > section :is(h4, marp-h4) tt,div#\:\$p > svg > foreignObject > section :is(h5, marp-h5) code,div#\:\$p > svg > foreignObject > section :is(h5, marp-h5) tt,div#\:\$p > svg > foreignObject > section :is(h6, marp-h6) code,div#\:\$p > svg > foreignObject > section :is(h6, marp-h6) tt{font-size:inherit;padding:0 .2em}div#\:\$p > svg > foreignObject > section summary :is(h1, marp-h1),div#\:\$p > svg > foreignObject > section summary :is(h2, marp-h2),div#\:\$p > svg > foreignObject > section summary :is(h3, marp-h3),div#\:\$p > svg > foreignObject > section summary :is(h4, marp-h4),div#\:\$p > svg > foreignObject > section summary :is(h5, marp-h5),div#\:\$p > svg > foreignObject > section summary :is(h6, marp-h6){display:inline-block}div#\:\$p > svg > foreignObject > section summary :is(h1, marp-h1) .anchor,div#\:\$p > svg > foreignObject > section summary :is(h2, marp-h2) .anchor,div#\:\$p > svg > foreignObject > section summary :is(h3, marp-h3) .anchor,div#\:\$p > svg > foreignObject > section summary :is(h4, marp-h4) .anchor,div#\:\$p > svg > foreignObject > section summary :is(h5, marp-h5) .anchor,div#\:\$p > svg > foreignObject > section summary :is(h6, marp-h6) .anchor{margin-left:-40px}div#\:\$p > svg > foreignObject > section summary :is(h1, marp-h1),div#\:\$p > svg > foreignObject > section summary :is(h2, marp-h2){border-bottom:0;padding-bottom:0}div#\:\$p > svg > foreignObject > section ol.no-list,div#\:\$p > svg > foreignObject > section ul.no-list{list-style-type:none;padding:0}div#\:\$p > svg > foreignObject > section ol[type="a s"]{list-style-type:lower-alpha}div#\:\$p > svg > foreignObject > section ol[type="A s"]{list-style-type:upper-alpha}div#\:\$p > svg > foreignObject > section ol[type="i s"]{list-style-type:lower-roman}div#\:\$p > svg > foreignObject > section ol[type="I s"]{list-style-type:upper-roman}div#\:\$p > svg > foreignObject > section div>ol:not([type]),div#\:\$p > svg > foreignObject > section ol[type="1"]{list-style-type:decimal}div#\:\$p > svg > foreignObject > section ol ol,div#\:\$p > svg > foreignObject > section ol ul,div#\:\$p > svg > foreignObject > section ul ol,div#\:\$p > svg > foreignObject > section ul ul{margin-bottom:0;margin-top:0}div#\:\$p > svg > foreignObject > section li>p{margin-top:var(--base-size-16)}div#\:\$p > svg > foreignObject > section li+li{margin-top:.25em}div#\:\$p > svg > foreignObject > section dl{padding:0}div#\:\$p > svg > foreignObject > section dl dt{font-size:1em;font-style:italic;font-weight:var(--base-text-weight-semibold, 600);margin-top:var(--base-size-16);padding:0}div#\:\$p > svg > foreignObject > section dl dd{margin-bottom:var(--base-size-16);padding:0 var(--base-size-16)}div#\:\$p > svg > foreignObject > section table th{font-weight:var(--base-text-weight-semibold, 600)}div#\:\$p > svg > foreignObject > section table td,div#\:\$p > svg > foreignObject > section table th{border:1px solid var(--borderColor-default);padding:6px 13px}div#\:\$p > svg > foreignObject > section table td>:last-child{margin-bottom:0}div#\:\$p > svg > foreignObject > section table tr{background-color:var(--bgColor-default);border-top:1px solid var(--borderColor-muted)}div#\:\$p > svg > foreignObject > section table tr:nth-child(2n){background-color:var(--bgColor-muted)}div#\:\$p > svg > foreignObject > section table img{background-color:transparent}div#\:\$p > svg > foreignObject > section img[align=right]{padding-left:20px}div#\:\$p > svg > foreignObject > section img[align=left]{padding-right:20px}div#\:\$p > svg > foreignObject > section .emoji{background-color:transparent;max-width:none;vertical-align:text-top}div#\:\$p > svg > foreignObject > section :is(span, marp-span).frame,div#\:\$p > svg > foreignObject > section :is(span, marp-span).frame>:is(span, marp-span){display:block;overflow:hidden}div#\:\$p > svg > foreignObject > section :is(span, marp-span).frame>:is(span, marp-span){border:1px solid var(--borderColor-default);float:left;margin:13px 0 0;padding:7px;width:auto}div#\:\$p > svg > foreignObject > section :is(span, marp-span).frame :is(span, marp-span) img{display:block;float:left}div#\:\$p > svg > foreignObject > section :is(span, marp-span).frame :is(span, marp-span) :is(span, marp-span){clear:both;color:var(--fgColor-default);display:block;padding:5px 0 0}div#\:\$p > svg > foreignObject > section :is(span, marp-span).align-center{clear:both;display:block;overflow:hidden}div#\:\$p > svg > foreignObject > section :is(span, marp-span).align-center>:is(span, marp-span){display:block;margin:13px auto 0;overflow:hidden;text-align:center}div#\:\$p > svg > foreignObject > section :is(span, marp-span).align-center :is(span, marp-span) img{margin:0 auto;text-align:center}div#\:\$p > svg > foreignObject > section :is(span, marp-span).align-right{clear:both;display:block;overflow:hidden}div#\:\$p > svg > foreignObject > section :is(span, marp-span).align-right>:is(span, marp-span){display:block;margin:13px 0 0;overflow:hidden;text-align:right}div#\:\$p > svg > foreignObject > section :is(span, marp-span).align-right :is(span, marp-span) img{margin:0;text-align:right}div#\:\$p > svg > foreignObject > section :is(span, marp-span).float-left{display:block;float:left;margin-right:13px;overflow:hidden}div#\:\$p > svg > foreignObject > section :is(span, marp-span).float-left :is(span, marp-span){margin:13px 0 0}div#\:\$p > svg > foreignObject > section :is(span, marp-span).float-right{display:block;float:right;margin-left:13px;overflow:hidden}div#\:\$p > svg > foreignObject > section :is(span, marp-span).float-right>:is(span, marp-span){display:block;margin:13px auto 0;overflow:hidden;text-align:right}div#\:\$p > svg > foreignObject > section code,div#\:\$p > svg > foreignObject > section tt{background-color:var(--bgColor-neutral-muted);border-radius:6px;font-size:85%;margin:0;padding:.2em .4em;white-space:break-spaces}div#\:\$p > svg > foreignObject > section code br,div#\:\$p > svg > foreignObject > section tt br{display:none}div#\:\$p > svg > foreignObject > section del code{text-decoration:inherit}div#\:\$p > svg > foreignObject > section samp{font-size:85%}div#\:\$p > svg > foreignObject > section :is(pre, marp-pre) code{font-size:100%}div#\:\$p > svg > foreignObject > section :is(pre, marp-pre)>code{background:transparent;border:0;margin:0;padding:0;white-space:pre;word-break:normal}div#\:\$p > svg > foreignObject > section .highlight{margin-bottom:var(--base-size-16)}div#\:\$p > svg > foreignObject > section .highlight :is(pre, marp-pre){margin-bottom:0;word-break:normal}div#\:\$p > svg > foreignObject > section :is(pre, marp-pre){background-color:var(--bgColor-muted);border-radius:6px;color:var(--fgColor-default);font-size:85%;line-height:1.45;overflow:auto;padding:var(--base-size-16)}div#\:\$p > svg > foreignObject > section :is(pre, marp-pre) code,div#\:\$p > svg > foreignObject > section :is(pre, marp-pre) tt{display:inline;line-height:inherit;margin:0;max-width:auto;overflow:visible;padding:0;word-wrap:normal;background-color:transparent;border:0}div#\:\$p > svg > foreignObject > section .csv-data td,div#\:\$p > svg > foreignObject > section .csv-data th{font-size:12px;line-height:1;overflow:hidden;padding:5px;text-align:left;white-space:nowrap}div#\:\$p > svg > foreignObject > section .csv-data .blob-num{background:var(--bgColor-default);border:0;padding:10px var(--base-size-8) 9px;text-align:right}div#\:\$p > svg > foreignObject > section .csv-data tr{border-top:0}div#\:\$p > svg > foreignObject > section .csv-data th{background:var(--bgColor-muted);border-top:0;font-weight:var(--base-text-weight-semibold, 600)}div#\:\$p > svg > foreignObject > section [data-footnote-ref]:before{content:"["}div#\:\$p > svg > foreignObject > section [data-footnote-ref]:after{content:"]"}div#\:\$p > svg > foreignObject > section .footnotes{border-top:1px solid var(--borderColor-default);color:var(--fgColor-muted);font-size:12px}div#\:\$p > svg > foreignObject > section div#\:\$p > svg > foreignObject > section section.footnotes{--marpit-root-font-size:12px}div#\:\$p > svg > foreignObject > section .footnotes ol,div#\:\$p > svg > foreignObject > section .footnotes ol ul{padding-left:var(--base-size-16)}div#\:\$p > svg > foreignObject > section .footnotes ol ul{display:inline-block;margin-top:var(--base-size-16)}div#\:\$p > svg > foreignObject > section .footnotes li{position:relative}div#\:\$p > svg > foreignObject > section .footnotes li:target:before{border:2px solid var(--borderColor-accent-emphasis);border-radius:6px;bottom:calc(var(--base-size-8)*-1);content:"";left:calc(var(--base-size-24)*-1);pointer-events:none;position:absolute;right:calc(var(--base-size-8)*-1);top:calc(var(--base-size-8)*-1)}div#\:\$p > svg > foreignObject > section .footnotes li:target{color:var(--fgColor-default)}div#\:\$p > svg > foreignObject > section .footnotes .data-footnote-backref g-emoji{font-family:monospace}div#\:\$p > svg > foreignObject > section body:has(:modal){padding-right:var(--dialog-scrollgutter)!important}div#\:\$p > svg > foreignObject > section .pl-c{color:var(--color-prettylights-syntax-comment)}div#\:\$p > svg > foreignObject > section .pl-c1,div#\:\$p > svg > foreignObject > section .pl-s .pl-v{color:var(--color-prettylights-syntax-constant)}div#\:\$p > svg > foreignObject > section .pl-e,div#\:\$p > svg > foreignObject > section .pl-en{color:var(--color-prettylights-syntax-entity)}div#\:\$p > svg > foreignObject > section .pl-s .pl-s1,div#\:\$p > svg > foreignObject > section .pl-smi{color:var(--color-prettylights-syntax-storage-modifier-import)}div#\:\$p > svg > foreignObject > section .pl-ent{color:var(--color-prettylights-syntax-entity-tag)}div#\:\$p > svg > foreignObject > section .pl-k{color:var(--color-prettylights-syntax-keyword)}div#\:\$p > svg > foreignObject > section .pl-pds,div#\:\$p > svg > foreignObject > section .pl-s,div#\:\$p > svg > foreignObject > section .pl-s .pl-pse .pl-s1,div#\:\$p > svg > foreignObject > section .pl-sr,div#\:\$p > svg > foreignObject > section .pl-sr .pl-cce,div#\:\$p > svg > foreignObject > section .pl-sr .pl-sra,div#\:\$p > svg > foreignObject > section .pl-sr .pl-sre{color:var(--color-prettylights-syntax-string)}div#\:\$p > svg > foreignObject > section .pl-smw,div#\:\$p > svg > foreignObject > section .pl-v{color:var(--color-prettylights-syntax-variable)}div#\:\$p > svg > foreignObject > section .pl-bu{color:var(--color-prettylights-syntax-brackethighlighter-unmatched)}div#\:\$p > svg > foreignObject > section .pl-ii{background-color:var(--color-prettylights-syntax-invalid-illegal-bg);color:var(--color-prettylights-syntax-invalid-illegal-text)}div#\:\$p > svg > foreignObject > section .pl-c2{background-color:var(--color-prettylights-syntax-carriage-return-bg);color:var(--color-prettylights-syntax-carriage-return-text)}div#\:\$p > svg > foreignObject > section .pl-sr .pl-cce{color:var(--color-prettylights-syntax-string-regexp);font-weight:700}div#\:\$p > svg > foreignObject > section .pl-ml{color:var(--color-prettylights-syntax-markup-list)}div#\:\$p > svg > foreignObject > section .pl-mh,div#\:\$p > svg > foreignObject > section .pl-mh .pl-en,div#\:\$p > svg > foreignObject > section .pl-ms{color:var(--color-prettylights-syntax-markup-heading);font-weight:700}div#\:\$p > svg > foreignObject > section .pl-mi{color:var(--color-prettylights-syntax-markup-italic);font-style:italic}div#\:\$p > svg > foreignObject > section .pl-mb{color:var(--color-prettylights-syntax-markup-bold);font-weight:700}div#\:\$p > svg > foreignObject > section .pl-md{background-color:var(--color-prettylights-syntax-markup-deleted-bg);color:var(--color-prettylights-syntax-markup-deleted-text)}div#\:\$p > svg > foreignObject > section .pl-mi1{background-color:var(--color-prettylights-syntax-markup-inserted-bg);color:var(--color-prettylights-syntax-markup-inserted-text)}div#\:\$p > svg > foreignObject > section .pl-mc{background-color:var(--color-prettylights-syntax-markup-changed-bg);color:var(--color-prettylights-syntax-markup-changed-text)}div#\:\$p > svg > foreignObject > section .pl-mi2{background-color:var(--color-prettylights-syntax-markup-ignored-bg);color:var(--color-prettylights-syntax-markup-ignored-text)}div#\:\$p > svg > foreignObject > section .pl-mdr{color:var(--color-prettylights-syntax-meta-diff-range);font-weight:700}div#\:\$p > svg > foreignObject > section .pl-ba{color:var(--color-prettylights-syntax-brackethighlighter-angle)}div#\:\$p > svg > foreignObject > section .pl-sg{color:var(--color-prettylights-syntax-sublimelinter-gutter-mark)}div#\:\$p > svg > foreignObject > section .pl-corl{color:var(--color-prettylights-syntax-constant-other-reference-link);text-decoration:underline}div#\:\$p > svg > foreignObject > section [role=button]:focus:not(:focus-visible),div#\:\$p > svg > foreignObject > section [role=tabpanel][tabindex="0"]:focus:not(:focus-visible),div#\:\$p > svg > foreignObject > section a:focus:not(:focus-visible),div#\:\$p > svg > foreignObject > section button:focus:not(:focus-visible),div#\:\$p > svg > foreignObject > section summary:focus:not(:focus-visible){box-shadow:none;outline:none}div#\:\$p > svg > foreignObject > section [tabindex="0"]:focus:not(:focus-visible),div#\:\$p > svg > foreignObject > section details-dialog:focus:not(:focus-visible){outline:none}div#\:\$p > svg > foreignObject > section g-emoji{display:inline-block;font-family:Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol;font-size:1em;font-style:normal!important;font-weight:var(--base-text-weight-normal, 400);line-height:1;min-width:1ch;vertical-align:-.075em}div#\:\$p > svg > foreignObject > section g-emoji img{height:1em;width:1em}div#\:\$p > svg > foreignObject > section .task-list-item{list-style-type:none}div#\:\$p > svg > foreignObject > section .task-list-item label{font-weight:var(--base-text-weight-normal, 400)}div#\:\$p > svg > foreignObject > section .task-list-item.enabled label{cursor:pointer}div#\:\$p > svg > foreignObject > section .task-list-item+.task-list-item{margin-top:var(--base-size-4)}div#\:\$p > svg > foreignObject > section .task-list-item .handle{display:none}div#\:\$p > svg > foreignObject > section .task-list-item-checkbox{margin:0 .2em .25em -1.4em;vertical-align:middle}div#\:\$p > svg > foreignObject > section ul:dir(rtl) .task-list-item-checkbox{margin:0 -1.6em .25em .2em}div#\:\$p > svg > foreignObject > section ol:dir(rtl) .task-list-item-checkbox{margin:0 -1.6em .25em .2em}div#\:\$p > svg > foreignObject > section .contains-task-list:focus-within .task-list-item-convert-container,div#\:\$p > svg > foreignObject > section .contains-task-list:hover .task-list-item-convert-container{display:block;height:24px;overflow:visible;width:auto;clip:auto}div#\:\$p > svg > foreignObject > section ::-webkit-calendar-picker-indicator{filter:invert(50%)}div#\:\$p > svg > foreignObject > section .markdown-alert{border-left:.25em solid var(--borderColor-default);color:inherit;margin-bottom:var(--base-size-16);padding:var(--base-size-8) var(--base-size-16)}div#\:\$p > svg > foreignObject > section .markdown-alert>:first-child{margin-top:0}div#\:\$p > svg > foreignObject > section .markdown-alert>:last-child{margin-bottom:0}div#\:\$p > svg > foreignObject > section .markdown-alert .markdown-alert-title{align-items:center;display:flex;font-weight:var(--base-text-weight-medium, 500);line-height:1}div#\:\$p > svg > foreignObject > section .markdown-alert.markdown-alert-note{border-left-color:var(--borderColor-accent-emphasis)}div#\:\$p > svg > foreignObject > section .markdown-alert.markdown-alert-note .markdown-alert-title{color:var(--fgColor-accent)}div#\:\$p > svg > foreignObject > section .markdown-alert.markdown-alert-important{border-left-color:var(--borderColor-done-emphasis)}div#\:\$p > svg > foreignObject > section .markdown-alert.markdown-alert-important .markdown-alert-title{color:var(--fgColor-done)}div#\:\$p > svg > foreignObject > section .markdown-alert.markdown-alert-warning{border-left-color:var(--borderColor-attention-emphasis)}div#\:\$p > svg > foreignObject > section .markdown-alert.markdown-alert-warning .markdown-alert-title{color:var(--fgColor-attention)}div#\:\$p > svg > foreignObject > section .markdown-alert.markdown-alert-tip{border-left-color:var(--borderColor-success-emphasis)}div#\:\$p > svg > foreignObject > section .markdown-alert.markdown-alert-tip .markdown-alert-title{color:var(--fgColor-success)}div#\:\$p > svg > foreignObject > section .markdown-alert.markdown-alert-caution{border-left-color:var(--borderColor-danger-emphasis)}div#\:\$p > svg > foreignObject > section .markdown-alert.markdown-alert-caution .markdown-alert-title{color:var(--fgColor-danger)}div#\:\$p > svg > foreignObject > section>:first-child>.heading-element:first-child{margin-top:0!important}div#\:\$p > svg > foreignObject > section .highlight :is(pre, marp-pre):has(+.zeroclipboard-container){min-height:52px}div#\:\$p > svg > foreignObject > section :is(h1, marp-h1){color:var(--h1-color);font-size:1.6em}div#\:\$p > svg > foreignObject > section :is(h1, marp-h1),div#\:\$p > svg > foreignObject > section :is(h2, marp-h2){border-bottom:none}div#\:\$p > svg > foreignObject > section :is(h2, marp-h2){font-size:1.3em}div#\:\$p > svg > foreignObject > section :is(h3, marp-h3){font-size:1.1em}div#\:\$p > svg > foreignObject > section :is(h4, marp-h4){font-size:1.05em}div#\:\$p > svg > foreignObject > section :is(h5, marp-h5){font-size:1em}div#\:\$p > svg > foreignObject > section :is(h6, marp-h6){font-size:.9em}div#\:\$p > svg > foreignObject > section :is(h1, marp-h1) strong,div#\:\$p > svg > foreignObject > section :is(h2, marp-h2) strong,div#\:\$p > svg > foreignObject > section :is(h3, marp-h3) strong,div#\:\$p > svg > foreignObject > section :is(h4, marp-h4) strong,div#\:\$p > svg > foreignObject > section :is(h5, marp-h5) strong,div#\:\$p > svg > foreignObject > section :is(h6, marp-h6) strong{color:var(--heading-strong-color);font-weight:inherit}div#\:\$p > svg > foreignObject > section :is(h1, marp-h1)::part(auto-scaling),div#\:\$p > svg > foreignObject > section :is(h2, marp-h2)::part(auto-scaling),div#\:\$p > svg > foreignObject > section :is(h3, marp-h3)::part(auto-scaling),div#\:\$p > svg > foreignObject > section :is(h4, marp-h4)::part(auto-scaling),div#\:\$p > svg > foreignObject > section :is(h5, marp-h5)::part(auto-scaling),div#\:\$p > svg > foreignObject > section :is(h6, marp-h6)::part(auto-scaling){max-height:563px}div#\:\$p > svg > foreignObject > section hr{height:0;padding-top:.25em}div#\:\$p > svg > foreignObject > section img{background-color:transparent}div#\:\$p > svg > foreignObject > section :is(pre, marp-pre){border:1px solid var(--borderColor-default);line-height:1.15;overflow:visible}div#\:\$p > svg > foreignObject > section :is(pre, marp-pre)::part(auto-scaling){max-height:529px}div#\:\$p > svg > foreignObject > section :is(pre, marp-pre) :where(.hljs){color:var(--color-prettylights-syntax-storage-modifier-import)}div#\:\$p > svg > foreignObject > section :is(pre, marp-pre) :where(.hljs-doctag),div#\:\$p > svg > foreignObject > section :is(pre, marp-pre) :where(.hljs-keyword),div#\:\$p > svg > foreignObject > section :is(pre, marp-pre) :where(.hljs-meta .hljs-keyword),div#\:\$p > svg > foreignObject > section :is(pre, marp-pre) :where(.hljs-template-tag),div#\:\$p > svg > foreignObject > section :is(pre, marp-pre) :where(.hljs-template-variable),div#\:\$p > svg > foreignObject > section :is(pre, marp-pre) :where(.hljs-type),div#\:\$p > svg > foreignObject > section :is(pre, marp-pre) :where(.hljs-variable.language_){color:var(--color-prettylights-syntax-keyword)}div#\:\$p > svg > foreignObject > section :is(pre, marp-pre) :where(.hljs-title),div#\:\$p > svg > foreignObject > section :is(pre, marp-pre) :where(.hljs-title.class_),div#\:\$p > svg > foreignObject > section :is(pre, marp-pre) :where(.hljs-title.class_.inherited__),div#\:\$p > svg > foreignObject > section :is(pre, marp-pre) :where(.hljs-title.function_){color:var(--color-prettylights-syntax-entity)}div#\:\$p > svg > foreignObject > section :is(pre, marp-pre) :where(.hljs-attr),div#\:\$p > svg > foreignObject > section :is(pre, marp-pre) :where(.hljs-attribute),div#\:\$p > svg > foreignObject > section :is(pre, marp-pre) :where(.hljs-literal),div#\:\$p > svg > foreignObject > section :is(pre, marp-pre) :where(.hljs-meta),div#\:\$p > svg > foreignObject > section :is(pre, marp-pre) :where(.hljs-number),div#\:\$p > svg > foreignObject > section :is(pre, marp-pre) :where(.hljs-operator),div#\:\$p > svg > foreignObject > section :is(pre, marp-pre) :where(.hljs-selector-attr),div#\:\$p > svg > foreignObject > section :is(pre, marp-pre) :where(.hljs-selector-class),div#\:\$p > svg > foreignObject > section :is(pre, marp-pre) :where(.hljs-selector-id),div#\:\$p > svg > foreignObject > section :is(pre, marp-pre) :where(.hljs-variable){color:var(--color-prettylights-syntax-constant)}div#\:\$p > svg > foreignObject > section :is(pre, marp-pre) :where(.hljs-meta .hljs-string),div#\:\$p > svg > foreignObject > section :is(pre, marp-pre) :where(.hljs-regexp),div#\:\$p > svg > foreignObject > section :is(pre, marp-pre) :where(.hljs-string){color:var(--color-prettylights-syntax-string)}div#\:\$p > svg > foreignObject > section :is(pre, marp-pre) :where(.hljs-built_in),div#\:\$p > svg > foreignObject > section :is(pre, marp-pre) :where(.hljs-symbol){color:var(--color-prettylights-syntax-variable)}div#\:\$p > svg > foreignObject > section :is(pre, marp-pre) :where(.hljs-code),div#\:\$p > svg > foreignObject > section :is(pre, marp-pre) :where(.hljs-comment),div#\:\$p > svg > foreignObject > section :is(pre, marp-pre) :where(.hljs-formula){color:var(--color-prettylights-syntax-comment)}div#\:\$p > svg > foreignObject > section :is(pre, marp-pre) :where(.hljs-name),div#\:\$p > svg > foreignObject > section :is(pre, marp-pre) :where(.hljs-quote),div#\:\$p > svg > foreignObject > section :is(pre, marp-pre) :where(.hljs-selector-pseudo),div#\:\$p > svg > foreignObject > section :is(pre, marp-pre) :where(.hljs-selector-tag){color:var(--color-prettylights-syntax-entity-tag)}div#\:\$p > svg > foreignObject > section :is(pre, marp-pre) :where(.hljs-subst){color:var(--color-prettylights-syntax-storage-modifier-import)}div#\:\$p > svg > foreignObject > section :is(pre, marp-pre) :where(.hljs-section){color:var(--color-prettylights-syntax-markup-heading);font-weight:700}div#\:\$p > svg > foreignObject > section :is(pre, marp-pre) :where(.hljs-bullet){color:var(--color-prettylights-syntax-markup-list)}div#\:\$p > svg > foreignObject > section :is(pre, marp-pre) :where(.hljs-emphasis){color:var(--color-prettylights-syntax-markup-italic);font-style:italic}div#\:\$p > svg > foreignObject > section :is(pre, marp-pre) :where(.hljs-strong){color:var(--color-prettylights-syntax-markup-bold);font-weight:700}div#\:\$p > svg > foreignObject > section :is(pre, marp-pre) :where(.hljs-addition){background-color:var(--color-prettylights-syntax-markup-inserted-bg);color:var(--color-prettylights-syntax-markup-inserted-text)}div#\:\$p > svg > foreignObject > section :is(pre, marp-pre) :where(.hljs-deletion){background-color:var(--color-prettylights-syntax-markup-deleted-bg);color:var(--color-prettylights-syntax-markup-deleted-text)}div#\:\$p > svg > foreignObject > section footer,div#\:\$p > svg > foreignObject > section header{color:var(--header-footer-color);font-size:18px;left:30px;margin:0;position:absolute}div#\:\$p > svg > foreignObject > section header{top:21px}div#\:\$p > svg > foreignObject > section footer{bottom:21px}div#\:\$p > svg > foreignObject > section{--h1-color:light-dark(#246, #cee7ff);--header-footer-color:light-dark(hsla(0,0%,40%,.75), hsla(0,0%,60%,.75));--heading-strong-color:light-dark(#48c, #7bf);--paginate-color:light-dark(#777, #999);--base-size-4:4px;--base-size-8:8px;--base-size-16:16px;--base-size-24:24px;--base-size-40:40px;align-items:stretch;display:block;flex-flow:column nowrap;font-size:29px;height:720px;padding:78.5px;place-content:safe center center;width:1280px}div#\:\$p > svg > foreignObject > section{--marpit-root-font-size:29px}div#\:\$p > svg > foreignObject > section>:last-child,div#\:\$p > svg > foreignObject > section[data-footer]>:nth-last-child(2){margin-bottom:0}div#\:\$p > svg > foreignObject > section>:first-child,div#\:\$p > svg > foreignObject > section>header:first-child+*{margin-top:0}div#\:\$p > svg > foreignObject > section:after{bottom:21px;color:var(--paginate-color);font-size:24px;padding:0;position:absolute;right:30px}div#\:\$p > svg > foreignObject > section:after{--marpit-root-font-size:24px}div#\:\$p > svg > foreignObject > section[data-color] :is(h1, marp-h1),div#\:\$p > svg > foreignObject > section[data-color] :is(h2, marp-h2),div#\:\$p > svg > foreignObject > section[data-color] :is(h3, marp-h3),div#\:\$p > svg > foreignObject > section[data-color] :is(h4, marp-h4),div#\:\$p > svg > foreignObject > section[data-color] :is(h5, marp-h5),div#\:\$p > svg > foreignObject > section[data-color] :is(h6, marp-h6){color:currentcolor}div#\:\$p > svg > foreignObject > section img{max-width:70%!important;max-height:50vh!important;object-fit:contain!important;height:auto!important;display:block!important;margin:0 auto!important}div#\:\$p > svg > foreignObject > section{font-size:20px;overflow:hidden}div#\:\$p > svg > foreignObject > section{--marpit-root-font-size: 20px}div#\:\$p > svg > foreignObject > section :is(h1, marp-h1){font-size:1.8em}div#\:\$p > svg > foreignObject > section :is(h2, marp-h2){font-size:1.4em}div#\:\$p > svg > foreignObject > section :is(h3, marp-h3){font-size:1.2em}div#\:\$p > svg > foreignObject > section ul, div#\:\$p > svg > foreignObject > section ol{font-size:0.9em;margin-left:1em}div#\:\$p > svg > foreignObject > section li{margin-bottom:0.3em}div#\:\$p > svg > foreignObject > section :is(pre, marp-pre){font-size:0.7em;max-height:60vh;overflow-y:auto}div#\:\$p > svg > foreignObject > section code{font-size:0.85em}div#\:\$p > svg > foreignObject > section p{margin:0.5em 0}div#\:\$p > svg > foreignObject > section table{width:100%;max-width:100%;font-size:0.85em;border-collapse:collapse;margin:0.5em auto;table-layout:auto}div#\:\$p > svg > foreignObject > section th{background-color:#1e40af;color:white;padding:0.4em 0.6em;text-align:left;font-size:0.9em;border:1px solid #ddd}div#\:\$p > svg > foreignObject > section td{padding:0.4em 0.6em;border:1px solid #ddd;vertical-align:top;word-wrap:break-word;font-size:0.85em}div#\:\$p > svg > foreignObject > section tbody tr:nth-child(even){background-color:#f8f9fa}div#\:\$p > svg > foreignObject > section tbody tr:hover{background-color:#e9ecef}div#\:\$p > svg > foreignObject > section{padding:1em 2em;box-sizing:border-box}@media screen and (max-width: 1280px){div#\:\$p > svg > foreignObject > section table{font-size:0.75em}div#\:\$p > svg > foreignObject > section th, div#\:\$p > svg > foreignObject > section td{padding:0.3em 0.4em}}div#\:\$p > svg > foreignObject > section[data-marpit-advanced-background="background"]{columns:initial!important;display:block!important;padding:0!important}div#\:\$p > svg > foreignObject > section[data-marpit-advanced-background="background"]::before, div#\:\$p > svg > foreignObject > section[data-marpit-advanced-background="background"]::after, div#\:\$p > svg > foreignObject > section[data-marpit-advanced-background="content"]::before, div#\:\$p > svg > foreignObject > section[data-marpit-advanced-background="content"]::after{display:none!important}div#\:\$p > svg > foreignObject > section[data-marpit-advanced-background="background"] > div[data-marpit-advanced-background-container]{all:initial;display:flex;flex-direction:row;height:100%;overflow:hidden;width:100%}div#\:\$p > svg > foreignObject > section[data-marpit-advanced-background="background"] > div[data-marpit-advanced-background-container][data-marpit-advanced-background-direction="vertical"]{flex-direction:column}div#\:\$p > svg > foreignObject > section[data-marpit-advanced-background="background"][data-marpit-advanced-background-split] > div[data-marpit-advanced-background-container]{width:var(--marpit-advanced-background-split, 50%)}div#\:\$p > svg > foreignObject > section[data-marpit-advanced-background="background"][data-marpit-advanced-background-split="right"] > div[data-marpit-advanced-background-container]{margin-left:calc(100% - var(--marpit-advanced-background-split, 50%))}div#\:\$p > svg > foreignObject > section[data-marpit-advanced-background="background"] > div[data-marpit-advanced-background-container] > figure{all:initial;background-position:center;background-repeat:no-repeat;background-size:cover;flex:auto;margin:0}div#\:\$p > svg > foreignObject > section[data-marpit-advanced-background="background"] > div[data-marpit-advanced-background-container] > figure > figcaption{position:absolute;border:0;clip:rect(0, 0, 0, 0);height:1px;margin:-1px;overflow:hidden;padding:0;white-space:nowrap;width:1px}div#\:\$p > svg > foreignObject > section[data-marpit-advanced-background="content"], div#\:\$p > svg > foreignObject > section[data-marpit-advanced-background="pseudo"]{background:transparent!important}div#\:\$p > svg > foreignObject > section[data-marpit-advanced-background="pseudo"], div#\:\$p > svg[data-marpit-svg] > foreignObject[data-marpit-advanced-background="pseudo"]{pointer-events:none!important}div#\:\$p > svg > foreignObject > section[data-marpit-advanced-background-split]{width:100%;height:100%}
-</style></head><body><div class="bespoke-marp-osc"><button data-bespoke-marp-osc="prev" tabindex="-1" title="Previous slide">Previous slide</button><span data-bespoke-marp-osc="page"></span><button data-bespoke-marp-osc="next" tabindex="-1" title="Next slide">Next slide</button><button data-bespoke-marp-osc="fullscreen" tabindex="-1" title="Toggle fullscreen (f)">Toggle fullscreen</button><button data-bespoke-marp-osc="presenter" tabindex="-1" title="Open presenter view (p)">Open presenter view</button></div><div id=":$p"><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="1" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 1" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="1" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 1;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="30">
+</style></head><body><div class="bespoke-marp-osc"><button data-bespoke-marp-osc="prev" tabindex="-1" title="Previous slide">Previous slide</button><span data-bespoke-marp-osc="page"></span><button data-bespoke-marp-osc="next" tabindex="-1" title="Next slide">Next slide</button><button data-bespoke-marp-osc="fullscreen" tabindex="-1" title="Toggle fullscreen (f)">Toggle fullscreen</button><button data-bespoke-marp-osc="presenter" tabindex="-1" title="Open presenter view (p)">Open presenter view</button></div><div id=":$p"><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="1" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 1" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="1" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 1;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="29">
 <header>IF0099 - Sistemas Operativos I | Unidad 1</header>
 
 <h1 id="clase-2-evoluci%C3%B3n-y-componentes-del-so">Clase 2: Evolución y Componentes del SO</h1>
 <h2 id="de-las-tarjetas-perforadas-a-la-nube">De las tarjetas perforadas a la nube</h2>
 <footer>UNAULA - Ingeniería Informática - 2026-I</footer>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="2" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 1" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="2" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 1;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="30">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="2" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 1" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="2" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 1;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="29">
 <header>IF0099 - Sistemas Operativos I | Unidad 1</header>
 <h2 id="objetivos-de-la-clase">Objetivos de la Clase</h2>
 <p>Al finalizar esta clase, el estudiante será capaz de:</p>
-<ol>
-<li><strong>Describir</strong> la evolución histórica de los sistemas operativos</li>
-<li><strong>Identificar</strong> las generaciones de sistemas operativos</li>
-<li><strong>Explicar</strong> los componentes principales de un SO</li>
-<li><strong>Diferenciar</strong> modo usuario vs modo kernel</li>
-</ol>
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+<div style="padding: 15px; background: #dbeafe; border-radius: 10px;">
+<h3 id="%F0%9F%93%9A-hist%C3%B3rico"><img class="emoji" draggable="false" alt="📚" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4da.svg" data-marp-twemoji=""/> Histórico</h3>
+<table>
+<thead>
+<tr>
+<th>Objetivo</th>
+<th>Habilidad</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Describir</strong> evolución histórica</td>
+<td>Comprensión temporal</td>
+</tr>
+<tr>
+<td><strong>Identificar</strong> generaciones de SO</td>
+<td>Análisis de épocas</td>
+</tr>
+<tr>
+<td><strong>Relacionar</strong> contexto con diseño</td>
+<td>Síntesis</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div style="padding: 15px; background: #d1fae5; border-radius: 10px;">
+<h3 id="%F0%9F%8F%97%EF%B8%8F-t%C3%A9cnico"><img class="emoji" draggable="false" alt="🏗️" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f3d7.svg" data-marp-twemoji=""/> Técnico</h3>
+<table>
+<thead>
+<tr>
+<th>Objetivo</th>
+<th>Habilidad</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Explicar</strong> componentes principales</td>
+<td>Análisis estructural</td>
+</tr>
+<tr>
+<td><strong>Diferenciar</strong> modo usuario vs kernel</td>
+<td>Comparación crítica</td>
+</tr>
+<tr>
+<td><strong>Reconocer</strong> system calls clave</td>
+<td>Identificación</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <p><strong>Duración:</strong> 90 minutos</p>
 <footer>UNAULA - Ingeniería Informática - 2026-I</footer>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="3" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 1" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="3" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 1;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="30">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="3" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 1" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="3" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 1;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="29">
 <header>IF0099 - Sistemas Operativos I | Unidad 1</header>
 <h2 id="agenda">Agenda</h2>
 <ol>
@@ -40,25 +86,54 @@
 </ol>
 <footer>UNAULA - Ingeniería Informática - 2026-I</footer>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="4" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 1" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="4" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 1;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="30">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="4" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 1" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="4" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 1;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="29">
 <header>IF0099 - Sistemas Operativos I | Unidad 1</header>
 <h2 id="l%C3%ADnea-de-tiempo-de-los-so">Línea de Tiempo de los SO</h2>
 <h3 id="%C2%BFpor-qu%C3%A9-estudiar-la-evoluci%C3%B3n">¿Por qué estudiar la evolución?</h3>
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+<div>
+<h3 id="%F0%9F%93%9A-valor-de-la-historia"><img class="emoji" draggable="false" alt="📚" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4da.svg" data-marp-twemoji=""/> Valor de la Historia</h3>
 <p>Entender la historia nos ayuda a:</p>
-<ul>
-<li><img class="emoji" draggable="false" alt="📚" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4da.svg" data-marp-twemoji=""/> Comprender decisiones de diseño actuales</li>
-<li><img class="emoji" draggable="false" alt="🔍" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f50d.svg" data-marp-twemoji=""/> Aprender de errores pasados</li>
-<li><img class="emoji" draggable="false" alt="🚀" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f680.svg" data-marp-twemoji=""/> Anticipar tendencias futuras</li>
-<li><img class="emoji" draggable="false" alt="💡" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4a1.svg" data-marp-twemoji=""/> Valorar la complejidad actual</li>
-</ul>
-<p><strong>Cada generación resolvió problemas específicos de su época.</strong></p>
-<p><img src="../../assets/infografias/so-evolucion-timeline.png" alt="Evolución de los Sistemas Operativos" /></p>
-<h3 id="hitos-clave-en-la-evoluci%C3%B3n">Hitos Clave en la Evolución</h3>
+<table>
+<thead>
+<tr>
+<th>Beneficio</th>
+<th>Explicación</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Comprender diseño actual</strong></td>
+<td>Las decisiones del pasado moldean el presente</td>
+</tr>
+<tr>
+<td><strong>Aprender de errores</strong></td>
+<td>No repetir fracasos históricos</td>
+</tr>
+<tr>
+<td><strong>Anticipar tendencias</strong></td>
+<td>Patrones se repiten</td>
+</tr>
+<tr>
+<td><strong>Valorar complejidad</strong></td>
+<td>Lo que damos por sentido tomó décadas</td>
+</tr>
+</tbody>
+</table>
+<h3 id="%F0%9F%8E%AF-motivaci%C3%B3n-clave"><img class="emoji" draggable="false" alt="🎯" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f3af.svg" data-marp-twemoji=""/> Motivación Clave</h3>
+<blockquote>
+<p>&quot;Aquellos que no pueden recordar el pasado están condenados a repetirlo.&quot;<br />
+— George Santayana</p>
+</blockquote>
+<p><strong>En SO:</strong> Cada generación resolvió problemas específicos de su época.</p>
+</div>
+<div>
+<h3 id="%F0%9F%93%8A-hitos-clave-en-la-evoluci%C3%B3n"><img class="emoji" draggable="false" alt="📊" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4ca.svg" data-marp-twemoji=""/> Hitos Clave en la Evolución</h3>
 <table>
 <thead>
 <tr>
 <th>Período</th>
-<th>Avance Tecnológico</th>
+<th>Avance</th>
 <th>Problema Resuelto</th>
 </tr>
 </thead>
@@ -66,233 +141,1074 @@
 <tr>
 <td><strong>1940s</strong></td>
 <td>Sin SO</td>
-<td>Programación manual con cables</td>
+<td>Programación con cables</td>
 </tr>
 <tr>
 <td><strong>1950s</strong></td>
-<td>Batch processing</td>
-<td>Automatizar secuencia de trabajos</td>
+<td>Batch</td>
+<td>Automatizar trabajos</td>
 </tr>
 <tr>
 <td><strong>1960s</strong></td>
 <td>Multiprogramación</td>
-<td>CPU ociosa durante E/S</td>
+<td>CPU ociosa en E/S</td>
 </tr>
 <tr>
 <td><strong>1970s</strong></td>
 <td>Time-sharing</td>
-<td>Múltiples usuarios interactivos</td>
+<td>Usuarios interactivos</td>
 </tr>
 <tr>
 <td><strong>1980s</strong></td>
-<td>GUI personal</td>
-<td>Computación accesible para todos</td>
+<td>GUI PC</td>
+<td>Computación masiva</td>
 </tr>
 <tr>
 <td><strong>2000s+</strong></td>
-<td>Virtualización/cloud</td>
-<td>Escalabilidad y servicios on-demand</td>
+<td>Cloud/VM</td>
+<td>Escalabilidad</td>
 </tr>
 </tbody>
 </table>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code>1940      1960      1980      2000      2020
+  │         │         │         │         │
+  ▼         ▼         ▼         ▼         ▼
+Sin SO  →  Batch  →  Multi   →   PC    → Cloud
+                    prog           GUI      VMs
+</code></pre>
+<p><strong>Insight:</strong> Cada década trajo un paradigma nuevo impulsado por hardware más poderoso.</p>
+</div>
+</div>
 <footer>UNAULA - Ingeniería Informática - 2026-I</footer>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="5" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 1" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="5" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 1;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="30">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="5" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 1" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="5" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 1;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="29">
 <header>IF0099 - Sistemas Operativos I | Unidad 1</header>
 <h2 id="generaci%C3%B3n-0-sin-sistema-operativo-1940-1950">Generación 0: Sin Sistema Operativo (1940-1950)</h2>
-<h3 id="caracter%C3%ADsticas">Características</h3>
-<ul>
-<li><strong>ENIAC, UNIVAC</strong>: Primeras computadoras</li>
-<li>Programación con <strong>cables y switches</strong></li>
-<li><strong>Una persona</strong> = un programa = toda la máquina</li>
-<li>Sin concepto de &quot;software de sistema&quot;</li>
-</ul>
-<pre is="marp-pre" data-auto-scaling="downscale-only"><code>┌─────────────────────────────────┐
-│    PROGRAMADOR                  │
-│         │                       │
-│         ▼                       │
-│  ┌─────────────┐               │
-│  │  HARDWARE   │ (directo)     │
-│  └─────────────┘               │
-└─────────────────────────────────┘
+<h3 id="la-era-de-los-gigantes-computacionales">La era de los &quot;gigantes&quot; computacionales</h3>
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+<div>
+<h3 id="%F0%9F%94%8C-caracter%C3%ADsticas"><img class="emoji" draggable="false" alt="🔌" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f50c.svg" data-marp-twemoji=""/> Características</h3>
+<table>
+<thead>
+<tr>
+<th>Aspecto</th>
+<th>Descripción</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Hardware</strong></td>
+<td>ENIAC (1945), UNIVAC I (1951)</td>
+</tr>
+<tr>
+<td><strong>Tamaño</strong></td>
+<td>Ocupaban habitaciones completas</td>
+</tr>
+<tr>
+<td><strong>Programación</strong></td>
+<td>Cables y switches físicos</td>
+</tr>
+<tr>
+<td><strong>Uso</strong></td>
+<td>Cálculos balísticos, censos</td>
+</tr>
+<tr>
+<td><strong>Costo</strong></td>
+<td>Millones de dólares</td>
+</tr>
+</tbody>
+</table>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code>    ┌──────────────────────────────┐
+    │                              │
+    │    <img class="emoji" draggable="false" alt="🏭" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f3ed.svg" data-marp-twemoji=""/> ENIAC (1945)           │
+    │    30 toneladas              │
+    │    17,468 válvulas            │
+    │    174 kW de potencia         │
+    │                              │
+    │   [Programador cableando]     │
+    │         │                    │
+    │         ▼                    │
+    │    ┌─────────────┐            │
+    │    │  SWITCHES    │           │
+    │    │  CABLES      │           │
+    │    └─────────────┘            │
+    └──────────────────────────────┘
 </code></pre>
-<p><strong>Problema:</strong> Desperdicio de tiempo y recursos</p>
+<h3 id="%E2%9A%A0%EF%B8%8F-problemas"><img class="emoji" draggable="false" alt="⚠️" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/26a0.svg" data-marp-twemoji=""/> Problemas</h3>
+<ul>
+<li><strong>Tiempo perdido</strong> reconectando cables</li>
+<li><strong>Errores humanos</strong> frecuentes</li>
+<li><strong>Un programa</strong> = toda la máquina</li>
+<li><strong>Sin concepto</strong> de &quot;software de sistema&quot;</li>
+</ul>
+</div>
+<div>
+<h3 id="%F0%9F%92%A1-insight-hist%C3%B3rico"><img class="emoji" draggable="false" alt="💡" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4a1.svg" data-marp-twemoji=""/> Insight Histórico</h3>
+<blockquote>
+<p>&quot;Programar la ENIAC era como reconectar una central telefónica<br />
+cada vez que querías hacer una llamada.&quot;</p>
+</blockquote>
+<h3 id="%F0%9F%93%8A-comparaci%C3%B3n"><img class="emoji" draggable="false" alt="📊" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4ca.svg" data-marp-twemoji=""/> Comparación</h3>
+<table>
+<thead>
+<tr>
+<th>Métrica</th>
+<th>1940s</th>
+<th>Hoy</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Peso</td>
+<td>30 toneladas</td>
+<td>Gramos</td>
+</tr>
+<tr>
+<td>Energía</td>
+<td>174 kW</td>
+<td>5-15 W</td>
+</tr>
+<tr>
+<td>Velocidad</td>
+<td>~5,000 ops/s</td>
+<td>~100,000 M ops/s</td>
+</tr>
+<tr>
+<td>Costo</td>
+<td>~$500,000</td>
+<td>~$500</td>
+</tr>
+</tbody>
+</table>
+<h3 id="%F0%9F%8E%AF-%C2%BFpor-qu%C3%A9-estudiarnos"><img class="emoji" draggable="false" alt="🎯" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f3af.svg" data-marp-twemoji=""/> ¿Por qué estudiarnos?</h3>
+<ul>
+<li><strong>Origen de conceptos:</strong> todavía usamos herencia de esta época</li>
+<li><strong>Contexto:</strong> entender por qué los SO surgieron como respuesta a estos problemas</li>
+<li><strong>Agradecimiento:</strong> valorar lo fácil que es programar hoy</li>
+</ul>
+</div>
+</div>
+<div style="text-align: center; margin-top: 20px; padding: 15px; background: #fef3c7; border-radius: 10px;">
+<p><strong><img class="emoji" draggable="false" alt="💡" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4a1.svg" data-marp-twemoji=""/> Lección:</strong> La necesidad es la madre de la invención. Estos problemas extremos impulsaron la creación de los primeros sistemas operativos.</p>
+</div>
 <footer>UNAULA - Ingeniería Informática - 2026-I</footer>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="6" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 1" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="6" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 1;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="30">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="6" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 1" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="6" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 1;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="29">
 <header>IF0099 - Sistemas Operativos I | Unidad 1</header>
 <h2 id="primera-generaci%C3%B3n-procesamiento-por-lotes-1950-1965">Primera Generación: Procesamiento por Lotes (1950-1965)</h2>
-<h3 id="batch-processing">Batch Processing</h3>
-<pre is="marp-pre" data-auto-scaling="downscale-only"><code>┌─────────────────────────────────────────┐
-│ 1. Programador escribe código en papel  │
-│              ↓                          │
-│ 2. Operador perfora tarjetas            │
-│              ↓                          │
-│ 3. Tarjetas se acumulan en &quot;lote&quot;       │
-│              ↓                          │
-│ 4. Computador procesa todo el lote      │
-│              ↓                          │
-│ 5. Resultados en impresora (horas después)│
-└─────────────────────────────────────────┘
+<h3 id="batch-processing-automatizando-el-flujo">Batch Processing: Automatizando el flujo</h3>
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+<div>
+<h3 id="%F0%9F%93%A6-el-flujo-del-batch"><img class="emoji" draggable="false" alt="📦" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4e6.svg" data-marp-twemoji=""/> El flujo del batch</h3>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code>PROGRAMADOR           OPERADOR           COMPUTADORA
+    │                    │                    │
+    │ Escribe            │ Perfora            │
+    │ en papel           │ tarjetas           │
+    ▼                    ▼                    ▼
+┌────────┐          ┌────────┐          ┌────────┐
+│ CÓDIGO  │          │TARJETAS│          │  LOTE  │
+│ FUENTE │          │PERFORADAS│         │ACUMU-  │
+└────────┘          └────────┘          │ LADO   │
+                                        └───┬────┘
+                                            │
+                       (horas después)      ▼
+                                            │
+                                        ┌────────┐
+                                        │SALIDA  │
+                                        │IMPRESA │
+                                        └────────┘
 </code></pre>
-<h3 id="primer-so-gm-naa-io-1956---general-motors">Primer SO: <strong>GM-NAA I/O</strong> (1956) - General Motors</h3>
+<h3 id="%F0%9F%8E%AF-ventajas-del-sistema-de-lotes"><img class="emoji" draggable="false" alt="🎯" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f3af.svg" data-marp-twemoji=""/> Ventajas del Sistema de Lotes</h3>
+<table>
+<thead>
+<tr>
+<th>Aspecto</th>
+<th>Sin Sistema</th>
+<th>Con Batch</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Preparación</strong></td>
+<td>Manual</td>
+<td>Automatizada</td>
+</tr>
+<tr>
+<td><strong>Throughput</strong></td>
+<td>1 trabajo/hora</td>
+<td>Varios/hora</td>
+</tr>
+<tr>
+<td><strong>Eficiencia</strong></td>
+<td>CPU ociosa mucho</td>
+<td>CPU casi siempre ocupada</td>
+</tr>
+<tr>
+<td><strong>Errores</strong></td>
+<td>Frecuentes</td>
+<td>Detectados antes</td>
+</tr>
+</tbody>
+</table>
+<h3 id="%E2%9A%99%EF%B8%8F-primer-so-gm-naa-io-1956"><img class="emoji" draggable="false" alt="⚙️" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2699.svg" data-marp-twemoji=""/> Primer SO: GM-NAA I/O (1956)</h3>
+<ul>
+<li><strong>Creado por:</strong> General Motors e IBM</li>
+<li><strong>Innovación:</strong> Primer SO de producción real</li>
+<li><strong>Función:</strong> Automatizar procesamiento de nómina de GM</li>
+<li><strong>Impacto:</strong> Probó que los SO valían la inversión</li>
+</ul>
+</div>
+<div>
+<h3 id="%F0%9F%8F%AD-secuencia-de-un-job-batch"><img class="emoji" draggable="false" alt="🏭" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f3ed.svg" data-marp-twemoji=""/> Secuencia de un Job Batch</h3>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code>┌────────────────────────────────────────┐
+│ 1. PROGRAMADOR                           │
+│    Escribe código en FORTRAN/COBOL      │
+└────────────┬───────────────────────────┘
+             │ Tarjetas perforadas
+             ▼
+┌────────────────────────────────────────┐
+│ 2. OPERADOR                            │
+│    Prepara tarjetas y tarjetas          │
+│    Incluye: código + datos + control    │
+└────────────┬───────────────────────────┘
+             │ Se acumulan en lote
+             ▼
+┌────────────────────────────────────────┐
+│ 3. LECTOR DE TARJETAS                  │
+│    Lee tarjetas a alta velocidad        │
+└────────────┬───────────────────────────┘
+             │ Datos en memoria
+             ▼
+┌────────────────────────────────────────┐
+│ 4. COMPUTADORA PROCESA                │
+│    Ejecuta secuencialmente             │
+│    Uno tras otro                       │
+└────────────┬───────────────────────────┘
+             │ Resultados listos
+             ▼
+┌────────────────────────────────────────┐
+│ 5. IMPRESORA                           │
+│    Salida en papel (horas después)     │
+└────────────────────────────────────────┘
+</code></pre>
+<h3 id="%F0%9F%93%8A-limitaciones"><img class="emoji" draggable="false" alt="📊" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4ca.svg" data-marp-twemoji=""/> Limitaciones</h3>
+<table>
+<thead>
+<tr>
+<th>Problema</th>
+<th>Explicación</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Sin interactividad</strong></td>
+<td>No puedes corregir errores en tiempo real</td>
+</tr>
+<tr>
+<td><strong>Turnaround largo</strong></td>
+<td>Horas o días para resultados</td>
+</tr>
+<tr>
+<td><strong>Sin debugging</strong></td>
+<td>Casi imposible encontrar bugs</td>
+</tr>
+<tr>
+<td><strong>Ineficiente</strong></td>
+<td>CPU espera E/S del siguiente job</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div style="text-align: center; margin-top: 20px; padding: 15px; background: #dbeafe; border-radius: 10px;">
+<p><strong><img class="emoji" draggable="false" alt="💡" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4a1.svg" data-marp-twemoji=""/> Evolución clave:</strong> El concepto de &quot;cola de trabajos&quot; (job queue) nació aquí y todavía lo usamos hoy (printers, batch jobs).</p>
+</div>
 <footer>UNAULA - Ingeniería Informática - 2026-I</footer>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="7" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 1" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="7" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 1;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="30">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="7" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 1" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="7" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 1;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="29">
 <header>IF0099 - Sistemas Operativos I | Unidad 1</header>
 <h2 id="segunda-generaci%C3%B3n-multiprogramaci%C3%B3n-1965-1980">Segunda Generación: Multiprogramación (1965-1980)</h2>
-<h3 id="m%C3%BAltiples-programas-en-memoria">Múltiples programas en memoria</h3>
+<h3 id="%F0%9F%8E%AF-el-problema-cpu-esperando-es"><img class="emoji" draggable="false" alt="🎯" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f3af.svg" data-marp-twemoji=""/> El problema: CPU esperando E/S</h3>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code>SIN MULTIPROGRAMACIÓN        CON MULTIPROGRAMACIÓN
+┌──────────────────┐         ┌──────────────────┐
+│ CPU: 10% ocupada │         │ CPU: 95% ocupada  │
+│ E/S: 90% tiempo  │         │ E/S: 5% tiempo   │
+└──────────────────┘         └──────────────────┘
+
+Porque cuando un programa      Ahora CPU NO espera:
+lee del disco, CPU ociosa     - Mientras A lee, B corre
+porque no hay otro programa    - Mientras B escribe, C corre
+que ejecutar.
+</code></pre>
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+<div>
+<h3 id="%F0%9F%92%BE-memoria-con-m%C3%BAltiples-programas"><img class="emoji" draggable="false" alt="💾" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4be.svg" data-marp-twemoji=""/> Memoria con Múltiples Programas</h3>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code>┌────────────────────────────────┐
 │         MEMORIA RAM            │
 ├────────────────────────────────┤
 │  Sistema Operativo             │
 ├────────────────────────────────┤
-│  Programa A (esperando E/S)    │
+│  Programa A                     │ ← esperando E/S
+│  (en espera de disco)           │
 ├────────────────────────────────┤
-│  Programa B (ejecutando)       │ ← CPU
+│  Programa B  <img class="emoji" draggable="false" alt="◀" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/25c0.svg" data-marp-twemoji=""/>─────► CPU        │ ← ejecutando ahora
+│  (usa CPU activamente)          │
 ├────────────────────────────────┤
-│  Programa C (esperando E/S)    │
+│  Programa C                     │ ← esperando E/S
+│  (en espera de red)             │
 └────────────────────────────────┘
+
+La CPU cambia de programa cuando
+uno hace E/S. A = B = C = A = B ...
 </code></pre>
-<h3 id="sistemas-importantes">Sistemas importantes</h3>
+<h3 id="%F0%9F%9A%80-innovaci%C3%B3n-clave"><img class="emoji" draggable="false" alt="🚀" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f680.svg" data-marp-twemoji=""/> Innovación Clave</h3>
+<table>
+<thead>
+<tr>
+<th>Aspecto</th>
+<th>Antes</th>
+<th>Después</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Uso de CPU</strong></td>
+<td>~10-20%</td>
+<td>~80-95%</td>
+</tr>
+<tr>
+<td><strong>Throughput</strong></td>
+<td>1 job/hora</td>
+<td>3-5 jobs/hora</td>
+</tr>
+<tr>
+<td><strong>Eficiencia</strong></td>
+<td>Muy baja</td>
+<td>Muy alta</td>
+</tr>
+<tr>
+<td><strong>Costo</strong></td>
+<td>Alto por job</td>
+<td>Bajo por job</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div>
+<h3 id="%F0%9F%8F%AD-sistemas-importantes"><img class="emoji" draggable="false" alt="🏭" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f3ed.svg" data-marp-twemoji=""/> Sistemas Importantes</h3>
+<h4 id="ibm-os360-1964">IBM OS/360 (1964)</h4>
 <ul>
-<li><strong>IBM OS/360</strong> (1964)</li>
-<li><strong>MULTICS</strong> (1969) - Precursor de UNIX</li>
+<li><strong>Primer SO de &quot;propósito general&quot;</strong></li>
+<li><strong>Familia de SOs</strong> para diferentes hardware</li>
+<li><strong>Conceptos introducidos:</strong>
+<ul>
+<li>Job control language (JCL)</li>
+<li>Spooling (Simultaneous Peripheral Operations On-Line)</li>
+<li>Multiprogramación real</li>
 </ul>
+</li>
+</ul>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code>OS/360 fue el proyecto de software más
+grande de la época: 5,000 personas-año
+</code></pre>
+<h4 id="multics-1969">MULTICS (1969)</h4>
+<ul>
+<li><strong>Proyecto conjunto:</strong> Bell Labs, MIT, GE</li>
+<li><strong>Objetivo:</strong> SO &quot;universal&quot; para todas las necesidades</li>
+<li><strong>Resultado:</strong> Demasiado complejo, proyecto cancelado</li>
+<li><strong>Legado:</strong> Ideas que inspiraron UNIX</li>
+</ul>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code>MULTICS era &quot;todo para todos&quot;:
+- Muy potente
+- Muy complejo
+- Muy caro
+- Falló por sobre-ingeniería
+</code></pre>
+<h3 id="%F0%9F%92%A1-insight"><img class="emoji" draggable="false" alt="💡" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4a1.svg" data-marp-twemoji=""/> Insight</h3>
+<blockquote>
+<p>&quot;La perfección se alcanza no cuando no hay nada más que añadir,<br />
+sino cuando no hay nada más que quitar.&quot;<br />
+— Antoine de Saint-Exupéry</p>
+</blockquote>
+<p><strong>MULTICS añadió de todo. UNIX eliminó hasta lo esencial.</strong></p>
+</div>
+</div>
+<div style="text-align: center; margin-top: 20px; padding: 15px; background: #d1fae5; border-radius: 10px;">
+<p><strong><img class="emoji" draggable="false" alt="💡" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4a1.svg" data-marp-twemoji=""/> Evolución clave:</strong> Multiprogramación = El kernel cambia de programa activo cada milisegundo, maximizando uso de CPU.</p>
+</div>
 <footer>UNAULA - Ingeniería Informática - 2026-I</footer>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="8" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 1" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="8" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 1;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="30">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="8" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 1" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="8" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 1;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="29">
 <header>IF0099 - Sistemas Operativos I | Unidad 1</header>
 <h2 id="nacimiento-de-unix-1969">Nacimiento de UNIX (1969)</h2>
-<h3 id="ken-thompson-y-dennis-ritchie---bell-labs">Ken Thompson y Dennis Ritchie - Bell Labs</h3>
-<pre is="marp-pre" data-auto-scaling="downscale-only"><code>      ┌─────────────────┐
-      │    MULTICS      │ (muy complejo)
-      │    (fallido)    │
-      └────────┬────────┘
-               │ Thompson y Ritchie
-               │ simplifican
-               ▼
-      ┌─────────────────┐
-      │     UNIX        │
-      │ &quot;Una cosa bien&quot; │
-      └─────────────────┘
+<h3 id="%F0%9F%93%96-la-historia-de-c%C3%B3mo-un-proyecto-fallido-cre%C3%B3-el-so-m%C3%A1s-influyente"><img class="emoji" draggable="false" alt="📖" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4d6.svg" data-marp-twemoji=""/> La historia de cómo un proyecto fallido creó el SO más influyente</h3>
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+<div>
+<h3 id="%F0%9F%94%AC-el-contexto-multics"><img class="emoji" draggable="false" alt="🔬" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f52c.svg" data-marp-twemoji=""/> El contexto: MULTICS</h3>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code>┌─────────────────────────────────────┐
+│           MULTICS (1964-1969)        │
+│                                     │
+│  Objetivo: SO &quot;perfecto&quot; universal   │
+│  Problema: Demasiado complejo        │
+│  Resultado: Proyecto cancelado      │
+│                                     │
+│  Bell Labs se retira del proyecto   │
+└─────────────────────────────────────┘
+           │ Ken Thompson, Dennis Ritchie
+           │ decepcionados, deciden
+           │ crear su propio SO minimalista
+           ▼
+┌─────────────────────────────────────┐
+│           UNIX (1969)               │
+│                                     │
+│  Filosofía: &quot;Haz una cosa bien&quot;     │
+│  Simple, elegante, poderoso          │
+└─────────────────────────────────────┘
 </code></pre>
-<h3 id="innovaciones-de-unix">Innovaciones de UNIX:</h3>
-<ul>
-<li>Escrito en <strong>C</strong> (portable)</li>
-<li>Filosofía: &quot;Haz una cosa y hazla bien&quot;</li>
-<li>Todo es un archivo</li>
-<li>Base de Linux, macOS, Android</li>
-</ul>
+<h3 id="%F0%9F%8E%AF-los-creadores"><img class="emoji" draggable="false" alt="🎯" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f3af.svg" data-marp-twemoji=""/> Los Creadores</h3>
+<table>
+<thead>
+<tr>
+<th>Persona</th>
+<th>Rol</th>
+<th>Contribución</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Ken Thompson</strong></td>
+<td>Arquitecto principal</td>
+<td>Diseñó UNIX, escribió B</td>
+</tr>
+<tr>
+<td><strong>Dennis Ritchie</strong></td>
+<td>Creador de C</td>
+<td>Inventó C, reescribió UNIX</td>
+</tr>
+<tr>
+<td><strong>Douglas McIlroy</strong></td>
+<td>Filosofía</td>
+<td>&quot;Pipes&quot;, filosofía UNIX</td>
+</tr>
+<tr>
+<td><strong>Brian Kernighan</strong></td>
+<td>Documentación</td>
+<td>Explicó UNIX al mundo</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div>
+<h3 id="%F0%9F%92%A1-innovaciones-revolucionarias"><img class="emoji" draggable="false" alt="💡" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4a1.svg" data-marp-twemoji=""/> Innovaciones Revolucionarias</h3>
+<h4 id="1-escrito-en-c-portabilidad">1. Escrito en C (Portabilidad)</h4>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code>ANTES (SO en ensamblador):
+┌──────────────────┐
+│ SO IBM 360       │ → Solo corre en IBM 360
+│ (ensamblador)    │
+└──────────────────┘
+
+DESPUÉS (UNIX en C):
+┌──────────────────┐        ┌──────────────┐
+│ UNIX en C        │   ──►  │ PDP-11       │
+└──────────────────┘        │ VAX          │
+                            │ x86          │
+                            │ ARM          │
+                            └──────────────┘
+
+UN SO corre en CUALQUIER hardware
+con solo recompilar.
+</code></pre>
+<h4 id="2-filosof%C3%ADa-haz-una-cosa-y-hazla-bien">2. Filosofía &quot;Haz una cosa y hazla bien&quot;</h4>
+<table>
+<thead>
+<tr>
+<th>Programa</th>
+<th>Función</th>
+<th>Combinar</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ls</code></td>
+<td>Listar archivos</td>
+<td><code>ls | grep .txt</code></td>
+</tr>
+<tr>
+<td><code>grep</code></td>
+<td>Buscar texto</td>
+<td><code>cat file | grep error</code></td>
+</tr>
+<tr>
+<td><code>cat</code></td>
+<td>Mostrar archivo</td>
+<td><code>cat file | wc -l</code></td>
+</tr>
+<tr>
+<td><code>wc</code></td>
+<td>Contar líneas</td>
+<td><code>ls | wc -l</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Pequeñas herramientas que se combinan = Poder infinito</strong></p>
+<h4 id="3-todo-es-un-archivo">3. &quot;Todo es un archivo&quot;</h4>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code>/archivo/disco
+/dispositivo/teclado
+/socket/red
+/todo/es/un/archivo
+</code></pre>
+<p>Abstracción elegante y uniforme.</p>
+<h4 id="4-herencia-que-define-el-mundo-actual">4. Herencia que define el mundo actual</h4>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code>UNIX (1969)
+   │
+   ├───→ Linux (1991) → Servidores, Android, IoT
+   ├───→ BSD → macOS, iOS
+   ├───→ Minix → Educación
+   └───→ Plan 9 → Inspiración para Go
+</code></pre>
+<p><strong>El 99% de internet corre descendientes de UNIX.</strong></p>
+</div>
+</div>
+<div style="text-align: center; margin-top: 20px; padding: 15px; background: #fef3c7; border-radius: 10px;">
+<p><strong><img class="emoji" draggable="false" alt="🎯" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f3af.svg" data-marp-twemoji=""/> Lección:</strong> A veces, un fracaso (MULTICS) conduce a un éxito aún mayor (UNIX). La simplicidad gana.</p>
+</div>
 <footer>UNAULA - Ingeniería Informática - 2026-I</footer>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="9" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 1" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="9" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 1;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="30">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="9" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 1" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="9" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 1;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="29">
 <header>IF0099 - Sistemas Operativos I | Unidad 1</header>
 <h2 id="tercera-generaci%C3%B3n-tiempo-compartido-1970-1990">Tercera Generación: Tiempo Compartido (1970-1990)</h2>
-<h3 id="time-sharing-m%C3%BAltiples-usuarios-simult%C3%A1neos">Time-Sharing: Múltiples usuarios simultáneos</h3>
-<pre is="marp-pre" data-auto-scaling="downscale-only"><code>Usuario 1 ──┐
-            │
-Usuario 2 ──┼──→ [SO Time-Sharing] ──→ [CPU]
-            │         │
-Usuario 3 ──┘    Reparte tiempo
-                 en &quot;tajadas&quot;
+<h3 id="%E2%8F%B1%EF%B8%8F-time-sharing-interactividad-para-m%C3%BAltiples-usuarios"><img class="emoji" draggable="false" alt="⏱️" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/23f1.svg" data-marp-twemoji=""/> Time-Sharing: Interactividad para múltiples usuarios</h3>
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+<div>
+<h3 id="%F0%9F%92%A1-el-concepto-tajadas-de-tiempo"><img class="emoji" draggable="false" alt="💡" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4a1.svg" data-marp-twemoji=""/> El concepto: &quot;Tajadas&quot; de tiempo</h3>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code>CPU de 1 segundo se divide en &quot;tajadas&quot;:
+
+┌─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┐
+│100ms│100ms│100ms│100ms│100ms│100ms│100ms│100ms│100ms│
+└──┬──┴──┬──┴──┬──┴──┬──┴──┬──┴──┬──┴──┬──┴──┬──┘
+   │   │   │   │   │   │   │   │   │
+   ▼   ▼   ▼   ▼   ▼   ▼   ▼   ▼   ▼   ▼
+Usuario Usuario Usuario Usuario Usuario Usuario Usuario
+  1      2      3      4      5      6      7      8
+
+Cada usuario tiene la ILLUSIÓN de
+exclusividad, pero comparten la CPU.
 </code></pre>
-<h3 id="sistemas-importantes-1">Sistemas importantes:</h3>
-<ul>
-<li><strong>UNIX</strong> (1969-presente)</li>
-<li><strong>VMS</strong> (DEC)</li>
-<li><strong>CP/M</strong> (microcomputadores)</li>
-</ul>
+<h3 id="%F0%9F%8E%AF-problema-resuelto"><img class="emoji" draggable="false" alt="🎯" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f3af.svg" data-marp-twemoji=""/> Problema Resuelto</h3>
+<table>
+<thead>
+<tr>
+<th>Antes (Batch)</th>
+<th>Después (Time-Sharing)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Horas de espera</td>
+<td>Respuesta inmediata</td>
+</tr>
+<tr>
+<td>Sin interactividad</td>
+<td>Interactivo</td>
+</tr>
+<tr>
+<td>Un usuario a la vez</td>
+<td>Decenas de usuarios</td>
+</tr>
+<tr>
+<td>Debugging difícil</td>
+<td>Debugging en tiempo real</td>
+</tr>
+</tbody>
+</table>
+<h3 id="%E2%9A%99%EF%B8%8F-c%C3%B3mo-funciona"><img class="emoji" draggable="false" alt="⚙️" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2699.svg" data-marp-twemoji=""/> Cómo funciona</h3>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code>1. Usuario presiona tecla
+   ↓
+2. SO guarda contexto del programa actual
+   ↓
+3. SO carga programa del usuario
+   ↓
+4. Usuario tiene CPU por su &quot;tajada&quot;
+   ↓
+5. SO interrumpe y cambia a siguiente usuario
+   ↓
+6. (Repetir muy rápido)
+
+Todo esto ocurre en milisegundos.
+</code></pre>
+</div>
+<div>
+<h3 id="%F0%9F%8F%9B%EF%B8%8F-sistemas-importantes"><img class="emoji" draggable="false" alt="🏛️" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f3db.svg" data-marp-twemoji=""/> Sistemas Importantes</h3>
+<h4 id="unix-1969-presente---el-est%C3%A1ndar">UNIX (1969-presente) - El estándar</h4>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code>Características innovadoras:
+- Time-sharing real
+- Jerarquía de archivos
+- Permisos de usuario
+- Shell programable
+- Todo es un archivo
+- Escrito en C (portable)
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Año</th>
+<th>Versión</th>
+<th>Innovación</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1969</td>
+<td>UNIX v1</td>
+<td>Primer sistema time-sharing</td>
+</tr>
+<tr>
+<td>1971</td>
+<td>UNIX v4</td>
+<td>Pipes (comunicación entre procesos)</td>
+</tr>
+<tr>
+<td>1973</td>
+<td>UNIX v5</td>
+<td>Primera versión portátil</td>
+</tr>
+<tr>
+<td>1977</td>
+<td>BSD</td>
+<td>Berkeley sockets (red)</td>
+</tr>
+<tr>
+<td>1983</td>
+<td>System V</td>
+<td>IPC System V, semáforos</td>
+</tr>
+</tbody>
+</table>
+<h4 id="vms-1978---virtual-memory-system">VMS (1978) - Virtual Memory System</h4>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code>DEC VAX/VMS fue el SO más influyente
+de los años 80 en entornos académicos
+y de ingeniería.
+
+Características:
+- Clustering (varios computadores como uno)
+- Sistema de archivos robusto
+- DDCMP (protocolo de red)
+- Impacto: Influenció Windows NT
+</code></pre>
+<h4 id="cpm-1974---microprocesadores">CP/M (1974) - Microprocesadores</h4>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code>Gary Kildall crea CP/M para microprocesadores
+Intel 8080.
+
+Características:
+- SO simple para 8-bit
+- API consistente
+- Se convirtió en estándar de facto
+- Base para MS-DOS
+
+Impacto: Popularizó computación personal
+</code></pre>
+<h3 id="%F0%9F%93%8A-comparativa-de-sistemas-de-los-70s"><img class="emoji" draggable="false" alt="📊" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4ca.svg" data-marp-twemoji=""/> Comparativa de Sistemas de los 70s</h3>
+<table>
+<thead>
+<tr>
+<th>Sistema</th>
+<th>Hardware</th>
+<th>Usuarios</th>
+<th>Uso principal</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>UNIX</td>
+<td>PDP-11, VAX</td>
+<td>~50-100</td>
+<td>Academia, investigación</td>
+</tr>
+<tr>
+<td>VMS</td>
+<td>VAX</td>
+<td>~100</td>
+<td>Empresas, ingeniería</td>
+</tr>
+<tr>
+<td>CP/M</td>
+<td>8080, Z80</td>
+<td>1</td>
+<td>Oficina, juegos tempranos</td>
+</tr>
+<tr>
+<td>DOS</td>
+<td>8086</td>
+<td>1</td>
+<td>Jogos, ofimática</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div style="text-align: center; margin-top: 20px; padding: 15px; background: #dbeafe; border-radius: 10px;">
+<p><strong><img class="emoji" draggable="false" alt="💡" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4a1.svg" data-marp-twemoji=""/> Evolución clave:</strong> Time-sharing + Terminales remotas = Primera forma de &quot;computación en la nube&quot; (mainframes con terminales tontas).</p>
+</div>
 <footer>UNAULA - Ingeniería Informática - 2026-I</footer>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="10" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 1" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="10" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 1;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="30">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="10" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 1" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="10" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 1;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="29">
 <header>IF0099 - Sistemas Operativos I | Unidad 1</header>
 <h2 id="cuarta-generaci%C3%B3n-computadoras-personales-1980-2000">Cuarta Generación: Computadoras Personales (1980-2000)</h2>
-<h3 id="la-era-del-pc">La era del PC</h3>
+<h3 id="%F0%9F%8F%A0-la-revoluci%C3%B3n-del-pc-computaci%C3%B3n-para-todos"><img class="emoji" draggable="false" alt="🏠" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f3e0.svg" data-marp-twemoji=""/> La revolución del PC: Computación para todos</h3>
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+<div>
+<h3 id="%F0%9F%93%8A-l%C3%ADnea-de-tiempo-del-pc"><img class="emoji" draggable="false" alt="📊" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4ca.svg" data-marp-twemoji=""/> Línea de tiempo del PC</h3>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code>1975          1981          1984          1991          1995
+ │             │             │             │             │
+ ▼             ▼             ▼             ▼             ▼
+Altair        IBM PC         Mac           Linux         Win 95
+8800          (MS-DOS)       (GUI)         (Open)        (GUI masivo)
+</code></pre>
+<h3 id="%F0%9F%8E%AF-sistemas-que-definieron-una-%C3%A9poca"><img class="emoji" draggable="false" alt="🎯" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f3af.svg" data-marp-twemoji=""/> Sistemas que Definieron una Época</h3>
 <table>
 <thead>
 <tr>
 <th>Año</th>
 <th>Sistema</th>
-<th>Importancia</th>
+<th>Importancia Histórica</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>1981</td>
-<td>MS-DOS</td>
-<td>IBM PC</td>
+<td><strong>1981</strong></td>
+<td><strong>MS-DOS</strong></td>
+<td>IBM PC, dominio empresarial</td>
 </tr>
 <tr>
-<td>1984</td>
-<td>Mac OS</td>
+<td><strong>1984</strong></td>
+<td><strong>Mac OS</strong></td>
 <td>Primera GUI comercial exitosa</td>
 </tr>
 <tr>
-<td>1985</td>
+<td><strong>1985</strong></td>
 <td>Windows 1.0</td>
 <td>Intento de GUI sobre DOS</td>
 </tr>
 <tr>
-<td>1991</td>
+<td><strong>1991</strong></td>
 <td><strong>Linux</strong></td>
 <td>SO libre y abierto</td>
 </tr>
 <tr>
-<td>1995</td>
-<td>Windows 95</td>
-<td>GUI dominante</td>
+<td><strong>1995</strong></td>
+<td><strong>Windows 95</strong></td>
+<td>GUI dominante en hogares</td>
+</tr>
+<tr>
+<td><strong>1998</strong></td>
+<td><strong>Windows 98</strong></td>
+<td>Internet integrado</td>
 </tr>
 </tbody>
 </table>
-<p><strong>Impacto histórico:</strong> Esta generación democrató el acceso a la computación, llevando los computadores de las grandes empresas a los hogares.</p>
+<h3 id="%F0%9F%92%A1-la-guerra-de-los-so"><img class="emoji" draggable="false" alt="💡" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4a1.svg" data-marp-twemoji=""/> La Guerra de los SO</h3>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code>┌─────────────┐                    ┌─────────────┐
+│   DOS       │                    │   Mac OS    │
+│   $ prompt  │                    │   <img class="emoji" draggable="false" alt="🖼" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f5bc.svg" data-marp-twemoji=""/>  GUI   │
+│   c:\&gt;       │                    │   Mouse      │
+│             │                    │   Iconos     │
+└─────────────┘                    └─────────────┘
+     │                                   │
+     │     1991: Linux nace           │
+     │     1995: Win 95 une GUI       │
+     │           │                    │
+     ▼           ▼                    ▼
+┌─────────────────────────────────────────┐
+│  El gana: GUI + Compatibilidad        │
+│  (Microsoft)                          │
+│                                         │
+│  Los perdedores:                       │
+│  - Mac: Cerrado, hardware caro          │
+│  - Linux: Técnico, sin GUI             │
+└─────────────────────────────────────────┘
+</code></pre>
+<h3 id="%F0%9F%9A%80-transformaci%C3%B3n-social"><img class="emoji" draggable="false" alt="🚀" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f680.svg" data-marp-twemoji=""/> Transformación Social</h3>
+<table>
+<thead>
+<tr>
+<th>Antes (1980)</th>
+<th>Después (2000)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Computadoras = empresas</td>
+<td>Computadoras = hogares</td>
+</tr>
+<tr>
+<td>Programadores = expertos</td>
+<td>Cualquiera programa</td>
+</tr>
+<tr>
+<td>Internet = académicos</td>
+<td>Internet = todos</td>
+</tr>
+<tr>
+<td>Costo = $5,000+</td>
+<td>Costo = $500</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div>
+<h3 id="%F0%9F%8E%AE-el-impacto-en-la-cultura-popular"><img class="emoji" draggable="false" alt="🎮" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f3ae.svg" data-marp-twemoji=""/> El impacto en la cultura popular</h3>
+<h4 id="gaming">Gaming</h4>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code>1980: Pac-Man, Space Invaders (Arcades)
+1990: Doom, SimCity (PC games)
+2000+: MMORPG, Esports (Jugar en red)
+
+La GUI hizo los PCs &quot;amigables&quot; para juegos.
+</code></pre>
+<h4 id="oficina">Oficina</h4>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code>1985: Excel, WordPerfect (Productivity apps)
+1990: Microsoft Office (Dominio absoluto)
+2000: Google Docs (Computación en nube)
+
+La PC se volvió indispensable para negocios.
+</code></pre>
+<h4 id="educaci%C3%B3n">Educación</h4>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code>1980s: Logo, BASIC (Aprender a programar)
+1990s: CD-ROMs enciclopedias (Información digital)
+2000s: Internet (Aprendizaje en línea)
+
+La PC democratizó el conocimiento.
+</code></pre>
+<h3 id="%F0%9F%93%88-n%C3%BAmeros-de-la-revoluci%C3%B3n-del-pc"><img class="emoji" draggable="false" alt="📈" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4c8.svg" data-marp-twemoji=""/> Números de la Revolución del PC</h3>
+<table>
+<thead>
+<tr>
+<th>Métrica</th>
+<th>1981</th>
+<th>1990</th>
+<th>2000</th>
+<th>2010</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PCs vendidos/año</td>
+<td>~0.2M</td>
+<td>~10M</td>
+<td>~140M</td>
+<td>~350M</td>
+</tr>
+<tr>
+<td>Penetración hogares</td>
+<td>&lt;1%</td>
+<td>~20%</td>
+<td>~60%</td>
+<td>~80%</td>
+</tr>
+<tr>
+<td>Costo promedio</td>
+<td>$3,000</td>
+<td>$1,500</td>
+<td>$800</td>
+<td>$500</td>
+</tr>
+</tbody>
+</table>
+<h3 id="%F0%9F%92%A1-insight-1"><img class="emoji" draggable="false" alt="💡" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4a1.svg" data-marp-twemoji=""/> Insight</h3>
+<blockquote>
+<p>&quot;La computadora personal más importante es la que<br />
+tienen las personas que no saben que la necesitan.&quot;<br />
+— Steve Jobs, 1985</p>
+</blockquote>
+<p><strong>Windows 95 fue el momento en que la computación se volvió mainstream.</strong></p>
+</div>
+</div>
+<div style="text-align: center; margin-top: 20px; padding: 15px; background: #f0f9ff; border-radius: 10px;">
+<p><strong><img class="emoji" draggable="false" alt="💡" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4a1.svg" data-marp-twemoji=""/> Evolución clave:</strong> El PC + GUI = Democratización de la computación. Ya no necesitabas ser ingeniero para usar un computador.</p>
+</div>
 <footer>UNAULA - Ingeniería Informática - 2026-I</footer>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="11" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 1" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="11" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 1;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="30">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="11" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 1" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="11" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 1;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="29">
 <header>IF0099 - Sistemas Operativos I | Unidad 1</header>
 <h2 id="quinta-generaci%C3%B3n-so-modernos-2000-presente">Quinta Generación: SO Modernos (2000-presente)</h2>
-<h3 id="caracter%C3%ADsticas-actuales">Características actuales:</h3>
-<ul>
-<li><strong>Multitarea real</strong> (múltiples núcleos)</li>
-<li><strong>Conectividad</strong> (redes, Internet)</li>
-<li><strong>Seguridad</strong> (permisos, encriptación)</li>
-<li><strong>Virtualización</strong> (VMs, contenedores)</li>
-<li><strong>Cloud computing</strong> (servicios on-demand)</li>
-<li><strong>Computación móvil y edge</strong> (sensores, IoT)</li>
-</ul>
-<h3 id="ejemplos-actuales">Ejemplos actuales:</h3>
-<ul>
-<li>Windows 10/11</li>
-<li>macOS</li>
-<li>Distribuciones GNU/Linux (Ubuntu, Fedora, Debian)</li>
-<li>Android</li>
-<li>iOS/iPadOS</li>
-<li>ChromeOS</li>
-</ul>
+<h3 id="%F0%9F%8C%90-la-era-de-la-conectividad-total-y-la-computaci%C3%B3n-ubicua"><img class="emoji" draggable="false" alt="🌐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f310.svg" data-marp-twemoji=""/> La era de la conectividad total y la computación ubicua</h3>
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+<div>
+<h3 id="%E2%9A%A1-caracter%C3%ADsticas-definitorias"><img class="emoji" draggable="false" alt="⚡" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/26a1.svg" data-marp-twemoji=""/> Características Definitorias</h3>
+<table>
+<thead>
+<tr>
+<th>Característica</th>
+<th>Descripción</th>
+<th>Ejemplo</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Multitarea real</strong></td>
+<td>Múltiples núcleos, múltiples CPUs</td>
+<td>Tu PC hace 100 cosas a la vez</td>
+</tr>
+<tr>
+<td><strong>Conectividad total</strong></td>
+<td>Redes, Internet, 5G</td>
+<td>Todo siempre conectado</td>
+</tr>
+<tr>
+<td><strong>Seguridad avanzada</strong></td>
+<td>Encriptación, permisos granulares</td>
+<td>FaceID, HTTPS, sandbox</td>
+</tr>
+<tr>
+<td><strong>Virtualización</strong></td>
+<td>VMs, contenedores</td>
+<td>Docker, KVM, Hyper-V</td>
+</tr>
+<tr>
+<td><strong>Cloud native</strong></td>
+<td>Servicios on-demand</td>
+<td>AWS, Azure, GCP</td>
+</tr>
+<tr>
+<td><strong>Computación móvil</strong></td>
+<td>Smartphones = computadores potentes</td>
+<td>Tu celular es más rápido que PCs de 2010</td>
+</tr>
+<tr>
+<td><strong>Edge computing</strong></td>
+<td>Procesamiento en el borde</td>
+<td>IoT, sensores, CDN</td>
+</tr>
+</tbody>
+</table>
+<h3 id="%F0%9F%93%B1-el-cambio-de-paradigma-desktop-%E2%86%92-cloud-%E2%86%92-edge"><img class="emoji" draggable="false" alt="📱" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4f1.svg" data-marp-twemoji=""/> El cambio de paradigma: Desktop → Cloud → Edge</h3>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code>2000s: Desktop Computing
+┌─────────────────────────────┐
+│  Todo corre LOCALMENTE         │
+│  - Office instalado            │
+│  - Archivos en disco duro     │
+│  - Aplicaciones .exe          │
+└─────────────────────────────┘
+
+2010s: Cloud Computing
+┌─────────────────────────────┐
+│  Todo en la NUBE              │
+│  - Google Docs               │
+│  - Netflix streaming          │
+│  - Dropbox                   │
+│  - Microsoft 365             │
+└─────────────────────────────┘
+
+2020s: Edge Computing
+┌─────────────────────────────┐
+│  Procesamiento DISTRIBUIDO    │
+│  - CDNs                     │
+│  - IoT gateways             │
+│  - Edge functions          │
+└─────────────────────────────┘
+</code></pre>
+<h3 id="%F0%9F%94%AE-tendencias-emergentes-2026"><img class="emoji" draggable="false" alt="🔮" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f52e.svg" data-marp-twemoji=""/> Tendencias emergentes (2026+)</h3>
+<table>
+<thead>
+<tr>
+<th>Tendencia</th>
+<th>Explicación</th>
+<th>Impacto</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>AI-native OS</strong></td>
+<td>SO optimizados para ML chips</td>
+<td>Windows Copilot, Apple Intelligence</td>
+</tr>
+<tr>
+<td><strong>Container-first</strong></td>
+<td>Microservicios + contenedores</td>
+<td>Kubernetes everywhere</td>
+</tr>
+<tr>
+<td><strong>Real-time OS</strong></td>
+<td>Latencia ultrabaja</td>
+<td>Automotrización, VR/AR</td>
+</tr>
+<tr>
+<td><strong>Energy-aware</strong></td>
+<td>Optimización de batería</td>
+<td>Chips ARM en servidores</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div>
+<h3 id="%F0%9F%96%A5%EF%B8%8F-ejemplos-actuales-por-categor%C3%ADa"><img class="emoji" draggable="false" alt="🖥️" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f5a5.svg" data-marp-twemoji=""/> Ejemplos Actuales por Categoría</h3>
+<h4 id="desktop">Desktop</h4>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code>Windows 11 (2021+)
+├── Interfaz híbrida (Start Menu)
+├── WSL 2 (Linux integrado)
+├── Teams integrado
+└── Microsoft Store
+
+macOS (versiones anuales)
+├── macOS Sequoia, Ventura, Sonoma...
+├── ARM64 (Apple Silicon)
+├── Continuidad iOS/macOS
+└── Optimizado para creativos
+
+Linux Desktop
+├── Ubuntu LTS (soporte 5 años)
+├── Fedora (bleeding edge)
+├── Pop!_OS (usabilidad)
+└── Mint (fácil para migrantes)
+</code></pre>
+<h4 id="m%C3%B3vil">Móvil</h4>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code>Android (Google)
+├── 71% market share
+├── Fragmentación (skins: Samsung, Xiaomi)
+├── Google Play Services
+└── Base de 24,000+ modelos
+
+iOS (Apple)
+├── 28% market share
+├── Ecosistema cerrado
+├── App Store curado
+└── Base de ~10 modelos
+</code></pre>
+<h4 id="servidor">Servidor</h4>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code>Distribuciones empresariales:
+├── RHEL (Red Hat, soporte pagado)
+├── Ubuntu LTS (Canonical, free/pagado)
+├── Debian (comunidad, estable)
+└── SUSE (Enterprise, europeo)
+
+SO Cloud:
+├── Amazon Linux (optimizado para AWS)
+├── Azure Linux (optimizado para Azure)
+└── Google COS (optimizado para GCP)
+</code></pre>
+<h3 id="%F0%9F%92%A1-insights"><img class="emoji" draggable="false" alt="💡" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4a1.svg" data-marp-twemoji=""/> Insights</h3>
 <blockquote>
-<p><strong>Nota:</strong> Las versiones cambian cada año, pero las ideas clave se mantienen.</p>
+<p>&quot;La computación más importante es la que ni ves ni piensas.<br />
+Está en data centers procesando tus búsquedas, transacciones y<br />
+streams de video las 24/7.&quot;</p>
 </blockquote>
+<p><strong>El SO moderno es invisible: está en la nube, en tu celular, en tu smartwatch.</strong></p>
+</div>
+</div>
+<div style="text-align: center; margin-top: 20px; padding: 15px; background: #d1fae5; border-radius: 10px;">
+<p><strong><img class="emoji" draggable="false" alt="💡" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4a1.svg" data-marp-twemoji=""/> Evolución clave:</strong> Ya no hay &quot;el&quot; SO dominante. Hay múltiples SOs para diferentes usos, y todos coexisten en un ecosistema conectado.</p>
+</div>
 <footer>UNAULA - Ingeniería Informática - 2026-I</footer>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="12" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 1" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="12" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 1;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="30">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="12" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 1" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="12" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 1;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="29">
 <header>IF0099 - Sistemas Operativos I | Unidad 1</header>
 <h2 id="componentes-de-un-so-moderno">Componentes de un SO Moderno</h2>
-<p><img src="../../assets/infografias/so-componentes-arquitectura.png" alt="Arquitectura del Sistema Operativo" /></p>
-<h3 id="capas-de-abstracci%C3%B3n">Capas de Abstracción</h3>
-<p>Cada capa oculta la complejidad de la inferior:</p>
-<ul>
-<li><strong>Aplicaciones</strong> → No conocen el hardware específico</li>
-<li><strong>Shell</strong> → Interpreta comandos sin saber del kernel</li>
-<li><strong>Kernel</strong> → Gestiona recursos sin exponer detalles físicos</li>
-<li><strong>Hardware</strong> → Componentes físicos reales</li>
-</ul>
-<footer>UNAULA - Ingeniería Informática - 2026-I</footer>
-</section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="13" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 1" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="13" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 1;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="30">
-<header>IF0099 - Sistemas Operativos I | Unidad 1</header>
-<h3 id="representaci%C3%B3n-ascii">Representación ASCII:</h3>
+<h3 id="capas-de-abstracci%C3%B3n-el-modelo-de-cebolla">Capas de Abstracción: El modelo de cebolla</h3>
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+<div>
+<h4 id="%F0%9F%A7%85-%C2%BFpor-qu%C3%A9-capas"><img class="emoji" draggable="false" alt="🧅" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f9c5.svg" data-marp-twemoji=""/> ¿Por qué &quot;capas&quot;?</h4>
+<p>Cada capa <strong>oculta la complejidad</strong> de la inferior:</p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code>┌─────────────────────────────────────────────────┐
-│                  APLICACIONES                   │
+│                  APLICACIONES                   │ ← Usuario interactúa aquí
 ├─────────────────────────────────────────────────┤
 │              UTILIDADES DEL SISTEMA             │
 │    (Administrador archivos, Terminal, etc.)     │
@@ -300,7 +1216,7 @@ Usuario 3 ──┘    Reparte tiempo
 │                    SHELL                        │
 │         (Intérprete de comandos / GUI)          │
 ├─────────────────────────────────────────────────┤
-│            LLAMADAS AL SISTEMA (API)            │
+│            LLAMADAS AL SISTEMA (API)            │ ← La frontera crucial
 ├─────────────────────────────────────────────────┤
 │                   KERNEL                        │
 │  ┌──────────┬──────────┬──────────┬──────────┐ │
@@ -308,15 +1224,75 @@ Usuario 3 ──┘    Reparte tiempo
 │  │ Procesos │ Memoria  │ Archivos │   E/S    │ │
 │  └──────────┴──────────┴──────────┴──────────┘ │
 ├─────────────────────────────────────────────────┤
-│                   HARDWARE                      │
+│                   HARDWARE                      │ ← Componentes físicos
 └─────────────────────────────────────────────────┘
 </code></pre>
+</div>
+<div>
+<h4 id="%F0%9F%93%8B-responsabilidades-por-capa"><img class="emoji" draggable="false" alt="📋" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4cb.svg" data-marp-twemoji=""/> Responsabilidades por Capa</h4>
+<table>
+<thead>
+<tr>
+<th>Capa</th>
+<th>Responsabilidad</th>
+<th>Ejemplos</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Aplicaciones</strong></td>
+<td>Funcionalidad para usuario</td>
+<td>Chrome, VS Code, juegos</td>
+</tr>
+<tr>
+<td><strong>Utilidades</strong></td>
+<td>Herramientas del sistema</td>
+<td>FileManager, TaskManager</td>
+</tr>
+<tr>
+<td><strong>Shell</strong></td>
+<td>Puente usuario-kernel</td>
+<td>bash, PowerShell, Explorador</td>
+</tr>
+<tr>
+<td><strong>System Calls</strong></td>
+<td>API oficial del SO</td>
+<td>open(), read(), fork()</td>
+</tr>
+<tr>
+<td><strong>Kernel</strong></td>
+<td>Gestión de recursos</td>
+<td>CPU, RAM, disco, red</td>
+</tr>
+<tr>
+<td><strong>Hardware</strong></td>
+<td>Componentes físicos</td>
+<td>CPU, RAM, SSD, GPU</td>
+</tr>
+</tbody>
+</table>
+<h4 id="%F0%9F%92%A1-insight-la-transici%C3%B3n-clave"><img class="emoji" draggable="false" alt="💡" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4a1.svg" data-marp-twemoji=""/> Insight: La transición clave</h4>
+<blockquote>
+<p><strong>Las system calls son la ÚNICA forma válida</strong><br />
+<strong>de que un programa acceda a servicios del kernel.</strong></p>
+</blockquote>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code>Aplicación ──<img class="emoji" draggable="false" alt="✖" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2716.svg" data-marp-twemoji=""/>──&gt; Hardware directo
+              │
+              └──&gt; System Call ──&gt; Kernel ──&gt; Hardware
+</code></pre>
+<p><strong>Sin system calls:</strong> Caos, inseguridad, crashes<br />
+<strong>Con system calls:</strong> Orden, seguridad, estabilidad</p>
+</div>
+</div>
 <footer>UNAULA - Ingeniería Informática - 2026-I</footer>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="14" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 1" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="14" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 1;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="30">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="13" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 1" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="13" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 1;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="29">
 <header>IF0099 - Sistemas Operativos I | Unidad 1</header>
 <h2 id="el-kernel-n%C3%BAcleo">El Kernel (Núcleo)</h2>
 <h3 id="el-coraz%C3%B3n-del-sistema-operativo">El corazón del Sistema Operativo</h3>
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+<div>
+<h4 id="%F0%9F%92%93-por-qu%C3%A9-es-el-coraz%C3%B3n"><img class="emoji" draggable="false" alt="💓" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f493.svg" data-marp-twemoji=""/> Por qué es el &quot;corazón&quot;</h4>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code>         Aplicaciones
               │
               ▼
@@ -332,7 +1308,40 @@ Usuario 3 ──┘    Reparte tiempo
               ▼
          Hardware
 </code></pre>
-<h3 id="tipos-de-kernel-y-sus-caracter%C3%ADsticas">Tipos de Kernel y sus Características</h3>
+<h4 id="%F0%9F%8E%AF-responsabilidades-principales"><img class="emoji" draggable="false" alt="🎯" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f3af.svg" data-marp-twemoji=""/> Responsabilidades Principales</h4>
+<table>
+<thead>
+<tr>
+<th>Componente</th>
+<th>Función</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Planificador</strong></td>
+<td>Decide qué proceso ejecuta</td>
+</tr>
+<tr>
+<td><strong>Gestor de memoria</strong></td>
+<td>Asigna RAM a procesos</td>
+</tr>
+<tr>
+<td><strong>Sistema de archivos</strong></td>
+<td>Organiza datos en disco</td>
+</tr>
+<tr>
+<td><strong>Drivers E/S</strong></td>
+<td>Habla con hardware</td>
+</tr>
+<tr>
+<td><strong>Gestor de procesos</strong></td>
+<td>Crea, destruye procesos</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div>
+<h4 id="%F0%9F%8F%97%EF%B8%8F-tipos-de-kernel"><img class="emoji" draggable="false" alt="🏗️" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f3d7.svg" data-marp-twemoji=""/> Tipos de Kernel</h4>
 <table>
 <thead>
 <tr>
@@ -345,39 +1354,56 @@ Usuario 3 ──┘    Reparte tiempo
 <tbody>
 <tr>
 <td><strong>Monolítico</strong></td>
-<td>Todo en un solo espacio de memoria</td>
-<td>Rápido, comunicación directa</td>
-<td>Linux, Windows clásico</td>
+<td>Todo en un espacio</td>
+<td>Rápido, directo</td>
+<td>Linux, DOS</td>
 </tr>
 <tr>
 <td><strong>Microkernel</strong></td>
-<td>Mínimo en kernel, servicios en usuario</td>
-<td>Seguro, mantenible</td>
+<td>Mínimo en kernel</td>
+<td>Seguro, flexible</td>
 <td>Minix, QNX, seL4</td>
 </tr>
 <tr>
 <td><strong>Híbrido</strong></td>
-<td>Kernel monolítico + características microkernel</td>
-<td>Balance rendimiento/seguridad</td>
-<td>macOS (XNU), Windows NT</td>
+<td>Mezcla de ambos</td>
+<td>Balance</td>
+<td>macOS, Windows NT</td>
 </tr>
 <tr>
 <td><strong>Exokernel</strong></td>
-<td>Mínimo, bibliotecas de usuario controlan recursos</td>
-<td>Máxima flexibilidad</td>
-<td>MIT Exokernel (investigación)</td>
+<td>Mínimo absoluto</td>
+<td>Flexibilidad total</td>
+<td>Investigación</td>
 </tr>
 </tbody>
 </table>
+<h4 id="%E2%9A%96%EF%B8%8F-comparativa"><img class="emoji" draggable="false" alt="⚖️" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2696.svg" data-marp-twemoji=""/> Comparativa</h4>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code>MONOLÍTICO                    MICROKERNEL
+┌─────────────┐              ┌──────────┐
+│   KERNEL    │              │  Kernel  │
+│             │              │  mínimo  │
+│ Todo junto  │              └─────┬────┘
+│             │                    │
+│ - Rápido    │              ┌──────▼──────┐
+│ - Complejo  │              │   Servicios │
+│ - Crash total│             │   en user   │
+└─────────────┘              └─────────────┘
+</code></pre>
 <blockquote>
-<p><strong>Nota:</strong> Linux es monolítico pero soporta módulos cargables, lo que le da cierta flexibilidad de microkernel.</p>
+<p><strong>Nota:</strong> Linux es monolítico con módulos cargables → &quot;lo mejor de ambos mundos&quot;</p>
 </blockquote>
+</div>
+</div>
 <footer>UNAULA - Ingeniería Informática - 2026-I</footer>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="15" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 1" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="15" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 1;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="30">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="14" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 1" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="14" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 1;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="29">
 <header>IF0099 - Sistemas Operativos I | Unidad 1</header>
 <h2 id="el-shell">El Shell</h2>
 <h3 id="interfaz-entre-usuario-y-kernel">Interfaz entre usuario y kernel</h3>
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+<div>
+<h4 id="%F0%9F%94%84-el-flujo-de-trabajo"><img class="emoji" draggable="false" alt="🔄" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f504.svg" data-marp-twemoji=""/> El flujo de trabajo</h4>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code>┌────────────────────────────────────────┐
 │            USUARIO                     │
 └───────────────┬────────────────────────┘
@@ -397,53 +1423,177 @@ Usuario 3 ──┘    Reparte tiempo
 │            KERNEL                      │
 └────────────────────────────────────────┘
 </code></pre>
-<h3 id="shells-populares-bash-zsh-powershell-fish">Shells populares: <strong>bash</strong>, zsh, PowerShell, fish</h3>
+<h4 id="%F0%9F%8E%AD-dos-tipos-de-shell"><img class="emoji" draggable="false" alt="🎭" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f3ad.svg" data-marp-twemoji=""/> Dos tipos de Shell</h4>
+<table>
+<thead>
+<tr>
+<th>Tipo</th>
+<th>Descripción</th>
+<th>Ejemplos</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>CLI</strong></td>
+<td>Comandos de texto</td>
+<td>bash, zsh, PowerShell</td>
+</tr>
+<tr>
+<td><strong>GUI</strong></td>
+<td>Interfaz gráfica</td>
+<td>Explorador Windows, Finder</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div>
+<h4 id="%F0%9F%90%9A-shells-cli-populares"><img class="emoji" draggable="false" alt="🐚" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f41a.svg" data-marp-twemoji=""/> Shells CLI populares</h4>
+<table>
+<thead>
+<tr>
+<th>Shell</th>
+<th>Características</th>
+<th>Uso típico</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>bash</strong></td>
+<td>Estándar POSIX, omnipresente</td>
+<td>Linux, macOS (antes)</td>
+</tr>
+<tr>
+<td><strong>zsh</strong></td>
+<td>Autocompletado avanzado, themes</td>
+<td>macOS default</td>
+</tr>
+<tr>
+<td><strong>PowerShell</strong></td>
+<td>Orientado a objetos, .NET</td>
+<td>Windows admin</td>
+</tr>
+<tr>
+<td><strong>fish</strong></td>
+<td>Autocompletado inteligente, UX-friendly</td>
+<td>Principiantes</td>
+</tr>
+</tbody>
+</table>
+<h4 id="%F0%9F%92%BB-gui-como-shell"><img class="emoji" draggable="false" alt="💻" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4bb.svg" data-marp-twemoji=""/> GUI como Shell</h4>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code>EXPLORADOR WINDOWS = Shell gráfico
+
+Click carpeta → Explorador interpreta
+                → Llama a kernel
+                → Muestra contenido
+
+Lo MISMO que bash, pero con clics
+en lugar de comandos de texto.
+</code></pre>
+<blockquote>
+<p><strong>El shell NO es el kernel.</strong><br />
+Es un programa CORRIENDO en modo usuario<br />
+que SOLICITA servicios al kernel.</p>
+</blockquote>
+</div>
+</div>
 <footer>UNAULA - Ingeniería Informática - 2026-I</footer>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="16" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 1" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="16" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 1;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="30">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="15" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 1" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="15" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 1;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="29">
 <header>IF0099 - Sistemas Operativos I | Unidad 1</header>
 <h2 id="llamadas-al-sistema-system-calls">Llamadas al Sistema (System Calls)</h2>
 <h3 id="la-api-del-sistema-operativo">La API del Sistema Operativo</h3>
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+<div>
+<h4 id="%F0%9F%94%8C-por-qu%C3%A9-son-necesarias"><img class="emoji" draggable="false" alt="🔌" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f50c.svg" data-marp-twemoji=""/> Por qué son necesarias</h4>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-c"><span class="hljs-comment">// Ejemplo: Abrir un archivo</span>
 <span class="hljs-type">int</span> fd = open(<span class="hljs-string">&quot;/home/user/archivo.txt&quot;</span>, O_RDONLY);
 
 <span class="hljs-comment">// El programa NO accede al disco directamente</span>
 <span class="hljs-comment">// Pide al kernel que lo haga por él</span>
 </code></pre>
-<h3 id="categor%C3%ADas-de-system-calls">Categorías de system calls:</h3>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code>┌─────────────┐                    ┌─────────────┐
+│  PROGRAMA   │                    │   HARDWARE  │
+│             │                    │             │
+│ &quot;Quiero     │────<img class="emoji" draggable="false" alt="✖" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2716.svg" data-marp-twemoji=""/>────directo──→│  (DISCO)    │
+│  leer disco&quot;│                    │             │
+└──────┬──────┘                    └─────────────┘
+       │
+       │ System Call
+       ▼
+┌─────────────┐
+│   KERNEL    │ ← Verifica permisos
+│             │ ← Accede a hardware
+│ &quot;Autorizado&quot;│ ← Devuelve datos
+└──────┬──────┘
+       │
+       ▼
+┌─────────────┐
+│  PROGRAMA   │ ← Recibe datos
+│   (datos)   │
+└─────────────┘
+</code></pre>
+</div>
+<div>
+<h4 id="%F0%9F%93%82-categor%C3%ADas-de-system-calls"><img class="emoji" draggable="false" alt="📂" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4c2.svg" data-marp-twemoji=""/> Categorías de System Calls</h4>
 <table>
 <thead>
 <tr>
 <th>Categoría</th>
+<th>Propósito</th>
 <th>Ejemplos</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Procesos</td>
+<td><strong>Procesos</strong></td>
+<td>Crear/destruir procesos</td>
 <td>fork(), exec(), exit(), wait()</td>
 </tr>
 <tr>
-<td>Archivos</td>
+<td><strong>Archivos</strong></td>
+<td>Manipular archivos</td>
 <td>open(), read(), write(), close()</td>
 </tr>
 <tr>
-<td>Dispositivos</td>
+<td><strong>Dispositivos</strong></td>
+<td>Acceder a hardware</td>
 <td>ioctl(), read(), write()</td>
 </tr>
 <tr>
-<td>Información</td>
+<td><strong>Información</strong></td>
+<td>Obtener datos del sistema</td>
 <td>getpid(), time(), uname()</td>
 </tr>
 <tr>
-<td>Comunicación</td>
+<td><strong>Comunicación</strong></td>
+<td>Enviar/recibir datos</td>
 <td>pipe(), socket(), send()</td>
+</tr>
+<tr>
+<td><strong>Memoria</strong></td>
+<td>Gestión de memoria</td>
+<td>mmap(), brk(), sbrk()</td>
 </tr>
 </tbody>
 </table>
+<h4 id="%F0%9F%8E%AF-ejemplo-real-ls--la"><img class="emoji" draggable="false" alt="🎯" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f3af.svg" data-marp-twemoji=""/> Ejemplo real: <code>ls -la</code></h4>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code>$ ls -la /home
+
+bash ejecuta:
+1. getuid() → Verificar permisos
+2. opendir(&quot;/home&quot;) → Abrir directorio
+3. readdir() → Leer entrada
+4. stat() → Obtener metadatos
+5. printf() → Mostrar en pantalla
+6. closedir() → Cerrar directorio
+
+¡6 system calls para un simple ls!
+</code></pre>
+</div>
+</div>
 <footer>UNAULA - Ingeniería Informática - 2026-I</footer>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="17" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 1" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="17" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 1;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="30">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="16" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 1" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="16" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 1;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="29">
 <header>IF0099 - Sistemas Operativos I | Unidad 1</header>
 <h2 id="modo-usuario-vs-modo-kernel">Modo Usuario vs Modo Kernel</h2>
 <h3 id="los-anillos-de-protecci%C3%B3n-protection-rings">Los &quot;Anillos&quot; de Protección (Protection Rings)</h3>
@@ -465,7 +1615,7 @@ Usuario 3 ──┘    Reparte tiempo
 </blockquote>
 <footer>UNAULA - Ingeniería Informática - 2026-I</footer>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="18" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 1" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="18" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 1;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="30">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="17" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 1" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="17" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 1;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="29">
 <header>IF0099 - Sistemas Operativos I | Unidad 1</header>
 <h2 id="comparaci%C3%B3n-modo-usuario-vs-modo-kernel">Comparación: Modo Usuario vs Modo Kernel</h2>
 <div style="display: flex; gap: 15px;">
@@ -494,7 +1644,7 @@ Usuario 3 ──┘    Reparte tiempo
 </div>
 <footer>UNAULA - Ingeniería Informática - 2026-I</footer>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="19" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 1" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="19" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 1;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="30">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="18" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 1" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="18" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 1;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="29">
 <header>IF0099 - Sistemas Operativos I | Unidad 1</header>
 <h2 id="tabla-de-instrucciones-permitidas">Tabla de Instrucciones Permitidas</h2>
 <table>
@@ -562,7 +1712,7 @@ Usuario 3 ──┘    Reparte tiempo
 </blockquote>
 <footer>UNAULA - Ingeniería Informática - 2026-I</footer>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="20" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 1" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="20" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 1;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="30">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="19" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 1" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="19" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 1;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="29">
 <header>IF0099 - Sistemas Operativos I | Unidad 1</header>
 <h2 id="%C2%BFpor-qu%C3%A9-separar-modos">¿Por qué separar modos?</h2>
 <h3 id="seguridad-y-estabilidad">Seguridad y estabilidad</h3>
@@ -584,7 +1734,7 @@ Usuario 3 ──┘    Reparte tiempo
 </ul>
 <footer>UNAULA - Ingeniería Informática - 2026-I</footer>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="21" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 1" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="21" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 1;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="30">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="20" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 1" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="20" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 1;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="29">
 <header>IF0099 - Sistemas Operativos I | Unidad 1</header>
 <h2 id="transici%C3%B3n-entre-modos-el-mecanismo">Transición entre Modos: El Mecanismo</h2>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code>┌─────────────────────────────────────────────────┐
@@ -616,7 +1766,7 @@ Usuario 3 ──┘    Reparte tiempo
 </code></pre>
 <footer>UNAULA - Ingeniería Informática - 2026-I</footer>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="22" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 1" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="22" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 1;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="30">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="21" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 1" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="21" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 1;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="29">
 <header>IF0099 - Sistemas Operativos I | Unidad 1</header>
 <h2 id="tipos-de-transiciones-al-kernel">Tipos de Transiciones al Kernel</h2>
 <table>
@@ -657,7 +1807,7 @@ Usuario 3 ──┘    Reparte tiempo
 </table>
 <footer>UNAULA - Ingeniería Informática - 2026-I</footer>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="23" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 1" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="23" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 1;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="30">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="22" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 1" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="22" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 1;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="29">
 <header>IF0099 - Sistemas Operativos I | Unidad 1</header>
 <h2 id="analog%C3%ADa-la-transici%C3%B3n-como-un-edificio-de-seguridad">Analogía: La Transición como un Edificio de Seguridad</h2>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code>PISO 3 (PÚBLICO)          PISO 0 (SEGURIDAD MÁXIMA)
@@ -683,7 +1833,7 @@ Usuario 3 ──┘    Reparte tiempo
 </blockquote>
 <footer>UNAULA - Ingeniería Informática - 2026-I</footer>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="24" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 1" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="24" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 1;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="30">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="23" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 1" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="23" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 1;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="29">
 <header>IF0099 - Sistemas Operativos I | Unidad 1</header>
 <h2 id="actividad-pr%C3%A1ctica-10-min">Actividad Práctica (10 min)</h2>
 <h3 id="en-parejas-preparen-su-entorno-de-trabajo">En parejas, preparen su entorno de trabajo</h3>
@@ -706,7 +1856,7 @@ Tienen dos opciones para practicar:</p>
 <p><strong>En este curso usaremos Linux (Ubuntu)</strong></p>
 <footer>UNAULA - Ingeniería Informática - 2026-I</footer>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="25" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 1" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="25" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 1;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="30">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="24" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 1" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="24" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 1;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="29">
 <header>IF0099 - Sistemas Operativos I | Unidad 1</header>
 <h2 id="actividad-pr%C3%A1ctica">Actividad Práctica</h2>
 <h3 id="en-windows-powershell---comandos-nativos">En Windows (PowerShell) - Comandos nativos</h3>
@@ -721,7 +1871,7 @@ systeminfo | findstr /C:<span class="hljs-string">&quot;Total Physical Memory&qu
 </code></pre>
 <footer>UNAULA - Ingeniería Informática - 2026-I</footer>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="26" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 1" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="26" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 1;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="30">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="25" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 1" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="25" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 1;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="29">
 <header>IF0099 - Sistemas Operativos I | Unidad 1</header>
 <h2 id="actividad-pr%C3%A1ctica-1">Actividad Práctica</h2>
 <h3 id="en-linuxubuntu-terminal---lo-que-usaremos-en-el-curso">En Linux/Ubuntu (Terminal) - Lo que usaremos en el curso</h3>
@@ -738,7 +1888,7 @@ free -h                 <span class="hljs-comment"># Muestra memoria RAM y swap<
 </code></pre>
 <footer>UNAULA - Ingeniería Informática - 2026-I</footer>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="27" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 1" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="27" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 1;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="30">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="26" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 1" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="26" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 1;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="29">
 <header>IF0099 - Sistemas Operativos I | Unidad 1</header>
 <h2 id="actividad-pr%C3%A1ctica-2">Actividad Práctica</h2>
 <h3 id="discusi%C3%B3n-en-parejas">Discusión en parejas</h3>
@@ -749,7 +1899,7 @@ free -h                 <span class="hljs-comment"># Muestra memoria RAM y swap<
 </ol>
 <footer>UNAULA - Ingeniería Informática - 2026-I</footer>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="28" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 1" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="28" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 1;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="30">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="27" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 1" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="27" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 1;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="29">
 <header>IF0099 - Sistemas Operativos I | Unidad 1</header>
 <h2 id="resumen-de-la-clase">Resumen de la Clase</h2>
 <table>
@@ -796,7 +1946,7 @@ free -h                 <span class="hljs-comment"># Muestra memoria RAM y swap<
 <h3 id="componentes-kernel--shell--utilidades--system-calls">Componentes: Kernel + Shell + Utilidades + System Calls</h3>
 <footer>UNAULA - Ingeniería Informática - 2026-I</footer>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="29" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 1" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="29" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 1;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="30">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="28" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 1" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="28" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 1;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="29">
 <header>IF0099 - Sistemas Operativos I | Unidad 1</header>
 <h2 id="tarea-para-pr%C3%B3xima-clase">Tarea para próxima clase</h2>
 <h3 id="preparaci%C3%B3n-para-laboratorio">Preparación para laboratorio</h3>
@@ -808,7 +1958,7 @@ free -h                 <span class="hljs-comment"># Muestra memoria RAM y swap<
 <p><strong>En la próxima clase:</strong> Instalaremos Linux en máquina virtual</p>
 <footer>UNAULA - Ingeniería Informática - 2026-I</footer>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="30" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 1" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="30" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 1;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="30">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="29" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 1" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="29" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 1;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="29">
 <header>IF0099 - Sistemas Operativos I | Unidad 1</header>
 <h2 id="pr%C3%B3xima-clase">Próxima Clase</h2>
 <h3 id="clase-3-concepto-de-proceso">Clase 3: Concepto de Proceso</h3>
