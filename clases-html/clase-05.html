@@ -302,6 +302,11 @@ void salir(int i) {
                 El hardware proporciona operaciones atómicas (indivisibles) para sincronización
             </div>
 
+            <div class="callout info">
+                <p class="callout-title">Definición: TAS (Test-And-Set)</p>
+                <p><strong>TAS</strong> es una instrucción atómica de hardware que lee un valor de memoria y lo establece en 1 en una sola operación indivisible. Es la base primitiva para implementar locks y mecanismos de sincronización.</p>
+            </div>
+
             <h4>Test-and-Set (TAS)</h4>
             <pre><code>// Ejecuta atómicamente (no interrumpible)
 boolean test_and_set(boolean *target) {
@@ -320,6 +325,11 @@ while (test_and_set(&lock));  // Espera activa hasta obtener lock
 
 // Salida de sección crítica
 lock = false;</code></pre>
+
+            <div class="callout info">
+                <p class="callout-title">Definición: CAS (Compare-And-Swap)</p>
+                <p><strong>CAS</strong> es una instrucción atómica que compara un valor en memoria con un valor esperado, y si son iguales, lo reemplaza con un nuevo valor. Es fundamental para implementar estructuras de datos lock-free y algoritmos sin bloqueos.</p>
+            </div>
 
             <h4>Compare-and-Swap (CAS)</h4>
             <pre><code>// Ejecuta atómicamente
@@ -748,6 +758,15 @@ int main() {
         <section id="deadlock">
             <h2>Deadlock (Interbloqueo)</h2>
             <h3>Cuando los procesos se bloquean mutuamente</h3>
+
+            <div class="callout warning">
+                <p><strong>¿Qué es un Deadlock?</strong> Dos procesos esperan recursos que el otro tiene, y nadie cede.</p>
+                <p><strong>Ejemplo simple:</strong></p>
+                <pre class="ascii-diagram">Proceso A: "Tengo sem1, necesito sem2" → ESPERA
+Proceso B: "Tengo sem2, necesito sem1" → ESPERA
+                  ↓
+            ¡Nadie avanza! ¡Deadlock!</pre>
+            </div>
 
             <pre><code>Proceso A:                      Proceso B:
 wait(sem1);  ← tiene sem1       wait(sem2);  ← tiene sem2
