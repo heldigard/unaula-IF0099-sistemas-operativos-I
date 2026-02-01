@@ -1454,8 +1454,81 @@ MONOLÍTICO       CAPAS          MICROKERNEL
 
 ### Clase 2: Evolución y Componentes del SO
 
-- 📜 Historia de los SO
-- 🏗️ Componentes: Kernel, Shell, Utilidades
-- 🔐 Modos: Usuario vs Kernel
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
 
-**¡Nos vemos!**
+<div>
+
+### 📜 Lo que viene
+
+```
+┌─────────────────────────────┐
+│  HISTORIA DE LOS SO         │
+├─────────────────────────────┤
+│  1950s: Procesos por lote   │
+│  1960s: Tiempo compartido   │
+│  1970s: UNIX, CP/M          │
+│  1980s: PC-DOS, Mac OS      │
+│  1990s: Windows 95, Linux   │
+│  2000s: Móviles, Cloud      │
+│  2010s: Contenedores, IoT    │
+│  2020s: Edge Computing      │
+└─────────────────────────────┘
+```
+
+### 🏗️ Componentes que veremos
+
+| Componente | Descripción |
+|------------|-------------|
+| **Kernel** | Núcleo del sistema |
+| **Shell** | Intérprete de comandos |
+| **Utilidades** | Herramientas del sistema |
+| **Librerías** | Funciones compartidas |
+
+### 🔐 Modos de ejecución
+
+| Modo Usuario | Modo Kernel |
+|---------------|-------------|
+| Aplicaciones normales | SO tiene control total |
+| Acceso limitado | Acceso a todo el hardware |
+| Sistema call cambia modo | Privilegios completos |
+
+</div>
+
+<div>
+
+### 📖 Preparación
+
+**Lectura recomendada para la próxima clase:**
+
+1. Capítulo 2 del libro de texto
+   - Historia de los sistemas operativos
+   - Evolución de las interfaces
+
+2. Investiguen:
+   - ¿Qué fue UNIX y por qué fue importante?
+   - ¿Por qué Linux nació en 1991?
+   - ¿Cuál fue el primer SO que usaron?
+
+### 💡 Pregunta para reflexionar
+
+> "Si los SO han existido desde los años 50,
+> ¿por qué seguimos mejorándolos?
+> ¿Qué problemas siguen sin resolver?"
+
+### 🚀 Próxima sesión
+
+**Miércoles 12 de Febrero, 06:00 - 09:00**
+- Tarea: Investigar breve sobre UNIX
+- Entrega: Inicio de la próxima clase
+- Formato: Compartir en parejas
+
+</div>
+
+</div>
+
+<div style="text-align: center; margin-top: 30px; font-size: 1.2em;">
+
+# **¡Gracias por su atención!**
+### ¿Preguntas?
+
+</div>

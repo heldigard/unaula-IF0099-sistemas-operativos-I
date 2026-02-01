@@ -109,10 +109,31 @@ IMÁGENES GENERADAS:
 
 Al finalizar esta clase, el estudiante será capaz de:
 
-1. **Describir** la evolución histórica de los sistemas operativos
-2. **Identificar** las generaciones de sistemas operativos
-3. **Explicar** los componentes principales de un SO
-4. **Diferenciar** modo usuario vs modo kernel
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+
+<div style="padding: 15px; background: #dbeafe; border-radius: 10px;">
+
+### 📚 Histórico
+| Objetivo | Habilidad |
+|----------|-----------|
+| **Describir** evolución histórica | Comprensión temporal |
+| **Identificar** generaciones de SO | Análisis de épocas |
+| **Relacionar** contexto con diseño | Síntesis |
+
+</div>
+
+<div style="padding: 15px; background: #d1fae5; border-radius: 10px;">
+
+### 🏗️ Técnico
+| Objetivo | Habilidad |
+|----------|-----------|
+| **Explicar** componentes principales | Análisis estructural |
+| **Diferenciar** modo usuario vs kernel | Comparación crítica |
+| **Reconocer** system calls clave | Identificación |
+
+</div>
+
+</div>
 
 **Duración:** 90 minutos
 
@@ -130,81 +151,268 @@ Al finalizar esta clase, el estudiante será capaz de:
 
 ## Línea de Tiempo de los SO
 
-
 ### ¿Por qué estudiar la evolución?
 
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+
+<div>
+
+### 📚 Valor de la Historia
+
 Entender la historia nos ayuda a:
-- 📚 Comprender decisiones de diseño actuales
-- 🔍 Aprender de errores pasados
-- 🚀 Anticipar tendencias futuras
-- 💡 Valorar la complejidad actual
 
-**Cada generación resolvió problemas específicos de su época.**
+| Beneficio | Explicación |
+|-----------|-------------|
+| **Comprender diseño actual** | Las decisiones del pasado moldean el presente |
+| **Aprender de errores** | No repetir fracasos históricos |
+| **Anticipar tendencias** | Patrones se repiten |
+| **Valorar complejidad** | Lo que damos por sentido tomó décadas |
 
+### 🎯 Motivación Clave
 
-![Evolución de los Sistemas Operativos](../../assets/infografias/so-evolucion-timeline.png)
+> "Aquellos que no pueden recordar el pasado están condenados a repetirlo."
+> — George Santayana
 
-### Hitos Clave en la Evolución
+**En SO:** Cada generación resolvió problemas específicos de su época.
 
-| Período | Avance Tecnológico | Problema Resuelto |
-|---------|-------------------|-------------------|
-| **1940s** | Sin SO | Programación manual con cables |
-| **1950s** | Batch processing | Automatizar secuencia de trabajos |
-| **1960s** | Multiprogramación | CPU ociosa durante E/S |
-| **1970s** | Time-sharing | Múltiples usuarios interactivos |
-| **1980s** | GUI personal | Computación accesible para todos |
-| **2000s+** | Virtualización/cloud | Escalabilidad y servicios on-demand |
+</div>
+
+<div>
+
+### 📊 Hitos Clave en la Evolución
+
+| Período | Avance | Problema Resuelto |
+|---------|---------|-------------------|
+| **1940s** | Sin SO | Programación con cables |
+| **1950s** | Batch | Automatizar trabajos |
+| **1960s** | Multiprogramación | CPU ociosa en E/S |
+| **1970s** | Time-sharing | Usuarios interactivos |
+| **1980s** | GUI PC | Computación masiva |
+| **2000s+** | Cloud/VM | Escalabilidad |
+
+```
+1940      1960      1980      2000      2020
+  │         │         │         │         │
+  ▼         ▼         ▼         ▼         ▼
+Sin SO  →  Batch  →  Multi   →   PC    → Cloud
+                    prog           GUI      VMs
+```
+
+**Insight:** Cada década trajo un paradigma nuevo impulsado por hardware más poderoso.
+
+</div>
+
+</div>
 
 ---
 
 ## Generación 0: Sin Sistema Operativo (1940-1950)
 
-### Características
-- **ENIAC, UNIVAC**: Primeras computadoras
-- Programación con **cables y switches**
-- **Una persona** = un programa = toda la máquina
-- Sin concepto de "software de sistema"
+### La era de los "gigantes" computacionales
+
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+
+<div>
+
+### 🔌 Características
+
+| Aspecto | Descripción |
+|---------|-------------|
+| **Hardware** | ENIAC (1945), UNIVAC I (1951) |
+| **Tamaño** | Ocupaban habitaciones completas |
+| **Programación** | Cables y switches físicos |
+| **Uso** | Cálculos balísticos, censos |
+| **Costo** | Millones de dólares |
 
 ```
-┌─────────────────────────────────┐
-│    PROGRAMADOR                  │
-│         │                       │
-│         ▼                       │
-│  ┌─────────────┐               │
-│  │  HARDWARE   │ (directo)     │
-│  └─────────────┘               │
-└─────────────────────────────────┘
+    ┌──────────────────────────────┐
+    │                              │
+    │    🏭 ENIAC (1945)           │
+    │    30 toneladas              │
+    │    17,468 válvulas            │
+    │    174 kW de potencia         │
+    │                              │
+    │   [Programador cableando]     │
+    │         │                    │
+    │         ▼                    │
+    │    ┌─────────────┐            │
+    │    │  SWITCHES    │           │
+    │    │  CABLES      │           │
+    │    └─────────────┘            │
+    └──────────────────────────────┘
 ```
 
-**Problema:** Desperdicio de tiempo y recursos
+### ⚠️ Problemas
+
+- **Tiempo perdido** reconectando cables
+- **Errores humanos** frecuentes
+- **Un programa** = toda la máquina
+- **Sin concepto** de "software de sistema"
+
+</div>
+
+<div>
+
+### 💡 Insight Histórico
+
+> "Programar la ENIAC era como reconectar una central telefónica
+> cada vez que querías hacer una llamada."
+
+### 📊 Comparación
+
+| Métrica | 1940s | Hoy |
+|---------|-------|-----|
+| Peso | 30 toneladas | Gramos |
+| Energía | 174 kW | 5-15 W |
+| Velocidad | ~5,000 ops/s | ~100,000 M ops/s |
+| Costo | ~$500,000 | ~$500 |
+
+### 🎯 ¿Por qué estudiarnos?
+
+- **Origen de conceptos:** todavía usamos herencia de esta época
+- **Contexto:** entender por qué los SO surgieron como respuesta a estos problemas
+- **Agradecimiento:** valorar lo fácil que es programar hoy
+
+</div>
+
+</div>
+
+<div style="text-align: center; margin-top: 20px; padding: 15px; background: #fef3c7; border-radius: 10px;">
+
+**💡 Lección:** La necesidad es la madre de la invención. Estos problemas extremos impulsaron la creación de los primeros sistemas operativos.
+
+</div>
 
 ---
 
 ## Primera Generación: Procesamiento por Lotes (1950-1965)
 
-### Batch Processing
+### Batch Processing: Automatizando el flujo
+
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+
+<div>
+
+### 📦 El flujo del batch
 
 ```
-┌─────────────────────────────────────────┐
-│ 1. Programador escribe código en papel  │
-│              ↓                          │
-│ 2. Operador perfora tarjetas            │
-│              ↓                          │
-│ 3. Tarjetas se acumulan en "lote"       │
-│              ↓                          │
-│ 4. Computador procesa todo el lote      │
-│              ↓                          │
-│ 5. Resultados en impresora (horas después)│
-└─────────────────────────────────────────┘
+PROGRAMADOR           OPERADOR           COMPUTADORA
+    │                    │                    │
+    │ Escribe            │ Perfora            │
+    │ en papel           │ tarjetas           │
+    ▼                    ▼                    ▼
+┌────────┐          ┌────────┐          ┌────────┐
+│ CÓDIGO  │          │TARJETAS│          │  LOTE  │
+│ FUENTE │          │PERFORADAS│         │ACUMU-  │
+└────────┘          └────────┘          │ LADO   │
+                                        └───┬────┘
+                                            │
+                       (horas después)      ▼
+                                            │
+                                        ┌────────┐
+                                        │SALIDA  │
+                                        │IMPRESA │
+                                        └────────┘
 ```
 
-### Primer SO: **GM-NAA I/O** (1956) - General Motors
+### 🎯 Ventajas del Sistema de Lotes
+
+| Aspecto | Sin Sistema | Con Batch |
+|---------|-------------|-----------|
+| **Preparación** | Manual | Automatizada |
+| **Throughput** | 1 trabajo/hora | Varios/hora |
+| **Eficiencia** | CPU ociosa mucho | CPU casi siempre ocupada |
+| **Errores** | Frecuentes | Detectados antes |
+
+### ⚙️ Primer SO: GM-NAA I/O (1956)
+
+- **Creado por:** General Motors e IBM
+- **Innovación:** Primer SO de producción real
+- **Función:** Automatizar procesamiento de nómina de GM
+- **Impacto:** Probó que los SO valían la inversión
+
+</div>
+
+<div>
+
+### 🏭 Secuencia de un Job Batch
+
+```
+┌────────────────────────────────────────┐
+│ 1. PROGRAMADOR                           │
+│    Escribe código en FORTRAN/COBOL      │
+└────────────┬───────────────────────────┘
+             │ Tarjetas perforadas
+             ▼
+┌────────────────────────────────────────┐
+│ 2. OPERADOR                            │
+│    Prepara tarjetas y tarjetas          │
+│    Incluye: código + datos + control    │
+└────────────┬───────────────────────────┘
+             │ Se acumulan en lote
+             ▼
+┌────────────────────────────────────────┐
+│ 3. LECTOR DE TARJETAS                  │
+│    Lee tarjetas a alta velocidad        │
+└────────────┬───────────────────────────┘
+             │ Datos en memoria
+             ▼
+┌────────────────────────────────────────┐
+│ 4. COMPUTADORA PROCESA                │
+│    Ejecuta secuencialmente             │
+│    Uno tras otro                       │
+└────────────┬───────────────────────────┘
+             │ Resultados listos
+             ▼
+┌────────────────────────────────────────┐
+│ 5. IMPRESORA                           │
+│    Salida en papel (horas después)     │
+└────────────────────────────────────────┘
+```
+
+### 📊 Limitaciones
+
+| Problema | Explicación |
+|----------|-------------|
+| **Sin interactividad** | No puedes corregir errores en tiempo real |
+| **Turnaround largo** | Horas o días para resultados |
+| **Sin debugging** | Casi imposible encontrar bugs |
+| **Ineficiente** | CPU espera E/S del siguiente job |
+
+</div>
+
+</div>
+
+<div style="text-align: center; margin-top: 20px; padding: 15px; background: #dbeafe; border-radius: 10px;">
+
+**💡 Evolución clave:** El concepto de "cola de trabajos" (job queue) nació aquí y todavía lo usamos hoy (printers, batch jobs).
+
+</div>
 
 ---
 
 ## Segunda Generación: Multiprogramación (1965-1980)
 
-### Múltiples programas en memoria
+### 🎯 El problema: CPU esperando E/S
+
+```
+SIN MULTIPROGRAMACIÓN        CON MULTIPROGRAMACIÓN
+┌──────────────────┐         ┌──────────────────┐
+│ CPU: 10% ocupada │         │ CPU: 95% ocupada  │
+│ E/S: 90% tiempo  │         │ E/S: 5% tiempo   │
+└──────────────────┘         └──────────────────┘
+
+Porque cuando un programa      Ahora CPU NO espera:
+lee del disco, CPU ociosa     - Mientras A lee, B corre
+porque no hay otro programa    - Mientras B escribe, C corre
+que ejecutar.
+```
+
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+
+<div>
+
+### 💾 Memoria con Múltiples Programas
 
 ```
 ┌────────────────────────────────┐
@@ -212,122 +420,596 @@ Entender la historia nos ayuda a:
 ├────────────────────────────────┤
 │  Sistema Operativo             │
 ├────────────────────────────────┤
-│  Programa A (esperando E/S)    │
+│  Programa A                     │ ← esperando E/S
+│  (en espera de disco)           │
 ├────────────────────────────────┤
-│  Programa B (ejecutando)       │ ← CPU
+│  Programa B  ◀─────► CPU        │ ← ejecutando ahora
+│  (usa CPU activamente)          │
 ├────────────────────────────────┤
-│  Programa C (esperando E/S)    │
+│  Programa C                     │ ← esperando E/S
+│  (en espera de red)             │
 └────────────────────────────────┘
+
+La CPU cambia de programa cuando
+uno hace E/S. A = B = C = A = B ...
 ```
 
-### Sistemas importantes
-- **IBM OS/360** (1964)
-- **MULTICS** (1969) - Precursor de UNIX
+### 🚀 Innovación Clave
+
+| Aspecto | Antes | Después |
+|---------|-------|---------|
+| **Uso de CPU** | ~10-20% | ~80-95% |
+| **Throughput** | 1 job/hora | 3-5 jobs/hora |
+| **Eficiencia** | Muy baja | Muy alta |
+| **Costo** | Alto por job | Bajo por job |
+
+</div>
+
+<div>
+
+### 🏭 Sistemas Importantes
+
+#### IBM OS/360 (1964)
+- **Primer SO de "propósito general"**
+- **Familia de SOs** para diferentes hardware
+- **Conceptos introducidos:**
+  - Job control language (JCL)
+  - Spooling (Simultaneous Peripheral Operations On-Line)
+  - Multiprogramación real
+
+```
+OS/360 fue el proyecto de software más
+grande de la época: 5,000 personas-año
+```
+
+#### MULTICS (1969)
+- **Proyecto conjunto:** Bell Labs, MIT, GE
+- **Objetivo:** SO "universal" para todas las necesidades
+- **Resultado:** Demasiado complejo, proyecto cancelado
+- **Legado:** Ideas que inspiraron UNIX
+
+```
+MULTICS era "todo para todos":
+- Muy potente
+- Muy complejo
+- Muy caro
+- Falló por sobre-ingeniería
+```
+
+### 💡 Insight
+
+> "La perfección se alcanza no cuando no hay nada más que añadir,
+> sino cuando no hay nada más que quitar."
+> — Antoine de Saint-Exupéry
+
+**MULTICS añadió de todo. UNIX eliminó hasta lo esencial.**
+
+</div>
+
+</div>
+
+<div style="text-align: center; margin-top: 20px; padding: 15px; background: #d1fae5; border-radius: 10px;">
+
+**💡 Evolución clave:** Multiprogramación = El kernel cambia de programa activo cada milisegundo, maximizando uso de CPU.
+
+</div>
 
 ---
 
 ## Nacimiento de UNIX (1969)
 
-### Ken Thompson y Dennis Ritchie - Bell Labs
+### 📖 La historia de cómo un proyecto fallido creó el SO más influyente
+
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+
+<div>
+
+### 🔬 El contexto: MULTICS
 
 ```
-      ┌─────────────────┐
-      │    MULTICS      │ (muy complejo)
-      │    (fallido)    │
-      └────────┬────────┘
-               │ Thompson y Ritchie
-               │ simplifican
-               ▼
-      ┌─────────────────┐
-      │     UNIX        │
-      │ "Una cosa bien" │
-      └─────────────────┘
+┌─────────────────────────────────────┐
+│           MULTICS (1964-1969)        │
+│                                     │
+│  Objetivo: SO "perfecto" universal   │
+│  Problema: Demasiado complejo        │
+│  Resultado: Proyecto cancelado      │
+│                                     │
+│  Bell Labs se retira del proyecto   │
+└─────────────────────────────────────┘
+           │ Ken Thompson, Dennis Ritchie
+           │ decepcionados, deciden
+           │ crear su propio SO minimalista
+           ▼
+┌─────────────────────────────────────┐
+│           UNIX (1969)               │
+│                                     │
+│  Filosofía: "Haz una cosa bien"     │
+│  Simple, elegante, poderoso          │
+└─────────────────────────────────────┘
 ```
 
-### Innovaciones de UNIX:
-- Escrito en **C** (portable)
-- Filosofía: "Haz una cosa y hazla bien"
-- Todo es un archivo
-- Base de Linux, macOS, Android
+### 🎯 Los Creadores
+
+| Persona | Rol | Contribución |
+|---------|-----|-------------|
+| **Ken Thompson** | Arquitecto principal | Diseñó UNIX, escribió B |
+| **Dennis Ritchie** | Creador de C | Inventó C, reescribió UNIX |
+| **Douglas McIlroy** | Filosofía | "Pipes", filosofía UNIX |
+| **Brian Kernighan** | Documentación | Explicó UNIX al mundo |
+
+</div>
+
+<div>
+
+### 💡 Innovaciones Revolucionarias
+
+#### 1. Escrito en C (Portabilidad)
+```
+ANTES (SO en ensamblador):
+┌──────────────────┐
+│ SO IBM 360       │ → Solo corre en IBM 360
+│ (ensamblador)    │
+└──────────────────┘
+
+DESPUÉS (UNIX en C):
+┌──────────────────┐        ┌──────────────┐
+│ UNIX en C        │   ──►  │ PDP-11       │
+└──────────────────┘        │ VAX          │
+                            │ x86          │
+                            │ ARM          │
+                            └──────────────┘
+
+UN SO corre en CUALQUIER hardware
+con solo recompilar.
+```
+
+#### 2. Filosofía "Haz una cosa y hazla bien"
+
+| Programa | Función | Combinar |
+|----------|---------|----------|
+| `ls` | Listar archivos | `ls \| grep .txt` |
+| `grep` | Buscar texto | `cat file \| grep error` |
+| `cat` | Mostrar archivo | `cat file \| wc -l` |
+| `wc` | Contar líneas | `ls \| wc -l` |
+
+**Pequeñas herramientas que se combinan = Poder infinito**
+
+#### 3. "Todo es un archivo"
+
+```
+/archivo/disco
+/dispositivo/teclado
+/socket/red
+/todo/es/un/archivo
+```
+
+Abstracción elegante y uniforme.
+
+#### 4. Herencia que define el mundo actual
+
+```
+UNIX (1969)
+   │
+   ├───→ Linux (1991) → Servidores, Android, IoT
+   ├───→ BSD → macOS, iOS
+   ├───→ Minix → Educación
+   └───→ Plan 9 → Inspiración para Go
+```
+
+**El 99% de internet corre descendientes de UNIX.**
+
+</div>
+
+</div>
+
+<div style="text-align: center; margin-top: 20px; padding: 15px; background: #fef3c7; border-radius: 10px;">
+
+**🎯 Lección:** A veces, un fracaso (MULTICS) conduce a un éxito aún mayor (UNIX). La simplicidad gana.
+
+</div>
 
 ---
 
 ## Tercera Generación: Tiempo Compartido (1970-1990)
 
-### Time-Sharing: Múltiples usuarios simultáneos
+### ⏱️ Time-Sharing: Interactividad para múltiples usuarios
+
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+
+<div>
+
+### 💡 El concepto: "Tajadas" de tiempo
 
 ```
-Usuario 1 ──┐
-            │
-Usuario 2 ──┼──→ [SO Time-Sharing] ──→ [CPU]
-            │         │
-Usuario 3 ──┘    Reparte tiempo
-                 en "tajadas"
+CPU de 1 segundo se divide en "tajadas":
+
+┌─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┐
+│100ms│100ms│100ms│100ms│100ms│100ms│100ms│100ms│100ms│
+└──┬──┴──┬──┴──┬──┴──┬──┴──┬──┴──┬──┴──┬──┴──┬──┘
+   │   │   │   │   │   │   │   │   │
+   ▼   ▼   ▼   ▼   ▼   ▼   ▼   ▼   ▼   ▼
+Usuario Usuario Usuario Usuario Usuario Usuario Usuario
+  1      2      3      4      5      6      7      8
+
+Cada usuario tiene la ILLUSIÓN de
+exclusividad, pero comparten la CPU.
 ```
 
-### Sistemas importantes:
-- **UNIX** (1969-presente)
-- **VMS** (DEC)
-- **CP/M** (microcomputadores)
+### 🎯 Problema Resuelto
+
+| Antes (Batch) | Después (Time-Sharing) |
+|---------------|----------------------|
+| Horas de espera | Respuesta inmediata |
+| Sin interactividad | Interactivo |
+| Un usuario a la vez | Decenas de usuarios |
+| Debugging difícil | Debugging en tiempo real |
+
+### ⚙️ Cómo funciona
+
+```
+1. Usuario presiona tecla
+   ↓
+2. SO guarda contexto del programa actual
+   ↓
+3. SO carga programa del usuario
+   ↓
+4. Usuario tiene CPU por su "tajada"
+   ↓
+5. SO interrumpe y cambia a siguiente usuario
+   ↓
+6. (Repetir muy rápido)
+
+Todo esto ocurre en milisegundos.
+```
+
+</div>
+
+<div>
+
+### 🏛️ Sistemas Importantes
+
+#### UNIX (1969-presente) - El estándar
+
+```
+Características innovadoras:
+- Time-sharing real
+- Jerarquía de archivos
+- Permisos de usuario
+- Shell programable
+- Todo es un archivo
+- Escrito en C (portable)
+```
+
+| Año | Versión | Innovación |
+|-----|---------|-------------|
+| 1969 | UNIX v1 | Primer sistema time-sharing |
+| 1971 | UNIX v4 | Pipes (comunicación entre procesos) |
+| 1973 | UNIX v5 | Primera versión portátil |
+| 1977 | BSD | Berkeley sockets (red) |
+| 1983 | System V | IPC System V, semáforos |
+
+#### VMS (1978) - Virtual Memory System
+
+```
+DEC VAX/VMS fue el SO más influyente
+de los años 80 en entornos académicos
+y de ingeniería.
+
+Características:
+- Clustering (varios computadores como uno)
+- Sistema de archivos robusto
+- DDCMP (protocolo de red)
+- Impacto: Influenció Windows NT
+```
+
+#### CP/M (1974) - Microprocesadores
+
+```
+Gary Kildall crea CP/M para microprocesadores
+Intel 8080.
+
+Características:
+- SO simple para 8-bit
+- API consistente
+- Se convirtió en estándar de facto
+- Base para MS-DOS
+
+Impacto: Popularizó computación personal
+```
+
+### 📊 Comparativa de Sistemas de los 70s
+
+| Sistema | Hardware | Usuarios | Uso principal |
+|---------|----------|----------|----------------|
+| UNIX | PDP-11, VAX | ~50-100 | Academia, investigación |
+| VMS | VAX | ~100 | Empresas, ingeniería |
+| CP/M | 8080, Z80 | 1 | Oficina, juegos tempranos |
+| DOS | 8086 | 1 | Jogos, ofimática |
+
+</div>
+
+</div>
+
+<div style="text-align: center; margin-top: 20px; padding: 15px; background: #dbeafe; border-radius: 10px;">
+
+**💡 Evolución clave:** Time-sharing + Terminales remotas = Primera forma de "computación en la nube" (mainframes con terminales tontas).
+
+</div>
 
 ---
 
 ## Cuarta Generación: Computadoras Personales (1980-2000)
 
-### La era del PC
+### 🏠 La revolución del PC: Computación para todos
 
-| Año | Sistema | Importancia |
-| ----- | --------- | ------------- |
-| 1981 | MS-DOS | IBM PC |
-| 1984 | Mac OS | Primera GUI comercial exitosa |
-| 1985 | Windows 1.0 | Intento de GUI sobre DOS |
-| 1991 | **Linux** | SO libre y abierto |
-| 1995 | Windows 95 | GUI dominante |
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
 
-**Impacto histórico:** Esta generación democrató el acceso a la computación, llevando los computadores de las grandes empresas a los hogares.
+<div>
+
+### 📊 Línea de tiempo del PC
+
+```
+1975          1981          1984          1991          1995
+ │             │             │             │             │
+ ▼             ▼             ▼             ▼             ▼
+Altair        IBM PC         Mac           Linux         Win 95
+8800          (MS-DOS)       (GUI)         (Open)        (GUI masivo)
+```
+
+### 🎯 Sistemas que Definieron una Época
+
+| Año | Sistema | Importancia Histórica |
+|-----|---------|----------------------|
+| **1981** | **MS-DOS** | IBM PC, dominio empresarial |
+| **1984** | **Mac OS** | Primera GUI comercial exitosa |
+| **1985** | Windows 1.0 | Intento de GUI sobre DOS |
+| **1991** | **Linux** | SO libre y abierto |
+| **1995** | **Windows 95** | GUI dominante en hogares |
+| **1998** | **Windows 98** | Internet integrado |
+
+### 💡 La Guerra de los SO
+
+```
+┌─────────────┐                    ┌─────────────┐
+│   DOS       │                    │   Mac OS    │
+│   $ prompt  │                    │   🖼️  GUI   │
+│   c:\>       │                    │   Mouse      │
+│             │                    │   Iconos     │
+└─────────────┘                    └─────────────┘
+     │                                   │
+     │     1991: Linux nace           │
+     │     1995: Win 95 une GUI       │
+     │           │                    │
+     ▼           ▼                    ▼
+┌─────────────────────────────────────────┐
+│  El gana: GUI + Compatibilidad        │
+│  (Microsoft)                          │
+│                                         │
+│  Los perdedores:                       │
+│  - Mac: Cerrado, hardware caro          │
+│  - Linux: Técnico, sin GUI             │
+└─────────────────────────────────────────┘
+```
+
+### 🚀 Transformación Social
+
+| Antes (1980) | Después (2000) |
+|---------------|----------------|
+| Computadoras = empresas | Computadoras = hogares |
+| Programadores = expertos | Cualquiera programa |
+| Internet = académicos | Internet = todos |
+| Costo = $5,000+ | Costo = $500 |
+
+</div>
+
+<div>
+
+### 🎮 El impacto en la cultura popular
+
+#### Gaming
+```
+1980: Pac-Man, Space Invaders (Arcades)
+1990: Doom, SimCity (PC games)
+2000+: MMORPG, Esports (Jugar en red)
+
+La GUI hizo los PCs "amigables" para juegos.
+```
+
+#### Oficina
+```
+1985: Excel, WordPerfect (Productivity apps)
+1990: Microsoft Office (Dominio absoluto)
+2000: Google Docs (Computación en nube)
+
+La PC se volvió indispensable para negocios.
+```
+
+#### Educación
+```
+1980s: Logo, BASIC (Aprender a programar)
+1990s: CD-ROMs enciclopedias (Información digital)
+2000s: Internet (Aprendizaje en línea)
+
+La PC democratizó el conocimiento.
+```
+
+### 📈 Números de la Revolución del PC
+
+| Métrica | 1981 | 1990 | 2000 | 2010 |
+|---------|------|------|------|------|
+| PCs vendidos/año | ~0.2M | ~10M | ~140M | ~350M |
+| Penetración hogares | <1% | ~20% | ~60% | ~80% |
+| Costo promedio | $3,000 | $1,500 | $800 | $500 |
+
+### 💡 Insight
+
+> "La computadora personal más importante es la que
+> tienen las personas que no saben que la necesitan."
+> — Steve Jobs, 1985
+
+**Windows 95 fue el momento en que la computación se volvió mainstream.**
+
+</div>
+
+</div>
+
+<div style="text-align: center; margin-top: 20px; padding: 15px; background: #f0f9ff; border-radius: 10px;">
+
+**💡 Evolución clave:** El PC + GUI = Democratización de la computación. Ya no necesitabas ser ingeniero para usar un computador.
+
+</div>
 
 ---
 
 ## Quinta Generación: SO Modernos (2000-presente)
 
-### Características actuales:
-- **Multitarea real** (múltiples núcleos)
-- **Conectividad** (redes, Internet)
-- **Seguridad** (permisos, encriptación)
-- **Virtualización** (VMs, contenedores)
-- **Cloud computing** (servicios on-demand)
-- **Computación móvil y edge** (sensores, IoT)
+### 🌐 La era de la conectividad total y la computación ubicua
 
-### Ejemplos actuales:
-- Windows 10/11
-- macOS
-- Distribuciones GNU/Linux (Ubuntu, Fedora, Debian)
-- Android
-- iOS/iPadOS
-- ChromeOS
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
 
-> **Nota:** Las versiones cambian cada año, pero las ideas clave se mantienen.
+<div>
+
+### ⚡ Características Definitorias
+
+| Característica | Descripción | Ejemplo |
+|----------------|-------------|---------|
+| **Multitarea real** | Múltiples núcleos, múltiples CPUs | Tu PC hace 100 cosas a la vez |
+| **Conectividad total** | Redes, Internet, 5G | Todo siempre conectado |
+| **Seguridad avanzada** | Encriptación, permisos granulares | FaceID, HTTPS, sandbox |
+| **Virtualización** | VMs, contenedores | Docker, KVM, Hyper-V |
+| **Cloud native** | Servicios on-demand | AWS, Azure, GCP |
+| **Computación móvil** | Smartphones = computadores potentes | Tu celular es más rápido que PCs de 2010 |
+| **Edge computing** | Procesamiento en el borde | IoT, sensores, CDN |
+
+### 📱 El cambio de paradigma: Desktop → Cloud → Edge
+
+```
+2000s: Desktop Computing
+┌─────────────────────────────┐
+│  Todo corre LOCALMENTE         │
+│  - Office instalado            │
+│  - Archivos en disco duro     │
+│  - Aplicaciones .exe          │
+└─────────────────────────────┘
+
+2010s: Cloud Computing
+┌─────────────────────────────┐
+│  Todo en la NUBE              │
+│  - Google Docs               │
+│  - Netflix streaming          │
+│  - Dropbox                   │
+│  - Microsoft 365             │
+└─────────────────────────────┘
+
+2020s: Edge Computing
+┌─────────────────────────────┐
+│  Procesamiento DISTRIBUIDO    │
+│  - CDNs                     │
+│  - IoT gateways             │
+│  - Edge functions          │
+└─────────────────────────────┘
+```
+
+### 🔮 Tendencias emergentes (2026+)
+
+| Tendencia | Explicación | Impacto |
+|----------|-------------|---------|
+| **AI-native OS** | SO optimizados para ML chips | Windows Copilot, Apple Intelligence |
+| **Container-first** | Microservicios + contenedores | Kubernetes everywhere |
+| **Real-time OS** | Latencia ultrabaja | Automotrización, VR/AR |
+| **Energy-aware** | Optimización de batería | Chips ARM en servidores |
+
+</div>
+
+<div>
+
+### 🖥️ Ejemplos Actuales por Categoría
+
+#### Desktop
+```
+Windows 11 (2021+)
+├── Interfaz híbrida (Start Menu)
+├── WSL 2 (Linux integrado)
+├── Teams integrado
+└── Microsoft Store
+
+macOS (versiones anuales)
+├── macOS Sequoia, Ventura, Sonoma...
+├── ARM64 (Apple Silicon)
+├── Continuidad iOS/macOS
+└── Optimizado para creativos
+
+Linux Desktop
+├── Ubuntu LTS (soporte 5 años)
+├── Fedora (bleeding edge)
+├── Pop!_OS (usabilidad)
+└── Mint (fácil para migrantes)
+```
+
+#### Móvil
+```
+Android (Google)
+├── 71% market share
+├── Fragmentación (skins: Samsung, Xiaomi)
+├── Google Play Services
+└── Base de 24,000+ modelos
+
+iOS (Apple)
+├── 28% market share
+├── Ecosistema cerrado
+├── App Store curado
+└── Base de ~10 modelos
+```
+
+#### Servidor
+```
+Distribuciones empresariales:
+├── RHEL (Red Hat, soporte pagado)
+├── Ubuntu LTS (Canonical, free/pagado)
+├── Debian (comunidad, estable)
+└── SUSE (Enterprise, europeo)
+
+SO Cloud:
+├── Amazon Linux (optimizado para AWS)
+├── Azure Linux (optimizado para Azure)
+└── Google COS (optimizado para GCP)
+```
+
+### 💡 Insights
+
+> "La computación más importante es la que ni ves ni piensas.
+> Está en data centers procesando tus búsquedas, transacciones y
+> streams de video las 24/7."
+
+**El SO moderno es invisible: está en la nube, en tu celular, en tu smartwatch.**
+
+</div>
+
+</div>
+
+<div style="text-align: center; margin-top: 20px; padding: 15px; background: #d1fae5; border-radius: 10px;">
+
+**💡 Evolución clave:** Ya no hay "el" SO dominante. Hay múltiples SOs para diferentes usos, y todos coexisten en un ecosistema conectado.
+
+</div>
 
 ---
 
 ## Componentes de un SO Moderno
 
-![Arquitectura del Sistema Operativo](../../assets/infografias/so-componentes-arquitectura.png)
+### Capas de Abstracción: El modelo de cebolla
 
-### Capas de Abstracción
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
 
-Cada capa oculta la complejidad de la inferior:
-- **Aplicaciones** → No conocen el hardware específico
-- **Shell** → Interpreta comandos sin saber del kernel
-- **Kernel** → Gestiona recursos sin exponer detalles físicos
-- **Hardware** → Componentes físicos reales
+<div>
 
----
+#### 🧅 ¿Por qué "capas"?
 
-### Representación ASCII:
+Cada capa **oculta la complejidad** de la inferior:
+
 ```
 ┌─────────────────────────────────────────────────┐
-│                  APLICACIONES                   │
+│                  APLICACIONES                   │ ← Usuario interactúa aquí
 ├─────────────────────────────────────────────────┤
 │              UTILIDADES DEL SISTEMA             │
 │    (Administrador archivos, Terminal, etc.)     │
@@ -335,7 +1017,7 @@ Cada capa oculta la complejidad de la inferior:
 │                    SHELL                        │
 │         (Intérprete de comandos / GUI)          │
 ├─────────────────────────────────────────────────┤
-│            LLAMADAS AL SISTEMA (API)            │
+│            LLAMADAS AL SISTEMA (API)            │ ← La frontera crucial
 ├─────────────────────────────────────────────────┤
 │                   KERNEL                        │
 │  ┌──────────┬──────────┬──────────┬──────────┐ │
@@ -343,15 +1025,54 @@ Cada capa oculta la complejidad de la inferior:
 │  │ Procesos │ Memoria  │ Archivos │   E/S    │ │
 │  └──────────┴──────────┴──────────┴──────────┘ │
 ├─────────────────────────────────────────────────┤
-│                   HARDWARE                      │
+│                   HARDWARE                      │ ← Componentes físicos
 └─────────────────────────────────────────────────┘
 ```
+
+</div>
+
+<div>
+
+#### 📋 Responsabilidades por Capa
+
+| Capa | Responsabilidad | Ejemplos |
+|------|-----------------|----------|
+| **Aplicaciones** | Funcionalidad para usuario | Chrome, VS Code, juegos |
+| **Utilidades** | Herramientas del sistema | FileManager, TaskManager |
+| **Shell** | Puente usuario-kernel | bash, PowerShell, Explorador |
+| **System Calls** | API oficial del SO | open(), read(), fork() |
+| **Kernel** | Gestión de recursos | CPU, RAM, disco, red |
+| **Hardware** | Componentes físicos | CPU, RAM, SSD, GPU |
+
+#### 💡 Insight: La transición clave
+
+> **Las system calls son la ÚNICA forma válida**
+> **de que un programa acceda a servicios del kernel.**
+
+```
+Aplicación ──✖──> Hardware directo
+              │
+              └──> System Call ──> Kernel ──> Hardware
+```
+
+**Sin system calls:** Caos, inseguridad, crashes
+**Con system calls:** Orden, seguridad, estabilidad
+
+</div>
+
+</div>
 
 ---
 
 ## El Kernel (Núcleo)
 
 ### El corazón del Sistema Operativo
+
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+
+<div>
+
+#### 💓 Por qué es el "corazón"
 
 ```
          Aplicaciones
@@ -370,22 +1091,61 @@ Cada capa oculta la complejidad de la inferior:
          Hardware
 ```
 
-### Tipos de Kernel y sus Características
+#### 🎯 Responsabilidades Principales
+
+| Componente | Función |
+|-----------|---------|
+| **Planificador** | Decide qué proceso ejecuta |
+| **Gestor de memoria** | Asigna RAM a procesos |
+| **Sistema de archivos** | Organiza datos en disco |
+| **Drivers E/S** | Habla con hardware |
+| **Gestor de procesos** | Crea, destruye procesos |
+
+</div>
+
+<div>
+
+#### 🏗️ Tipos de Kernel
 
 | Tipo | Estructura | Ventajas | Ejemplos |
 |------|------------|----------|----------|
-| **Monolítico** | Todo en un solo espacio de memoria | Rápido, comunicación directa | Linux, Windows clásico |
-| **Microkernel** | Mínimo en kernel, servicios en usuario | Seguro, mantenible | Minix, QNX, seL4 |
-| **Híbrido** | Kernel monolítico + características microkernel | Balance rendimiento/seguridad | macOS (XNU), Windows NT |
-| **Exokernel** | Mínimo, bibliotecas de usuario controlan recursos | Máxima flexibilidad | MIT Exokernel (investigación) |
+| **Monolítico** | Todo en un espacio | Rápido, directo | Linux, DOS |
+| **Microkernel** | Mínimo en kernel | Seguro, flexible | Minix, QNX, seL4 |
+| **Híbrido** | Mezcla de ambos | Balance | macOS, Windows NT |
+| **Exokernel** | Mínimo absoluto | Flexibilidad total | Investigación |
 
-> **Nota:** Linux es monolítico pero soporta módulos cargables, lo que le da cierta flexibilidad de microkernel.
+#### ⚖️ Comparativa
+
+```
+MONOLÍTICO                    MICROKERNEL
+┌─────────────┐              ┌──────────┐
+│   KERNEL    │              │  Kernel  │
+│             │              │  mínimo  │
+│ Todo junto  │              └─────┬────┘
+│             │                    │
+│ - Rápido    │              ┌──────▼──────┐
+│ - Complejo  │              │   Servicios │
+│ - Crash total│             │   en user   │
+└─────────────┘              └─────────────┘
+```
+
+> **Nota:** Linux es monolítico con módulos cargables → "lo mejor de ambos mundos"
+
+</div>
+
+</div>
 
 ---
 
 ## El Shell
 
 ### Interfaz entre usuario y kernel
+
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+
+<div>
+
+#### 🔄 El flujo de trabajo
 
 ```
 ┌────────────────────────────────────────┐
@@ -408,13 +1168,58 @@ Cada capa oculta la complejidad de la inferior:
 └────────────────────────────────────────┘
 ```
 
-### Shells populares: **bash**, zsh, PowerShell, fish
+#### 🎭 Dos tipos de Shell
+
+| Tipo | Descripción | Ejemplos |
+|------|-------------|----------|
+| **CLI** | Comandos de texto | bash, zsh, PowerShell |
+| **GUI** | Interfaz gráfica | Explorador Windows, Finder |
+
+</div>
+
+<div>
+
+#### 🐚 Shells CLI populares
+
+| Shell | Características | Uso típico |
+|-------|----------------|------------|
+| **bash** | Estándar POSIX, omnipresente | Linux, macOS (antes) |
+| **zsh** | Autocompletado avanzado, themes | macOS default |
+| **PowerShell** | Orientado a objetos, .NET | Windows admin |
+| **fish** | Autocompletado inteligente, UX-friendly | Principiantes |
+
+#### 💻 GUI como Shell
+
+```
+EXPLORADOR WINDOWS = Shell gráfico
+
+Click carpeta → Explorador interpreta
+                → Llama a kernel
+                → Muestra contenido
+
+Lo MISMO que bash, pero con clics
+en lugar de comandos de texto.
+```
+
+> **El shell NO es el kernel.**
+> Es un programa CORRIENDO en modo usuario
+> que SOLICITA servicios al kernel.
+
+</div>
+
+</div>
 
 ---
 
 ## Llamadas al Sistema (System Calls)
 
 ### La API del Sistema Operativo
+
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+
+<div>
+
+#### 🔌 Por qué son necesarias
 
 ```c
 // Ejemplo: Abrir un archivo
@@ -424,15 +1229,63 @@ int fd = open("/home/user/archivo.txt", O_RDONLY);
 // Pide al kernel que lo haga por él
 ```
 
-### Categorías de system calls:
+```
+┌─────────────┐                    ┌─────────────┐
+│  PROGRAMA   │                    │   HARDWARE  │
+│             │                    │             │
+│ "Quiero     │────✖────directo──→│  (DISCO)    │
+│  leer disco"│                    │             │
+└──────┬──────┘                    └─────────────┘
+       │
+       │ System Call
+       ▼
+┌─────────────┐
+│   KERNEL    │ ← Verifica permisos
+│             │ ← Accede a hardware
+│ "Autorizado"│ ← Devuelve datos
+└──────┬──────┘
+       │
+       ▼
+┌─────────────┐
+│  PROGRAMA   │ ← Recibe datos
+│   (datos)   │
+└─────────────┘
+```
 
-| Categoría | Ejemplos |
-| ----------- | ---------- |
-| Procesos | fork(), exec(), exit(), wait() |
-| Archivos | open(), read(), write(), close() |
-| Dispositivos | ioctl(), read(), write() |
-| Información | getpid(), time(), uname() |
-| Comunicación | pipe(), socket(), send() |
+</div>
+
+<div>
+
+#### 📂 Categorías de System Calls
+
+| Categoría | Propósito | Ejemplos |
+|-----------|-----------|----------|
+| **Procesos** | Crear/destruir procesos | fork(), exec(), exit(), wait() |
+| **Archivos** | Manipular archivos | open(), read(), write(), close() |
+| **Dispositivos** | Acceder a hardware | ioctl(), read(), write() |
+| **Información** | Obtener datos del sistema | getpid(), time(), uname() |
+| **Comunicación** | Enviar/recibir datos | pipe(), socket(), send() |
+| **Memoria** | Gestión de memoria | mmap(), brk(), sbrk() |
+
+#### 🎯 Ejemplo real: `ls -la`
+
+```
+$ ls -la /home
+
+bash ejecuta:
+1. getuid() → Verificar permisos
+2. opendir("/home") → Abrir directorio
+3. readdir() → Leer entrada
+4. stat() → Obtener metadatos
+5. printf() → Mostrar en pantalla
+6. closedir() → Cerrar directorio
+
+¡6 system calls para un simple ls!
+```
+
+</div>
+
+</div>
 
 ---
 
