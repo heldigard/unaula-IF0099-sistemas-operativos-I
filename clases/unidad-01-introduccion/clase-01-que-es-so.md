@@ -1302,13 +1302,60 @@ Otros   █   1%
 
 ## 7. Actividad Práctica
 
+### Explorando tu Sistema Operativo (5 min)
+
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+
+<div>
+
 ### En parejas, investiguen:
 
-| Tarea | Instrucciones |
-|-------|---------------|
-| **1️⃣ Ver procesos** | `Ctrl+Shift+Esc` (Windows) o `top` (Linux) |
-| **2️⃣ Ver memoria** | Pestaña "Rendimiento" o `free -h` |
-| **3️⃣ Discutir** | ¿Por qué Linux en servidores? |
+#### 🪟 Windows
+| Tarea | Comando/Acción |
+|-------|-----------------|
+| **Ver procesos** | `Ctrl+Shift+Esc` → Task Manager |
+| **Ver memoria** | Pestaña "Rendimiento" |
+| **Ver archivos abiertos** | `Ctrl+Shift+Esc` → Pestaña "Detalles" |
+| **Terminal** | `Windows + X` → Windows PowerShell |
+
+#### 🐧 Linux / macOS
+| Tarea | Comando/Acción |
+|-------|-----------------|
+| **Ver procesos** | `top` o `htop` |
+| **Ver memoria** | `free -h` (Linux) o `vm_stat` (macOS) |
+| **Ver archivos abiertos** | `lsof` |
+| **Terminal** | `Ctrl+Alt+T` o buscar "Terminal" |
+
+</div>
+
+<div>
+
+### Preguntas para discutir:
+
+1. **¿Cuántos procesos** están corriendo?
+   - ¿Por qué hay tantos que no reconoces?
+
+2. **¿Cuánta memoria** está en uso?
+   - ¿Qué pasa si se llena?
+
+3. **¿Qué proceso** consume más CPU?
+   - ¿Es esperado o sospechoso?
+
+4. **¿Por qué Linux** domina servidores?
+   - Basado en lo que observaste
+
+### 🎯 Objetivo
+Conectar la teoría con la realidad: **tu computador está ejecutando cientos de procesos simultáneamente**, coordinados por el SO.
+
+</div>
+
+</div>
+
+<div style="text-align: center; margin-top: 20px; padding: 15px; background: #fef3c7; border-radius: 10px;">
+
+**💡 Compartan sus descubrimientos con la clase. ¿Algo les sorprendió?**
+
+</div>
 
 ---
 
