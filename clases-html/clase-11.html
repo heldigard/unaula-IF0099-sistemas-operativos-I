@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clase 11: Implementación de Sistemas de Archivos - IF0099</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #1e40af;
+            --secondary: #3b82f6;
+            --accent: #06b6d4;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --text: #334155;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background: var(--bg-light);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        h1 {
+            color: var(--primary);
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: var(--secondary);
+            font-size: 1.1em;
+            font-weight: 500;
+        }
+
+        .main-content {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .index {
+            background: var(--light);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .index h2 {
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .index ul {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 10px;
+        }
+
+        .index a {
+            color: var(--secondary);
+            text-decoration: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            transition: all 0.3s;
+            display: block;
+        }
+
+        .index a:hover {
+            background: var(--secondary);
+            color: white;
+            transform: translateX(5px);
+        }
+
+        section {
+            margin-bottom: 50px;
+            scroll-margin-top: 20px;
+        }
+
+        h2 {
+            color: var(--primary);
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            border-bottom: 3px solid var(--accent);
+            padding-bottom: 10px;
+        }
+
+        h3 {
+            color: var(--secondary);
+            font-size: 1.4em;
+            margin: 25px 0 15px;
+        }
+
+        h4 {
+            color: var(--dark);
+            font-size: 1.2em;
+            margin: 20px 0 10px;
+        }
+
+        p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+
+        .diagram-box {
+            background: var(--dark);
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            overflow-x: auto;
+            line-height: 1.4;
+        }
+
+        .diagram-box table {
+            border-collapse: collapse;
+            width: 100%;
+            color: #e2e8f0;
+        }
+
+        .diagram-box td {
+            padding: 8px;
+            border: 1px solid #475569;
+        }
+
+        pre {
+            background: var(--dark);
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 10px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+
+        code {
+            background: #f1f5f9;
+            color: var(--primary);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+
+        pre code {
+            background: transparent;
+            color: inherit;
+            padding: 0;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 25px 0;
+        }
+
+        .highlight-box h3 {
+            color: white;
+        }
+
+        .info-box {
+            background: #dbeafe;
+            border-left: 4px solid var(--secondary);
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .warning-box {
+            background: #fef3c7;
+            border-left: 4px solid var(--warning);
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .success-box {
+            background: #d1fae5;
+            border-left: 4px solid var(--success);
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            font-size: 0.95em;
+        }
+
+        th {
+            background: var(--primary);
+            color: white;
+            padding: 12px 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 12px 15px;
+            border: 1px solid #e2e8f0;
+            vertical-align: top;
+        }
+
+        tr:nth-child(even) {
+            background: #f8fafc;
+        }
+
+        tr:hover {
+            background: #e0e7ff;
+        }
+
+        .comparison-table {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
+        }
+
+        .comparison-card {
+            background: var(--light);
+            padding: 20px;
+            border-radius: 10px;
+            border-top: 4px solid var(--secondary);
+        }
+
+        .comparison-card h4 {
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .comparison-card ul {
+            list-style: none;
+        }
+
+        .comparison-card li {
+            padding: 5px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .comparison-card li:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: var(--secondary);
+            font-weight: bold;
+        }
+
+        .inode-structure {
+            display: inline-block;
+            background: var(--dark);
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+            margin: 20px 0;
+            border: 2px solid var(--accent);
+        }
+
+        figure {
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        figure img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        figcaption {
+            margin-top: 15px;
+            color: var(--secondary);
+            font-style: italic;
+            font-size: 0.95em;
+        }
+
+        .objectives {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 25px 0;
+        }
+
+        .objective-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            position: relative;
+            padding-left: 50px;
+        }
+
+        .objective-card:before {
+            content: attr(data-number);
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 2em;
+            font-weight: bold;
+            opacity: 0.5;
+        }
+
+        .key-rule {
+            background: #fef3c7;
+            border: 2px solid var(--warning);
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-weight: 500;
+        }
+
+        .key-rule:before {
+            content: "⚠️ ";
+            font-size: 1.2em;
+        }
+
+        .pointer-diagram {
+            background: var(--light);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            border: 1px solid #e2e8f0;
+        }
+
+        .capacity-box {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            font-weight: 600;
+        }
+
+        .scroll-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--primary);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            font-size: 1.5em;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            transition: all 0.3s;
+            z-index: 1000;
+        }
+
+        .scroll-top:hover {
+            background: var(--secondary);
+            transform: translateY(-5px);
+        }
+
+        .scroll-top.visible {
+            display: flex;
+        }
+
+        footer {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 30px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 1.8em; }
+            h2 { font-size: 1.4em; }
+            .main-content { padding: 20px; }
+            .index ul { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Implementación de Sistemas de Archivos</h1>
+            <p class="subtitle">IF0099 - Sistemas Operativos I | Unidad 6 | Clase 11</p>
+            <p class="subtitle">UNAULA - Ingeniería Informática - 2026-I</p>
+        </header>
+
+        <article class="main-content">
+            <nav class="index">
+                <h2>Índice de Contenidos</h2>
+                <ul>
+                    <a href="#objetivos">Objetivos de la Clase</a>
+                    <a href="#agenda">Agenda</a>
+                    <a href="#estructura-interna">1. Estructura Interna del FS</a>
+                    <a href="#inodos">2. ¿Qué es un Inodo?</a>
+                    <a href="#directorios">Directorios como Tablas</a>
+                    <a href="#asignacion">3. Asignación de Espacio</a>
+                    <a href="#ext4">4. Ejemplo ext4</a>
+                    <a href="#detalles-inodos">5. Detalles Avanzados de Inodos</a>
+                    <a href="#punteros-directos">Punteros Directos</a>
+                    <a href="#indirecto-simple">Indirecto Simple</a>
+                    <a href="#indirecto-doble">Indirecto Doble</a>
+                    <a href="#indirecto-triple">Indirecto Triple</a>
+                    <a href="#ver-inodos">Ver Inodos en Linux</a>
+                    <a href="#hard-soft">Hard Links vs Symbolic Links</a>
+                    <a href="#actividad">Actividad Práctica</a>
+                    <a href="#resumen">Resumen</a>
+                </ul>
+            </nav>
+
+            <figure>
+                <img src="../assets/infografias/clase-11-inodos.png" alt="Estructura Interna del Filesystem - Inodos y Bloques">
+                <figcaption>Estructura interna de un filesystem Unix: separación entre metadatos (inodos) y datos (bloques)</figcaption>
+            </figure>
+
+            <section id="objetivos">
+                <h2>Objetivos de la Clase</h2>
+                <div class="objectives">
+                    <div class="objective-card" data-number="1">
+                        <strong>Explicar</strong> la estructura interna de un sistema de archivos
+                    </div>
+                    <div class="objective-card" data-number="2">
+                        <strong>Describir</strong> el rol de inodos, directorios y bloques
+                    </div>
+                    <div class="objective-card" data-number="3">
+                        <strong>Analizar</strong> la asignación de espacio (contigua, enlazada, indexada)
+                    </div>
+                    <div class="objective-card" data-number="4">
+                        <strong>Relacionar</strong> el diseño con el rendimiento
+                    </div>
+                </div>
+                <p><strong>Duración:</strong> 90 minutos</p>
+            </section>
+
+            <section id="agenda">
+                <h2>Agenda</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Tema</th>
+                            <th>Tiempo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>1. Estructuras de un FS</td><td>20 min</td></tr>
+                        <tr><td>2. Inodos y metadatos</td><td>20 min</td></tr>
+                        <tr><td>3. Asignación de espacio</td><td>25 min</td></tr>
+                        <tr><td>4. Caso ext4</td><td>15 min</td></tr>
+                        <tr><td>5. Actividad práctica</td><td>10 min</td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section id="estructura-interna">
+                <h2>1. Estructura Interna del Filesystem</h2>
+
+                <div class="diagram-box">
+<pre>
+┌──────────────────────────────────────┐
+│         SUPERBLOQUE                   │
+├──────────────────────────────────────┤
+│    Bitmaps (bloques / inodos libres)  │
+├──────────────────────────────────────┤
+│         Tabla de Inodos               │
+├──────────────────────────────────────┤
+│         Bloques de Datos              │
+└──────────────────────────────────────┘
+</pre>
+                </div>
+
+                <div class="comparison-table">
+                    <div class="comparison-card">
+                        <h4>📋 Superblock</h4>
+                        <ul>
+                            <li>Tamaño total del FS</li>
+                            <li>Tipo de filesystem</li>
+                            <li>Estado (clean/dirty)</li>
+                            <li>Contadores de bloques libres</li>
+                        </ul>
+                    </div>
+                    <div class="comparison-card">
+                        <h4>🗺️ Bitmaps</h4>
+                        <ul>
+                            <li>Bitmap de bloques libres</li>
+                            <li>Bitmap de inodos libres</li>
+                            <li>1 bit = 1 bloque/inodo</li>
+                            <li>Bit 1 = ocupado, 0 = libre</li>
+                        </ul>
+                    </div>
+                    <div class="comparison-card">
+                        <h4>📁 Inodos</h4>
+                        <ul>
+                            <li>Metadatos de archivos</li>
+                            <li>Permisos y propietario</li>
+                            <li>Tamaños y timestamps</li>
+                            <li>Punteros a bloques de datos</li>
+                        </ul>
+                    </div>
+                    <div class="comparison-card">
+                        <h4>💾 Bloques de Datos</h4>
+                        <ul>
+                            <li>Contenido real de archivos</li>
+                            <li>Tamaño típico: 4KB</li>
+                            <li>No guardan nombres</li>
+                            <li>Se acceden vía inodos</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    <strong>Idea clave:</strong> El filesystem separa <strong>metadatos</strong> (inodos) de <strong>datos</strong> (bloques). Los directorios solo apuntan a inodos, no a datos directamente.
+                </div>
+            </section>
+
+            <section id="inodos">
+                <h2>2. ¿Qué es un Inodo?</h2>
+
+                <div class="inode-structure">
+<pre>
+┌─────────────────────────────────┐
+│         INODO #12345            │
+├─────────────────────────────────┤
+│ Tipo: Archivo regular           │
+│ Permisos: -rw-r--r-- (644)      │
+│ Propietario: UID 1000           │
+│ Grupo: GID 1000                 │
+│ Tamaño: 4,096 bytes             │
+│ Fecha creación: 2026-01-31      │
+│ Fecha modificación: 2026-01-31  │
+│ Último acceso: 2026-01-31       │
+│ Links: 1                        │
+│ Bloques usados: 8               │
+│ ┌─────────────────────────────┐ │
+│ │  PUNTEROS A BLOQUES:        │ │
+│ │  • Directos (12): → Bloques │ │
+│ │  • Indirecto simple: → Tabla│ │
+│ │  • Indirecto doble: → Tabla │ │
+│ │  • Indirecto triple: → Tabla│ │
+│ └─────────────────────────────┘ │
+└─────────────────────────────────┘
+</pre>
+                </div>
+
+                <div class="key-rule">
+                    <strong>Regla clave:</strong> El nombre del archivo está en el directorio, <strong>no en el inodo</strong>. El inodo contiene todos los metadatos <strong>excepto</strong> el nombre.
+                </div>
+
+                <h3>Campos del Inodo</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Campo</th>
+                            <th>Descripción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><code>mode</code></td><td>Tipo de archivo y permisos (rwx)</td></tr>
+                        <tr><td><code>uid</code></td><td>ID del usuario propietario</td></tr>
+                        <tr><td><code>gid</code></td><td>ID del grupo propietario</td></tr>
+                        <tr><td><code>size</code></td><td>Tamaño en bytes</td></tr>
+                        <tr><td><code>atime</code></td><td>Tiempo de último acceso</td></tr>
+                        <tr><td><code>mtime</code></td><td>Tiempo de última modificación</td></tr>
+                        <tr><td><code>ctime</code></td><td>Tiempo de cambio de metadatos</td></tr>
+                        <tr><td><code>links</code></td><td>Contador de hard links</td></tr>
+                        <tr><td><code>blocks</code></td><td>Número de bloques usados</td></tr>
+                        <tr><td><code>block[15]</code></td><td>Punteros a bloques de datos</td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section id="directorios">
+                <h2>Directorios como Tablas</h2>
+
+                <div class="diagram-box">
+<table>
+    <tr><td><strong>Nombre</strong></td><td><strong>Inodo</strong></td></tr>
+    <tr><td>documento.txt</td><td>1052</td></tr>
+    <tr><td>foto.jpg</td><td>2048</td></tr>
+    <tr><td>proyecto/</td><td>3021</td></tr>
+</table>
+                </div>
+
+                <div class="info-box">
+                    <strong>Concepto importante:</strong> Un directorio es simplemente un archivo especial que contiene una tabla de mapeo <strong>nombre → inodo</strong>.
+                </div>
+
+                <p>Cuando ejecutas <code>cat archivo.txt</code>:</p>
+                <ol>
+                    <li>El kernel busca "archivo.txt" en el directorio actual</li>
+                    <li>Encuentra el número de inodo (ej: 12345)</li>
+                    <li>Carga el inodo 12345 desde la tabla de inodos</li>
+                    <li>Lee los punteros a bloques del inodo</li>
+                    <li>Carga los bloques de datos y muestra el contenido</li>
+                </ol>
+            </section>
+
+            <section id="asignacion">
+                <h2>3. Asignación de Espacio en Disco</h2>
+
+                <div class="comparison-table">
+                    <div class="comparison-card">
+                        <h4>📦 Contigua</h4>
+                        <ul>
+                            <li><strong>Idea:</strong> Bloques consecutivos</li>
+                            <li><strong>Ventaja:</strong> Acceso secuencial rápido</li>
+                            <li><strong>Desventaja:</strong> Fragmentación externa</li>
+                            <li><strong>Difícil de:</strong> Expandir archivos</li>
+                        </ul>
+                        <div class="diagram-box" style="font-size: 0.8em;">
+[████████][████████][████████]
+Bloque 100 → 101 → 102
+                        </div>
+                    </div>
+
+                    <div class="comparison-card">
+                        <h4>🔗 Enlazada</h4>
+                        <ul>
+                            <li><strong>Idea:</strong> Cada bloque apunta al siguiente</li>
+                            <li><strong>Ventaja:</strong> Fácil crecer</li>
+                            <li><strong>Desventaja:</strong> Acceso secuencial lento</li>
+                            <li><strong>No hay:</strong> Acceso directo</li>
+                        </ul>
+                        <div class="diagram-box" style="font-size: 0.8em;">
+[→102]  [→205]  [→410]
+100      207      512
+                        </div>
+                    </div>
+
+                    <div class="comparison-card">
+                        <h4>📑 Indexada</h4>
+                        <ul>
+                            <li><strong>Idea:</strong> Bloque índice con punteros</li>
+                            <li><strong>Ventaja:</strong> Acceso directo</li>
+                            <li><strong>Ventaja:</strong> Fácil crecer</li>
+                            <li><strong>Desventaja:</strong> Usa bloques extra</li>
+                        </ul>
+                        <div class="diagram-box" style="font-size: 0.8em;">
+Inodo → [Índice]
+         [100,207,512,620]
+        ↑    ↑   ↑   ↑
+       Datos...
+                        </div>
+                    </div>
+                </div>
+
+                <div class="success-box">
+                    <strong>Unix/Linux usa asignación indexada con múltiples niveles:</strong> punteros directos, indirecto simple, doble y triple.
+                </div>
+            </section>
+
+            <section id="ext4">
+                <h2>4. Ejemplo: ext4 (Linux)</h2>
+
+                <p>El filesystem ext4 es el estándar en muchas distribuciones Linux. Combina varias técnicas optimizadas:</p>
+
+                <div class="comparison-table">
+                    <div class="comparison-card">
+                        <h4>📝 Journaling</h4>
+                        <ul>
+                            <li>Transacciones de metadatos</li>
+                            <li>Recuperación rápida tras crash</li>
+                            <li>Journal circular en disco</li>
+                            <li>Garantiza consistencia</li>
+                        </ul>
+                    </div>
+
+                    <div class="comparison-card">
+                        <h4>📊 Extents</h4>
+                        <ul>
+                            <li>Reemplaza bitmap clásico</li>
+                            <li>Un extent = bloque contiguo</li>
+                            <li>Reduce fragmentación</li>
+                            <li>Hasta 128KB por extent</li>
+                        </ul>
+                    </div>
+
+                    <div class="comparison-card">
+                        <h4>⚙️ Características</h4>
+                        <ul>
+                            <li>Bloques típicos: 4KB</li>
+                            <li>Max tamaño: 16TB</li>
+                            <li>Max archivo: 16TB</li>
+                            <li>Subsegundos en timestamps</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="highlight-box">
+                    <h3>🎯 Ventaja Principal de ext4</h3>
+                    <p>Rápido y confiable para servidores. El journaling protege contra corrupción, los extents reducen fragmentación, y las técnicas de asignación indexada permiten archivos gigantes con acceso rápido.</p>
+                </div>
+            </section>
+
+            <section id="detalles-inodos">
+                <h2>5. Detalles Avanzados de Inodos</h2>
+
+                <p>Un <strong>inodo</strong> (index node) es una estructura de datos que contiene metadatos sobre un archivo, <strong>excepto su nombre y datos reales</strong>.</p>
+
+                <h3>Estructura de Punteros del Inodo</h3>
+                <p>Cada inodo tiene 15 punteros:</p>
+                <ul>
+                    <li><strong>12 punteros directos</strong> → apuntan directamente a bloques de datos</li>
+                    <li><strong>1 puntero indirecto simple</strong> → apunta a un bloque con punteros</li>
+                    <li><strong>1 puntero indirecto doble</strong> → dos niveles de indirección</li>
+                    <li><strong>1 puntero indirecto triple</strong> → tres niveles de indirección</li>
+                </ul>
+
+                <p>Con bloques de 4KB:</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Tipo de Puntero</th>
+                            <th>Cantidad</th>
+                            <th>Capacidad</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Directos</td><td>12 bloques</td><td>48 KB</td></tr>
+                        <tr><td>Indirecto simple</td><td>1×1024 bloques</td><td>4 MB</td></tr>
+                        <tr><td>Indirecto doble</td><td>1024² bloques</td><td>4 GB</td></tr>
+                        <tr><td>Indirecto triple</td><td>1024³ bloques</td><td>4 TB</td></tr>
+                        <tr><td><strong>Total</strong></td><td>-</td><td><strong>≈4 TB</strong></td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section id="punteros-directos">
+                <h3>5.1 Punteros Directos (12)</h3>
+
+                <p>Apuntan directamente a bloques de datos. Sin indirección.</p>
+
+                <div class="pointer-diagram">
+<pre>
+Inodo #12345
+  │
+  ├─→ Bloque 1001  [4KB de datos]
+  ├─→ Bloque 1002  [4KB de datos]
+  ├─→ Bloque 1003  [4KB de datos]
+  ├─→ Bloque 1004  [4KB de datos]
+  ├─→ Bloque 1005  [4KB de datos]
+  ├─→ Bloque 1006  [4KB de datos]
+  ├─→ Bloque 1007  [4KB de datos]
+  ├─→ Bloque 1008  [4KB de datos]
+  ├─→ Bloque 1009  [4KB de datos]
+  ├─→ Bloque 1010  [4KB de datos]
+  ├─→ Bloque 1011  [4KB de datos]
+  └─→ Bloque 1012  [4KB de datos]
+
+Capacidad: 12 × 4KB = 48 KB
+</pre>
+                </div>
+
+                <div class="capacity-box">
+                    ⚡ Uso: Archivos pequeños (&lt;48 KB) se acceden directamente, muy rápido. Un solo acceso a disco para leer el inodo, y accesos directos a los bloques.
+                </div>
+            </section>
+
+            <section id="indirecto-simple">
+                <h3>5.2 Puntero Indirecto Simple</h3>
+
+                <p>Apunta a un bloque que contiene punteros a bloques de datos.</p>
+
+                <div class="pointer-diagram">
+<pre>
+Inodo #12345
+  │
+  └─→ Bloque 5000 [Bloque Indirecto - 1024 punteros]
+       ├─→ Bloque 2001  [4KB de datos]
+       ├─→ Bloque 2002  [4KB de datos]
+       ├─→ Bloque 2003  [4KB de datos]
+       ├─→ ...
+       └─→ Bloque 3024  [4KB de datos]
+
+Capacidad adicional: 1024 × 4KB = 4 MB
+Total acumulado: 48 KB + 4 MB = 4.048 MB
+</pre>
+                </div>
+
+                <div class="info-box">
+                    <strong>Nota:</strong> Para leer un byte en esta región se necesitan 2 accesos a disco: 1) leer el bloque indirecto, 2) leer el bloque de datos.
+                </div>
+            </section>
+
+            <section id="indirecto-doble">
+                <h3>5.3 Puntero Indirecto Doble</h3>
+
+                <p>Apunta a un bloque con punteros a bloques de punteros que apuntan a datos.</p>
+
+                <div class="pointer-diagram">
+<pre>
+Inodo #12345
+  │
+  └─→ Bloque 6000 [Bloque Indirecto Doble]
+       ├─→ Bloque 6001 [Indirecto 1: 1024 punteros]
+       │    ├─→ Bloque datos
+       │    ├─→ Bloque datos
+       │    ├─→ ...
+       │    └─→ Bloque datos (1024 bloques)
+       │
+       ├─→ Bloque 6002 [Indirecto 2: 1024 punteros]
+       │    └─→ ...
+       │
+       └─→ Bloque 7000 [Indirecto 1024: 1024 punteros]
+
+Capacidad: 1024 × 1024 × 4KB = 4 GB
+Total acumulado: 48 KB + 4 MB + 4 GB ≈ 4.04 GB
+</pre>
+                </div>
+
+                <div class="warning-box">
+                    <strong>Costo de acceso:</strong> 3 accesos a disco para leer un byte (indirecto doble → indirecto simple → bloque de datos).
+                </div>
+            </section>
+
+            <section id="indirecto-triple">
+                <h3>5.4 Puntero Indirecto Triple</h3>
+
+                <p>Para archivos MUY grandes (&gt;4 GB).</p>
+
+                <div class="pointer-diagram">
+<pre>
+Inodo
+  │
+  └─→ [Indirecto Triple]
+       ├─→ [Indirecto Doble 1]
+       │    └─→ [Indirecto Simple 1]
+       │         └─→ [Bloques de datos: 1024]
+       │
+       ├─→ [Indirecto Doble 2]
+       │    └─→ ...
+       │
+       └─→ [Indirecto Doble 1024]
+            └─→ ...
+
+Capacidad: 1024³ × 4KB = 4 TB
+</pre>
+                </div>
+
+                <div class="capacity-box">
+                    📊 Total máximo teórico: 48 KB + 4 MB + 4 GB + 4 TB ≈ <strong>4 TB por archivo</strong>
+                </div>
+            </section>
+
+            <section id="ver-inodos">
+                <h2>🔍 Ver Inodos en Linux</h2>
+
+                <h3>Listar Inodos</h3>
+                <pre><code># Ver número de inodo de archivos
+ls -i
+
+# Salida ejemplo:
+# 12345 documento.txt
+# 67890 foto.jpg
+# 30201 proyecto/</code></pre>
+
+                <h3>Ver Detalles de Inodo</h3>
+                <pre><code>stat documento.txt</code></pre>
+
+                <p><strong>Salida de ejemplo:</strong></p>
+                <pre><code>  File: documento.txt
+  Size: 4096          Blocks: 8          IO Block: 4096   regular file
+Device: 802h/2050d    Inode: 12345       Links: 1
+Access: (0644/-rw-r--r--)  Uid: ( 1000/ usuario)   Gid: ( 1000/ usuario)
+Access: 2026-01-31 10:00:00.000000000 -0500
+Modify: 2026-01-31 10:00:00.000000000 -0500
+Change: 2026-01-31 10:00:00.000000000 -0500
+ Birth: -</code></pre>
+
+                <h3>Exploración Avanzada con debugfs</h3>
+                <div class="warning-box">
+                    <strong>Requiere permisos root</strong>
+                </div>
+                <pre><code># Entrar en modo debug del filesystem
+sudo debugfs /dev/sda1
+
+# Comandos útiles:
+debugfs&gt; stat &lt;12345&gt;          # Ver inodo 12345 en detalle
+debugfs&gt; ls -l                 # Listar con inodos
+debugfs&gt; blocks &lt;12345&gt;        # Ver bloques usados por inodo
+debugfs&gt; imap documento.txt    # Encontrar inodo de archivo
+debugfs&gt; quit                  # Salir</code></pre>
+            </section>
+
+            <section id="hard-soft">
+                <h2>🔗 Hard Links vs Symbolic Links</h2>
+
+                <div class="comparison-table">
+                    <div class="comparison-card">
+                        <h4>🔗 Hard Link</h4>
+                        <p>Mismo inodo, contador de links incrementado.</p>
+                        <pre><code>ln archivo.txt hardlink.txt</code></pre>
+                        <div class="diagram-box" style="font-size: 0.8em;">
+Directorio:
+  "archivo.txt"  → Inodo 12345
+  "hardlink.txt" → Inodo 12345
+
+Inodo 12345:
+  Links: 2  ← Contador aumenta
+                        </div>
+                        <p><strong>Eliminación:</strong> Solo se borra cuando Links = 0</p>
+                    </div>
+
+                    <div class="comparison-card">
+                        <h4>🔀 Symbolic Link (Soft Link)</h4>
+                        <p>Nuevo inodo que contiene la ruta como texto.</p>
+                        <pre><code>ln -s archivo.txt symlink.txt</code></pre>
+                        <div class="diagram-box" style="font-size: 0.8em;">
+Directorio:
+  "archivo.txt" → Inodo 12345
+  "symlink.txt" → Inodo 67890
+
+Inodo 67890 (symlink):
+  Datos: "archivo.txt"
+                        </div>
+                        <p><strong>Riesgo:</strong> Si se borra el original, el symlink queda "roto"</p>
+                    </div>
+                </div>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Aspecto</th>
+                            <th>Hard Link</th>
+                            <th>Symbolic Link</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Inodo</td><td>Mismo inodo</td><td>Nuevo inodo</td></tr>
+                        <tr><td>Contador de links</td><td>Incrementa</td><td>No afecta</td></tr>
+                        <tr><td>Funciona entre filesystems</td><td>No</td><td>Sí</td></tr>
+                        <tr><td>Apunta a directorios</td><td>No (generalmente)</td><td>Sí</td></tr>
+                        <tr><td>Si borran el original</td><td>Sigue accesible</td><td>Link roto</td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section id="actividad">
+                <h2>💻 Actividad Práctica: Explorando Inodos</h2>
+
+                <h3>Ejercicio 1: Observar Inodos</h3>
+                <pre><code># 1. Crear archivo de prueba
+echo "Hola mundo" > test.txt
+
+# 2. Ver su inodo
+ls -i test.txt
+# Anota el número: __________
+
+# 3. Ver detalles completos
+stat test.txt
+
+# 4. Crear hard link
+ln test.txt test_hardlink.txt
+
+# 5. Verificar que tienen el mismo inodo
+ls -i test*.txt
+
+# 6. Ver contador de links
+stat test.txt | grep Links
+# Debe mostrar: Links: 2</code></pre>
+
+                <h3>Ejercicio 2: Hard Link vs Soft Link</h3>
+                <pre><code># 1. Crear archivo original
+echo "Contenido original" > original.txt
+
+# 2. Crear hard link y soft link
+ln original.txt hard.txt
+ln -s original.txt soft.txt
+
+# 3. Ver inodos (¿cuáles son iguales?)
+ls -i original.txt hard.txt soft.txt
+
+# 4. Eliminar el original
+rm original.txt
+
+# 5. Intentar leer ambos links
+cat hard.txt      # ¿Funciona?
+cat soft.txt      # ¿Funciona?
+
+# 6. Explica: ¿Por qué uno funciona y otro no?</code></pre>
+
+                <h3>Ejercicio 3: Límite de Inodos</h3>
+                <pre><code># Ver total de inodos en el filesystem
+df -i
+
+# Salida ejemplo:
+# Filesystem      Inodes  IUsed   IFree IUse% Mounted on
+# /dev/sda1      6000000 500000 5500000    9% /</code></pre>
+
+                <div class="warning-box">
+                    <strong>Pregunta:</strong> ¿Qué pasa si IUse% llega a 100%, aunque haya espacio en disco?
+                </div>
+
+                <div class="success-box">
+                    <strong>Respuesta:</strong> No se pueden crear más archivos, aunque haya espacio libre. Cada archivo necesita un inodo. Es posible quedarse sin inodos antes de quedarse sin espacio en disco.
+                </div>
+
+                <p><strong>Tiempo estimado:</strong> 30 minutos</p>
+            </section>
+
+            <section id="resumen">
+                <h2>Resumen de la Clase</h2>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Concepto</th>
+                            <th>Idea Clave</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><strong>Superblock</strong></td><td>Información global del FS (tamaño, estado, conteos)</td></tr>
+                        <tr><td><strong>Bitmaps</strong></td><td>Registra qué bloques e inodos están libres/ocupados</td></tr>
+                        <tr><td><strong>Inodo</strong></td><td>Metadatos y punteros a bloques (sin nombre)</td></tr>
+                        <tr><td><strong>Directorio</strong></td><td>Tabla nombre → inodo</td></tr>
+                        <tr><td><strong>Asignación contigua</strong></td><td>Rápida pero causa fragmentación</td></tr>
+                        <tr><td><strong>Asignación enlazada</strong></td><td>Fácil crecer pero acceso lento</td></tr>
+                        <tr><td><strong>Asignación indexada</strong></td><td>Acceso directo con bloques índice</td></tr>
+                        <tr><td><strong>ext4</strong></td><td>Journaling + extents + asignación indexada</td></tr>
+                        <tr><td><strong>Punteros directos</strong></td><td>12 bloques (~48 KB) - acceso muy rápido</td></tr>
+                        <tr><td><strong>Indirecto simple</strong></td><td>1024 bloques (~4 MB) - 2 niveles</td></tr>
+                        <tr><td><strong>Indirecto doble</strong></td><td>1024² bloques (~4 GB) - 3 niveles</td></tr>
+                        <tr><td><strong>Indirecto triple</strong></td><td>1024³ bloques (~4 TB) - 4 niveles</td></tr>
+                        <tr><td><strong>Hard link</strong></td><td>Mismo inodo, contador de links</td></tr>
+                        <tr><td><strong>Symbolic link</strong></td><td>Nuevo inodo, contiene ruta como texto</td></tr>
+                    </tbody>
+                </table>
+
+                <div class="highlight-box">
+                    <h3>🎯 Concepto Fundamental</h3>
+                    <p>En Unix/Linux, <strong>todo es un archivo</strong>, y cada archivo tiene un inodo que contiene sus metadatos. Los nombres solo existen en los directorios, que mapean nombres a números de inodo. Esta separación permite hard links, renombrados rápidos y una estructura flexible.</p>
+                </div>
+            </section>
+
+            <div class="info-box">
+                <h3>📚 Próxima Clase</h3>
+                <p><strong>Clase 12: Protección y Seguridad</strong></p>
+                <ul>
+                    <li>Diferencia entre protección y seguridad</li>
+                    <li>Dominios de protección y matriz de acceso</li>
+                    <li>Control de acceso en Linux (UGO, SUID, SGID)</li>
+                    <li>Control de acceso en Windows (ACL)</li>
+                    <li>Amenazas comunes y mecanismos de defensa</li>
+                </ul>
+                <p><strong>¡Nos vemos!</strong></p>
+            </div>
+        </article>
+
+        <footer>
+        <div class="container">
+            <p><strong>IF0099 - Sistemas Operativos I</strong> • <a href="index.html">Índice de Clases</a></p>
+            <p><strong>IF0099 - Sistemas Operativos I</strong> | UNAULA - Ingeniería Informática - 2026-I</p>
+            <p>Clase 11: Implementación de Sistemas de Archivos</p>
+        </footer>
+    </div>
+
+    <button class="scroll-top" id="scrollTop" aria-label="Scroll to top">↑</button>
+
+    <script>
+        const scrollTopBtn = document.getElementById('scrollTop');
+
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                scrollTopBtn.classList.add('visible');
+            } else {
+                scrollTopBtn.classList.remove('visible');
+            }
+        });
+
+        scrollTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1177 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clase 13: Deadlocks y Estrategias de Manejo | IF0099 - Sistemas Operativos I</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #1e40af;
+            --accent: #059669;
+            --bg-light: #f8fafc;
+            --bg-code: #1e293b;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.7;
+            color: var(--text-main);
+            background: var(--bg-light);
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 3rem 0;
+            margin-bottom: 2rem;
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        header .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        header .meta {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Navigation */
+        nav {
+            background: white;
+            padding: 1.5rem 0;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        nav h2 {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            padding: 0 20px;
+        }
+
+        nav ul {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 0.5rem;
+            padding: 0 20px;
+        }
+
+        nav a {
+            color: var(--primary);
+            text-decoration: none;
+            padding: 0.5rem;
+            display: block;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+
+        nav a:hover {
+            background: var(--bg-light);
+        }
+
+        /* Sections */
+        section {
+            background: white;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        section h2 {
+            color: var(--primary);
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid var(--accent);
+        }
+
+        section h3 {
+            color: var(--secondary);
+            font-size: 1.4rem;
+            margin: 2rem 0 1rem;
+        }
+
+        section h4 {
+            color: var(--text-main);
+            font-size: 1.1rem;
+            margin: 1.5rem 0 0.75rem;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 1rem;
+        }
+
+        /* Figures */
+        figure {
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        figure img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        figcaption {
+            margin-top: 0.75rem;
+            color: var(--text-muted);
+            font-style: italic;
+            font-size: 0.95rem;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.95rem;
+        }
+
+        th, td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            background: var(--bg-light);
+            font-weight: 600;
+            color: var(--secondary);
+        }
+
+        tr:hover {
+            background: var(--bg-light);
+        }
+
+        /* Code blocks */
+        pre {
+            background: var(--bg-code);
+            color: #e2e8f0;
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+        }
+
+        p code, li code, td code {
+            background: var(--bg-light);
+            color: var(--primary);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+        }
+
+        /* Lists */
+        ul, ol {
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Callout boxes */
+        .callout {
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            border-left: 4px solid;
+        }
+
+        .callout.info {
+            background: #eff6ff;
+            border-left-color: var(--primary);
+        }
+
+        .callout.warning {
+            background: #fef3c7;
+            border-left-color: #f59e0b;
+        }
+
+        .callout.success {
+            background: #d1fae5;
+            border-left-color: var(--accent);
+        }
+
+        .callout-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Checkboxes for exercises */
+        .exercise {
+            background: var(--bg-light);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+        }
+
+        .exercise h4 {
+            margin-top: 0;
+        }
+
+        .checklist {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .checklist li {
+            padding: 0.5rem 0;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+        }
+
+        .checklist li input[type="checkbox"] {
+            margin-top: 0.25rem;
+            width: 18px;
+            height: 18px;
+        }
+
+        /* Details */
+        details {
+            background: var(--bg-light);
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+
+        summary {
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        summary:hover {
+            text-decoration: underline;
+        }
+
+        details[open] summary {
+            margin-bottom: 1rem;
+        }
+
+        /* ASCII diagrams */
+        .ascii-diagram {
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.85rem;
+            line-height: 1.2;
+            background: var(--bg-light);
+            padding: 1rem;
+            border-radius: 4px;
+            overflow-x: auto;
+            white-space: pre;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--text-main);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        footer a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.6rem;
+            }
+
+            section {
+                padding: 1.5rem;
+            }
+
+            nav ul {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Difficulty badges */
+        .difficulty {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .difficulty.easy { background: #d1fae5; color: #065f46; }
+        .difficulty.medium { background: #fef3c7; color: #92400e; }
+        .difficulty.hard { background: #fee2e2; color: #991b1b; }
+
+        /* Formula boxes */
+        .formula {
+            background: #f0f9ff;
+            border: 2px solid var(--primary);
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+            margin: 1.5rem 0;
+            font-family: 'Times New Roman', serif;
+            font-size: 1.1rem;
+        }
+
+        /* Grid for comparisons */
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .comparison-card {
+            background: var(--bg-light);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .comparison-card h4 {
+            margin-top: 0;
+            color: var(--primary);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Clase 13: Deadlocks y Estrategias de Manejo</h1>
+            <p class="subtitle">IF0099 - Sistemas Operativos I</p>
+            <p class="meta">Unidad 5: Sincronización de Procesos</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <nav>
+            <h2>Contenido</h2>
+            <ul>
+                <li><a href="#objetivos">Objetivos de Aprendizaje</a></li>
+                <li><a href="#intro">Introducción a los Deadlocks</a></li>
+                <li><a href="#condiciones">Condiciones Necesarias</a></li>
+                <li><a href="#modelos">Modelos de Deadlock</a></li>
+                <li><a href="#prevencion">Prevención</a></li>
+                <li><a href="#evitacion">Evitación</a></li>
+                <li><a href="#deteccion">Detección y Recuperación</a></li>
+                <li><a href="#linux">Deadlocks en Linux</a></li>
+                <li><a href="#ejercicios">Ejercicios Prácticos</a></li>
+            </ul>
+        </nav>
+
+        <section id="objetivos">
+            <h2>Objetivos de Aprendizaje</h2>
+            <p>Al finalizar esta clase, podrás:</p>
+            <ul>
+                <li>Identificar las cuatro condiciones necesarias para que ocurra un deadlock</li>
+                <li>Aplicar estrategias de prevención de deadlocks en diseño de sistemas</li>
+                <li>Implementar algoritmos de evitación como el Banker's Algorithm</li>
+                <li>Diseñar sistemas de detección y recuperación de deadlocks</li>
+                <li>Analizar deadlocks reales en Linux utilizando herramientas del sistema</li>
+                <li>Evaluar trade-offs entre las diferentes estrategias de manejo</li>
+            </ul>
+        </section>
+
+        <section id="intro">
+            <h2>Introducción a los Deadlocks</h2>
+
+            <h3>¿Qué es un Deadlock?</h3>
+            <p>Un <strong>deadlock</strong> (interbloqueo o abrazo mortal) es una situación en la que dos o más procesos quedan bloqueados indefinidamente, esperando recursos que están retenidos unos por otros.</p>
+
+            <div class="callout.info">
+                <div class="callout-title">Definición Formal</div>
+                <p>Un deadlock ocurre cuando un conjunto de procesos está en estado de <strong>bloqueo permanente</strong> porque cada proceso holds a un recurso y espera por otro recurso que está siendo retenido por otro proceso en el conjunto.</p>
+            </div>
+
+            <h3>Analogía del Tráfico</h3>
+            <div class="comparison-grid">
+                <div class="comparison-card">
+                    <h4>Situación de Deadlock</h4>
+                    <p>Imagina un puente de una sola vía. Dos autos llegan simultáneamente desde extremos opuestos. Ninguno puede avanzar porque el otro bloquea el paso, y ninguno puede retroceder.</p>
+                </div>
+                <div class="comparison-card">
+                    <h4>En Sistemas Operativos</h4>
+                    <p>Proceso A holds el recurso R1 y espera R2. Proceso B holds R2 y espera R1. Ambos esperan indefinidamente: ¡deadlock!</p>
+                </div>
+            </div>
+
+            <h3>El Problema de los Filósofos</h3>
+            <p>El clásico problema de los filósofos comiendo ilustra perfectamente el deadlock:</p>
+            <ul>
+                <li>5 filósofos sentados alrededor de una mesa</li>
+                <li>5 tenedores (uno entre cada par de filósofos)</li>
+                <li>Para comer, un filósofo necesita <strong>dos tenedores</strong></li>
+                <li>Si todos toman el tenedor de su izquierda simultáneamente → <strong>deadlock</strong></li>
+            </ul>
+
+            <div class="callout.warning">
+                <div class="callout-title">Impacto en Sistemas Reales</div>
+                <p>Los deadlocks no son solo teóricos. Han causado fallos en sistemas críticos: bases de datos bloqueadas, sistemas de archivos congelados, e incluso incidentes en sistemas de control de tráfico aéreo.</p>
+            </div>
+        </section>
+
+        <section id="condiciones">
+            <h2>Condiciones Necesarias para Deadlock</h2>
+            <p>Para que ocurra un deadlock, <strong>deben cumplirse las cuatro condiciones</strong> simultáneamente (Coffman, 1971):</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Condición</th>
+                        <th>Descripción</th>
+                        <th>Ejemplo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>1. Mutua Exclusión</strong></td>
+                        <td>El recurso solo puede ser usado por un proceso a la vez</td>
+                        <td>Una impresora, un archivo en modo exclusivo</td>
+                    </tr>
+                    <tr>
+                        <td><strong>2. Hold and Wait</strong></td>
+                        <td>Un proceso holds recursos mientras espera otros</td>
+                        <td>Proceso holds Archivo A, espera Archivo B</td>
+                    </tr>
+                    <tr>
+                        <td><strong>3. No Preemption</strong></td>
+                        <td>Los recursos no pueden ser tomados por la fuerza</td>
+                        <td>No se puede quitar una impresora a mitad de trabajo</td>
+                    </tr>
+                    <tr>
+                        <td><strong>4. Circular Wait</strong></td>
+                        <td>Cadena circular de procesos cada uno esperando al siguiente</td>
+                        <td>P1 → P2 → P3 → P1 (espera recursos)</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="callout.info">
+                <div class="callout-title">Propiedad Clave</div>
+                <p>Si eliminamos <strong>cualquiera</strong> de estas cuatro condiciones, el deadlock es imposible. Esta es la base de las estrategias de <strong>prevención</strong>.</p>
+            </div>
+
+            <h3>Análisis de Espera Circular</h3>
+            <pre><code>Ejemplo de Espera Circular:
+
+Proceso P1: Holds R1, Espera R2
+Proceso P2: Holds R2, Espera R3
+Proceso P3: Holds R3, Espera R1
+     ↓
+Ciclo P1 → P2 → P3 → P1
+     ↓
+DEADLOCK (ningún proceso puede avanzar)</code></pre>
+        </section>
+
+        <section id="modelos">
+            <h2>Modelos de Representación de Deadlocks</h2>
+
+            <h3>Grafo de Asignación de Recursos</h3>
+            <p>Un grafo dirigido que representa el estado de asignación de recursos:</p>
+            <ul>
+                <li><strong>Vértices</strong>: Procesos (P) y Recursos (R)</li>
+                <li><strong>Arista P→R</strong>: Proceso espera recurso (request edge)</li>
+                <li><strong>Arista R→P</strong>: Recurso asignado a proceso (assignment edge)</li>
+            </ul>
+
+            <pre><code>Ejemplo Visual:
+
+  P1 → R1 → P2 → R2 → P3
+       ↑             ↓
+       └─────────────┘
+
+Ciclo detectado: ¡Deadlock!</code></pre>
+
+            <h3>Detección de Ciclos</h3>
+            <div class="comparison-grid">
+                <div class="comparison-card">
+                    <h4>Sin Ciclo</h4>
+                    <p>Si el grafo <strong>no tiene ciclos</strong>, no hay deadlock. El sistema puede eventualmente completar todas las solicitudes.</p>
+                </div>
+                <div class="comparison-card">
+                    <h4>Con Ciclo</h4>
+                    <p>Si existe un <strong>ciclo</strong>, hay deadlock <strong>sí y solo si</strong> todos los recursos en el ciclo tienen una sola instancia.</p>
+                </div>
+            </div>
+
+            <div class="callout.warning">
+                <div class="callout-title">Caso de Múltiples Instancias</div>
+                <p>Si los recursos tienen múltiples instancias, un ciclo <strong>puede</strong> indicar deadlock, pero no es garantía. Se necesita análisis más complejo (algoritmos de detección).</p>
+            </div>
+        </section>
+
+        <section id="prevencion">
+            <h2>Estrategias de Prevención de Deadlocks</h2>
+            <p>La prevención elimina <strong>al menos una</strong> de las cuatro condiciones necesarias:</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Condición a Romper</th>
+                        <th>Estrategia</th>
+                        <th>Ventaja</th>
+                        <th>Desventaja</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Mutua Exclusión</strong></td>
+                        <td>Usar spooling para recursos (ej: impresoras)</td>
+                        <td>Elimina contención directa</td>
+                        <td>No aplica a todos los recursos</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Hold and Wait</strong></td>
+                        <td>Solicitar todos los recursos al inicio</td>
+                        <td>Sin esperas con recursos retenidos</td>
+                        <td>Baja utilización, starvation</td>
+                    </tr>
+                    <tr>
+                        <td><strong>No Preemption</strong></td>
+                        <td>Permitir preemption de recursos</td>
+                        <td>Flexibilidad en recuperación</td>
+                        <td>Costo de rollback alto</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Circular Wait</strong></td>
+                        <td>Orden jerárquico de recursos</td>
+                        <td>Fácil de implementar</td>
+                        <td>Restringe acceso a recursos</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Estrategia de Orden Jerárquico</h3>
+            <p>Asignar un número único a cada tipo de recurso y exigir que los procesos los soliciten en orden:</p>
+            <pre><code># Ejemplo: Orden de recursos
+R1 (Impresora) = 1
+R2 (Escáner) = 2
+R3 (Archivo de datos) = 3
+R4 (Archivo de log) = 4
+
+Regla: Si holds R2, solo puede solicitar R3, R4...
+       ¡Nunca puede volver a R1!
+
+# Esto previene ciclos: P1 → R1 → R2 → R3 (sin retorno posible)</code></pre>
+
+            <div class="callout.success">
+                <div class="callout-title">Ejemplo Real: Linux File Locks</div>
+                <p>Linux usa <strong>flock()</strong> y <code>fcntl()</code> con principios de orden. La documentación recomienda adquirir locks en un orden consistente para evitar deadlocks en aplicaciones.</p>
+            </div>
+
+            <h3>Solicitar Todos los Recursos al Inicio</h3>
+            <pre><code># Problema: baja utilización
+Proceso necesita R1 al inicio y R100 al final
+Debe tomar R1, R2, ..., R100 todos al inicio
+R2-R99 quedan idle 99% del tiempo
+
+# Mejor: Request con límite de tiempo
+if (!request_all(resources, timeout=5s)) {
+    liberar_todos();
+    retry_later();
+}</code></pre>
+        </section>
+
+        <section id="evitacion">
+            <h2>Estrategias de Evitación de Deadlocks</h2>
+
+            <h3>Prevención vs Evitación</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Aspecto</th>
+                        <th>Prevención</th>
+                        <th>Evitación</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Enfoque</strong></td>
+                        <td>Eliminar condiciones necesarias</td>
+                        <td>Evitar estados inseguros dinámicamente</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Conocimiento</strong></td>
+                        <td>No requiere conocer solicitudes futuras</td>
+                        <td>Requiere conocer máximo需求 de cada proceso</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Utilización</strong></td>
+                        <td>Baja (muy restrictiva)</td>
+                        <td>Media (más flexible)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Costo</strong></td>
+                        <td>Bajo overhead</td>
+                        <td>Requiere cálculo de estado seguro</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Estados Seguros vs Inseguros</h3>
+            <p>Un estado es <strong>seguro</strong> si existe una secuencia de ejecución que permite a todos los procesos completarse.</p>
+
+            <pre><code>Ejemplo: 3 procesos, 10 instancias de un recurso
+
+Estado Actual:
+Proceso    Maximum    Current     Need
+P1         10          4          6
+P2          5          2          3
+P3          4          2          2
+───────────────────────────────────
+Total:     19          8          11
+Available: 2
+
+¿Es seguro?
+- P2 necesita 3, pero solo hay 2 disponibles → ¡No!
+- P3 necesita 2, hay 2 disponibles → P3 puede completar
+- Cuando P3 termina, libera 4 → Available = 6
+- Ahora P2 puede completar (necesita 3, hay 6)
+- Cuando P2 termina, libera 5 → Available = 11
+- P1 puede completar (necesita 6, hay 11)
+→ ESTADO SEGURO (secuencia: P3 → P2 → P1)</code></pre>
+
+            <h3>Algoritmo del Banquero (Banker's Algorithm)</h3>
+            <p>Diseñado por Dijkstra (1965), este algoritmo decide si conceder una solicitud de recurso mantiene el sistema en un estado seguro.</p>
+
+            <div class="callout.info">
+                <div class="callout-title">Analogía del Banquero</div>
+                <p>Un banquero con capital C tiene N clientes. Cada cliente tiene un crédito máximo. El banquero solo presta si después del préstamo sigue teniendo suficiente capital para que al menos un cliente pueda pagar su crédito completo.</p>
+            </div>
+
+            <h4>Pseudocódigo del Algoritmo</h4>
+            <pre><code># Estructuras de datos
+Available[m]          # Recursos disponibles
+Maximum[n][m]         # Máximo que cada proceso puede pedir
+Allocation[n][m]      # Currently asignado a cada proceso
+Need[n][m]            # Maximum - Allocation
+
+function request_resources(process, request[m]):
+    # Paso 1: Verificar que request ≤ Need
+    if request[process] > Need[process]:
+        return ERROR  # Proceso excedió su máximo declarado
+
+    # Paso 2: Verificar que request ≤ Available
+    if request > Available:
+        return WAIT   # Proceso debe esperar
+
+    # Paso 3: Simular asignación tentativa
+    Available = Available - request
+    Allocation[process] = Allocation[process] + request
+    Need[process] = Need[process] - request
+
+    # Paso 4: Verificar si estado resultante es seguro
+    if is_safe_state():
+        return GRANT   # Asignación permanente
+    else:
+        # Rollback: estado no seguro
+        Available = Available + request
+        Allocation[process] = Allocation[process] - request
+        Need[process] = Need[process] + request
+        return WAIT
+
+function is_safe_state():
+    work = Available
+    finish[n] = false for all processes
+
+    while exists process i such that finish[i] == false
+          and Need[i] ≤ work:
+        work = work + Allocation[i]
+        finish[i] = true
+
+    return (finish[all] == true)</code></pre>
+
+            <h4>Ejemplo Paso a Paso</h4>
+            <pre><code># Estado inicial: 5 procesos, 3 tipos de recursos (A, B, C)
+Total del sistema: [10, 5, 7]
+
+        Allocation      Max       Need
+P1        0 1 0      7 5 3     7 4 3
+P2        2 0 0      3 2 2     1 2 2
+P3        3 0 2      9 0 2     6 0 0
+P4        2 1 1      2 2 2     0 1 1
+P5        0 0 2      4 3 3     4 3 1
+─────────────────────────────────────
+Total    7 2 5
+Available 3 3 2
+
+¿Es seguro?
+1. P4 necesita [0,1,1] ≤ [3,3,2] → P4 completa
+   Available = [3,3,2] + [2,1,1] = [5,4,3]
+2. P5 necesita [4,3,3] pero [5,4,3] no suficiente
+3. P2 necesita [1,2,2] ≤ [5,4,3] → P2 completa
+   Available = [5,4,3] + [2,0,0] = [7,4,3]
+4. Continúa... eventualmente todos completan
+→ ESTADO SECURO</code></pre>
+
+            <div class="callout.warning">
+                <div class="callout-title">Limitaciones del Algoritmo del Banquero</div>
+                <ul>
+                    <li>Requiere que los procesos declaren su máximo需求 por adelantado</li>
+                    <li>Asume que el número de procesos es fijo</li>
+                    <li>Asume que no hay recursos llegando/leyendo el sistema</li>
+                    <li>El algoritmo es O(n²×m) donde n=procesos, m=tipos de recursos</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="deteccion">
+            <h2>Detección y Recuperación de Deadlocks</h2>
+
+            <h3>Enfoque de Detección</h3>
+            <p>A diferencia de la evitación, la detección permite que ocurran deadlocks pero los identifica y recupera.</p>
+
+            <div class="comparison-grid">
+                <div class="comparison-card">
+                    <h4>Cuándo Usar Detección</h4>
+                    <ul>
+                        <li>Deadlocks son raros</li>
+                        <li>Prevención/evitación son muy costosas</li>
+                        <li>Se puede tolerar recuperación ocasional</li>
+                    </ul>
+                </div>
+                <div class="comparison-card">
+                    <h4>Sistemas que lo Usan</h4>
+                    <ul>
+                        <li>Bases de datos (detect deadlocks y aborta una transacción)</li>
+                        <li>Sistemas de archivos</li>
+                        <li>Algunos kernels de SO</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>Algoritmo de Detección (Un Recurso por Tipo)</h3>
+            <pre><code># Grafo de espera: Wait-For Graph
+1. Construir grafo: vértices = procesos
+2. Edge Pᵢ → Pⱼ si Pᵢ espera recurso held por Pⱼ
+
+3. Deadlock existe ⇔ hay ciclo en el grafo
+
+function detect_deadlock():
+    for each process P in graph:
+        mark[P] = UNVISITED
+
+    has_cycle = dfs_detect_cycle(start_node)
+
+    if has_cycle:
+        identify_processes_in_cycle()
+        trigger_recovery()
+    return has_cycle
+
+function dfs_detect_cycle(node):
+    if mark[node] == VISITING:
+        return TRUE  # Ciclo detectado
+
+    if mark[node] == VISITED:
+        return FALSE
+
+    mark[node] = VISITING
+
+    for each neighbor in graph[node]:
+        if dfs_detect_cycle(neighbor):
+            return TRUE
+
+    mark[node] = VISITED
+    return FALSE</code></pre>
+
+            <h3>Algoritmo de Detección (Múltiples Instancias)</h3>
+            <pre><code# Similar al algoritmo de seguridad del Banquero
+# Pero no tenemos Need[] (processes no declaran máximo)
+
+function detect_deadlock_multiple_instances():
+    work = Available
+    finish[n] = false
+
+    # Inicializar: proceso sin allocation está "terminado"
+    for i = 1 to n:
+        if Allocation[i] == 0:
+            finish[i] = true
+        else:
+            finish[i] = false
+
+    # Buscar proceso que pueda completar
+    while exists i such that finish[i] == false
+          and Request[i] ≤ work:
+        work = work + Allocation[i]
+        finish[i] = true
+
+    # Procesos con finish[i] == false están en deadlock
+    deadlocked_processes = {i | finish[i] == false}
+    return deadlocked_processes</code></pre>
+
+            <h3>Estrategias de Recuperación</h3>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Estrategia</th>
+                        <th>Descripción</th>
+                        <th>Costo</th>
+                        <th>Cuándo Usar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Preempt Resources</strong></td>
+                        <td>Tomar recursos de un proceso para otro</td>
+                        <td>Alto (rollback)</td>
+                        <td>Recursos preemptibles (CPU, memoria)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Rollback Process</strong></td>
+                        <td>Retomar proceso a checkpoint anterior</td>
+                        <td>Medio (checkpoints)</td>
+                        <td>Procesos con checkpoints</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Kill Process</strong></td>
+                        <td>Terminar uno o más procesos</td>
+                        <td>Variable (pérdida de trabajo)</td>
+                        <td>Último recurso</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Reboot System</strong></td>
+                        <td>Reiniciar todo el sistema</td>
+                        <td>Muy alto (todo se pierde)</td>
+                        <td>Sistemas embebidos críticos</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Criterios para Selección de Víctima</h3>
+            <div class="callout.info">
+                <div class="callout-title">Factores a Considerar</div>
+                <ul>
+                    <li><strong>Priority</strong>: Procesos de menor prioridad primero</li>
+                    <li><strong>Time consumed</strong>: Procesos que han ejecutado menos tiempo</li>
+                    <li><strong>Resources held</strong>: Procesos holding más recursos</li>
+                    <li><strong>Resources needed</strong>: Procesos que requieren más recursos para completar</li>
+                    <li><strong>Interactivity</strong>: Procesos batch antes que interactivos</li>
+                </ul>
+            </div>
+
+            <h3>Recuperación en Sistemas Reales</h3>
+            <pre><code># PostgreSQL: Deadlock Detection
+# Cuando se detecta deadlock:
+
+ERROR: deadlock detected
+DETAIL: Process 123 waits for ShareLock on transaction 789;
+       process 456 holds a ShareLock on transaction 789.
+HINT: See server log for query details.
+
+# PostgreSQL elige la víctima basándose en:
+# 1. Costo de rollback (menor filas modificadas = mejor víctima)
+# 2. Tiempo de ejecución (más reciente = mejor víctima)
+
+# La transacción víctima debe ser reintentada por la aplicación</code></pre>
+        </section>
+
+        <section id="linux">
+            <h2>Deadlocks en Linux</h2>
+
+            <h3>Fuentes Comunes de Deadlock en Linux</h3>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Tipo</th>
+                        <th>Causa</th>
+                        <th>Detección</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Kernel Mutexes</strong></td>
+                        <td>Múltiples locks adquiridos en orden incorrecto</td>
+                        <td>lockdep, /proc/lock_stat</td>
+                    </tr>
+                    <tr>
+                        <td><strong>File Locks</strong></td>
+                        <td>flock() / fcntl() en orden inconsistente</td>
+                        <td>/proc/locks</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Memory Allocation</strong></td>
+                        <td>Deadlock en allocator bajo memoria baja</td>
+                        <td>Kernel logs (dmesg)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>IPC</strong></td>
+                        <td>Semáforos System V en orden incorrecto</td>
+                        <td>ipcs -s</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Herramienta: lockdep</h3>
+            <p>Lock Dependency Checker (lockdep) es una herramienta del kernel Linux que detecta posibles deadlocks en tiempo de ejecución.</p>
+
+            <pre><code># Habilitar lockdep (requiere kernel con CONFIG_LOCKDEP=y)
+echo 1 > /proc/sys/kernel/lock_stat
+
+# Ver estadísticas de locks
+cat /proc/lock_stat
+
+# Ejemplo de salida:
+# lock_stat tracking enabled
+#
+# Class                      Type    Contends    Waits...
+# ------------------------------------------------------------------------
+# &mm->mmap_sem              R       1234       56
+# &mm->mmap_sem              W       789        23
+# ...
+
+# Si lockdep detecta posible deadlock:
+# WARNING: possible circular locking
+# ============================================
+# Chain exists of:
+#   &A->lock --> &B->lock --> &C->lock --> &A->lock</code></pre>
+
+            <h3>Ver File Locks Activos</h3>
+            <pre><code># Listar todos los file locks en el sistema
+$ cat /proc/locks
+
+1: POSIX  ADVISORY  READ  pid:1234  uid:1000  12345:00000003 0 0
+2: POSIX  ADVISORY  WRITE pid:5678  uid:1000  12346:00000003 0 EOF
+3: FLOCK  ADVISORY  WRITE pid:9012  uid:0     12347:00000003 0 EOF
+
+# Formato:
+# TYPE: POSIX or FLOCK
+# KIND: ADVISORY or MANDATORY
+# MODE: READ or WRITE
+# pid: Process ID holding the lock
+# uid: User ID of the process
+# inode:file_id  (major:minor inode_number)</code></pre>
+
+            <h3>Ver Deadlocks en Procesos</h3>
+            <pre><code># Usar strace para ver syscalls de un proceso
+$ strace -p 1234 -f -e trace=flock,fcntl
+
+# Output si está bloqueado en lock:
+flock(3, LOCK_EX)                     = ? ERESTARTSYS
+# El proceso está esperando lock exclusivo en fd 3
+
+# Ver estado de procesos en D state (uninterruptible sleep)
+# (D state a menudo indica espera por I/O o lock)
+$ ps aux | awk '$8=="D"'
+
+# Si el proceso está en D state:
+$ cat /proc/1234/stack
+# Muestra el stack del kernel, útil para diagnosticar dónde está esperando</code></pre>
+
+            <h3>Detección de Deadlock en Aplicaciones</h3>
+            <pre><code># Ejemplo: Uso correcto de flock para evitar deadlock
+# Regla: Siempre adquirir locks en el mismo orden
+
+#!/bin/bash
+# Script 1: CORRECTO (locks en orden creciente)
+flock -x 3  # Lock file 3 primero
+flock -x 5  # Luego lock file 5
+
+# Script 2: CORRECTO (mismo orden)
+flock -x 3  # Lock file 3 primero
+flock -x 5  # Luego lock file 5
+
+# ¡Deadlock imposible!
+
+#!/bin/bash
+# Script 1: INCORRECTO (locks en orden 3→5)
+flock -x 3
+flock -x 5
+
+# Script 2: INCORRECTO (locks en orden 5→3)
+flock -x 5
+flock -x 3
+
+# ¡Deadlock posible si corren en paralelo!</code></pre>
+
+            <div class="callout.warning">
+                <div class="callout-title">Deadlock en Filesystem</div>
+                <p>Si un proceso termina mientras holds un file lock, el kernel automáticamente libera el lock. Sin embargo, para locks System V semáforos, esto NO ocurre: los semáforos permanecen hasta ser explícitamente liberados o removidos con <code>ipcrm</code>.</p>
+            </div>
+        </section>
+
+        <section id="ejercicios">
+            <h2>Ejercicios Prácticos</h2>
+
+            <div class="exercise">
+                <h4>Ejercicio 1: Detectar Deadlock en Wait-For Graph</h4>
+                <p>Dado el siguiente grafo de espera, identifica si hay deadlock y qué procesos están involucrados:</p>
+                <pre><code>Wait-For Graph:
+
+P1 → R2 → P3
+     ↓     ↑
+     P2 ←─┘
+
+Donde:
+- P1 holds R1, espera R2
+- P2 holds R2, espera R3
+- P3 holds R3, espera R1</code></pre>
+                <div class="checklist">
+                    <li><input type="checkbox"> <span>Dibujar el grafo de asignación de recursos</span></li>
+                    <li><input type="checkbox"> <span>Identificar el ciclo presente</span></li>
+                    <li><input type="checkbox"> <span>Listar procesos en deadlock</span></li>
+                    <li><input type="checkbox"> <span>Proponer solución (qué proceso terminar)</span></li>
+                </div>
+            </div>
+
+            <div class="exercise">
+                <h4>Ejercicio 2: Algoritmo del Banquero</h4>
+                <p>Un sistema tiene 12 instancias de un recurso. Tres procesos con las siguientes solicitudes:</p>
+                <pre><code>Process    Maximum    Current    Need
+P1          9          4          5
+P2          7          2          5
+P3          5          2          3
+
+Available = 4
+
+Si P1 solicita 1 instancia más:
+1. ¿El estado resultante es seguro?
+2. Si es seguro, dar la secuencia de ejecución
+3. Si no es seguro, explicar por qué</code></pre>
+                <div class="checklist">
+                    <li><input type="checkbox"> <span>Calcular nuevos valores después de solicitud</span></li>
+                    <li><input type="checkbox"> <span>Aplicar algoritmo de seguridad</span></li>
+                    <li><input type="checkbox"> <span>Determinar si estado es seguro</span></li>
+                    <li><input type="checkbox"> <span>Si es seguro, mostrar secuencia de ejecución</span></li>
+                </div>
+            </div>
+
+            <div class="exercise">
+                <h4>Ejercicio 3: Análisis de Deadlock en Linux</h4>
+                <p>Usando comandos de Linux:</p>
+                <pre><code># 1. Crear dos scripts que generen deadlock
+# 2. Ejecutarlos en background
+# 3. Usar herramientas para detectar el deadlock
+# 4. Terminar el proceso apropiado para resolver
+
+# Script template:
+#!/bin/bash
+exec 3>file1.txt
+exec 4>file2.txt
+flock -x 3  # Lock file1
+echo "Got lock 1, waiting for lock 2..."
+sleep 1
+flock -x 4  # Lock file2
+echo "Got both locks!"
+# (second script reverses the order)</code></pre>
+                <div class="checklist">
+                    <li><input type="checkbox"> <span>Crear script A (locks en orden 1→2)</span></li>
+                    <li><input type="checkbox"> <span>Crear script B (locks en orden 2→1)</span></li>
+                    <li><input type="checkbox"> <span>Ejecutar simultáneamente y verificar deadlock con /proc/locks</span></li>
+                    <li><input type="checkbox"> <span>Documentar observaciones y proceso de resolución</span></li>
+                </div>
+                <div class="callout.info">
+                    <div class="callout-title">Ayuda</div>
+                    <code>cat /proc/locks</code> mostrará los locks. Para terminar un proceso: <code>kill -9 PID</code>. Para ver qué procesos están bloqueados: <code>ps aux | grep D</code> (estado uninterruptible sleep).
+                </div>
+            </div>
+
+            <div class="exercise">
+                <h4>Ejercicio 4: Diseño de Sistema Sin Deadlock</h4>
+                <p>Diseña un sistema de base de datos simple con transacciones que acceden múltiples registros. Implementa:</p>
+                <ul>
+                    <li>Orden jerárquico de recursos (registros ordenados por ID)</li>
+                    <li>Timeout para adquisición de locks</li>
+                    <li>Mecanismo de detección de deadlock (opcional)</li>
+                </ul>
+                <div class="checklist">
+                    <li><input type="checkbox"> <span>Diseñar esquema de ordenamiento de registros</span></li>
+                    <li><input type="checkbox"> <span>Implementar función lock_ordered(resources[], timeout)</span></li>
+                    <li><input type="checkbox"> <span>Probar con transacciones concurrentes</span></li>
+                    <li><input type="checkbox"> <span>Documentar que el diseño es deadlock-free</span></li>
+                </div>
+            </div>
+        </section>
+
+        <section id="resumen">
+            <h2>Resumen</h2>
+            <div class="comparison-grid">
+                <div class="comparison-card">
+                    <h4>Conceptos Clave</h4>
+                    <ul>
+                        <li>Deadlock = bloqueo permanente por espera circular</li>
+                        <li>4 condiciones necesarias (todas deben ocurrir)</li>
+                        <li>Grafo de asignación de recursos para visualización</li>
+                    </ul>
+                </div>
+                <div class="comparison-card">
+                    <h4>Estrategias</h4>
+                    <ul>
+                        <li><strong>Ignorar</strong>: Asumir que no ocurrirá (ostrich algorithm)</li>
+                        <li><strong>Prevenir</strong>: Eliminar condiciones necesarias</li>
+                        <li><strong>Evitar</strong>: Mantener estado seguro (Banker's Algorithm)</li>
+                        <li><strong>Detectar y Recuperar</strong>: Permitir, identificar, resolver</li>
+                    </ul>
+                </div>
+                <div class="comparison-card">
+                    <h4>En Linux</h4>
+                    <ul>
+                        <li><code>/proc/locks</code> para ver file locks activos</li>
+                        <li><code>lockdep</code> para detectar deadlocks en kernel</li>
+                        <li>Orden consistente de locks es la mejor prevención</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p><strong>IF0099 - Sistemas Operativos I</strong> • <a href="index.html">Índice de Clases</a></p>
+            <p style="margin-top: 1rem; opacity: 0.7; font-size: 0.9rem;">
+                Deadlocks y Estrategias de Manejo • Unidad 5: Sincronización de Procesos
+            </p>
+        </div>
+    </footer>
+</body>
+</html>
