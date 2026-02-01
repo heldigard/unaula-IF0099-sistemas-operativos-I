@@ -206,8 +206,8 @@
 <header>IF0099 - Sistemas Operativos I | Unidad 8</header>
 <h2 id="2-tipos-de-sistemas-distribuidos">2. Tipos de Sistemas Distribuidos</h2>
 <h3 id="clasificaci%C3%B3n-por-arquitectura">Clasificación por Arquitectura</h3>
-<div>
-<div>
+<div style="display: flex; gap: 15px; font-size: 0.9em;">
+<div style="flex: 1;">
 <h3 id="%F0%9F%96%A5%EF%B8%8F-cliente-servidor"><img class="emoji" draggable="false" alt="🖥️" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f5a5.svg" data-marp-twemoji=""/> <strong>Cliente-Servidor</strong></h3>
 <ul>
 <li>Servidores centralizados</li>
@@ -219,7 +219,7 @@
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code>Cliente ←→ Servidor
 </code></pre>
 </div>
-<div>
+<div style="flex: 1;">
 <h3 id="%F0%9F%94%84-peer-to-peer-p2p"><img class="emoji" draggable="false" alt="🔄" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f504.svg" data-marp-twemoji=""/> <strong>Peer-to-Peer (P2P)</strong></h3>
 <ul>
 <li>Todos los nodos son iguales</li>
@@ -231,7 +231,7 @@
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code>Nodo ←→ Nodo ←→ Nodo
 </code></pre>
 </div>
-<div>
+<div style="flex: 1;">
 <h3 id="%E2%98%81%EF%B8%8F-cl%C3%BAstergrid"><img class="emoji" draggable="false" alt="☁️" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2601.svg" data-marp-twemoji=""/> <strong>Clúster/Grid</strong></h3>
 <ul>
 <li>Nodos dedicados al cómputo</li>
@@ -400,8 +400,8 @@
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="11" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 8" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="11" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 8;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="27">
 <header>IF0099 - Sistemas Operativos I | Unidad 8</header>
 <h3 id="otros-retos-importantes">Otros Retos Importantes</h3>
-<div>
-<div>
+<div style="display: flex; gap: 15px; font-size: 0.85em;">
+<div style="flex: 1;">
 <h4 id="%E2%9A%A0%EF%B8%8F-fallos-parciales"><img class="emoji" draggable="false" alt="⚠️" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/26a0.svg" data-marp-twemoji=""/> <strong>Fallos Parciales</strong></h4>
 <ul>
 <li>Un nodo falla, otros continúan</li>
@@ -417,7 +417,7 @@
 <li><strong>Solución:</strong> etcd, ZooKeeper</li>
 </ul>
 </div>
-<div>
+<div style="flex: 1;">
 <h4 id="%F0%9F%95%90-sincronizaci%C3%B3n"><img class="emoji" draggable="false" alt="🕐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f550.svg" data-marp-twemoji=""/> <strong>Sincronización</strong></h4>
 <ul>
 <li>No hay reloj global exacto</li>
@@ -556,8 +556,8 @@
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="13" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 8" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="13" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 8;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="27">
 <header>IF0099 - Sistemas Operativos I | Unidad 8</header>
 <h3 id="comparaci%C3%B3n-s%C3%ADncrono-vs-as%C3%ADncrono">Comparación: Síncrono vs Asíncrono</h3>
-<div>
-<div>
+<div style="display: flex; gap: 20px;">
+<div style="flex: 1;">
 <h4 id="%F0%9F%94%84-s%C3%ADncrono-rpc"><img class="emoji" draggable="false" alt="🔄" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f504.svg" data-marp-twemoji=""/> <strong>Síncrono (RPC)</strong></h4>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code>Cliente ──request──► Servidor
    │◄────response────┘
@@ -571,7 +571,7 @@ Espera bloqueada
 <li><strong>Uso:</strong> Consultas que requieren respuesta inmediata</li>
 </ul>
 </div>
-<div>
+<div style="flex: 1;">
 <h4 id="%F0%9F%93%A8-as%C3%ADncrono-mensajes"><img class="emoji" draggable="false" alt="📨" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4e8.svg" data-marp-twemoji=""/> <strong>Asíncrono (Mensajes)</strong></h4>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code>Productor ──msg──► Cola ──msg──► Consumidor
      │                            │
@@ -651,8 +651,8 @@ Sistema distribuido para gestionar contenedores Docker en múltiples máquinas.<
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="15" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 8" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="15" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 8;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="27">
 <header>IF0099 - Sistemas Operativos I | Unidad 8</header>
 <h3 id="componentes-de-kubernetes">Componentes de Kubernetes</h3>
-<div>
-<div>
+<div style="display: flex; gap: 15px; font-size: 0.85em;">
+<div style="flex: 1;">
 <h4 id="master-node-control-plane"><strong>Master Node (Control Plane)</strong></h4>
 <ul>
 <li><strong>API Server:</strong> Punto de entrada para todas las operaciones</li>
@@ -661,7 +661,7 @@ Sistema distribuido para gestionar contenedores Docker en múltiples máquinas.<
 <li><strong>etcd:</strong> Base de datos distribuida de configuración</li>
 </ul>
 </div>
-<div>
+<div style="flex: 1;">
 <h4 id="worker-nodes"><strong>Worker Nodes</strong></h4>
 <ul>
 <li><strong>Kubelet:</strong> Agente que ejecuta containers en cada nodo</li>

@@ -225,8 +225,8 @@
 <header>IF0099 - Sistemas Operativos I | Unidad 8</header>
 <h3 id="el-mecanismo-paso-a-paso">El Mecanismo Paso a Paso</h3>
 <p><strong>Ejemplo: <code>open(&quot;/tmp/test.txt&quot;, O_RDONLY)</code></strong></p>
-<div>
-<div>
+<div style="display: flex; gap: 10px; font-size: 0.85em;">
+<div style="flex: 1;">
 <p><strong>Paso 1: Preparación</strong></p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-c"><span class="hljs-comment">// libc prepara parámetros</span>
 mov rax, <span class="hljs-number">2</span>        <span class="hljs-comment">// syscall #2 = open</span>
@@ -234,13 +234,13 @@ mov rdi, path     <span class="hljs-comment">// &quot;/tmp/test.txt&quot;</span>
 mov rsi, O_RDONLY <span class="hljs-comment">// flags</span>
 </code></pre>
 </div>
-<div>
+<div style="flex: 1;">
 <p><strong>Paso 2: Ejecutar syscall</strong></p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-asm">syscall           // ← CPU cambia a Ring 0
                   // Hardware guarda contexto
 </code></pre>
 </div>
-<div>
+<div style="flex: 1;">
 <p><strong>Paso 3: Kernel ejecuta</strong></p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-c">sys_open() {
   <span class="hljs-number">1.</span> Validar ruta
