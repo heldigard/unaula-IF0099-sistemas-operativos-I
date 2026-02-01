@@ -174,6 +174,11 @@ Tiempo    Proceso A              Memoria          Proceso B
 
 ![Sección Crítica](../../assets/infografias/clase-05-seccion-critica.png)
 
+### Idea clave
+- **Sección crítica**: fragmento donde se **lee/modifica** un recurso compartido
+- **Riesgo**: si dos procesos entran a la vez, el estado puede quedar inconsistente
+- **Solución**: garantizar **exclusión mutua** (solo uno a la vez)
+
 ---
 
 ### Representación ASCII del problema
@@ -329,6 +334,17 @@ lock = 0;
 
 ---
 
+## Busy Waiting vs Bloqueo
+
+| Enfoque | Qué hace | Ventaja | Desventaja |
+|---------|----------|---------|------------|
+| **Espera activa (spin)** | El proceso gira en un while | Muy rápido si la espera es corta | Consume CPU inútilmente |
+| **Bloqueo** | El proceso duerme y espera señal | Ahorra CPU | Mayor latencia por despertar |
+
+> **Regla práctica:** spin para secciones muy cortas, bloqueo para esperas largas.
+
+---
+
 ## Lista Enlazada Libre de Bloqueos (Lock-Free)
 
 ### Usando CAS para estructuras de datos concurrentes
@@ -476,6 +492,11 @@ public class CuentaBancaria {
 
 ![Semáforos vs Mutex](../../assets/infografias/clase-05-semaforos-mutex.png)
 
+### Diferencias rápidas
+- **Mutex**: exclusión mutua estricta (0/1)
+- **Semáforo**: contador de recursos (0..N)
+- **Uso típico**: mutex para proteger una sección crítica, semáforo para recursos múltiples
+
 ---
 
 ## Semáforos
@@ -483,6 +504,10 @@ public class CuentaBancaria {
 ### Inventados por Dijkstra (1965)
 
 ![Semáforos](../../assets/infografias/clase-05-semaforos.png)
+
+### Qué resuelven
+- Controlan **quién entra** a una sección crítica o a un recurso
+- Permiten **sincronizar** productor-consumidor, lectores-escritores, etc.
 
 ---
 
@@ -708,6 +733,17 @@ wait(sem2);  ← espera sem2      wait(sem1);  ← espera sem1
 4. **Espera circular**: A espera a B, B espera a C, C espera a A
 
 ### Prevención: Romper al menos una condición
+
+---
+
+## Estrategias frente a Deadlocks
+
+| Estrategia | Idea | Ejemplo |
+|------------|------|---------|
+| **Prevención** | Evitar que se cumpla alguna condición | Orden fijo de recursos |
+| **Evitación** | Analizar si un estado es seguro | Algoritmo del banquero |
+| **Detección** | Permitir deadlock y detectarlo | Grafo de espera |
+| **Recuperación** | Romper el ciclo | Terminar/rollback procesos |
 
 ---
 
