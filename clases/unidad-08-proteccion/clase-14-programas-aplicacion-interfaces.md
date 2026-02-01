@@ -99,14 +99,11 @@ section {
 
 ---
 
-<!--
-IMÁGENES GENERADAS:
-- clase-14-llamadas-sistema.png: Arquitectura de llamadas al sistema y APIs
--->
-
+# Clase 14: Programas, Aplicaciones e Interfaces
 
 **IF0099 - Sistemas Operativos I**
 *4° Semestre - Ingeniería Informática*
+
 ---
 
 ## Objetivos
@@ -277,9 +274,15 @@ syscall(__NR_open, "/tmp/test.txt", O_RDONLY, 0);
 ```
 
 ---
-#### ¿Qué pasa internamente?
+#### ¿Qué pasa internamente? (Continuación)
 
-*(continuación...)*
+**La syscall open() en detalle:**
+
+**Parámetros preparados por libc:**
+- `rax`: 2 (número de syscall para open en x86-64)
+- `rdi`: puntero a la cadena "/tmp/test.txt"
+- `rsi`: O_RDONLY (solo lectura)
+- `rdx`: 0 (modo de archivo, no usado en open)
 
 **Paso 2:** Instrucción especial de CPU
 ```asm
@@ -304,9 +307,23 @@ asmlinkage long sys_open(const char __user *filename,
 ```
 
 ---
-#### ¿Qué pasa internamente?
+#### ¿Qué pasa internamente? (Continuación)
 
-*(continuación...)*
+**Validaciones que hace el kernel:**
+
+1. **Verificar permisos:**
+   - ¿El archivo existe?
+   - ¿El usuario tiene permiso de lectura?
+   - ¿La ruta es válida?
+
+2. **Gestión de recursos:**
+   - ¿Hay file descriptors disponibles?
+   - ¿Hay memoria para estructuras internas?
+
+3. **Actualización de estructuras:**
+   - Crear entrada en la tabla de archivos abiertos
+   - Asignar el file descriptor más bajo disponible
+   - No usar fd 0, 1, 2 (reservados para stdin, stdout, stderr)
 
 **Paso 4:** Retorno a modo usuario
 ```c

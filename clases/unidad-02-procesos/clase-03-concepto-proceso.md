@@ -97,10 +97,42 @@ section {
 
 <!--
 [2026-01-31] - Clase enriquecida con infografías
+[2026-01-31] - Revisión completa y mejora de contenido
+
+CAMBIOS REALIZADOS:
+1. Sección "Estructura de Memoria" - Agregada explicación de crecimiento de stack/heap
+2. Sección "Estados de Proceso" - Dividida en 3 diapositivas para mejor claridad
+   - Modelo de 5 estados (imagen + transiciones)
+   - Diagrama detallado ASCII
+   - Ejemplo real con Firefox
+3. Sección "PCB" - Agregada sección "Importancia del PCB" y ejemplo real de /proc
+4. Sección "Context Switch" - Dividida en 2 diapositivas
+   - Explicación del proceso
+   - Costo del context switch con causas y ejemplo de vmstat
+5. Sección "Threads vs Procesos" - Agregadas 3 diapositivas nuevas
+   - Ejemplo visual comparativo
+   - Cuándo usar procesos vs threads
+   - Ejemplos reales de aplicaciones
+6. Sección "Modelos de Threads" - Expandida de 1 a 4 diapositivas
+   - Tabla comparativa de modelos
+   - Modelo 1:1 con ventajas/desventajas
+   - Modelo M:1 con ventajas/desventajas
+   - Modelo M:N con ventajas/desventajas
+7. Sección "Problemas Clásicos de IPC" - Expandida de 1 a 3 diapositivas
+   - Productor-Consumidor con detalles de semáforos
+   - Filósofos Comensales con diagrama visual y soluciones
+   - Lectores-Escritores con explicación de inanición
+8. Sección "Pipes" - Agregada tabla de características
+9. Nueva sección "Otros Mecanismos de IPC" con 3 subsecciones
+   - Shared Memory con ejemplo de código
+   - Signals con tabla de señales comunes
+   - Message Queues con ejemplo de código
 
 IMÁGENES GENERADAS:
 - so-estados-proceso.png: Diagrama de estados de un proceso
 - clase-03-pcb.png: Infografía del Bloque de Control de Proceso
+- clase-03-estructura-memoria.png: Diagrama de segmentos de memoria
+- clase-03-cswitch-timeline.png: Timeline de context switch
 -->
 
 ---
@@ -581,6 +613,84 @@ pstree -p
 
 ---
 
+## Proceso vs Thread: Ejemplo Visual
+
+### Múltiples Procesos (Pesados)
+
+```
+┌─────────────────────┐  ┌─────────────────────┐  ┌─────────────────────┐
+│    Proceso A        │  │    Proceso B        │  │    Proceso C        │
+├─────────────────────┤  ├─────────────────────┤  ├─────────────────────┤
+│ Código (TEXT)       │  │ Código (TEXT)       │  │ Código (TEXT)       │
+│ Datos (DATA)        │  │ Datos (DATA)        │  │ Datos (DATA)        │
+│ Heap                │  │ Heap                │  │ Heap                │
+│ Stack               │  │ Stack               │  │ Stack               │
+│ PCB                 │  │ PCB                 │  │ PCB                 │
+│ Archivos abiertos   │  │ Archivos abiertos   │  │ Archivos abiertos   │
+└─────────────────────┘  └─────────────────────┘  └─────────────────────┘
+     Memoria propia           Memoria propia           Memoria propia
+         ↑ Costoso ↑              ↑ Costoso ↑              ↑ Costoso ↑
+```
+
+### Un Proceso con Múltiples Threads (Ligeros)
+
+```
+                    ┌─────────────────────────────────┐
+                    │      Proceso (Contenedor)       │
+                    ├─────────────────────────────────┤
+                    │  Código (TEXT)  ← Compartido    │
+                    │  Datos (DATA)   ← Compartido    │
+                    │  Heap           ← Compartido    │
+                    │  Archivos        ← Compartido    │
+                    ├─────────────────────────────────┤
+                    │  PCB                             │
+                    ├─────────────────────────────────┤
+                    │                                 │
+        ┌───────────┼───────────┬───────────┐        │
+        │           │           │           │        │
+    ┌───┴───┐   ┌───┴───┐   ┌───┴───┐   ┌───┴───┐    │
+    │Thread 1│   │Thread 2│   │Thread 3│   │Thread 4│   │
+    │ Stack  │   │ Stack  │   │ Stack  │   │ Stack  │   │
+    │Regs    │   │Regs    │   │Regs    │   │Regs    │   │
+    │PC      │   │PC      │   │PC      │   │PC      │   │
+    └────────┘   └────────┘   └────────┘   └────────┘   │
+        ↑             ↑             ↑             ↑       │
+      Comparten memoria y recursos                    │
+                    ↓ Más rápido ↓                     │
+                    └─────────────────────────────────┘
+```
+
+> 💡 **Analogía:**
+> - **Proceso** = Casa independiente (paredes, techo, servicios propios)
+> - **Thread** = Habitación dentro de la casa (comparten paredes y servicios)
+
+---
+
+## Cuándo usar Procesos vs Threads
+
+### Usar Procesos cuando:
+- Necesitas **aislamiento total** (fallos no afectan a otros)
+- Requieres **seguridad** entre tareas
+- Tareas son **independientes**
+- Tienes suficientes recursos
+
+### Usar Threads cuando:
+- Tareas **comparten datos** frecuentemente
+- Necesitas **bajo overhead** de creación
+- Requieres **respuesta rápida**
+- Tareas son **parte de la misma aplicación**
+
+### Ejemplos reales:
+
+| Aplicación | Enfoque | Por qué |
+|-----------|---------|---------|
+| **Chrome** | Múltiples procesos (una pestaña = un proceso) | Aislamiento: si una pestaña crashea, las otras siguen funcionando |
+| **VS Code** | Un proceso, múltiples threads | Comparten el mismo documento y estado del editor |
+| **Servidor Web** | Proceso master + procesos/threads workers | Master gestiona, workers atienden peticiones |
+| **Base de Datos** | Múltiples procesos | Cada conexión es un proceso para seguridad y aislamiento |
+
+---
+
 ## Modelos de Threads: Comparación
 
 | Modelo | Threads Usuario | Threads Kernel | ¿Concurrencia Múltiples Núcleos? | ¿Bloqueo Afecta a Todos? |
@@ -711,6 +821,7 @@ int main() {
 ## Pipes en Linux
 
 ### Pipe anónimo (entre padre e hijo)
+
 ```c
 #include <unistd.h>
 
@@ -731,9 +842,85 @@ if (fork() == 0) {
 ```
 
 ### Comando en shell:
+
 ```bash
 ls -la | grep "\.txt" | wc -l
 ```
+
+### Características de los Pipes
+
+| Característica | Descripción |
+|---------------|-------------|
+| **Unidireccional** | El flujo de datos es en una sola dirección |
+| **FIFO** | First In, First Out (el primero en entrar es el primero en salir) |
+| **Buffer limitado** | Tamaño fijo (típicamente 64KB en Linux) |
+| **Bloqueante** | Si está lleno, el escritor espera; si vacío, el lector espera |
+| **Relación** | Comúnmente usado entre procesos padre-hijo |
+
+---
+
+## Otros Mecanismos de IPC
+
+### Shared Memory (Memoria Compartida)
+
+```c
+#include <sys/shm.h>
+
+// Crear segmento de memoria compartida
+int shmid = shmget(IPC_PRIVATE, 1024, IPC_CREAT | 0666);
+
+// Adjuntar al espacio de direcciones del proceso
+char *shared_mem = shmat(shmid, NULL, 0);
+
+// Escribir
+strcpy(shared_mem, "Hola desde otro proceso");
+
+// Otro proceso puede leer desde la misma memoria
+```
+
+**Ventajas:**
+- ✅ Más rápido (no hay copia de datos)
+- ✅ Ideal para grandes volúmenes de datos
+
+**Desventajas:**
+- ❌ Requiere sincronización explícita (semáforos, mutex)
+
+### Signals (Señales)
+
+```bash
+# Enviar señal SIGTERM (terminar) a un proceso
+kill -15 1234
+
+# Enviar señal SIGKILL (matar inmediatamente)
+kill -9 1234
+```
+
+**Señales comunes:**
+- **SIGINT (2)**: Interrupción (Ctrl+C)
+- **SIGTERM (15)**: Terminación graceful
+- **SIGKILL (9)**: Terminación forzada (no se puede ignorar)
+- **SIGSTOP (19)**: Pausar proceso
+- **SIGCONT (18)**: Continuar proceso pausado
+
+### Message Queues (Colas de Mensajes)
+
+```c
+#include <sys/msg.h>
+
+// Crear cola de mensajes
+int msqid = msgget(IPC_PRIVATE, IPC_CREAT | 0666);
+
+// Enviar mensaje
+msgsnd(msqid, &message, sizeof(message.data), 0);
+
+// Recibir mensaje
+msgrcv(msqid, &buffer, sizeof(buffer.data), 0, 0);
+```
+
+**Características:**
+- Mensajes con **tipos** (prioridad)
+- Lectura **selectiva** por tipo
+- Persiste aunque el proceso termine
 
 ---
 

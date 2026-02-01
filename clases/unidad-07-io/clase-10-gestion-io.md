@@ -464,12 +464,32 @@ ESCRITURA (write-back):
 ```
 
 ---
-## Spooling (Print Spooler)
+## Spooling: Ventajas y Gestión
 
-*(continuación...)*
+### Beneficios del Spooling
 
-✅ Múltiples usuarios pueden "imprimir" simultáneamente
-✅ Cola gestionada con prioridades
+```
+SIN SPOOLING:                    CON SPOOLING:
+┌────────┐                       ┌──────────┐
+│ App 1  │ espera impresora      │ App 1    │ → spool → termina rápido
+├────────┤                       ├──────────┤
+│ App 2  │ espera impresora      │ App 2    │ → spool → termina rápido
+├────────┤                       ├──────────┤
+│ App 3  │ espera impresora      │ App 3    │ → spool → termina rápido
+└────────┘                       └──────────┘
+                                    │
+                                    ▼
+                               ┌─────────┐
+                               │ Impresora│
+                               │ procesa │
+                               │ cola    │
+                               └─────────┘
+```
+
+✅ **Desacoplamiento:** Aplicaciones terminan rápido
+✅ **Concurrencia:** Múltiples usuarios imprimen simultáneamente
+✅ **Priorización:** Admin puede reordenar cola de trabajos
+✅ **Recuperación:** Trabajos spoolados sobreviven reinicios
 
 ---
 
@@ -579,9 +599,10 @@ free -h
 
 ### Clase 11: Implementación de Sistemas de Archivos
 
-- Dominios de protección
-- Matriz de acceso
-- Control de acceso en Linux/Windows
-- Amenazas y mecanismos de defensa
+- Estructura interna del filesystem
+- Inodos y metadatos
+- Asignación de espacio (contigua, enlazada, indexada)
+- El sistema ext4 en Linux
+- Hard links vs symbolic links
 
 **¡Nos vemos!**

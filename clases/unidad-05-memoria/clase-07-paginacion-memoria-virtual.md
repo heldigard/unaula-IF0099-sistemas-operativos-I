@@ -106,6 +106,13 @@ section {
 
 ![Paginación de Memoria](../../assets/infografias/clase-07-tabla-paginas.png)
 
+**Conceptos fundamentales que veremos:**
+- **Páginas**: Bloques de memoria lógica del proceso
+- **Marcos**: Bloques de memoria física en RAM
+- **Tablas de páginas**: Mapa páginas → marcos
+- **Page Fault**: Cuando una página no está en RAM
+- **Memoria virtual**: Procesos más grandes que la RAM disponible
+
 ---
 
 ## Objetivos de la Clase

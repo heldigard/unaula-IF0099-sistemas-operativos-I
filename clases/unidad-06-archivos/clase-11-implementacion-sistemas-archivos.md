@@ -165,6 +165,8 @@ INODO:
 
 **Regla clave:** El nombre del archivo está en el directorio, no en el inodo.
 
+**Veremos detalles avanzados de inodos más adelante...**
+
 ---
 
 ## Directorios como Tablas
@@ -212,21 +214,7 @@ Directorio:
 
 ---
 
-## Actividad Práctica (10 min)
-
-### En parejas (Linux):
-```bash
-ls -li
-stat archivo.txt
-```
-
-Preguntas:
-1. ¿Cuál es el inodo del archivo?
-2. ¿Qué metadatos muestra `stat`?
-
----
-
-## Resumen de la Clase
+## Resumen de la Clase (Parte 1)
 
 | Concepto | Idea clave |
 | ---------- | ------------ |
@@ -238,26 +226,21 @@ Preguntas:
 
 ---
 
-## Tarea
+## Transición a Detalles Avanzados
 
-1. Comparar FAT32 vs ext4 (3 diferencias)
-2. Explicar qué es journaling y por qué ayuda
+### A continuación: Profundización en Inodos
 
----
-
-## Próxima Clase
-
-### Clase 13: Sistemas Distribuidos
-
-- Conceptos básicos
-- Ventajas y retos
-- Ejemplos reales
-
-**¡Nos vemos!**
-
+Explicaremos en detalle:
+- Estructura completa de un inodo
+- Punteros directos e indirectos
+- Hard links vs symbolic links
+- Exploración práctica con comandos Linux
 
 ---
-### ¿Qué es un Inodo?
+
+## 5. Detalles Avanzados de Inodos
+
+### Estructura Completa de un Inodo
 
 
 
@@ -541,3 +524,28 @@ df -i
 ### Tiempo estimado: 30 minutos
 
 ---
+
+## Resumen de la Clase (Parte 2)
+
+| Concepto | Idea clave |
+| ---------- | ------------ |
+| **Punteros directos** | 12 bloques directos (~48 KB) |
+| **Indirecto simple** | 1024 bloques (~4 MB adicionales) |
+| **Indirecto doble** | 1024² bloques (~4 GB adicionales) |
+| **Indirecto triple** | 1024³ bloques (~4 TB adicionales) |
+| **Hard link** | Mismo inodo, contador de links |
+| **Symbolic link** | Nuevo inodo, contiene ruta como texto |
+
+---
+
+## Próxima Clase
+
+### Clase 12: Protección y Seguridad
+
+- Diferencia entre protección y seguridad
+- Dominios de protección y matriz de acceso
+- Control de acceso en Linux (UGO, SUID, SGID)
+- Control de acceso en Windows (ACL)
+- Amenazas comunes y mecanismos de defensa
+
+**¡Nos vemos!**

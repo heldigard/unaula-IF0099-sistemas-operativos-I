@@ -106,6 +106,13 @@ section {
 
 ![Comparación de Sistemas de Archivos](../../assets/infografias/clase-09-sistemas-archivos.png)
 
+**En esta clase exploraremos:**
+- Cómo los SO organizan archivos en disco
+- Estructuras de directorios: de árbol, jerárquicas, grafos
+- Sistemas de archivos modernos: FAT32, NTFS, ext4
+- Journaling y protección de datos
+- Inodos y bloques en Linux
+
 ---
 
 ## Objetivos de la Clase
@@ -451,9 +458,6 @@ Cifrado      │     ❌      │  EFS ✅     │ ext./LUKS   │
 
 ---
 
-
----
-
 ## Profundizando en Inodos (ext4)
 
 ### Estructura detallada de un inodo
@@ -513,10 +517,11 @@ $ ln -s /home/juan/original.txt /home/maria/enlace.txt
    ❌ Si se borra original.txt, enlace.txt queda "roto"
 ```
 
-
 ---
-### Escenario: "Borré un archivo importante"
 
+## Escenario: "Borré un archivo importante"
+
+### ¿Qué podemos hacer?
 
 ```
 $ rm importante.txt
@@ -546,12 +551,8 @@ PASO 3: El sistema marca bloques como "libres"
 └──────────────────────────────────────┘
 ```
 
----
-### Escenario: "Borré un archivo importante"
+### Recuperación posible con:
 
-*(continuación...)*
-
-**Recuperación posible con:**
 - `extundelete` (ext3/ext4)
 - `TestDisk` (múltiples FS)
 - `photorec` (archivos multimedia)

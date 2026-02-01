@@ -491,7 +491,9 @@ Quantum óptimo:
 
 ## Comparación de Algoritmos
 
-![Comparación de Algoritmos - Gantt](../../assets/infografias/clase-04-comparacion-algoritmos-gantt.png)
+### Comparación visual de diagramas de Gantt para todos los algoritmos estudiados
+
+![Diagrama de Gantt - Algoritmos de Planificación](../../assets/infografias/clase-04-gantt-algoritmos.png)
 
 | Algoritmo | Tipo | Starvation | Turnaround | Respuesta |
 | ----------- | ------ | ------------ | ------------ | ----------- |

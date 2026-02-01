@@ -97,7 +97,11 @@ section {
 ---
 # Clase 8: Memoria Secundaria y Discos
 
-*(continuación...)*
+**En esta clase exploraremos:**
+- Estructura física de discos duros y SSDs
+- Algoritmos de planificación de disco
+- Configuraciones RAID para redundancia
+- Optimización del rendimiento de almacenamiento
 
 
 <!--
@@ -112,6 +116,12 @@ IMÁGENES GENERADAS:
 *4° Semestre - Ingeniería Informática*
 
 ![Estructura de Disco Duro](../../assets/infografias/clase-08-estructura-disco.png)
+
+**Componentes clave que veremos:**
+- Pistas, sectores y cilindros (organización física)
+- Tiempos de acceso: seek, latencia rotacional y transferencia
+- Algoritmos para optimizar el movimiento del cabezal
+- RAID: redundancia y rendimiento combinados
 
 ---
 
@@ -216,9 +226,6 @@ Movimiento (SCAN): 53 → 65 → 67 → 98 → 122 → 124 → 183 → (regresa)
 | **RAID 10** | 0 + 1 | Rendimiento y redundancia |
 
 **SSD:** sin partes mecánicas, menor latencia
-
----
-
 
 ---
 
@@ -1098,33 +1105,40 @@ def sstf(posicion_inicial, solicitudes):
     posicion_actual = posicion_inicial
     solicitudes_restantes = solicitudes.copy()
     orden = []
-    
+
     while solicitudes_restantes:
-        # Encontrar la más cercana
-        mas_cercana = min(solicitudes_restantes, 
+        # Encontrar la solicitud más cercana
+        mas_cercana = min(solicitudes_restantes,
                          key=lambda x: abs(x - posicion_actual))
-        
-        # Calcular movimiento
+
+        # Calcular movimiento del cabezal
         movimiento = abs(mas_cercana - posicion_actual)
         movimiento_total += movimiento
-        
-        # Actualizar estado
+
+        # Actualizar posición y registrar orden
         posicion_actual = mas_cercana
         orden.append(mas_cercana)
         solicitudes_restantes.remove(mas_cercana)
-    
----
-### Tiempo estimado: 45 minutos
-
-*(continuación...)*
 
     return movimiento_total, orden
 
+# Ejemplo de uso
 solicitudes = [82, 170, 43, 140, 24, 16, 190]
 total, orden = sstf(50, solicitudes)
-print(f"Movimiento total: {total}")
+print(f"Movimiento total: {total} cilindros")
 print(f"Orden de atención: {orden}")
 ```
 
+---
+
+## Notas Finales
+
+**Puntos clave para recordar:**
+1. Los SSDs están reemplazando HDDs por velocidad (100× más rápido)
+2. NVMe es el futuro del almacenamiento de alto rendimiento
+3. RAID 5 o 10 son estándares en servidores modernos
+4. La planificación de disco es menos crítica con SSDs
+
+**¡Nos vemos en la próxima clase!**
 
 ---

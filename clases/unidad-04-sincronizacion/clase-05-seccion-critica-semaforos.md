@@ -612,7 +612,7 @@ void productor() {
 
 ---
 
-## Solución (continuación)
+## Solución: Código del Consumidor
 
 ```c
 void consumidor() {

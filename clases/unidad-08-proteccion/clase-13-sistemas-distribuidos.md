@@ -254,9 +254,20 @@ Sistema distribuido para gestionar contenedores Docker en múltiples máquinas.
 ```
 
 ---
-### 1. Kubernetes - Orquestación de Contenedores
+### 1. Kubernetes - Orquestación de Contenedores (Continuación)
 
-*(continuación...)*
+**Componentes Principales del Cluster:**
+
+- **Master Node (Control Plane):**
+  - **API Server:** Punto de entrada para todas las operaciones
+  - **Scheduler:** Decide en qué nodo ejecutar cada pod
+  - **Controller Manager:** Mantiene el estado deseado del cluster
+  - **etcd:** Base de datos distribuida con toda la configuración
+
+- **Worker Nodes:**
+  - **Kubelet:** Agente que ejecuta containers en cada nodo
+  - **Kube-proxy:** Maneja networking y balanceo de carga
+  - **Container Runtime:** Docker, containerd, etc.
 
 **Características Distribuidas:**
 - **Replicación:** Copia automática de pods en múltiples nodos
@@ -324,9 +335,24 @@ Almacenar archivos de **petabytes** en miles de máquinas comunes (no servidores
 ```
 
 ---
-### 3. Google File System (GFS) / HDFS
+### 3. Google File System (GFS) / HDFS (Continuación)
 
-*(continuación...)*
+**Componentes del Sistema:**
+
+- **Master (NameNode en HDFS):**
+  - Almacena metadata: nombres de archivos, permisos, ubicación de chunks
+  - NO almacena datos reales (solo metadatos)
+  - Single point of failure (mitigado con Secondary Master)
+
+- **Chunk Servers (DataNodes en HDFS):**
+  - Almacenan los datos reales
+  - Reportan su estado al Master periódicamente
+  - Se comunican directamente con los clientes
+
+**Tamaño de Chunks:**
+- GFS: 64 MB (mucho más grande que bloques de filesystems tradicionales)
+- HDFS: 128 MB (por defecto)
+- ¿Por qué tan grandes? Reduce overhead de metadata
 
 **Proceso de Lectura:**
 
@@ -368,9 +394,42 @@ Si uno falla, Master ordena replicar desde otro.
 ```
 
 ---
-### 4. Netflix - CDN Distribuido
+### 4. Netflix - CDN Distribuido (Continuación)
 
-*(continuación...)*
+**Arquitectura de Open Connect:**
+
+**Jerarquía de Caches:**
+1. **Edge Cache (Nivel 1):** Servidores en ciudades grandes
+   - Ubicados en ISPs locales
+   - 20-40 TB de almacenamiento
+   - Atienden 90% del tráfico
+
+2. **Regional Cache (Nivel 2):** Servidores regionales
+   - Ubicados en puntos de intercambio de internet
+   - 100+ TB de almacenamiento
+   - Respaldan a los edge caches
+
+3. **Origin Servers:** AWS Cloud
+   - Almacén completo del catálogo
+   - Codifican video en múltiples resoluciones/bitrates
+
+**Algoritmo de Entrega:**
+```
+Usuario solicita película
+    ↓
+Verificar: ¿Está en Edge Cache?
+    ↓ Sí → Entregar desde Edge (<50ms)
+    ↓ No
+Verificar: ¿Está en Regional Cache?
+    ↓ Sí → Entregar desde Regional (<200ms)
+    ↓ No
+Obtener desde Origin + Cachear en Regional/Edge
+```
+
+**Optimizaciones:**
+- **Pre-caching:** Películas populares se cargan en caches durante la noche
+- **Smart routing:** DNS inteligente dirige al servidor más cercano
+- **Adaptive streaming:** Calidad se ajusta según ancho de banda
 
 **Métricas Reales:**
 - **90% del tráfico** se sirve desde cache local
