@@ -76,71 +76,132 @@
 <blockquote>
 <p><strong>Software intermediario</strong> entre el <strong>usuario</strong> y el <strong>hardware</strong></p>
 </blockquote>
-<pre is="marp-pre" data-auto-scaling="downscale-only"><code>┌─────────────────────────────────────────┐
-│                                         │
-│   <img class="emoji" draggable="false" alt="👤" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f464.svg" data-marp-twemoji=""/> USUARIO / APLICACIONES             │
-│                                         │
-│   ═══════════════════════════════════   │
-│                                         │
-│   <img class="emoji" draggable="false" alt="🖥" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f5a5.svg" data-marp-twemoji=""/>  SISTEMA OPERATIVO                 │
-│                                         │
-│   ═══════════════════════════════════   │
-│                                         │
-│   <img class="emoji" draggable="false" alt="⚡" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/26a1.svg" data-marp-twemoji=""/> HARDWARE (CPU, RAM, Disco)         │
-│                                         │
-└─────────────────────────────────────────┘
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 30px;">
+<div>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code>┌─────────────────────┐
+│   <img class="emoji" draggable="false" alt="👤" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f464.svg" data-marp-twemoji=""/> USUARIO        │
+│   Aplicaciones      │
+│                     │
+│   ▼ ▼ ▼            │
+├─────────────────────┤
+│   <img class="emoji" draggable="false" alt="🖥" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f5a5.svg" data-marp-twemoji=""/>  SISTEMA       │
+│   OPERATIVO         │
+│                     │
+│   ▼ ▼ ▼            │
+├─────────────────────┤
+│   <img class="emoji" draggable="false" alt="⚡" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/26a1.svg" data-marp-twemoji=""/> HARDWARE       │
+│   CPU, RAM, Disco   │
+└─────────────────────┘
 </code></pre>
-<p><img src="../../assets/infografias/so-capas-sistema.png" alt="Capas del Sistema" /></p>
+<p><strong>El SO abstrae la complejidad del hardware</strong></p>
+</div>
+<div>
+<h3 id="funci%C3%B3n-principal">Función Principal</h3>
+<ul>
+<li><strong>Abstracción:</strong> Oculta detalles de hardware</li>
+<li><strong>Interfaz:</strong> Provee API estandarizada</li>
+<li><strong>Gestor:</strong> Administra recursos limitados</li>
+<li><strong>Protector:</strong> Aísla procesos entre sí</li>
+</ul>
+</div>
+</div>
 <footer>UNAULA - Ingeniería Informática - 2026-I</footer>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="5" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 1" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="5" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 1;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="25">
 <header>IF0099 - Sistemas Operativos I | Unidad 1</header>
 <h2 id="%C2%BFpor-qu%C3%A9-necesitamos-un-so">¿Por qué necesitamos un SO?</h2>
-<table>
-<thead>
-<tr>
-<th>Sin SO</th>
-<th>Con SO</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Cada programa maneja el hardware</td>
-<td>El SO maneja todo</td>
-</tr>
-<tr>
-<td>Muy complejo para programadores</td>
-<td>Interfaz simple</td>
-</tr>
-<tr>
-<td>No se pueden ejecutar varios programas</td>
-<td>Multiprogramación</td>
-</tr>
-<tr>
-<td>Sin protección entre programas</td>
-<td>Memoria protegida</td>
-</tr>
-</tbody>
-</table>
-<p><strong>El SO hace que el hardware sea usable</strong></p>
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+<div style="text-align: center;">
+<h3 id="%E2%9D%8C-sin-sistema-operativo"><img class="emoji" draggable="false" alt="❌" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/274c.svg" data-marp-twemoji=""/> Sin Sistema Operativo</h3>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code>┌─────────────────────────────┐
+│  Programa 1 │ Programa 2   │
+│      ↓      │      ↓        │
+│    HARWARE ←────────┘       │
+│      ↓                      │
+│   ¡COLISIÓN!               │
+└─────────────────────────────┘
+</code></pre>
+<ul>
+<li>Cada programa accede al hardware directamente</li>
+<li>Programadores deben conocer cada dispositivo</li>
+<li>Solo un programa a la vez</li>
+<li>Sin protección entre programas</li>
+</ul>
+</div>
+<div style="text-align: center;">
+<h3 id="%E2%9C%85-con-sistema-operativo"><img class="emoji" draggable="false" alt="✅" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2705.svg" data-marp-twemoji=""/> Con Sistema Operativo</h3>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code>┌─────────────────────────────┐
+│  P1  │  P2  │  P3         │
+│   ↓   ↓   ↓                │
+│  ┌─────────────────┐       │
+│  │   SISTEMA       │       │
+│  │   OPERATIVO     │       │
+│  └─────────────────┘       │
+│           ↓                │
+│        HARWARE             │
+└─────────────────────────────┘
+</code></pre>
+<ul>
+<li>Interfaz uniforme para todos</li>
+<li>Multiprogramación eficiente</li>
+<li>Memoria protegida</li>
+<li>Hardware abstracto</li>
+</ul>
+</div>
+</div>
+<div style="text-align: center; margin-top: 20px; font-size: 0.9em;">
+<p><strong>El SO transforma el hardware crudo en una plataforma usable y programable</strong></p>
+</div>
 <footer>UNAULA - Ingeniería Informática - 2026-I</footer>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="6" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 1" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="6" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 1;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="25">
 <header>IF0099 - Sistemas Operativos I | Unidad 1</header>
 <h2 id="analog%C3%ADa-el-hotel-%F0%9F%8F%A8">Analogía: El Hotel <img class="emoji" draggable="false" alt="🏨" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f3e8.svg" data-marp-twemoji=""/></h2>
-<pre is="marp-pre" data-auto-scaling="downscale-only"><code>┌──────────────────────────────────────────────────┐
-│                                                  │
-│   <img class="emoji" draggable="false" alt="🏨" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f3e8.svg" data-marp-twemoji=""/> HUESPEDES     <img class="emoji" draggable="false" alt="↔" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2194.svg" data-marp-twemoji=""/>     <img class="emoji" draggable="false" alt="💻" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4bb.svg" data-marp-twemoji=""/> APLICACIONES         │
-│      (clientes)              (programas)         │
-│                                                  │
-│   <img class="emoji" draggable="false" alt="🎯" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f3af.svg" data-marp-twemoji=""/> GERENTE        <img class="emoji" draggable="false" alt="↔" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2194.svg" data-marp-twemoji=""/>     <img class="emoji" draggable="false" alt="🖥" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f5a5.svg" data-marp-twemoji=""/>  SISTEMA OPERATIVO  │
-│   (asigna habitaciones)    (asigna recursos)     │
-│                                                  │
-│   <img class="emoji" draggable="false" alt="🛏" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f6cf.svg" data-marp-twemoji=""/> HABITACIONES  <img class="emoji" draggable="false" alt="↔" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2194.svg" data-marp-twemoji=""/>     <img class="emoji" draggable="false" alt="💾" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4be.svg" data-marp-twemoji=""/> MEMORIA RAM          │
-│   (recursos limitados)     (espacio limitado)    │
-│                                                  │
-└──────────────────────────────────────────────────┘
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px;">
+<div style="text-align: center;">
+<h3 id="%F0%9F%8F%A8-el-hotel"><img class="emoji" draggable="false" alt="🏨" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f3e8.svg" data-marp-twemoji=""/> El Hotel</h3>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code>    ┌─────────────┐
+    │ HUESPEDES  │ ← Clientes
+    │   Mario    │    Ana
+    │    Carlos  │
+    └──────┬──────┘
+           │
+    ┌──────▼──────┐
+    │  GERENTE <img class="emoji" draggable="false" alt="🎯" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f3af.svg" data-marp-twemoji=""/> │ ← Asigna
+    │   Hotel     │    habitaciones
+    └──────┬──────┘
+           │
+    ┌──────▼──────┐
+    │<img class="emoji" draggable="false" alt="🛏" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f6cf.svg" data-marp-twemoji=""/> HABITACIONES│ ← Recursos
+    │ 101  102    │    limitados
+    │ 103  ...   │
+    └─────────────┘
 </code></pre>
+</div>
+<div style="text-align: center;">
+<h3 id="%F0%9F%92%BB-el-computador"><img class="emoji" draggable="false" alt="💻" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4bb.svg" data-marp-twemoji=""/> El Computador</h3>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code>    ┌─────────────┐
+    │APLICACIONES │ ← Chrome,
+    │  Spotify   │    VS Code
+    │   Discord  │
+    └──────┬──────┘
+           │
+    ┌──────▼──────┐
+    │SO <img class="emoji" draggable="false" alt="🖥" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f5a5.svg" data-marp-twemoji=""/>       │ ← Asigna
+    │  Linux/Win  │    recursos
+    └──────┬──────┘
+           │
+    ┌──────▼──────┐
+    │<img class="emoji" draggable="false" alt="💾" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4be.svg" data-marp-twemoji=""/> RAM 16GB  │ ← Recursos
+    │ CPU 8 núcleos│    limitados
+    │ Disco 1TB  │
+    └─────────────┘
+</code></pre>
+</div>
+</div>
+<div style="text-align: center; margin-top: 20px;">
+<p><strong>Sin el gerente, los huéspedes pelearían por las habitaciones. Sin el SO, los programas pelearían por la RAM.</strong></p>
+</div>
 <footer>UNAULA - Ingeniería Informática - 2026-I</footer>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="7" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 1" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="7" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 1;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="25">
@@ -182,12 +243,47 @@
 <header>IF0099 - Sistemas Operativos I | Unidad 1</header>
 <h2 id="2-funciones-principales-del-so">2. Funciones Principales del SO</h2>
 <h3 id="las-4-funciones-fundamentales">Las 4 funciones fundamentales</h3>
-<p><img src="../../assets/infografias/so-funciones-principales.png" alt="Funciones del SO" /></p>
-<div style="display: flex; gap: 20px; margin-top: 20px;">
-<div style="flex: 1; text-align: center;">📊 Gestión de Procesos</div>
-<div style="flex: 1; text-align: center;">💾 Gestión de Memoria</div>
-<div style="flex: 1; text-align: center;">📁 Gestión de Archivos</div>
-<div style="flex: 1; text-align: center;">🔌 Gestión de E/S</div>
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-top: 20px;">
+<div style="text-align: center; padding: 15px; border: 2px solid #3b82f6; border-radius: 10px;">
+<h4 id="%F0%9F%93%8A-gesti%C3%B3n-de-procesos"><img class="emoji" draggable="false" alt="📊" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4ca.svg" data-marp-twemoji=""/> Gestión de Procesos</h4>
+<ul>
+<li>Crear y destruir procesos</li>
+<li>Planificar CPU (scheduling)</li>
+<li>Sincronizar y comunicar procesos</li>
+<li>Manejar deadlocks</li>
+</ul>
+<p><strong>Ejemplo:</strong> Ejecutar Chrome + Spotify a la vez</p>
+</div>
+<div style="text-align: center; padding: 15px; border: 2px solid #10b981; border-radius: 10px;">
+<h4 id="%F0%9F%92%BE-gesti%C3%B3n-de-memoria"><img class="emoji" draggable="false" alt="💾" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4be.svg" data-marp-twemoji=""/> Gestión de Memoria</h4>
+<ul>
+<li>Asignar memoria a procesos</li>
+<li>Proteger memoria entre procesos</li>
+<li>Implementar memoria virtual</li>
+<li>Paginación y segmentación</li>
+</ul>
+<p><strong>Ejemplo:</strong> 16GB RAM compartida por 20 programas</p>
+</div>
+<div style="text-align: center; padding: 15px; border: 2px solid #f59e0b; border-radius: 10px;">
+<h4 id="%F0%9F%93%81-gesti%C3%B3n-de-archivos"><img class="emoji" draggable="false" alt="📁" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4c1.svg" data-marp-twemoji=""/> Gestión de Archivos</h4>
+<ul>
+<li>Crear, leer, escribir archivos</li>
+<li>Organizar en directorios</li>
+<li>Manejar permisos y acceso</li>
+<li>Backups y recuperación</li>
+</ul>
+<p><strong>Ejemplo:</strong> Sistema de archivos jerárquico</p>
+</div>
+<div style="text-align: center; padding: 15px; border: 2px solid #ef4444; border-radius: 10px;">
+<h4 id="%F0%9F%94%8C-gesti%C3%B3n-de-es"><img class="emoji" draggable="false" alt="🔌" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f50c.svg" data-marp-twemoji=""/> Gestión de E/S</h4>
+<ul>
+<li>Controlar dispositivos</li>
+<li>Buffering y caching</li>
+<li>Manejar interrupciones</li>
+<li>Drivers de dispositivos</li>
+</ul>
+<p><strong>Ejemplo:</strong> Teclado, mouse, disco, red</p>
+</div>
 </div>
 <footer>UNAULA - Ingeniería Informática - 2026-I</footer>
 </section>
@@ -229,79 +325,252 @@
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="10" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 1" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="10" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 1;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="25">
 <header>IF0099 - Sistemas Operativos I | Unidad 1</header>
 <h2 id="el-ciclo-de-vida-de-un-proceso">El Ciclo de Vida de un Proceso</h2>
-<pre is="marp-pre" data-auto-scaling="downscale-only"><code>    <img class="emoji" draggable="false" alt="📝" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4dd.svg" data-marp-twemoji=""/> CREADO
-        │
-        ▼
-    <img class="emoji" draggable="false" alt="🏃" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f3c3.svg" data-marp-twemoji=""/> LISTO ──→ <img class="emoji" draggable="false" alt="🎯" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f3af.svg" data-marp-twemoji=""/> EJECUTANDO
-        │          │
-        │          ▼
-        │      <img class="emoji" draggable="false" alt="⏸" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/23f8.svg" data-marp-twemoji=""/> BLOQUEADO
-        │          │
-        └──────────┴──→ <img class="emoji" draggable="false" alt="✅" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2705.svg" data-marp-twemoji=""/> TERMINADO
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+<div>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code>    ┌─────┐
+    │<img class="emoji" draggable="false" alt="📝" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4dd.svg" data-marp-twemoji=""/> NUEVO│
+    └──┬──┘
+       │ creado
+       ▼
+    ┌─────┐  ready    ┌─────┐
+    │<img class="emoji" draggable="false" alt="🏃" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f3c3.svg" data-marp-twemoji=""/>LISTO├────────→│<img class="emoji" draggable="false" alt="🎯" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f3af.svg" data-marp-twemoji=""/>EJEC│
+    └──┬──┘           │UTANDO│
+       │               └──┬──┘
+       │ running         │
+       │                 │ I/O
+       │        waiting  ▼
+       │             ┌─────┐
+       └─────────────│<img class="emoji" draggable="false" alt="⏸" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/23f8.svg" data-marp-twemoji=""/>BLOQ│  exit
+  scheduler            │UEADO├──→ <img class="emoji" draggable="false" alt="✅" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2705.svg" data-marp-twemoji=""/>TERMINADO
+                     └─────┘
 </code></pre>
-<p><strong>El SO gestiona:</strong> crear, suspender, reanudar, sincronizar, comunicar</p>
+</div>
+<div>
+<h3 id="estados-del-proceso">Estados del Proceso</h3>
+<table>
+<thead>
+<tr>
+<th>Estado</th>
+<th>Significado</th>
+<th>Ejemplo</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>NUEVO</strong></td>
+<td>Se está creando</td>
+<td><code>fork()</code> en C</td>
+</tr>
+<tr>
+<td><strong>LISTO</strong></td>
+<td>Espera CPU</td>
+<td>En cola de ready</td>
+</tr>
+<tr>
+<td><strong>EJECUTANDO</strong></td>
+<td>Usa CPU ahora</td>
+<td>Proceso actual</td>
+</tr>
+<tr>
+<td><strong>BLOQUEADO</strong></td>
+<td>Espera I/O</td>
+<td>Leyendo archivo</td>
+</tr>
+<tr>
+<td><strong>TERMINADO</strong></td>
+<td>Fin ejecución</td>
+<td><code>exit()</code> llamado</td>
+</tr>
+</tbody>
+</table>
+<h3 id="transiciones-clave">Transiciones Clave</h3>
+<ul>
+<li><strong>LISTO → EJECUTANDO:</strong> scheduler elige proceso</li>
+<li><strong>EJECUTANDO → LISTO:</strong> quantum expiró (preemptivo)</li>
+<li><strong>EJECUTANDO → BLOQUEADO:</strong> espera I/O</li>
+<li><strong>BLOQUEADO → LISTO:</strong> I/O completó</li>
+</ul>
+</div>
+</div>
+<div style="text-align: center; margin-top: 15px; font-size: 0.85em;">
+<p><strong>El scheduler decide QUÉ proceso corre. Las interrupciones deciden CUÁNDO cambiar.</strong></p>
+</div>
 <footer>UNAULA - Ingeniería Informática - 2026-I</footer>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="11" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 1" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="11" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 1;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="25">
 <header>IF0099 - Sistemas Operativos I | Unidad 1</header>
 <h2 id="22-gesti%C3%B3n-de-memoria">2.2 Gestión de Memoria</h2>
-<h3 id="la-ram-como-edificio">La RAM como edificio</h3>
-<pre is="marp-pre" data-auto-scaling="downscale-only"><code>┌─────────────────────────────────────┐
-│     <img class="emoji" draggable="false" alt="🏢" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f3e2.svg" data-marp-twemoji=""/> EDIFICIO RAM (16 GB)          │
-├─────────┬─────────┬─────────┬───────┤
-│ SO 2GB  │ Chrome  │ Spotify │ Libre │
-│ <img class="emoji" draggable="false" alt="🔴" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f534.svg" data-marp-twemoji=""/>      │ <img class="emoji" draggable="false" alt="🟡" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f7e1.svg" data-marp-twemoji=""/>      │ <img class="emoji" draggable="false" alt="🟢" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f7e2.svg" data-marp-twemoji=""/>      │ <img class="emoji" draggable="false" alt="⚪" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/26aa.svg" data-marp-twemoji=""/>    │
-└─────────┴─────────┴─────────┴───────┘
+<h3 id="la-ram-como-edificio-de-apartamentos">La RAM como edificio de apartamentos</h3>
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+<div>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code>┌─────────────────────────────┐
+│   <img class="emoji" draggable="false" alt="🏢" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f3e2.svg" data-marp-twemoji=""/> EDIFICIO RAM (16 GB)   │
+├──────────┬──────────┬───────┤
+│ Apart. 0 │ Apart. 1 │  ...  │
+│  SO 2GB  │ Chrome   │       │
+│   <img class="emoji" draggable="false" alt="🔴" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f534.svg" data-marp-twemoji=""/>     │   <img class="emoji" draggable="false" alt="🟡" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f7e1.svg" data-marp-twemoji=""/>     │       │
+├──────────┼──────────┼───────┤
+│ Apart. 3 │ Apart. 4 │ Apart.│
+│ Spotify  │ VS Code  │ Libre │
+│   <img class="emoji" draggable="false" alt="🟢" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f7e2.svg" data-marp-twemoji=""/>     │   <img class="emoji" draggable="false" alt="🟠" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f7e0.svg" data-marp-twemoji=""/>     │  <img class="emoji" draggable="false" alt="⚪" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/26aa.svg" data-marp-twemoji=""/>  │
+└──────────┴──────────┴───────┘
 </code></pre>
+<p><strong>Cada apartamento = proceso aislado</strong></p>
+</div>
+<div>
+<h3 id="funciones-del-gestor-de-memoria">Funciones del Gestor de Memoria</h3>
 <table>
 <thead>
 <tr>
 <th>Función</th>
-<th>Descripción</th>
+<th>¿Qué hace?</th>
+<th>Ejemplo</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><strong>Asignar</strong></td>
-<td>Dar memoria a procesos</td>
+<td>Dar RAM a procesos</td>
+<td>Chrome pide 500MB</td>
 </tr>
 <tr>
 <td><strong>Liberar</strong></td>
-<td>Recuperar memoria</td>
+<td>Recuperar RAM</td>
+<td>Cerrar Firefox</td>
 </tr>
 <tr>
 <td><strong>Proteger</strong></td>
-<td>Chrome no lee Spotify</td>
+<td>Aislar procesos</td>
+<td>Chrome NO lee Spotify</td>
 </tr>
 <tr>
 <td><strong>Virtual</strong></td>
-<td>Swap: disco como RAM</td>
+<td>Usar disco como RAM</td>
+<td>Swap en disco SSD</td>
+</tr>
+<tr>
+<td><strong>Compartir</strong></td>
+<td>Mismo código en RAM</td>
+<td>Librerías compartidas</td>
 </tr>
 </tbody>
 </table>
+<h3 id="problemas-clave">Problemas Clave</h3>
+<ul>
+<li><strong>Fragmentación:</strong> Huecos entre procesos</li>
+<li><strong>Thrashing:</strong> swapping excesivo</li>
+<li><strong>Fugas:</strong> Memoria no liberada</li>
+</ul>
+</div>
+</div>
 <footer>UNAULA - Ingeniería Informática - 2026-I</footer>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="12" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 1" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="12" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 1;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="25">
 <header>IF0099 - Sistemas Operativos I | Unidad 1</header>
 <h2 id="23-gesti%C3%B3n-de-archivos">2.3 Gestión de Archivos</h2>
-<h3 id="sistema-jer%C3%A1rquico">Sistema jerárquico</h3>
-<pre is="marp-pre" data-auto-scaling="downscale-only"><code><img class="emoji" draggable="false" alt="📁" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4c1.svg" data-marp-twemoji=""/> C:\ o / (raíz)
-├── <img class="emoji" draggable="false" alt="📁" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4c1.svg" data-marp-twemoji=""/> Windows/ o /bin
-├── <img class="emoji" draggable="false" alt="📁" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4c1.svg" data-marp-twemoji=""/> Program Files/
-├── <img class="emoji" draggable="false" alt="📁" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4c1.svg" data-marp-twemoji=""/> Users/
-│   └── <img class="emoji" draggable="false" alt="📁" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4c1.svg" data-marp-twemoji=""/> estudiante/
-│       ├── <img class="emoji" draggable="false" alt="📁" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4c1.svg" data-marp-twemoji=""/> Documentos/
-│       ├── <img class="emoji" draggable="false" alt="📁" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4c1.svg" data-marp-twemoji=""/> Descargas/
-│       └── <img class="emoji" draggable="false" alt="📁" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4c1.svg" data-marp-twemoji=""/> Escritorio/
-└── <img class="emoji" draggable="false" alt="📁" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4c1.svg" data-marp-twemoji=""/> ...
+<h3 id="el-so-como-bibliotecario-digital">El SO como bibliotecario digital</h3>
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+<div>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code>        <img class="emoji" draggable="false" alt="📁" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4c1.svg" data-marp-twemoji=""/> / (raíz)
+         │
+    ┌────┼────┬────┬────┐
+    │    │    │    │    │
+  <img class="emoji" draggable="false" alt="📁" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4c1.svg" data-marp-twemoji=""/>home <img class="emoji" draggable="false" alt="📁" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4c1.svg" data-marp-twemoji=""/>usr <img class="emoji" draggable="false" alt="📁" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4c1.svg" data-marp-twemoji=""/>etc <img class="emoji" draggable="false" alt="📁" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4c1.svg" data-marp-twemoji=""/>var <img class="emoji" draggable="false" alt="📁" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4c1.svg" data-marp-twemoji=""/>tmp
+    │
+  <img class="emoji" draggable="false" alt="📁" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4c1.svg" data-marp-twemoji=""/>usuario
+    │
+  ┌─┴─┬────────────┐
+  │   │             │
+<img class="emoji" draggable="false" alt="📁" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4c1.svg" data-marp-twemoji=""/>docs <img class="emoji" draggable="false" alt="📁" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4c1.svg" data-marp-twemoji=""/>downloads <img class="emoji" draggable="false" alt="📁" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4c1.svg" data-marp-twemoji=""/>code
+  │
+ <img class="emoji" draggable="false" alt="📄" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4c4.svg" data-marp-twemoji=""/>notes.txt
+ <img class="emoji" draggable="false" alt="📄" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4c4.svg" data-marp-twemoji=""/>report.pdf
 </code></pre>
-<p><strong>El SO es el bibliotecario:</strong> sabe dónde está todo</p>
+<h3 id="operaciones-del-sistema-de-archivos">Operaciones del Sistema de Archivos</h3>
+<table>
+<thead>
+<tr>
+<th>Operación</th>
+<th>Descripción</th>
+<th>System Call</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Crear</strong></td>
+<td>Nuevo archivo</td>
+<td><code>creat()</code></td>
+</tr>
+<tr>
+<td><strong>Leer</strong></td>
+<td>Obtener datos</td>
+<td><code>read()</code></td>
+</tr>
+<tr>
+<td><strong>Escribir</strong></td>
+<td>Guardar datos</td>
+<td><code>write()</code></td>
+</tr>
+<tr>
+<td><strong>Eliminar</strong></td>
+<td>Borrar archivo</td>
+<td><code>unlink()</code></td>
+</tr>
+<tr>
+<td><strong>Mover</strong></td>
+<td>Cambiar ubicación</td>
+<td><code>rename()</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div>
+<h3 id="funciones-del-gestor-de-archivos">Funciones del Gestor de Archivos</h3>
+<ul>
+<li><strong>Organización:</strong> Directorios jerárquicos</li>
+<li><strong>Nombres:</strong> Rutas absolutas y relativas</li>
+<li><strong>Permisos:</strong> Lectura, escritura, ejecución</li>
+<li><strong>Metadatos:</strong> Tamaño, fecha, dueño</li>
+<li><strong>Acceso:</strong> Secuencial o aleatorio</li>
+</ul>
+<h3 id="estructura-vs-contenido">Estructura vs Contenido</h3>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code><img class="emoji" draggable="false" alt="📦" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4e6.svg" data-marp-twemoji=""/> archivo.txt = [metadatos + datos]
+
+METADATOS                     DATOS
+┌─────────────────┐         ┌─────────────┐
+│ tipo: regular   │         │ &quot;Hola       │
+│ tamaño: 1024    │ ────<img class="emoji" draggable="false" alt="▶" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/25b6.svg" data-marp-twemoji=""/>   │  Mundo...&quot;   │
+│ permisos: rw-  │         │             │
+│ dueño: usuario  │         │ (bytes en   │
+│ fecha: hoy     │         │  disco)     │
+└─────────────────┘         └─────────────┘
+</code></pre>
+<p><strong>El separa QUÉ es el archivo de DÓNDE están los datos</strong></p>
+</div>
+</div>
 <footer>UNAULA - Ingeniería Informática - 2026-I</footer>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="13" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 1" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="13" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 1;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="25">
 <header>IF0099 - Sistemas Operativos I | Unidad 1</header>
 <h2 id="24-gesti%C3%B3n-de-es">2.4 Gestión de E/S</h2>
 <h3 id="dispositivos-de-entradasalida">Dispositivos de entrada/salida</h3>
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+<div>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code>    APLICACION
+        ↓
+┌───────────────────────┐
+│  CAPA DE ABSTRACCIÓN  │  ← APIs uniformes
+├───────────────────────┤
+│   SUBSISTEMA E/S      │
+├───────────────────────┤
+│    DRIVERS <img class="emoji" draggable="false" alt="📝" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4dd.svg" data-marp-twemoji=""/>         │  ← Hablan con hw
+├───────────────────────┤
+│   CONTROLADOR         │  ← Hardware real
+└───────────────────────┘
+        ↓
+    DISPOSITIVO
+</code></pre>
+<h3 id="tipos-de-dispositivos">Tipos de Dispositivos</h3>
 <table>
 <thead>
 <tr>
@@ -314,7 +583,7 @@
 <tr>
 <td><img class="emoji" draggable="false" alt="⌨️" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2328.svg" data-marp-twemoji=""/> Teclado</td>
 <td><img class="emoji" draggable="false" alt="🖥️" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f5a5.svg" data-marp-twemoji=""/> Monitor</td>
-<td><img class="emoji" draggable="false" alt="💾" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4be.svg" data-marp-twemoji=""/> Disco</td>
+<td><img class="emoji" draggable="false" alt="💾" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4be.svg" data-marp-twemoji=""/> Disco duro</td>
 </tr>
 <tr>
 <td><img class="emoji" draggable="false" alt="🖱️" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f5b1.svg" data-marp-twemoji=""/> Mouse</td>
@@ -322,320 +591,1123 @@
 <td><img class="emoji" draggable="false" alt="🔌" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f50c.svg" data-marp-twemoji=""/> USB</td>
 </tr>
 <tr>
-<td><img class="emoji" draggable="false" alt="🎤" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f3a4.svg" data-marp-twemoji=""/> Mic</td>
-<td><img class="emoji" draggable="false" alt="🔊" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f50a.svg" data-marp-twemoji=""/> Altavoz</td>
-<td><img class="emoji" draggable="false" alt="🌐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f310.svg" data-marp-twemoji=""/> Red</td>
+<td><img class="emoji" draggable="false" alt="🎤" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f3a4.svg" data-marp-twemoji=""/> Micrófono</td>
+<td><img class="emoji" draggable="false" alt="🔊" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f50a.svg" data-marp-twemoji=""/> Altavoces</td>
+<td><img class="emoji" draggable="false" alt="🌐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f310.svg" data-marp-twemoji=""/> Tarjeta red</td>
+</tr>
+<tr>
+<td><img class="emoji" draggable="false" alt="📷" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4f7.svg" data-marp-twemoji=""/> Cámara web</td>
+<td><img class="emoji" draggable="false" alt="👞" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f45e.svg" data-marp-twemoji=""/> Auriculares</td>
+<td><img class="emoji" draggable="false" alt="📱" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4f1.svg" data-marp-twemoji=""/> Móviles</td>
 </tr>
 </tbody>
 </table>
-<p><strong>El SO usa drivers</strong> para &quot;hablar&quot; con cada dispositivo</p>
+</div>
+<div>
+<h3 id="t%C3%A9cnicas-de-es">Técnicas de E/S</h3>
+<h4 id="1-polling-sondeo">1. Polling (Sondeo)</h4>
+<ul>
+<li>CPU pregunta repetidamente</li>
+<li>Ineficiente, desperdicia ciclos</li>
+</ul>
+<h4 id="2-interrupciones">2. Interrupciones</h4>
+<ul>
+<li>Dispositivo avisa a CPU</li>
+<li>Más eficiente, estándar actual</li>
+</ul>
+<h4 id="3-dma-direct-memory-access">3. DMA (Direct Memory Access)</h4>
+<ul>
+<li>Dispositivo <img class="emoji" draggable="false" alt="↔" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2194.svg" data-marp-twemoji=""/> Memoria directa</li>
+<li>Sin intervención de CPU</li>
+<li>Para transferencias grandes</li>
+</ul>
+<h3 id="ejemplo-leer-un-archivo">Ejemplo: Leer un archivo</h3>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code>Programa → read() → SO → Driver → Disco
+                      ↓
+                 (interrupción)
+                      ↓
+SO → &quot;¡Datos listos!&quot; → Programa
+</code></pre>
+<p><strong>El SO es el traductor entre software y hardware</strong></p>
+</div>
+</div>
 <footer>UNAULA - Ingeniería Informática - 2026-I</footer>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="14" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 1" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="14" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 1;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="25">
 <header>IF0099 - Sistemas Operativos I | Unidad 1</header>
 <h2 id="3-arquitecturas-del-so">3. Arquitecturas del SO</h2>
-<h3 id="tipos-de-estructura">Tipos de estructura</h3>
-<pre is="marp-pre" data-auto-scaling="downscale-only"><code>┌─────────────────────────────────────────────────┐
-│          MONOLÍTICO               CAPAS         │
-│      (Linux, MS-DOS)        (THE, VAX/VMS)     │
-│                                                 │
-│    ┌─────────┐              ┌─────────┐        │
-│    │  TODO   │              │ Nivel 5 │        │
-│    │ JUNTO   │              │   ...   │        │
-│    │         │              │ Nivel 0 │        │
-│    └─────────┘              └─────────┘        │
-│                                                 │
-│      Rápido              Seguro, Modular       │
-│      Difícil mantener    Lento (overhead)       │
-└─────────────────────────────────────────────────┘
+<h3 id="%C2%BFc%C3%B3mo-organizar-un-so-complejo">¿Cómo organizar un SO complejo?</h3>
+<div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px;">
+<div style="text-align: center; padding: 15px; border: 3px solid #3b82f6; border-radius: 10px;">
+<h3 id="%F0%9F%8F%9B%EF%B8%8F-monol%C3%ADtico"><img class="emoji" draggable="false" alt="🏛️" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f3db.svg" data-marp-twemoji=""/> Monolítico</h3>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code>┌─────────────────┐
+│   TODOS LOS     │
+│   SERVICIOS     │
+│   JUNTOS        │
+├─────────────────┤
+│   KERNEL UNICO  │
+├─────────────────┤
+│   HARDWARE      │
+└─────────────────┘
 </code></pre>
+<p><strong>Linux, MS-DOS</strong></p>
+<p><img class="emoji" draggable="false" alt="✅" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2705.svg" data-marp-twemoji=""/> Rápido (sin overhead)<br />
+<img class="emoji" draggable="false" alt="❌" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/274c.svg" data-marp-twemoji=""/> Difícil de mantener<br />
+<img class="emoji" draggable="false" alt="❌" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/274c.svg" data-marp-twemoji=""/> Un fallo = crash total</p>
+</div>
+<div style="text-align: center; padding: 15px; border: 3px solid #10b981; border-radius: 10px;">
+<h3 id="%F0%9F%A7%B1-capas"><img class="emoji" draggable="false" alt="🧱" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f9f1.svg" data-marp-twemoji=""/> Capas</h3>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code>┌─────────────────┐
+│   Nivel 5       │
+├─────────────────┤
+│   Nivel 4       │
+├─────────────────┤
+│   Nivel 3       │
+├─────────────────┤
+│   Nivel 2       │
+├─────────────────┤
+│   Nivel 1       │
+├─────────────────┤
+│   Nivel 0       │
+└─────────────────┘
+</code></pre>
+<p><strong>THE, VMS</strong></p>
+<p><img class="emoji" draggable="false" alt="✅" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2705.svg" data-marp-twemoji=""/> Modular<br />
+<img class="emoji" draggable="false" alt="✅" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2705.svg" data-marp-twemoji=""/> Más seguro<br />
+<img class="emoji" draggable="false" alt="❌" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/274c.svg" data-marp-twemoji=""/> Overhead por capas<br />
+<img class="emoji" draggable="false" alt="❌" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/274c.svg" data-marp-twemoji=""/> Más lento</p>
+</div>
+<div style="text-align: center; padding: 15px; border: 3px solid #f59e0b; border-radius: 10px;">
+<h3 id="%F0%9F%A7%A9-microkernel"><img class="emoji" draggable="false" alt="🧩" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f9e9.svg" data-marp-twemoji=""/> Microkernel</h3>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code>┌─────┐ ┌─────┐ ┌─────┐
+│Files│ │Mem  │ │Proc │
+└──┬──┘ └──┬──┘ └──┬──┘
+   │       │       │
+   └───┬───┴───┬───┘
+       │       │
+   ┌───▼───────▼───┐
+   │  MICROKERNEL  │
+   │  (mínimo)     │
+   └───┬───────────┘
+       │
+   HARDWARE
+</code></pre>
+<p><strong>MINIX, QNX</strong></p>
+<p><img class="emoji" draggable="false" alt="✅" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2705.svg" data-marp-twemoji=""/> Más seguro<br />
+<img class="emoji" draggable="false" alt="✅" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2705.svg" data-marp-twemoji=""/> Flexible<br />
+<img class="emoji" draggable="false" alt="❌" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/274c.svg" data-marp-twemoji=""/> Más lento<br />
+<img class="emoji" draggable="false" alt="❌" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/274c.svg" data-marp-twemoji=""/> Complejo</p>
+</div>
+</div>
 <footer>UNAULA - Ingeniería Informática - 2026-I</footer>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="15" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 1" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="15" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 1;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="25">
 <header>IF0099 - Sistemas Operativos I | Unidad 1</header>
 <h2 id="microkernel-el-enfoque-minimalista">Microkernel: El enfoque minimalista</h2>
-<pre is="marp-pre" data-auto-scaling="downscale-only"><code>┌──────────────────────────────────────────┐
-│                                          │
-│  <img class="emoji" draggable="false" alt="📁" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4c1.svg" data-marp-twemoji=""/> Archivos  <img class="emoji" draggable="false" alt="📊" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4ca.svg" data-marp-twemoji=""/> Memoria  <img class="emoji" draggable="false" alt="🔄" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f504.svg" data-marp-twemoji=""/> Procesos   │
-│    (user)       (user)      (user)       │
-│         │           │           │         │
-│         └───────────┼───────────┘         │
-│                     │                     │
-│              ┌──────┴──────┐             │
-│              │  MICROKERNEL│             │
-│              │   (mínimo)  │             │
-│              └──────┬──────┘             │
-│                     │                     │
-│                  HARDWARE                │
-└──────────────────────────────────────────┘
+<h3 id="%C2%BFpor-qu%C3%A9-mover-servicios-fuera-del-kernel">¿Por qué mover servicios fuera del kernel?</h3>
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+<div>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code>┌─────────────────────────────────────┐
+│  <img class="emoji" draggable="false" alt="📁" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4c1.svg" data-marp-twemoji=""/> Servidor Archivos (user space)  │
+│         │                           │
+│         │ IPC                       │
+│         ↓                           │
+│  <img class="emoji" draggable="false" alt="🔄" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f504.svg" data-marp-twemoji=""/> Servidor Procesos (user space)  │
+│         │                           │
+│         │ IPC                       │
+│         ↓                           │
+│  ┌─────────────────────────────┐   │
+│  │   MICROKERNEL (kernel)      │   │
+│  │   - IPC                     │   │
+│  │   - Scheduling básico       │   │
+│  │   - Memoria básica          │   │
+│  └───────────┬─────────────────┘   │
+│              │                      │
+│         HARDWARE                   │
+└─────────────────────────────────────┘
 </code></pre>
-<p><strong>Solo en kernel:</strong> IPC, scheduling básico, memoria básica</p>
+<p><strong>Solo lo esencial en kernel mode</strong></p>
+</div>
+<div>
+<h3 id="ventajas-del-microkernel">Ventajas del Microkernel</h3>
+<table>
+<thead>
+<tr>
+<th>Aspecto</th>
+<th>Beneficio</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Seguridad</strong></td>
+<td>Menos código en kernel = menos fallos</td>
+</tr>
+<tr>
+<td><strong>Extensibilidad</strong></td>
+<td>Agregar servicios sin recompilar kernel</td>
+</tr>
+<tr>
+<td><strong>Mantenibilidad</strong></td>
+<td>Fallos en user space NO crashean el sistema</td>
+</tr>
+<tr>
+<td><strong>Portabilidad</strong></td>
+<td>Kernel pequeño es más portable</td>
+</tr>
+</tbody>
+</table>
+<h3 id="desventajas">Desventajas</h3>
+<table>
+<thead>
+<tr>
+<th>Aspecto</th>
+<th>Problema</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Rendimiento</strong></td>
+<td>IPC entre servicios es costoso</td>
+</tr>
+<tr>
+<td><strong>Complejidad</strong></td>
+<td>Difícil de diseñar correctamente</td>
+</tr>
+<tr>
+<td><strong>Overhead</strong></td>
+<td>Cambios de contexto adicionales</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Ejemplo real:</strong> Minix 3 (usado en educación) y QNX (usado en sistemas críticos como autos)</p>
+</div>
+</div>
 <footer>UNAULA - Ingeniería Informática - 2026-I</footer>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="16" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 1" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="16" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 1;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="25">
 <header>IF0099 - Sistemas Operativos I | Unidad 1</header>
 <h2 id="comparaci%C3%B3n-de-arquitecturas">Comparación de Arquitecturas</h2>
+<h3 id="%C2%BFcu%C3%A1l-elegir-depende-del-objetivo">¿Cuál elegir? Depende del objetivo</h3>
+<div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px;">
+<div style="text-align: center;">
+<h3 id="%F0%9F%8F%9B%EF%B8%8F-monol%C3%ADtico-1"><img class="emoji" draggable="false" alt="🏛️" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f3db.svg" data-marp-twemoji=""/> Monolítico</h3>
 <table>
 <thead>
 <tr>
-<th></th>
-<th>Monolítico</th>
-<th>Capas</th>
-<th>Microkernel</th>
+<th>Criterio</th>
+<th>Calificación</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><strong>Rendimiento</strong></td>
 <td><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/></td>
-<td><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/></td>
-<td><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/></td>
 </tr>
 <tr>
 <td><strong>Seguridad</strong></td>
 <td><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/></td>
-<td><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/></td>
-<td><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/></td>
 </tr>
 <tr>
 <td><strong>Mantenibilidad</strong></td>
 <td><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/></td>
-<td><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/></td>
-<td><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/></td>
 </tr>
 <tr>
-<td><strong>Ejemplos</strong></td>
-<td>Linux, DOS</td>
-<td>THE, VMS</td>
-<td>MINIX, QNX</td>
+<td><strong>Complejidad</strong></td>
+<td>Baja</td>
+</tr>
+<tr>
+<td><strong>Uso ideal</strong></td>
+<td>Escritorio, servidores</td>
 </tr>
 </tbody>
 </table>
+<p><strong>Ejemplos:</strong></p>
+<ul>
+<li>Linux (más popular)</li>
+<li>MS-DOS (histórico)</li>
+<li>Unix BSD</li>
+</ul>
+</div>
+<div style="text-align: center;">
+<h3 id="%F0%9F%A7%B1-capas-1"><img class="emoji" draggable="false" alt="🧱" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f9f1.svg" data-marp-twemoji=""/> Capas</h3>
+<table>
+<thead>
+<tr>
+<th>Criterio</th>
+<th>Calificación</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Rendimiento</strong></td>
+<td><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/></td>
+</tr>
+<tr>
+<td><strong>Seguridad</strong></td>
+<td><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/></td>
+</tr>
+<tr>
+<td><strong>Mantenibilidad</strong></td>
+<td><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/></td>
+</tr>
+<tr>
+<td><strong>Complejidad</strong></td>
+<td>Media</td>
+</tr>
+<tr>
+<td><strong>Uso ideal</strong></td>
+<td>Sistemas académicos</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Ejemplos:</strong></p>
+<ul>
+<li>THE (histórico)</li>
+<li>VAX/VMS</li>
+<li>Windows (híbrido)</li>
+</ul>
+</div>
+<div style="text-align: center;">
+<h3 id="%F0%9F%A7%A9-microkernel-1"><img class="emoji" draggable="false" alt="🧩" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f9e9.svg" data-marp-twemoji=""/> Microkernel</h3>
+<table>
+<thead>
+<tr>
+<th>Criterio</th>
+<th>Calificación</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Rendimiento</strong></td>
+<td><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/></td>
+</tr>
+<tr>
+<td><strong>Seguridad</strong></td>
+<td><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/></td>
+</tr>
+<tr>
+<td><strong>Mantenibilidad</strong></td>
+<td><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/></td>
+</tr>
+<tr>
+<td><strong>Complejidad</strong></td>
+<td>Alta</td>
+</tr>
+<tr>
+<td><strong>Uso ideal</strong></td>
+<td>Sistemas críticos</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Ejemplos:</strong></p>
+<ul>
+<li>MINIX 3 (educación)</li>
+<li>QNX (automotriz)</li>
+<li>GNU Hurd (experimental)</li>
+</ul>
+</div>
+</div>
+<div style="text-align: center; margin-top: 20px; padding: 15px; background: #f0f9ff; border-radius: 10px;">
+<p><strong>Insight:</strong> Linux es técnicamente monolítico pero usa módulos cargables, obteniendo lo mejor de ambos mundos.</p>
+</div>
 <footer>UNAULA - Ingeniería Informática - 2026-I</footer>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="17" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 1" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="17" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 1;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="25">
 <header>IF0099 - Sistemas Operativos I | Unidad 1</header>
 <h2 id="4-system-calls-llamadas-al-sistema">4. System Calls (Llamadas al Sistema)</h2>
 <h3 id="la-puerta-entre-usuario-y-kernel">La puerta entre usuario y kernel</h3>
-<pre is="marp-pre" data-auto-scaling="downscale-only"><code>┌─────────────────────────────────────────────┐
-│  <img class="emoji" draggable="false" alt="👤" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f464.svg" data-marp-twemoji=""/> USUARIO               <img class="emoji" draggable="false" alt="🔧" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f527.svg" data-marp-twemoji=""/> KERNEL          │
-│                                              │
-│  printf(&quot;Hola&quot;)                              │
-│      │                                       │
-│      ▼                                       │
-│  libc: write()                              │
-│      │                                       │
-│      ▼                                       │
-│  ┌─────────┐          ┌─────────────────┐  │
-│  │  TRAP   │ ────────► │ sys_write()     │  │
-│  │ (syscall)│          │ en kernel       │  │
-│  └─────────┘          └─────────────────┘  │
-│                              │              │
-│                              ▼              │
-│                         🖴 DRIVER DISCO    │
-└─────────────────────────────────────────────┘
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+<div>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code>USUARIO          KERNEL
+    │                │
+    │ printf(&quot;hola&quot;)  │
+    ▼                │
+┌─────────┐          │
+│ libc    │          │
+│ write() │          │
+└────┬────┘          │
+     │               │
+     │ syscall       │
+     ▼               │
+┌─────────┐          │
+│  TRAP   │─────────►│
+│ (cambio │          │
+│  modo)  │          │
+         ───────────►│
+                    ▼
+         ◄──────────│
+     │              │ sys_write()
+     ▼              │
+┌─────────┐         │
+│ libc    │         │
+└────┬────┘         │
+     │              │
+     ▼              │
+   printf()         │
+    │              │
+    ▼              │
+  Usuario         │
 </code></pre>
+<p><strong>TRAP = Transición segura de modo usuario → kernel</strong></p>
+</div>
+<div>
+<h3 id="%C2%BFpor-qu%C3%A9-system-calls">¿Por qué System Calls?</h3>
+<table>
+<thead>
+<tr>
+<th>Razón</th>
+<th>Explicación</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Protección</strong></td>
+<td>Hardware no debe ser accesible directamente</td>
+</tr>
+<tr>
+<td><strong>Abstracción</strong></td>
+<td>No necesitas saber cómo funciona el disco</td>
+</tr>
+<tr>
+<td><strong>Seguridad</strong></td>
+<td>El SO valida cada operación</td>
+</tr>
+<tr>
+<td><strong>Portabilidad</strong></td>
+<td>Mismo código en diferentes hardware</td>
+</tr>
+</tbody>
+</table>
+<h3 id="flujo-complejo">Flujo Complejo</h3>
+<ol>
+<li><strong>Programa</strong> llama función en libc</li>
+<li><strong>libc</strong> prepara parámetros</li>
+<li><strong>TRAP</strong> cambia a modo kernel</li>
+<li><strong>Kernel</strong> valida permisos</li>
+<li><strong>Kernel</strong> ejecuta operación</li>
+<li><strong>RET</strong> retorna resultado</li>
+<li><strong>Programa</strong> continúa</li>
+</ol>
+<p><strong>Todo esto en microsegundos, millones de veces por segundo</strong></p>
+</div>
+</div>
 <footer>UNAULA - Ingeniería Informática - 2026-I</footer>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="18" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 1" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="18" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 1;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="25">
 <header>IF0099 - Sistemas Operativos I | Unidad 1</header>
 <h2 id="system-calls-categor%C3%ADas">System Calls: Categorías</h2>
+<h3 id="tipos-de-operaciones-que-el-kernel-puede-hacer">Tipos de operaciones que el kernel puede hacer</h3>
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+<div>
+<h4 id="%F0%9F%94%84-control-de-procesos"><img class="emoji" draggable="false" alt="🔄" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f504.svg" data-marp-twemoji=""/> Control de Procesos</h4>
 <table>
 <thead>
 <tr>
-<th>Categoría</th>
-<th>Ejemplos</th>
-<th>Qué hace</th>
+<th>System Call</th>
+<th>Propósito</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><strong>Procesos</strong></td>
-<td><code>fork()</code>, <code>exec()</code>, <code>exit()</code></td>
-<td>Crear/terminar</td>
+<td><code>fork()</code></td>
+<td>Crear proceso hijo</td>
 </tr>
 <tr>
-<td><strong>Archivos</strong></td>
-<td><code>open()</code>, <code>read()</code>, <code>write()</code></td>
-<td>Manipular archivos</td>
+<td><code>exec()</code></td>
+<td>Reemplazar programa</td>
 </tr>
 <tr>
-<td><strong>Dispositivos</strong></td>
-<td><code>ioctl()</code>, <code>read()</code></td>
-<td>Controlar hardware</td>
+<td><code>wait()</code></td>
+<td>Esperar hijo</td>
 </tr>
 <tr>
-<td><strong>Info</strong></td>
-<td><code>getpid()</code>, <code>time()</code></td>
-<td>Obtener datos</td>
+<td><code>exit()</code></td>
+<td>Terminar proceso</td>
 </tr>
 <tr>
-<td><strong>Comms</strong></td>
-<td><code>pipe()</code>, <code>socket()</code></td>
-<td>IPC y red</td>
+<td><code>kill()</code></td>
+<td>Enviar señal</td>
 </tr>
 </tbody>
 </table>
+<p><strong>Ejemplo:</strong> Cuando ejecutas <code>ls</code>, bash hace fork() + exec()</p>
+</div>
+<div>
+<h4 id="%F0%9F%93%81-manipulaci%C3%B3n-de-archivos"><img class="emoji" draggable="false" alt="📁" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4c1.svg" data-marp-twemoji=""/> Manipulación de Archivos</h4>
+<table>
+<thead>
+<tr>
+<th>System Call</th>
+<th>Propósito</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>open()</code></td>
+<td>Abrir archivo</td>
+</tr>
+<tr>
+<td><code>read()</code></td>
+<td>Leer datos</td>
+</tr>
+<tr>
+<td><code>write()</code></td>
+<td>Escribir datos</td>
+</tr>
+<tr>
+<td><code>close()</code></td>
+<td>Cerrar archivo</td>
+</tr>
+<tr>
+<td><code>lseek()</code></td>
+<td>Mover posición</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Ejemplo:</strong> <code>cat archivo.txt</code> hace open() + read() + write()</p>
+</div>
+<div>
+<h4 id="%F0%9F%94%8C-control-de-dispositivos"><img class="emoji" draggable="false" alt="🔌" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f50c.svg" data-marp-twemoji=""/> Control de Dispositivos</h4>
+<table>
+<thead>
+<tr>
+<th>System Call</th>
+<th>Propósito</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ioctl()</code></td>
+<td>Control específico</td>
+</tr>
+<tr>
+<td><code>mmap()</code></td>
+<td>Mapear memoria</td>
+</tr>
+<tr>
+<td><code>read()</code></td>
+<td>Leer de dispositivo</td>
+</tr>
+<tr>
+<td><code>write()</code></td>
+<td>Escribir a dispositivo</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Ejemplo:</strong> Configurar velocidad de puerto serie</p>
+</div>
+<div>
+<h4 id="%F0%9F%93%8A-informaci%C3%B3n-del-sistema"><img class="emoji" draggable="false" alt="📊" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4ca.svg" data-marp-twemoji=""/> Información del Sistema</h4>
+<table>
+<thead>
+<tr>
+<th>System Call</th>
+<th>Propósito</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>getpid()</code></td>
+<td>ID del proceso</td>
+</tr>
+<tr>
+<td><code>getuid()</code></td>
+<td>ID del usuario</td>
+</tr>
+<tr>
+<td><code>time()</code></td>
+<td>Hora actual</td>
+</tr>
+<tr>
+<td><code>gettimeofday()</code></td>
+<td>Hora precisa</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Ejemplo:</strong> <code>ps</code> usa getpid() para listar procesos</p>
+</div>
+</div>
+<div style="text-align: center; margin-top: 20px; padding: 15px; background: #fef3c7; border-radius: 10px;">
+<p><strong><img class="emoji" draggable="false" alt="💡" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4a1.svg" data-marp-twemoji=""/> Las system calls son la API del kernel. Todo lo que hace un programa pasa por ellas.</strong></p>
+</div>
 <footer>UNAULA - Ingeniería Informática - 2026-I</footer>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="19" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 1" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="19" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 1;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="25">
 <header>IF0099 - Sistemas Operativos I | Unidad 1</header>
 <h2 id="5-el-so-como-interfaz">5. El SO como Interfaz</h2>
-<h3 id="dos-formas-de-interactuar">Dos formas de interactuar</h3>
-<pre is="marp-pre" data-auto-scaling="downscale-only"><code>       <img class="emoji" draggable="false" alt="👤" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f464.svg" data-marp-twemoji=""/> USUARIO
-          │
-     ┌────┴────┐
-     │         │
-     ▼         ▼
-┌─────────┐ ┌─────────┐
-│   GUI   │ │   CLI   │
-│ Gráfica │ │Comandos │
-└─────────┘ └─────────┘
- Windows    bash/PowerShell
- macOS      Terminal
- GNOME      zsh
+<h3 id="dos-formas-de-interactuar-con-el-computador">Dos formas de interactuar con el computador</h3>
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px;">
+<div style="text-align: center;">
+<h3 id="%F0%9F%96%BC%EF%B8%8F-gui-interfaz-gr%C3%A1fica"><img class="emoji" draggable="false" alt="🖼️" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f5bc.svg" data-marp-twemoji=""/> GUI (Interfaz Gráfica)</h3>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code>┌──────────────────────────────────┐
+│  [<img class="emoji" draggable="false" alt="📁" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4c1.svg" data-marp-twemoji=""/>] [<img class="emoji" draggable="false" alt="📝" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4dd.svg" data-marp-twemoji=""/>] [<img class="emoji" draggable="false" alt="⚙" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2699.svg" data-marp-twemoji=""/>]         [<img class="emoji" draggable="false" alt="🔊" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f50a.svg" data-marp-twemoji=""/>] [<img class="emoji" draggable="false" alt="🔋" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f50b.svg" data-marp-twemoji=""/>] │
+├──────────────────────────────────┤
+│                                  │
+│     Iconos de programas          │
+│     <img class="emoji" draggable="false" alt="📁" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4c1.svg" data-marp-twemoji=""/>  <img class="emoji" draggable="false" alt="📄" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4c4.svg" data-marp-twemoji=""/>  <img class="emoji" draggable="false" alt="🌐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f310.svg" data-marp-twemoji=""/>  <img class="emoji" draggable="false" alt="📮" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4ee.svg" data-marp-twemoji=""/>                │
+│                                  │
+│     Ventanas, menúes             │
+│     Botones, cuadros             │
+│                                  │
+└──────────────────────────────────┘
 </code></pre>
+<h4 id="caracter%C3%ADsticas">Características</h4>
+<table>
+<thead>
+<tr>
+<th>Ventaja</th>
+<th>Desventaja</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img class="emoji" draggable="false" alt="✅" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2705.svg" data-marp-twemoji=""/> Fácil de usar</td>
+<td><img class="emoji" draggable="false" alt="❌" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/274c.svg" data-marp-twemoji=""/> Usa más recursos</td>
+</tr>
+<tr>
+<td><img class="emoji" draggable="false" alt="✅" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2705.svg" data-marp-twemoji=""/> Intuitivo</td>
+<td><img class="emoji" draggable="false" alt="❌" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/274c.svg" data-marp-twemoji=""/> Difícil de automatizar</td>
+</tr>
+<tr>
+<td><img class="emoji" draggable="false" alt="✅" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2705.svg" data-marp-twemoji=""/> Visual</td>
+<td><img class="emoji" draggable="false" alt="❌" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/274c.svg" data-marp-twemoji=""/> Menos potente</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Ejemplos:</strong> Windows, macOS GNOME, KDE</p>
+</div>
+<div style="text-align: center;">
+<h3 id="%E2%8C%A8%EF%B8%8F-cli-interfaz-de-comandos"><img class="emoji" draggable="false" alt="⌨️" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2328.svg" data-marp-twemoji=""/> CLI (Interfaz de Comandos)</h3>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code>usuario@so:~$ ls -la
+drwxr-xr-x  5 usuario  512 Jan 28 10:30 .
+drwxr-xr-x  3 root     256 Jan 27 09:00 ..
+-rw-r--r--  1 usuario 1024 Jan 28 10:30 datos.txt
+-rwxr-xr-x  1 usuario  8192 Jan 27 12:00 script.sh
+
+usuario@so:~$ cat datos.txt | grep error &gt; log.txt
+
+usuario@so:~$
+</code></pre>
+<h4 id="caracter%C3%ADsticas-1">Características</h4>
+<table>
+<thead>
+<tr>
+<th>Ventaja</th>
+<th>Desventaja</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img class="emoji" draggable="false" alt="✅" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2705.svg" data-marp-twemoji=""/> Muy potente</td>
+<td><img class="emoji" draggable="false" alt="❌" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/274c.svg" data-marp-twemoji=""/> Curva de aprendizaje</td>
+</tr>
+<tr>
+<td><img class="emoji" draggable="false" alt="✅" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2705.svg" data-marp-twemoji=""/> Automatizable</td>
+<td><img class="emoji" draggable="false" alt="❌" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/274c.svg" data-marp-twemoji=""/> Memorizar comandos</td>
+</tr>
+<tr>
+<td><img class="emoji" draggable="false" alt="✅" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2705.svg" data-marp-twemoji=""/> Usa pocos recursos</td>
+<td><img class="emoji" draggable="false" alt="❌" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/274c.svg" data-marp-twemoji=""/> No es visual</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Ejemplos:</strong> bash, zsh, PowerShell, cmd</p>
+</div>
+</div>
+<div style="text-align: center; margin-top: 20px; padding: 15px; background: #ecfdf5; border-radius: 10px;">
+<p><strong><img class="emoji" draggable="false" alt="💡" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4a1.svg" data-marp-twemoji=""/> Los administradores de sistemas prefieren CLI. Los usuarios caseros prefieren GUI. Ambas usan el mismo kernel.</strong></p>
+</div>
 <footer>UNAULA - Ingeniería Informática - 2026-I</footer>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="20" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 1" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="20" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 1;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="25">
 <header>IF0099 - Sistemas Operativos I | Unidad 1</header>
-<h2 id="gui-vs-cli">GUI vs CLI</h2>
+<h2 id="gui-vs-cli-comparaci%C3%B3n-detallada">GUI vs CLI: Comparación Detallada</h2>
+<h3 id="%C2%BFcu%C3%A1l-usar-y-cu%C3%A1ndo">¿Cuál usar y cuándo?</h3>
+<div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px;">
+<div>
+<h3 id="%F0%9F%91%A5-uso-cotidiano"><img class="emoji" draggable="false" alt="👥" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f465.svg" data-marp-twemoji=""/> Uso Cotidiano</h3>
 <table>
 <thead>
 <tr>
 <th>Aspecto</th>
+<th><img class="emoji" draggable="false" alt="🏆" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f3c6.svg" data-marp-twemoji=""/> Ganador</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Navegar web</td>
+<td>GUI</td>
+</tr>
+<tr>
+<td>Ver videos</td>
+<td>GUI</td>
+</tr>
+<tr>
+<td>Ofimática</td>
+<td>GUI</td>
+</tr>
+<tr>
+<td>Juegos</td>
+<td>GUI</td>
+</tr>
+<tr>
+<td>Edición fotos</td>
+<td>GUI</td>
+</tr>
+</tbody>
+</table>
+<p><strong>La GUI es mejor para tareas visuales e interactivas</strong></p>
+</div>
+<div>
+<h3 id="%F0%9F%94%A7-desarrollo-y-administraci%C3%B3n"><img class="emoji" draggable="false" alt="🔧" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f527.svg" data-marp-twemoji=""/> Desarrollo y Administración</h3>
+<table>
+<thead>
+<tr>
+<th>Aspecto</th>
+<th><img class="emoji" draggable="false" alt="🏆" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f3c6.svg" data-marp-twemoji=""/> Ganador</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Servidores</td>
+<td>CLI</td>
+</tr>
+<tr>
+<td>Scripting</td>
+<td>CLI</td>
+</tr>
+<tr>
+<td>Automatización</td>
+<td>CLI</td>
+</tr>
+<tr>
+<td>Debug remoto</td>
+<td>CLI</td>
+</tr>
+<tr>
+<td>Batch processing</td>
+<td>CLI</td>
+</tr>
+</tbody>
+</table>
+<p><strong>La CLI es mejor para automatización y administración</strong></p>
+</div>
+<div>
+<h3 id="%F0%9F%93%8A-comparativa-num%C3%A9rica"><img class="emoji" draggable="false" alt="📊" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4ca.svg" data-marp-twemoji=""/> Comparativa Numérica</h3>
+<table>
+<thead>
+<tr>
+<th>Métrica</th>
 <th>GUI</th>
 <th>CLI</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Facilidad</td>
-<td><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/></td>
-<td><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/></td>
+<td>Uso RAM</td>
+<td>~500MB</td>
+<td>~5MB</td>
+</tr>
+<tr>
+<td>Tiempo startup</td>
+<td>~10s</td>
+<td>~0.1s</td>
 </tr>
 <tr>
 <td>Potencia</td>
-<td><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/></td>
-<td><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/></td>
+<td>60%</td>
+<td>100%</td>
 </tr>
 <tr>
-<td>Automatización</td>
-<td><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/></td>
-<td><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/></td>
+<td>Facilidad inicio</td>
+<td>95%</td>
+<td>20%</td>
 </tr>
 <tr>
-<td>Recursos</td>
-<td>Alto</td>
-<td>Bajo</td>
-</tr>
-<tr>
-<td>Servidores</td>
-<td>Raro</td>
-<td><strong>Estándar</strong></td>
+<td>Automatizable</td>
+<td>10%</td>
+<td>100%</td>
 </tr>
 </tbody>
 </table>
+<p><strong>CLI = eficiencia máxima, GUI = accesibilidad máxima</strong></p>
+</div>
+</div>
+<div style="text-align: center; margin-top: 20px; padding: 15px; background: #eff6ff; border-radius: 10px;">
+<p><strong><img class="emoji" draggable="false" alt="💡" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4a1.svg" data-marp-twemoji=""/> Insight:</strong> La mayoría de servidores Linux NO tienen GUI instalada. ¿Por qué? Los servidores se administran remotamente vía SSH (CLI).</p>
+</div>
 <footer>UNAULA - Ingeniería Informática - 2026-I</footer>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="21" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 1" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="21" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 1;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="25">
 <header>IF0099 - Sistemas Operativos I | Unidad 1</header>
-<h2 id="6-sistemas-operativos-actuales">6. Sistemas Operativos Actuales</h2>
-<h3 id="dominio-por-plataforma">Dominio por plataforma</h3>
-<pre is="marp-pre" data-auto-scaling="downscale-only"><code>┌─────────────────┐ ┌─────────────────┐ ┌─────────────────┐
-│   ESCRITORIO     │ │    SERVIDORES    │ │     MÓVILES      │
-│   Windows 70%    │ │    Linux 96%     │ │   Android 71%    │
-│   macOS   16%    │ │    Windows 4%    │ │   iOS     28%    │
-│   Linux    4%    │ │                  │ │                  │
-└─────────────────┘ └─────────────────┘ └─────────────────┘
+<h2 id="6-sistemas-operativos-actuales-2026">6. Sistemas Operativos Actuales (2026)</h2>
+<h3 id="el-panorama-de-los-sistemas-operativos-por-plataforma">El panorama de los sistemas operativos por plataforma</h3>
+<div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px;">
+<div style="text-align: center; padding: 15px; border: 3px solid #3b82f6; border-radius: 10px;">
+<h3 id="%F0%9F%92%BB-escritorio"><img class="emoji" draggable="false" alt="💻" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4bb.svg" data-marp-twemoji=""/> Escritorio</h3>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code>Windows ████████████████  70%
+macOS   ████████████  16%
+Linux   ████   4%
+Otros   ████   10%
 </code></pre>
-<p><strong>Insight:</strong> Linux domina servidores pero no escritorios. ¿Por qué?</p>
+<h4 id="windows-microsoft">Windows (Microsoft)</h4>
+<ul>
+<li><strong>Líder absoluto</strong> en escritorio corporativo</li>
+<li>Office, SAP, Adobe → ecosistema completo</li>
+<li><strong>Hardware兼容:</strong> funciona con cualquier PC</li>
+<li>Gaming → DirectX</li>
+</ul>
+<h4 id="macos-apple">macOS (Apple)</h4>
+<ul>
+<li><strong>Favorito</strong> de creativos (video, música, diseño)</li>
+<li>Ecosistema Apple integrado (iPhone, iPad, Watch)</li>
+<li>Desarrollo iOS requiere Mac</li>
+</ul>
+<h4 id="linux-escritorio">Linux (Escritorio)</h4>
+<ul>
+<li>Minoría pero creciendo</li>
+<li>Favorito de desarrolladores</li>
+<li>Distribuciones: Ubuntu, Mint, Fedora</li>
+</ul>
+</div>
+<div style="text-align: center; padding: 15px; border: 3px solid #10b981; border-radius: 10px;">
+<h3 id="%F0%9F%96%A5%EF%B8%8F-servidores"><img class="emoji" draggable="false" alt="🖥️" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f5a5.svg" data-marp-twemoji=""/> Servidores</h3>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code>Linux ████████████████████████████████  96%
+Windows ████   4%
+Otros   █   1%
+</code></pre>
+<h4 id="linux-el-rey-indiscutible">Linux (El rey indiscutible)</h4>
+<ul>
+<li><strong>96% de servidores web</strong> (Netcraft, 2026)</li>
+<li><strong>100% de supercomputadoras</strong> (Top 500)</li>
+<li>Gratis, estable, uptime de años</li>
+<li>Docker, Kubernetes → stack cloud native</li>
+</ul>
+<h4 id="windows-server">Windows Server</h4>
+<ul>
+<li>4% en empresas Microsoft</li>
+<li>Active Directory, Exchange, SharePoint</li>
+</ul>
+<p><strong>¿Por qué Linux domina servidores?</strong></p>
+<ul>
+<li>Gratis (sin licenciamiento)</li>
+<li>Sin GUI ahorra RAM</li>
+<li>Scripting potente (bash)</li>
+<li>Seguridad por diseño</li>
+</ul>
+</div>
+<div style="text-align: center; padding: 15px; border: 3px solid #f59e0b; border-radius: 10px;">
+<h3 id="%F0%9F%93%B1-m%C3%B3viles"><img class="emoji" draggable="false" alt="📱" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4f1.svg" data-marp-twemoji=""/> Móviles</h3>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code>Android ████████████████████████████████  71%
+iOS     ████████████████████████  28%
+Otros   █   1%
+</code></pre>
+<h4 id="android-google">Android (Google)</h4>
+<ul>
+<li><strong>71% del mercado móvil mundial</strong></li>
+<li>Código abierto (proyecto AOSP)</li>
+<li>Ecosistema fragmentado (Samsung, Xiaomi, etc.)</li>
+</ul>
+<h4 id="ios-apple">iOS (Apple)</h4>
+<ul>
+<li><strong>28% del mercado</strong> pero <strong>50% de ingresos</strong></li>
+<li>Exclusivo hardware Apple</li>
+<li>Usuarios con mayor gasto promedio</li>
+</ul>
+<p><strong>Insight:</strong> En móvil, Android domina en unidades, iOS domina en ganancias.</p>
+</div>
+</div>
 <footer>UNAULA - Ingeniería Informática - 2026-I</footer>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="22" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 1" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="22" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 1;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="25">
 <header>IF0099 - Sistemas Operativos I | Unidad 1</header>
 <h2 id="%C2%BFpor-qu%C3%A9-cada-so-domina-su-nicho">¿Por qué cada SO domina su nicho?</h2>
-<h3 id="windows-%F0%9F%91%94-escritorio-corporativo">Windows: <img class="emoji" draggable="false" alt="👔" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f454.svg" data-marp-twemoji=""/> Escritorio corporativo</h3>
+<h3 id="an%C3%A1lisis-de-las-fortalezas-competitivas">Análisis de las fortalezas competitivas</h3>
+<div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px;">
+<div>
+<h3 id="%F0%9F%91%94-windows-en-escritorio"><img class="emoji" draggable="false" alt="👔" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f454.svg" data-marp-twemoji=""/> Windows en Escritorio</h3>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code>┌──────────────────────────┐
+│  FACTORES DE ÉXITO       │
+├──────────────────────────┤
+│ <img class="emoji" draggable="false" alt="✅" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2705.svg" data-marp-twemoji=""/> Compatible con todo   │
+│ <img class="emoji" draggable="false" alt="✅" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2705.svg" data-marp-twemoji=""/> Office indispensable   │
+│ <img class="emoji" draggable="false" alt="✅" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2705.svg" data-marp-twemoji=""/> Soporte mundial        │
+│ <img class="emoji" draggable="false" alt="✅" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2705.svg" data-marp-twemoji=""/> Familiaridad           │
+│ <img class="emoji" draggable="false" alt="✅" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2705.svg" data-marp-twemoji=""/> Gaming (DirectX 12)    │
+│ <img class="emoji" draggable="false" alt="✅" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2705.svg" data-marp-twemoji=""/> Hardware variado       │
+└──────────────────────────┘
+</code></pre>
+<h4 id="efecto-de-red">Efecto de Red</h4>
 <ul>
-<li>Office, SAP, Adobe</li>
-<li>Soporte global</li>
-<li>Familiar para usuarios</li>
+<li><strong>Desarrolladores</strong> → Windows por mercado</li>
+<li><strong>Usuarios</strong> → Windows por software</li>
+<li><strong>Empresas</strong> → Windows por compatibilidad</li>
 </ul>
-<h3 id="linux-%F0%9F%96%A5%EF%B8%8F-servidores">Linux: <img class="emoji" draggable="false" alt="🖥️" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f5a5.svg" data-marp-twemoji=""/> Servidores</h3>
+<p><strong>Círculo virtuoso:</strong> más usuarios → más software → más usuarios</p>
+</div>
+<div>
+<h3 id="%F0%9F%90%A7-linux-en-servidores"><img class="emoji" draggable="false" alt="🐧" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f427.svg" data-marp-twemoji=""/> Linux en Servidores</h3>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code>┌──────────────────────────┐
+│  FACTORES DE ÉXITO       │
+├──────────────────────────┤
+│ <img class="emoji" draggable="false" alt="✅" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2705.svg" data-marp-twemoji=""/> Gratis (sin licencia)  │
+│ <img class="emoji" draggable="false" alt="✅" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2705.svg" data-marp-twemoji=""/> Estabilidad extrema    │
+│ <img class="emoji" draggable="false" alt="✅" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2705.svg" data-marp-twemoji=""/> Scripting superior     │
+│ <img class="emoji" draggable="false" alt="✅" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2705.svg" data-marp-twemoji=""/> Seguridad por diseño   │
+│ <img class="emoji" draggable="false" alt="✅" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2705.svg" data-marp-twemoji=""/> Comunidad activa       │
+│ <img class="emoji" draggable="false" alt="✅" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2705.svg" data-marp-twemoji=""/> Cloud-native stack     │
+└──────────────────────────┘
+</code></pre>
+<h4 id="dominio-absoluto">Dominio Absoluto</h4>
 <ul>
-<li>Gratis y estable</li>
-<li>Uptime de años</li>
-<li>96% de servidores web</li>
+<li><strong>Internet corre Linux:</strong> Google, Facebook, Amazon</li>
+<li><strong>Supercomputadoras:</strong> 100% Top 500</li>
+<li><strong>IoT y Edge:</strong> Raspberry Pi, routers</li>
 </ul>
-<h3 id="macos-%F0%9F%8E%A8-creativos">macOS: <img class="emoji" draggable="false" alt="🎨" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f3a8.svg" data-marp-twemoji=""/> Creativos</h3>
+<p><strong>Sin Linux, internet NO funcionaría.</strong></p>
+</div>
+<div>
+<h3 id="%F0%9F%8D%8E-macos-en-creativos"><img class="emoji" draggable="false" alt="🍎" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f34e.svg" data-marp-twemoji=""/> macOS en Creativos</h3>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code>┌──────────────────────────┐
+│  FACTORES DE ÉXITO       │
+├──────────────────────────┤
+│ <img class="emoji" draggable="false" alt="✅" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2705.svg" data-marp-twemoji=""/> Hardware premium       │
+│ <img class="emoji" draggable="false" alt="✅" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2705.svg" data-marp-twemoji=""/> Software creativo      │
+│ <img class="emoji" draggable="false" alt="✅" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2705.svg" data-marp-twemoji=""/> Ecosistema integrado   │
+│ <img class="emoji" draggable="false" alt="✅" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2705.svg" data-marp-twemoji=""/> Experiencia usuario    │
+│ <img class="emoji" draggable="false" alt="✅" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2705.svg" data-marp-twemoji=""/> Desarrollo iOS         │
+│ <img class="emoji" draggable="false" alt="✅" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2705.svg" data-marp-twemoji=""/> Unix underneath       │
+└──────────────────────────┘
+</code></pre>
+<h4 id="nicho-premium">Nicho Premium</h4>
 <ul>
-<li>Video, música, diseño</li>
-<li>Desarrollo iOS</li>
-<li>Ecosistema Apple</li>
+<li><strong>Video profesional:</strong> Final Cut Pro</li>
+<li><strong>Diseño gráfico:</strong> Adobe Suite optimizado</li>
+<li><strong>Música:</strong> Logic Pro</li>
+<li><strong>Desarrollo móvil:</strong> Xcode requerido</li>
 </ul>
+<p><strong>Diseño → Mac. Oficina → Windows. Servidores → Linux.</strong></p>
+</div>
+</div>
+<div style="text-align: center; margin-top: 20px; padding: 15px; background: #f0f9ff; border-radius: 10px;">
+<p><strong><img class="emoji" draggable="false" alt="🎯" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f3af.svg" data-marp-twemoji=""/> Lección:</strong> No existe &quot;el mejor&quot; SO. Cada uno domina donde resuelve mejor un problema específico.</p>
+</div>
 <footer>UNAULA - Ingeniería Informática - 2026-I</footer>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="23" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 1" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="23" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 1;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="25">
 <header>IF0099 - Sistemas Operativos I | Unidad 1</header>
 <h2 id="7-actividad-pr%C3%A1ctica">7. Actividad Práctica</h2>
+<h3 id="explorando-tu-sistema-operativo-5-min">Explorando tu Sistema Operativo (5 min)</h3>
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+<div>
 <h3 id="en-parejas-investiguen">En parejas, investiguen:</h3>
+<h4 id="%F0%9F%AA%9F-windows"><img class="emoji" draggable="false" alt="🪟" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1fa9f.svg" data-marp-twemoji=""/> Windows</h4>
 <table>
 <thead>
 <tr>
 <th>Tarea</th>
-<th>Instrucciones</th>
+<th>Comando/Acción</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><strong><img class="emoji" draggable="false" alt="1️⃣" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/31-20e3.svg" data-marp-twemoji=""/> Ver procesos</strong></td>
-<td><code>Ctrl+Shift+Esc</code> (Windows) o <code>top</code> (Linux)</td>
+<td><strong>Ver procesos</strong></td>
+<td><code>Ctrl+Shift+Esc</code> → Task Manager</td>
 </tr>
 <tr>
-<td><strong><img class="emoji" draggable="false" alt="2️⃣" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/32-20e3.svg" data-marp-twemoji=""/> Ver memoria</strong></td>
-<td>Pestaña &quot;Rendimiento&quot; o <code>free -h</code></td>
+<td><strong>Ver memoria</strong></td>
+<td>Pestaña &quot;Rendimiento&quot;</td>
 </tr>
 <tr>
-<td><strong><img class="emoji" draggable="false" alt="3️⃣" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/33-20e3.svg" data-marp-twemoji=""/> Discutir</strong></td>
-<td>¿Por qué Linux en servidores?</td>
+<td><strong>Ver archivos abiertos</strong></td>
+<td><code>Ctrl+Shift+Esc</code> → Pestaña &quot;Detalles&quot;</td>
+</tr>
+<tr>
+<td><strong>Terminal</strong></td>
+<td><code>Windows + X</code> → Windows PowerShell</td>
 </tr>
 </tbody>
 </table>
+<h4 id="%F0%9F%90%A7-linux--macos"><img class="emoji" draggable="false" alt="🐧" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f427.svg" data-marp-twemoji=""/> Linux / macOS</h4>
+<table>
+<thead>
+<tr>
+<th>Tarea</th>
+<th>Comando/Acción</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Ver procesos</strong></td>
+<td><code>top</code> o <code>htop</code></td>
+</tr>
+<tr>
+<td><strong>Ver memoria</strong></td>
+<td><code>free -h</code> (Linux) o <code>vm_stat</code> (macOS)</td>
+</tr>
+<tr>
+<td><strong>Ver archivos abiertos</strong></td>
+<td><code>lsof</code></td>
+</tr>
+<tr>
+<td><strong>Terminal</strong></td>
+<td><code>Ctrl+Alt+T</code> o buscar &quot;Terminal&quot;</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div>
+<h3 id="preguntas-para-discutir">Preguntas para discutir:</h3>
+<ol>
+<li>
+<p><strong>¿Cuántos procesos</strong> están corriendo?</p>
+<ul>
+<li>¿Por qué hay tantos que no reconoces?</li>
+</ul>
+</li>
+<li>
+<p><strong>¿Cuánta memoria</strong> está en uso?</p>
+<ul>
+<li>¿Qué pasa si se llena?</li>
+</ul>
+</li>
+<li>
+<p><strong>¿Qué proceso</strong> consume más CPU?</p>
+<ul>
+<li>¿Es esperado o sospechoso?</li>
+</ul>
+</li>
+<li>
+<p><strong>¿Por qué Linux</strong> domina servidores?</p>
+<ul>
+<li>Basado en lo que observaste</li>
+</ul>
+</li>
+</ol>
+<h3 id="%F0%9F%8E%AF-objetivo"><img class="emoji" draggable="false" alt="🎯" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f3af.svg" data-marp-twemoji=""/> Objetivo</h3>
+<p>Conectar la teoría con la realidad: <strong>tu computador está ejecutando cientos de procesos simultáneamente</strong>, coordinados por el SO.</p>
+</div>
+</div>
+<div style="text-align: center; margin-top: 20px; padding: 15px; background: #fef3c7; border-radius: 10px;">
+<p><strong><img class="emoji" draggable="false" alt="💡" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4a1.svg" data-marp-twemoji=""/> Compartan sus descubrimientos con la clase. ¿Algo les sorprendió?</strong></p>
+</div>
 <footer>UNAULA - Ingeniería Informática - 2026-I</footer>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="24" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 1" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="24" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 1;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="25">
 <header>IF0099 - Sistemas Operativos I | Unidad 1</header>
-<h2 id="resumen">Resumen</h2>
+<h2 id="resumen-de-la-clase">Resumen de la Clase</h2>
+<h3 id="lo-que-aprendimos-hoy">Lo que aprendimos hoy</h3>
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+<div>
+<h3 id="%F0%9F%93%9A-conceptos-clave"><img class="emoji" draggable="false" alt="📚" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4da.svg" data-marp-twemoji=""/> Conceptos Clave</h3>
 <table>
 <thead>
 <tr>
 <th>Concepto</th>
-<th>Clave</th>
+<th>Definición Corta</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><strong>SO</strong> = Intermediario usuario <img class="emoji" draggable="false" alt="↔" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2194.svg" data-marp-twemoji=""/> hardware</td>
-<td></td>
+<td><strong>Sistema Operativo</strong></td>
+<td>Software intermediario entre usuario y hardware</td>
 </tr>
 <tr>
-<td><strong>4 funciones</strong>: Procesos, Memoria, Archivos, E/S</td>
-<td></td>
+<td><strong>Proceso</strong></td>
+<td>Programa en ejecución con sus recursos</td>
 </tr>
 <tr>
-<td><strong>Arquitecturas</strong>: Monolítico, Capas, Microkernel</td>
-<td></td>
+<td><strong>System Call</strong></td>
+<td>Puerta controlada al kernel</td>
 </tr>
 <tr>
-<td><strong>System call</strong> = Puerta al kernel</td>
-<td></td>
+<td><strong>Kernel</strong></td>
+<td>Núcleo del SO, corre en modo privilegiado</td>
 </tr>
 <tr>
-<td><strong>Interfaces</strong>: GUI (fácil) vs CLI (potente)</td>
-<td></td>
+<td><strong>Arquitectura</strong></td>
+<td>Cómo se organiza el SO internamente</td>
 </tr>
 </tbody>
 </table>
+<h3 id="%F0%9F%8F%97%EF%B8%8F-arquitecturas-del-so"><img class="emoji" draggable="false" alt="🏗️" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f3d7.svg" data-marp-twemoji=""/> Arquitecturas del SO</h3>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code>MONOLÍTICO       CAPAS          MICROKERNEL
+┌────────┐       ┌────┐         ┌─┬─┬─┐
+│ Todo   │       │ 5  │         │ │ │ │
+│ junto  │       │ 4  │         │M│I│P│
+│        │       │ 3  │         │e│C│r│
+│ Rápido │       │ 2  │         │m│ │o│
+│        │       │ 1  │         │ │ │c│
+│ Difícil │       │ 0  │         └─┴─┴─┘
+└────────┘       └────┘         Flexible
+                 Seguro        Lento
+</code></pre>
+</div>
+<div>
+<h3 id="%F0%9F%8E%AF-4-funciones-del-so"><img class="emoji" draggable="false" alt="🎯" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f3af.svg" data-marp-twemoji=""/> 4 Funciones del SO</h3>
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+<div style="padding: 8px; background: #dbeafe; border-radius: 8px;">
+<p><strong><img class="emoji" draggable="false" alt="📊" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4ca.svg" data-marp-twemoji=""/> Procesos</strong></p>
+<ul>
+<li>Crear, destruir, scheduling</li>
+<li>Sincronización, comunicación</li>
+</ul>
+</div>
+<div style="padding: 8px; background: #d1fae5; border-radius: 8px;">
+<p><strong><img class="emoji" draggable="false" alt="💾" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4be.svg" data-marp-twemoji=""/> Memoria</strong></p>
+<ul>
+<li>Asignar, proteger, virtual</li>
+<li>Paginación, swapping</li>
+</ul>
+</div>
+<div style="padding: 8px; background: #fef3c7; border-radius: 8px;">
+<p><strong><img class="emoji" draggable="false" alt="📁" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4c1.svg" data-marp-twemoji=""/> Archivos</strong></p>
+<ul>
+<li>Crear, leer, escribir</li>
+<li>Directorios, permisos</li>
+</ul>
+</div>
+<div style="padding: 8px; background: #fee2e2; border-radius: 8px;">
+<p><strong><img class="emoji" draggable="false" alt="🔌" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f50c.svg" data-marp-twemoji=""/> E/S</strong></p>
+<ul>
+<li>Drivers, dispositivos</li>
+<li>Interrupciones, DMA</li>
+</ul>
+</div>
+</div>
+<h3 id="%F0%9F%92%A1-insights-importantes"><img class="emoji" draggable="false" alt="💡" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4a1.svg" data-marp-twemoji=""/> Insights Importantes</h3>
+<table>
+<thead>
+<tr>
+<th>Insight</th>
+<th>Explicación</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SO = abstracción</td>
+<td>Oculta complejidad del hardware</td>
+</tr>
+<tr>
+<td>System calls = API</td>
+<td>Es la interfaz programable del kernel</td>
+</tr>
+<tr>
+<td>Linux domina servidores</td>
+<td>Gratis, estable, sin GUI</td>
+</tr>
+<tr>
+<td>Windows domina escritorio</td>
+<td>Compatible con todo, Office</td>
+</tr>
+<tr>
+<td>Arquitectura importa</td>
+<td>Afecta rendimiento y seguridad</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <footer>UNAULA - Ingeniería Informática - 2026-I</footer>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="25" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 1" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="25" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 1;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="25">
