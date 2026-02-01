@@ -61,3 +61,7 @@ temp-html/
 .temp-html/
 .playwright-mcp/
 temp*
+.temp*
+.temp-html/
+.temp-preview/
+.playwright-mcp/
