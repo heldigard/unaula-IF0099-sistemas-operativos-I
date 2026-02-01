@@ -109,7 +109,10 @@ escribir_cuenta(saldo);         escribir_cuenta(saldo);
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="8" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 4" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="8" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 4;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="34">
 <header>IF0099 - Sistemas Operativos I | Unidad 4</header>
 <h2 id="requisitos-de-la-soluci%C3%B3n">Requisitos de la Solución</h2>
-<h3 id="una-buena-soluci%C3%B3n-debe-garantizar">Una buena solución debe garantizar:</h3>
+<h3 id="una-buena-soluci%C3%B3n-debe-garantizar">Una buena solución debe garantizar</h3>
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+<div>
+<h4 id="%E2%9C%85-los-3-requisitos"><img class="emoji" draggable="false" alt="✅" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2705.svg" data-marp-twemoji=""/> Los 3 requisitos</h4>
 <table>
 <thead>
 <tr>
@@ -132,17 +135,44 @@ escribir_cuenta(saldo);         escribir_cuenta(saldo);
 </tr>
 </tbody>
 </table>
-<pre is="marp-pre" data-auto-scaling="downscale-only"><code>// Estructura general de la solución
-while (true) {
-    ENTRADA_SECCION_CRITICA();   // Solicitar permiso
-    
-    // ... sección crítica ...
-    
-    SALIDA_SECCION_CRITICA();    // Liberar permiso
-    
-    // ... resto del código ...
+<h4 id="%F0%9F%93%9D-estructura-general"><img class="emoji" draggable="false" alt="📝" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4dd.svg" data-marp-twemoji=""/> Estructura general</h4>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-c"><span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>) {
+    ENTRADA_SECCION_CRITICA();   <span class="hljs-comment">// Solicitar permiso</span>
+
+    <span class="hljs-comment">// ... sección crítica ...</span>
+
+    SALIDA_SECCION_CRITICA();    <span class="hljs-comment">// Liberar permiso</span>
+
+    <span class="hljs-comment">// ... resto del código ...</span>
 }
 </code></pre>
+</div>
+<div>
+<h4 id="%F0%9F%8E%AF-%C2%BFpor-qu%C3%A9-son-necesarios"><img class="emoji" draggable="false" alt="🎯" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f3af.svg" data-marp-twemoji=""/> ¿Por qué son necesarios?</h4>
+<p><strong>Exclusión Mutua</strong></p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code>Sin ella:
+Proceso A: saldo = 1000 + 100
+Proceso B: saldo = 1000 - 50
+Resultado: saldo inconsistente
+</code></pre>
+<p><strong>Progreso</strong></p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code>Sin progreso:
+Si un proceso fuera de SC impide
+que otros entren, nadie avanza.
+</code></pre>
+<p><strong>Espera Limitada</strong></p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code>Sin ella:
+Un proceso puede esperar
+indefinidamente (inanición).
+</code></pre>
+<h4 id="%F0%9F%92%A1-soluciones"><img class="emoji" draggable="false" alt="💡" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4a1.svg" data-marp-twemoji=""/> Soluciones</h4>
+<ul>
+<li><strong>Hardware</strong>: TAS, CAS (instrucciones atómicas)</li>
+<li><strong>Software</strong>: Semáforos, Mutex, Monitores</li>
+<li><strong>Lenguaje</strong>: Java synchronized, C# lock</li>
+</ul>
+</div>
+</div>
 <footer>UNAULA - Ingeniería Informática - 2026-I</footer>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="9" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 4" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="9" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 4;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="34">
