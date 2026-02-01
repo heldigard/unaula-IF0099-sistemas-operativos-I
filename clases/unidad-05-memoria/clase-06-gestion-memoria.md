@@ -151,6 +151,11 @@ El SO debe:
 
 ![Jerarquía de Memoria](../../assets/infografias/clase-06-jerarquia-memoria.png)
 
+**¿Qué muestra esta pirámide?**
+- **Arriba**: Memoria más rápida, más cara y de menor capacidad (registros, caché)
+- **Abajo**: Memoria más lenta, más barata y de mayor capacidad (SSD, HDD)
+- **Compromiso**: No podemos tener memoria rápida Y barata Y grande; debe haber equilibrio
+
 ---
 ### Representación ASCII:
                     ▲
@@ -184,6 +189,11 @@ El SO debe:
 ### Traducción de Direcciones con MMU
 
 ![Traducción de Direcciones](../../assets/infografias/clase-06-traduccion-direcciones.png)
+
+**¿Qué es la MMU?**
+- **Memory Management Unit**: Hardware especializado dentro del CPU
+- **Función**: Traduce direcciones "que ve el programa" a direcciones "reales en la RAM"
+- **Beneficio**: Cada proceso cree que tiene toda la memoria para sí solo (aislamiento)
 
 ---
 
@@ -384,7 +394,13 @@ INICIAL:                    DESPUÉS DE LIBERAR B:
 
 ![Tipos de Fragmentación](../../assets/infografias/clase-06-fragmentacion.png)
 
+**¿Por qué ocurre la fragmentación?**
+- **Interna**: Se asigna más memoria de la solicitada (particiones fijas)
+- **Externa**: Procesos cargados y descargados dejan "huecos" entre ellos
+- **Consecuencia**: Memoria disponible pero inutilizable para procesos grandes
+
 ---
+
 | Tipo | Causa | Dónde ocurre |
 | ------ | ------- | -------------- |
 | **Interna** | Proceso no usa toda su partición | Partición fija |

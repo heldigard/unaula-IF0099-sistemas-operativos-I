@@ -7,10 +7,12 @@ footer: 'UNAULA - Ingeniería Informática - 2026-I'
 ---
 
 # Clase 14: Programas, Aplicaciones e Interfaces
+## System Calls, APIs y Comunicación con el Kernel
 
 <style>
 section {
-  font-size: 24px;
+  font-size: 20px;
+  overflow: hidden;
 }
 img {
   max-width: 70% !important;
@@ -19,10 +21,6 @@ img {
   height: auto !important;
   display: block !important;
   margin: 0 auto !important;
-}
-section {
-  font-size: 20px;
-  overflow: hidden;
 }
 section h1 {
   font-size: 1.8em;
@@ -99,21 +97,16 @@ section {
 
 ---
 
-# Clase 14: Programas, Aplicaciones e Interfaces
-
-**IF0099 - Sistemas Operativos I**
-*4° Semestre - Ingeniería Informática*
-
----
-
-## Objetivos
+## Objetivos de la Clase
 
 Al finalizar esta clase, el estudiante será capaz de:
 
-1. **Distinguir** entre llamadas al sistema y APIs de usuario
-2. **Reconocer** interfaces típicas del SO
-3. **Usar** llamadas básicas (archivos y procesos)
-4. **Explicar** el flujo app → kernel
+1. **Distinguir** entre llamadas al sistema (syscalls) y APIs de usuario
+2. **Explicar** el flujo completo: Aplicación → Biblioteca → Kernel → Hardware
+3. **Reconocer** las categorías de system calls en Linux
+4. **Usar** herramientas como `strace` para analizar syscalls
+5. **Comparar** system calls entre Linux y Windows
+6. **Implementar** programas básicos usando syscalls directamente
 
 **Duración:** 90 minutos
 
@@ -121,119 +114,82 @@ Al finalizar esta clase, el estudiante será capaz de:
 
 ## Agenda
 
-1. Interfaz usuario-sistema (15 min)
-2. Llamadas al sistema (25 min)
-3. APIs y bibliotecas (15 min)
-4. Ejemplos Linux/Windows (25 min)
-5. Actividad (10 min)
+1. Interfaz usuario-sistema: La arquitectura de capas (15 min)
+2. System Calls: La puerta al kernel (25 min)
+3. APIs y bibliotecas estándar (15 min)
+4. System Calls en Linux vs Windows (10 min)
+5. Ejemplos prácticos y strace (20 min)
+6. Ejercicio: Implementar micat (5 min)
 
 ---
 
 ## 1. Interfaz Usuario-Sistema
 
+### La Arquitectura de Capas
+
 ```
-Aplicación
-   │  (API)
-Biblioteca estándar
-   │  (syscall)
-Kernel
-   │
-Hardware
-```
-
-- **Syscall:** entrada controlada al kernel
-- **API:** funciones de alto nivel (libc, WinAPI)
-
----
-
-## 2. Llamadas al Sistema (Linux)
-
-| Categoría | Ejemplos |
-| ---------- | ---------- |
-| **Procesos** | fork, exec, wait |
-| **Archivos** | open, read, write, close |
-| **Memoria** | mmap, brk |
-| **E/S** | ioctl |
-
-```c
-int fd = open("datos.txt", O_RDONLY);
-read(fd, buffer, 100);
-close(fd);
+┌─────────────────────────────────────────────────────────┐
+│  NIVEL 4: APLICACIONES DEL USUARIO                      │
+│  (Chrome, VS Code, Juegos, Tu programa)                 │
+├─────────────────────────────────────────────────────────┤
+│  NIVEL 3: BIBLIOTECAS ESTÁNDAR                          │
+│  (libc, WinAPI, Python stdlib)                          │
+│  → Proporcionan funciones de alto nivel                 │
+├─────────────────────────────────────────────────────────┤
+│  NIVEL 2: LLAMADAS AL SISTEMA (SYSCALLS)                │
+│  → Interfaz controlada con el kernel                    │
+├─────────────────────────────────────────────────────────┤
+│  NIVEL 1: KERNEL DEL SISTEMA OPERATIVO                  │
+│  → Gestión de procesos, memoria, archivos, E/S          │
+├─────────────────────────────────────────────────────────┤
+│  NIVEL 0: HARDWARE                                      │
+│  (CPU, Memoria, Disco, Red)                             │
+└─────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## 3. APIs de Usuario
+### Flujo de una Operación
 
-- **libc**: capa estándar en Unix
-- **WinAPI**: CreateProcess, ReadFile, WriteFile
+**Ejemplo: Abrir un archivo en Python**
 
-**Idea:** Las APIs esconden detalles de syscalls
-
----
-
-## 4. Ejemplos Prácticos
-
-### Linux: contar líneas
-```bash
-wc -l archivo.txt
+```python
+# Código de usuario (Nivel 4)
+with open("datos.txt", "r") as f:
+    contenido = f.read()
 ```
 
-### Windows PowerShell:
-```powershell
-Get-Content archivo.txt | Measure-Object -Line
+**¿Qué pasa internamente?**
+
+```
+1. Python open() → llama a C stdio
+2. C fopen() → llama a syscall open()
+3. Syscall open() → kernel verifica permisos
+4. Kernel → solicita acceso al driver de disco
+5. Driver → opera el hardware del disco
+6. Resultado → vuelve por la cadena
 ```
 
----
-
-## Actividad (10 min)
-
-En parejas:
-1. Escribir un programa en C que abra un archivo y muestre su tamaño
-2. Investigar qué syscall usa `ls` para listar directorios
+> **Key insight:** Cada nivel agrega abstracción, pero las syscalls son el único camino al kernel.
 
 ---
 
-## Resumen
-
-| Concepto | Idea clave |
-| ---------- | ------------ |
-| **Syscall** | Puerta de entrada al kernel |
-| **API** | Abstracción de alto nivel |
-| **Interfaz** | App → Biblioteca → Kernel |
-
----
-
-## Próxima Clase
-
-### Clase 15: Repaso Integral
-
-- Conceptos clave del curso
-- Resolución de dudas
-- Preparación examen final
-
-**¡Nos vemos!**
-
-
----
-
-
-## 🔧 System Calls: La Interfaz con el Kernel
+## 2. System Calls: La Puerta al Kernel
 
 ### ¿Qué son las System Calls?
 
-Las **llamadas al sistema** (syscalls) son la única forma en que un programa puede pedirle al kernel que haga algo privilegiado.
+Las **llamadas al sistema** (syscalls) son la **única forma** en que un programa en modo usuario puede solicitar servicios privilegiados al kernel.
 
 ```
 ┌───────────────────────────────────┐
-│      MODO USUARIO                 │
+│      MODO USUARIO (Ring 3)        │
 │                                   │
 │  Aplicación                       │
 │    ↓ (open, read, write...)       │
 │  Biblioteca C (libc)              │
 │    ↓ (syscall wrapper)            │
-├───────────────────────────────────┤ ← CPU cambia a Modo Kernel
-│      MODO KERNEL                  │
+├───────────────────────────────────┤ ← TRAP/INT: Cambio de modo
+│      MODO KERNEL (Ring 0)         │
 │                                   │
 │  Despachador de Syscalls          │
 │    ↓ (tabla de syscalls)          │
@@ -246,277 +202,442 @@ Las **llamadas al sistema** (syscalls) son la única forma en que un programa pu
 ```
 
 ---
-#### ¿Qué pasa internamente?
 
+### ¿Por qué dos modos de operación?
 
-```c
+| Aspecto | Modo Usuario (Ring 3) | Modo Kernel (Ring 0) |
+|---------|----------------------|---------------------|
+| **Quién ejecuta** | Aplicaciones normales | SO y drivers |
+| **Privilegios** | Limitados | Totales |
+| **Acceso a hardware** | ❌ No directo | ✅ Directo |
+| **Memoria accesible** | Solo la asignada | Toda |
+| **Si hay error** | Muere el proceso | Crash del sistema |
+| **Instrucciones** | ADD, MOV, JMP | + IN, OUT, HLT |
 
-int main() {
-    // 1. Llamada a open() en modo usuario
-    int fd = open("/tmp/test.txt", O_RDONLY);
-    
-    if (fd == -1) {
-        perror("Error abriendo archivo");
-        return 1;
-    }
-    
-    printf("Archivo abierto con descriptor: %d\n", fd);
-    close(fd);
-    return 0;
-}
-```
-
-
-**Paso 1:** `open()` en libc prepara parámetros
-```c
-// libc traduce a syscall #2 (en x86-64)
-syscall(__NR_open, "/tmp/test.txt", O_RDONLY, 0);
-```
+**La syscall es la "puerta controlada"** entre estos mundos.
 
 ---
-#### ¿Qué pasa internamente? (Continuación)
 
-**La syscall open() en detalle:**
+### El Mecanismo Paso a Paso
 
-**Parámetros preparados por libc:**
-- `rax`: 2 (número de syscall para open en x86-64)
-- `rdi`: puntero a la cadena "/tmp/test.txt"
-- `rsi`: O_RDONLY (solo lectura)
-- `rdx`: 0 (modo de archivo, no usado en open)
+**Ejemplo: `open("/tmp/test.txt", O_RDONLY)`**
 
-**Paso 2:** Instrucción especial de CPU
+<div style="display: flex; gap: 10px; font-size: 0.85em;">
+
+<div style="flex: 1;">
+
+**Paso 1: Preparación**
+```c
+// libc prepara parámetros
+mov rax, 2        // syscall #2 = open
+mov rdi, path     // "/tmp/test.txt"
+mov rsi, O_RDONLY // flags
+```
+
+</div>
+
+<div style="flex: 1;">
+
+**Paso 2: Ejecutar syscall**
 ```asm
-mov rax, 2              ; Número de syscall (open = 2)
-mov rdi, path           ; Parámetro 1: ruta del archivo
-mov rsi, O_RDONLY       ; Parámetro 2: flags
-syscall                 ; ← CPU cambia a modo kernel
+syscall           // ← CPU cambia a Ring 0
+                  // Hardware guarda contexto
 ```
 
-**Paso 3:** Kernel ejecuta `sys_open()`
+</div>
+
+<div style="flex: 1;">
+
+**Paso 3: Kernel ejecuta**
 ```c
-// En el kernel de Linux:
-asmlinkage long sys_open(const char __user *filename, 
-                         int flags, umode_t mode)
-{
-    // 1. Validar ruta (¿existe?, ¿permisos?)
-    // 2. Buscar inodo en filesystem
-    // 3. Crear entrada en tabla de archivos abiertos
-    // 4. Asignar file descriptor (fd)
-    // 5. Retornar fd al programa
+sys_open() {
+  1. Validar ruta
+  2. Verificar permisos
+  3. Asignar file descriptor
+  4. Retornar fd
 }
 ```
 
----
-#### ¿Qué pasa internamente? (Continuación)
+</div>
 
-**Validaciones que hace el kernel:**
+</div>
 
-1. **Verificar permisos:**
-   - ¿El archivo existe?
-   - ¿El usuario tiene permiso de lectura?
-   - ¿La ruta es válida?
-
-2. **Gestión de recursos:**
-   - ¿Hay file descriptors disponibles?
-   - ¿Hay memoria para estructuras internas?
-
-3. **Actualización de estructuras:**
-   - Crear entrada en la tabla de archivos abiertos
-   - Asignar el file descriptor más bajo disponible
-   - No usar fd 0, 1, 2 (reservados para stdin, stdout, stderr)
-
-**Paso 4:** Retorno a modo usuario
-```c
-// El valor de retorno está en rax
-// libc retorna ese valor como int
-return fd;  // Ej: 3 (0,1,2 están reservados para stdin/out/err)
+**Paso 4: Retorno**
+```asm
+// Kernel pone resultado en rax
+// CPU vuelve a Ring 3
+iret              // Continúa programa
 ```
 
+> ⚠️ **Cambiar de modo cuesta ~100-1000 ciclos de CPU**
+
 ---
 
-### 📋 Syscalls Comunes en Linux
+### Categorías de System Calls (Linux)
 
-| Syscall | Número | Descripción | Ejemplo en C |
-|---------|--------|-------------|--------------|
-| `read` | 0 | Leer de fd | `read(fd, buf, count)` |
-| `write` | 1 | Escribir a fd | `write(fd, "hola", 4)` |
-| `open` | 2 | Abrir archivo | `open("/file", O_RDONLY)` |
-| `close` | 3 | Cerrar fd | `close(fd)` |
-| `stat` | 4 | Info de archivo | `stat("/file", &statbuf)` |
-| `fork` | 57 | Crear proceso | `fork()` |
+| Categoría | Ejemplos | Función |
+|-----------|----------|---------|
+| **Control de procesos** | `fork()`, `exec()`, `exit()`, `wait()` | Crear, terminar procesos |
+| **Manejo de archivos** | `open()`, `read()`, `write()`, `close()` | Operaciones con archivos |
+| **Gestión de memoria** | `mmap()`, `brk()`, `mprotect()` | Asignar/liberar memoria |
+| **Gestión de dispositivos** | `ioctl()`, `read()`, `write()` | Control de hardware |
+| **Información del sistema** | `getpid()`, `time()`, `uname()` | Datos del sistema |
+| **Comunicación** | `pipe()`, `socket()`, `send()`, `recv()` | IPC y red |
+
+---
+
+### Tabla de System Calls Comunes
+
+| Syscall | Número (x86-64) | Descripción | Ejemplo en C |
+|---------|-----------------|-------------|--------------|
+| `read` | 0 | Leer de file descriptor | `read(fd, buf, count)` |
+| `write` | 1 | Escribir a file descriptor | `write(fd, "hola", 4)` |
+| `open` | 2 | Abrir/crear archivo | `open("/file", O_RDONLY)` |
+| `close` | 3 | Cerrar file descriptor | `close(fd)` |
+| `stat` | 4 | Información de archivo | `stat("/file", &buf)` |
+| `fork` | 57 | Crear proceso hijo | `fork()` |
 | `execve` | 59 | Ejecutar programa | `execve("/bin/ls", ...)` |
 | `exit` | 60 | Terminar proceso | `exit(0)` |
 | `getpid` | 39 | Obtener PID | `getpid()` |
-| `socket` | 41 | Crear socket | `socket(AF_INET, ...)` |
+| `socket` | 41 | Crear socket de red | `socket(AF_INET, ...)` |
 
-**Nota:** Los números varían según arquitectura (x86-64 vs ARM).
+> **Nota:** Los números varían según arquitectura (x86-64 vs ARM).
 
 ---
 
-### 🛠️ Herramienta `strace`: Espiar Syscalls
+## 3. APIs y Bibliotecas Estándar
 
-**strace** muestra todas las syscalls que hace un programa.
+### APIs vs System Calls
 
-#### Ejemplo 1: `ls`
+| Aspecto | System Calls | APIs (libc, etc.) |
+|---------|--------------|-------------------|
+| **Nivel** | Bajo (kernel) | Alto (usuario) |
+| **Portabilidad** | Específico del SO | Portátil entre SO |
+| **Usabilidad** | Complejo (ensamblador) | Simple (C/Python) |
+| **Overhead** | Alto (cambio de modo) | Variable |
+| **Funciones** | Primitivas básicas | Funciones compuestas |
+
+**Ejemplo:** `printf()` vs `write()`
+```c
+// printf() - API de alto nivel
+printf("Hola %s, tienes %d mensajes\n", nombre, count);
+// → Formatea string, maneja buffers, luego llama write()
+
+// write() - Syscall directo
+write(1, "Hola\n", 5);  // fd=1 (stdout)
+```
+
+---
+
+### La Biblioteca C (libc)
+
+**Funciones de la libc:**
+- **Wrapper de syscalls:** `open()`, `read()`, `write()`
+- **Gestión de memoria:** `malloc()`, `free()`
+- **Entrada/Salida:** `printf()`, `scanf()`, `fopen()`
+- **Procesos:** `system()`, `popen()`
+- **Strings:** `strcpy()`, `strcmp()`, `strlen()`
+
+**Flujo de printf():**
+```
+printf("Hola")
+  ↓
+formatea string → buffer
+  ↓
+write(1, buffer, len)  // syscall real
+  ↓
+syscall instruction
+  ↓
+kernel escribe en terminal
+```
+
+---
+
+## 4. System Calls: Linux vs Windows
+
+### Diferencias Arquitectónicas
+
+| Característica | Linux | Windows |
+|----------------|-------|---------|
+| **Estándar** | POSIX | Win32 API |
+| **Syscalls** | Documentadas (~300) | No documentadas oficialmente |
+| **Interfaz** | Directa (syscall) | A través de ntdll.dll |
+| **Números** | Estables por arquitectura | Cambian entre versiones |
+
+### Equivalencia de Operaciones
+
+| Operación | Linux (POSIX) | Windows (Win32) |
+|-----------|---------------|-----------------|
+| Abrir archivo | `open()` | `CreateFile()` |
+| Leer archivo | `read()` | `ReadFile()` |
+| Escribir archivo | `write()` | `WriteFile()` |
+| Crear proceso | `fork()` + `exec()` | `CreateProcess()` |
+| Esperar proceso | `wait()` | `WaitForSingleObject()` |
+| Mapear memoria | `mmap()` | `VirtualAlloc()` + `MapViewOfFile()` |
+| Crear thread | `pthread_create()` | `CreateThread()` |
+
+---
+
+### Ejemplo Comparativo: Crear Proceso
+
+**Linux:**
+```c
+pid_t pid = fork();     // Clonar proceso actual
+if (pid == 0) {
+    // Proceso hijo
+    execl("/bin/ls", "ls", "-l", NULL);
+} else {
+    // Proceso padre
+    wait(NULL);         // Esperar al hijo
+}
+```
+
+**Windows:**
+```c
+STARTUPINFO si = {sizeof(si)};
+PROCESS_INFORMATION pi;
+
+CreateProcess(
+    NULL,               // No module name
+    "cmd /c dir",       // Command line
+    NULL, NULL,         // Security attrs
+    FALSE,              // Inherit handles
+    0, NULL, NULL,      // Flags, env, dir
+    &si, &pi             // Startup info, process info
+);
+
+WaitForSingleObject(pi.hProcess, INFINITE);
+CloseHandle(pi.hProcess);
+```
+
+---
+
+## 5. Ejemplos Prácticos y strace
+
+### La Herramienta `strace`
+
+**strace** intercepta y muestra todas las system calls que realiza un proceso.
+
+**Uso básico:**
+```bash
+strace comando
+strace -c comando      # Contar syscalls
+strace -e open,read ls # Filtrar syscalls
+strace -o salida.txt comando  # Guardar a archivo
+```
+
+---
+
+### Ejemplo 1: Analizando `ls`
 
 ```bash
-strace ls /tmp 2>&1 | head -20
+$ strace ls /tmp 2>&1 | head -20
 ```
 
 **Salida:**
 ```
-execve("/bin/ls", ["ls", "/tmp"], ...) = 0
-brk(NULL)                               = 0x55a8f4b4a000
-openat(AT_FDCWD, "/tmp", O_RDONLY|O_DIRECTORY) = 3
-getdents64(3, /* 15 entries */, 32768) = 480
-write(1, "archivo1.txt  archivo2.txt\n", 28) = 28
-close(3)                                = 0
-exit_group(0)                           = ?
+execve("/bin/ls", ["ls", "/tmp"], ...) = 0  # Ejecutar programa
+brk(NULL)                               = 0x55a8f4b4a000  # Asignar memoria
+openat(AT_FDCWD, "/tmp", O_RDONLY|O_DIRECTORY) = 3  # Abrir directorio
+getdents64(3, /* 15 entries */, 32768)  = 480  # Leer entradas
+write(1, "archivo1.txt  archivo2.txt\n", 28) = 28  # Escribir a stdout
+close(3)                                = 0  # Cerrar fd
+exit_group(0)                           = ?  # Terminar
 ```
 
 **Interpretación:**
-1. `execve`: Ejecuta `/bin/ls`
-2. `openat`: Abre directorio `/tmp` (fd=3)
-3. `getdents64`: Lee entradas del directorio
-4. `write`: Escribe a stdout (fd=1)
-5. `close`: Cierra fd 3
-6. `exit_group`: Termina proceso
+1. `execve`: Carga `/bin/ls`
+2. `brk`: Reserva memoria heap
+3. `openat`: Abre `/tmp` → fd=3
+4. `getdents64`: Lee contenido del directorio
+5. `write`: Escribe resultado a stdout (fd=1)
+6. `close`: Cierra el directorio
+7. `exit_group`: Termina el proceso
 
 ---
 
-#### Ejemplo 2: Programa Propio
+### Ejemplo 2: Contar Syscalls de Python vs C
 
-```bash
-# Compilar programa
-gcc -o test test.c
-
-# Ejecutar con strace
-strace ./test
-```
-
-**Ejercicio:** Escribe un programa que:
-1. Abra un archivo
-2. Lea 10 bytes
-3. Escriba en otro archivo
-4. Cierre ambos
-
-Luego ejecuta con `strace` y cuenta cuántas syscalls hace.
-
----
-
-### 🪟 System Calls en Windows
-
-Windows usa **Native API** (ntdll.dll), no POSIX.
-
-| Linux Syscall | Windows Native API | Descripción |
-|---------------|-------------------|-------------|
-| `open()` | `NtCreateFile()` | Abrir archivo |
-| `read()` | `NtReadFile()` | Leer |
-| `write()` | `NtWriteFile()` | Escribir |
-| `fork()` | ❌ (no existe) | Usar `CreateProcess()` |
-| `getpid()` | `NtGetCurrentProcessId()` | Obtener PID |
-
-**Herramienta equivalente a strace:** **Process Monitor** (de Sysinternals)
-
----
-
-## Ejemplo en C usando Syscalls Directamente
-
+**Programa en C:**
 ```c
 #include <fcntl.h>
 #include <unistd.h>
 
 int main() {
-    // Sin printf - usamos write directo
-    const char msg[] = "Hola desde syscalls\n";
-    
-    // 1. Escribir a stdout (fd=1)
-    write(1, msg, sizeof(msg) - 1);
-    
-    // 2. Crear y escribir archivo
-    int fd = open("/tmp/syscall_test.txt", 
-                  O_WRONLY | O_CREAT | O_TRUNC, 
-                  0644);
-    
-    if (fd != -1) {
-        write(fd, msg, sizeof(msg) - 1);
-        close(fd);
-    }
-    
+    int fd = open("/tmp/test.txt", O_WRONLY|O_CREAT, 0644);
+    write(fd, "Hola\n", 5);
+    close(fd);
     return 0;
 }
 ```
 
-```bash
-gcc -o syscall_test syscall_test.c
-strace -c ./syscall_test
-cat /tmp/syscall_test.txt
-```
-
----
-
-## Comparación: Python vs C
-
-### Python (alto nivel)
-
+**Equivalente en Python:**
 ```python
 with open("/tmp/test.txt", "w") as f:
     f.write("Hola\n")
 ```
 
-**Pregunta:** ¿Cuántas syscalls hace Python vs el programa en C?
-
+**Comparación con strace:**
 ```bash
-strace -c python3 -c "open('/tmp/test.txt','w').write('Hola\n')"
-strace -c ./syscall_test
+# Compilar y contar syscalls de C
+gcc -o test_c test.c
+strace -c ./test_c
+# → ~15 syscalls
+
+# Contar syscalls de Python
+strace -c python3 test.py
+# → ~500+ syscalls (import, inicialización, etc.)
 ```
 
-**Análisis:** Python hace muchas más syscalls (imports, inicialización, etc.).
+> **Conclusión:** Python hace muchas más syscalls debido a la inicialización del intérprete.
 
 ---
 
-## 📝 Ejercicio: Implementar `micat`
+### Ejemplo 3: Analizar un Programa con Error
 
-### Tiempo estimado: 30 minutos
+```c
+// bug.c - Intento de abrir archivo inexistente
+int main() {
+    int fd = open("/noexiste.txt", O_RDONLY);
+    // Sin verificar error!
+    write(fd, "hola", 4);  // fd = -1, ¡error!
+    return 0;
+}
+```
 
-Implementa un programa que replique `cat` usando syscalls directamente:
+```bash
+$ strace ./bug 2>&1 | tail -10
+openat(AT_FDCWD, "/noexiste.txt", O_RDONLY) = -1 ENOENT
+  # ↑ Retorna -1, archivo no existe!
+write(-1, "hola", 4) = -1 EBADF
+  # ↑ Intenta escribir a fd inválido
+exit_group(0) = ?
+```
+
+**Diagnóstico rápido con strace:** El archivo no existe (`ENOENT` = Error NO ENTry).
+
+---
+
+## 6. Ejercicio: Implementar `micat`
+
+### Objetivo
+
+Crear un programa que replique la funcionalidad básica de `cat` usando syscalls directamente.
+
+### Código Base
 
 ```c
 #include <fcntl.h>
 #include <unistd.h>
 
 int main(int argc, char *argv[]) {
+    // Verificar argumentos
     if (argc != 2) {
         const char usage[] = "Uso: micat <archivo>\n";
-        write(2, usage, sizeof(usage) - 1);  // stderr
+        write(2, usage, sizeof(usage) - 1);  // stderr = fd 2
         return 1;
     }
     
+    // Abrir archivo (syscall open)
     int fd = open(argv[1], O_RDONLY);
     if (fd == -1) {
-        const char err[] = "Error: archivo no existe\n";
+        const char err[] = "Error: no se puede abrir el archivo\n";
         write(2, err, sizeof(err) - 1);
         return 1;
     }
     
+    // Leer y escribir en chunks
     char buffer[4096];
     ssize_t bytes;
     
     while ((bytes = read(fd, buffer, sizeof(buffer))) > 0) {
-        write(1, buffer, bytes);  // stdout
+        write(1, buffer, bytes);  // stdout = fd 1
     }
     
+    // Cerrar archivo
     close(fd);
     return 0;
 }
 ```
 
-**Compilar y probar:**
+---
+
+### Instrucciones
+
 ```bash
+# 1. Guardar el código en micat.c
+# 2. Compilar
 gcc -o micat micat.c
+
+# 3. Probar
 ./micat /etc/passwd
+./micat micat.c  # ¡Se lee a sí mismo!
+
+# 4. Analizar con strace
 strace ./micat /etc/passwd
+
+# 5. Contar syscalls
+strace -c ./micat /etc/passwd
+
+# 6. Comparar con cat real
+strace -c cat /etc/passwd
 ```
 
+**Preguntas de reflexión:**
+1. ¿Cuántas syscalls hace tu implementación vs `cat` original?
+2. ¿Qué hace `cat` adicional que tu programa no hace?
+3. ¿Por qué usamos buffer de 4096 bytes?
 
 ---
+
+## Resumen de la Clase
+
+| Concepto | Descripción |
+|----------|-------------|
+| **System Call** | Interfaz controlada al kernel |
+| **Modo Usuario** | Aplicaciones, acceso limitado (Ring 3) |
+| **Modo Kernel** | SO, acceso total (Ring 0) |
+| **API** | Abstracción de alto nivel sobre syscalls |
+| **libc** | Biblioteca estándar de C, wrappers de syscalls |
+| **strace** | Herramienta para observar syscalls |
+
+### Syscalls más importantes:
+- `open()`, `read()`, `write()`, `close()` - Archivos
+- `fork()`, `exec()`, `wait()`, `exit()` - Procesos
+- `mmap()`, `brk()` - Memoria
+- `socket()`, `connect()`, `send()`, `recv()` - Red
+
+---
+
+## Próxima Clase
+
+### Clase 15: Repaso Integral
+
+- Mapa conceptual completo del curso
+- Conexiones entre unidades
+- Resolución de dudas
+- Preparación para el examen final
+
+**¡Nos vemos!**
+
+---
+
+## Recursos y Referencias
+
+### Manuales y Documentación
+```bash
+man 2 open      # Syscalls: sección 2
+man 3 printf    # Funciones de biblioteca: sección 3
+man 2 syscalls  # Lista de syscalls de Linux
+```
+
+### Herramientas Útiles
+- **strace:** Rastrear syscalls (Linux)
+- **Process Monitor:** Equivalente en Windows (Sysinternals)
+- **ltrace:** Rastrear llamadas a bibliotecas
+- **gdb:** Debugger con capacidad de ver syscalls
+
+### Para Profundizar
+- **Libro:** "The Linux Programming Interface" - Michael Kerrisk
+- **Libro:** "Advanced Programming in the UNIX Environment" - Stevens
+- **Repositorio:** `strace` en GitHub (código fuente)

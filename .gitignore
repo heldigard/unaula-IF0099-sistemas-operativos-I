@@ -51,3 +51,9 @@ venv/
 
 # Git backups
 .git.backup/
+
+# Output de Marp (presentaciones HTML generadas)
+output/
+
+# Capturas de Playwright (temporal para revisión visual)
+.playwright-mcp/

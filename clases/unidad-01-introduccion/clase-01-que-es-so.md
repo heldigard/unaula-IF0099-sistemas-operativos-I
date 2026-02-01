@@ -966,8 +966,6 @@ ESCRITORIO/LAPTOP          SERVIDORES WEB          MÓVILES
 
 ---
 
----
-
 ## ¿Por qué Linux en este curso?
 
 ### Razones pedagógicas:
