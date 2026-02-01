@@ -22,7 +22,7 @@ section {
 section h1 { font-size: 1.6em; }
 section h2 { font-size: 1.2em; }
 section h3 { font-size: 1.05em; }
-section ul, section ol { font-size: 0.9em; margin-left: 0.5em; }
+section ul, section ol { font-size: 0.95em; margin-left: 0.5em; }
 section li { margin-bottom: 0.25em; }
 section pre { font-size: 0.7em; max-height: 50vh; overflow-y: auto; }
 section code { font-size: 0.85em; }
@@ -45,7 +45,7 @@ section td {
   padding: 0.3em 0.5em;
   border: 1px solid #ddd;
   vertical-align: top;
-  font-size: 0.8em;
+  font-size: 0.9em;
 }
 section tbody tr:nth-child(even) { background-color: #f8f9fa; }
 section tbody tr:hover { background-color: #e9ecef; }
@@ -553,6 +553,12 @@ METADATOS                     DATOS
     DISPOSITIVO
 ```
 
+**El SO es el traductor entre software y hardware**
+
+</div>
+
+<div>
+
 ### Tipos de Dispositivos
 
 | Entrada ⬇️ | Salida ⬆️ | Ambos ↕️ |
@@ -562,36 +568,66 @@ METADATOS                     DATOS
 | 🎤 Micrófono | 🔊 Altavoces | 🌐 Tarjeta red |
 | 📷 Cámara web | 👞 Auriculares | 📱 Móviles |
 
+### Técnicas de E/S
+
+| Técnica | Descripción | Eficiencia |
+|---------|-------------|------------|
+| **Polling** | CPU pregunta repetidamente | ❌ Baja |
+| **Interrupciones** | Dispositivo avisa a CPU | ✅ Alta |
+| **DMA** | Memoria ↔ Dispositivo directo | ✅ Máxima |
+
+</div>
+
+</div>
+
+---
+
+## Técnicas de E/S: Detalles
+
+### Polling vs Interrupciones vs DMA
+
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+
+<div>
+
+#### 1. Polling (Sondeo)
+```
+CPU: ¿Listo? CPU: ¿Listo? CPU: ¿Listo?
+DISPOSITIVO: No... No... No... Sí
+```
+- **Desventaja:** Desperdicia ciclos de CPU
+- **Uso actual:** Casi obsoleto en SO modernos
+
+#### 2. Interrupciones
+```
+CPU: Trabaja... DISPOSITIVO: ¡Interrupción!
+CPU: Atiende dispositivo, continúa
+```
+- **Ventaja:** CPU no pierde tiempo
+- **Estándar:** Usado en la mayoría de E/S
+
 </div>
 
 <div>
 
-### Técnicas de E/S
-
-#### 1. Polling (Sondeo)
-- CPU pregunta repetidamente
-- Ineficiente, desperdicia ciclos
-
-#### 2. Interrupciones
-- Dispositivo avisa a CPU
-- Más eficiente, estándar actual
-
 #### 3. DMA (Direct Memory Access)
-- Dispositivo ↔ Memoria directa
-- Sin intervención de CPU
-- Para transferencias grandes
+```
+DISPOSITIVO ←→ MEMORIA (sin CPU)
+CPU: Solo notificada al finalizar
+```
+- **Ventaja:** Transferencias grandes sin intervención
+- **Uso:** Discos, red, tarjetas gráficas
 
 ### Ejemplo: Leer un archivo
 
-```
-Programa → read() → SO → Driver → Disco
-                      ↓
-                 (interrupción)
-                      ↓
-SO → "¡Datos listos!" → Programa
-```
-
-**El SO es el traductor entre software y hardware**
+| Paso | Acción |
+|------|--------|
+| 1 | Programa llama `read()` |
+| 2 | SO valida permisos |
+| 3 | SO invoca driver de disco |
+| 4 | Driver programa DMA |
+| 5 | **Interrupción:** Datos listos |
+| 6 | SO copia datos al usuario |
 
 </div>
 
@@ -934,6 +970,22 @@ USUARIO          KERNEL
 
 </div>
 
+</div>
+
+<div style="text-align: center; margin-top: 20px; padding: 15px; background: #fef3c7; border-radius: 10px;">
+
+**💡 Las system calls son la API del kernel. Todo lo que hace un programa pasa por ellas.**
+
+</div>
+
+---
+
+## System Calls: Más Categorías
+
+### Comunicaciones, Dispositivos e Información
+
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+
 <div>
 
 #### 🔌 Control de Dispositivos
@@ -946,6 +998,17 @@ USUARIO          KERNEL
 | `write()` | Escribir a dispositivo |
 
 **Ejemplo:** Configurar velocidad de puerto serie
+
+#### 📡 Comunicaciones
+
+| System Call | Propósito |
+|-------------|-----------|
+| `socket()` | Crear endpoint |
+| `bind()` | Asociar dirección |
+| `listen()` | Esperar conexiones |
+| `accept()` | Aceptar conexión |
+
+**Ejemplo:** Navegador web usa sockets para HTTP
 
 </div>
 
@@ -962,13 +1025,19 @@ USUARIO          KERNEL
 
 **Ejemplo:** `ps` usa getpid() para listar procesos
 
-</div>
+### Flujo de una System Call
+
+```
+Usuario → libc → TRAP → Kernel → Hardware
+         ↓                    ↓
+    parámetros         validación
+                            ↓
+                     sys_call()
+                            ↓
+                         RET → Usuario
+```
 
 </div>
-
-<div style="text-align: center; margin-top: 20px; padding: 15px; background: #fef3c7; border-radius: 10px;">
-
-**💡 Las system calls son la API del kernel. Todo lo que hace un programa pasa por ellas.**
 
 </div>
 
@@ -1331,12 +1400,10 @@ MONOLÍTICO       CAPAS          MICROKERNEL
 
 <div>
 
-### 📜 Lo que viene
+### 📜 Historia de los SO
 
 ```
 ┌─────────────────────────────┐
-│  HISTORIA DE LOS SO         │
-├─────────────────────────────┤
 │  1950s: Procesos por lote   │
 │  1960s: Tiempo compartido   │
 │  1970s: UNIX, CP/M          │
@@ -1348,7 +1415,7 @@ MONOLÍTICO       CAPAS          MICROKERNEL
 └─────────────────────────────┘
 ```
 
-### 🏗️ Componentes que veremos
+### 🏗️ Componentes del SO
 
 | Componente | Descripción |
 |------------|-------------|
@@ -1357,47 +1424,54 @@ MONOLÍTICO       CAPAS          MICROKERNEL
 | **Utilidades** | Herramientas del sistema |
 | **Librerías** | Funciones compartidas |
 
-### 🔐 Modos de ejecución
-
-| Modo Usuario | Modo Kernel |
-|---------------|-------------|
-| Aplicaciones normales | SO tiene control total |
-| Acceso limitado | Acceso a todo el hardware |
-| Sistema call cambia modo | Privilegios completos |
-
 </div>
 
 <div>
 
+### 🔐 Modos de Ejecución
+
+| Modo Usuario | Modo Kernel |
+|---------------|-------------|
+| Aplicaciones normales | SO tiene control total |
+| Acceso limitado | Acceso a hardware |
+| System call cambia modo | Privilegios completos |
+
 ### 📖 Preparación
 
-**Lectura recomendada para la próxima clase:**
-
+**Lectura recomendada:**
 1. Capítulo 2 del libro de texto
-   - Historia de los sistemas operativos
-   - Evolución de las interfaces
-
-2. Investiguen:
-   - ¿Qué fue UNIX y por qué fue importante?
-   - ¿Por qué Linux nació en 1991?
-   - ¿Cuál fue el primer SO que usaron?
-
-### 💡 Pregunta para reflexionar
-
-> "Si los SO han existido desde los años 50,
-> ¿por qué seguimos mejorándolos?
-> ¿Qué problemas siguen sin resolver?"
+2. Investigar: ¿Qué fue UNIX y por qué fue importante?
 
 ### 🚀 Próxima sesión
 
 **Miércoles 12 de Febrero, 06:00 - 09:00**
 - Tarea: Investigar breve sobre UNIX
 - Entrega: Inicio de la próxima clase
-- Formato: Compartir en parejas
 
 </div>
 
 </div>
+
+---
+
+## 💡 Reflexión Final
+
+### Pregunta para pensar hasta la próxima clase
+
+> "Si los SO han existido desde los años 50,
+> **¿por qué seguimos mejorándolos?**
+> **¿Qué problemas siguen sin resolver?**"
+
+<div style="text-align: center; margin-top: 40px; padding: 20px; background: #f0f9ff; border-radius: 10px;">
+
+### Algunas preguntas para reflexionar:
+- ¿Por qué siguen existiendo bugs en SO maduros como Windows y Linux?
+- ¿Qué nuevos desafíos plantean la IA, el IoT y Edge Computing?
+- ¿Llegaremos algún día a un SO "perfecto"?
+
+</div>
+
+---
 
 <div style="text-align: center; margin-top: 30px; font-size: 1.2em;">
 
