@@ -27,67 +27,62 @@ footer: 'UNAULA - Ingeniería Informática - 2026-I'
 
 <style>
 section {
-  font-size: 20px;
+  font-size: 18px;
   overflow: hidden;
-}
-img {
-  max-width: 70% !important;
-  max-height: 50vh !important;
-  object-fit: contain !important;
-  height: auto !important;
-  display: block !important;
-  margin: 0 auto !important;
+  padding: 0.8em 1.5em;
 }
 section h1 {
-  font-size: 1.8em;
-}
-section h2 {
-  font-size: 1.4em;
-}
-section h3 {
-  font-size: 1.2em;
-}
-section ul, section ol {
-  font-size: 0.9em;
-  margin-left: 1em;
-}
-section li {
+  font-size: 1.6em;
   margin-bottom: 0.3em;
 }
+section h2 {
+  font-size: 1.2em;
+  margin-bottom: 0.3em;
+}
+section h3 {
+  font-size: 1.1em;
+  margin-bottom: 0.2em;
+}
+section ul, section ol {
+  font-size: 0.85em;
+  margin-left: 0.8em;
+}
+section li {
+  margin-bottom: 0.2em;
+}
+section p {
+  margin: 0.3em 0;
+  font-size: 0.9em;
+}
 section pre {
-  font-size: 0.7em;
-  max-height: 60vh;
+  font-size: 0.65em;
+  max-height: 50vh;
   overflow-y: auto;
 }
 section code {
-  font-size: 0.85em;
+  font-size: 0.8em;
 }
-section p {
-  margin: 0.5em 0;
-}
-/* Estilos para tablas responsivas */
 section table {
   width: 100%;
-  max-width: 100%;
-  font-size: 0.95em;
+  font-size: 0.85em;
   border-collapse: collapse;
-  margin: 0.5em auto;
+  margin: 0.3em auto;
   table-layout: auto;
 }
 section th {
   background-color: #1e40af;
   color: white;
-  padding: 0.4em 0.6em;
+  padding: 0.3em 0.5em;
   text-align: left;
-  font-size: 0.95em;
+  font-size: 0.85em;
   border: 1px solid #ddd;
 }
 section td {
-  padding: 0.4em 0.6em;
+  padding: 0.3em 0.5em;
   border: 1px solid #ddd;
   vertical-align: top;
   word-wrap: break-word;
-  font-size: 0.9em;
+  font-size: 0.85em;
 }
 section tbody tr:nth-child(even) {
   background-color: #f8f9fa;
@@ -95,18 +90,12 @@ section tbody tr:nth-child(even) {
 section tbody tr:hover {
   background-color: #e9ecef;
 }
-/* Asegurar que el contenido no desborde */
-section {
-  padding: 1em 2em;
-  box-sizing: border-box;
-}
-/* Responsividad para tablas anchas */
 @media screen and (max-width: 1280px) {
   section table {
-    font-size: 0.75em;
+    font-size: 0.7em;
   }
   section th, section td {
-    padding: 0.3em 0.4em;
+    padding: 0.2em 0.3em;
   }
 }
 </style>

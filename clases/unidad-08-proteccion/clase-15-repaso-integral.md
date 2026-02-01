@@ -13,23 +13,7 @@ footer: 'UNAULA - Ingeniería Informática - 2026-I'
 
 ---
 
-## 🗺️ Mapa Conceptual del Curso
-
-### Conectando los 8 Unidades Temáticas
-
-| Unidad | Tema | Conexión con |
-|--------|------|--------------|
-| **1** | Introducción y Procesos | Base para todo |
-| **2-3** | Planificación y Sincronización | Gestión de CPU |
-| **4** | Sincronización | Coordinación entre procesos |
-| **5-6** | Memoria y Archivos | Gestión de recursos |
-| **7** | E/S y Discos | Comunicación hardware |
-| **8** | Protección y Sistemas Distribuidos | Seguridad y escalabilidad |
-
 <style>
-section {
-  font-size: 24px;
-}
 img {
   max-width: 70% !important;
   max-height: 50vh !important;
@@ -69,11 +53,10 @@ section code {
 section p {
   margin: 0.5em 0;
 }
-/* Estilos para tablas responsivas */
 section table {
   width: 100%;
   max-width: 100%;
-  font-size: 0.85em;
+  font-size: 0.95em;
   border-collapse: collapse;
   margin: 0.5em auto;
   table-layout: auto;
@@ -83,7 +66,7 @@ section th {
   color: white;
   padding: 0.4em 0.6em;
   text-align: left;
-  font-size: 0.9em;
+  font-size: 0.95em;
   border: 1px solid #ddd;
 }
 section td {
@@ -91,7 +74,7 @@ section td {
   border: 1px solid #ddd;
   vertical-align: top;
   word-wrap: break-word;
-  font-size: 0.85em;
+  font-size: 0.9em;
 }
 section tbody tr:nth-child(even) {
   background-color: #f8f9fa;
@@ -99,12 +82,10 @@ section tbody tr:nth-child(even) {
 section tbody tr:hover {
   background-color: #e9ecef;
 }
-/* Asegurar que el contenido no desborde */
 section {
   padding: 1em 2em;
   box-sizing: border-box;
 }
-/* Responsividad para tablas anchas */
 @media screen and (max-width: 1280px) {
   section table {
     font-size: 0.75em;
@@ -115,31 +96,14 @@ section {
 }
 </style>
 
----
-
-## Objetivos de Aprendizaje
-
-Al finalizar esta clase, el estudiante será capaz de:
-
-1. **Consolidar** todos los conceptos fundamentales del curso mediante mapas conceptuales
-2. **Identificar** temas débiles y fortalezas en su comprensión
-3. **Resolver** ejercicios integradores tipo examen con confianza
-4. **Conectar** conceptos de diferentes unidades (visión holística)
-5. **Aplicar** conocimientos teóricos a problemas prácticos reales
-
-**Duración:** 90 minutos
-
----
-
 ## 🗺️ Mapa Conceptual del Curso
 
-### 8 Unidades Temáticas
+### 8 Unidades Conectadas
 
 ```
 ┌─────────────────────────────────────────────────────────┐
 │                  SISTEMA OPERATIVO                      │
 ├─────────────────────────────────────────────────────────┤
-│                                                         │
 │  ┌────────────┐  ┌────────────┐  ┌────────────┐      │
 │  │ Unidad 1-2 │  │ Unidad 3-4 │  │ Unidad 5-6 │      │
 │  │ PROCESOS   │→ │PLANIFICACIÓN│→│  MEMORIA   │      │
@@ -156,58 +120,84 @@ Al finalizar esta clase, el estudiante será capaz de:
 
 ---
 
-## 📚 Unidad 1-2: Introducción y Procesos
+## Objetivos y Estructura
+
+### Objetivos de Aprendizaje
+
+1. **Consolidar** conceptos fundamentales del curso
+2. **Identificar** temas débiles y fortalezas
+3. **Resolver** ejercicios tipo examen
+4. **Conectar** conceptos de diferentes unidades
+5. **Aplicar** conocimientos teóricos a problemas prácticos
+
+### Agenda
+
+| Sección | Tiempo |
+|---------|--------|
+| Repaso unidades 1-8 | 35 min |
+| Ejercicios integradores | 30 min |
+| Quiz y estrategias | 15 min |
+| Actividad práctica | 10 min |
+
+---
+
+## 📚 Unidad 1-2: Procesos y Planificación
+
+<div class="columns">
+<div>
 
 ### Conceptos Clave
 
-- **Definición SO:** Intermediario entre usuario y hardware
-- **Funciones:** Gestión de CPU, memoria, E/S, archivos
-- **Proceso:** Programa en ejecución (código + datos + PCB)
-- **PCB:** Contiene PID, estado, registros, prioridad
-- **Estados:** Nuevo, Listo, Ejecución, Espera, Terminado
+- **Proceso:** Programa en ejecución (PCB + código + datos)
+- **Estados:** Nuevo → Listo → Ejecución → Espera → Terminado
+- **Context Switch:** Guardar/restaurar registros y estado
+- **Métricas:**
+  - Turnaround = Fin - Llegada
+  - Waiting = Turnaround - CPU
+  - Throughput = Procesos/tiempo
 
-### Pregunta de Repaso 1
+### Algoritmos de Planificación
 
-**¿Cuál es la diferencia fundamental entre proceso e hilo?**
+| Algoritmo | Tipo | Ventaja |
+|-----------|------|---------|
+| FCFS | No-apropiativo | Simple |
+| SJF | No-apropiativo | Óptimo TT |
+| RR | Apropiativo | Equitativo |
+| Prioridad | Ambos | Flexible |
 
-<details>
-<summary>💡 Ver respuesta</summary>
+</div>
+<div>
 
-- **Proceso:** Unidad de recursos (memoria, archivos, espacio de direcciones)
-- **Hilo:** Unidad de ejecución (comparte recursos del proceso)
-- **Ventaja hilos:** Menor overhead en cambio de contexto
-- **Ejemplo:** Navegador = 1 proceso, cada pestaña = 1 hilo
+### Fórmulas Esenciales
 
-</details>
+```
+Turnaround = Fin - Llegada
+Waiting = Turnaround - Ráfaga
+Response = Primera_exec - Llegada
+```
+
+### Estados del Proceso
+
+```
+    Nuevo
+     ↓
+  Listo ⇄ Ejecución
+     ↑      ↓
+Espera ─────┘
+```
+
+</div>
+</div>
 
 ---
 
-## 🕐 Unidad 3: Planificación de CPU
+## 🔒 Unidad 3-4: Sincronización
 
-### Algoritmos Fundamentales
+<div class="columns">
+<div>
 
-| Algoritmo | Tipo | Ventaja | Desventaja |
-|-----------|------|---------|------------|
-| **FCFS** | No apropiativo | Simple | Convoy effect |
-| **SJF** | No apropiativo | Óptimo T.Espera | Inanición |
-| **RR** | Apropiativo | Equitativo | Overhead |
-| **Prioridad** | Ambos | Flexible | Inanición |
+### Sección Crítica - Requisitos
 
-### Métricas de Desempeño
-
-- **Tiempo de espera (Waiting Time):** Tiempo en cola de listos
-- **Tiempo de retorno (Turnaround Time):** Tiempo total (llegada → salida)
-- **Tiempo de respuesta:** Primera respuesta del sistema
-- **Utilización CPU:** % tiempo CPU ocupada
-- **Throughput:** Procesos completados por unidad de tiempo
-
----
-
-## 🔒 Unidad 4: Sincronización
-
-### Problema de la Sección Crítica
-
-**Requisitos:**
 1. **Exclusión mutua:** Solo 1 proceso en SC
 2. **Progreso:** Si nadie en SC, alguien puede entrar
 3. **Espera limitada:** No inanición
@@ -216,330 +206,365 @@ Al finalizar esta clase, el estudiante será capaz de:
 
 ```c
 // MUTEX
-pthread_mutex_t mutex;
 pthread_mutex_lock(&mutex);
-// Sección crítica
+// SC
 pthread_mutex_unlock(&mutex);
 
 // SEMÁFORO
-sem_t semaforo;
-sem_wait(&semaforo);  // P(s) o wait(s)
-// Sección crítica
-sem_post(&semaforo);  // V(s) o signal(s)
+sem_wait(&sem);    // P()
+// SC
+sem_post(&sem);    // V()
 ```
 
-### Deadlock: 4 Condiciones Necesarias
+</div>
+<div>
+
+### Deadlock - 4 Condiciones Necesarias
 
 1. **Exclusión mutua**
-2. **Hold and wait** (retener y esperar)
+2. **Hold and wait**
 3. **No apropiación**
 4. **Espera circular**
 
-**Romper UNA condición = Prevenir deadlock**
+⚠️ **Romper UNA = Prevenir deadlock**
+
+```
+P1: tiene R1, espera R2
+     ↓
+P2: tiene R2, espera R1
+     ↑──────────┘
+```
+
+</div>
+</div>
 
 ---
 
-## 💾 Unidad 5-6: Gestión de Memoria
+## 💾 Unidad 5-6: Memoria y Archivos
 
-### Jerarquía de Memoria
+<div class="columns">
+<div>
 
+### Gestión de Memoria
+
+**Jerarquía:**
 ```
-Velocidad  Capacidad   Costo      Nivel
-↑          ↓           ↓
-Registros  < 1KB       $$$$$      CPU
-Cache L1   32-64KB     $$$$       Chip
-Cache L2   256KB-1MB   $$$        Chip
-RAM        4-32GB      $$         Placa
-SSD        256GB-2TB   $          Periférico
-HDD        1-8TB       ¢          Periférico
+Registro < Cache < RAM < SSD < HDD
+Velocidad: ↓        Capacidad: ↓
 ```
 
-### Paginación vs Segmentación
+**Paginación:**
+- Tamaño fijo (potencia de 2)
+- Elimina fragmentación externa
+- Crea fragmentación interna
 
-| Aspecto | Paginación | Segmentación |
-|---------|------------|--------------|
-| **División** | Fija (páginas) | Variable (segmentos) |
-| **Fragmentación** | Interna | Externa |
-| **Protección** | Por página | Por segmento |
-| **Compartición** | Difícil | Fácil |
-| **Tamaño** | Potencia de 2 | Variable |
-
-### Traducción de Direcciones
-
-**Ejemplo:** Dirección lógica `0x3A2F`, tamaño página = 4KB (0x1000)
-
+**Traducción:**
 ```
-Dirección lógica: 0x3A2F
-├─ Página: 0x3A2F / 0x1000 = 0x3 (página 3)
-└─ Offset: 0x3A2F % 0x1000 = 0xA2F (offset 2607)
-
-Tabla de páginas: Página 3 → Marco 7
-Dirección física: (7 × 4096) + 2607 = 0x7A2F
+Página = Dir_Lógica / Tamaño_Página
+Offset = Dir_Lógica % Tamaño_Página
+Dir_Física = (Marco × Tamaño) + Offset
 ```
 
----
+### Sistemas de Archivos
 
-## 📁 Unidad 6-7: Sistemas de Archivos
+| Sistema | Max Archivo | Journaling |
+|---------|------------|------------|
+| FAT32 | 4GB | ❌ |
+| NTFS | 16EB | ✅ |
+| ext4 | 16TB | ✅ |
 
-### Estructura de Inodos (ext4)
+**Inodo:** Metadatos + punteros (12 directos, 3 indirectos)
+
+</div>
+<div>
+
+### Estructura Inodo ext4
 
 ```
-┌─────────────────────────────────────┐
-│ INODO (128 bytes)                   │
-├─────────────────────────────────────┤
-│ Metadatos:                          │
-│  - Permisos: rwxr-xr-x              │
-│  - Dueño: UID 1000                  │
-│  - Tamaño: 4096 bytes               │
-│  - Timestamps: ctime, mtime, atime  │
-├─────────────────────────────────────┤
-│ Bloques de datos:                   │
-│  - Directos (12): Bloques 0-11      │
-│  - Indirecto simple: Bloque 12      │
-│  - Indirecto doble: Bloque 13       │
-│  - Indirecto triple: Bloque 14      │
-└─────────────────────────────────────┘
+┌────────────────────────────┐
+│ INODO (128 bytes)           │
+├────────────────────────────┤
+│ Permisos: rwxr-xr-x         │
+│ UID/GID                     │
+│ Tamaño: 4096 bytes          │
+│ Timestamps                  │
+├────────────────────────────┤
+│ Bloques:                    │
+│  - Directos: 12             │
+│  - Indirecto simple: 1      │
+│  - Indirecto doble: 1       │
+│  - Indirecto triple: 1      │
+└────────────────────────────┘
 ```
 
-### Comparación de Sistemas de Archivos
+**Acceso bloque 14:** 3 lecturas (inodo → indirecto → dato)
 
-| Sistema | SO | Max Archivo | Max Volumen | Journaling |
-|---------|----|-----------|--------------| ----------|
-| FAT32 | Todos | 4GB | 2TB | ❌ |
-| NTFS | Windows | 16TB | 256TB | ✅ |
-| ext4 | Linux | 16TB | 1EB | ✅ |
-| APFS | macOS | 8EB | 8EB | ✅ |
+</div>
+</div>
 
 ---
 
 ## 🖥️ Unidad 7-8: E/S y Protección
 
-### DMA (Direct Memory Access)
+<div class="columns">
+<div>
 
-**Sin DMA:**
-```
-CPU → Leer byte → Copiar a RAM → Repetir × 1000
-(CPU ocupada 100% del tiempo)
-```
+### E/S y DMA
 
-**Con DMA:**
-```
-CPU → Iniciar DMA → Hacer otra tarea
-DMA → Transferir 1000 bytes → Interrumpir CPU
-(CPU libre durante transferencia)
-```
+**Sin DMA:** CPU copia byte por byte (100% ocupada)
+
+**Con DMA:** CPU inicia transferencia → libre
 
 ### Niveles de Protección
 
-| Nivel | Descripción | Ejemplo |
-|-------|-------------|---------|
-| **Físico** | Acceso al edificio | Guardias, cerraduras |
-| **Usuario** | Autenticación | Login/password |
-| **Proceso** | Memoria aislada | Espacios de direcciones |
-| **Archivo** | Permisos rwx | chmod 755 |
-| **Red** | Firewall/cifrado | TLS, IPsec |
+| Nivel | Ejemplo |
+|-------|---------|
+| Físico | Guardias, cerraduras |
+| Usuario | Login/password |
+| Proceso | Espacios de direcciones |
+| Archivo | Permisos rwx |
+| Red | Firewall, TLS |
+
+### DMA
+
+```
+Sin DMA:    Con DMA:
+CPU→RAM×1000  CPU→Iniciar→Libre
+             DMA→RAM×1000→Interrumpir
+```
+
+</div>
+<div>
+
+### Sistemas Distribuidos
+
+**Tipos:**
+- **SO de red:** NFS, montaje remoto
+- **SO distribuido:** Transparencia total
+
+**Teorema CAP (2 de 3):**
+- **C**onsistencia
+- **A**vailability
+- **P**artition tolerance
+
+**Ejemplo:** Google File System, HDFS
+
+### Permisos Unix
+
+```bash
+-rw-r--r-- 1 juan users 1024 archivo
+│││ │││ │││
+│││ │││ └└└─ Otros: r--
+│││ └└└───── Grupo: r--
+└└└───────── Dueño: rw-
+
+chmod 755 = rwxr-xr-x
+```
+
+</div>
+</div>
 
 ---
 
-## 🧠 Ejercicio Integrador 1: Planificación
+## 🧠 Ejercicio 1: Planificación FCFS
+
+<div class="columns">
+<div>
 
 ### Enunciado
 
-4 procesos llegan al sistema:
+| Proceso | Llegada | Ráfaga |
+|---------|---------|--------|
+| P1 | 0 | 8 |
+| P2 | 1 | 4 |
+| P3 | 2 | 9 |
+| P4 | 3 | 5 |
 
-| Proceso | Llegada | Ráfaga CPU | Prioridad |
-|---------|---------|------------|-----------|
-| P1 | 0 | 8 | 3 |
-| P2 | 1 | 4 | 1 |
-| P3 | 2 | 9 | 4 |
-| P4 | 3 | 5 | 2 |
+**Calcular Turnaround promedio con FCFS**
 
-**Tareas:**
-1. Calcular Turnaround promedio con **FCFS**
-2. Calcular Turnaround promedio con **SJF** (no apropiativo)
-3. Calcular Turnaround promedio con **Round Robin (q=2)**
-4. ¿Cuál algoritmo es mejor? ¿Por qué?
+### Solución
+
+**Gantt:**
+```
+| P1 | P1 | P1 | P1 | P2 | P2 | P3 | P3 | P3 | P4 | P4 |
+0   2   4   6   8  10  12  15  18  21  24  26
+```
+
+| Proc | Fin | TT | Espera |
+|------|-----|-------|--------|
+| P1 | 8 | 8 | 0 |
+| P2 | 12 | 11 | 7 |
+| P3 | 21 | 19 | 10 |
+| P4 | 26 | 23 | 18 |
+
+**TT promedio = 15.25**
+
+</div>
+<div>
+
+### Preguntas para Practicar
+
+**¿Y con SJF no-apropiativo?**
+
+Orden: P1(0), P2(4), P4(5), P3(9)
+
+**¿Y con Round Robin (q=2)?**
+
+Secuencia: P1,P2,P3,P4,P1,P2,P3,P4,P1,P3,P3...
+
+**¿Cuál es mejor?**
+
+RR → Mejor tiempo de espera
+SJF → Mejor turnaround
+FCFS → Más simple
+
+</div>
+</div>
 
 ---
 
-## 💡 Solución Ejercicio 1: FCFS
+## 🧠 Ejercicio 2: Memoria Virtual
 
-### Diagrama de Gantt
-
-```
-|  P1  |  P1  |  P1  |  P1  |  P2  |  P2  |  P3  |  P3  |  P3  |  P4  |  P4  |
-0      2      4      6      8     10     12     15     18     21     24     26
-```
-
-### Cálculos
-
-| Proceso | Llegada | Ráfaga | Inicio | Fin | Turnaround | Espera |
-|---------|---------|--------|--------|-----|------------|--------|
-| P1 | 0 | 8 | 0 | 8 | 8 | 0 |
-| P2 | 1 | 4 | 8 | 12 | 11 | 7 |
-| P3 | 2 | 9 | 12 | 21 | 19 | 10 |
-| P4 | 3 | 5 | 21 | 26 | 23 | 18 |
-
-**Turnaround promedio:** (8 + 11 + 19 + 23) / 4 = **15.25**
-**Espera promedio:** (0 + 7 + 10 + 18) / 4 = **8.75**
-
----
-
-## 🧠 Ejercicio Integrador 2: Memoria Virtual
+<div class="columns">
+<div>
 
 ### Enunciado
 
-Sistema con:
-- Tamaño de página: **4KB** (4096 bytes)
+- Tamaño página: **4KB** (4096 bytes)
 - Dirección lógica: **0x00012A3F**
 
 **Preguntas:**
-1. ¿Cuántos bits para el offset?
-2. ¿Cuál es el número de página?
-3. ¿Cuál es el desplazamiento (offset)?
-4. Si la página está en el marco 5, ¿cuál es la dirección física?
+1. ¿Bits para offset?
+2. ¿Número de página?
+3. ¿Desplazamiento?
+4. Si página → marco 5, ¿dirección física?
+
+### Solución Paso a Paso
+
+**1. Bits offset:**
+```
+4KB = 2^12 → 12 bits
+```
+
+**2. Dividir dirección:**
+```
+0x00012A3F = 0001 0010 1010 0011 1111
+Página: 0001 0010 = 0x12 = 18
+Offset: 1010 0011 1111 = 0xA3F = 2623
+```
+
+**3. Dirección física:**
+```
+Dir_Física = (5 × 4096) + 2623
+           = 20480 + 2623
+           = 23103
+           = 0x5A3F
+```
+
+</div>
+<div>
+
+### Fórmulas de Traducción
+
+```
+# Dividir dirección
+Número_página = Dir_Lógica / Tamaño_Página
+Offset = Dir_Lógica % Tamaño_Página
+
+# Reconstruir
+Dir_Física = (Marco × Tamaño_Página) + Offset
+```
+
+### Ejemplo Adicional
+
+Si Dir_lógica = 0x00305B7C:
+
+```
+Página = 0x00305B7C / 4096 = 0x305 (773)
+Offset = 0x00305B7C % 4096 = 0x7C (124)
+
+Si Marco = 10:
+Dir_Física = (10 × 4096) + 124 = 41084 = 0xA0BC
+```
+
+**Key insight:** Los bits inferiores (offset) NO cambian en la traducción
+
+</div>
+</div>
 
 ---
 
-## 💡 Solución Ejercicio 2
+## 🧠 Ejercicio 3: Inodos y Archivos
 
-### Paso 1: Bits del offset
-
-```
-Tamaño página = 4KB = 4096 bytes = 2^12
-Bits offset = 12 bits
-```
-
-### Paso 2: Dividir dirección
-
-```
-Dirección: 0x00012A3F = 0001 0010 1010 0011 1111 (binario)
-
-Página (bits superiores): 0001 0010 = 0x12 = 18 (decimal)
-Offset (12 bits inferiores): 1010 0011 1111 = 0xA3F = 2623 (decimal)
-```
-
-### Paso 3: Dirección física
-
-```
-Marco físico = 5
-Dirección física = (Marco × Tamaño_página) + Offset
-                 = (5 × 4096) + 2623
-                 = 20480 + 2623
-                 = 23103
-                 = 0x5A3F
-```
-
-**Respuesta:** La dirección física es **0x5A3F**
-
----
-
-## 🧠 Ejercicio Integrador 3: Sistemas de Archivos
+<div class="columns">
+<div>
 
 ### Enunciado
 
-Un archivo ocupa 15 bloques de datos. El sistema usa inodos con:
+Archivo de **15 bloques**, inodo con:
 - 12 bloques directos
-- 1 bloque indirecto simple (apunta a 256 bloques)
-- 1 bloque indirecto doble
+- 1 indirecto simple (256 punteros)
+- 1 indirecto doble
 
 **Preguntas:**
 1. ¿Cuántos bloques directos se usan?
 2. ¿Cuántos bloques indirectos se necesitan?
-3. ¿Cuántas lecturas de disco para acceder al bloque 14?
+3. ¿Lecturas de disco para bloque 14?
+
+### Solución
+
+**Distribución:**
+```
+Bloques 0-11: Directos (12 bloques)
+Bloque 12-14: Indirecto simple (3 bloques)
+```
+
+**Respuestas:**
+1. **12 directos** usados
+2. **3 indirectos** simples
+3. **3 lecturas** para bloque 14:
+   - Leer inodo (1)
+   - Leer bloque indirecto (1)
+   - Leer dato (1)
+
+</div>
+<div>
+
+### Estructura de Acceso
+
+```
+Acceso bloque 5 (directo):
+  INODO → Dato (2 lecturas)
+
+Acceso bloque 14 (indirecto):
+  INODO → Indirecto → Dato (3 lecturas)
+
+Acceso bloque 1000 (indirecto doble):
+  INODO → Indirecto1 → Indirecto2 → Dato
+  (4 lecturas)
+```
+
+### Máxima Capacidad
+
+```
+Directos: 12 bloques
+Indirecto simple: 256 bloques
+Indirecto doble: 256² = 65,536 bloques
+Indirecto triple: 256³ = 16,777,216 bloques
+
+Total: ~16.8M bloques × 4KB ≈ 64 GB
+```
+
+</div>
+</div>
 
 ---
 
-## 💡 Solución Ejercicio 3
+## 📖 Los 10 Mandamientos de SO
 
-### Distribución de bloques
-
-```
-Archivo: 15 bloques totales
-
-Bloques 0-11: Directos (12 bloques) ✅
-Bloque 12: Indirecto simple (1 bloque)
-Bloque 13: Indirecto simple (1 bloque)
-Bloque 14: Indirecto simple (1 bloque)
-
-Total directos usados: 12
-Total indirectos usados: 3 (del bloque indirecto simple)
-```
-
-### Acceso al bloque 14
-
-```
-Lecturas necesarias:
-1. Leer INODO (obtener puntero a bloque indirecto simple)
-2. Leer BLOQUE INDIRECTO (obtener dirección del bloque 14)
-3. Leer BLOQUE DE DATOS 14 (datos reales)
-
-Total: 3 lecturas de disco
-```
-
----
-
-## 🎯 Actividad Práctica en Clase (30 min)
-
-### Parte 1: Trabajo en Parejas (20 min)
-
-**Instrucciones:**
-1. Formen parejas
-2. Seleccionen 2 ejercicios del banco de abajo
-3. Resuelvan paso a paso
-4. Preparen explicación de 3 minutos
-
-### Banco de Ejercicios
-
-**Opción A: Deadlock**
-```
-4 procesos (P1-P4) necesitan 2 recursos (R1, R2)
-Estado actual:
-- P1 tiene R1, necesita R2
-- P2 tiene R2, necesita R1
-- P3 espera R1
-- P4 espera R2
-
-¿Hay deadlock? ¿Por qué? ¿Cómo resolverlo?
-```
-
-**Opción B: Paginación**
-```
-Sistema con 64KB RAM, páginas de 4KB
-Proceso A: 12KB
-Proceso B: 20KB
-Proceso C: 8KB
-
-¿Cuántos marcos de página se necesitan en total?
-¿Hay fragmentación interna? Calcúlala.
-```
-
-**Opción C: Scheduling Multicore**
-```
-CPU con 2 núcleos, 5 procesos:
-P1(5), P2(3), P3(6), P4(2), P5(4)
-
-Diseñar scheduling Round Robin (q=2)
-Calcular tiempo total de ejecución.
-```
-
----
-
-## 📊 Parte 2: Presentaciones (10 min)
-
-- 3 parejas presentan sus soluciones
-- Clase discute alternativas
-- Profesor aclara dudas
-
----
-
-## 📖 Conceptos de Último Momento
-
-### Los 10 Mandamientos de Sistemas Operativos
-
-1. **Un proceso = Programa en ejecución** (código + datos + estado)
+1. **Proceso = Programa en ejecución** (código + datos + estado)
 2. **Context switch es costoso** (guardar/restaurar registros)
-3. **Deadlock necesita 4 condiciones** (romper 1 = prevención)
+3. **Deadlock necesita 4 condiciones** (romper 1 = prevenir)
 4. **Paginación elimina fragmentación externa** (pero crea interna)
 5. **Cache L1 es 100× más rápido que RAM**
 6. **Inodo ≠ Archivo** (inodo = metadatos, archivo = datos)
@@ -550,119 +575,23 @@ Calcular tiempo total de ejecución.
 
 ---
 
-## 🧪 Quiz Rápido (5 min)
+## ⚠️ Errores Comunes en Exámenes
 
-### Pregunta 1
-**Un proceso en estado "Espera" puede pasar directamente a "Ejecución"?**
-- A) Sí, siempre
-- B) No, debe pasar por "Listo"
-- C) Depende del scheduler
-- D) Solo si tiene prioridad alta
+<div class="columns">
+<div>
 
-<details>
-<summary>✅ Respuesta</summary>
-**B) No, debe pasar por "Listo"**
-
-El flujo es: Espera → Listo → Ejecución
-</details>
-
----
-
-## 🧪 Quiz Rápido (cont.)
-
-### Pregunta 2
-**¿Cuántos bloques indirectos simples puede direccionar un inodo si cada bloque es 4KB y cada puntero es 4 bytes?**
-- A) 256
-- B) 512
-- C) 1024
-- D) 2048
-
-<details>
-<summary>✅ Respuesta</summary>
-**C) 1024**
-
-Cálculo: 4096 bytes / 4 bytes = 1024 punteros
-</details>
-
----
-
-### Pregunta 3
-**En Round Robin con q=1, 3 procesos (P1=5, P2=3, P3=4). ¿Cuántos context switches?**
-- A) 10
-- B) 11
-- C) 12
-- D) 13
-
-<details>
-<summary>✅ Respuesta</summary>
-**B) 11**
-
-Ejecución: P1→P2→P3→P1→P2→P3→P1→P2→P3→P1→P3→P1
-Context switches = cambios = 11
-</details>
-
----
-
-## 🎓 Estrategias de Estudio para el Examen
-
-### Técnicas Efectivas
-
-1. **Método Feynman:** Explica conceptos en voz alta como si enseñaras
-2. **Mapas mentales:** Dibuja conexiones entre temas
-3. **Flashcards:** 50 tarjetas con preguntas clave
-4. **Resolución de ejercicios:** 10+ problemas por tema
-5. **Grupos de estudio:** 3-4 personas, 2 horas
-
-### Distribución de Tiempo (Próximos 7 días)
-
-```
-┌─────────────────────────────────────────────────┐
-│ Día 1-2: Procesos + Planificación (30%)        │
-│ Día 3-4: Memoria + Archivos (35%)              │
-│ Día 5-6: E/S + Protección + Distribuidos (25%) │
-│ Día 7: Repaso general + ejercicios (10%)       │
-└─────────────────────────────────────────────────┘
-```
-
----
-
-## 📚 Recursos de Estudio Recomendados
-
-### Libros (capítulos clave)
-
-- **Silberschatz** - Operating System Concepts:
-  - Cap 3: Procesos
-  - Cap 5: Scheduling
-  - Cap 9: Memoria Virtual
-  - Cap 13: Sistemas de Archivos
-
-### Videos (YouTube)
-
-- **Neso Academy:** Playlist "Operating Systems"
-- **Gate Smashers:** Algoritmos de planificación
-- **CodeHelp:** Memoria virtual explicada
-
-### Práctica Online
-
-- **GeeksforGeeks:** 100+ ejercicios resueltos
-- **TutorialsPoint:** Tests de autoevaluación
-- **StackOverflow:** Dudas específicas
-
----
-
-## ⚠️ Errores Comunes a Evitar
-
-### Top 5 Errores en Exámenes Pasados
+### Top 5 Errores
 
 1. **Confundir paginación con segmentación**
-   - Paginación: tamaño FIJO
-   - Segmentación: tamaño VARIABLE
+   - Paginación: tamaño **FIJO**
+   - Segmentación: tamaño **VARIABLE**
 
-2. **Calcular mal el Turnaround Time**
-   - TT = Tiempo fin - Tiempo llegada (NO solo ráfaga)
+2. **Calcular mal Turnaround Time**
+   - ❌ TT = Ráfaga
+   - ✅ TT = Fin - Llegada
 
-3. **Olvidar context switch en Round Robin**
-   - RR tiene overhead de cambio de contexto
+3. **Olvidar context switch en RR**
+   - Cada cambio tiene overhead
 
 4. **No diferenciar inodo de archivo**
    - Inodo: metadatos (permisos, fechas)
@@ -672,126 +601,218 @@ Context switches = cambios = 11
    - Prevención: eliminar condiciones
    - Detección: grafo de asignación
 
+</div>
+<div>
+
+### Consejos de Oro
+
+- **Leer TODO antes de responder**
+- **Mostrar trabajo** en cálculos (puntos parciales)
+- **Usar unidades** (ms, segundos, etc.)
+- **Verificar** respuestas con lógica
+- **Administrar tiempo:** 90 min / examen
+
+### Fórmulas para Memorizar
+
+```
+TT = Fin - Llegada
+Waiting = TT - CPU
+Dir_Física = (Marco × PageSize) + Offset
+Page_Faults = # de veces que página no está en memoria
+```
+
+</div>
+</div>
+
 ---
 
-## 🎯 Checklist Pre-Examen
+## 🧪 Quiz Rápido
 
-### 48 horas antes
+### Pregunta 1
+**Un proceso en "Espera" puede pasar directamente a "Ejecución"?**
+- A) Sí, siempre
+- B) No, debe pasar por "Listo" ✅
+- C) Depende del scheduler
+- D) Solo si tiene prioridad alta
 
-- [ ] Repasé todas las presentaciones
-- [ ] Resolví 5+ ejercicios de cada tema
-- [ ] Creé resumen de 2 páginas
+### Pregunta 2
+**¿Cuántos punteros tiene un bloque indirecto simple (4KB, punteros 4B)?**
+- A) 256
+- B) 512
+- C) 1024 ✅
+- D) 2048
+
+### Pregunta 3
+**RR con q=1, 3 procesos (P1=5, P2=3, P3=4). ¿Context switches?**
+- A) 10
+- B) 11 ✅
+- C) 12
+- D) 13
+
+---
+
+## 🎓 Estrategias de Estudio
+
+<div class="columns">
+<div>
+
+### Técnicas Efectivas
+
+1. **Método Feynman:** Explica en voz alta
+2. **Mapas mentales:** Conecta temas
+3. **Flashcards:** 50+ preguntas clave
+4. **Resolución:** 10+ ejercicios/tema
+5. **Grupos:** 3-4 personas, 2 horas
+
+### Distribución 7 Días
+
+```
+Día 1-2: Procesos + Planificación (30%)
+Día 3-4: Memoria + Archivos (35%)
+Día 5-6: E/S + Protección (25%)
+Día 7: Repaso general (10%)
+```
+
+</div>
+<div>
+
+### Recursos Recomendados
+
+**Libros:**
+- Silberschatz: Cap 3, 5, 9, 13
+
+**Videos:**
+- Neso Academy: OS Playlist
+- Gate Smashers: Scheduling
+
+**Práctica:**
+- GeeksforGeeks: 100+ ejercicios
+- TutorialsPoint: Tests
+
+### Checklist Pre-Examen
+
+**48h antes:**
+- [ ] Repasé presentaciones
+- [ ] Resolví 5+ ejercicios/tema
+- [ ] Creé resumen 2 páginas
 - [ ] Identifiqué 3 temas débiles
-- [ ] Practiqué ejercicios cronometrados
 
-### 24 horas antes
-
-- [ ] Revisé mapas conceptuales
+**24h antes:**
 - [ ] Dormí 8 horas
-- [ ] Repasé errores comunes
-- [ ] Preparé materiales permitidos
-- [ ] Llegué temprano al salón
+- [ ] Revisé errores comunes
+- [ ] Preparé materiales
+
+</div>
+</div>
 
 ---
 
-## 💪 Motivación Final
+## 🎯 Actividad Práctica (15 min)
 
-### Recuerda
+### Trabajo en Parejas
 
-> "El éxito es la suma de pequeños esfuerzos repetidos día tras día"
+**Instrucciones:**
+1. Formen parejas
+2. Resuelvan 1 ejercicio:
+   - Deadlock: 4 procesos, 2 recursos
+   - Paginación: 64KB RAM, procesos
+   - Scheduling: RR multicore
+3. Preparen explicación de 2 min
 
-**Has visto:**
-- 15 clases de contenido
-- 8 unidades temáticas
-- 50+ conceptos fundamentales
-- 100+ ejemplos prácticos
-
-**¡Estás preparado/a!** 🚀
+**Discusión:** 3 parejas presentan, clase comenta
 
 ---
 
-## 📝 Próxima Clase: Examen Final
+## 📝 Formato del Examen Final
 
-### Formato del Examen
+<div class="columns">
+<div>
+
+### Estructura
 
 - **Duración:** 90 minutos
-- **Preguntas:**
-  - 10 selección múltiple (30%)
-  - 3 ejercicios prácticos (50%)
-  - 2 preguntas de análisis (20%)
+- **10 selección múltiple** (30%)
+- **3 ejercicios prácticos** (50%)
+- **2 preguntas análisis** (20%)
 
 ### Temas con Mayor Peso
 
-1. Planificación de CPU (25%)
+1. Planificación CPU (25%)
 2. Memoria Virtual (25%)
-3. Sistemas de Archivos (20%)
+3. Archivos (20%)
 4. Sincronización (15%)
 5. E/S y Protección (15%)
 
 ### Materiales Permitidos
 
 - ✅ Calculadora básica
-- ✅ 1 hoja de resumen (ambos lados)
-- ❌ Celular
-- ❌ Laptop
-- ❌ Notas adicionales
+- ✅ 1 hoja resumen (2 caras)
+- ❌ Celular/Laptop
 
----
-
-## 🙋 Espacio para Dudas Finales
+</div>
+<div>
 
 ### Preguntas Frecuentes
 
-**P:** ¿Hay que memorizar todas las syscalls?
+**P:** ¿Memorizar todas las syscalls?
 **R:** No, solo las principales (fork, exec, wait, read, write, open, close)
 
-**P:** ¿Cálculos complejos en el examen?
+**P:** ¿Cálculos complejos?
 **R:** No, matemáticas básicas (sumas, divisiones, potencias de 2)
 
-**P:** ¿Preguntas de historia de SO?
-**R:** Mínimas, enfoque en conceptos técnicos
+**P:** ¿Historia de SO?
+**R:** Mínimas, enfoque técnico
+
+**P:** ¿Preguntas de código?
+**R:** Sí, pseudocódigo C para sincronización
+
+</div>
+</div>
 
 ---
 
-## ✅ Cierre de Clase
+## ✅ Cierre y Acción Inmediata
 
 ### Resumen de Hoy
 
 ✅ Repasamos 8 unidades temáticas
 ✅ Resolvimos 3 ejercicios integradores
-✅ Practicamos en parejas
 ✅ Identificamos errores comunes
 ✅ Definimos estrategia de estudio
 
 ### Acción Inmediata (Hoy)
 
-1. Crear resumen personal de 2 páginas
-2. Identificar 3 temas débiles
-3. Formar grupo de estudio (3-4 personas)
-4. Programar sesiones de repaso
+1. **Crear** resumen personal de 2 páginas
+2. **Identificar** 3 temas débiles
+3. **Formar** grupo de estudio (3-4 personas)
+4. **Programar** sesiones de repaso
 
 ---
 
-## 🎯 Próxima Clase
+## 🚀 ¡Están Preparados!
 
-### Clase 16: Examen Final
+### Recuerda
 
-📅 **Fecha:** [Según cronograma]
-⏰ **Hora:** [Horario habitual]
-📍 **Lugar:** [Salón habitual]
+> "El éxito es la suma de pequeños esfuerzos repetidos día tras día"
 
-**¡Mucho éxito en su preparación!** 🚀
+**Han visto:**
+- 15 clases de contenido
+- 8 unidades temáticas
+- 50+ conceptos fundamentales
+- 100+ ejemplos prácticos
+
+**¡Mucho éxito en su examen final!** 💪
 
 ---
 
-## Referencias y Material Complementario
+## Referencias
 
-### Para profundizar
+### Para Profundizar
 
-- Silberschatz, A. (2018). *Operating System Concepts*, 10th Ed.
-- Tanenbaum, A. (2015). *Modern Operating Systems*, 4th Ed.
-- [OSDev.org](https://wiki.osdev.org/) - Wiki de desarrollo de SO
-- [Linux Kernel Archives](https://www.kernel.org/) - Código fuente
+- **Silberschatz, A.** (2018). *Operating System Concepts*, 10th Ed.
+- **Tanenbaum, A.** (2015). *Modern Operating Systems*, 4th Ed.
+- **OSDev.org** - Wiki de desarrollo de SO
+- **Linux Kernel** - Código fuente
 
 ### Contacto
 
@@ -800,405 +821,3 @@ Context switches = cambios = 11
 **Plataforma:** [LMS del curso]
 
 **¡Nos vemos en el examen final!** 💪
-
----
-
-## 📚 Resumen Completo del Curso
-
-### Unidad 1: Introducción y Procesos
-
-#### ¿Qué es un Sistema Operativo?
-```
-┌─────────────────────────────────────────┐
-│           APLICACIONES                   │
-├─────────────────────────────────────────┤
-│       SISTEMA OPERATIVO                  │
-│   • Gestión de procesos                  │
-│   • Gestión de memoria                   │
-│   • Sistema de archivos                  │
-│   • Gestión de E/S                       │
-├─────────────────────────────────────────┤
-│            HARDWARE                      │
-└─────────────────────────────────────────┘
-```
-
-**Funciones principales:**
-1. **Abstracción:** Oculta complejidad del hardware
-2. **Gestión de recursos:** CPU, memoria, disco, E/S
-3. **Interfaz:** GUI y CLI para interactuar
-4. **Protección:** Aísla procesos entre sí
-
----
-
-### Proceso vs Programa
-
-| Aspecto | Programa | Proceso |
-|---------|----------|---------|
-| **Naturaleza** | Estático (archivo) | Dinámico (en ejecución) |
-| **Ubicación** | Disco | Memoria RAM |
-| **Recursos** | Ninguno | CPU, memoria, archivos |
-| **Estado** | No tiene | Nuevo, Listo, Ejecutando, Bloqueado, Terminado |
-
-```
-Estados de un proceso:
-          ┌─────────┐
-          │  NUEVO  │
-          └────┬────┘
-               │ admitido
-               ▼
-          ┌─────────┐      dispatch      ┌─────────────┐
-          │  LISTO  │ ─────────────────► │ EJECUTANDO  │
-          └────┬────┘ ◄───────────────── └──────┬──────┘
-               │       interrupción            │
-               │                               │ E/S o evento
-               │                               ▼
-               │                        ┌─────────────┐
-               └──────────────────────► │  BLOQUEADO  │
-                    E/S completada      └─────────────┘
-```
-
----
-
-### PCB (Process Control Block)
-
-```
-┌────────────────────────────────────┐
-│          PCB - Proceso 1234        │
-├────────────────────────────────────┤
-│ PID: 1234                          │
-│ Estado: LISTO                      │
-│ Program Counter: 0x00401000        │
-│ Registros: [R1=5, R2=100, ...]     │
-│ Límites memoria: 0x1000 - 0x9000   │
-│ Archivos abiertos: [fd0, fd1, ...] │
-│ Prioridad: 10                      │
-│ Tiempo CPU usado: 523 ms           │
-│ Puntero al padre: 1001             │
-└────────────────────────────────────┘
-```
-
----
-
-### Unidad 2: Planificación de CPU
-
-#### Algoritmos - Comparación Rápida
-
-| Algoritmo | Tipo | Starvation | Ideal para |
-|-----------|------|------------|------------|
-| **FCFS** | No-preemptive | No | Simple, batch |
-| **SJF** | Ambos | Sí | Mejor turnaround |
-| **Prioridad** | Ambos | Sí | Sistemas interactivos |
-| **Round Robin** | Preemptive | No | Time-sharing |
-
-#### Fórmulas Clave
-
-```
-Turnaround Time = Tiempo_Finalización - Tiempo_Llegada
-Waiting Time = Turnaround - Tiempo_Ráfaga (CPU)
-Response Time = Primera_Ejecución - Tiempo_Llegada
-```
-
----
-
-### Ejercicio Resuelto: FCFS
-
-**Datos:**
-| Proceso | Llegada | Ráfaga |
-|---------|---------|--------|
-| P1 | 0 | 5 |
-| P2 | 1 | 3 |
-| P3 | 2 | 8 |
-
-**Diagrama de Gantt:**
-```
-|  P1  |  P2  |    P3    |
-0      5      8          16
-```
-
-**Cálculos:**
-| Proceso | Fin | Turnaround | Waiting |
-|---------|-----|------------|---------|
-| P1 | 5 | 5-0=5 | 5-5=0 |
-| P2 | 8 | 8-1=7 | 7-3=4 |
-| P3 | 16 | 16-2=14 | 14-8=6 |
-
-**Promedios:** TT=8.67, WT=3.33
-
----
-
-### Ejercicio Resuelto: Round Robin (Q=2)
-
-**Datos:** (mismos)
-| Proceso | Llegada | Ráfaga |
-|---------|---------|--------|
-| P1 | 0 | 5 |
-| P2 | 1 | 3 |
-| P3 | 2 | 8 |
-
-**Ejecución paso a paso:**
-```
-t=0-2:  P1 ejecuta (restante=3), cola=[P2,P3,P1]
-t=2-4:  P2 ejecuta (restante=1), cola=[P3,P1,P2]
-t=4-6:  P3 ejecuta (restante=6), cola=[P1,P2,P3]
-t=6-8:  P1 ejecuta (restante=1), cola=[P2,P3,P1]
-t=8-9:  P2 termina
-t=9-11: P3 ejecuta (restante=4), cola=[P1,P3]
-t=11-12: P1 termina
-t=12-14: P3 ejecuta (restante=2)
-t=14-16: P3 termina
-```
-
----
-
-### Unidad 3: Sincronización
-
-#### Problema de la Sección Crítica
-
-```c
-// MAL - Race Condition
-void depositar(int monto) {
-    saldo = saldo + monto;  // No atómico!
-}
-
-// BIEN - Con mutex
-pthread_mutex_t lock;
-
-void depositar(int monto) {
-    pthread_mutex_lock(&lock);
-    saldo = saldo + monto;
-    pthread_mutex_unlock(&lock);
-}
-```
-
-#### Semáforos
-
-```c
-sem_t mutex;
-sem_init(&mutex, 0, 1);  // Inicializar en 1
-
-// Entrada a sección crítica
-sem_wait(&mutex);  // P() - decrementa
-
-// ... sección crítica ...
-
-// Salida
-sem_post(&mutex);  // V() - incrementa
-```
-
----
-
-### Condiciones de Deadlock (Coffman)
-
-**Las 4 condiciones necesarias:**
-1. **Exclusión mutua:** Recurso no compartible
-2. **Retención y espera:** Proceso retiene mientras espera
-3. **No apropiación:** No se puede quitar recurso por fuerza
-4. **Espera circular:** A→B→C→A
-
-```
-Prevención: Romper AL MENOS UNA condición
-
-Ejemplo de espera circular:
-    P1 tiene R1, espera R2
-          ↓
-    P2 tiene R2, espera R1
-          ↑───────────────┘
-```
-
----
-
-### Unidad 4: Gestión de Memoria
-
-#### Paginación - Traducción de Direcciones
-
-**Fórmulas:**
-```
-Número de página = Dirección_Lógica / Tamaño_Página
-Offset = Dirección_Lógica % Tamaño_Página
-Dirección_Física = (Marco × Tamaño_Página) + Offset
-```
-
-**Ejemplo:**
-```
-Dirección lógica: 8500
-Tamaño página: 4096 bytes
-
-Página = 8500 / 4096 = 2
-Offset = 8500 % 4096 = 308
-
-Si tabla de páginas dice: Página 2 → Marco 5
-Dir. Física = 5 × 4096 + 308 = 20788
-```
-
----
-
-### Algoritmos de Reemplazo de Páginas
-
-**FIFO:** Primera página que entró, primera que sale
-**LRU:** Página menos usada recientemente sale
-**Óptimo:** Página que se usará más tarde (teórico)
-
-**Ejemplo FIFO (3 marcos):**
-```
-Secuencia: 1, 2, 3, 4, 1, 2, 5
-
-| Paso | Página | M1 | M2 | M3 | Fault? |
-|------|--------|----|----|----| -------|
-| 1 | 1 | 1 |   |   | ✓ |
-| 2 | 2 | 1 | 2 |   | ✓ |
-| 3 | 3 | 1 | 2 | 3 | ✓ |
-| 4 | 4 | 4 | 2 | 3 | ✓ (sale 1) |
-| 5 | 1 | 4 | 1 | 3 | ✓ (sale 2) |
-| 6 | 2 | 4 | 1 | 2 | ✓ (sale 3) |
-| 7 | 5 | 5 | 1 | 2 | ✓ (sale 4) |
-
-Total Page Faults: 7
-```
-
----
-
-### Unidad 5: Sistemas de Archivos
-
-#### Estructura de Directorios
-
-```
-Linux:                          Windows:
-/                               C:\
-├── bin/                        ├── Windows\
-├── etc/                        ├── Program Files\
-├── home/                       ├── Users\
-│   └── usuario/                │   └── Usuario\
-│       ├── Documents/          │       ├── Documents\
-│       └── Downloads/          │       └── Downloads\
-└── var/                        └── ...
-```
-
-#### Inodos (ext4)
-
-```
-┌──────────────────────────────────┐
-│ INODO #12345                     │
-├──────────────────────────────────┤
-│ Permisos: rw-r--r-- (644)        │
-│ Propietario: UID 1000            │
-│ Tamaño: 15360 bytes              │
-│ Timestamps: ctime, mtime, atime  │
-│ Punteros a bloques: [100,101,...]│
-└──────────────────────────────────┘
-
-Nota: El NOMBRE del archivo está en el directorio,
-      no en el inodo.
-```
-
----
-
-### Comparación de Sistemas de Archivos
-
-| Característica | FAT32 | NTFS | ext4 |
-|----------------|-------|------|------|
-| **Tamaño máx archivo** | 4 GB | 16 EB | 16 TB |
-| **Journaling** | ❌ | ✅ | ✅ |
-| **Permisos** | ❌ | ACL | Unix |
-| **Cifrado** | ❌ | EFS | LUKS |
-| **Uso típico** | USB | Windows | Linux |
-
----
-
-### Unidad 6: Protección y Seguridad
-
-#### Principio de Mínimo Privilegio
-
-```
-MAL:                           BIEN:
-┌─────────────────┐           ┌─────────────────┐
-│ Web Server      │           │ Web Server      │
-│ Usuario: root   │           │ Usuario: www    │
-│ Acceso: TODO    │           │ Acceso:         │
-└─────────────────┘           │ - /var/www (RO) │
-                              │ - /var/log (RW) │
-Si es hackeado:               │ - Puerto 80     │
-¡Control total!               └─────────────────┘
-                              Si es hackeado:
-                              Daño limitado
-```
-
-#### Permisos Unix
-
-```bash
--rw-r--r-- 1 juan users 1024 Jan 31 archivo.txt
- │││ │││ │││
- │││ │││ └└└─ Otros: r-- (solo lectura)
- │││ └└└───── Grupo: r-- (solo lectura)
- └└└───────── Dueño: rw- (lectura y escritura)
-
-chmod 755 archivo  # rwxr-xr-x
-chmod 644 archivo  # rw-r--r--
-```
-
----
-
-## 📝 Preguntas de Práctica
-
-### Pregunta 1: Procesos
-¿Cuál es la diferencia entre modo usuario y modo kernel?
-
-**Respuesta:**
-- **Modo usuario:** Acceso limitado, no puede acceder hardware directo
-- **Modo kernel:** Acceso total, ejecuta código privilegiado
-- Transición mediante **syscalls** (interrupciones de software)
-
----
-
-### Pregunta 2: Planificación
-Un sistema usa Round Robin con Q=4. Si llegan P1(CPU=10) y P2(CPU=3) en t=0, ¿cuántos context switches hay?
-
-**Respuesta:**
-```
-t=0-4:   P1 (restante=6)  | Switch 1
-t=4-7:   P2 termina       | Switch 2
-t=7-11:  P1 (restante=2)  | Switch 3 (aunque no hay otros)
-t=11-13: P1 termina
-
-Total: 3 context switches
-```
-
----
-
-### Pregunta 3: Memoria
-¿Qué es thrashing y cómo se previene?
-
-**Respuesta:**
-- **Thrashing:** El sistema pasa más tiempo en page faults que ejecutando
-- **Causa:** Demasiados procesos compiten por pocos marcos
-- **Prevención:** 
-  - Asegurar working set de cada proceso
-  - Reducir grado de multiprogramación
-  - Añadir más RAM
-
----
-
-### Pregunta 4: Archivos
-¿Qué ventaja tiene journaling?
-
-**Respuesta:**
-- **Journaling:** Registro de transacciones antes de hacerlas
-- **Ventaja:** Recuperación rápida tras fallo (no fsck completo)
-- **Proceso:**
-  1. Escribir en journal
-  2. Hacer cambio real
-  3. Marcar como completado
-- Si falla en 1-2: Se descarta la operación
-- Si falla en 3: Se completa al reiniciar
-
----
-
-## 📋 Checklist de Estudio
-
-- [ ] Entiendo los estados de un proceso y transiciones
-- [ ] Puedo calcular métricas con FCFS, SJF, RR
-- [ ] Sé qué es una race condition y cómo evitarla
-- [ ] Puedo traducir direcciones con paginación
-- [ ] Entiendo la diferencia entre FAT32, NTFS, ext4
-- [ ] Conozco las syscalls básicas (open, read, write, fork)
-- [ ] Puedo explicar el teorema CAP
-- [ ] Sé qué son y para qué sirven los semáforos
