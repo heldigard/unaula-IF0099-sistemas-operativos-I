@@ -159,8 +159,8 @@ E1 (15%) + E2 (15%) + E3 (20%) + E4 (15%) + E5 (15%) + E6 (20%) = 100%
 
 ## 📧 Contacto
 
-**Docente:** [Por definir]  
-**Email:** [Por definir]  
+**Docente:** Eldigardo Camacho  
+**Email:** eldigardo.camacho3380@unaula.edu.co  
 **Horario de atención:** [Por definir]  
 
 ---

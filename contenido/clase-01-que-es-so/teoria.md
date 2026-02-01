@@ -79,7 +79,9 @@ Un **proceso** es un programa en ejecución. El SO es responsable de:
 
 ### 2.2 Gestión de Memoria
 
-El SO administra la RAM como un edificio de apartamentos:
+El SO administra la RAM como un edificio de apartamentos.
+
+> **¿Qué es RAM?** La **Random Access Memory** (Memoria de Acceso Aleatorio) es la memoria principal del computador. Es volátil (pierde datos sin energía) y muy rápida. El SO la asigna a los procesos para que ejecuten sus programas.
 
 - **Asignación**: Dar memoria a procesos cuando la necesitan
 - **Liberación**: Recuperar memoria cuando procesos terminan
@@ -93,6 +95,23 @@ El SO administra la RAM como un edificio de apartamentos:
 | **Fragmentación** | Huecos entre bloques de memoria | Compacción, paginación |
 | **Thrashing** | Excesivo swapping, CPU inactiva | Aumentar RAM, ajustar parámetros |
 | **Fugas de memoria** | Memoria no liberada | Herramientas de detección |
+
+#### Explicación de Problemas Clave
+
+**Fragmentación:** Ocurre cuando la memoria libre está dispersa en pequeños huecos no contiguos. Aunque haya suficiente memoria total, ningún hueco individual es lo bastante grande para un proceso nuevo.
+
+- **Error común:** Creer que fragmentación = "memoria llena". ¡No es lo mismo! Puedes tener 100MB libres pero fragmentados en 10 bloques de 10MB, y un proceso que necesite 50MB no podrá cargarse.
+
+**Thrashing:** El sistema pasa más tiempo swapping (moviendo datos entre RAM y disco) que ejecutando programas. Ocurre cuando hay demasiados procesos para la RAM disponible.
+
+- **Señal:** El disco está 100% ocupado pero la CPU está ociosa
+- **Causa típica:** Abrir demasiadas pestañas del navegador simultáneamente
+
+**Memoria Virtual y Paginación:**
+
+- **Memoria Virtual:** Técnica que permite al computador "engañar" a los programas haciéndoles creer que tienen más RAM de la que realmente existe. Usa espacio en disco como extensión de la RAM.
+
+- **Paginación:** Divide la memoria en bloques de tamaño fijo llamados "páginas" (típicamente 4KB). El SO mueve páginas entre RAM y disco según se necesiten.
 
 ### 2.3 Gestión de Archivos
 
@@ -123,6 +142,8 @@ El SO organiza datos en **sistemas de archivos jerárquicos**:
 
 ### 2.4 Gestión de E/S (Entrada/Salida)
 
+> **¿Qué es E/S?** **Entrada/Salida** (Input/Output, I/O) se refiere a toda comunicación entre el computador y el mundo exterior: teclado, mouse, monitor, disco, red, etc.
+
 El SO controla dispositivos mediante **drivers** y técnicas de E/S:
 
 #### Técnicas de E/S
@@ -132,6 +153,31 @@ El SO controla dispositivos mediante **drivers** y técnicas de E/S:
 | **Polling** | CPU pregunta repetidamente | ❌ Baja | Casi obsoleto |
 | **Interrupciones** | Dispositivo avisa a CPU | ✅ Alta | Estándar |
 | **DMA** | Memoria ↔ Dispositivo directo | ✅ Máxima | Discos, red |
+
+#### DMA (Direct Memory Access) - Explicación Detallada
+
+> **¿Qué es DMA?** El **Acceso Directo a Memoria** es un mecanismo que permite a los dispositivos transferir datos directamente hacia/desde la RAM sin intervenir a la CPU.
+
+**Sin DMA:** La CPU debe controlar cada byte de transferencia, lo que la deja ocupada y no puede hacer otras tareas.
+
+**Con DMA:** Un controlador especial llamado "controlador DMA" maneja la transferencia. La CPU solo:
+1. Configura la transferencia (dirección origen, destino, cantidad)
+2. Inicia el controlador DMA
+3. Continúa con otras tareas
+4. Recibe una interrupción cuando la transferencia termina
+
+**Ejemplo:** Cuando copias un archivo de 1GB, el DMA mueve los datos entre disco y RAM mientras la CPU puede seguir respondiendo al mouse y teclado.
+
+#### IPC (Inter-Process Communication)
+
+> **¿Qué es IPC?** La **Comunicación entre Procesos** es el conjunto de mecanismos que permiten a los procesos intercambiar datos y sincronizarse.
+
+**Mecanismos IPC comunes:**
+- **Pipes:** Canales unidireccionales (ej: `ls | grep`)
+- **Sockets:** Comunicación en red
+- **Memoria compartida:** Zonas de memoria accesibles por múltiples procesos
+- **Semáforos:** Sincronización (control de acceso a recursos compartidos)
+- **Mensajes:** Colas de mensajes entre procesos
 
 ---
 
@@ -238,6 +284,26 @@ Solo lo **esencial** corre en modo kernel; el resto corre en **espacio de usuari
 
 Las **system calls** son la **puerta de entrada** al kernel. Son funciones que permiten a los programas solicitar servicios del SO que requieren privilegios especiales.
 
+> **¿Por qué son necesarias?** Los programas de aplicación (modo usuario) NO pueden acceder directamente al hardware por razones de seguridad. Las system calls son la ÚNICA forma válida de solicitar servicios del kernel.
+
+### Modos de Ejecución: Usuario vs Kernel
+
+Los procesadores modernos tienen **anillos de protección** (protection rings):
+
+| Modo | Anillo | Privilegios | ¿Qué puede hacer? | Ejemplo |
+|------|-------|-------------|-------------------|---------|
+| **Kernel** | Ring 0 | Máximo | Acceso total a hardware, toda la memoria, cualquier instrucción | El SO y drivers |
+| **Usuario** | Ring 3 | Mínimo | Solo su propia memoria, instrucciones no privilegiadas | Chrome, VS Code, juegos |
+
+**Analogía del edificio:**
+- **Modo Usuario:** Piso público (puedes moverte libremente, pero no entrar a áreas restringidas)
+- **Modo Kernel:** Sótano de seguridad (acceso total, incluido la bóveda)
+
+**¿Por qué la separación?**
+- **Seguridad:** Un programa malicioso no puede leer tus archivos directamente
+- **Estabilidad:** Si un programa falla, NO crashea todo el sistema
+- **Aislamiento:** Cada proceso está en su "sandbox" (arena aislada)
+
 ### Flujo de una System Call
 
 ```
@@ -313,13 +379,31 @@ Usuario                    Kernel
 
 ### Por Plataforma
 
-| Plataforma | Líder | Cuota de mercado | Por qué |
-|------------|-------|------------------|---------|
-| **Escritorio** | Windows | 70% | Compatibilidad, Office, Gaming |
-| **Servidores** | Linux | 96% | Gratis, estable, Docker/K8s |
-| **Móviles** | Android | 71% | Código abierto, ecosistema |
+| Plataforma | Líder | Cuota de mercado (2025-2026) | Por qué |
+|------------|-------|-----------------------------|---------|
+| **Escritorio** | Windows | ~67-70% | Compatibilidad, Office, Gaming |
+| **Servidores** | Linux | ~44-96% (web: 96%) | Gratis, estable, Docker/K8s, 92% VMs en cloud |
+| **Móviles** | Android | ~71-73% | Código abierto, ecosistema |
 
-**Insight:** Cada SO domina donde resuelve mejor un problema específico.
+**Nota:** Las cifras varían según la fuente (StatCounter, DemandSage, CommandLinux). Los datos presentados son los más recientes disponibles a inicios de 2026.
+
+### Tendencias Importantes
+
+**Desktop Linux en crecimiento:**
+- Linux desktop alcanzó **4.7%** global en 2025 (70% de aumento desde 2022)
+- En Estados Unidos alcanzó **5.38%** en 2025
+- Proyecciones para 2026 sugieren que podría alcanzar **6%**
+
+**Servidores:**
+- Linux domina el 96% de servidores web
+- **92%** de las máquinas virtuales en plataformas cloud (AWS, Google Cloud, Azure) corren Linux
+- Windows Server mantienen fuerte presencia en entornos empresariales tradicionales (~4-11% en web)
+
+**Móviles:**
+- Android: 71-73% global, pero iOS domina en ingresos (50%+ de ingresos del mercado)
+- Juntos, Android e iOS controlan más del **99%** del mercado móvil
+
+**Insight:** Cada SO domina donde resuelve mejor un problema específico. Linux gana donde la tecnología importa (servidores, desarrolladores); Windows gana en facilidad de uso y compatibilidad.
 
 ---
 

@@ -4,6 +4,31 @@
 
 ---
 
+## Fuentes de Datos Estadísticos (2026)
+
+Las siguientes fuentes fueron consultadas para validar las estadísticas de mercado de sistemas operativos presentadas en esta clase:
+
+### Desktop Operating System Market Share
+- [StatCounter - Desktop OS Market Share Worldwide](https://gs.statcounter.com/os-market-share/desktop/worldwide)
+- [CommandLinux - Linux Desktop Market Share Yearly Trends](https://commandlinux.com/statistics/linux-desktop-market-share-yearly-trends/)
+- [Accio - 2025 Operating System Market Share Trends](https://www.accio.com/business/operating-system-market-share-trend)
+- [PCMag - Linux Just Hit a Big Milestone in the Desktop OS Race](https://www.pcmag.com/news/linux-just-hit-a-big-milestone-in-the-desktop-os-race)
+
+### Server Operating System Market Share
+- [CommandLinux - Linux Server Market Share (2026)](https://commandlinux.com/statistics/linux-server-market-share/)
+- [W3Techs - Linux vs Windows Usage Statistics](https://w3techs.com/technologies/comparison/os-linux,os-windows)
+- [FactMR - Server Operating System Market](https://www.factmr.com/report/server-operating-system-market)
+
+### Mobile Operating System Market Share
+- [StatCounter - Mobile OS Market Share Worldwide](https://gs.statcounter.com/os-market-share/mobile/worldwide)
+- [DemandSage - iPhone vs Android Users Market Share Statistics (2026)](https://www.demandsage.com/iphone-vs-android-users/)
+- [CommandLinux - Android Global Market Share Statistics 2026](https://commandlinux.com/android/android-global-market-share-statistics/)
+- [AppVertices - Android vs iOS Market Share 2025](https://appvertices.io/android-vs-ios-market-share-2025/)
+
+**Nota:** Los datos presentados en el material reflejan cifras acumuladas de 2025 y proyecciones para 2026. Las variaciones entre fuentes son normales debido a diferencias en metodología de medición.
+
+---
+
 ## Bibliografía
 
 ### Libros de Texto Recomendados

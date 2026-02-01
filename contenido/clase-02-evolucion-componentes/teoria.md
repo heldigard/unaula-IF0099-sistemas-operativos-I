@@ -63,9 +63,17 @@ CPU ociosa                    B hace E/S → CPU ejecuta C
 ```
 
 **Sistemas importantes:**
-- **IBM OS/360:** Introdujo spooling, JCL, multiprogramación real
-- **MULTICS (1969):** Proyecto ambicioso que falló por complejidad
-- **UNIX (1969):** Respuesta minimalista a MULTICS
+- **IBM OS/360 (1964):** Primer SO de "propósito general". Introdujo conceptos clave:
+  - **Spooling:** Simultaneous Peripheral Operations On-Line - Permite que el SO prepare E/S de un job mientras se ejecuta otro
+  - **JCL (Job Control Language):** Lenguaje de control para describir jobs al sistema
+  - **Multiprogramación real:** Varios programas en RAM simultáneamente
+
+> **¿Qué es Spooling?** El spooling permite que trabajos de E/S (como imprimir) se encolen para procesarse en segundo plano, sin que la CPU espere. Por ejemplo, múltiples usuarios pueden enviar documentos a imprimir simultáneamente; el SO los encola y los imprime uno por uno en segundo plano.
+
+> **¿Qué es JCL?** El Job Control Language es un lenguaje especial que usan los operadores para describir los trabajos al sistema operativo. Por ejemplo: `//JOB NAME=REPORT,CLASS=A,MSG=SYSPRINT` le dice al sistema cómo procesar un trabajo.
+
+- **MULTICS (1969):** Proyecto conjunto de Bell Labs, MIT y GE para crear un SO "universal". Falló por sobre-ingeniería (demasiado complejo, caro).
+- **UNIX (1969):** Respuesta minimalista de Ken Thompson y Dennis Ritchie (de Bell Labs) al fracaso de MULTICS
 
 **Innovaciones de UNIX:**
 - **Escrito en C:** Primer SO portable (no ensamblador)
@@ -88,16 +96,24 @@ UNIX (1969)
 
 **Innovación:** Time-sharing - múltiples usuarios interactivos simultáneos.
 
+> **¿Qué es Time-Sharing?** El **tiempo compartido** es una técnica que permite a múltiples usuarios acceder simultáneamente a un computador. La CPU cambia rápidamente entre usuarios, dando a cada uno una "tajada" de tiempo (generalmente milisegundos). Los usuarios tienen la ilusión de uso exclusivo, aunque en realidad comparten la CPU.
+
 **Concepto:** CPU dividida en "tajadas" de tiempo (quantum):
 ```
 1 segundo = 100ms usuario 1 + 100ms usuario 2 + 100ms usuario 3 + ...
 ```
 
+**Diferencia clave con multiprogramación:**
+- **Multiprogramación:** Varios programas se alternan, pero uno puede esperar E/S
+- **Time-sharing:** Varios **usuarios** interactivos se alternan, cada uno con su terminal
+
 **Sistemas importantes:**
 - **UNIX v4 (1973):** Introdujo pipes
 - **BSD (1977):** Sockets (red)
-- **VMS (1978):** Clustering en DEC VAX
-- **CP/M (1974):** SO para microprocesadores 8-bit
+- **VMS (1978):** Virtual Memory System en DEC VAX
+  > **¿Qué es VMS?** El **Virtual Memory System** fue un SO innovador para computadores VAX de Digital Equipment Corporation. Introdujo el **clustering** (varios computadores actuando como uno) y un sistema de archivos muy robusto. VMS influyó fuertemente en Windows NT (diseñado por ex-ingenieros de DEC).
+
+- **CP/M (1974):** SO para microprocesadores 8-bit de Intel y Zilog. Creado por Gary Kildall, se convirtió en el estándar para computadoras tempranas y fue la base de MS-DOS.
 
 **Problemas resueltos:**
 - Interactividad en tiempo real
@@ -237,13 +253,20 @@ Usuario (Ring 3)
 | Concepto | Definición |
 |----------|------------|
 | **Batch processing** | Procesamiento automático de trabajos encolados |
+| **Spooling** | Simultaneous Peripheral Operations On-Line - E/S en segundo plano |
+| **JCL** | Job Control Language - Lenguaje para describir jobs |
 | **Multiprogramación** | Múltiples programas en RAM simultáneamente |
-| **Time-sharing** | Usuarios comparten CPU mediante tajadas de tiempo |
+| **Time-sharing** | Usuarios interactivos comparten CPU mediante tajadas de tiempo |
+| **Virtual Memory (VMS)** | SO innovador con clustering y robustez (influyó Windows NT) |
 | **Kernel** | Núcleo del SO, corre en modo privilegiado |
 | **Shell** | Intérprete de comandos, puente usuario-kernel |
 | **System call** | Puente controlada entre usuario y kernel |
 | **Protection rings** | Niveles de privilegio del procesador (0-3) |
 | **Mode transition** | Cambio de modo usuario → kernel (TRAP/IRET) |
+
+> **Error común a evitar:** Confundir multiprogramación con time-sharing.
+> - **Multiprogramación** = varios programas simultáneos (uno puede estar esperando)
+> - **Time-sharing** = varios **usuarios** simultáneos (todos interactivos)
 
 ---
 
