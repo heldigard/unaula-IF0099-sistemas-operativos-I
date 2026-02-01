@@ -149,88 +149,157 @@ top
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="8" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 1" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="8" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 1;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="36">
 <header>IF0099 - Sistemas Operativos I | Unidad 1</header>
 <h2 id="22-gesti%C3%B3n-de-memoria">2.2 Gestión de Memoria</h2>
-<h3 id="el-so-administra-la-ram">El SO administra la RAM</h3>
+<h3 id="%C2%BFqu%C3%A9-gestiona-el-so">¿Qué gestiona el SO?</h3>
+<blockquote>
+<p>El <strong>SO es el administrador de la RAM</strong>: decide quién usa qué y cuándo</p>
+</blockquote>
+<h3 id="la-ram-como-un-edificio-de-oficinas">La RAM como un edificio de oficinas</h3>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code>┌─────────────────────────────────────┐
-│           MEMORIA RAM               │
+│           EDIFICIO (RAM 16GB)       │
 ├─────────┬─────────┬─────────┬───────┤
-│ Sistema │ Chrome  │ Spotify │ Libre │
-│ Operat. │ (500MB) │ (200MB) │(2.3GB)│
-│ (1GB)   │         │         │       │
+│ Oficina │ Oficina │ Oficina │ Libre │
+│ SO 2GB  │ Chrome  │ Spotify │ 3GB   │
+│         │ 500MB   │ 200MB   │       │
 └─────────┴─────────┴─────────┴───────┘
 </code></pre>
-<h3 id="funciones">Funciones:</h3>
+<h3 id="funciones-del-so">Funciones del SO:</h3>
 <ul>
-<li>Asignar memoria a procesos</li>
-<li>Liberar memoria cuando termina un proceso</li>
-<li>Proteger la memoria de un proceso de otros</li>
-<li>Implementar memoria virtual (swap)</li>
+<li><img class="emoji" draggable="false" alt="🔹" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f539.svg" data-marp-twemoji=""/> <strong>Asignar</strong> memoria a procesos cuando la necesitan</li>
+<li><img class="emoji" draggable="false" alt="🔹" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f539.svg" data-marp-twemoji=""/> <strong>Liberar</strong> memoria cuando un proceso termina</li>
+<li><img class="emoji" draggable="false" alt="🔹" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f539.svg" data-marp-twemoji=""/> <strong>Proteger</strong> la memoria (que Chrome no lea datos de Spotify)</li>
+<li><img class="emoji" draggable="false" alt="🔹" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f539.svg" data-marp-twemoji=""/> <strong>Memoria virtual</strong> (swap: usar disco como RAM extendida)</li>
 </ul>
+<h3 id="%C2%BFpor-qu%C3%A9-es-importante">¿Por qué es importante?</h3>
+<p>Sin gestión de memoria, un programa podría escribir en la memoria de otro → <strong>crash</strong> o <strong>brecha de seguridad</strong></p>
+<h3 id="ejemplo-ver-uso-de-memoria">Ejemplo: Ver uso de memoria</h3>
+<p><strong>Windows:</strong> <code>Ctrl + Shift + Esc</code> → pestaña &quot;Rendimiento&quot;<br />
+<strong>Linux:</strong> <code>free -h</code> o <code>top</code></p>
 <footer>UNAULA - Ingeniería Informática - 2026-I</footer>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="9" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 1" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="9" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 1;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="36">
 <header>IF0099 - Sistemas Operativos I | Unidad 1</header>
 <h2 id="23-gesti%C3%B3n-de-archivos">2.3 Gestión de Archivos</h2>
-<h3 id="sistema-de-archivos-jer%C3%A1rquico">Sistema de archivos jerárquico</h3>
-<pre is="marp-pre" data-auto-scaling="downscale-only"><code>C:\ (o /)
-├── Windows/ (o /bin)
-├── Program Files/
-├── Users/
-│   └── estudiante/
-│       ├── Documentos/
-│       ├── Descargas/
-│       └── Escritorio/
-└── ...
+<h3 id="%C2%BFqu%C3%A9-hace-el-so">¿Qué hace el SO?</h3>
+<blockquote>
+<p>El SO organiza tus archivos como <strong>bibliotecario</strong>: sabe dónde está todo</p>
+</blockquote>
+<h3 id="sistema-de-archivos-jer%C3%A1rquico-%C3%A1rbol-de-directorios">Sistema de archivos jerárquico (árbol de directorios)</h3>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code><img class="emoji" draggable="false" alt="📁" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4c1.svg" data-marp-twemoji=""/> C:\ o / (raíz)
+├── <img class="emoji" draggable="false" alt="📁" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4c1.svg" data-marp-twemoji=""/> Windows/ o /bin      → Programas del sistema
+├── <img class="emoji" draggable="false" alt="📁" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4c1.svg" data-marp-twemoji=""/> Program Files/        → Apps instaladas
+├── <img class="emoji" draggable="false" alt="📁" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4c1.svg" data-marp-twemoji=""/> Users/                → Perfiles de usuario
+│   └── <img class="emoji" draggable="false" alt="📁" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4c1.svg" data-marp-twemoji=""/> estudiante/
+│       ├── <img class="emoji" draggable="false" alt="📁" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4c1.svg" data-marp-twemoji=""/> Documentos/   → Tus archivos
+│       ├── <img class="emoji" draggable="false" alt="📁" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4c1.svg" data-marp-twemoji=""/> Descargas/    → Descargas
+│       └── <img class="emoji" draggable="false" alt="📁" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4c1.svg" data-marp-twemoji=""/> Escritorio/   → Escritorio
+└── <img class="emoji" draggable="false" alt="📁" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4c1.svg" data-marp-twemoji=""/> ...                   → Más carpetas
 </code></pre>
-<h3 id="funciones-1">Funciones:</h3>
+<h3 id="funciones-del-so-1">Funciones del SO:</h3>
 <ul>
-<li>Crear, eliminar, renombrar archivos</li>
-<li>Organizar en directorios</li>
-<li>Controlar permisos de acceso</li>
-<li>Gestionar espacio en disco</li>
+<li><img class="emoji" draggable="false" alt="🔹" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f539.svg" data-marp-twemoji=""/> <strong>Crear, eliminar, renombrar</strong> archivos y carpetas</li>
+<li><img class="emoji" draggable="false" alt="🔹" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f539.svg" data-marp-twemoji=""/> <strong>Organizar</strong> en directorios (estructura jerárquica)</li>
+<li><img class="emoji" draggable="false" alt="🔹" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f539.svg" data-marp-twemoji=""/> <strong>Permisos</strong>: quién puede leer/escribir (chmod, chown)</li>
+<li><img class="emoji" draggable="false" alt="🔹" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f539.svg" data-marp-twemoji=""/> <strong>Gestionar espacio</strong>: ubicación física en disco</li>
 </ul>
+<h3 id="analog%C3%ADa-sistema-de-archivos--archivo-f%C3%ADsico">Analogía: Sistema de archivos = Archivo físico</h3>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code>Disco duro          Archivo de oficinas
+─────────          ──────────────────
+Directorios        Carpetas y archivadores
+Archivos           Documentos individuales
+Permisos           Cerrojos y llaves
+</code></pre>
+<h3 id="ejemplo-comandos-b%C3%A1sicos">Ejemplo: Comandos básicos</h3>
+<table>
+<thead>
+<tr>
+<th>Acción</th>
+<th>Windows</th>
+<th>Linux</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Listar</td>
+<td><code>dir</code></td>
+<td><code>ls</code></td>
+</tr>
+<tr>
+<td>Crear carpeta</td>
+<td><code>mkdir</code></td>
+<td><code>mkdir</code></td>
+</tr>
+<tr>
+<td>Cambiar directorio</td>
+<td><code>cd</code></td>
+<td><code>cd</code></td>
+</tr>
+<tr>
+<td>Copiar</td>
+<td><code>copy</code></td>
+<td><code>cp</code></td>
+</tr>
+</tbody>
+</table>
 <footer>UNAULA - Ingeniería Informática - 2026-I</footer>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="10" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 1" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="10" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 1;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="36">
 <header>IF0099 - Sistemas Operativos I | Unidad 1</header>
 <h2 id="24-gesti%C3%B3n-de-entradasalida">2.4 Gestión de Entrada/Salida</h2>
+<h3 id="%C2%BFqu%C3%A9-es-es-inputoutput">¿Qué es E/S (Input/Output)?</h3>
+<blockquote>
+<p>La comunicación entre el computador y el mundo exterior</p>
+</blockquote>
 <h3 id="dispositivos-de-es">Dispositivos de E/S</h3>
 <table>
 <thead>
 <tr>
-<th>Entrada</th>
-<th>Salida</th>
-<th>Ambos</th>
+<th>Entrada (Input)</th>
+<th>Salida (Output)</th>
+<th>Ambos (I/O)</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Teclado</td>
-<td>Monitor</td>
-<td>Disco duro</td>
+<td><img class="emoji" draggable="false" alt="⌨️" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2328.svg" data-marp-twemoji=""/> Teclado</td>
+<td><img class="emoji" draggable="false" alt="🖥️" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f5a5.svg" data-marp-twemoji=""/> Monitor</td>
+<td><img class="emoji" draggable="false" alt="💾" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4be.svg" data-marp-twemoji=""/> Disco duro</td>
 </tr>
 <tr>
-<td>Mouse</td>
-<td>Impresora</td>
-<td>USB</td>
+<td><img class="emoji" draggable="false" alt="🖱️" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f5b1.svg" data-marp-twemoji=""/> Mouse</td>
+<td><img class="emoji" draggable="false" alt="🖨️" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f5a8.svg" data-marp-twemoji=""/> Impresora</td>
+<td><img class="emoji" draggable="false" alt="🔌" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f50c.svg" data-marp-twemoji=""/> USB</td>
 </tr>
 <tr>
-<td>Micrófono</td>
-<td>Parlantes</td>
-<td>Red</td>
+<td><img class="emoji" draggable="false" alt="🎤" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f3a4.svg" data-marp-twemoji=""/> Micrófono</td>
+<td><img class="emoji" draggable="false" alt="🔊" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f50a.svg" data-marp-twemoji=""/> Parlantes</td>
+<td><img class="emoji" draggable="false" alt="🌐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f310.svg" data-marp-twemoji=""/> Red</td>
 </tr>
 <tr>
-<td>Cámara</td>
+<td><img class="emoji" draggable="false" alt="📷" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4f7.svg" data-marp-twemoji=""/> Cámara</td>
 <td>-</td>
-<td>Pantalla táctil</td>
+<td><img class="emoji" draggable="false" alt="📱" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4f1.svg" data-marp-twemoji=""/> Pantalla táctil</td>
+</tr>
+<tr>
+<td><img class="emoji" draggable="false" alt="🎮" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f3ae.svg" data-marp-twemoji=""/> Joystick</td>
+<td><img class="emoji" draggable="false" alt="🎧" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f3a7.svg" data-marp-twemoji=""/> Auriculares</td>
+<td><img class="emoji" draggable="false" alt="💿" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4bf.svg" data-marp-twemoji=""/> CD/DVD</td>
 </tr>
 </tbody>
 </table>
-<h3 id="el-so">El SO:</h3>
-<ul>
-<li>Proporciona <strong>drivers</strong> para cada dispositivo</li>
-<li><strong>Abstrae</strong> las diferencias de hardware</li>
-<li>Maneja <strong>interrupciones</strong> de dispositivos</li>
-</ul>
+<h3 id="%C2%BFc%C3%B3mo-gestiona-el-so-los-dispositivos">¿Cómo gestiona el SO los dispositivos?</h3>
+<ol>
+<li><strong>Drivers</strong>: Software que &quot;habla&quot; el idioma de cada dispositivo</li>
+<li><strong>Abstracción</strong>: Todos los dispositivos se ven como &quot;archivos&quot; para el programa</li>
+<li><strong>Interrupciones</strong>: El dispositivo avisa &quot;¡tengo datos listos!&quot;</li>
+<li><strong>Buffering</strong>: Datos temporales mientras se procesan</li>
+</ol>
+<h3 id="analog%C3%ADa-el-so-como-traductor-universal">Analogía: El SO como traductor universal</h3>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code>Programa       →   SO (driver)   →   Impresora
+&quot;imprimir&quot;     →   traduce       →   lenguaje Epson
+</code></pre>
+<h3 id="ejemplo-ver-dispositivos">Ejemplo: Ver dispositivos</h3>
+<p><strong>Windows:</strong> <code>Administrador de dispositivos</code> (devmgmt.msc)<br />
+<strong>Linux:</strong> <code>lsusb</code>, <code>lspci</code>, <code>lsblk</code></p>
 <footer>UNAULA - Ingeniería Informática - 2026-I</footer>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="11" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 1" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="11" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 1;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="36">
