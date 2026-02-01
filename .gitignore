@@ -55,5 +55,9 @@ venv/
 # Output de Marp (presentaciones HTML generadas)
 output/
 
-# Capturas de Playwright (temporal para revisión visual)
+# Carpeta temporal para previsualización de slides
+.temp-preview/
+temp-html/
+.temp-html/
 .playwright-mcp/
+temp*
