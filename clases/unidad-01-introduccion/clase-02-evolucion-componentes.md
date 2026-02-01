@@ -278,7 +278,7 @@ Usuario 3 ──┘    Reparte tiempo
 | 1991 | **Linux** | SO libre y abierto |
 | 1995 | Windows 95 | GUI dominante |
 
-> 💡 **Prompt para infografía:** "Crear línea de tiempo visual de sistemas operativos desde 1970 hasta 2000, mostrando UNIX, MS-DOS, Mac OS, Windows y Linux con sus logos y fechas clave"
+**Impacto histórico:** Esta generación democrató el acceso a la computación, llevando los computadores de las grandes empresas a los hogares.
 
 ---
 
@@ -490,11 +490,9 @@ Programa malicioso → Pide al kernel → Kernel DENIEGA → Sistema seguro
 
 ---
 ## Transición entre modos
+### Puntos clave de la transición:- **TRAP (Interrupción de software)**: Mecanismo que permite cambiar de modo usuario a kernel- **Validación**: El kernel verifica permisos antes de ejecutar cualquier operación- **Retorno**: Se restaura el contexto del programa y se vuelve al modo usuario- **Seguridad**: Este mecanismo es fundamental para la protección del sistema### Analogía:```Usuario (modo usuario)  →  Llama a recepción (system call)                              ↓Recepcionista (kernel)    →  Verifica permisos                              ↓Gerente (kernel)          →  Ejecuta operación privilegiada                              ↓Usuario (modo usuario)    →  Recibe resultado```
 
-*(continuación...)*
 
----
-## Actividad Práctica (10 min)
 ---
 ## Actividad Práctica (10 min)
 ### En parejas, investiguen en su computador:

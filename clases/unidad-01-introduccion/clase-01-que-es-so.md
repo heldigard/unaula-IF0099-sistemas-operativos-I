@@ -169,13 +169,42 @@ Sin un SO, cada programa tendría que:
 
 ![Analogía del Hotel](../../assets/infografias/so-analogia-hotel.png)
 
+### Explicación de la Analogía
+
+| Elemento del Hotel | Equivalente en el Sistema |
+|--------------------|---------------------------|
+| **Huespedes** | Usuarios / Aplicaciones |
+| **Gerente** | Sistema Operativo |
+| **Habitaciones** | Memoria RAM |
+| **Personal de limpieza** | Gestión de procesos |
+| **Recepción** | Sistema de archivos |
+| **Mantenimiento** | Gestión de E/S |
+| **Reglas del hotel** | Políticas de seguridad |
+
+**Key Insight:** Así como el gerente coordina todos los recursos del hotel sin que los huéspedes necesiten conocer los detalles operativos, el SO gestiona todos los recursos del computador de manera transparente para el usuario.
+
 ---
 
 ## 2. Funciones Principales del SO
 
 ### Las 4 funciones fundamentales
 
+> El SO realiza **4 tareas principales** para que el computador funcione
+
 ![Funciones del SO](../../assets/infografias/so-funciones-principales.png)
+
+---
+
+## Resumen de las 4 Funciones
+
+| Función | Responsabilidad |
+|---------|-----------------|
+| **Gestión de Procesos** | Crear, terminar y coordinar programas |
+| **Gestión de Memoria** | Asignar y liberar RAM, proteger memoria |
+| **Gestión de Archivos** | Organizar, almacenar y recuperar datos |
+| **Gestión de E/S** | Controlar dispositivos (teclado, disco, red) |
+
+Estas cuatro funciones permiten que **múltiples programas** se ejecuten simultáneamente sin conflictos.
 
 ---
 
@@ -342,6 +371,16 @@ Programa       →   SO (driver)   →   Impresora
 ## 3. Arquitecturas del Sistema Operativo
 
 ### Tipos de estructura interna
+
+#### Monolítico
+
+**Características principales:**
+- Todos los servicios del SO están en un único bloque (kernel)
+- Comunicación directa entre componentes (llamadas a funciones)
+- Alto rendimiento pero difícil de mantener
+- Un error puede crashing todo el sistema
+
+**Ejemplos:** Linux, MS-DOS, UNIX original
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
@@ -675,42 +714,6 @@ ESCRITORIO/LAPTOP          SERVIDORES WEB          MÓVILES
 **Observación:** Linux está en todas partes, incluso donde no lo imaginas.
 
 ---
-## Familias de Sistemas Operativos
-
-```
-                    ┌─────────────┐
-                    │   UNIX      │
-                    │   (1969)    │
-                    └──────┬──────┘
-           ┌───────────────┼───────────────┐
-           ▼               ▼               ▼
-      ┌────────┐      ┌────────┐      ┌────────┐
-      │ BSD    │      │ Linux  │      │ macOS  │
-      │        │      │ (1991) │      │        │
-      └────────┘      └───┬────┘      └────────┘
-                    ┌─────┼─────┐
-                    ▼     ▼     ▼
-                 Ubuntu Fedora Android
-```
-
-```
-      ┌─────────────┐
-      │  MS-DOS     │
-      │  (1981)     │
-      └──────┬──────┘
-             ▼
-      ┌─────────────┐
-      │  Windows    │
-      │ (1985-hoy)  │
-      └─────────────┘
-```
-
----
-## Familias de Sistemas Operativos
-
-*(continuación...)*
-
----
 
 ## ¿Por qué Linux en este curso?
 
@@ -769,6 +772,165 @@ ESCRITORIO/LAPTOP          SERVIDORES WEB          MÓVILES
 | **Sistema Operativo** | Software intermediario entre usuario y hardware |
 | **Funciones** | Gestión de procesos, memoria, archivos y E/S |
 | **Interfaz** | GUI (gráfica) y CLI (comandos) |
+| **Kernel** | Núcleo del SO, gestiona recursos |
+
+---
+
+## Tarea para la próxima clase
+
+### Investigación individual (entregar vía plataforma)
+
+1. **Investiga** la historia de un SO (Windows, Linux, o macOS)
+2. **Escribe** un párrafo de 150 palabras sobre:
+   - Año de creación
+   - Creador(es)
+   - Versiones importantes
+   - Un dato curioso
+
+**Fecha de entrega:** Próxima clase
+
+---
+
+## Bibliografía
+
+- Silberschatz, A. (2018). *Operating System Concepts*. 10th Ed.
+- Tanenbaum, A. (2015). *Modern Operating Systems*. 4th Ed.
+- Stallings, W. (2018). *Operating Systems: Internals and Design Principles*
+
+### Recursos en línea
+- [OSDev Wiki](https://wiki.osdev.org/)
+- [Linux Journey](https://linuxjourney.com/)
+
+---
+
+## Próxima Clase
+
+### Clase 2: Evolución y Componentes del SO
+
+- Historia de los sistemas operativos
+- Generaciones de SO
+- Componentes: Kernel, Shell, Utilidades
+- Modos de operación: Usuario vs Kernel
+
+**¡Nos vemos!**
+
+---
+
+## Familias de Sistemas Operativos
+
+### Dos grandes linajes históricos
+
+> Los SO modernos provienen de dos ramas: **UNIX** (1969) y **MS-DOS** (1981)
+
+#### Familia UNIX (1969 - presente)
+
+```
+                    ┌─────────────┐
+                    │   UNIX      │  ← Bell Labs
+                    │   (1969)    │
+                    └──────┬──────┘
+           ┌───────────────┼───────────────┐
+           ▼               ▼               ▼
+      ┌────────┐      ┌────────┐      ┌────────┐
+      │ BSD    │      │ Linux  │      │ macOS  │
+      │ (1977) │      │ (1991) │      │ (2001) │
+      └────────┘      └───┬────┘      └────────┘
+                    ┌─────┼─────┐
+                    ▼     ▼     ▼
+                 Ubuntu Fedora Android
+```
+
+**Características:** Multiusuario, permisos rwx, "todo es un archivo"
+
+#### Familia Windows (1981 - presente)
+
+```
+      ┌─────────────┐
+      │  MS-DOS     │  ← Microsoft, IBM PC
+      │  (1981)     │
+      └──────┬──────┘
+             ▼
+      ┌─────────────┐
+      │  Windows    │  ← 1.0→95→XP→7→10→11
+      │ (1985-hoy)  │
+      └─────────────┘
+```
+
+**Características:** GUI predominante, Registro, DirectX
+
+### Impacto actual
+
+| Familia | Dominio | Cuota |
+|---------|---------|------|
+| UNIX/Linux | Servidores, móviles | ~96% servidores |
+| Windows | Escritorio, gaming | ~70% escritorio |
+
+---
+
+## ¿Por qué Linux en este curso?
+
+### Razones pedagógicas:
+1. **Código abierto**: Podemos ver cómo funciona internamente
+2. **Línea de comandos**: Entendemos mejor los conceptos
+3. **Dominante en servidores**: Habilidad laboral esencial
+4. **Gratuito**: Sin costo de licencias
+5. **Seguro**: Ideal para aprender sin riesgos
+
+### Usaremos: **Ubuntu 24.04 LTS**
+
+Ubuntu es ideal para aprender porque:
+- Gran comunidad y documentación
+- Fácil de instalar y usar
+- Amplio soporte de hardware
+- Equilibrio entre estabilidad y software reciente
+
+---
+
+## Actividad Práctica (10 min)
+
+### En parejas, respondan y practiquen:
+
+> **⚠️ IMPORTANTE:** En este curso usaremos **Linux (Ubuntu)** a través de WSL o VirtualBox. Ver guía en Laboratorio 1.
+
+### Tarea 1: Identificar procesos en ejecución
+
+**En Windows:**
+- `Ctrl + Shift + Esc` → Administrador de Tareas
+
+**En Linux:**
+- Terminal: `top`, `htop`, o `ps aux`
+- Interfaz gráfica: Monitor del Sistema
+
+**Investigación:** Identifiquen 3 procesos ejecutándose en su computador
+
+### Tarea 2: Análisis de memoria
+
+**Pregunta:** ¿Cuánta RAM tiene su computador y cuánta está en uso?
+
+**Windows:** Administrador de Tareas → pestaña "Rendimiento"
+**Linux:** `free -h` o en `top`
+
+### Tarea 3: Análisis crítico
+
+**Discusión:** ¿Por qué creen que Linux domina en servidores pero Windows en escritorios?
+
+*Consideren:*
+- Facilidad de uso para usuarios no técnicos
+- Costos de licencias
+- Compatibilidad de software
+- Soporte técnico
+
+---
+
+## Resumen de la Clase
+
+| Concepto | Descripción |
+|----------|-------------|
+| **Sistema Operativo** | Software intermediario entre usuario y hardware |
+| **Funciones** | Gestión de procesos, memoria, archivos y E/S |
+| **Arquitecturas** | Monolítico, capas, microkernel, híbrido |
+| **Interfaz** | GUI (gráfica) y CLI (comandos) |
+| **System Calls** | Puente entre programas y kernel |
 | **Kernel** | Núcleo del SO, gestiona recursos |
 
 ---
