@@ -1359,15 +1359,94 @@ Conectar la teoría con la realidad: **tu computador está ejecutando cientos de
 
 ---
 
-## Resumen
+## Resumen de la Clase
 
-| Concepto | Clave |
-|----------|-------|
-| **SO** = Intermediario usuario ↔ hardware |
-| **4 funciones**: Procesos, Memoria, Archivos, E/S |
-| **Arquitecturas**: Monolítico, Capas, Microkernel |
-| **System call** = Puerta al kernel |
-| **Interfaces**: GUI (fácil) vs CLI (potente) |
+### Lo que aprendimos hoy
+
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+
+<div>
+
+### 📚 Conceptos Clave
+
+| Concepto | Definición Corta |
+|----------|------------------|
+| **Sistema Operativo** | Software intermediario entre usuario y hardware |
+| **Proceso** | Programa en ejecución con sus recursos |
+| **System Call** | Puerta controlada al kernel |
+| **Kernel** | Núcleo del SO, corre en modo privilegiado |
+| **Arquitectura** | Cómo se organiza el SO internamente |
+
+### 🏗️ Arquitecturas del SO
+
+```
+MONOLÍTICO       CAPAS          MICROKERNEL
+┌────────┐       ┌────┐         ┌─┬─┬─┐
+│ Todo   │       │ 5  │         │ │ │ │
+│ junto  │       │ 4  │         │M│I│P│
+│        │       │ 3  │         │e│C│r│
+│ Rápido │       │ 2  │         │m│ │o│
+│        │       │ 1  │         │ │ │c│
+│ Difícil │       │ 0  │         └─┴─┴─┘
+└────────┘       └────┘         Flexible
+                 Seguro        Lento
+```
+
+</div>
+
+<div>
+
+### 🎯 4 Funciones del SO
+
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+
+<div style="padding: 8px; background: #dbeafe; border-radius: 8px;">
+
+**📊 Procesos**
+- Crear, destruir, scheduling
+- Sincronización, comunicación
+
+</div>
+
+<div style="padding: 8px; background: #d1fae5; border-radius: 8px;">
+
+**💾 Memoria**
+- Asignar, proteger, virtual
+- Paginación, swapping
+
+</div>
+
+<div style="padding: 8px; background: #fef3c7; border-radius: 8px;">
+
+**📁 Archivos**
+- Crear, leer, escribir
+- Directorios, permisos
+
+</div>
+
+<div style="padding: 8px; background: #fee2e2; border-radius: 8px;">
+
+**🔌 E/S**
+- Drivers, dispositivos
+- Interrupciones, DMA
+
+</div>
+
+</div>
+
+### 💡 Insights Importantes
+
+| Insight | Explicación |
+|---------|-------------|
+| SO = abstracción | Oculta complejidad del hardware |
+| System calls = API | Es la interfaz programable del kernel |
+| Linux domina servidores | Gratis, estable, sin GUI |
+| Windows domina escritorio | Compatible con todo, Office |
+| Arquitectura importa | Afecta rendimiento y seguridad |
+
+</div>
+
+</div>
 
 ---
 
