@@ -149,6 +149,17 @@ Entender la historia nos ayuda a:
 
 ![Evolución de los Sistemas Operativos](../../assets/infografias/so-evolucion-timeline.png)
 
+### Hitos Clave en la Evolución
+
+| Período | Avance Tecnológico | Problema Resuelto |
+|---------|-------------------|-------------------|
+| **1940s** | Sin SO | Programación manual con cables |
+| **1950s** | Batch processing | Automatizar secuencia de trabajos |
+| **1960s** | Multiprogramación | CPU ociosa durante E/S |
+| **1970s** | Time-sharing | Múltiples usuarios interactivos |
+| **1980s** | GUI personal | Computación accesible para todos |
+| **2000s+** | Virtualización/cloud | Escalabilidad y servicios on-demand |
+
 ---
 
 ## Generación 0: Sin Sistema Operativo (1940-1950)
@@ -304,6 +315,14 @@ Usuario 3 ──┘    Reparte tiempo
 
 ![Arquitectura del Sistema Operativo](../../assets/infografias/so-componentes-arquitectura.png)
 
+### Capas de Abstracción
+
+Cada capa oculta la complejidad de la inferior:
+- **Aplicaciones** → No conocen el hardware específico
+- **Shell** → Interpreta comandos sin saber del kernel
+- **Kernel** → Gestiona recursos sin exponer detalles físicos
+- **Hardware** → Componentes físicos reales
+
 ---
 
 ### Representación ASCII:
@@ -352,10 +371,16 @@ Usuario 3 ──┘    Reparte tiempo
          Hardware
 ```
 
-### Tipos de Kernel:
-- **Monolítico**: Linux, Windows
-- **Microkernel**: Minix, QNX
-- **Híbrido**: macOS (XNU), Windows NT
+### Tipos de Kernel y sus Características
+
+| Tipo | Estructura | Ventajas | Ejemplos |
+|------|------------|----------|----------|
+| **Monolítico** | Todo en un solo espacio de memoria | Rápido, comunicación directa | Linux, Windows clásico |
+| **Microkernel** | Mínimo en kernel, servicios en usuario | Seguro, mantenible | Minix, QNX, seL4 |
+| **Híbrido** | Kernel monolítico + características microkernel | Balance rendimiento/seguridad | macOS (XNU), Windows NT |
+| **Exokernel** | Mínimo, bibliotecas de usuario controlan recursos | Máxima flexibilidad | MIT Exokernel (investigación) |
+
+> **Nota:** Linux es monolítico pero soporta módulos cargables, lo que le da cierta flexibilidad de microkernel.
 
 ---
 
@@ -414,28 +439,74 @@ int fd = open("/home/user/archivo.txt", O_RDONLY);
 
 ## Modo Usuario vs Modo Kernel
 
-### Dos niveles de privilegio
+### Los "Anillos" de Protección (Protection Rings)
+
+Los procesadores modernos implementan **4 niveles de privilegio** (0-3), aunque la mayoría de SO solo usan 2:
 
 ```
-┌─────────────────────────────────────────────┐
-│           MODO USUARIO (Ring 3)             │
-│                                             │
-│  - Aplicaciones normales                    │
-│  - NO puede acceder hardware directamente   │
-│  - Memoria limitada                         │
-│  - Si falla, solo muere la aplicación       │
-└──────────────────┬──────────────────────────┘
-                   │ System Call
-                   ▼
-┌─────────────────────────────────────────────┐
-│           MODO KERNEL (Ring 0)              │
-│                                             │
-│  - Acceso total al hardware                 │
-│  - Toda la memoria accesible                │
-│  - Código del SO y drivers                  │
-│  - Si falla = CRASH del sistema             │
-└─────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────┐
+│  Ring 0  │  MODO KERNEL  │  Kernel, drivers         │
+│          │  (Máximo)     │  Acceso total            │
+├─────────────────────────────────────────────────────┤
+│  Ring 1  │  (No usado)   │  Reservado               │
+├─────────────────────────────────────────────────────┤
+│  Ring 2  │  (No usado)   │  Reservado               │
+├─────────────────────────────────────────────────────┤
+│  Ring 3  │  MODO USUARIO │  Aplicaciones normales   │
+│          │  (Mínimo)     │  Acceso restringido      │
+└─────────────────────────────────────────────────────┘
 ```
+
+> **¿Por qué solo 2 rings?** Simplifica el diseño del SO. OS/2 y antiguos Windows usaban Ring 2 para drivers.
+
+---
+
+## Comparación: Modo Usuario vs Modo Kernel
+
+<div style="display: flex; gap: 15px;">
+
+<div style="flex: 1;">
+
+### 🔵 MODO USUARIO (Ring 3)
+- **Aplicaciones normales** (Chrome, VS Code, juegos)
+- **NO puede acceder hardware directamente**
+- **Memoria aislada** (solo su espacio asignado)
+- **Instrucciones prohibidas**: IN, OUT, CLI, HLT
+- **Si falla**: Solo muere la aplicación
+- **Ejemplo**: `printf()` → solicita servicio al kernel
+
+</div>
+
+<div style="flex: 1;">
+
+### 🔴 MODO KERNEL (Ring 0)
+- **Código del SO y drivers**
+- **Acceso total al hardware**
+- **Toda la memoria accesible**
+- **Puede ejecutar cualquier instrucción**
+- **Si falla**: CRASH/BSoD/Pánico del kernel
+- **Ejemplo**: `sys_write()` → escribe directo en hardware
+
+</div>
+
+</div>
+
+---
+
+## Tabla de Instrucciones Permitidas
+
+| Instrucción | Descripción | Ring 3 | Ring 0 |
+|-------------|-------------|--------|--------|
+| `MOV` | Mover datos | ✅ | ✅ |
+| `ADD` | Sumar | ✅ | ✅ |
+| `JMP` | Saltar | ✅ | ✅ |
+| `IN` / `OUT` | Acceso a puertos E/S | ❌ | ✅ |
+| `CLI` / `STI` | Des/habilitar interrupciones | ❌ | ✅ |
+| `HLT` | Detener CPU | ❌ | ✅ |
+| `LGDT` | Cargar tabla de descriptores | ❌ | ✅ |
+| `MOV CR3` | Cambiar page tables | ❌ | ✅ |
+
+> **Resultado en Ring 3:** Si un programa intenta ejecutar `IN` o `HLT`, la CPU genera una **excepción de protección general** (General Protection Fault) y el SO termina el proceso.
 
 ---
 
@@ -460,50 +531,74 @@ Programa malicioso → Pide al kernel → Kernel DENIEGA → Sistema seguro
   - Acceder al disco sin permiso
 
 ---
-## Transición entre modos
+
+## Transición entre Modos: El Mecanismo
 
 ```
 ┌─────────────────────────────────────────────────┐
-│                MODO USUARIO                     │
+│                MODO USUARIO (Ring 3)            │
 │                                                 │
 │   programa ejecuta: read(fd, buffer, 100)       │
 │                         │                       │
+│   [Instrucción syscall/int 0x80]                │
 └─────────────────────────┼───────────────────────┘
-                          │ TRAP (interrupción)
+                          │ TRAP (Interrupción)
                           ▼
 ┌─────────────────────────────────────────────────┐
-│                MODO KERNEL                      │
+│                MODO KERNEL (Ring 0)             │
 │                                                 │
-│   1. Verifica permisos                          │
-│   2. Lee datos del disco                        │
-│   3. Copia datos a buffer del usuario           │
-│   4. Retorna al modo usuario                    │
+│   1. Guardar contexto (registros)               │
+│   2. Verificar permisos del fd                  │
+│   3. Validar dirección de buffer                │
+│   4. Ejecutar lectura física del disco          │
+│   5. Copiar datos a espacio de usuario          │
+│   6. Restaurar contexto                         │
 │                         │                       │
 └─────────────────────────┼───────────────────────┘
-                          │ RETURN
+                          │ IRET (Return)
                           ▼
 ┌─────────────────────────────────────────────────┐
-│                MODO USUARIO                     │
+│                MODO USUARIO (Ring 3)            │
 │   programa continúa con datos en buffer         │
 └─────────────────────────────────────────────────┘
 ```
 
 ---
-## Transición entre modos
-### Puntos clave de la transición:
 
-- **TRAP (Interrupción de software)**: Mecanismo que permite cambiar de modo usuario a kernel
-- **Validación**: El kernel verifica permisos antes de ejecutar cualquier operación
-- **Retorno**: Se restaura el contexto del programa y se vuelve al modo usuario
-- **Seguridad**: Este mecanismo es fundamental para la protección del sistema
+## Tipos de Transiciones al Kernel
 
-### Analogía:
+| Tipo | Causa | Propósito | Frecuencia |
+|------|-------|-----------|------------|
+| **System Call** | Programa solicita servicio | E/S, procesos, memoria | Miles/segundo |
+| **Interrupción** | Hardware necesita atención | Timer, teclado, disco | Miles/segundo |
+| **Excepción** | Error en programa | Page fault, división por cero | Variable |
+| **Trap** | Debug/breakpoint | Debugging | Baja |
 
+---
 
+## Analogía: La Transición como un Edificio de Seguridad
 
+```
+PISO 3 (PÚBLICO)          PISO 0 (SEGURIDAD MÁXIMA)
+────────────────          ─────────────────────────
+   Visitante                    Bóveda del banco
+      │                              │
+      │ "Quiero acceder a mi caja"   │
+      ▼                              ▼
+   Recepción ←────────────────→   Gerente de seguridad
+      │                              │
+      │ "Espere, verifico"           │ "Verificar identidad"
+      │                              │ "Verificar permisos"
+      │                              │ "Ejecutar acceso"
+      ▼                              ▼
+   Esperando ←────────────────→   Acceso concedido
+      │                              │
+      │ "Aquí tiene su contenido"    │ "Retornar resultado"
+      ▼                              ▼
+   Visitante satisfecho         Bóveda segura
+```
 
-```Usuario (modo usuario)  →  Llama a recepcion (system call)                              ↓Recepcionista (kernel)    →  Verifica permisos                              ↓Gerente (kernel)          →  Ejecuta operacion privilegiada                              ↓Usuario (modo usuario)    →  Recibe resultado```
-Usuario (modo usuario)  →  Llama a recepcion (system call)                              ↓Recepcionista (kernel)    →  Verifica permisos                              ↓Gerente (kernel)          →  Ejecuta operacion privilegiada                              ↓Usuario (modo usuario)    →  Recibe resultado```
+> **Principio clave:** El visitante (modo usuario) **nunca entra** a la bóveda; solo recibe el resultado de la operación solicitada.
 ---
 ## Actividad Práctica (10 min)
 ### En parejas, investiguen en su computador:

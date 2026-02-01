@@ -163,25 +163,59 @@ Sin un SO, cada programa tendría que:
 
 ---
 
-## Analogía del SO
+## Analogía del SO: El Hotel 🏨
 
 ### El SO como el "Gerente de un Hotel"
 
 ![Analogía del Hotel](../../assets/infografias/so-analogia-hotel.png)
 
-### Explicación de la Analogía
+**¿Por qué un hotel?** Ambos deben gestionar recursos finitos (habitaciones/RAM) entre múltiples usuarios concurrentes de forma segura y eficiente.
 
-| Elemento del Hotel | Equivalente en el Sistema |
-|--------------------|---------------------------|
-| **Huespedes** | Usuarios / Aplicaciones |
-| **Gerente** | Sistema Operativo |
-| **Habitaciones** | Memoria RAM |
-| **Personal de limpieza** | Gestión de procesos |
-| **Recepción** | Sistema de archivos |
-| **Mantenimiento** | Gestión de E/S |
-| **Reglas del hotel** | Políticas de seguridad |
+---
 
-**Key Insight:** Así como el gerente coordina todos los recursos del hotel sin que los huéspedes necesiten conocer los detalles operativos, el SO gestiona todos los recursos del computador de manera transparente para el usuario.
+## Analogía del Hotel: Equivalencias Detalladas
+
+<div style="display: flex; gap: 20px;">
+
+<div style="flex: 1;">
+
+### 🏨 Elementos del Hotel
+- **Huéspedes** → Llegan, solicitan servicios, usan recursos
+- **Gerente** → Coordina todo, toma decisiones de asignación
+- **Habitaciones** → Espacio limitado que debe asignarse
+- **Recepción** → Registra quién está dónde y cuándo
+- **Seguridad** → Controla quién entra a qué áreas
+- **Mantenimiento** → Repara y mantiene funcionando todo
+
+</div>
+
+<div style="flex: 1;">
+
+### 💻 Elementos del Sistema
+- **Usuarios/Aplicaciones** → Programas que necesitan recursos
+- **Sistema Operativo** → Gestiona y coordina todo
+- **Memoria RAM** → Espacio limitado para programas
+- **Sistema de Archivos** → Organiza y localiza datos
+- **Protección/Permisos** → Controla accesos a recursos
+- **Drivers/Gestión E/S** → Mantiene dispositivos funcionando
+
+</div>
+
+</div>
+
+> **💡 Insight:** El huésped no necesita saber cómo funciona la caldera ni la red eléctrica; solo pide agua caliente. Igualmente, el programador no necesita saber cómo funciona el disco duro; solo pide "abrir archivo".
+
+---
+
+## Analogía en Acción: Escenarios
+
+| Escenario Hotel | Escenario Computador | Acción del "Gerente" (SO) |
+|-----------------|----------------------|---------------------------|
+| Huésped solicita habitación | Programa solicita memoria | Busca espacio disponible, asigna, registra |
+| Dos huéspedes quieren la misma suite | Dos procesos compiten por CPU | Decide quién usa el recurso y por cuánto tiempo |
+| Huésped deja la habitación | Programa termina | Libera recursos, limpia, actualiza registros |
+| Robo en una habitación | Proceso intenta leer memoria ajena | Bloquea acceso, notifica violación de seguridad |
+| Llamada de emergencia | Interrupción de hardware | Atiende inmediatamente, suspende tareas actuales |
 
 ---
 
@@ -423,14 +457,54 @@ Programa       →   SO (driver)   →   Impresora
 ├──────────┼──────────────────────────────────────────────┤
 │  Nivel 0 │ Hardware (CPU, memoria, dispositivos)        │
 └─────────────────────────────────────────────────────────┘
-
-Ventaja: Cada capa solo usa servicios de la inferior
-Ejemplo: THE (Dijkstra, 1968)
 ```
+
+### Principio Fundamental: La Regla de las Capas
+> **Cada capa solo puede:**
+> 1. Usar servicios de la capa **inmediatamente inferior**
+> 2. Proveer servicios a la capa **inmediatamente superior**
 
 ---
 
-## Microkernel
+## Arquitectura por Capas: Análisis
+
+<div style="display: flex; gap: 15px; font-size: 0.9em;">
+
+<div style="flex: 1;">
+
+### ✅ Ventajas
+- **Modularidad**: Cada capa es un módulo independiente
+- **Fácil depuración**: Errores se aislan en una capa
+- **Desarrollo paralelo**: Equipos trabajan en capas diferentes
+- **Verificación formal**: Se puede probar cada capa por separado
+
+</div>
+
+<div style="flex: 1;">
+
+### ❌ Desventajas
+- **Overhead**: Llamadas entre capas consumen tiempo
+- **Definición de capas**: Decidir qué va en cada nivel es difícil
+- **Rendimiento inferior** vs monolítico (5-10% más lento)
+- **Rigidez**: Cambios en una capa pueden afectar otras
+
+</div>
+
+</div>
+
+### Ejemplo Histórico: THE (Dijkstra, 1968)
+- Primer SO con arquitectura de capas bien definida
+- 5 niveles con funciones claramente separadas
+- Demostró que la abstracción por capas era viable
+
+### ¿Dónde se usa hoy?
+- **TCP/IP**: Pila de red en capas (OSI model)
+- **Sistemas embebidos**: Donde la claridad es prioridad
+- **Sistemas educativos**: Para enseñar conceptos
+
+---
+
+## Microkernel: El Enfoque Minimalista
 
 ```
 ┌────────────────────────────────────────────────────────────┐
@@ -453,10 +527,59 @@ Ejemplo: THE (Dijkstra, 1968)
 │                          ▼                                 │
 │                      HARDWARE                              │
 └────────────────────────────────────────────────────────────┘
-
-Ventajas: Más seguro (servicios en modo usuario), mantenible
-Desventajas: Overhead por comunicación entre procesos
 ```
+
+### Filosofía del Microkernel
+> **"El kernel debe hacer lo mínimo indispensable; todo lo demás es servicio de usuario"**
+
+---
+
+## Microkernel: Componentes en el Kernel vs Usuario
+
+<div style="display: flex; gap: 15px;">
+
+<div style="flex: 1;">
+
+### 🔴 En el Kernel (Mínimo)
+- **Comunicación entre procesos (IPC)**
+- **Scheduling básico** (decidir quién corre)
+- **Manejo básico de memoria**
+- **Manejo de interrupciones**
+- **Primitivas de sincronización**
+
+**Tamaño típico:** 10,000 - 50,000 líneas de código
+
+</div>
+
+<div style="flex: 1;">
+
+### 🔵 En Modo Usuario (Servidores)
+- **Sistema de archivos** (puede fallar sin crashear SO)
+- **Drivers de dispositivos** (aislados del kernel)
+- **Gestión de memoria virtual**
+- **Red y protocolos de comunicación**
+- **Interfaz de usuario**
+
+**Ventaja:** Si falla un driver, se reinicia sin afectar el sistema
+
+</div>
+
+</div>
+
+---
+
+## Microkernel: Casos de Uso Reales
+
+| Sistema | Uso Principal | Características |
+|---------|---------------|-----------------|
+| **MINIX** | Educación/Investigación | Tanenbaum lo diseñó para enseñar; código muy limpio |
+| **QNX** | Automotriz/Industrial | Usado en 200+ millones de vehículos (infoentretenimiento) |
+| **seL4** | Sistemas críticos | Primer kernel con verificación formal de corrección |
+| **L4** | Virtualización | Base de muchos hypervisors modernos |
+| **Mach** | macOS/iOS (híbrido) | Precursor del kernel XNU de Apple |
+
+### 📱 Dato Curioso: iPhone usa microkernel (parcial)
+iOS/macOS usan **XNU** (X is Not Unix), un híbrido basado en Mach microkernel + componentes BSD. Los drivers corren en modo usuario para mayor estabilidad.
 
 ---
 
@@ -519,6 +642,83 @@ Combina lo mejor: núcleo híbrido con drivers en modo usuario.
 │                                       HARDWARE              │
 └─────────────────────────────────────────────────────────────┘
 ```
+
+### ¿Por qué dos modos de operación?
+| Modo | Privilegios | Puede acceder a | Ejemplos de instrucciones |
+|------|-------------|-----------------|---------------------------|
+| **Usuario** | Limitados | Memoria propia | ADD, MOV, JMP |
+| **Kernel** | Totales | Todo el hardware | IN, OUT, HLT, CLI |
+
+> **El TRAP/INT es la "puerta" controlada** que permite al programa solicitar servicios del kernel de forma segura.
+
+---
+
+## System Calls: El Mecanismo Paso a Paso
+
+### ¿Qué sucede realmente cuando llamas a `printf()`?
+
+<div style="display: flex; gap: 10px; font-size: 0.85em;">
+
+<div style="flex: 1;">
+
+**Paso 1: Biblioteca C**
+```c
+printf("Hola");
+```
+La función de usuario prepara los parámetros en registros/Stack.
+
+**Paso 2: Preparar Syscall**
+```c
+// libc prepara:
+mov eax, 4      // syscall número 4 = write
+mov ebx, 1      // fd = stdout
+mov ecx, msg    // dirección del mensaje
+mov edx, 4      // longitud
+```
+
+</div>
+
+<div style="flex: 1;">
+
+**Paso 3: Ejecutar INT/_SYSCALL**
+```asm
+int 0x80        // Interrupción 0x80 (Linux x86)
+// o
+syscall         // Instrucción syscall (x86_64)
+```
+**¡Cambio de contexto!** CPU cambia a modo kernel.
+
+**Paso 4: Kernel ejecuta**
+```c
+// sys_write() en el kernel:
+// 1. Verifica permisos del fd
+// 2. Copia datos de usuario a kernel
+// 3. Llama al driver de consola
+// 4. Escribe en hardware
+```
+
+</div>
+
+<div style="flex: 1;">
+
+**Paso 5: Retorno**
+```asm
+// Kernel devuelve resultado
+// en registro eax/rax
+iret            // Retorna a modo usuario
+```
+
+**Paso 6: Continúa programa**
+```c
+// libc recibe resultado
+// y retorna a printf()
+```
+
+</div>
+
+</div>
+
+> ⚠️ **Cambiar de modo usuario a kernel es costoso** (~100-1000 ciclos de CPU). Por eso existen optimizaciones como `vDSO` (evitar syscall para gettimeofday).
 
 ---
 
