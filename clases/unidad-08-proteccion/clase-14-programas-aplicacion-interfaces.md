@@ -9,6 +9,22 @@ footer: 'UNAULA - Ingeniería Informática - 2026-I'
 # Clase 14: Programas, Aplicaciones e Interfaces
 ## System Calls, APIs y Comunicación con el Kernel
 
+**Pregunta fundamental:** ¿Cómo se comunican los programas con el sistema operativo?
+
+---
+
+## Conceptos Clave de esta Clase
+
+| Concepto | Pregunta | Respuesta corta |
+|----------|----------|-----------------|
+| **System Call** | ¿Qué es? | La puerta controlada al kernel |
+| **Modo Usuario** | ¿Qué limita? | Acceso restringido (Ring 3) |
+| **Modo Kernel** | ¿Qué permite? | Acceso total al hardware (Ring 0) |
+| **API** | ¿Para qué sirve? | Abstracción amigable sobre syscalls |
+| **strace** | ¿Qué hace? | Muestra todas las syscalls de un programa |
+
+**Contexto:** Cada vez que abres un archivo, creas un proceso, o usas la red, tu programa hace system calls.
+
 <style>
 section {
   font-size: 20px;
@@ -170,6 +186,13 @@ with open("datos.txt", "r") as f:
 6. Resultado → vuelve por la cadena
 ```
 
+**Analogía de la vida real:**
+- **Nivel 4 (Usuario):** "Quiero leer este libro" → Pides al bibliotecario
+- **Nivel 3 (Biblioteca):** Busca el libro en el catálogo → Funciones helper
+- **Nivel 2 (Syscall):** Solicita acceso al archivo → Petición formal
+- **Nivel 1 (Kernel):** Verifica permisos y accede al disco → El bibliotecario
+- **Nivel 0 (Hardware):** El disco físico gira y lee → La estantería
+
 > **Key insight:** Cada nivel agrega abstracción, pero las syscalls son el único camino al kernel.
 
 ---
@@ -214,7 +237,14 @@ Las **llamadas al sistema** (syscalls) son la **única forma** en que un program
 | **Si hay error** | Muere el proceso | Crash del sistema |
 | **Instrucciones** | ADD, MOV, JMP | + IN, OUT, HLT |
 
+**¿Por qué esta separación?**
+- **Seguridad:** Un programa malicioso no puede acceder directamente al hardware
+- **Estabilidad:** Un bug en un programa no puede tumbar el sistema entero
+- **Control:** El SO decide quién accede a qué y cuándo
+
 **La syscall es la "puerta controlada"** entre estos mundos.
+
+> **Insight:** Los anillos de protección (rings) son un concepto de hardware x86. El SO los usa para implementar seguridad.
 
 ---
 
@@ -332,11 +362,13 @@ write(1, "Hola\n", 5);  // fd=1 (stdout)
 ### La Biblioteca C (libc)
 
 **Funciones de la libc:**
-- **Wrapper de syscalls:** `open()`, `read()`, `write()`
-- **Gestión de memoria:** `malloc()`, `free()`
-- **Entrada/Salida:** `printf()`, `scanf()`, `fopen()`
-- **Procesos:** `system()`, `popen()`
-- **Strings:** `strcpy()`, `strcmp()`, `strlen()`
+| Categoría | Funciones |
+|-----------|-----------|
+| **Wrapper de syscalls** | `open()`, `read()`, `write()` |
+| **Gestión de memoria** | `malloc()`, `free()` |
+| **Entrada/Salida** | `printf()`, `scanf()`, `fopen()` |
+| **Procesos** | `system()`, `popen()` |
+| **Strings** | `strcpy()`, `strcmp()`, `strlen()` |
 
 **Flujo de printf():**
 ```
@@ -350,6 +382,14 @@ syscall instruction
   ↓
 kernel escribe en terminal
 ```
+
+**¿Por qué usar libc en lugar de syscalls directas?**
+1. **Portabilidad:** `printf()` funciona en Linux, Windows, macOS
+2. **Comodidad:** `printf()` formatea, `write()` solo escribe bytes
+3. **Buffering:** libc agrupa writes para mejorar rendimiento
+4. **Seguridad:** Maneja errores automáticamente
+
+> **Trade-off:** libc añade overhead, pero vale la pena para la mayoría de aplicaciones.
 
 ---
 
@@ -418,12 +458,20 @@ CloseHandle(pi.hProcess);
 
 **strace** intercepta y muestra todas las system calls que realiza un proceso.
 
+**¿Por qué usar strace?**
+- **Debugging:** Ver qué archivos intenta abrir un programa
+- **Performance:** Identificar syscalls frecuentes o lentas
+- **Aprendizaje:** Entender cómo funciona el SO
+- **Forense:** Ver qué hace un programa sospechoso
+
 **Uso básico:**
 ```bash
 strace comando
-strace -c comando      # Contar syscalls
-strace -e open,read ls # Filtrar syscalls
+strace -c comando      # Contar syscalls (summary)
+strace -e open,read ls # Filtrar syscalls específicas
 strace -o salida.txt comando  # Guardar a archivo
+strace -p 1234        # Adjuntar a proceso existente (PID)
+strace -f comando     # Seguir procesos hijos
 ```
 
 ---
@@ -592,20 +640,32 @@ strace -c cat /etc/passwd
 
 ## Resumen de la Clase
 
-| Concepto | Descripción |
-|----------|-------------|
-| **System Call** | Interfaz controlada al kernel |
-| **Modo Usuario** | Aplicaciones, acceso limitado (Ring 3) |
-| **Modo Kernel** | SO, acceso total (Ring 0) |
-| **API** | Abstracción de alto nivel sobre syscalls |
-| **libc** | Biblioteca estándar de C, wrappers de syscalls |
-| **strace** | Herramienta para observar syscalls |
+### Conceptos fundamentales
 
-### Syscalls más importantes:
-- `open()`, `read()`, `write()`, `close()` - Archivos
-- `fork()`, `exec()`, `wait()`, `exit()` - Procesos
-- `mmap()`, `brk()` - Memoria
-- `socket()`, `connect()`, `send()`, `recv()` - Red
+| Concepto | Descripción | Ejemplo |
+|----------|-------------|---------|
+| **System Call** | Interfaz controlada al kernel | `open()`, `read()`, `write()` |
+| **Modo Usuario** | Aplicaciones, acceso limitado (Ring 3) | Navegador, editor de texto |
+| **Modo Kernel** | SO, acceso total (Ring 0) | Gestión de memoria, E/S |
+| **API** | Abstracción de alto nivel sobre syscalls | `printf()`, `fopen()` |
+| **libc** | Biblioteca estándar de C, wrappers de syscalls | `glibc`, `musl` |
+| **strace** | Herramienta para observar syscalls | `strace ls` |
+
+### Syscalls más importantes por categoría:
+
+| Categoría | Syscalls clave |
+|-----------|----------------|
+| **Archivos** | `open()`, `read()`, `write()`, `close()` |
+| **Procesos** | `fork()`, `exec()`, `wait()`, `exit()` |
+| **Memoria** | `mmap()`, `brk()`, `munmap()` |
+| **Red** | `socket()`, `connect()`, `send()`, `recv()` |
+| **Info** | `getpid()`, `gettimeofday()`, `uname()` |
+
+**Puntos clave:**
+1. **Syscalls son costosas:** Cambiar de modo usuario→kernel cuesta ~100-1000 ciclos
+2. **libc mejora rendimiento:** Buffering agrupa múltiples syscalls
+3. **Portabilidad vs Control:** APIs son portables; syscalls son específicas del SO
+4. **strace es esencial:** Herramienta de debugging indispensable
 
 ---
 

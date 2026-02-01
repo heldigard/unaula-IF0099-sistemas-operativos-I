@@ -7,6 +7,28 @@ footer: 'UNAULA - Ingeniería Informática - 2026-I'
 ---
 
 # Clase 16: Examen Final
+## Evaluación Integral del Curso
+
+**IF0099 - Sistemas Operativos I**
+*4° Semestre - Ingeniería Informática*
+
+---
+
+## 🎯 Objetivo del Examen
+
+Evaluar la comprensión integral de los conceptos fundamentales de sistemas operativos y la capacidad de aplicarlos a problemas prácticos.
+
+---
+
+## 📋 Formato del Examen
+
+| Aspecto | Detalle |
+|---------|---------|
+| **Duración** | 90-120 minutos |
+| **Formato** | Teórico + práctico |
+| **Temas** | Todo el curso (Unidades 1-8) |
+| **Materiales** | Calculadora básica permitida |
+| **Consultas** | Solo para aclarar enunciados |
 
 <style>
 section {
@@ -141,12 +163,21 @@ section {
 
 ### Estructura del Examen
 
-| Sección | Tipo | Puntos | Tiempo |
-|---------|------|--------|--------|
-| **Parte 1:** Conceptos Teóricos | Selección Múltiple | 30% | 30 min |
-| **Parte 2:** Análisis de Casos | Desarrollo | 40% | 45 min |
-| **Parte 3:** Ejercicios Prácticos | Cálculos/Código | 30% | 45 min |
-| **TOTAL** | | **100%** | **120 min** |
+| Sección | Tipo | Puntos | Tiempo sugerido | Habilidades evaluadas |
+|---------|------|--------|------------------|----------------------|
+| **Parte 1** | Conceptos Teóricos | 30% | 30 min | Comprensión, definiciones |
+| **Parte 2** | Análisis de Casos | 40% | 45 min | Aplicación, análisis |
+| **Parte 3** | Ejercicios Prácticos | 30% | 45 min | Cálculos, código |
+| **TOTAL** | | **100%** | **120 min** | |
+
+**Distribución temática aproximada:**
+| Unidad | Peso | Temas clave |
+|--------|------|-------------|
+| 1-2 | 20% | Procesos, estados, PCB |
+| 3 | 20% | Planificación FCFS, SJF, RR |
+| 4 | 15% | Sincronización, semáforos, deadlock |
+| 5-6 | 25% | Memoria virtual, paginación, archivos |
+| 7-8 | 20% | E/S, protección, distribuidos |
 
 ---
 

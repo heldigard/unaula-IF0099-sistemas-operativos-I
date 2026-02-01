@@ -360,6 +360,8 @@ Archivo: Inicio=2 → 2→3→5→4→EOF    ▼ ▼
                                   Orden: 2→3→5→4
 ```
 
+**Funcionamiento:** La FAT es una tabla central que indica el siguiente bloque de cada archivo. Cada entrada corresponde a un bloque de datos. El valor EOF marca fin de archivo. El sistema sigue la cadena de punteros para leer archivos fragmentados.
+
 ✅ Simple, compatible con todo
 ❌ Límite 4GB por archivo
 ❌ Sin permisos, sin journaling
@@ -386,6 +388,8 @@ Archivo: Inicio=2 → 2→3→5→4→EOF    ▼ ▼
 └────────────────────────────────────────────────────────┘
 ```
 
+**Funcionamiento:** NTFS organiza todo en la Master File Table (MFT), una base de datos de registros de 1KB. Cada archivo o directorio tiene al menos un registro MFT que contiene atributos como datos, seguridad, timestamps. El journaling ($LogFile) garantiza consistencia tras fallos.
+
 ✅ Journaling (recuperación de errores)
 ✅ Permisos ACL granulares
 ✅ Compresión y cifrado (EFS)
@@ -410,9 +414,11 @@ Archivo: Inicio=2 → 2→3→5→4→EOF    ▼ ▼
 └─────────────────────────────────────────────────────────┘
 ```
 
+**Funcionamiento:** ext4 usa inodos para almacenar metadatos y punteros a bloques de datos. El superbloque contiene información del sistema de archivos. Los extents permiten asignar bloques contiguos, mejorando rendimiento. La asignación retardada (delayed allocation) reduce fragmentación.
+
 ✅ Journaling
 ✅ Extents (bloques contiguos)
-✅ Alocación retardada
+✅ Asignación retardada
 
 ---
 

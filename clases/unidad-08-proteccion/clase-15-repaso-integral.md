@@ -7,6 +7,24 @@ footer: 'UNAULA - Ingeniería Informática - 2026-I'
 ---
 
 # Clase 15: Repaso Integral
+## Conectando Todos los Conceptos del Curso
+
+**Objetivo:** Integrar y sintetizar todo el conocimiento adquirido para el examen final
+
+---
+
+## 🗺️ Mapa Conceptual del Curso
+
+### Conectando los 8 Unidades Temáticas
+
+| Unidad | Tema | Conexión con |
+|--------|------|--------------|
+| **1** | Introducción y Procesos | Base para todo |
+| **2-3** | Planificación y Sincronización | Gestión de CPU |
+| **4** | Sincronización | Coordinación entre procesos |
+| **5-6** | Memoria y Archivos | Gestión de recursos |
+| **7** | E/S y Discos | Comunicación hardware |
+| **8** | Protección y Sistemas Distribuidos | Seguridad y escalabilidad |
 
 <style>
 section {

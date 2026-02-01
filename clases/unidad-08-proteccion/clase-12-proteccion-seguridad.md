@@ -106,7 +106,16 @@ section {
 
 ![Protección vs Seguridad](../../assets/infografias/clase-12-proteccion-seguridad-v2.png)
 
-> **Nota:** Esta infografía muestra la diferencia entre Protección (mecanismos internos del SO) y Seguridad (defensa contra amenazas externas).
+**Conceptos Clave de esta Clase:**
+
+| Área | Pregunta Fundamental |
+|------|---------------------|
+| **Protección** | ¿Cómo controla el SO quién accede a qué? |
+| **Seguridad** | ¿Cómo defendemos el sistema de amenazas? |
+| **Dominios** | ¿Cómo agrupamos permisos lógicamente? |
+| **Amenazas** | ¿Qué puede atacar nuestro sistema? |
+
+> **Nota:** Esta infografía muestra la diferencia entre **Protección** (mecanismos internos del SO para controlar acceso) y **Seguridad** (defensa contra amenazas externas e internas).
 
 ---
 
@@ -125,6 +134,8 @@ Al finalizar esta clase, el estudiante será capaz de:
 
 ## Protección vs Seguridad
 
+### Dos caras de la misma moneda
+
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                      PROTECCIÓN                             │
@@ -134,6 +145,8 @@ Al finalizar esta clase, el estudiante será capaz de:
 │  • Control de acceso a archivos                             │
 │  • Separación de memoria entre procesos                     │
 │  • Permisos de ejecución                                    │
+│                                                             │
+│  Ejemplo: chmod 755 archivo.txt                             │
 └─────────────────────────────────────────────────────────────┘
 
 ┌─────────────────────────────────────────────────────────────┐
@@ -145,8 +158,16 @@ Al finalizar esta clase, el estudiante será capaz de:
 │  • Cifrado de datos                                         │
 │  • Defensa contra malware                                   │
 │  • Auditoría y logs                                         │
+│                                                             │
+│  Ejemplo: SSH key + contraseñas hasheadas                   │
 └─────────────────────────────────────────────────────────────┘
 ```
+
+**Analogía:**
+- **Protección** = Cerraduras en las puertas de tu casa
+- **Seguridad** = Sistema de alarma + vigilancia + seguro
+
+> **Insight:** La protección es interna (el SO controla); la seguridad es externa (defenderse de atacantes).
 
 ---
 
@@ -194,8 +215,15 @@ R = Leer    W = Escribir    X = Ejecutar
 F1, F2, F3 = Archivos       Imp = Impresora
 ```
 
-Un proceso ejecuta en un dominio.
-Un usuario puede tener múltiples dominios.
+**Conceptos clave:**
+- **Un proceso ejecuta en un dominio** específico
+- **Un usuario puede tener múltiples dominios** (cambia según contexto)
+- **Cambios de dominio** = Transiciones de privilegio (ej: `sudo`)
+
+**Ejemplo real:**
+- Usuario normal → Dominio D0 (leer documentos)
+- Ejecuta `sudo` → Dominio D2 (administrar sistema)
+- Ejecuta compilador → Dominio D1 (acceso a herramientas)
 
 ---
 
@@ -219,8 +247,15 @@ Un usuario puede tener múltiples dominios.
 "switch" = puede cambiar a otro dominio (ej: sudo)
 ```
 
-**Problema:** Matriz muy grande y dispersa
-**Solución:** No almacenarla completa
+**El problema de la matriz:**
+- Sistemas reales: miles de usuarios × millones de objetos
+- Matriz **enorme y dispersa** (la mayoría está vacía)
+- Almacenarla completa es ineficiente
+
+**Soluciones prácticas:**
+1. **ACL (Access Control Lists)** - Lista por cada objeto
+2. **Capabilities** - Token que porta cada proceso
+3. **Roles** - Agrupar permisos por función (RBAC)
 
 ---
 
@@ -242,6 +277,8 @@ Ventaja: Fácil ver quién accede a un archivo
 Desventaja: Difícil ver a qué accede un usuario
 ```
 
+**Uso típico:** Unix/Linux (chmod, Windows ACLs)
+
 ### Capabilities - Por dominio/proceso
 
 ```
@@ -256,6 +293,10 @@ Proceso: usuario juan
 Ventaja: Fácil ver permisos de un proceso
 Desventaja: Difícil auditar un archivo
 ```
+
+**Uso típico:** Distribuciones Linux (capsicum), KeyKOS (historioco)
+
+> **Insight:** ACL = "¿Quién puede entrar aquí?" vs Capabilities = "¿A dónde puedo ir yo?"
 
 ---
 
@@ -275,12 +316,22 @@ $ ls -l archivo.txt
  └┴┴──────── user: rw- (lectura y escritura)
  │
  └────────── tipo: - (archivo regular)
-
-Notación octal: 644
-  6 (rw-) = 4+2+0 = 110 binario
-  4 (r--) = 4+0+0 = 100 binario
-  4 (r--) = 4+0+0 = 100 binario
 ```
+
+**Notación octal: 644**
+```
+  6 (rw-) = 4+2+0 = 110 binario = leer + escribir
+  4 (r--) = 4+0+0 = 100 binario = solo leer
+  4 (r--) = 4+0+0 = 100 binario = solo leer
+```
+
+**Valores octales comunes:**
+| Código | Significado |
+|--------|-------------|
+| `777` | Todos pueden todo (¡peligroso!) |
+| `755` | Propietario: todo; otros: leer+ejecutar |
+| `644` | Propietario: leer/escribir; otros: leer |
+| `600` | Solo el propietario puede leer/escribir |
 
 ---
 
@@ -294,18 +345,33 @@ SUID (Set User ID):
     ^
     El proceso ejecuta con permisos del PROPIETARIO (root)
     Permite a usuarios cambiar su password en /etc/shadow
+```
 
+**¿Por qué SUID es necesario?**
+- `/etc/shadow` solo es escribible por root
+- Los usuarios necesitan cambiar su contraseña
+- `passwd` tiene SUID → se ejecuta como root temporalmente
+
+```
 SGID (Set Group ID):
 drwxrws--- 2 juan proyecto /proyecto/
        ^
        Nuevos archivos heredan el grupo del directorio
+```
 
+**Uso práctico:** Directorios compartidos por equipos
+- Todos los archivos creados pertenecen al grupo del proyecto
+- Facilita la colaboración sin cambiar permisos manualmente
+
+```
 Sticky Bit:
 drwxrwxrwt 10 root root /tmp/
           ^
           Solo el propietario puede borrar sus archivos
           (aunque /tmp sea escribible por todos)
 ```
+
+**Problema que resuelve:** Sin sticky bit, cualquiera podría borrar archivos de otros en `/tmp`
 
 ---
 
@@ -325,17 +391,28 @@ Archivo: C:\Documentos\reporte.docx
 │      ├── DOMAIN\Users: Read                             │
 │      └── Everyone: (denegado)                           │
 └─────────────────────────────────────────────────────────┘
-
-Permisos granulares:
-- Read, Write, Execute
-- Read Attributes, Write Attributes
-- Delete, Change Permissions
-- Take Ownership
 ```
+
+**Permisos granulares de Windows:**
+| Permiso | Descripción |
+|---------|-------------|
+| **Read** | Leer contenido |
+| **Write** | Modificar contenido |
+| **Execute** | Ejecutar programa |
+| **Delete** | Borrar archivo |
+| **Read Permissions** | Ver permisos |
+| **Change Permissions** | Modificar permisos |
+| **Take Ownership** | Convertirse en propietario |
+
+**Diferencia clave con Unix:**
+- Unix: 3 categorías fijas (User, Group, Others)
+- Windows: ACL arbitraria con tantos usuarios como se necesite
 
 ---
 
 ## Amenazas de Seguridad
+
+### Clasificación de ataques
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -357,45 +434,89 @@ Permisos granulares:
 └─────────────────────────────────────────────────────────────┘
 ```
 
+**Amenazas más comunes en SO:**
+| Tipo | Descripción | Ejemplo |
+|------|-------------|---------|
+| **Buffer Overflow** | Sobrescribir memoria | Código inyectado |
+| **Privilege Escalation** | Obtener más permisos | exploit de sudo |
+| **DoS/DDoS** | Sobrecargar servicio | Ataque a servidor web |
+| **Malware** | Código malicioso | Ransomware WannaCry |
+
 ---
 
 ## Amenaza: Buffer Overflow
 
-### Cómo funciona
+### Cómo funciona el ataque
 
 ```c
 void funcion_vulnerable(char *entrada) {
     char buffer[64];
     strcpy(buffer, entrada);  // ¡No verifica tamaño!
 }
-
-STACK:                           STACK DESPUÉS DEL ATAQUE:
-┌───────────────────┐            ┌───────────────────┐
-│ Dirección retorno │            │ Dirección maliciosa│ ← Sobrescrito
-├───────────────────┤            ├───────────────────┤
-│ Variables locales │            │   Código malicioso│
-├───────────────────┤            ├───────────────────┤
-│   buffer[64]      │            │   AAAAAAAAAAAAA...│
-└───────────────────┘            └───────────────────┘
-
-Entrada: 100+ bytes incluyendo dirección a código malicioso
 ```
 
-**Defensa:** Stack canaries, ASLR, NX bit, funciones seguras
+**Antes del ataque:**
+```
+STACK:
+┌───────────────────┐
+│ Dirección retorno │ ← Return address (pila de ejecución)
+├───────────────────┤
+│ Variables locales │
+├───────────────────┤
+│   buffer[64]      │ ← 64 bytes reservados
+└───────────────────┘
+```
+
+**Después del ataque:**
+```
+STACK:
+┌─────────────────────────────────────┐
+│ Dirección del código malicioso │ ← ¡Sobrescrito!
+├─────────────────────────────────────┤
+│   NOP NOP NOP ...                   │
+├─────────────────────────────────────┤
+│   CÓDIGO MALICIOSO (shellcode)      │ ← Payload
+├─────────────────────────────────────┤
+│   AAAAAAAAAAAAA...                  │ ← Padding
+└─────────────────────────────────────┘
+```
+
+**Defensas modernas:**
+| Mecanismo | Qué hace |
+|-----------|----------|
+| **Stack Canary** | Valor secreto antes del return address |
+| **ASLR** | Direcciones de memoria aleatorias |
+| **NX Bit** | No ejecutar código en la pila |
+| **Fortify Source** | Funciones que verifican tamaño |
 
 ---
 
 ## Mecanismos de Defensa
 
-| Mecanismo | Descripción | Protege contra |
-| ----------- | ------------- | ---------------- |
-| **Autenticación** | Verificar identidad | Acceso no autorizado |
-| **Cifrado** | Datos ilegibles sin clave | Intercepción |
-| **Firewall** | Filtrar tráfico de red | Ataques remotos |
-| **Antivirus** | Detectar malware | Virus, trojans |
-| **ASLR** | Direcciones aleatorias | Buffer overflow |
-| **Sandbox** | Proceso aislado | Malware |
-| **Auditoría** | Registro de acciones | Detectar intrusos |
+### Estrategias multicapa
+
+| Mecanismo | Descripción | Protege contra | Ejemplo |
+| ----------- | ------------- | ---------------- |---------|
+| **Autenticación** | Verificar identidad | Acceso no autorizado | Contraseñas, 2FA |
+| **Cifrado** | Datos ilegibles sin clave | Intercepción | TLS, AES |
+| **Firewall** | Filtrar tráfico de red | Ataques remotos | iptables, pf |
+| **Antivirus** | Detectar malware | Virus, trojans | ClamAV, Defender |
+| **ASLR** | Direcciones aleatorias | Buffer overflow | Windows, Linux |
+| **Sandbox** | Proceso aislado | Malware | Contenedores, jails |
+| **Auditoría** | Registro de acciones | Detectar intrusos | auth.log |
+
+**Defensa en profundidad:**
+```
+┌─────────────────────────────────────────────────────────────┐
+│  CAPA 1: Perímetro         Firewall, IDS/IPS               │
+│  CAPA 2: Red               VLAN, Segmentación               │
+│  CAPA 3: Host              Antivirus, Hardening             │
+│  CAPA 4: Aplicación        Validación inputs, Code review   │
+│  CAPA 5: Datos             Cifrado, Backups                 │
+└─────────────────────────────────────────────────────────────┘
+```
+
+> **Principio:** Si una capa falla, las siguientes siguen protegiendo.
 
 ---
 
@@ -423,91 +544,150 @@ Entrada: 100+ bytes incluyendo dirección a código malicioso
 └─────────────────────────────────────────────────────────────┘
 ```
 
+**Ejemplos de MFA (Multi-Factor Authentication):**
+| Factores | Seguridad | Ejemplo |
+|----------|-----------|---------|
+| 1 factor | Baja | Solo contraseña |
+| 2 factores | Media | Contraseña + SMS |
+| 2+ factores | Alta | Contraseña + YubiKey + Huella |
+
+**Consideraciones:**
+- **Algo que sabes:** Puede ser robado o adivinado
+- **Algo que tienes:** Puede ser robado físicamente
+- **Algo que eres:** Difícil de falsificar pero requiere hardware especial
+
 ---
 
 ## Hash de Contraseñas
 
 ### Nunca almacenar contraseñas en texto plano
 
+**INCORRECTO (texto plano):**
 ```
-INCORRECTO:                    CORRECTO:
-┌─────────────────────┐        ┌─────────────────────────────────┐
-│ usuario │ password  │        │ usuario │ salt  │ hash          │
-├─────────┼───────────┤        ├─────────┼───────┼───────────────┤
-│ juan    │ 12345     │        │ juan    │ x7Kg  │ a3f2d1...     │
-│ maria   │ password  │        │ maria   │ mN8p  │ 7b2c4e...     │
-└─────────┴───────────┘        └─────────┴───────┴───────────────┘
-
-hash = SHA256(salt + password)
-
-Si BD es robada:              Si BD es robada:
-¡Todas las contraseñas        Atacante debe romper
-expuestas!                    cada hash individualmente
+┌─────────────────────┐
+│ usuario │ password  │
+├─────────┼───────────┤
+│ juan    │ 12345     │  ← ¡Visible si la BD es robada!
+│ maria   │ password  │
+└─────────┴───────────┘
 ```
 
-**Algoritmos recomendados:** bcrypt, scrypt, Argon2
+**CORRECTO (hash con salt):**
+```
+┌─────────────────────────────────┐
+│ usuario │ salt  │ hash          │
+├─────────┼───────┼───────────────┤
+│ juan    │ x7Kg  │ a3f2d1...     │  ← Irreversible
+│ maria   │ mN8p  │ 7b2c4e...     │
+└─────────┴───────┴───────────────┘
+```
+
+**Si la base de datos es robada:**
+| Enfoque | Consecuencia |
+|---------|--------------|
+| Texto plano | ¡Todas las contraseñas expuestas! |
+| Hash + salt | Atacante debe crackear cada hash individualmente |
+
+**Algoritmos recomendados (2026):**
+| Algoritmo | Ventajas |
+|-----------|----------|
+| **bcrypt** | Probado, factor de trabajo ajustable |
+| **scrypt** | Resistente a hardware especializado (ASIC) |
+| **Argon2** | Ganador de Password Hashing Competition 2015 |
 
 ---
 
 ## Linux: Seguridad de Contraseñas
+
+### Separación de archivos /etc/passwd y /etc/shadow
 
 ```bash
 # /etc/passwd (legible por todos)
 juan:x:1000:1000:Juan Garcia:/home/juan:/bin/bash
      ^
      "x" indica que el hash está en /etc/shadow
+```
 
+**¿Por qué /etc/passwd es legible por todos?**
+- Contiene información necesaria para el funcionamiento del sistema
+- UID, GID, home directory, shell
+- Programes necesitan leer estos datos (ls, whoami, etc.)
+
+```bash
 # /etc/shadow (solo root)
 juan:$6$rounds=5000$salt$hash...:19000:0:99999:7:::
      │  │              │
-     │  │              └── Hash de contraseña
-     │  └──────────────── Sal (salt)
-     └─────────────────── $6$ = SHA-512
+     │  │              └── Hash de contraseña (SHA-512)
+     │  └──────────────── Sal aleatoria (salt)
+     └─────────────────── $6$ = SHA-512, $5$ = SHA-256, $1$ = MD5
+```
 
-# Verificar permisos
+**Verificación de permisos:**
+```bash
 $ ls -l /etc/shadow
 -rw-r----- 1 root shadow 1234 Feb 15 10:30 /etc/shadow
+      │    │    │
+      │    │    └── Solo root puede leer/escribir
+      │    └──────── Grupo shadow puede leer
+      └────────────── Propietario root
 ```
+
+> **Insight:** La separación permite que programas lean info del usuario sin exponer las contraseñas.
 
 ---
 
 ## Actividad Práctica (10 min)
 
-### En parejas:
+### Explorando permisos en Linux
 
-1. En Linux (o WSL), ejecutar:
+**En parejas, realizar:**
+
 ```bash
-# Ver permisos de passwd y shadow
+# 1. Ver permisos de passwd y shadow
 ls -l /etc/passwd /etc/shadow
 
-# Ver tu usuario y grupos
+# 2. Ver tu usuario y grupos
 id
 
-# Crear archivo y cambiar permisos
+# 3. Crear archivo y cambiar permisos
 touch prueba.txt
 chmod 750 prueba.txt
 ls -l prueba.txt
-
-# Interpretar el permiso 750
-# ¿Qué puede hacer el propietario?
-# ¿Y el grupo? ¿Y otros?
 ```
 
-2. **Discutir:** ¿Por qué `/etc/passwd` es legible pero `/etc/shadow` no?
+**Interpretar el permiso 750:**
+| Categoría | Permisos | Significado |
+|-----------|----------|-------------|
+| **Propietario** | rwx (7) | Leer, escribir, ejecutar |
+| **Grupo** | r-- (5) | Solo leer |
+| **Otros** | --- (0) | Sin permisos |
+
+**Preguntas de discusión:**
+1. ¿Por qué `/etc/passwd` es legible pero `/etc/shadow` no?
+2. ¿Qué pasaría si `/etc/shadow` tuviera permisos 644?
+3. ¿Cómo se vería el permiso 755 en formato rwx?
 
 ---
 
 ## Resumen de la Clase
 
-| Concepto | Descripción |
-| ---------- | ------------- |
-| **Protección** | Mecanismos internos del SO |
-| **Seguridad** | Defensa contra amenazas |
-| **Dominio** | Conjunto de derechos de acceso |
-| **ACL** | Lista de permisos por objeto |
-| **UGO** | Modelo User-Group-Others de Unix |
-| **SUID** | Ejecutar con permisos del propietario |
-| **Hash** | Nunca almacenar contraseñas en texto plano |
+### Conceptos fundamentales de protección y seguridad
+
+| Concepto | Descripción | Ejemplo práctico |
+| ---------- | ------------- |-----------------|
+| **Protección** | Mecanismos internos del SO para controlar acceso | `chmod 644 archivo.txt` |
+| **Seguridad** | Defensa contra amenazas internas y externas | Firewall, antivirus |
+| **Dominio** | Conjunto de derechos de acceso | Usuario, root, desarrollador |
+| **ACL** | Lista de permisos por objeto | Windows ACLs |
+| **UGO** | Modelo User-Group-Others de Unix | `rwxr-xr-x` |
+| **SUID** | Ejecutar con permisos del propietario | `/usr/bin/passwd` |
+| **Hash** | Nunca almacenar contraseñas en texto plano | bcrypt, Argon2 |
+
+**Puntos clave para recordar:**
+1. **Protección ≠ Seguridad:** La protección es interna; la seguridad incluye defensa externa
+2. **Principio de mínimo privilegio:** Dar solo los permisos necesarios
+3. **Defensa en profundidad:** Múltiples capas de seguridad
+4. **Autenticación fuerte:** MFA + contraseñas hasheadas con salt
 
 ---
 
@@ -515,48 +695,85 @@ ls -l prueba.txt
 
 ### Examen Teórico-Práctico - Semana 17-18
 
-**Contenido:** Unidades 5-8
-- Paginación y memoria virtual
-- Sistemas de archivos
-- Gestión de E/S
-- Protección y seguridad
+**Contenido: Unidades 5-8**
 
-**Formato:**
-- 40% Preguntas conceptuales
-- 40% Ejercicios prácticos
-- 20% Casos de análisis
+| Unidad | Temas clave |
+|--------|-------------|
+| **5** | Paginación, memoria virtual, marcos de página |
+| **6** | Sistemas de archivos (FAT32, NTFS, ext4) |
+| **7** | E/S (polling, interrupciones, DMA) |
+| **8** | Protección, seguridad, autenticación |
+
+**Formato del examen:**
+| Componente | Porcentaje | Tipo de preguntas |
+|------------|-----------|-------------------|
+| Conceptual | 40% | Definiciones, comparaciones |
+| Práctico | 40% | Ejercicios de permisos, cálculos |
+| Análisis | 20% | Casos de estudio, escenarios |
 
 ---
 
 ## Cierre del Curso
 
-### ¿Qué aprendimos?
+### Recorrido completo del semestre
 
 ```
 Unidad 1: ¿Qué es un SO?
+    ├─ Estructura y componentes
+    └─ Evolución histórica
     ↓
 Unidad 2-3: Procesos y Planificación
+    ├─ Estados del proceso
+    ├─ PCB, context switch
+    └─ Algoritmos: FCFS, SJF, RR, Priority
     ↓
-Unidad 4: Sincronización (semáforos, deadlock)
+Unidad 4: Sincronización
+    ├─ Sección crítica
+    ├─ Semáforos y mutex
+    └─ Deadlocks: prevención y detección
     ↓
-Unidad 5: Memoria (paginación, virtual)
+Unidad 5: Memoria
+    ├─ Particiónamiento
+    ├─ Paginación y marcos de página
+    └─ Memoria virtual y swapping
     ↓
 Unidad 6: Sistemas de archivos
+    ├─ Estructura (FAT32, NTFS, ext4)
+    ├─ Inodos y bloques de datos
+    └─ Montaje y desmontaje
     ↓
-Unidad 7: E/S (polling, interrupciones, DMA)
+Unidad 7: E/S
+    ├─ Polling vs interrupciones
+    ├─ DMA (Direct Memory Access)
+    └─ Drivers de dispositivo
     ↓
 Unidad 8: Protección y Seguridad
+    ├─ Dominios de protección
+    ├─ ACL vs Capabilities
+    ├─ Permisos (Unix UGO, Windows ACL)
+    └─ Autenticación y defensas
 ```
 
-**¡El SO es el corazón de todo sistema computacional!**
+> **El SO es el corazón de todo sistema computacional!**
 
 ---
 
 ## Recursos para Seguir Aprendiendo
 
-- **Libro:** Operating System Concepts (Silberschatz)
-- **Práctica:** Escribir un kernel mínimo (xv6, OSDev)
-- **Certificaciones:** LPIC-1, CompTIA Linux+
-- **Cursos avanzados:** Sistemas distribuidos, Virtualización
+### Continuar el viaje en sistemas operativos
+
+| Tipo | Recurso | Descripción |
+|------|---------|-------------|
+| **Libro** | Operating System Concepts (Silberschatz) | El "dinosaurio azul" - referencia clásica |
+| **Libro** | Modern Operating Systems (Tanenbaum) | Enfoque práctico y actualizado |
+| **Práctica** | xv6 | Unix V6 reescrito en C (MIT) |
+| **Práctica** | OSDev wiki | Comunidad de desarrollo de SO |
+| **Certificación** | LPIC-1 | Linux Professional Institute |
+| **Certificación** | CompTIA Linux+ | Certificación de Linux |
+| **Cursos** | Sistemas distribuidos | Próximo nivel académico |
+| **Cursos** | Virtualización y contenedores | Docker, KVM, Xen |
 
 ### ¡Gracias por su participación!
+
+**Sistemas Operativos I - 2026-I**
+UNAULA - Ingeniería Informática
