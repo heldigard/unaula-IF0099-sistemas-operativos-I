@@ -271,6 +271,13 @@
                 </tr>
             </table>
 
+            <div class="callout info">
+                <p class="callout-title">Definición: BSS</p>
+                <p><strong>BSS</strong> (<strong>Block Started Symbol</strong>) es una sección de memoria que contiene variables globales y estáticas no inicializadas. El kernel reserva espacio para estas variables pero no las almacena en el ejecutable, lo que ahorra espacio en disco.</p>
+                <p><strong>Por qué importa:</strong> Permite que programas tengan variables globales sin inflar innecesariamente el tamaño del archivo ejecutable.</p>
+                <p><strong>Ejemplo:</strong> <code>int counter; // va a BSS</code></p>
+            </div>
+
             <div class="ascii-diagram">
 Direcciones ALTAS
         ↓
