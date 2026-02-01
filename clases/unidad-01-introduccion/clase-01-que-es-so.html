@@ -85,16 +85,64 @@
 <header>IF0099 - Sistemas Operativos I | Unidad 1</header>
 <h2 id="21-gesti%C3%B3n-de-procesos">2.1 Gestión de Procesos</h2>
 <h3 id="%C2%BFqu%C3%A9-es-un-proceso">¿Qué es un proceso?</h3>
-<p>Un <strong>proceso</strong> es un programa en ejecución.</p>
-<h3 id="el-so-debe">El SO debe:</h3>
+<blockquote>
+<p>Un <strong>proceso</strong> es un programa en ejecución + sus recursos (memoria, archivos, CPU)</p>
+</blockquote>
+<h3 id="programa-vs-proceso">Programa vs Proceso</h3>
+<table>
+<thead>
+<tr>
+<th>Aspecto</th>
+<th>Programa</th>
+<th>Proceso</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Qué es</strong></td>
+<td>Archivo en disco</td>
+<td>Instancia activa en memoria</td>
+</tr>
+<tr>
+<td><strong>Estado</strong></td>
+<td>Pasivo (no hace nada)</td>
+<td>Activo (se está ejecutando)</td>
+</tr>
+<tr>
+<td><strong>Ejemplo</strong></td>
+<td><code>chrome.exe</code> en C:</td>
+<td>Chrome abierto con 5 pestañas</td>
+</tr>
+<tr>
+<td><strong>Recursos</strong></td>
+<td>Solo ocupa espacio en disco</td>
+<td>Usa RAM, CPU, archivos</td>
+</tr>
+</tbody>
+</table>
+<h3 id="el-so-debe-gestionar">El SO debe gestionar:</h3>
 <ul>
-<li><strong>Crear</strong> y <strong>terminar</strong> procesos</li>
-<li><strong>Suspender</strong> y <strong>reanudar</strong> procesos</li>
-<li><strong>Sincronizar</strong> procesos</li>
-<li><strong>Comunicar</strong> procesos entre sí</li>
+<li><img class="emoji" draggable="false" alt="🔹" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f539.svg" data-marp-twemoji=""/> <strong>Crear</strong> y <strong>terminar</strong> procesos (lifecycle)</li>
+<li><img class="emoji" draggable="false" alt="🔹" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f539.svg" data-marp-twemoji=""/> <strong>Suspender</strong> y <strong>reanudar</strong> procesos (scheduling)</li>
+<li><img class="emoji" draggable="false" alt="🔹" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f539.svg" data-marp-twemoji=""/> <strong>Sincronizar</strong> procesos (evitar conflictos)</li>
+<li><img class="emoji" draggable="false" alt="🔹" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f539.svg" data-marp-twemoji=""/> <strong>Comunicar</strong> procesos entre sí (IPC)</li>
 </ul>
+<h3 id="analog%C3%ADa-programa--receta-proceso--cocinando">Analogía: Programa = Receta, Proceso = Cocinando</h3>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code>PROGRAMA                    PROCESO
+─────────                  ─────────
+La receta de pasta    →   Alguien cocinando pasta
+(en papel)                  (usando ingredientes, fuego, tiempo)
+</code></pre>
 <h3 id="ejemplo-en-windows">Ejemplo en Windows</h3>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code>Ctrl + Shift + Esc → Administrador de Tareas
+</code></pre>
+<p>Verás: chrome.exe (5 procesos), spotify.exe, vscode.exe, etc.</p>
+<h3 id="ejemplo-en-linux">Ejemplo en Linux</h3>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-bash"><span class="hljs-comment"># Ver todos los procesos</span>
+ps aux
+
+<span class="hljs-comment"># Ver procesos en tiempo real</span>
+top
 </code></pre>
 <footer>UNAULA - Ingeniería Informática - 2026-I</footer>
 </section>
@@ -278,21 +326,21 @@ Desventajas: Overhead por comunicación entre procesos
 <tbody>
 <tr>
 <td><strong>Rendimiento</strong></td>
-<td><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/></td>
-<td><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/></td>
-<td><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/></td>
+<td>5/5</td>
+<td>3/5</td>
+<td>2/5</td>
 </tr>
 <tr>
 <td><strong>Seguridad</strong></td>
-<td><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/></td>
-<td><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/></td>
-<td><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/></td>
+<td>2/5</td>
+<td>3/5</td>
+<td>5/5</td>
 </tr>
 <tr>
 <td><strong>Mantenibilidad</strong></td>
-<td><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/></td>
-<td><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/></td>
-<td><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/></td>
+<td>2/5</td>
+<td>3/5</td>
+<td>5/5</td>
 </tr>
 <tr>
 <td><strong>Ejemplos</strong></td>
@@ -475,18 +523,18 @@ Desventajas: Overhead por comunicación entre procesos
 <tbody>
 <tr>
 <td>Facilidad</td>
-<td><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/></td>
-<td><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/></td>
+<td>5/5</td>
+<td>2/5</td>
 </tr>
 <tr>
 <td>Potencia</td>
-<td><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/></td>
-<td><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/></td>
+<td>3/5</td>
+<td>5/5</td>
 </tr>
 <tr>
 <td>Automatización</td>
-<td><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/></td>
-<td><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/><img class="emoji" draggable="false" alt="⭐" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2b50.svg" data-marp-twemoji=""/></td>
+<td>2/5</td>
+<td>5/5</td>
 </tr>
 <tr>
 <td>Recursos</td>
