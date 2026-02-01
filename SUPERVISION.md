@@ -16,13 +16,15 @@
 | Supervisor | Modelo | Estado | Inicio | Último update |
 |---|---|---|---|---|
 | Ralph-Auto | GLM 4.7 | 🔄 Activo | 2026-02-01 | Iniciando... |
-| Claude-Sonnet | claude-sonnet-4.5 | ✅ Disponible | 2026-02-01 | clase-01 R2 completada |
+| Claude-Sonnet | claude-sonnet-4.5 | 🔒 LOCK (clase-03, R2) | 2026-02-01 | R2 batch en progreso... |
 
 ## Locks
 | Curso | Clase | Ronda | Supervisor | Estado | Inicio | Último update | TTL | Notas |
 |---|---|---|---|---|---|---|---|
 | IF0099 | clase-10 | R1 | Ralph-Auto | ✅ DONE | 2026-02-01T19:40 | 2026-02-01T19:42 | 44m | Completada - expandir contenido y unificar estilo |
 | IF0099 | clase-01 | R2 | Claude-Sonnet | ✅ DONE | 2026-02-01 | 2026-02-01 | 5m | Completada - Footer corregido, nota WSL agregada |
+| IF0099 | clase-02 | R2 | Claude-Sonnet | ✅ DONE | 2026-02-01 | 2026-02-01 | 3m | Completada - Footer corregido |
+| IF0099 | clase-03 | R2 | Claude-Sonnet | 🔒 IN_PROGRESS | 2026-02-01 | 2026-02-01 | 45m | Iniciando R2 |
 
 ## Backlog por prioridad
 ### P0 (todas las clases)
