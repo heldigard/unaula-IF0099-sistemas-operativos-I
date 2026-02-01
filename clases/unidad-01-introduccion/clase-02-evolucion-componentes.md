@@ -105,11 +105,6 @@ IMÁGENES GENERADAS:
 
 ---
 
-**IF0099 - Sistemas Operativos I**
-*4° Semestre - Ingeniería Informática*
-
----
-
 ## Objetivos de la Clase
 
 Al finalizar esta clase, el estudiante será capaz de:
@@ -300,14 +295,18 @@ Usuario 3 ──┘    Reparte tiempo
 - **Conectividad** (redes, Internet)
 - **Seguridad** (permisos, encriptación)
 - **Virtualización** (VMs, contenedores)
-- **Cloud computing** (SO en la nube)
+- **Cloud computing** (servicios on-demand)
+- **Computación móvil y edge** (sensores, IoT)
 
-### Sistemas actuales (2026):
-- Windows 11
-- macOS Sequoia
-- Ubuntu 24.04 LTS
-- Android 16
-- iOS 19
+### Ejemplos actuales:
+- Windows 10/11
+- macOS
+- Distribuciones GNU/Linux (Ubuntu, Fedora, Debian)
+- Android
+- iOS/iPadOS
+- ChromeOS
+
+> **Nota:** Las versiones cambian cada año, pero las ideas clave se mantienen.
 
 ---
 
@@ -601,25 +600,29 @@ PISO 3 (PÚBLICO)          PISO 0 (SEGURIDAD MÁXIMA)
 > **Principio clave:** El visitante (modo usuario) **nunca entra** a la bóveda; solo recibe el resultado de la operación solicitada.
 ---
 ## Actividad Práctica (10 min)
-### En parejas, investiguen en su computador:
+### En parejas, preparen su entorno de trabajo
 
-> **⚠️ IMPORTANTE - Para estudiantes con Windows:**
-> Los comandos de Linux que usaremos en este curso NO funcionan directamente en Windows.
-> Tienes **dos opciones** para practicar:
-> 
-> **Opción 1: WSL (Recomendada)** - Linux dentro de Windows
-> 1. Abre PowerShell como administrador
-> 2. Ejecuta: `wsl --install`
-> 3. Reinicia el computador
-> 4. Una vez instalado, abre "Ubuntu" desde el menú de inicio
-> 
-> **Opción 2: Máquina Virtual**
-> 1. Instala VirtualBox: https://www.virtualbox.org/
-> 2. Descarga Ubuntu 24.04 ISO: https://ubuntu.com/download
-> 3. Sigue el tutorial del Laboratorio 1 para crear la VM
->
-> **En este curso usaremos exclusivamente Linux (Ubuntu)**
-### En Windows (PowerShell) - Comandos nativos:
+**Para estudiantes con Windows:**
+Los comandos de Linux del curso NO funcionan directamente en Windows.
+Tienen dos opciones para practicar:
+
+**Opción 1: WSL (Recomendada)** - Linux dentro de Windows
+1. Abran PowerShell como administrador
+2. Ejecuten: `wsl --install`
+3. Reinicien el computador
+4. Abran "Ubuntu" desde el menú de inicio
+
+**Opción 2: Máquina Virtual**
+1. Instalen VirtualBox: https://www.virtualbox.org/
+2. Descarguen Ubuntu LTS ISO: https://ubuntu.com/download
+3. Sigan el tutorial del Laboratorio 1 para crear la VM
+
+**En este curso usaremos Linux (Ubuntu)**
+
+---
+
+## Actividad Práctica
+### En Windows (PowerShell) - Comandos nativos
 
 ```powershell
 # Ver información del sistema operativo
@@ -632,9 +635,12 @@ Get-Process | Select-Object -First 10 Name, CPU, PM | Sort-Object CPU -Descendin
 systeminfo | findstr /C:"Total Physical Memory" /C:"Available Physical Memory"
 ```
 
-### En Linux/Ubuntu (Terminal) - Lo que usaremos en el curso:
+---
 
-Abre Terminal (en WSL o VM) y ejecuta:
+## Actividad Práctica
+### En Linux/Ubuntu (Terminal) - Lo que usaremos en el curso
+
+Abren Terminal (en WSL o VM) y ejecuten:
 
 ```bash
 # Ver información del sistema
@@ -648,7 +654,14 @@ ps aux | head -11       # Incluye encabezado
 free -h                 # Muestra memoria RAM y swap
 ```
 
-3. **Discutan**: ¿Qué información les da cada comando?
+---
+
+## Actividad Práctica
+### Discusión en parejas
+
+1. **Expliquen** qué información aporta cada comando
+2. **Comparen** resultados entre Windows y Linux
+3. **Conclusión breve**: ¿Qué datos del SO te parecen más relevantes?
 
 ---
 

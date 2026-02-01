@@ -354,7 +354,11 @@ VmRSS:        678 kB
 └─────────────────────────────────────────────────────────┘
 ```
 
-### Analogía: Cambio de contextos = Cambio de jugador en un partido
+---
+
+## Context Switch: Analogía
+
+### Cambio de jugador en un partido
 
 ```
 Jugador A sale           ↓             Jugador B entra
@@ -388,7 +392,11 @@ Jugador A sale           ↓             Jugador B entra
 3. **Interrupción**: Evento de hardware requiere atención
 4. **Prioridad**: Proceso de mayor prioridad debe ejecutarse
 
-### Optimización
+---
+
+## Medir Context Switch en Linux
+
+### Observación práctica
 
 ```bash
 # Ver context switches en Linux
@@ -847,7 +855,9 @@ if (fork() == 0) {
 ls -la | grep "\.txt" | wc -l
 ```
 
-### Características de los Pipes
+---
+
+## Pipes en Linux: Características
 
 | Característica | Descripción |
 |---------------|-------------|
@@ -859,9 +869,7 @@ ls -la | grep "\.txt" | wc -l
 
 ---
 
-## Otros Mecanismos de IPC
-
-### Shared Memory (Memoria Compartida)
+## Otros Mecanismos de IPC: Shared Memory
 
 ```c
 #include <sys/shm.h>
@@ -885,7 +893,9 @@ strcpy(shared_mem, "Hola desde otro proceso");
 **Desventajas:**
 - ❌ Requiere sincronización explícita (semáforos, mutex)
 
-### Signals (Señales)
+---
+
+## Otros Mecanismos de IPC: Signals
 
 ```bash
 # Enviar señal SIGTERM (terminar) a un proceso
@@ -902,7 +912,9 @@ kill -9 1234
 - **SIGSTOP (19)**: Pausar proceso
 - **SIGCONT (18)**: Continuar proceso pausado
 
-### Message Queues (Colas de Mensajes)
+---
+
+## Otros Mecanismos de IPC: Message Queues
 
 ```c
 #include <sys/msg.h>

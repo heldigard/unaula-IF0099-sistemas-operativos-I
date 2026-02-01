@@ -515,9 +515,10 @@ Quantum óptimo:
 | **Hard Real-Time** | Cumplimiento estricto obligatorio | Frenos de automóvil, control de reactores |
 | **Soft Real-Time** | Cumplimiento deseable pero no crítico | Streaming de video, juegos |
 
-### Algoritmos de Tiempo Real
+---
 
-#### Rate Monotonic Scheduling (RMS)
+## Algoritmo RMS (Rate Monotonic Scheduling)
+
 - Prioridad basada en el **periodo** del proceso
 - Menor periodo = Mayor prioridad
 - Óptimo para procesos periódicos
@@ -545,7 +546,10 @@ Donde:
 - n = Número de procesos
 ```
 
-#### Earliest Deadline First (EDF)
+---
+
+## Algoritmo EDF (Earliest Deadline First)
+
 - Prioridad dinámica: proceso con **deadline más cercano** primero
 - Más flexible que RMS
 - Utilización del CPU hasta 100%
@@ -568,9 +572,7 @@ En t=45:
 
 ## 8. Planificación en Multiprocesadores
 
-### Enfoques para múltiples CPUs
-
-#### Multiprocesador Simétrico (SMP)
+### Multiprocesador Simétrico (SMP)
 ```
 ┌─────────────────────────────────────────┐
 │              Cola única                 │
@@ -587,7 +589,11 @@ Ventaja: Balance de carga automático
 Desventaja: Contención en la cola
 ```
 
-#### Colas Privadas por CPU
+---
+
+## Planificación en Multiprocesadores
+
+### Colas Privadas por CPU
 ```
 ┌─────────────────────────────────────────┐
 │  Cola CPU 0   Cola CPU 1   Cola CPU 2   │
@@ -606,7 +612,11 @@ Desventaja: Desbalance de carga posible
 Solución: **Migración de procesos** entre colas
 ```
 
-#### Afinidad a Procesador
+---
+
+## Planificación en Multiprocesadores
+
+### Afinidad a Procesador
 ```
 Proceso P1 ha estado ejecutando en CPU 0
 Su caché L1/L2 contiene datos de P1
@@ -622,7 +632,9 @@ Opción B: Mantener P1 en CPU 0
 Decisión: Afinidad blanda vs afinidad dura
 ```
 
-### Algoritmos para Multiprocesadores
+---
+
+## Algoritmos para Multiprocesadores
 
 #### Partitioned Scheduling
 - Cada procesador tiene su propia cola
@@ -660,6 +672,10 @@ P1 y P2 alternan, todos sus threads juntos
 | **Queueing Models** | Modelos matemáticos de colas | Predicción de comportamiento |
 | **Simulación** | Simular carga real | Estudio detallado |
 | **Implementación real** | Probar en sistema real | Validación final |
+
+---
+
+## 9. Evaluación de Algoritmos
 
 ### Métricas de Comparación
 
