@@ -1,0 +1,37 @@
+name: Deploy HTML Classes to GitHub Pages
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Copy clases-html to output directory
+        run: |
+          mkdir -p output
+          cp -r clases-html/* output/
+
+      - name: Copy assets (if any)
+        run: |
+          if [ -d "assets" ]; then
+            mkdir -p output/assets
+            cp -r assets/* output/assets/ 2>/dev/null || true
+          fi
+
+      - name: Deploy to gh-pages branch
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./output
+          publish_branch: gh-pages

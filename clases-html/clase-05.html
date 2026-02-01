@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clase 05: Sección Crítica y Semáforos | IF0099 - Sistemas Operativos I</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #1e40af;
+            --accent: #059669;
+            --bg-light: #f8fafc;
+            --bg-code: #1e293b;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+        }
+
+        * {margin:0;padding:0;box-sizing:border-box}
+        body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;line-height:1.7;color:var(--text-main);background:var(--bg-light);font-size:16px}
+        .container{max-width:1200px;margin:0 auto;padding:0 20px}
+
+        header{background:linear-gradient(135deg,var(--primary) 0%,var(--secondary) 100%);color:white;padding:3rem 0;margin-bottom:2rem}
+        header h1{font-size:2.2rem;margin-bottom:.5rem;font-weight:700}
+        header .subtitle{font-size:1.1rem;opacity:.9}
+        header .meta{margin-top:1rem;font-size:.9rem;opacity:.8}
+
+        nav{background:white;padding:1.5rem 0;margin-bottom:2rem;border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,0.1)}
+        nav h2{font-size:1.1rem;color:var(--text-muted);margin-bottom:1rem;padding:0 20px}
+        nav ul{list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:.5rem;padding:0 20px}
+        nav a{color:var(--primary);text-decoration:none;padding:.5rem;display:block;border-radius:4px;transition:background .2s}
+        nav a:hover{background:var(--bg-light)}
+
+        section{background:white;padding:2rem;margin-bottom:2rem;border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,0.1)}
+        section h2{color:var(--primary);font-size:1.8rem;margin-bottom:1.5rem;padding-bottom:.5rem;border-bottom:3px solid var(--accent)}
+        section h3{color:var(--secondary);font-size:1.4rem;margin:2rem 0 1rem}
+        section h4{color:var(--text-main);font-size:1.1rem;margin:1.5rem 0 .75rem;font-weight:600}
+        p{margin-bottom:1rem}
+
+        figure{margin:2rem 0;text-align:center}
+        figure img{max-width:100%;height:auto;border-radius:8px;box-shadow:0 4px 6px rgba(0,0,0,0.1)}
+        figcaption{margin-top:.75rem;color:var(--text-muted);font-style:italic;font-size:.95rem}
+
+        table{width:100%;border-collapse:collapse;margin:1.5rem 0;font-size:.95rem}
+        th,td{padding:.75rem 1rem;text-align:left;border-bottom:1px solid var(--border)}
+        th{background:var(--bg-light);font-weight:600;color:var(--secondary)}
+        tr:hover{background:var(--bg-light)}
+
+        pre{background:var(--bg-code);color:#e2e8f0;padding:1.5rem;border-radius:8px;overflow-x:auto;margin:1.5rem 0;font-size:.9rem;line-height:1.5}
+        code{font-family:'Consolas','Monaco','Courier New',monospace}
+        p code,li code,td code{background:var(--bg-light);color:var(--primary);padding:.2rem .4rem;border-radius:4px;font-size:.9em}
+        pre code{background:none;padding:0;color:inherit}
+
+        ul,ol{margin-left:1.5rem;margin-bottom:1rem}
+        li{margin-bottom:.5rem}
+
+        .callout{padding:1.5rem;border-radius:8px;margin:1.5rem 0;border-left:4px solid}
+        .callout.info{background:#eff6ff;border-left-color:var(--primary)}
+        .callout.warning{background:#fef3c7;border-left-color:#f59e0b}
+        .callout.success{background:#d1fae5;border-left-color:var(--accent)}
+        .callout.danger{background:#fee2e2;border-left-color:#ef4444}
+
+        .ascii-diagram{font-family:'Consolas','Monaco',monospace;font-size:.85rem;line-height:1.2;background:var(--bg-light);padding:1rem;border-radius:4px;overflow-x:auto;white-space:pre}
+
+        .comparison{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin:2rem 0}
+        .comparison>div{background:var(--bg-light);padding:1.5rem;border-radius:8px}
+
+        .deadlock-diagram{display:flex;justify-content:center;align-items:center;margin:2rem 0;font-family:'Consolas','Monaco',monospace;font-size:.8rem}
+        .deadlock-box{border:2px solid var(--secondary);padding:1rem;border-radius:8px;background:var(--bg-light)}
+
+        footer{background:var(--text-main);color:white;padding:2rem 0;text-align:center;margin-top:3rem}
+        footer a{color:var(--accent);text-decoration:none}
+
+        .scroll-top{position:fixed;bottom:2rem;right:2rem;background:var(--primary);color:white;width:45px;height:45px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;transition:opacity .3s;text-decoration:none;font-size:1.5rem}
+        .scroll-top.visible{opacity:1}
+        .scroll-top:hover{background:var(--secondary)}
+
+        .buffer-diagram{display:flex;justify-content:center;gap:.5rem;margin:1.5rem 0}
+        .buffer-cell{width:50px;height:50px;border:2px solid var(--secondary);display:flex;align-items:center;justify-content:center;background:var(--bg-light);font-family:monospace;border-radius:4px}
+
+        @media(max-width:768px){
+            header h1{font-size:1.6rem}
+            section{padding:1.5rem}
+            nav ul{grid-template-columns:1fr}
+            .comparison{grid-template-columns:1fr}
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Clase 05: Sección Crítica y Semáforos</h1>
+            <p class="subtitle">IF0099 - Sistemas Operativos I | Unidad 4 - Sincronización</p>
+            <p class="subtitle">Sección Crítica, Semáforos y Mutex</p>
+            <p class="meta">Última actualización: 2026-02-01 | Duración: 90 minutos</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <nav>
+            <h2>Contenido de la Clase</h2>
+            <ul>
+                <li><a href="#objetivos">Objetivos de Aprendizaje</a></li>
+                <li><a href="#concurrencia">El Problema de la Concurrencia</a></li>
+                <li><a href="#race-condition">Condición de Carrera</a></li>
+                <li><a href="#seccion-critica">La Sección Crítica</a></li>
+                <li><a href="#requisitos">Requisitos de la Solución</a></li>
+                <li><a href="#hardware">Hardware de Sincronización</a></li>
+                <li><a href="#monitores">Monitores</a></li>
+                <li><a href="#semaforos">Semáforos</a></li>
+                <li><a href="#productor-consumidor">Productor-Consumidor</a></li>
+                <li><a href="#mutex">Mutex en POSIX</a></li>
+                <li><a href="#deadlock">Deadlock</a></li>
+                <li><a href="#practica">Actividad Práctica</a></li>
+                <li><a href="#resumen">Resumen</a></li>
+            </ul>
+        </nav>
+
+        <!-- Objetivos -->
+        <section id="objetivos">
+            <h2>Objetivos de la Clase</h2>
+            <p>Al finalizar esta clase, el estudiante será capaz de:</p>
+            <ol>
+                <li><strong>Identificar</strong> condiciones de carrera en programas concurrentes</li>
+                <li><strong>Explicar</strong> el problema de la sección crítica y sus requisitos</li>
+                <li><strong>Describir</strong> mecanismos de hardware para sincronización (TAS, CAS)</li>
+                <li><strong>Implementar</strong> soluciones usando semáforos y mutex</li>
+                <li><strong>Explicar</strong> el concepto de monitores y variables de condición</li>
+                <li><strong>Resolver</strong> problemas clásicos: productor-consumidor, filósofos</li>
+                <li><strong>Identificar</strong> y prevenir deadlocks</li>
+            </ol>
+        </section>
+
+        <!-- El Problema de la Concurrencia -->
+        <section id="concurrencia">
+            <h2>El Problema de la Concurrencia</h2>
+            <h3>Cuando dos procesos acceden al mismo recurso</h3>
+
+            <pre><code>// Proceso A                    // Proceso B
+saldo = leer_cuenta();          saldo = leer_cuenta();
+saldo = saldo + 100;            saldo = saldo - 50;
+escribir_cuenta(saldo);         escribir_cuenta(saldo);</code></pre>
+
+            <div class="callout info">
+                <strong>Saldo inicial:</strong> $1000
+            </div>
+
+            <h4>¿Qué puede pasar?</h4>
+            <ul>
+                <li><strong>Esperado:</strong> $1000 + $100 - $50 = <strong>$1050</strong></li>
+                <li><strong>Possible:</strong> $1100 o $950 (¡ERROR!)</li>
+            </ul>
+        </section>
+
+        <!-- Condición de Carrera -->
+        <section id="race-condition">
+            <h2>Condición de Carrera (Race Condition)</h2>
+
+            <pre class="ascii-diagram">Tiempo    Proceso A              Memoria          Proceso B
+──────────────────────────────────────────────────────────────────────
+  t1      lee saldo (1000)      [saldo=1000]
+  t2                            [saldo=1000]     lee saldo (1000)
+  t3      suma 100 (local=1100)
+  t4                                             resta 50 (local=950)
+  t5      escribe 1100          [saldo=1100]
+  t6                            [saldo=950]      escribe 950
+──────────────────────────────────────────────────────────────────────
+                                 RESULTADO: $950 (¡perdimos $100!)</pre>
+
+            <div class="callout warning">
+                <strong>Definición:</strong> <em>Race condition</em> - El resultado depende del orden de ejecución (no determinístico)
+            </div>
+        </section>
+
+        <!-- La Sección Crítica -->
+        <section id="seccion-critica">
+            <h2>La Sección Crítica</h2>
+            <h3>Código que accede a recursos compartidos</h3>
+
+            <figure>
+                <img src="../assets/infografias/clase-05-seccion-critica.png" alt="Diagrama del problema de sección crítica">
+                <figcaption>El problema de la sección crítica: garantizar que solo un proceso acceda al recurso compartido</figcaption>
+            </figure>
+
+            <h4>Idea clave</h4>
+            <ul>
+                <li><strong>Sección crítica:</strong> fragmento donde se <strong>lee/modifica</strong> un recurso compartido</li>
+                <li><strong>Riesgo:</strong> si dos procesos entran a la vez, el estado puede quedar inconsistente</li>
+                <li><strong>Solución:</strong> garantizar <strong>exclusión mutua</strong> (solo uno a la vez)</li>
+            </ul>
+
+            <h4>Representación del problema</h4>
+            <pre class="ascii-diagram">┌────────────────────────────────────────────────────────┐
+│                     PROCESO                            │
+├────────────────────────────────────────────────────────┤
+│   Código normal (no crítico)                           │
+├────────────────────────────────────────────────────────┤
+│   ┌──────────────────────────────────────────────┐    │
+│   │         SECCIÓN CRÍTICA                      │    │
+│   │   - Accede a variable compartida             │    │
+│   │   - Modifica recurso común                   │    │
+│   │   - Solo UN proceso a la vez                 │    │
+│   └──────────────────────────────────────────────┘    │
+├────────────────────────────────────────────────────────┤
+│   Código normal (no crítico)                           │
+└────────────────────────────────────────────────────────┘</pre>
+        </section>
+
+        <!-- Requisitos de la Solución -->
+        <section id="requisitos">
+            <h2>Requisitos de la Solución</h2>
+            <h3>Una buena solución debe garantizar</h3>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Requisito</th>
+                        <th>Descripción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Exclusión mutua</strong></td>
+                        <td>Solo un proceso en la sección crítica</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Progreso</strong></td>
+                        <td>Si nadie está en SC, alguien puede entrar</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Espera limitada</strong></td>
+                        <td>Un proceso no debe esperar infinitamente</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Estructura general</h3>
+            <pre><code>while (true) {
+    ENTRADA_SECCION_CRITICA();   // Solicitar permiso
+
+    // ... sección crítica ...
+
+    SALIDA_SECCION_CRITICA();    // Liberar permiso
+
+    // ... resto del código ...
+}</code></pre>
+
+            <div class="comparison">
+                <div>
+                    <h4>¿Por qué son necesarios?</h4>
+                    <p><strong>Exclusión Mutua</strong></p>
+                    <p style="font-size:0.9em;color:var(--text-muted)">Sin ella:<br>
+                    Proceso A: saldo = 1000 + 100<br>
+                    Proceso B: saldo = 1000 - 50<br>
+                    Resultado: saldo inconsistente</p>
+
+                    <p><strong>Progreso</strong></p>
+                    <p style="font-size:0.9em;color:var(--text-muted)">Sin progreso:<br>
+                    Si un proceso fuera de SC impide<br>
+                    que otros entren, nadie avanza.</p>
+
+                    <p><strong>Espera Limitada</strong></p>
+                    <p style="font-size:0.9em;color:var(--text-muted)">Sin ella:<br>
+                    Un proceso puede esperar<br>
+                    indefinidamente (inanición).</p>
+                </div>
+                <div>
+                    <h4>Soluciones</h4>
+                    <ul>
+                        <li><strong>Hardware:</strong> TAS, CAS (instrucciones atómicas)</li>
+                        <li><strong>Software:</strong> Semáforos, Mutex, Monitores</li>
+                        <li><strong>Lenguaje:</strong> Java synchronized, C# lock</li>
+                    </ul>
+
+                    <h4>Ejemplo: Algoritmo de Peterson</h4>
+                    <pre><code>int flag[2] = {false, false};
+int turno;
+
+void entrar(int i) {
+    int j = 1 - i;
+    flag[i] = true;       // Quiero entrar
+    turno = j;            // Doy prioridad al otro
+    while (flag[j] && turno == j);  // Espero
+}
+
+void salir(int i) {
+    flag[i] = false;      // Ya no quiero estar
+}</code></pre>
+                    <p style="font-size:0.85em;color:var(--text-muted)">✅ Cumple los 3 requisitos (para 2 procesos)<br>
+                    ❌ Solo funciona para 2 procesos<br>
+                    ❌ Requiere busy waiting (espera activa)</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Hardware de Sincronización -->
+        <section id="hardware">
+            <h2>Hardware de Sincronización</h2>
+            <h3>Instrucciones Atómicas del Procesador</h3>
+
+            <div class="callout info">
+                El hardware proporciona operaciones atómicas (indivisibles) para sincronización
+            </div>
+
+            <div class="callout info">
+                <p class="callout-title">Definición: TAS (Test-And-Set)</p>
+                <p><strong>TAS</strong> es una instrucción atómica de hardware que lee un valor de memoria y lo establece en 1 en una sola operación indivisible. Es la base primitiva para implementar locks y mecanismos de sincronización.</p>
+            </div>
+
+            <h4>Test-and-Set (TAS)</h4>
+            <pre><code>// Ejecuta atómicamente (no interrumpible)
+boolean test_and_set(boolean *target) {
+    boolean valor = *target;
+    *target = true;
+    return valor;
+}</code></pre>
+
+            <p><strong>Uso para exclusión mutua:</strong></p>
+            <pre><code>boolean lock = false;  // Variable compartida
+
+// Entrada a sección crítica
+while (test_and_set(&lock));  // Espera activa hasta obtener lock
+
+// ========= SECCIÓN CRÍTICA ==========
+
+// Salida de sección crítica
+lock = false;</code></pre>
+
+            <div class="callout info">
+                <p class="callout-title">Definición: CAS (Compare-And-Swap)</p>
+                <p><strong>CAS</strong> es una instrucción atómica que compara un valor en memoria con un valor esperado, y si son iguales, lo reemplaza con un nuevo valor. Es fundamental para implementar estructuras de datos lock-free y algoritmos sin bloqueos.</p>
+            </div>
+
+            <h4>Compare-and-Swap (CAS)</h4>
+            <pre><code>// Ejecuta atómicamente
+int compare_and_swap(int *valor, int esperado, int nuevo) {
+    int temp = *valor;
+    if (*valor == esperado)
+        *valor = nuevo;
+    return temp;
+}</code></pre>
+
+            <p><strong>Uso para exclusión mutua:</strong></p>
+            <pre><code>int lock = 0;  // 0 = libre, 1 = ocupado
+
+// Entrada
+while (compare_and_swap(&lock, 0, 1) != 0);
+    // Si lock era 0, lo pone en 1 y sale del while
+    // Si lock era 1, sigue en el while
+
+// ========= SECCIÓN CRÍTICA ==========
+
+// Salida
+lock = 0;</code></pre>
+
+            <div class="callout success">
+                <strong>Usado en:</strong> Java, C++11 (atomic), Linux kernel
+            </div>
+
+            <h4>Busy Waiting vs Bloqueo</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Enfoque</th>
+                        <th>Qué hace</th>
+                        <th>Ventaja</th>
+                        <th>Desventaja</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Espera activa (spin)</strong></td>
+                        <td>El proceso gira en un while</td>
+                        <td>Muy rápido si la espera es corta</td>
+                        <td>Consume CPU inútilmente</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Bloqueo</strong></td>
+                        <td>El proceso duerme y espera señal</td>
+                        <td>Ahorra CPU</td>
+                        <td>Mayor latencia por despertar</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="callout warning">
+                <strong>Regla práctica:</strong> spin para secciones muy cortas, bloqueo para esperas largas.
+            </div>
+
+            <h4>Lista Enlazada Libre de Bloqueos (Lock-Free)</h4>
+            <p>Usando CAS para estructuras de datos concurrentes:</p>
+            <pre><code>// Insertar nodo nuevo después de A
+// PASO 1: Guardar referencias actuales
+nuevo->siguiente = A->siguiente;  // Apunta a B
+
+// PASO 2: Intentar actualizar A->siguiente con CAS
+if (CAS(&A->siguiente, B, nuevo) == B) {
+    // Éxito: A->siguiente ahora apunta a nuevo
+} else {
+    // Fallo: otro hilo modificó A->siguiente
+    // Reintentar desde PASO 1
+}</code></pre>
+        </section>
+
+        <!-- Monitores -->
+        <section id="monitores">
+            <h2>Monitores</h2>
+            <h3>Concepto de Monitor (Hoare, 1974)</h3>
+
+            <div class="callout info">
+                Un <strong>monitor</strong> es una construcción del lenguaje de programación que encapsula:<br>
+                • Variables compartidas<br>
+                • Procedimientos que operan sobre esas variables<br>
+                • Sincronización implícita
+            </div>
+
+            <pre class="ascii-diagram">┌─────────────────────────────────────────┐
+│              MONITOR                    │
+│  ┌─────────────────────────────────┐    │
+│  │  Variables privadas             │    │
+│  │  (solo accesibles dentro)       │    │
+│  └─────────────────────────────────┘    │
+│                                          │
+│  ┌─────────────────────────────────┐    │
+│  │  Procedimiento op1()            │    │
+│  │    ... operaciones ...          │    │
+│  └─────────────────────────────────┘    │
+│  ┌─────────────────────────────────┐    │
+│  │  Procedimiento op2()            │    │
+│  │    ... operaciones ...          │    │
+│  └─────────────────────────────────┘    │
+│                                          │
+│  ⚡ Solo UN proceso puede ejecutar       │
+│     un procedimiento del monitor         │
+│     a la vez (exclusión mutua implícita) │
+└─────────────────────────────────────────┘</pre>
+
+            <h3>Variables de Condición</h3>
+            <p>Dentro de un monitor: sincronización condicional</p>
+
+            <pre><code>monitor BufferLimitado {
+    // Variables del monitor
+    item buffer[N];
+    int count = 0;
+
+    // Variables de condición
+    condition no_lleno;    // Esperar si buffer lleno
+    condition no_vacio;    // Esperar si buffer vacío
+
+    procedure insertar(item x) {
+        if (count == N)
+            no_lleno.wait;     // Duerme si lleno
+        buffer[in] = x;
+        count++;
+        no_vacio.signal;       // Despierta a consumidor
+    }
+
+    procedure remover() {
+        if (count == 0)
+            no_vacio.wait;     // Duerme si vacío
+        item = buffer[out];
+        count--;
+        no_lleno.signal;       // Despierta a productor
+        return item;
+    }
+}</code></pre>
+
+            <h3>Monitores en Java</h3>
+            <pre><code>public class CuentaBancaria {
+    private double saldo = 0;
+
+    // 'synchronized' = monitor
+    public synchronized void depositar(double monto) {
+        saldo += monto;
+    }
+
+    public synchronized void retirar(double monto) {
+        saldo -= monto;
+    }
+
+    // Uso de variables de condición
+    public synchronized void retirarSeguro(double monto)
+            throws InterruptedException {
+        while (saldo < monto) {
+            wait();  // Espera en la variable de condición
+        }
+        saldo -= monto;
+    }
+
+    public synchronized void depositarNotificar(double monto) {
+        saldo += monto;
+        notifyAll();  // Despierta a los que esperan
+    }
+}</code></pre>
+
+            <h3>Comparación: Semáforos vs Mutex vs Monitores</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Característica</th>
+                        <th>Semáforo</th>
+                        <th>Mutex</th>
+                        <th>Monitor</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Nivel</strong></td>
+                        <td>Sistema operativo</td>
+                        <td>Biblioteca/Lenguaje</td>
+                        <td>Lenguaje (alto nivel)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Valor</strong></td>
+                        <td>0, 1, 2, ...</td>
+                        <td>0 o 1</td>
+                        <td>Implícito (lock implícito)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Exclusión mutua</strong></td>
+                        <td>✅</td>
+                        <td>✅</td>
+                        <td>✅ (automática)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Sincronización condicional</strong></td>
+                        <td>✅ (con semáforos adicionales)</td>
+                        <td>❌</td>
+                        <td>✅ (variables de condición)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Errores comunes</strong></td>
+                        <td>Olvidar signal/wait</td>
+                        <td>Olvidar unlock</td>
+                        <td>Menos probable</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Ejemplos</strong></td>
+                        <td><code>sem_t</code> (C), <code>Semaphore</code> (Java)</td>
+                        <td><code>pthread_mutex</code>, <code>std::mutex</code></td>
+                        <td>Java <code>synchronized</code>, C# <code>lock</code></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Semáforos -->
+        <section id="semaforos">
+            <h2>Semáforos</h2>
+            <h3>Inventados por Dijkstra (1965)</h3>
+
+            <figure>
+                <img src="../assets/infografias/clase-05-semaforos.png" alt="Visualización de semáforos y operaciones wait/signal">
+                <figcaption>Visualización de semáforos: operaciones wait (P) y signal (V)</figcaption>
+            </figure>
+
+            <h4>Qué resuelven</h4>
+            <ul>
+                <li>Controlan <strong>quién entra</strong> a una sección crítica o a un recurso</li>
+                <li>Permiten <strong>sincronizar</strong> productor-consumidor, lectores-escritores, etc.</li>
+            </ul>
+
+            <p>Un <strong>semáforo</strong> es una variable entera con dos operaciones atómicas:</p>
+
+            <div class="comparison">
+                <div>
+                    <h4>wait(S) o P(S) o down(S)</h4>
+                    <pre><code>if (S > 0)
+    S = S - 1;
+else
+    bloquear proceso;</code></pre>
+                </div>
+                <div>
+                    <h4>signal(S) o V(S) o up(S)</h4>
+                    <pre><code>if (hay procesos esperando)
+    despertar uno;
+else
+    S = S + 1;</code></pre>
+                </div>
+            </div>
+
+            <h3>Tipos de Semáforos</h3>
+
+            <h4>Semáforo Binario (Mutex)</h4>
+            <ul>
+                <li>Valores: 0 o 1</li>
+                <li>Usado para exclusión mutua</li>
+            </ul>
+            <pre><code>semaphore mutex = 1;
+
+// Proceso
+wait(mutex);
+// sección crítica
+signal(mutex);</code></pre>
+
+            <h4>Semáforo Contador</h4>
+            <ul>
+                <li>Valores: 0, 1, 2, 3, ...</li>
+                <li>Usado para controlar acceso a N recursos</li>
+            </ul>
+            <pre><code>semaphore recursos = 5;  // 5 recursos disponibles</code></pre>
+
+            <h3>Comparación: Semáforos vs Mutex</h3>
+
+            <figure>
+                <img src="../assets/infografias/clase-05-semaforos-mutex.png" alt="Comparación visual entre semáforos y mutex">
+                <figcaption>Diferencias clave entre semáforos y mutex</figcaption>
+            </figure>
+
+            <ul>
+                <li><strong>Mutex:</strong> exclusión mutua estricta (0/1)</li>
+                <li><strong>Semáforo:</strong> contador de recursos (0..N)</li>
+                <li><strong>Uso típico:</strong> mutex para proteger una sección crítica, semáforo para recursos múltiples</li>
+            </ul>
+
+            <h3>Ejemplo: Exclusión Mutua con Semáforo</h3>
+            <pre><code>#include &lt;semaphore.h&gt;
+
+sem_t mutex;
+int saldo = 1000;  // Variable compartida
+
+void depositar(int monto) {
+    sem_wait(&mutex);       // Entrada a SC
+    saldo = saldo + monto;  // Sección crítica
+    sem_post(&mutex);       // Salida de SC
+}
+
+void retirar(int monto) {
+    sem_wait(&mutex);       // Entrada a SC
+    saldo = saldo - monto;  // Sección crítica
+    sem_post(&mutex);       // Salida de SC
+}
+
+int main() {
+    sem_init(&mutex, 0, 1);  // Inicializar en 1
+    // ... crear threads que llaman depositar/retirar ...
+}</code></pre>
+        </section>
+
+        <!-- Productor-Consumidor -->
+        <section id="productor-consumidor">
+            <h2>Problema del Productor-Consumidor</h2>
+            <h3>Buffer limitado compartido</h3>
+
+            <div class="buffer-diagram">
+                <span style="display:flex;align-items:center;font-weight:bold;">PRODUCTOR →</span>
+                <div class="buffer-cell">X</div>
+                <div class="buffer-cell">X</div>
+                <div class="buffer-cell">X</div>
+                <div class="buffer-cell"></div>
+                <div class="buffer-cell"></div>
+                <span style="display:flex;align-items:center;font-weight:bold;">→ CONSUMIDOR</span>
+            </div>
+
+            <pre class="ascii-diagram">                    BUFFER (tamaño N)
+                 ┌───┬───┬───┬───┬───┐
+PRODUCTOR ────→  │ X │ X │ X │   │   │ ────→ CONSUMIDOR
+                 └───┴───┴───┴───┴───┘
+                   0   1   2   3   4
+
+Productor: Genera items y los pone en el buffer
+Consumidor: Saca items del buffer y los usa
+
+Problemas:
+- Productor no puede poner si buffer lleno
+- Consumidor no puede sacar si buffer vacío
+- No pueden acceder al buffer simultáneamente</pre>
+
+            <h3>Solución con Semáforos</h3>
+
+            <h4>Código del Productor</h4>
+            <pre><code>#define N 5  // Tamaño del buffer
+
+sem_t mutex;     // Exclusión mutua para el buffer
+sem_t empty;     // Espacios vacíos disponibles
+sem_t full;      // Items disponibles
+
+void productor() {
+    while (true) {
+        item = producir();
+
+        sem_wait(&empty);    // Esperar espacio vacío
+        sem_wait(&mutex);    // Entrar a SC
+
+        buffer[in] = item;   // Poner item
+        in = (in + 1) % N;
+
+        sem_post(&mutex);    // Salir de SC
+        sem_post(&full);     // Avisar que hay item
+    }
+}</code></pre>
+
+            <h4>Código del Consumidor</h4>
+            <pre><code>void consumidor() {
+    while (true) {
+        sem_wait(&full);     // Esperar item disponible
+        sem_wait(&mutex);    // Entrar a SC
+
+        item = buffer[out];  // Sacar item
+        out = (out + 1) % N;
+
+        sem_post(&mutex);    // Salir de SC
+        sem_post(&empty);    // Avisar que hay espacio
+
+        consumir(item);
+    }
+}
+
+int main() {
+    sem_init(&mutex, 0, 1);
+    sem_init(&empty, 0, N);  // N espacios vacíos
+    sem_init(&full, 0, 0);   // 0 items inicialmente
+    // crear threads...
+}</code></pre>
+
+            <div class="callout success">
+                <strong>Nota:</strong> El orden de los wait es importante. <code>empty/mutex</code> o <code>full/mutex</strong> previene deadlock, pero <code>mutex/empty</strong> podría causarlo.
+            </div>
+        </section>
+
+        <!-- Mutex en POSIX -->
+        <section id="mutex">
+            <h2>Mutex en POSIX Threads</h2>
+            <h3>pthread_mutex (más simple que semáforos)</h3>
+
+            <pre><code>#include &lt;pthread.h&gt;
+
+pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
+int contador = 0;
+
+void* incrementar(void* arg) {
+    for (int i = 0; i &lt; 1000000; i++) {
+        pthread_mutex_lock(&lock);    // Adquirir lock
+        contador++;                    // Sección crítica
+        pthread_mutex_unlock(&lock);  // Liberar lock
+    }
+    return NULL;
+}
+
+int main() {
+    pthread_t t1, t2;
+    pthread_create(&t1, NULL, incrementar, NULL);
+    pthread_create(&t2, NULL, incrementar, NULL);
+    pthread_join(t1, NULL);
+    pthread_join(t2, NULL);
+    printf("Contador: %d\n", contador);  // Siempre 2000000
+}</code></pre>
+
+            <div class="callout info">
+                <strong>Ventajas de pthread_mutex:</strong><br>
+                • Más simple que semáforos para exclusión mutua<br>
+                • Menor overhead que semáforos generales<br>
+                • Diseñado específicamente para secciones críticas
+            </div>
+        </section>
+
+        <!-- Deadlock -->
+        <section id="deadlock">
+            <h2>Deadlock (Interbloqueo)</h2>
+            <h3>Cuando los procesos se bloquean mutuamente</h3>
+
+            <div class="callout warning">
+                <p><strong>¿Qué es un Deadlock?</strong> Dos procesos esperan recursos que el otro tiene, y nadie cede.</p>
+                <p><strong>Ejemplo simple:</strong></p>
+                <pre class="ascii-diagram">Proceso A: "Tengo sem1, necesito sem2" → ESPERA
+Proceso B: "Tengo sem2, necesito sem1" → ESPERA
+                  ↓
+            ¡Nadie avanza! ¡Deadlock!</pre>
+            </div>
+
+            <pre><code>Proceso A:                      Proceso B:
+wait(sem1);  ← tiene sem1       wait(sem2);  ← tiene sem2
+wait(sem2);  ← espera sem2      wait(sem1);  ← espera sem1
+...                             ...</code></pre>
+
+            <div class="deadlock-diagram">
+                <div class="deadlock-box">
+                    <pre class="ascii-diagram">        ┌───────────────────────────────┐
+        │                               │
+        ▼                               │
+   ┌─────────┐   espera    ┌─────────┐ │
+   │    A    │ ──────────→ │    B    │ │
+   │ (sem1)  │             │ (sem2)  │ │
+   └─────────┘ ←────────── └─────────┘ │
+                  espera               │
+        │                               │
+        └───────────────────────────────┘
+                 ¡DEADLOCK!</pre>
+                </div>
+            </div>
+
+            <h3>Condiciones para Deadlock</h3>
+            <p><strong>Las 4 condiciones de Coffman (todas necesarias):</strong></p>
+            <ol>
+                <li><strong>Exclusión mutua:</strong> Recursos no compartibles</li>
+                <li><strong>Retención y espera:</strong> Proceso retiene recursos mientras espera otros</li>
+                <li><strong>No apropiación:</strong> No se pueden quitar recursos por la fuerza</li>
+                <li><strong>Espera circular:</strong> A espera a B, B espera a C, C espera a A</li>
+            </ol>
+
+            <div class="callout warning">
+                <strong>Prevención:</strong> Romper al menos una condición
+            </div>
+
+            <h3>Estrategias frente a Deadlocks</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Estrategia</th>
+                        <th>Idea</th>
+                        <th>Ejemplo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Prevención</strong></td>
+                        <td>Evitar que se cumpla alguna condición</td>
+                        <td>Orden fijo de recursos</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Evitación</strong></td>
+                        <td>Analizar si un estado es seguro</td>
+                        <td>Algoritmo del banquero</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Detección</strong></td>
+                        <td>Permitir deadlock y detectarlo</td>
+                        <td>Grafo de espera</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Recuperación</strong></td>
+                        <td>Romper el ciclo</td>
+                        <td>Terminar/rollback procesos</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="callout danger">
+                <strong>Ejemplo de prevención:</strong> Siempre adquirir locks en el mismo orden. Si el proceso A siempre adquiere sem1 antes que sem2, y el proceso B también, nunca habrá deadlock.
+            </div>
+        </section>
+
+        <!-- Actividad Práctica -->
+        <section id="practica">
+            <h2>Actividad Práctica</h2>
+            <h3>En parejas (10 min)</h3>
+
+            <ol>
+                <li>Identifiquen la sección crítica en este código:
+                <pre><code>void transferir(Cuenta* origen, Cuenta* destino, int monto) {
+    origen->saldo -= monto;
+    destino->saldo += monto;
+}</code></pre>
+                </li>
+                <li>Agreguen semáforos/mutex para hacerlo thread-safe</li>
+                <li>¿Puede haber deadlock si dos procesos hacen transferencias entre las mismas cuentas en direcciones opuestas?</li>
+            </ol>
+
+            <details>
+                <summary style="cursor:pointer;background:var(--bg-light);padding:1rem;border-radius:4px;margin-top:1rem;">
+                    <strong>Ver solución sugerida</strong>
+                </summary>
+                <div style="background:var(--bg-light);padding:1rem;border-radius:0 0 4px 4px;margin-top:-0.5rem;">
+                    <pre><code>// Solución con mutex por cuenta
+pthread_mutex_t lock_origen;
+pthread_mutex_t lock_destino;
+
+void transferir(Cuenta* origen, Cuenta* destino, int monto) {
+    // PREVENCIÓN DE DEADLOCK: siempre adquirir locks en mismo orden
+    // (por ejemplo, por dirección de memoria o ID de cuenta)
+    Cuenta* primero = (origen &lt; destino) ? origen : destino;
+    Cuenta* segundo = (origen &lt; destino) ? destino : origen;
+
+    pthread_mutex_lock(&amp;primero->lock);
+    pthread_mutex_lock(&amp;segundo->lock);
+
+    origen->saldo -= monto;
+    destino->saldo += monto;
+
+    pthread_mutex_unlock(&amp;segundo->lock);
+    pthread_mutex_unlock(&amp;primero->lock);
+}</code></pre>
+                    <p><strong>Nota:</strong> Al adquirir siempre los locks en un orden fijo (por dirección de memoria), se rompe la condición de espera circular y se previene el deadlock.</p>
+                </div>
+            </details>
+        </section>
+
+        <!-- Resumen -->
+        <section id="resumen">
+            <h2>Resumen de la Clase</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Concepto</th>
+                        <th>Descripción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Race condition</strong></td>
+                        <td>Resultado depende del orden de ejecución</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Sección crítica</strong></td>
+                        <td>Código que accede a recursos compartidos</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Hardware sync</strong></td>
+                        <td>TAS, CAS - instrucciones atómicas del procesador</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Monitor</strong></td>
+                        <td>Construcción del lenguaje con sincronización implícita</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Semáforo</strong></td>
+                        <td>Variable con wait/signal para sincronización</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Mutex</strong></td>
+                        <td>Semáforo binario para exclusión mutua</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Deadlock</strong></td>
+                        <td>Procesos bloqueados esperándose mutuamente</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Prevención</strong></td>
+                        <td>Romper al menos una condición de Coffman</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="callout info">
+                <h4>Evaluación (15% - Eval 2)</h4>
+                <p><strong>Laboratorio + Sustentación: Semana 7</strong></p>
+                <ol>
+                    <li>Implementar productor-consumidor en C con pthreads</li>
+                    <li>Demostrar que funciona correctamente</li>
+                    <li>Explicar cada semáforo y su propósito</li>
+                    <li><strong>Sustentación oral</strong> (5 min por pareja)</li>
+                </ol>
+                <p><strong>Trabajo en parejas</strong></p>
+            </div>
+
+            <h3>Próxima Clase</h3>
+            <p><strong>Clase 6: Gestión de Memoria</strong></p>
+            <ul>
+                <li>Conceptos de memoria principal</li>
+                <li>Direcciones lógicas vs físicas</li>
+                <li>Partición de memoria</li>
+                <li>Fragmentación</li>
+            </ul>
+        </section>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p><strong>IF0099 - Sistemas Operativos I</strong> • <a href="index.html">Índice de Clases</a></p>
+        <div class="container">
+            <p>IF0099 - Sistemas Operativos I | UNAULA - Ingeniería Informática - 2026-I</p>
+            <p><a href="../index.html">← Volver al inicio</a></p>
+        </div>
+    </footer>
+
+    <a href="#" class="scroll-top" id="scrollTop">↑</a>
+
+    <script>
+        // Scroll to top button
+        const scrollTopBtn = document.getElementById('scrollTop');
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                scrollTopBtn.classList.add('visible');
+            } else {
+                scrollTopBtn.classList.remove('visible');
+            }
+        });
+        scrollTopBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href !== '#' && href.length > 1) {
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

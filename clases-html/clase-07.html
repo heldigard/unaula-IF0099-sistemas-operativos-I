@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clase 07: Paginación y Memoria Virtual | IF0099 - Sistemas Operativos I</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #1e40af;
+            --accent: #059669;
+            --bg-light: #f8fafc;
+            --bg-code: #1e293b;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+        }
+
+        * {margin:0;padding:0;box-sizing:border-box}
+        body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;line-height:1.7;color:var(--text-main);background:var(--bg-light);font-size:16px}
+        .container{max-width:1200px;margin:0 auto;padding:0 20px}
+
+        header{background:linear-gradient(135deg,var(--primary) 0%,var(--secondary) 100%);color:white;padding:3rem 0;margin-bottom:2rem}
+        header h1{font-size:2.2rem;margin-bottom:.5rem;font-weight:700}
+        header .subtitle{font-size:1.1rem;opacity:.9}
+        header .meta{margin-top:1rem;font-size:.9rem;opacity:.8}
+
+        nav{background:white;padding:1.5rem 0;margin-bottom:2rem;border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,0.1)}
+        nav h2{font-size:1.1rem;color:var(--text-muted);margin-bottom:1rem;padding:0 20px}
+        nav ul{list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.5rem;padding:0 20px}
+        nav a{color:var(--primary);text-decoration:none;padding:.5rem;display:block;border-radius:4px;transition:background .2s}
+        nav a:hover{background:var(--bg-light)}
+
+        section{background:white;padding:2rem;margin-bottom:2rem;border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,0.1)}
+        section h2{color:var(--primary);font-size:1.8rem;margin-bottom:1.5rem;padding-bottom:.5rem;border-bottom:3px solid var(--accent)}
+        section h3{color:var(--secondary);font-size:1.4rem;margin:2rem 0 1rem}
+        section h4{color:var(--text-main);font-size:1.1rem;margin:1.5rem 0 .75rem;font-weight:600}
+        p{margin-bottom:1rem}
+
+        figure{margin:2rem 0;text-align:center}
+        figure img{max-width:100%;height:auto;border-radius:8px;box-shadow:0 4px 6px rgba(0,0,0,0.1)}
+        figcaption{margin-top:.75rem;color:var(--text-muted);font-style:italic;font-size:.95rem}
+
+        table{width:100%;border-collapse:collapse;margin:1.5rem 0;font-size:.95rem}
+        th,td{padding:.75rem 1rem;text-align:left;border-bottom:1px solid var(--border)}
+        th{background:var(--bg-light);font-weight:600;color:var(--secondary)}
+        tr:hover{background:var(--bg-light)}
+
+        pre{background:var(--bg-code);color:#e2e8f0;padding:1.5rem;border-radius:8px;overflow-x:auto;margin:1.5rem 0;font-size:.9rem;line-height:1.5}
+        code{font-family:'Consolas','Monaco','Courier New',monospace}
+        p code,li code,td code{background:var(--bg-light);color:var(--primary);padding:.2rem .4rem;border-radius:4px;font-size:.9em}
+        pre code{background:none;padding:0;color:inherit}
+
+        ul,ol{margin-left:1.5rem;margin-bottom:1rem}
+        li{margin-bottom:.5rem}
+
+        .callout{padding:1.5rem;border-radius:8px;margin:1.5rem 0;border-left:4px solid}
+        .callout.info{background:#eff6ff;border-left-color:var(--primary)}
+        .callout.warning{background:#fef3c7;border-left-color:#f59e0b}
+        .callout.success{background:#d1fae5;border-left-color:var(--accent)}
+
+        .ascii-diagram{font-family:'Consolas','Monaco',monospace;font-size:.85rem;line-height:1.2;background:var(--bg-light);padding:1rem;border-radius:4px;overflow-x:auto;white-space:pre}
+
+        .comparison{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin:2rem 0}
+        .comparison>div{background:var(--bg-light);padding:1.5rem;border-radius:8px}
+
+        .gantt{display:flex;align-items:center;margin:2rem 0;font-family:'Consolas','Monaco',monospace;font-size:.8rem}
+        .gantt-bar{height:30px;background:var(--primary);color:white;display:flex;align-items:center;justify-content:center;border-radius:4px;margin:0 2px}
+        .gantt-id{width:80px;text-align:right;padding-right:10px}
+        .gantt-timeline{flex:1;display:flex;height:30px}
+        .gantt-empty{flex:1;border-bottom:1px solid var(--border)}
+
+        footer{background:var(--text-main);color:white;padding:2rem 0;text-align:center;margin-top:3rem}
+        footer a{color:var(--accent);text-decoration:none}
+
+        .scroll-top{position:fixed;bottom:2rem;right:2rem;background:var(--primary);color:white;width:45px;height:45px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;transition:opacity .3s;text-decoration:none;font-size:1.5rem}
+        .scroll-top.visible{opacity:1}
+        .scroll-top:hover{background:var(--secondary)}
+
+        @media(max-width:768px){
+            header h1{font-size:1.6rem}
+            section{padding:1.5rem}
+            nav ul{grid-template-columns:1fr}
+            .comparison{grid-template-columns:1fr}
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Clase 07: Paginación y Memoria Virtual</h1>
+            <p class="subtitle">IF0099 - Sistemas Operativos I | Unidad 5 - Gestión de Memoria</p>
+            <p class="subtitle">Páginas, Marcos, Tablas y Page Faults</p>
+            <p class="meta">Última actualización: 2026-02-01 | Duración: 90 minutos</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <nav>
+            <h2>Contenido de la Clase</h2>
+            <ul>
+                <li><a href="#objetivos">Objetivos de Aprendizaje</a></li>
+                <li><a href="#introduccion">Introducción y Conceptos</a></li>
+                <li><a href="#fragmentacion">Problema de Fragmentación Externa</a></li>
+                <li><a href="#idea-paginacion">Idea de la Paginación</a></li>
+                <li><a href="#traduccion">Traducción de Direcciones</a></li>
+                <li><a href="#diagrama-traduccion">Diagrama de Traducción</a></li>
+                <li><a href="#ejemplo-completo">Ejemplo Completo</a></li>
+                <li><a href="#ventajas">Ventajas de la Paginación</a></li>
+                <li><a href="#memoria-virtual">Memoria Virtual</a></li>
+                <li><a href="#demand-paging">Demand Paging</a></li>
+                <li><a href="#page-fault">Page Fault</a></li>
+                <li><a href="#algoritmos-reemplazo">Algoritmos de Reemplazo</a></li>
+                <li><a href="#thrashing">Thrashing</a></li>
+                <li><a href="#working-set">Working Set</a></li>
+                <li><a href="#tlb">TLB (Translation Lookaside Buffer)</a></li>
+                <li><a href="#ejercicios">Ejercicios</a></li>
+                <li><a href="#ventajas-desventajas">Ventajas y Desventajas</a></li>
+                <li><a href="#ejemplo-real">Ejemplo Real: Linux vs Windows</a></li>
+                <li><a href="#comparacion-algoritmos">Comparación de Algoritmos</a></li>
+                <li><a href="#overhead">Cálculo de Overhead</a></li>
+                <li><a href="#ejercicio-tlb">Ejercicio TLB Miss Rate</a></li>
+                <li><a href="#actividad">Actividad Práctica</a></li>
+                <li><a href="#resumen">Resumen</a></li>
+                <li><a href="#evaluacion">Evaluación</a></li>
+            </ul>
+        </nav>
+
+        <section id="objetivos">
+            <h2>Objetivos de Aprendizaje</h2>
+            <p>Al finalizar esta clase, serás capaz de:</p>
+            <ol>
+                <li><strong>Explicar</strong> el mecanismo de paginación</li>
+                <li><strong>Traducir</strong> direcciones usando tablas de páginas</li>
+                <li><strong>Describir</strong> el funcionamiento de la memoria virtual</li>
+                <li><strong>Analizar</strong> algoritmos de reemplazo de páginas</li>
+            </ol>
+        </section>
+
+        <section id="introduccion">
+            <h2>Introducción y Conceptos</h2>
+            <figure>
+                <img src="../assets/infografias/clase-07-tabla-paginas.png" alt="Paginación de Memoria">
+                <figcaption>Diagrama de paginación: páginas lógicas asignadas a marcos físicos</figcaption>
+            </figure>
+            <p><strong>Conceptos fundamentales que veremos:</strong></p>
+            <ul>
+                <li><strong>Páginas</strong>: Bloques de memoria lógica del proceso</li>
+                <li><strong>Marcos</strong>: Bloques de memoria física en RAM</li>
+                <li><strong>Tablas de páginas</strong>: Mapa páginas → marcos</li>
+                <li><strong>Page Fault</strong>: Cuando una página no está en RAM</li>
+                <li><strong>Memoria virtual</strong>: Procesos más grandes que la RAM disponible</li>
+            </ul>
+        </section>
+
+        <section id="fragmentacion">
+            <h2>Problema de la Fragmentación Externa</h2>
+            <p><strong>Recordatorio de la clase anterior:</strong></p>
+            <div class="ascii-diagram">
+Con asignación contigua:
+┌─────┐
+│  A  │
+├─────┤
+│HUECO│ 50KB
+├─────┤
+│  B  │
+├─────┤
+│HUECO│ 30KB     Total libre: 120KB
+├─────┤          Proceso nuevo: 100KB
+│  C  │          ¿Puede cargarse? NO
+├─────┤
+│HUECO│ 40KB
+└─────┘
+            </div>
+            <p><strong>Solución: <em>Paginación</em></strong></p>
+            <p>¡No necesitamos memoria contigua!</p>
+        </section>
+
+        <section id="idea-paginacion">
+            <h2>Idea de la Paginación</h2>
+            <h3>Dividir memoria en bloques de tamaño fijo</h3>
+            <div class="ascii-diagram">
+MEMORIA LÓGICA (Proceso)          MEMORIA FÍSICA
+      PÁGINAS                         MARCOS
+┌─────────────┐                 ┌─────────────┐ Marco 0
+│   Página 0  │                 │   Página 2  │
+├─────────────┤                 ├─────────────┤ Marco 1
+│   Página 1  │                 │   Página 0  │
+├─────────────┤                 ├─────────────┤ Marco 2
+│   Página 2  │                 │    (libre)  │
+├─────────────┤                 ├─────────────┤ Marco 3
+│   Página 3  │                 │   Página 3  │
+└─────────────┘                 ├─────────────┤ Marco 4
+                                │   Página 1  │
+                                └─────────────┘
+            </div>
+            <p><strong>Página</strong> = Bloque de memoria lógica</p>
+            <p><strong>Marco</strong> = Bloque de memoria física</p>
+            <p><strong>Tamaño típico:</strong> 4KB (4096 bytes)</p>
+        </section>
+
+        <section id="traduccion">
+            <h2>Traducción de Direcciones</h2>
+            <h3>Dirección lógica = Número de página + Desplazamiento</h3>
+            <div class="ascii-diagram">
+Dirección lógica: 5000 (en bytes)
+Tamaño de página: 4096 bytes
+
+Número de página = 5000 / 4096 = 1
+Desplazamiento   = 5000 % 4096 = 904
+
+         TABLA DE PÁGINAS
+        ┌───────┬────────┐
+        │Página │ Marco  │
+        ├───────┼────────┤
+        │   0   │   1    │
+        │   1   │   4    │ ← Página 1 está en Marco 4
+        │   2   │   0    │
+        │   3   │   3    │
+        └───────┴────────┘
+
+Dirección física = Marco 4 × 4096 + 904 = 16384 + 904 = 17288
+            </div>
+        </section>
+
+        <section id="diagrama-traduccion">
+            <h2>Diagrama de Traducción</h2>
+            <div class="ascii-diagram">
+        DIRECCIÓN LÓGICA
+    ┌────────────┬──────────────┐
+    │ # Página   │ Desplazamiento│
+    │    (p)     │     (d)       │
+    └─────┬──────┴───────┬───────┘
+          │              │
+          ▼              │
+    ┌───────────┐        │
+    │  TABLA    │        │
+    │    DE     │        │
+    │  PÁGINAS  │        │
+    └─────┬─────┘        │
+          │              │
+          ▼              ▼
+    ┌────────────┬──────────────┐
+    │ # Marco    │ Desplazamiento│
+    │    (f)     │     (d)       │
+    └────────────┴──────────────┘
+        DIRECCIÓN FÍSICA
+            </div>
+        </section>
+
+        <section id="ejemplo-completo">
+            <h2>Ejemplo Completo</h2>
+            <div class="ascii-diagram">
+Memoria física: 64 KB (16 marcos de 4 KB)
+Proceso: 16 KB (4 páginas de 4 KB)
+
+Tabla de páginas del proceso:
+┌───────┬────────┬────────┐
+│Página │ Marco  │ Válido │
+├───────┼────────┼────────┤
+│   0   │   5    │   1    │
+│   1   │   9    │   1    │
+│   2   │   2    │   1    │
+│   3   │  12    │   1    │
+└───────┴────────┴────────┘
+
+Traducir dirección lógica: 8500
+
+Página = 8500 / 4096 = 2
+Desplazamiento = 8500 % 4096 = 308
+
+Marco de página 2 = 2
+Dirección física = 2 × 4096 + 308 = 8500 ✓
+            </div>
+        </section>
+
+        <section id="ventajas">
+            <h2>Ventajas de la Paginación</h2>
+            <div class="comparison">
+                <div>
+                    <h3>✅ Elimina fragmentación externa</h3>
+                    <div class="ascii-diagram">
+ANTES (contigua):               DESPUÉS (paginación):
+┌─────┐                         ┌─────┐ Marco 0: P1.pág0
+│  A  │                         ├─────┤ Marco 1: P2.pág0
+├─────┤                         ├─────┤ Marco 2: P1.pág1
+│HUECO│ No podemos usar         ├─────┤ Marco 3: P3.pág0
+├─────┤                         ├─────┤ Marco 4: P2.pág1
+│  B  │                         ├─────┤ Marco 5: P1.pág2
+├─────┤                         └─────┘
+│HUECO│ estos espacios
+├─────┤ para P4
+│  C  │
+└─────┘
+                    </div>
+                </div>
+                <div>
+                    <h3>⚠️ Fragmentación interna</h3>
+                    <p>Con paginación, P4 puede usar marcos no contiguos</p>
+                    <p>Aún puede haber <strong>fragmentación interna</strong> si un proceso no usa toda su última página</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="memoria-virtual">
+            <h2>Memoria Virtual</h2>
+            <h3>Más memoria de la que físicamente existe</h3>
+            <div class="ascii-diagram">
+    MEMORIA VIRTUAL                    MEMORIA FÍSICA
+    (por proceso)                         (real)
+┌─────────────────┐                 ┌─────────────────┐
+│                 │                 │                 │
+│   4 GB          │                 │   8 GB          │
+│   de espacio    │ ──parcialmente──│   compartida    │
+│   de direcciones│     cargada     │   entre todos   │
+│                 │                 │   los procesos  │
+└─────────────────┘                 └─────────────────┘
+
+Cada proceso CREE que tiene 4GB
+Solo las páginas en uso están en RAM
+El resto está en DISCO (swap)
+            </div>
+        </section>
+
+        <section id="demand-paging">
+            <h2>Demand Paging (Paginación por Demanda)</h2>
+            <p><strong>Solo cargar páginas cuando se necesitan</strong></p>
+            <div class="ascii-diagram">
+1. Proceso intenta acceder a dirección
+2. Buscar en tabla de páginas
+3. Si válido=1 → página en RAM → acceder
+4. Si válido=0 → PAGE FAULT:
+   a. Buscar página en disco
+   b. Cargar en marco libre
+   c. Actualizar tabla de páginas
+   d. Reintentar acceso
+
+┌───────┬────────┬────────┐
+│Página │ Marco  │ Válido │
+├───────┼────────┼────────┤
+│   0   │   5    │   1    │ ← En RAM
+│   1   │   -    │   0    │ ← En disco (page fault si se accede)
+│   2   │   2    │   1    │ ← En RAM
+│   3   │   -    │   0    │ ← En disco
+└───────┴────────┴────────┘
+            </div>
+        </section>
+
+        <section id="page-fault">
+            <h2>Page Fault (Fallo de Página)</h2>
+            <div class="ascii-diagram">
+┌─────────────────────────────────────────────────────────────┐
+│  1. CPU genera dirección lógica                             │
+│                    ↓                                        │
+│  2. MMU consulta tabla de páginas                           │
+│                    ↓                                        │
+│  3. Bit válido = 0 → TRAP (page fault)                      │
+│                    ↓                                        │
+│  4. SO busca página en disco (swap)                         │
+│                    ↓                                        │
+│  5. SO elige un marco (puede requerir reemplazo)            │
+│                    ↓                                        │
+│  6. SO carga página del disco al marco                      │
+│                    ↓                                        │
+│  7. SO actualiza tabla de páginas (válido=1)                │
+│                    ↓                                        │
+│  8. Se reinicia la instrucción                              │
+└─────────────────────────────────────────────────────────────┘
+            </div>
+        </section>
+
+        <section id="algoritmos-reemplazo">
+            <h2>Algoritmos de Reemplazo de Páginas</h2>
+            <p><strong>Cuando no hay marcos libres, ¿cuál página sacar?</strong></p>
+            <table>
+                <tr>
+                    <th>Algoritmo</th>
+                    <th>Descripción</th>
+                    <th>Optimalidad</th>
+                </tr>
+                <tr>
+                    <td><strong>FIFO</strong> (<abbr title="First In First Out">FIFO</abbr>)</td>
+                    <td>Primera en entrar, primera en salir</td>
+                    <td>Simple pero malo</td>
+                </tr>
+                <tr>
+                    <td><strong>Óptimo</strong></td>
+                    <td>Sacar la que se usará más tarde</td>
+                    <td>Imposible de implementar</td>
+                </tr>
+                <tr>
+                    <td><strong>LRU</strong> (<abbr title="Least Recently Used">LRU</abbr>)</td>
+                    <td>Least Recently Used (menos usada recientemente)</td>
+                    <td>Bueno pero costoso</td>
+                </tr>
+                <tr>
+                    <td><strong>Clock</strong></td>
+                    <td>Aproximación a LRU con bit de referencia</td>
+                    <td>Práctico</td>
+                </tr>
+            </table>
+        </section>
+
+        <section id="thrashing">
+            <h2>Thrashing</h2>
+            <p><strong>Cuando el sistema pasa más tiempo haciendo page faults que ejecutando</strong></p>
+            <div class="ascii-diagram">
+     Utilización
+     de CPU
+        │
+    100%│          ┌────────────────
+        │         /
+        │        /
+        │       /
+        │      /
+        │     /
+        │    /         THRASHING
+        │   / ──────────────────────
+        │  /           ▼
+      0 │─┴─────────────────────────────
+        └──────────────────────────────→
+                Grado de multiprogramación
+                   (# de procesos)
+            </div>
+            <p><strong>Causa:</strong> Demasiados procesos compitiendo por pocos marcos</p>
+        </section>
+
+        <section id="working-set">
+            <h2>Working Set (Conjunto de Trabajo)</h2>
+            <p><strong>Páginas activamente usadas por un proceso</strong></p>
+            <div class="ascii-diagram">
+Si un proceso usa las páginas: 1, 2, 1, 3, 2, 1, 4, 1, 2, 3
+
+En una ventana de tiempo Δ=4:
+Posición 10: páginas usadas en posiciones 7-10 = {4, 1, 2, 3}
+Working Set = {1, 2, 3, 4}  (4 páginas)
+
+El SO debe asegurar que el proceso tenga al menos
+4 marcos para evitar thrashing.
+            </div>
+        </section>
+
+        <section id="tlb">
+            <h2>TLB (<abbr title="Translation Lookaside Buffer">TLB</abbr>) - Translation Lookaside Buffer</h2>
+            <p><strong>Caché de traducciones de páginas</strong></p>
+            <div class="ascii-diagram">
+Sin TLB:
+CPU → Tabla de páginas (RAM) → Memoria física (RAM)
+      ↑ Lento (2 accesos a RAM)
+
+Con TLB:
+CPU → TLB (caché) → Si hit: Memoria física (1 acceso)
+         ↓
+    Si miss: Tabla de páginas → actualizar TLB
+            </div>
+            <p><strong>TLB típico:</strong> 64-1024 entradas, tiempo de acceso ~1 ns</p>
+        </section>
+
+        <section id="ejercicios">
+            <h2>📝 Ejercicio: Traducción de Direcciones</h2>
+            <h3>Datos:</h3>
+            <ul>
+                <li>Memoria física: 32 KB (8 marcos de 4 KB)</li>
+                <li>Proceso con 3 páginas</li>
+                <li>Tabla de páginas: P0→M5, P1→M2, P2→M7</li>
+            </ul>
+            <p><strong>Traducir las siguientes direcciones lógicas:</strong></p>
+            <ol>
+                <li>2048</li>
+                <li>5000</li>
+                <li>10240</li>
+            </ol>
+            <h3>Solución:</h3>
+            <div class="ascii-diagram">
+Tamaño de página = 4096 bytes
+
+1) Dirección 2048:
+   Página = 2048 / 4096 = 0
+   Desplazamiento = 2048 % 4096 = 2048
+   Marco = 5 (desde tabla)
+   Dir. Física = 5 × 4096 + 2048 = 22528 ✓
+
+2) Dirección 5000:
+   Página = 5000 / 4096 = 1
+   Desplazamiento = 5000 % 4096 = 904
+   Marco = 2 (desde tabla)
+   Dir. Física = 2 × 4096 + 904 = 9096 ✓
+
+3) Dirección 10240:
+   Página = 10240 / 4096 = 2
+   Desplazamiento = 10240 % 4096 = 2048
+   Marco = 7 (desde tabla)
+   Dir. Física = 7 × 4096 + 2048 = 30720 ✓
+            </div>
+        </section>
+
+        <section id="ventajas-desventajas">
+            <h2>🎯 Ventajas y Desventajas de la Paginación</h2>
+            <div class="comparison">
+                <div>
+                    <h3>✅ Ventajas</h3>
+                    <table>
+                        <tr>
+                            <th>Ventaja</th>
+                            <th>Explicación</th>
+                        </tr>
+                        <tr>
+                            <td><strong>No fragmentación externa</strong></td>
+                            <td>Cualquier marco puede alojar cualquier página</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Multiprogramación eficiente</strong></td>
+                            <td>Procesos comparten memoria fácilmente</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Protección simple</strong></td>
+                            <td>Bits de control en tabla de páginas</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Memoria virtual</strong></td>
+                            <td>Procesos más grandes que RAM</td>
+                        </tr>
+                    </table>
+                </div>
+                <div>
+                    <h3>❌ Desventajas</h3>
+                    <table>
+                        <tr>
+                            <th>Desventaja</th>
+                            <th>Explicación</th>
+                        </tr>
+                        <tr>
+                            <td><strong>Fragmentación interna</strong></td>
+                            <td>Última página puede no usar todo el marco</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Sobrecarga de tabla</strong></td>
+                            <td>Tablas grandes consumen memoria</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Tiempo de acceso</strong></td>
+                            <td>Doble acceso: tabla + dato</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section id="ejemplo-real">
+            <h2>💡 Ejemplo Real: Linux vs Windows</h2>
+            <h3>Gestión de Memoria Virtual</h3>
+            <div class="comparison">
+                <div>
+                    <h4>Linux</h4>
+                    <pre><code># Ver uso de memoria virtual
+$ free -h
+              total   usado   libre   compartido   búfer/caché   disponible
+Memoria:      8.0Gi   4.2Gi   1.1Gi   256Mi        2.7Gi         3.8Gi
+Swap:         2.0Gi   128Mi   1.9Gi
+
+# Ver page faults
+$ vmstat 1 5
+procs -----------memoria---------- ---swap-- -----io---- -sistema- ------cpu-----
+r  b   swpd   free   buff  cache   si   so    bi    bo   in   cs us sy id wa st
+1  0 131072 1048576  ...   ...     0    4     50   100  200  500 10  5 80  5  0</code></pre>
+                </div>
+                <div>
+                    <h4>Windows (Task Manager)</h4>
+                    <ul>
+                        <li>Memoria confirmada vs física</li>
+                        <li>Caché en espera vs modificada</li>
+                        <li>Page file: <code>C:\pagefile.sys</code></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="comparacion-algoritmos">
+            <h2>🔍 Comparación de Algoritmos de Reemplazo</h2>
+            <table>
+                <tr>
+                    <th>Algoritmo</th>
+                    <th>Complejidad</th>
+                    <th>Eficiencia</th>
+                    <th>Uso Real</th>
+                </tr>
+                <tr>
+                    <td><strong>Óptimo</strong></td>
+                    <td>O(n²)</td>
+                    <td>5/5</td>
+                    <td>Solo teórico</td>
+                </tr>
+                <tr>
+                    <td><strong>FIFO</strong></td>
+                    <td>O(1)</td>
+                    <td>2/5</td>
+                    <td>Sistemas simples</td>
+                </tr>
+                <tr>
+                    <td><strong>LRU</strong></td>
+                    <td>O(n)</td>
+                    <td>4/5</td>
+                    <td>Variantes tipo LRU/Clock</td>
+                </tr>
+                <tr>
+                    <td><strong>Clock</strong></td>
+                    <td>O(n)</td>
+                    <td>4/5</td>
+                    <td>Sistemas modernos</td>
+                </tr>
+                <tr>
+                    <td><strong>LFU</strong></td>
+                    <td>O(n log n)</td>
+                    <td>3/5</td>
+                    <td>Cachés especializadas</td>
+                </tr>
+            </table>
+            <div class="callout info">
+                <p><strong>Observación:</strong> LRU es el más usado en producción por su balance eficiencia/complejidad.</p>
+            </div>
+        </section>
+
+        <section id="overhead">
+            <h2>📊 Cálculo de Overhead de Paginación</h2>
+            <h3>Ejemplo Real: Sistema de 32 bits</h3>
+            <p><strong>Datos:</strong></p>
+            <ul>
+                <li>Espacio de direcciones: 4 GB (2³² bytes)</li>
+                <li>Tamaño de página: 4 KB (2¹² bytes)</li>
+                <li>Número de páginas: 4GB / 4KB = 1M páginas</li>
+                <li>Entrada de tabla: 4 bytes (32 bits)</li>
+            </ul>
+            <p><strong>Overhead:</strong></p>
+            <div class="ascii-diagram">
+Tamaño de tabla = 1M páginas × 4 bytes = 4 MB por proceso
+
+Con 100 procesos:
+Memoria solo para tablas = 100 × 4 MB = 400 MB 😱
+            </div>
+            <p><strong>Solución:</strong> Tablas de páginas multinivel (usadas por Intel x86)</p>
+        </section>
+
+        <section id="ejercicio-tlb">
+            <h2>🔧 Ejercicio Guiado: TLB Miss Rate</h2>
+            <h3>Escenario</h3>
+            <ul>
+                <li>TLB: 64 entradas</li>
+                <li>Tiempo acceso TLB: 2 ns</li>
+                <li>Tiempo acceso RAM: 100 ns</li>
+                <li>Hit rate TLB: 95%</li>
+            </ul>
+            <h3>Cálculo del EMAT (Effective Memory Access Time)</h3>
+            <div class="ascii-diagram">
+Caso TLB hit (95%):
+  Tiempo = 2 ns (TLB) + 100 ns (RAM) = 102 ns
+
+Caso TLB miss (5%):
+  Tiempo = 2 ns (TLB) + 100 ns (Tabla) + 100 ns (RAM) = 202 ns
+
+EMAT = 0.95 × 102 + 0.05 × 202
+     = 96.9 + 10.1
+     = 107 ns
+            </div>
+            <p><strong>Sin TLB:</strong> 200 ns<br>
+            <strong>Con TLB:</strong> 107 ns<br>
+            <strong>Mejora:</strong> 46.5% más rápido 🚀</p>
+        </section>
+
+        <section id="actividad">
+            <h2>Actividad Práctica (10 min)</h2>
+            <p><strong>En parejas:</strong></p>
+            <p><strong>Dado:</strong></p>
+            <ul>
+                <li>3 marcos disponibles</li>
+                <li>Secuencia de páginas: 7, 0, 1, 2, 0, 3, 0, 4, 2, 3, 0, 3</li>
+            </ul>
+            <p><strong>Calcular page faults usando:</strong></p>
+            <ol>
+                <li>FIFO</li>
+                <li>LRU</li>
+            </ol>
+            <p><strong>Comparar resultados y discutir.</strong></p>
+        </section>
+
+        <section id="resumen">
+            <h2>Resumen de la Clase</h2>
+            <table>
+                <tr>
+                    <th>Concepto</th>
+                    <th>Descripción</th>
+                </tr>
+                <tr>
+                    <td><strong>Página</strong></td>
+                    <td>Bloque de memoria lógica (ej: 4KB)</td>
+                </tr>
+                <tr>
+                    <td><strong>Marco</strong></td>
+                    <td>Bloque de memoria física</td>
+                </tr>
+                <tr>
+                    <td><strong>Page Fault</strong></td>
+                    <td>Acceso a página no cargada</td>
+                </tr>
+                <tr>
+                    <td><strong>Demand Paging</strong></td>
+                    <td>Cargar páginas solo cuando se necesitan</td>
+                </tr>
+                <tr>
+                    <td><strong>TLB</strong></td>
+                    <td>Caché de traducciones</td>
+                </tr>
+                <tr>
+                    <td><strong>Thrashing</strong></td>
+                    <td>Exceso de page faults</td>
+                </tr>
+            </table>
+        </section>
+
+        <section id="evaluacion">
+            <h2>Evaluación (20% - Eval 3)</h2>
+            <h3>Proyecto: Simulador de Paginación - Semana 10</h3>
+            <ol>
+                <li>Implementar simulador en Python/C</li>
+                <li>Soportar FIFO y LRU</li>
+                <li>Mostrar estadísticas de page faults</li>
+                <li><strong>Sustentación oral</strong> (10 min por pareja)</li>
+            </ol>
+            <p><strong>Trabajo en parejas</strong></p>
+        </section>
+
+        <footer>
+        <div class="container">
+            <p><strong>IF0099 - Sistemas Operativos I</strong> • <a href="index.html">Índice de Clases</a></p>
+            <div class="container">
+                <p>© 2026 UNAULA - Ingeniería Informática | IF0099 - Sistemas Operativos I</p>
+                <p><a href="#top">Volver arriba</a> | <a href="../clases-html/_progress.md">Ver progreso del curso</a></p>
+            </div>
+        </footer>
+
+        <a href="#" class="scroll-top" id="scroll-top">↑</a>
+    </div>
+
+    <script>
+        // Scroll to top button
+        const scrollTop = document.getElementById('scroll-top');
+        window.addEventListener('scroll', () => {
+            scrollTop.classList.toggle('visible', window.scrollY > 300);
+        });
+        scrollTop.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                const target = document.querySelector(targetId);
+                if (target) {
+                    e.preventDefault();
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

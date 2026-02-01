@@ -1,0 +1,1239 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clase 14: Programas, Aplicaciones e Interfaces - IF0099</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #1e40af;
+            --secondary: #3b82f6;
+            --accent: #06b6d4;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --text: #334155;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background: var(--bg-light);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        h1 {
+            color: var(--primary);
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: var(--secondary);
+            font-size: 1.1em;
+            font-weight: 500;
+        }
+
+        .main-content {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .index {
+            background: var(--light);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .index h2 {
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .index ul {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 10px;
+        }
+
+        .index a {
+            color: var(--secondary);
+            text-decoration: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            transition: all 0.3s;
+            display: block;
+        }
+
+        .index a:hover {
+            background: var(--secondary);
+            color: white;
+            transform: translateX(5px);
+        }
+
+        section {
+            margin-bottom: 50px;
+            scroll-margin-top: 20px;
+        }
+
+        h2 {
+            color: var(--primary);
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            border-bottom: 3px solid var(--accent);
+            padding-bottom: 10px;
+        }
+
+        h3 {
+            color: var(--secondary);
+            font-size: 1.4em;
+            margin: 25px 0 15px;
+        }
+
+        h4 {
+            color: var(--dark);
+            font-size: 1.2em;
+            margin: 20px 0 10px;
+        }
+
+        p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+
+        blockquote {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 25px;
+            border-radius: 10px;
+            margin: 25px 0;
+            border-left: 5px solid rgba(255,255,255,0.3);
+        }
+
+        blockquote p {
+            margin: 0;
+        }
+
+        .layer-diagram {
+            background: var(--dark);
+            color: #e2e8f0;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 25px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+            overflow-x: auto;
+            line-height: 1.6;
+        }
+
+        .ring-diagram {
+            background: var(--light);
+            border: 2px solid var(--accent);
+            border-radius: 10px;
+            padding: 25px;
+            margin: 25px 0;
+        }
+
+        pre {
+            background: var(--dark);
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 10px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+
+        code {
+            background: #f1f5f9;
+            color: var(--primary);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+
+        pre code {
+            background: transparent;
+            color: inherit;
+            padding: 0;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 25px 0;
+        }
+
+        .highlight-box h3, .highlight-box h4 {
+            color: white;
+        }
+
+        .info-box {
+            background: #dbeafe;
+            border-left: 4px solid var(--secondary);
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .warning-box {
+            background: #fef3c7;
+            border-left: 4px solid var(--warning);
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .success-box {
+            background: #d1fae5;
+            border-left: 4px solid var(--success);
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .insight-box {
+            background: #ede9fe;
+            border-left: 4px solid #8b5cf6;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            font-size: 0.95em;
+        }
+
+        th {
+            background: var(--primary);
+            color: white;
+            padding: 12px 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 12px 15px;
+            border: 1px solid #e2e8f0;
+            vertical-align: top;
+        }
+
+        tr:nth-child(even) {
+            background: #f8fafc;
+        }
+
+        tr:hover {
+            background: #e0e7ff;
+        }
+
+        .objectives {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 25px 0;
+        }
+
+        .objective-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            position: relative;
+            padding-left: 50px;
+        }
+
+        .objective-card:before {
+            content: attr(data-number);
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 2em;
+            font-weight: bold;
+            opacity: 0.5;
+        }
+
+        .key-concepts {
+            background: var(--light);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 25px 0;
+        }
+
+        .key-concepts table {
+            margin: 0;
+        }
+
+        .flow-diagram {
+            background: var(--light);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+
+        .flow-diagram ol {
+            margin-left: 20px;
+        }
+
+        .flow-diagram li {
+            margin: 8px 0;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .comparison-item {
+            background: var(--light);
+            padding: 15px;
+            border-radius: 8px;
+            border-top: 3px solid var(--secondary);
+        }
+
+        .comparison-item h4 {
+            margin-top: 0;
+            color: var(--primary);
+        }
+
+        .step-box {
+            background: var(--light);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 3px solid var(--accent);
+        }
+
+        .scroll-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--primary);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            font-size: 1.5em;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            transition: all 0.3s;
+            z-index: 1000;
+        }
+
+        .scroll-top:hover {
+            background: var(--secondary);
+            transform: translateY(-5px);
+        }
+
+        .scroll-top.visible {
+            display: flex;
+        }
+
+        footer {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 30px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .resource-list {
+            background: var(--light);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 25px 0;
+        }
+
+        .resource-list ul {
+            list-style: none;
+        }
+
+        .resource-list li {
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .resource-list li:before {
+            content: "📚";
+            position: absolute;
+            left: 0;
+        }
+
+        .code-example {
+            background: var(--dark);
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            overflow-x: auto;
+        }
+
+        .code-example pre {
+            background: transparent;
+            padding: 0;
+            margin: 0;
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 1.8em; }
+            h2 { font-size: 1.4em; }
+            .main-content { padding: 20px; }
+            .index ul { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Programas, Aplicaciones e Interfaces</h1>
+            <p class="subtitle">IF0099 - Sistemas Operativos I | Unidad 8 | Clase 14</p>
+            <p class="subtitle">UNAULA - Ingeniería Informática - 2026-I</p>
+        </header>
+
+        <article class="main-content">
+            <nav class="index">
+                <h2>Índice de Contenidos</h2>
+                <ul>
+                    <a href="#objetivos">Objetivos de la Clase</a>
+                    <a href="#agenda">Agenda</a>
+                    <a href="#arquitectura">1. Interfaz Usuario-Sistema</a>
+                    <a href="#syscalls">2. System Calls</a>
+                    <a href="#modos">Modo Usuario vs Kernel</a>
+                    <a href="#mecanismo">Mecanismo Paso a Paso</a>
+                    <a href="#categorias">Categorías de System Calls</a>
+                    <a href="#apis">3. APIs y Bibliotecas</a>
+                    <a href="#linux-windows">4. Linux vs Windows</a>
+                    <a href="#strace">5. Ejemplos con strace</a>
+                    <a href="#micat">6. Ejercicio: Implementar micat</a>
+                    <a href="#resumen">Resumen</a>
+                </ul>
+            </nav>
+
+            <div class="highlight-box">
+                <h3>Pregunta Fundamental</h3>
+                <p>¿Cómo se comunican los programas con el sistema operativo?</p>
+                <p><strong>Contexto:</strong> Cada vez que abres un archivo, creas un proceso, o usas la red, tu programa hace system calls.</p>
+            </div>
+
+            <div class="key-concepts">
+                <h3>Conceptos Clave de esta Clase</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Concepto</th>
+                            <th>Pregunta</th>
+                            <th>Respuesta corta</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>System Call</strong></td>
+                            <td>¿Qué es?</td>
+                            <td>La puerta controlada al kernel</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Modo Usuario</strong></td>
+                            <td>¿Qué limita?</td>
+                            <td>Acceso restringido (Ring 3)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Modo Kernel</strong></td>
+                            <td>¿Qué permite?</td>
+                            <td>Acceso total al hardware (Ring 0)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>API</strong></td>
+                            <td>¿Para qué sirve?</td>
+                            <td>Abstracción amigable sobre syscalls</td>
+                        </tr>
+                        <tr>
+                            <td><strong>strace</strong></td>
+                            <td>¿Qué hace?</td>
+                            <td>Muestra todas las syscalls de un programa</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <section id="objetivos">
+                <h2>Objetivos de la Clase</h2>
+                <div class="objectives">
+                    <div class="objective-card" data-number="1">
+                        <strong>Distinguir</strong> entre llamadas al sistema (syscalls) y APIs de usuario
+                    </div>
+                    <div class="objective-card" data-number="2">
+                        <strong>Explicar</strong> el flujo completo: Aplicación → Biblioteca → Kernel → Hardware
+                    </div>
+                    <div class="objective-card" data-number="3">
+                        <strong>Reconocer</strong> las categorías de system calls en Linux
+                    </div>
+                    <div class="objective-card" data-number="4">
+                        <strong>Usar</strong> herramientas como <code>strace</code> para analizar syscalls
+                    </div>
+                    <div class="objective-card" data-number="5">
+                        <strong>Comparar</strong> system calls entre Linux y Windows
+                    </div>
+                    <div class="objective-card" data-number="6">
+                        <strong>Implementar</strong> programas básicos usando syscalls directamente
+                    </div>
+                </div>
+                <p><strong>Duración:</strong> 90 minutos</p>
+            </section>
+
+            <section id="agenda">
+                <h2>Agenda</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Tema</th>
+                            <th>Tiempo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>1. Interfaz usuario-sistema: La arquitectura de capas</td><td>15 min</td></tr>
+                        <tr><td>2. System Calls: La puerta al kernel</td><td>25 min</td></tr>
+                        <tr><td>3. APIs y bibliotecas estándar</td><td>15 min</td></tr>
+                        <tr><td>4. System Calls en Linux vs Windows</td><td>10 min</td></tr>
+                        <tr><td>5. Ejemplos prácticos y strace</td><td>20 min</td></tr>
+                        <tr><td>6. Ejercicio: Implementar micat</td><td>5 min</td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section id="arquitectura">
+                <h2>1. Interfaz Usuario-Sistema</h2>
+
+                <h3>La Arquitectura de Capas</h3>
+
+                <div class="layer-diagram">
+<pre>
+┌─────────────────────────────────────────────────────────┐
+│  NIVEL 4: APLICACIONES DEL USUARIO                      │
+│  (Chrome, VS Code, Juegos, Tu programa)                 │
+├─────────────────────────────────────────────────────────┤
+│  NIVEL 3: BIBLIOTECAS ESTÁNDAR                          │
+│  (libc, WinAPI, Python stdlib)                          │
+│  → Proporcionan funciones de alto nivel                 │
+├─────────────────────────────────────────────────────────┤
+│  NIVEL 2: LLAMADAS AL SISTEMA (SYSCALLS)                │
+│  → Interfaz controlada con el kernel                    │
+├─────────────────────────────────────────────────────────┤
+│  NIVEL 1: KERNEL DEL SISTEMA OPERATIVO                  │
+│  → Gestión de procesos, memoria, archivos, E/S          │
+├─────────────────────────────────────────────────────────┤
+│  NIVEL 0: HARDWARE                                      │
+│  (CPU, Memoria, Disco, Red)                             │
+└─────────────────────────────────────────────────────────┘
+</pre>
+                </div>
+
+                <h3>Flujo de una Operación</h3>
+
+                <h4>Ejemplo: Abrir un archivo en Python</h4>
+                <pre><code class="language-python"># Código de usuario (Nivel 4)
+with open("datos.txt", "r") as f:
+    contenido = f.read()</code></pre>
+
+                <div class="flow-diagram">
+                    <h4>¿Qué pasa internamente?</h4>
+                    <ol>
+                        <li>Python <code>open()</code> → llama a C stdio</li>
+                        <li>C <code>fopen()</code> → llama a syscall <code>open()</code></li>
+                        <li>Syscall <code>open()</code> → kernel verifica permisos</li>
+                        <li>Kernel → solicita acceso al driver de disco</li>
+                        <li>Driver → opera el hardware del disco</li>
+                        <li>Resultado → vuelve por la cadena</li>
+                    </ol>
+                </div>
+
+                <div class="insight-box">
+                    <strong>Key insight:</strong> Cada nivel agrega abstracción, pero las syscalls son el único camino al kernel.
+                </div>
+
+                <h4>Analogía de la vida real:</h4>
+                <div class="comparison-grid">
+                    <div class="comparison-item">
+                        <h4>Nivel 4 (Usuario)</h4>
+                        <p>"Quiero leer este libro" → Pides al bibliotecario</p>
+                    </div>
+                    <div class="comparison-item">
+                        <h4>Nivel 3 (Biblioteca)</h4>
+                        <p>Busca el libro en el catálogo → Funciones helper</p>
+                    </div>
+                    <div class="comparison-item">
+                        <h4>Nivel 2 (Syscall)</h4>
+                        <p>Solicita acceso al archivo → Petición formal</p>
+                    </div>
+                    <div class="comparison-item">
+                        <h4>Nivel 1 (Kernel)</h4>
+                        <p>Verifica permisos y accede al disco → El bibliotecario</p>
+                    </div>
+                    <div class="comparison-item">
+                        <h4>Nivel 0 (Hardware)</h4>
+                        <p>El disco físico gira y lee → La estantería</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="syscalls">
+                <h2>2. System Calls: La Puerta al Kernel</h2>
+
+                <h3>¿Qué son las System Calls?</h3>
+
+                <p>Las <strong>llamadas al sistema</strong> (syscalls) son la <strong>única forma</strong> en que un programa en modo usuario puede solicitar servicios privilegiados al kernel.</p>
+
+                <div class="ring-diagram">
+<pre>
+┌───────────────────────────────────┐
+│      MODO USUARIO (Ring 3)        │
+│                                   │
+│  Aplicación                       │
+│    ↓ (open, read, write...)       │
+│  Biblioteca C (libc)              │
+│    ↓ (syscall wrapper)            │
+├───────────────────────────────────┤ ← TRAP/INT: Cambio de modo
+│      MODO KERNEL (Ring 0)         │
+│                                   │
+│  Despachador de Syscalls          │
+│    ↓ (tabla de syscalls)          │
+│  Función del Kernel               │
+│    ↓ (acceso a hardware)          │
+│  Controladores (drivers)          │
+│    ↓                              │
+│  HARDWARE                         │
+└───────────────────────────────────┘
+</pre>
+                </div>
+            </section>
+
+            <section id="modos">
+                <h3>¿Por qué dos modos de operación?</h3>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Aspecto</th>
+                            <th>Modo Usuario (Ring 3)</th>
+                            <th>Modo Kernel (Ring 0)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><strong>Quién ejecuta</strong></td><td>Aplicaciones normales</td><td>SO y drivers</td></tr>
+                        <tr><td><strong>Privilegios</strong></td><td>Limitados</td><td>Totales</td></tr>
+                        <tr><td><strong>Acceso a hardware</strong></td><td>❌ No directo</td><td>✅ Directo</td></tr>
+                        <tr><td><strong>Memoria accesible</strong></td><td>Solo la asignada</td><td>Toda</td></tr>
+                        <tr><td><strong>Si hay error</strong></td><td>Muere el proceso</td><td>Crash del sistema</td></tr>
+                        <tr><td><strong>Instrucciones</strong></td><td>ADD, MOV, JMP</td><td>+ IN, OUT, HLT</td></tr>
+                    </tbody>
+                </table>
+
+                <div class="info-box">
+                    <strong>¿Por qué esta separación?</strong>
+                    <ul>
+                        <li><strong>Seguridad:</strong> Un programa malicioso no puede acceder directamente al hardware</li>
+                        <li><strong>Estabilidad:</strong> Un bug en un programa no puede tumbar el sistema entero</li>
+                        <li><strong>Control:</strong> El SO decide quién accede a qué y cuándo</li>
+                    </ul>
+                </div>
+
+                <div class="warning-box">
+                    <strong>La syscall es la "puerta controlada"</strong> entre estos mundos.
+                </div>
+
+                <div class="insight-box">
+                    <strong>Insight:</strong> Los anillos de protección (rings) son un concepto de hardware x86. El SO los usa para implementar seguridad.
+                </div>
+            </section>
+
+            <section id="mecanismo">
+                <h3>El Mecanismo Paso a Paso</h3>
+
+                <h4>Ejemplo: <code>open("/tmp/test.txt", O_RDONLY)</code></h4>
+
+                <div class="comparison-grid">
+                    <div class="step-box">
+                        <h4>Paso 1: Preparación</h4>
+                        <pre><code class="language-c">// libc prepara parámetros
+mov rax, 2        // syscall #2 = open
+mov rdi, path     // "/tmp/test.txt"
+mov rsi, O_RDONLY // flags</code></pre>
+                    </div>
+
+                    <div class="step-box">
+                        <h4>Paso 2: Ejecutar syscall</h4>
+                        <pre><code class="language-asm">syscall           // ← CPU cambia a Ring 0
+                  // Hardware guarda contexto</code></pre>
+                    </div>
+
+                    <div class="step-box">
+                        <h4>Paso 3: Kernel ejecuta</h4>
+                        <pre><code class="language-c">sys_open() {
+  1. Validar ruta
+  2. Verificar permisos
+  3. Asignar file descriptor
+  4. Retornar fd
+}</code></pre>
+                    </div>
+                </div>
+
+                <div class="step-box">
+                    <h4>Paso 4: Retorno</h4>
+                    <pre><code class="language-asm">// Kernel pone resultado en rax
+// CPU vuelve a Ring 3
+iret              // Continúa programa</code></pre>
+                </div>
+
+                <div class="warning-box">
+                    ⚠️ <strong>Cambiar de modo cuesta ~100-1000 ciclos de CPU</strong>
+                </div>
+            </section>
+
+            <section id="categorias">
+                <h3>Categorías de System Calls (Linux)</h3>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Categoría</th>
+                            <th>Ejemplos</th>
+                            <th>Función</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><strong>Control de procesos</strong></td><td><code>fork()</code>, <code>exec()</code>, <code>exit()</code>, <code>wait()</code></td><td>Crear, terminar procesos</td></tr>
+                        <tr><td><strong>Manejo de archivos</strong></td><td><code>open()</code>, <code>read()</code>, <code>write()</code>, <code>close()</code></td><td>Operaciones con archivos</td></tr>
+                        <tr><td><strong>Gestión de memoria</strong></td><td><code>mmap()</code>, <code>brk()</code>, <code>mprotect()</code></td><td>Asignar/liberar memoria</td></tr>
+                        <tr><td><strong>Gestión de dispositivos</strong></td><td><code>ioctl()</code>, <code>read()</code>, <code>write()</code></td><td>Control de hardware</td></tr>
+                        <tr><td><strong>Información del sistema</strong></td><td><code>getpid()</code>, <code>time()</code>, <code>uname()</code></td><td>Datos del sistema</td></tr>
+                        <tr><td><strong>Comunicación</strong></td><td><code>pipe()</code>, <code>socket()</code>, <code>send()</code>, <code>recv()</code></td><td>IPC y red</td></tr>
+                    </tbody>
+                </table>
+
+                <h4>Tabla de System Calls Comunes</h4>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Syscall</th>
+                            <th>Número (x86-64)</th>
+                            <th>Descripción</th>
+                            <th>Ejemplo en C</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><code>read</code></td><td>0</td><td>Leer de file descriptor</td><td><code>read(fd, buf, count)</code></td></tr>
+                        <tr><td><code>write</code></td><td>1</td><td>Escribir a file descriptor</td><td><code>write(fd, "hola", 4)</code></td></tr>
+                        <tr><td><code>open</code></td><td>2</td><td>Abrir/crear archivo</td><td><code>open("/file", O_RDONLY)</code></td></tr>
+                        <tr><td><code>close</code></td><td>3</td><td>Cerrar file descriptor</td><td><code>close(fd)</code></td></tr>
+                        <tr><td><code>stat</code></td><td>4</td><td>Información de archivo</td><td><code>stat("/file", &buf)</code></td></tr>
+                        <tr><td><code>fork</code></td><td>57</td><td>Crear proceso hijo</td><td><code>fork()</code></td></tr>
+                        <tr><td><code>execve</code></td><td>59</td><td>Ejecutar programa</td><td><code>execve("/bin/ls", ...)</code></td></tr>
+                        <tr><td><code>exit</code></td><td>60</td><td>Terminar proceso</td><td><code>exit(0)</code></td></tr>
+                        <tr><td><code>getpid</code></td><td>39</td><td>Obtener PID</td><td><code>getpid()</code></td></tr>
+                        <tr><td><code>socket</code></td><td>41</td><td>Crear socket de red</td><td><code>socket(AF_INET, ...)</code></td></tr>
+                    </tbody>
+                </table>
+
+                <div class="info-box">
+                    <strong>Nota:</strong> Los números varían según arquitectura (x86-64 vs ARM).
+                </div>
+            </section>
+
+            <section id="apis">
+                <h2>3. APIs y Bibliotecas Estándar</h2>
+
+                <h3>APIs vs System Calls</h3>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Aspecto</th>
+                            <th>System Calls</th>
+                            <th>APIs (libc, etc.)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><strong>Nivel</strong></td><td>Bajo (kernel)</td><td>Alto (usuario)</td></tr>
+                        <tr><td><strong>Portabilidad</strong></td><td>Específico del SO</td><td>Portátil entre SO</td></tr>
+                        <tr><td><strong>Usabilidad</strong></td><td>Complejo (ensamblador)</td><td>Simple (C/Python)</td></tr>
+                        <tr><td><strong>Overhead</strong></td><td>Alto (cambio de modo)</td><td>Variable</td></tr>
+                        <tr><td><strong>Funciones</strong></td><td>Primitivas básicas</td><td>Funciones compuestas</td></tr>
+                    </tbody>
+                </table>
+
+                <h4>Ejemplo: <code>printf()</code> vs <code>write()</code></h4>
+                <pre><code class="language-c">// printf() - API de alto nivel
+printf("Hola %s, tienes %d mensajes\n", nombre, count);
+// → Formatea string, maneja buffers, luego llama write()
+
+// write() - Syscall directo
+write(1, "Hola\n", 5);  // fd=1 (stdout)</code></pre>
+
+                <h3>La Biblioteca C (libc)</h3>
+
+                <h4>Funciones de la libc:</h4>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Categoría</th>
+                            <th>Funciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><strong>Wrapper de syscalls</strong></td><td><code>open()</code>, <code>read()</code>, <code>write()</code></td></tr>
+                        <tr><td><strong>Gestión de memoria</strong></td><td><code>malloc()</code>, <code>free()</code></td></tr>
+                        <tr><td><strong>Entrada/Salida</strong></td><td><code>printf()</code>, <code>scanf()</code>, <code>fopen()</code></td></tr>
+                        <tr><td><strong>Procesos</strong></td><td><code>system()</code>, <code>popen()</code></td></tr>
+                        <tr><td><strong>Strings</strong></td><td><code>strcpy()</code>, <code>strcmp()</code>, <code>strlen()</code></td></tr>
+                    </tbody>
+                </table>
+
+                <h4>Flujo de printf():</h4>
+                <div class="flow-diagram">
+                    <pre><code>printf("Hola")
+  ↓
+formatea string → buffer
+  ↓
+write(1, buffer, len)  // syscall real
+  ↓
+syscall instruction
+  ↓
+kernel escribe en terminal</code></pre>
+                </div>
+
+                <div class="success-box">
+                    <strong>¿Por qué usar libc en lugar de syscalls directas?</strong>
+                    <ol>
+                        <li><strong>Portabilidad:</strong> <code>printf()</code> funciona en Linux, Windows, macOS</li>
+                        <li><strong>Comodidad:</strong> <code>printf()</code> formatea, <code>write()</code> solo escribe bytes</li>
+                        <li><strong>Buffering:</strong> libc agrupa writes para mejorar rendimiento</li>
+                        <li><strong>Seguridad:</strong> Maneja errores automáticamente</li>
+                    </ol>
+                </div>
+
+                <div class="insight-box">
+                    <strong>Trade-off:</strong> libc añade overhead, pero vale la pena para la mayoría de aplicaciones.
+                </div>
+            </section>
+
+            <section id="linux-windows">
+                <h2>4. System Calls: Linux vs Windows</h2>
+
+                <h3>Diferencias Arquitectónicas</h3>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Característica</th>
+                            <th>Linux</th>
+                            <th>Windows</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><strong>Estándar</strong></td><td>POSIX</td><td>Win32 API</td></tr>
+                        <tr><td><strong>Syscalls</strong></td><td>Documentadas (~300)</td><td>No documentadas oficialmente</td></tr>
+                        <tr><td><strong>Interfaz</strong></td><td>Directa (syscall)</td><td>A través de ntdll.dll</td></tr>
+                        <tr><td><strong>Números</strong></td><td>Estables por arquitectura</td><td>Cambian entre versiones</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>Equivalencia de Operaciones</h3>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Operación</th>
+                            <th>Linux (POSIX)</th>
+                            <th>Windows (Win32)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Abrir archivo</td><td><code>open()</code></td><td><code>CreateFile()</code></td></tr>
+                        <tr><td>Leer archivo</td><td><code>read()</code></td><td><code>ReadFile()</code></td></tr>
+                        <tr><td>Escribir archivo</td><td><code>write()</code></td><td><code>WriteFile()</code></td></tr>
+                        <tr><td>Crear proceso</td><td><code>fork()</code> + <code>exec()</code></td><td><code>CreateProcess()</code></td></tr>
+                        <tr><td>Esperar proceso</td><td><code>wait()</code></td><td><code>WaitForSingleObject()</code></td></tr>
+                        <tr><td>Mapear memoria</td><td><code>mmap()</code></td><td><code>VirtualAlloc()</code> + <code>MapViewOfFile()</code></td></tr>
+                        <tr><td>Crear thread</td><td><code>pthread_create()</code></td><td><code>CreateThread()</code></td></tr>
+                    </tbody>
+                </table>
+
+                <h4>Ejemplo Comparativo: Crear Proceso</h4>
+
+                <div class="comparison-grid">
+                    <div class="code-example">
+                        <h4>Linux:</h4>
+                        <pre><code class="language-c">pid_t pid = fork();     // Clonar proceso actual
+if (pid == 0) {
+    // Proceso hijo
+    execl("/bin/ls", "ls", "-l", NULL);
+} else {
+    // Proceso padre
+    wait(NULL);         // Esperar al hijo
+}</code></pre>
+                    </div>
+
+                    <div class="code-example">
+                        <h4>Windows:</h4>
+                        <pre><code class="language-c">STARTUPINFO si = {sizeof(si)};
+PROCESS_INFORMATION pi;
+
+CreateProcess(
+    NULL,               // No module name
+    "cmd /c dir",       // Command line
+    NULL, NULL,         // Security attrs
+    FALSE,              // Inherit handles
+    0, NULL, NULL,      // Flags, env, dir
+    &si, &pi             // Startup info, process info
+);
+
+WaitForSingleObject(pi.hProcess, INFINITE);
+CloseHandle(pi.hProcess);</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section id="strace">
+                <h2>5. Ejemplos Prácticos y strace</h2>
+
+                <h3>La Herramienta <code>strace</code></h3>
+
+                <p><strong>strace</strong> intercepta y muestra todas las system calls que realiza un proceso.</p>
+
+                <div class="info-box">
+                    <strong>¿Por qué usar strace?</strong>
+                    <ul>
+                        <li><strong>Debugging:</strong> Ver qué archivos intenta abrir un programa</li>
+                        <li><strong>Performance:</strong> Identificar syscalls frecuentes o lentas</li>
+                        <li><strong>Aprendizaje:</strong> Entender cómo funciona el SO</li>
+                        <li><strong>Forense:</strong> Ver qué hace un programa sospechoso</li>
+                    </ul>
+                </div>
+
+                <h4>Uso básico:</h4>
+                <pre><code class="language-bash">strace comando
+strace -c comando      # Contar syscalls (summary)
+strace -e open,read ls # Filtrar syscalls específicas
+strace -o salida.txt comando  # Guardar a archivo
+strace -p 1234        # Adjuntar a proceso existente (PID)
+strace -f comando     # Seguir procesos hijos</code></pre>
+
+                <h4>Ejemplo 1: Analizando <code>ls</code></h4>
+                <pre><code class="language-bash">$ strace ls /tmp 2>&1 | head -20</code></pre>
+
+                <p><strong>Salida:</strong></p>
+                <pre><code>execve("/bin/ls", ["ls", "/tmp"], ...) = 0  # Ejecutar programa
+brk(NULL)                               = 0x55a8f4b4a000  # Asignar memoria
+openat(AT_FDCWD, "/tmp", O_RDONLY|O_DIRECTORY) = 3  # Abrir directorio
+getdents64(3, /* 15 entries */, 32768)  = 480  # Leer entradas
+write(1, "archivo1.txt  archivo2.txt\n", 28) = 28  # Escribir a stdout
+close(3)                                = 0  # Cerrar fd
+exit_group(0)                           = ?  # Terminar</code></pre>
+
+                <div class="success-box">
+                    <strong>Interpretación:</strong>
+                    <ol>
+                        <li><code>execve</code>: Carga <code>/bin/ls</code></li>
+                        <li><code>brk</code>: Reserva memoria heap</li>
+                        <li><code>openat</code>: Abre <code>/tmp</code> → fd=3</li>
+                        <li><code>getdents64</code>: Lee contenido del directorio</li>
+                        <li><code>write</code>: Escribe resultado a stdout (fd=1)</li>
+                        <li><code>close</code>: Cierra el directorio</li>
+                        <li><code>exit_group</code>: Termina el proceso</li>
+                    </ol>
+                </div>
+
+                <h4>Ejemplo 2: Contar Syscalls de Python vs C</h4>
+
+                <div class="comparison-grid">
+                    <div class="code-example">
+                        <h4>Programa en C:</h4>
+                        <pre><code class="language-c">#include &lt;fcntl.h&gt;
+#include &lt;unistd.h&gt;
+
+int main() {
+    int fd = open("/tmp/test.txt", O_WRONLY|O_CREAT, 0644);
+    write(fd, "Hola\n", 5);
+    close(fd);
+    return 0;
+}</code></pre>
+                    </div>
+
+                    <div class="code-example">
+                        <h4>Equivalente en Python:</h4>
+                        <pre><code class="language-python">with open("/tmp/test.txt", "w") as f:
+    f.write("Hola\n")</code></pre>
+                    </div>
+                </div>
+
+                <p><strong>Comparación con strace:</strong></p>
+                <pre><code class="language-bash"># Compilar y contar syscalls de C
+gcc -o test_c test.c
+strace -c ./test_c
+# → ~15 syscalls
+
+# Contar syscalls de Python
+strace -c python3 test.py
+# → ~500+ syscalls (import, inicialización, etc.)</code></pre>
+
+                <div class="warning-box">
+                    <strong>Conclusión:</strong> Python hace muchas más syscalls debido a la inicialización del intérprete.
+                </div>
+
+                <h4>Ejemplo 3: Analizar un Programa con Error</h4>
+                <pre><code class="language-c">// bug.c - Intento de abrir archivo inexistente
+int main() {
+    int fd = open("/noexiste.txt", O_RDONLY);
+    // Sin verificar error!
+    write(fd, "hola", 4);  // fd = -1, ¡error!
+    return 0;
+}</code></pre>
+
+                <pre><code class="language-bash">$ strace ./bug 2>&1 | tail -10
+openat(AT_FDCWD, "/noexiste.txt", O_RDONLY) = -1 ENOENT
+  # ↑ Retorna -1, archivo no existe!
+write(-1, "hola", 4) = -1 EBADF
+  # ↑ Intenta escribir a fd inválido
+exit_group(0) = ?</code></pre>
+
+                <div class="info-box">
+                    <strong>Diagnóstico rápido con strace:</strong> El archivo no existe (<code>ENOENT</code> = Error NO ENTry).
+                </div>
+            </section>
+
+            <section id="micat">
+                <h2>6. Ejercicio: Implementar <code>micat</code></h2>
+
+                <h3>Objetivo</h3>
+
+                <p>Crear un programa que replique la funcionalidad básica de <code>cat</code> usando syscalls directamente.</p>
+
+                <h4>Código Base</h4>
+                <pre><code class="language-c">#include &lt;fcntl.h&gt;
+#include &lt;unistd.h&gt;
+
+int main(int argc, char *argv[]) {
+    // Verificar argumentos
+    if (argc != 2) {
+        const char usage[] = "Uso: micat &lt;archivo&gt;\n";
+        write(2, usage, sizeof(usage) - 1);  // stderr = fd 2
+        return 1;
+    }
+
+    // Abrir archivo (syscall open)
+    int fd = open(argv[1], O_RDONLY);
+    if (fd == -1) {
+        const char err[] = "Error: no se puede abrir el archivo\n";
+        write(2, err, sizeof(err) - 1);
+        return 1;
+    }
+
+    // Leer y escribir en chunks
+    char buffer[4096];
+    ssize_t bytes;
+
+    while ((bytes = read(fd, buffer, sizeof(buffer))) > 0) {
+        write(1, buffer, bytes);  // stdout = fd 1
+    }
+
+    // Cerrar archivo
+    close(fd);
+    return 0;
+}</code></pre>
+
+                <h4>Instrucciones</h4>
+                <pre><code class="language-bash"># 1. Guardar el código en micat.c
+# 2. Compilar
+gcc -o micat micat.c
+
+# 3. Probar
+./micat /etc/passwd
+./micat micat.c  # ¡Se lee a sí mismo!
+
+# 4. Analizar con strace
+strace ./micat /etc/passwd
+
+# 5. Contar syscalls
+strace -c ./micat /etc/passwd
+
+# 6. Comparar con cat real
+strace -c cat /etc/passwd</code></pre>
+
+                <h4>Preguntas de reflexión:</h4>
+                <ol>
+                    <li>¿Cuántas syscalls hace tu implementación vs <code>cat</code> original?</li>
+                    <li>¿Qué hace <code>cat</code> adicional que tu programa no hace?</li>
+                    <li>¿Por qué usamos buffer de 4096 bytes?</li>
+                </ol>
+            </section>
+
+            <section id="resumen">
+                <h2>Resumen de la Clase</h2>
+
+                <h3>Conceptos fundamentales</h3>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Concepto</th>
+                            <th>Descripción</th>
+                            <th>Ejemplo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><strong>System Call</strong></td><td>Interfaz controlada al kernel</td><td><code>open()</code>, <code>read()</code>, <code>write()</code></td></tr>
+                        <tr><td><strong>Modo Usuario</strong></td><td>Aplicaciones, acceso limitado (Ring 3)</td><td>Navegador, editor de texto</td></tr>
+                        <tr><td><strong>Modo Kernel</strong></td><td>SO, acceso total (Ring 0)</td><td>Gestión de memoria, E/S</td></tr>
+                        <tr><td><strong>API</strong></td><td>Abstracción de alto nivel sobre syscalls</td><td><code>printf()</code>, <code>fopen()</code></td></tr>
+                        <tr><td><strong>libc</strong></td><td>Biblioteca estándar de C, wrappers de syscalls</td><td><code>glibc</code>, <code>musl</code></td></tr>
+                        <tr><td><strong>strace</strong></td><td>Herramienta para observar syscalls</td><td><code>strace ls</code></td></tr>
+                    </tbody>
+                </table>
+
+                <h3>Syscalls más importantes por categoría:</h3>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Categoría</th>
+                            <th>Syscalls clave</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><strong>Archivos</strong></td><td><code>open()</code>, <code>read()</code>, <code>write()</code>, <code>close()</code></td></tr>
+                        <tr><td><strong>Procesos</strong></td><td><code>fork()</code>, <code>exec()</code>, <code>wait()</code>, <code>exit()</code></td></tr>
+                        <tr><td><strong>Memoria</strong></td><td><code>mmap()</code>, <code>brk()</code>, <code>munmap()</code></td></tr>
+                        <tr><td><strong>Red</strong></td><td><code>socket()</code>, <code>connect()</code>, <code>send()</code>, <code>recv()</code></td></tr>
+                        <tr><td><strong>Info</strong></td><td><code>getpid()</code>, <code>gettimeofday()</code>, <code>uname()</code></td></tr>
+                    </tbody>
+                </table>
+
+                <div class="highlight-box">
+                    <h3>Puntos clave:</h3>
+                    <ol>
+                        <li><strong>Syscalls son costosas:</strong> Cambiar de modo usuario→kernel cuesta ~100-1000 ciclos</li>
+                        <li><strong>libc mejora rendimiento:</strong> Buffering agrupa múltiples syscalls</li>
+                        <li><strong>Portabilidad vs Control:</strong> APIs son portables; syscalls son específicas del SO</li>
+                        <li><strong>strace es esencial:</strong> Herramienta de debugging indispensable</li>
+                    </ol>
+                </div>
+
+                <div class="info-box">
+                    <h3>📚 Próxima Clase</h3>
+                    <p><strong>Clase 15: Repaso Integral</strong></p>
+                    <ul>
+                        <li>Mapa conceptual completo del curso</li>
+                        <li>Conexiones entre unidades</li>
+                        <li>Resolución de dudas</li>
+                        <li>Preparación para el examen final</li>
+                    </ul>
+                    <p><strong>¡Nos vemos!</strong></p>
+                </div>
+            </section>
+
+            <section>
+                <h2>Recursos y Referencias</h2>
+
+                <div class="resource-list">
+                    <h3>Manuales y Documentación</h3>
+                    <pre><code class="language-bash">man 2 open      # Syscalls: sección 2
+man 3 printf    # Funciones de biblioteca: sección 3
+man 2 syscalls  # Lista de syscalls de Linux</code></pre>
+                </div>
+
+                <div class="resource-list">
+                    <h3>Herramientas Útiles</h3>
+                    <ul>
+                        <li><strong>strace:</strong> Rastrear syscalls (Linux)</li>
+                        <li><strong>Process Monitor:</strong> Equivalente en Windows (Sysinternals)</li>
+                        <li><strong>ltrace:</strong> Rastrear llamadas a bibliotecas</li>
+                        <li><strong>gdb:</strong> Debugger con capacidad de ver syscalls</li>
+                    </ul>
+                </div>
+
+                <div class="resource-list">
+                    <h3>Para Profundizar</h3>
+                    <ul>
+                        <li><strong>Libro:</strong> "The Linux Programming Interface" - Michael Kerrisk</li>
+                        <li><strong>Libro:</strong> "Advanced Programming in the UNIX Environment" - Stevens</li>
+                        <li><strong>Repositorio:</strong> <code>strace</code> en GitHub (código fuente)</li>
+                    </ul>
+                </div>
+            </section>
+        </article>
+
+        <footer>
+        <div class="container">
+            <p><strong>IF0099 - Sistemas Operativos I</strong> • <a href="index.html">Índice de Clases</a></p>
+            <p><strong>IF0099 - Sistemas Operativos I</strong> | UNAULA - Ingeniería Informática - 2026-I</p>
+            <p>Clase 14: Programas, Aplicaciones e Interfaces - System Calls, APIs y Comunicación con el Kernel</p>
+        </footer>
+    </div>
+
+    <button class="scroll-top" id="scrollTop" aria-label="Scroll to top">↑</button>
+
+    <script>
+        const scrollTopBtn = document.getElementById('scrollTop');
+
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                scrollTopBtn.classList.add('visible');
+            } else {
+                scrollTopBtn.classList.remove('visible');
+            }
+        });
+
+        scrollTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    </script>
+</body>
+</html>

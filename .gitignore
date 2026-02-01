@@ -1,0 +1,67 @@
+# Ignorar evaluaciones (contenido confidencial - respuestas, soluciones)
+evaluaciones/
+
+# Documentos internos del docente (notas, seguimiento, tareas pendientes)
+memory-bank/
+
+# Configuración sensible de MCP / Claude
+**/.claude/
+**/.claude/config.json
+**/mcp.local.json
+mcp.local.json
+
+# Archivos temporales
+*.tmp
+*.bak
+*~
+
+# Archivos de sistemas operativos
+.DS_Store
+Thumbs.db
+
+# Archivos de compilación
+*.class
+*.pyc
+*.o
+*.exe
+
+# Dependencias
+node_modules/
+__pycache__/
+
+# Archivos personales
+*.local
+.env
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+
+# C
+*.out
+
+# Git backups
+.git.backup/
+
+# Output de Marp (presentaciones HTML generadas)
+output/
+
+# Carpeta temporal para previsualización de slides
+.temp-preview/
+temp-html/
+.temp-html/
+.playwright-mcp/
+temp*
+.temp*
+.temp-html/
+.temp-preview/
+.playwright-mcp/

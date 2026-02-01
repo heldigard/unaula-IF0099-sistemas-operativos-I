@@ -1,0 +1,1216 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clase 15: Repaso Integral - IF0099</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #1e40af;
+            --secondary: #3b82f6;
+            --accent: #06b6d4;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --text: #334155;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background: var(--bg-light);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        h1 {
+            color: var(--primary);
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: var(--secondary);
+            font-size: 1.1em;
+            font-weight: 500;
+        }
+
+        .main-content {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .index {
+            background: var(--light);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .index h2 {
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .index ul {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 10px;
+        }
+
+        .index a {
+            color: var(--secondary);
+            text-decoration: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            transition: all 0.3s;
+            display: block;
+        }
+
+        .index a:hover {
+            background: var(--secondary);
+            color: white;
+            transform: translateX(5px);
+        }
+
+        section {
+            margin-bottom: 50px;
+            scroll-margin-top: 20px;
+        }
+
+        h2 {
+            color: var(--primary);
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            border-bottom: 3px solid var(--accent);
+            padding-bottom: 10px;
+        }
+
+        h3 {
+            color: var(--secondary);
+            font-size: 1.4em;
+            margin: 25px 0 15px;
+        }
+
+        h4 {
+            color: var(--dark);
+            font-size: 1.2em;
+            margin: 20px 0 10px;
+        }
+
+        p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+
+        .concept-map {
+            background: var(--dark);
+            color: #e2e8f0;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 25px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+            overflow-x: auto;
+            line-height: 1.6;
+        }
+
+        pre {
+            background: var(--dark);
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 10px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+
+        code {
+            background: #f1f5f9;
+            color: var(--primary);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+
+        pre code {
+            background: transparent;
+            color: inherit;
+            padding: 0;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 25px 0;
+        }
+
+        .highlight-box h3, .highlight-box h4 {
+            color: white;
+        }
+
+        .info-box {
+            background: #dbeafe;
+            border-left: 4px solid var(--secondary);
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .warning-box {
+            background: #fef3c7;
+            border-left: 4px solid var(--warning);
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .success-box {
+            background: #d1fae5;
+            border-left: 4px solid var(--success);
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .danger-box {
+            background: #fee2e2;
+            border-left: 4px solid var(--danger);
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .insight-box {
+            background: #ede9fe;
+            border-left: 4px solid #8b5cf6;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            font-size: 0.95em;
+        }
+
+        th {
+            background: var(--primary);
+            color: white;
+            padding: 12px 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 12px 15px;
+            border: 1px solid #e2e8f0;
+            vertical-align: top;
+        }
+
+        tr:nth-child(even) {
+            background: #f8fafc;
+        }
+
+        tr:hover {
+            background: #e0e7ff;
+        }
+
+        .objectives {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 25px 0;
+        }
+
+        .objective-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            position: relative;
+            padding-left: 50px;
+        }
+
+        .objective-card:before {
+            content: attr(data-number);
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 2em;
+            font-weight: bold;
+            opacity: 0.5;
+        }
+
+        .two-columns {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+            margin: 25px 0;
+        }
+
+        .column-card {
+            background: var(--light);
+            padding: 20px;
+            border-radius: 10px;
+            border-top: 4px solid var(--secondary);
+        }
+
+        .mandments {
+            background: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 25px 0;
+        }
+
+        .mandments ol {
+            margin-left: 20px;
+        }
+
+        .mandments li {
+            margin: 10px 0;
+            font-weight: 500;
+        }
+
+        .quiz-section {
+            background: var(--light);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 25px 0;
+        }
+
+        .quiz-question {
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .quiz-question:last-child {
+            border-bottom: none;
+        }
+
+        .quiz-options {
+            margin-left: 20px;
+        }
+
+        .correct {
+            color: var(--success);
+            font-weight: bold;
+        }
+
+        .scroll-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--primary);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            font-size: 1.5em;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            transition: all 0.3s;
+            z-index: 1000;
+        }
+
+        .scroll-top:hover {
+            background: var(--secondary);
+            transform: translateY(-5px);
+        }
+
+        .scroll-top.visible {
+            display: flex;
+        }
+
+        footer {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 30px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 1.8em; }
+            h2 { font-size: 1.4em; }
+            .main-content { padding: 20px; }
+            .index ul { grid-template-columns: 1fr; }
+            .two-columns { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Repaso Integral</h1>
+            <p class="subtitle">IF0099 - Sistemas Operativos I | Unidad 8 | Clase 15</p>
+            <p class="subtitle">UNAULA - Ingeniería Informática - 2026-I</p>
+        </header>
+
+        <article class="main-content">
+            <nav class="index">
+                <h2>Índice de Contenidos</h2>
+                <ul>
+                    <a href="#objetivos">Objetivos de la Clase</a>
+                    <a href="#mapa-conceptual">Mapa Conceptual del Curso</a>
+                    <a href="#unidad-1-2">Unidades 1-2: Procesos y Planificación</a>
+                    <a href="#unidad-3-4">Unidades 3-4: Sincronización</a>
+                    <a href="#unidad-5-6">Unidades 5-6: Memoria y Archivos</a>
+                    <a href="#unidad-7-8">Unidades 7-8: E/S y Protección</a>
+                    <a href="#ejercicio-1">Ejercicio 1: Planificación FCFS</a>
+                    <a href="#ejercicio-2">Ejercicio 2: Memoria Virtual</a>
+                    <a href="#ejercicio-3">Ejercicio 3: Inodos y Archivos</a>
+                    <a href="#mandamientos">Los 10 Mandamientos de SO</a>
+                </ul>
+            </nav>
+
+            <div class="highlight-box">
+                <h3>Objetivo</h3>
+                <p>Integrar y sintetizar todo el conocimiento adquirido para el examen final</p>
+            </div>
+
+            <section id="objetivos">
+                <h2>Objetivos y Estructura</h2>
+
+                <div class="objectives">
+                    <div class="objective-card" data-number="1">
+                        <strong>Consolidar</strong> conceptos fundamentales del curso
+                    </div>
+                    <div class="objective-card" data-number="2">
+                        <strong>Identificar</strong> temas débiles y fortalezas
+                    </div>
+                    <div class="objective-card" data-number="3">
+                        <strong>Resolver</strong> ejercicios tipo examen
+                    </div>
+                    <div class="objective-card" data-number="4">
+                        <strong>Conectar</strong> conceptos de diferentes unidades
+                    </div>
+                    <div class="objective-card" data-number="5">
+                        <strong>Aplicar</strong> conocimientos teóricos a problemas prácticos
+                    </div>
+                </div>
+
+                <h3>Agenda</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Sección</th>
+                            <th>Tiempo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Repaso unidades 1-8</td><td>35 min</td></tr>
+                        <tr><td>Ejercicios integradores</td><td>30 min</td></tr>
+                        <tr><td>Quiz y estrategias</td><td>15 min</td></tr>
+                        <tr><td>Actividad práctica</td><td>10 min</td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section id="mapa-conceptual">
+                <h2>🗺️ Mapa Conceptual del Curso</h2>
+
+                <div class="concept-map">
+<pre>
+┌─────────────────────────────────────────────────────────┐
+│                  SISTEMA OPERATIVO                      │
+├─────────────────────────────────────────────────────────┤
+│  ┌────────────┐  ┌────────────┐  ┌────────────┐      │
+│  │ Unidad 1-2 │  │ Unidad 3-4 │  │ Unidad 5-6 │      │
+│  │ PROCESOS   │→ │PLANIFICACIÓN│→│  MEMORIA   │      │
+│  │ & HILOS    │  │& SINCRONIA. │  │& ARCHIVOS  │      │
+│  └────────────┘  └────────────┘  └────────────┘      │
+│         ↓               ↓               ↓             │
+│  ┌────────────┐  ┌────────────┐  ┌────────────┐      │
+│  │ Unidad 7   │  │ Unidad 8   │  │ Integración│      │
+│  │  E/S       │→ │ PROTECCIÓN │→ │& REPASO    │      │
+│  │  & DISCOS  │  │& SEGURIDAD │  │            │      │
+│  └────────────┘  └────────────┘  └────────────┘      │
+└─────────────────────────────────────────────────────────┘
+</pre>
+                </div>
+            </section>
+
+            <section id="unidad-1-2">
+                <h2>📚 Unidad 1-2: Procesos y Planificación</h2>
+
+                <div class="two-columns">
+                    <div class="column-card">
+                        <h4>Conceptos Clave</h4>
+                        <ul>
+                            <li><strong>Proceso:</strong> Programa en ejecución (PCB + código + datos)</li>
+                            <li><strong>Estados:</strong> Nuevo → Listo → Ejecución → Espera → Terminado</li>
+                            <li><strong>Context Switch:</strong> Guardar/restaurar registros y estado</li>
+                            <li><strong>Métricas:</strong>
+                                <ul>
+                                    <li>Turnaround = Fin - Llegada</li>
+                                    <li>Waiting = Turnaround - CPU</li>
+                                    <li>Throughput = Procesos/tiempo</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="column-card">
+                        <h4>Algoritmos de Planificación</h4>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Algoritmo</th>
+                                    <th>Tipo</th>
+                                    <th>Ventaja</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>FCFS</td><td>No-apropiativo</td><td>Simple</td></tr>
+                                <tr><td>SJF</td><td>No-apropiativo</td><td>Óptimo TT</td></tr>
+                                <tr><td>RR</td><td>Apropiativo</td><td>Equitativo</td></tr>
+                                <tr><td>Prioridad</td><td>Ambos</td><td>Flexible</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="column-card">
+                    <h4>Fórmulas Esenciales</h4>
+                    <pre><code>Turnaround = Fin - Llegada
+Waiting = Turnaround - Ráfaga
+Response = Primera_exec - Llegada</code></pre>
+
+                    <h4>Estados del Proceso</h4>
+                    <div class="concept-map" style="font-size: 0.9em;">
+<pre>    Nuevo
+     ↓
+  Listo ⇄ Ejecución
+     ↑      ↓
+Espera ─────┘</pre>
+                    </div>
+                </div>
+            </section>
+
+            <section id="unidad-3-4">
+                <h2>🔒 Unidad 3-4: Sincronización</h2>
+
+                <div class="two-columns">
+                    <div class="column-card">
+                        <h4>Sección Crítica - Requisitos</h4>
+                        <ol>
+                            <li><strong>Exclusión mutua:</strong> Solo 1 proceso en SC</li>
+                            <li><strong>Progreso:</strong> Si nadie en SC, alguien puede entrar</li>
+                            <li><strong>Espera limitada:</strong> No inanición</li>
+                        </ol>
+
+                        <h4>Mecanismos</h4>
+                        <pre><code class="language-c">// MUTEX
+pthread_mutex_lock(&mutex);
+// SC
+pthread_mutex_unlock(&mutex);
+
+// SEMÁFORO
+sem_wait(&sem);    // P()
+// SC
+sem_post(&sem);    // V()</code></pre>
+                    </div>
+
+                    <div class="column-card">
+                        <h4>Deadlock - 4 Condiciones Necesarias</h4>
+                        <ol>
+                            <li><strong>Exclusión mutua</strong></li>
+                            <li><strong>Hold and wait</strong></li>
+                            <li><strong>No apropiación</strong></li>
+                            <li><strong>Espera circular</strong></li>
+                        </ol>
+
+                        <div class="warning-box">
+                            ⚠️ <strong>Romper UNA = Prevenir deadlock</strong>
+                        </div>
+
+                        <div class="concept-map" style="font-size: 0.8em;">
+<pre>P1: tiene R1, espera R2
+     ↓
+P2: tiene R2, espera R1
+     ↑──────────┘</pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="unidad-5-6">
+                <h2>💾 Unidad 5-6: Memoria y Archivos</h2>
+
+                <div class="two-columns">
+                    <div class="column-card">
+                        <h4>Gestión de Memoria</h4>
+
+                        <strong>Jerarquía:</strong>
+                        <pre><code>Registro < Cache < RAM < SSD < HDD
+Velocidad: ↓        Capacidad: ↓</code></pre>
+
+                        <strong>Paginación:</strong>
+                        <ul>
+                            <li>Tamaño fijo (potencia de 2)</li>
+                            <li>Elimina fragmentación externa</li>
+                            <li>Crea fragmentación interna</li>
+                        </ul>
+
+                        <strong>Traducción:</strong>
+                        <pre><code>Página = Dir_Lógica / Tamaño_Página
+Offset = Dir_Lógica % Tamaño_Página
+Dir_Física = (Marco × Tamaño) + Offset</code></pre>
+                    </div>
+
+                    <div class="column-card">
+                        <h4>Sistemas de Archivos</h4>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Sistema</th>
+                                    <th>Max Archivo</th>
+                                    <th>Journaling</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>FAT32</td><td>4GB</td><td>❌</td></tr>
+                                <tr><td>NTFS</td><td>16EB</td><td>✅</td></tr>
+                                <tr><td>ext4</td><td>16TB</td><td>✅</td></tr>
+                            </tbody>
+                        </table>
+
+                        <p><strong>Inodo:</strong> Metadatos + punteros (12 directos, 3 indirectos)</p>
+                    </div>
+                </div>
+
+                <div class="column-card">
+                    <h4>Estructura Inodo ext4</h4>
+                    <div class="concept-map" style="font-size: 0.85em;">
+<pre>
+┌────────────────────────────┐
+│ INODO (128 bytes)           │
+├────────────────────────────┤
+│ Permisos: rwxr-xr-x         │
+│ UID/GID                     │
+│ Tamaño: 4096 bytes          │
+│ Timestamps                  │
+├────────────────────────────┤
+│ Bloques:                    │
+│  - Directos: 12             │
+│  - Indirecto simple: 1      │
+│  - Indirecto doble: 1       │
+│  - Indirecto triple: 1      │
+└────────────────────────────┘
+</pre>
+                    </div>
+                    <p><strong>Acceso bloque 14:</strong> 3 lecturas (inodo → indirecto → dato)</p>
+                </div>
+            </section>
+
+            <section id="unidad-7-8">
+                <h2>🖥️ Unidad 7-8: E/S y Protección</h2>
+
+                <div class="two-columns">
+                    <div class="column-card">
+                        <h4>E/S y DMA</h4>
+                        <ul>
+                            <li><strong>Sin DMA:</strong> CPU copia byte por byte (100% ocupada)</li>
+                            <li><strong>Con DMA:</strong> CPU inicia transferencia → libre</li>
+                        </ul>
+
+                        <h4>DMA</h4>
+                        <div class="concept-map" style="font-size: 0.85em;">
+<pre>Sin DMA:    Con DMA:
+CPU→RAM×1000  CPU→Iniciar→Libre
+             DMA→RAM×1000→Interrumpir</pre>
+                        </div>
+                    </div>
+
+                    <div class="column-card">
+                        <h4>Niveles de Protección</h4>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Nivel</th>
+                                    <th>Ejemplo</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>Físico</td><td>Guardias, cerraduras</td></tr>
+                                <tr><td>Usuario</td><td>Login/password</td></tr>
+                                <tr><td>Proceso</td><td>Espacios de direcciones</td></tr>
+                                <tr><td>Archivo</td><td>Permisos rwx</td></tr>
+                                <tr><td>Red</td><td>Firewall, TLS</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="column-card">
+                    <h4>Sistemas Distribuidos</h4>
+                    <ul>
+                        <li><strong>SO de red:</strong> NFS, montaje remoto</li>
+                        <li><strong>SO distribuido:</strong> Transparencia total</li>
+                    </ul>
+
+                    <h4>Teorema CAP (2 de 3):</h4>
+                    <ul>
+                        <li><strong>C</strong>onsistencia</li>
+                        <li><strong>A</strong>vailability</li>
+                        <li><strong>P</strong>artition tolerance</li>
+                    </ul>
+
+                    <p><strong>Ejemplo:</strong> Google File System, HDFS</p>
+
+                    <h4>Permisos Unix</h4>
+                    <pre><code class="language-bash">-rw-r--r-- 1 juan users 1024 archivo
+│││ │││ │││
+│││ │││ └└└─ Otros: r--
+│││ └└└───── Grupo: r--
+└└└───────── Dueño: rw-
+
+chmod 755 = rwxr-xr-x</code></pre>
+                </div>
+            </section>
+
+            <section id="ejercicio-1">
+                <h2>🧠 Ejercicio 1: Planificación FCFS</h2>
+
+                <div class="two-columns">
+                    <div class="column-card">
+                        <h4>Enunciado</h4>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Proceso</th>
+                                    <th>Llegada</th>
+                                    <th>Ráfaga</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>P1</td><td>0</td><td>8</td></tr>
+                                <tr><td>P2</td><td>1</td><td>4</td></tr>
+                                <tr><td>P3</td><td>2</td><td>9</td></tr>
+                                <tr><td>P4</td><td>3</td><td>5</td></tr>
+                            </tbody>
+                        </table>
+
+                        <p><strong>Calcular Turnaround promedio con FCFS</strong></p>
+                    </div>
+
+                    <div class="column-card">
+                        <h4>Solución</h4>
+
+                        <strong>Gantt:</strong>
+                        <div class="concept-map" style="font-size: 0.8em;">
+<pre>
+| P1 | P1 | P1 | P1 | P2 | P2 | P3 | P3 | P3 | P4 | P4 |
+0   2   4   6   8  10  12  15  18  21  24  26</pre>
+                        </div>
+
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Proc</th>
+                                    <th>Fin</th>
+                                    <th>TT</th>
+                                    <th>Espera</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>P1</td><td>8</td><td>8</td><td>0</td></tr>
+                                <tr><td>P2</td><td>12</td><td>11</td><td>7</td></tr>
+                                <tr><td>P3</td><td>21</td><td>19</td><td>10</td></tr>
+                                <tr><td>P4</td><td>26</td><td>23</td><td>18</td></tr>
+                            </tbody>
+                        </table>
+
+                        <p><strong>TT promedio = 15.25</strong></p>
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    <h4>Preguntas para Practicar</h4>
+                    <ul>
+                        <li><strong>¿Y con SJF no-apropiativo?</strong> Orden: P1(0), P2(4), P4(5), P3(9)</li>
+                        <li><strong>¿Y con Round Robin (q=2)?</strong> Secuencia: P1,P2,P3,P4,P1,P2,P3,P4,P1,P3,P3...</li>
+                        <li><strong>¿Cuál es mejor?</strong> RR → Mejor tiempo de espera, SJF → Mejor turnaround, FCFS → Más simple</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section id="ejercicio-2">
+                <h2>🧠 Ejercicio 2: Memoria Virtual</h2>
+
+                <div class="two-columns">
+                    <div class="column-card">
+                        <h4>Enunciado</h4>
+                        <ul>
+                            <li>Tamaño página: <strong>4KB</strong> (4096 bytes)</li>
+                            <li>Dirección lógica: <strong>0x00012A3F</strong></li>
+                        </ul>
+
+                        <h4>Preguntas:</h4>
+                        <ol>
+                            <li>¿Bits para offset?</li>
+                            <li>¿Número de página?</li>
+                            <li>¿Desplazamiento?</li>
+                            <li>Si página → marco 5, ¿dirección física?</li>
+                        </ol>
+                    </div>
+
+                    <div class="column-card">
+                        <h4>Solución Paso a Paso</h4>
+
+                        <strong>1. Bits offset:</strong>
+                        <pre><code>4KB = 2^12 → 12 bits</code></pre>
+
+                        <strong>2. Dividir dirección:</strong>
+                        <pre><code>0x00012A3F = 0001 0010 1010 0011 1111
+Página: 0001 0010 = 0x12 = 18
+Offset: 1010 0011 1111 = 0xA3F = 2623</code></pre>
+
+                        <strong>3. Dirección física:</strong>
+                        <pre><code>Dir_Física = (5 × 4096) + 2623
+           = 20480 + 2623
+           = 23103
+           = 0x5A3F</code></pre>
+                    </div>
+                </div>
+
+                <div class="column-card">
+                    <h4>Fórmulas de Traducción</h4>
+                    <pre><code># Dividir dirección
+Número_página = Dir_Lógica / Tamaño_Página
+Offset = Dir_Lógica % Tamaño_Página
+
+# Reconstruir
+Dir_Física = (Marco × Tamaño_Página) + Offset</code></pre>
+
+                    <h4>Ejemplo Adicional</h4>
+                    <p>Si Dir_lógica = 0x00305B7C:</p>
+                    <pre><code>Página = 0x00305B7C / 4096 = 0x305 (773)
+Offset = 0x00305B7C % 4096 = 0x7C (124)
+
+Si Marco = 10:
+Dir_Física = (10 × 4096) + 124 = 41084 = 0xA0BC</code></pre>
+
+                    <div class="insight-box">
+                        <strong>Key insight:</strong> Los bits inferiores (offset) NO cambian en la traducción
+                    </div>
+                </div>
+            </section>
+
+            <section id="ejercicio-3">
+                <h2>🧠 Ejercicio 3: Inodos y Archivos</h2>
+
+                <div class="two-columns">
+                    <div class="column-card">
+                        <h4>Enunciado</h4>
+                        <p>Archivo de <strong>15 bloques</strong>, inodo con:</p>
+                        <ul>
+                            <li>12 bloques directos</li>
+                            <li>1 indirecto simple (256 punteros)</li>
+                            <li>1 indirecto doble</li>
+                        </ul>
+
+                        <h4>Preguntas:</h4>
+                        <ol>
+                            <li>¿Cuántos bloques directos se usan?</li>
+                            <li>¿Cuántos bloques indirectos se necesitan?</li>
+                            <li>¿Lecturas de disco para bloque 14?</li>
+                        </ol>
+                    </div>
+
+                    <div class="column-card">
+                        <h4>Solución</h4>
+
+                        <strong>Distribución:</strong>
+                        <pre><code>Bloques 0-11: Directos (12 bloques)
+Bloque 12-14: Indirecto simple (3 bloques)</code></pre>
+
+                        <strong>Respuestas:</strong>
+                        <ol>
+                            <li><strong>12 directos</strong> usados</li>
+                            <li><strong>3 indirectos</strong> simples</li>
+                            <li><strong>3 lecturas</strong> para bloque 14:
+                                <ul>
+                                    <li>Leer inodo (1)</li>
+                                    <li>Leer bloque indirecto (1)</li>
+                                    <li>Leer dato (1)</li>
+                                </ul>
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+
+                <div class="column-card">
+                    <h4>Estructura de Acceso</h4>
+                    <pre><code>Acceso bloque 5 (directo):
+  INODO → Dato (2 lecturas)
+
+Acceso bloque 14 (indirecto):
+  INODO → Indirecto → Dato (3 lecturas)
+
+Acceso bloque 1000 (indirecto doble):
+  INODO → Indirecto1 → Indirecto2 → Dato
+  (4 lecturas)</code></pre>
+
+                    <h4>Máxima Capacidad</h4>
+                    <pre><code>Directos: 12 bloques
+Indirecto simple: 256 bloques
+Indirecto doble: 256² = 65,536 bloques
+Indirecto triple: 256³ = 16,777,216 bloques
+
+Total: ~16.8M bloques × 4KB ≈ 64 GB</code></pre>
+                </div>
+            </section>
+
+            <section id="mandamientos">
+                <h2>📖 Los 10 Mandamientos de SO</h2>
+
+                <div class="mandaments">
+                    <ol>
+                        <li><strong>Proceso = Programa en ejecución</strong> (código + datos + estado)</li>
+                        <li><strong>Context switch es costoso</strong> (guardar/restaurar registros)</li>
+                        <li><strong>Deadlock necesita 4 condiciones</strong> (romper 1 = prevenir)</li>
+                        <li><strong>Paginación elimina fragmentación externa</strong> (pero crea interna)</li>
+                        <li><strong>Cache L1 es 100× más rápido que RAM</strong></li>
+                        <li><strong>Inodo ≠ Archivo</strong> (inodo = metadatos, archivo = datos)</li>
+                        <li><strong>DMA libera CPU</strong> durante transferencias I/O</li>
+                        <li><strong>Journaling previene corrupción</strong> tras crash</li>
+                        <li><strong>Syscalls cambian a modo kernel</strong> (overhead)</li>
+                        <li><strong>Multiprogramación ≠ Multiprocesamiento</strong> (tiempo vs espacio)</li>
+                    </ol>
+                </div>
+            </section>
+
+            <section>
+                <h2>⚠️ Errores Comunes en Exámenes</h2>
+
+                <div class="two-columns">
+                    <div class="column-card">
+                        <h4>Top 5 Errores</h4>
+                        <ol>
+                            <li><strong>Confundir paginación con segmentación</strong>
+                                <ul>
+                                    <li>Paginación: tamaño <strong>FIJO</strong></li>
+                                    <li>Segmentación: tamaño <strong>VARIABLE</strong></li>
+                                </ul>
+                            </li>
+                            <li><strong>Calcular mal Turnaround Time</strong>
+                                <ul>
+                                    <li>❌ TT = Ráfaga</li>
+                                    <li>✅ TT = Fin - Llegada</li>
+                                </ul>
+                            </li>
+                            <li><strong>Olvidar context switch en RR</strong>
+                                <ul>
+                                    <li>Cada cambio tiene overhead</li>
+                                </ul>
+                            </li>
+                            <li><strong>No diferenciar inodo de archivo</strong>
+                                <ul>
+                                    <li>Inodo: metadatos (permisos, fechas)</li>
+                                    <li>Archivo: datos reales</li>
+                                </ul>
+                            </li>
+                            <li><strong>Confundir prevención con detección de deadlock</strong>
+                                <ul>
+                                    <li>Prevención: eliminar condiciones</li>
+                                    <li>Detección: grafo de asignación</li>
+                                </ul>
+                            </li>
+                        </ol>
+                    </div>
+
+                    <div class="column-card">
+                        <h4>Consejos de Oro</h4>
+                        <ul>
+                            <li><strong>Leer TODO</strong> antes de responder</li>
+                            <li><strong>Mostrar trabajo</strong> en cálculos (puntos parciales)</li>
+                            <li><strong>Usar unidades</strong> (ms, segundos, etc.)</li>
+                            <li><strong>Verificar</strong> respuestas con lógica</li>
+                            <li><strong>Administrar tiempo:</strong> 90 min / examen</li>
+                        </ul>
+
+                        <h4>Fórmulas para Memorizar</h4>
+                        <pre><code>TT = Fin - Llegada
+Waiting = TT - CPU
+Dir_Física = (Marco × PageSize) + Offset
+Page_Faults = # de veces que página no está en memoria</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h2>🧪 Quiz Rápido</h2>
+
+                <div class="quiz-section">
+                    <div class="quiz-question">
+                        <h4>Pregunta 1</h4>
+                        <p><strong>Un proceso en "Espera" puede pasar directamente a "Ejecución"?</strong></p>
+                        <div class="quiz-options">
+                            <p>A) Sí, siempre</p>
+                            <p>B) No, debe pasar por "Listo" <span class="correct">✅</span></p>
+                            <p>C) Depende del scheduler</p>
+                            <p>D) Solo si tiene prioridad alta</p>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>Pregunta 2</h4>
+                        <p><strong>¿Cuántos punteros tiene un bloque indirecto simple (4KB, punteros 4B)?</strong></p>
+                        <div class="quiz-options">
+                            <p>A) 256</p>
+                            <p>B) 512</p>
+                            <p>C) 1024 <span class="correct">✅</span></p>
+                            <p>D) 2048</p>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>Pregunta 3</h4>
+                        <p><strong>RR con q=1, 3 procesos (P1=5, P2=3, P3=4). ¿Context switches?</strong></p>
+                        <div class="quiz-options">
+                            <p>A) 10</p>
+                            <p>B) 11 <span class="correct">✅</span></p>
+                            <p>C) 12</p>
+                            <p>D) 13</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h2>🎓 Estrategias de Estudio</h2>
+
+                <div class="two-columns">
+                    <div class="column-card">
+                        <h4>Técnicas Efectivas</h4>
+                        <ol>
+                            <li><strong>Método Feynman:</strong> Explica en voz alta</li>
+                            <li><strong>Mapas mentales:</strong> Conecta temas</li>
+                            <li><strong>Flashcards:</strong> 50+ preguntas clave</li>
+                            <li><strong>Resolución:</strong> 10+ ejercicios/tema</li>
+                            <li><strong>Grupos:</strong> 3-4 personas, 2 horas</li>
+                        </ol>
+
+                        <h4>Distribución 7 Días</h4>
+                        <pre><code>Día 1-2: Procesos + Planificación (30%)
+Día 3-4: Memoria + Archivos (35%)
+Día 5-6: E/S + Protección (25%)
+Día 7: Repaso general (10%)</code></pre>
+                    </div>
+
+                    <div class="column-card">
+                        <h4>Recursos Recomendados</h4>
+
+                        <strong>Libros:</strong>
+                        <ul>
+                            <li>Silberschatz: Cap 3, 5, 9, 13</li>
+                        </ul>
+
+                        <strong>Videos:</strong>
+                        <ul>
+                            <li>Neso Academy: OS Playlist</li>
+                            <li>Gate Smashers: Scheduling</li>
+                        </ul>
+
+                        <strong>Práctica:</strong>
+                        <ul>
+                            <li>GeeksforGeeks: 100+ ejercicios</li>
+                            <li>TutorialsPoint: Tests</li>
+                        </ul>
+
+                        <h4>Checklist Pre-Examen</h4>
+
+                        <strong>48h antes:</strong>
+                        <ul>
+                            <li>[ ] Repasé presentaciones</li>
+                            <li>[ ] Resolví 5+ ejercicios/tema</li>
+                            <li>[ ] Creé resumen 2 páginas</li>
+                            <li>[ ] Identifiqué 3 temas débiles</li>
+                        </ul>
+
+                        <strong>24h antes:</strong>
+                        <ul>
+                            <li>[ ] Dormí 8 horas</li>
+                            <li>[ ] Revisé errores comunes</li>
+                            <li>[ ] Preparé materiales</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h2>📝 Formato del Examen Final</h2>
+
+                <div class="two-columns">
+                    <div class="column-card">
+                        <h4>Estructura</h4>
+                        <ul>
+                            <li><strong>Duración:</strong> 90 minutos</li>
+                            <li><strong>10 selección múltiple</strong> (30%)</li>
+                            <li><strong>3 ejercicios prácticos</strong> (50%)</li>
+                            <li><strong>2 preguntas análisis</strong> (20%)</li>
+                        </ul>
+
+                        <h4>Temas con Mayor Peso</h4>
+                        <ol>
+                            <li>Planificación CPU (25%)</li>
+                            <li>Memoria Virtual (25%)</li>
+                            <li>Archivos (20%)</li>
+                            <li>Sincronización (15%)</li>
+                            <li>E/S y Protección (15%)</li>
+                        </ol>
+
+                        <h4>Materiales Permitidos</h4>
+                        <ul>
+                            <li>✅ Calculadora básica</li>
+                            <li>✅ 1 hoja resumen (2 caras)</li>
+                            <li>❌ Celular/Laptop</li>
+                        </ul>
+                    </div>
+
+                    <div class="column-card">
+                        <h4>Preguntas Frecuentes</h4>
+
+                        <p><strong>P:</strong> ¿Memorizar todas las syscalls?</p>
+                        <p><strong>R:</strong> No, solo las principales (fork, exec, wait, read, write, open, close)</p>
+
+                        <p><strong>P:</strong> ¿Cálculos complejos?</p>
+                        <p><strong>R:</strong> No, matemáticas básicas (sumas, divisiones, potencias de 2)</p>
+
+                        <p><strong>P:</strong> ¿Historia de SO?</p>
+                        <p><strong>R:</strong> Mínimas, enfoque técnico</p>
+
+                        <p><strong>P:</strong> ¿Preguntas de código?</p>
+                        <p><strong>R:</strong> Sí, pseudocódigo C para sincronización</p>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h2>✅ Cierre y Acción Inmediata</h2>
+
+                <h3>Resumen de Hoy</h3>
+                <ul class="success-list">
+                    <li>✅ Repasamos 8 unidades temáticas</li>
+                    <li>✅ Resolvimos 3 ejercicios integradores</li>
+                    <li>✅ Identificamos errores comunes</li>
+                    <li>✅ Definimos estrategia de estudio</li>
+                </ul>
+
+                <div class="highlight-box">
+                    <h3>Acción Inmediata (Hoy)</h3>
+                    <ol>
+                        <li><strong>Crear</strong> resumen personal de 2 páginas</li>
+                        <li><strong>Identificar</strong> 3 temas débiles</li>
+                        <li><strong>Formar</strong> grupo de estudio (3-4 personas)</li>
+                        <li><strong>Programar</strong> sesiones de repaso</li>
+                    </ol>
+                </div>
+
+                <div class="highlight-box">
+                    <h3>🚀 ¡Están Preparados!</h3>
+
+                    <h4>Recuerda</h4>
+                    <blockquote>
+                        <p>"El éxito es la suma de pequeños esfuerzos repetidos día tras día"</p>
+                    </blockquote>
+
+                    <p><strong>Han visto:</strong></p>
+                    <ul>
+                        <li>15 clases de contenido</li>
+                        <li>8 unidades temáticas</li>
+                        <li>50+ conceptos fundamentales</li>
+                        <li>100+ ejemplos prácticos</li>
+                    </ul>
+
+                    <p><strong>¡Mucho éxito en su examen final!</strong> 💪</p>
+                </div>
+            </section>
+
+            <section>
+                <h2>Referencias</h2>
+
+                <div class="info-box">
+                    <h3>Para Profundizar</h3>
+                    <ul>
+                        <li><strong>Silberschatz, A.</strong> (2018). <em>Operating System Concepts</em>, 10th Ed.</li>
+                        <li><strong>Tanenbaum, A.</strong> (2015). <em>Modern Operating Systems</em>, 4th Ed.</li>
+                        <li><strong>OSDev.org</strong> - Wiki de desarrollo de SO</li>
+                        <li><strong>Linux Kernel</strong> - Código fuente</li>
+                    </ul>
+                </div>
+            </section>
+        </article>
+
+        <footer>
+        <div class="container">
+            <p><strong>IF0099 - Sistemas Operativos I</strong> • <a href="index.html">Índice de Clases</a></p>
+            <p><strong>IF0099 - Sistemas Operativos I</strong> | UNAULA - Ingeniería Informática - 2026-I</p>
+            <p>Clase 15: Repaso Integral - Conectando Todos los Conceptos del Curso</p>
+        </footer>
+    </div>
+
+    <button class="scroll-top" id="scrollTop" aria-label="Scroll to top">↑</button>
+
+    <script>
+        const scrollTopBtn = document.getElementById('scrollTop');
+
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                scrollTopBtn.classList.add('visible');
+            } else {
+                scrollTopBtn.classList.remove('visible');
+            }
+        });
+
+        scrollTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    </script>
+</body>
+</html>
