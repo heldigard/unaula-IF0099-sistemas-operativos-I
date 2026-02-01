@@ -21,10 +21,6 @@ img {
   display: block !important;
   margin: 0 auto !important;
 }
-section {
-  font-size: 20px;
-  overflow: hidden;
-}
 section h1 {
   font-size: 1.8em;
 }
@@ -56,7 +52,7 @@ section p {
 section table {
   width: 100%;
   max-width: 100%;
-  font-size: 0.85em;
+  font-size: 0.95em;
   border-collapse: collapse;
   margin: 0.5em auto;
   table-layout: auto;
@@ -66,7 +62,7 @@ section th {
   color: white;
   padding: 0.4em 0.6em;
   text-align: left;
-  font-size: 0.9em;
+  font-size: 0.95em;
   border: 1px solid #ddd;
 }
 section td {
@@ -74,7 +70,7 @@ section td {
   border: 1px solid #ddd;
   vertical-align: top;
   word-wrap: break-word;
-  font-size: 0.85em;
+  font-size: 0.9em;
 }
 section tbody tr:nth-child(even) {
   background-color: #f8f9fa;
@@ -82,15 +78,13 @@ section tbody tr:nth-child(even) {
 section tbody tr:hover {
   background-color: #e9ecef;
 }
-/* Asegurar que el contenido no desborde */
 section {
   padding: 1em 2em;
   box-sizing: border-box;
 }
-/* Responsividad para tablas anchas */
 @media screen and (max-width: 1280px) {
   section table {
-    font-size: 0.75em;
+    font-size: 0.85em;
   }
   section th, section td {
     padding: 0.3em 0.4em;
@@ -104,7 +98,7 @@ section {
 **IF0099 - Sistemas Operativos I**
 *4° Semestre - Ingeniería Informática*
 
-![Paginación de Memoria](../../assets/infografias/clase-07-tabla-paginas.png)
+![Paginación de Memoria](../../../assets/infografias/clase-07-tabla-paginas.png)
 
 **Conceptos fundamentales que veremos:**
 - **Páginas**: Bloques de memoria lógica del proceso
@@ -259,7 +253,7 @@ Dirección física = 2 × 4096 + 308 = 8500 ✓
 
 ---
 
-## Ventajas de la Paginación
+## Ventajas de la Paginación (1/2)
 
 ### ✅ Elimina fragmentación externa
 
@@ -272,11 +266,17 @@ ANTES (contigua):               DESPUÉS (paginación):
 ├─────┤                         ├─────┤ Marco 4: P2.pág1
 │  B  │                         ├─────┤ Marco 5: P1.pág2
 ├─────┤                         └─────┘
-│HUECO│ estos espacios          
-├─────┤ para P4                  P4 puede usar marcos
-│  C  │                          no contiguos!
+│HUECO│ estos espacios
+├─────┤ para P4
+│  C  │
 └─────┘
 ```
+
+---
+
+## Ventajas de la Paginación (2/2)
+
+### Con paginación, P4 puede usar marcos no contiguos
 
 ### ⚠️ Aún puede haber fragmentación interna
 (Si un proceso no usa toda su última página)

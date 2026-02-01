@@ -68,7 +68,7 @@ section p {
 section table {
   width: 100%;
   max-width: 100%;
-  font-size: 0.85em;
+  font-size: 0.95em;
   border-collapse: collapse;
   margin: 0.5em auto;
   table-layout: auto;
@@ -78,7 +78,7 @@ section th {
   color: white;
   padding: 0.4em 0.6em;
   text-align: left;
-  font-size: 0.9em;
+  font-size: 0.95em;
   border: 1px solid #ddd;
 }
 section td {
@@ -86,7 +86,7 @@ section td {
   border: 1px solid #ddd;
   vertical-align: top;
   word-wrap: break-word;
-  font-size: 0.85em;
+  font-size: 0.9em;
 }
 section tbody tr:nth-child(even) {
   background-color: #f8f9fa;
