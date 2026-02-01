@@ -16,23 +16,23 @@ img {
   margin: 0 auto !important;
 }
 section {
-  font-size: 18px;
+  font-size: 16px;
   overflow: hidden;
 }
-section h1 { font-size: 1.7em; }
-section h2 { font-size: 1.3em; }
-section h3 { font-size: 1.1em; }
-section ul, section ol { font-size: 0.85em; margin-left: 0.5em; }
-section li { margin-bottom: 0.2em; }
-section pre { font-size: 0.65em; max-height: 55vh; overflow-y: auto; }
-section code { font-size: 0.8em; }
-section p { margin: 0.3em 0; }
+section h1 { font-size: 1.6em; }
+section h2 { font-size: 1.2em; }
+section h3 { font-size: 1.05em; }
+section ul, section ol { font-size: 0.9em; margin-left: 0.5em; }
+section li { margin-bottom: 0.25em; }
+section pre { font-size: 0.7em; max-height: 50vh; overflow-y: auto; }
+section code { font-size: 0.85em; }
+section p { margin: 0.35em 0; }
 section table {
   width: 100%;
   max-width: 100%;
-  font-size: 0.8em;
+  font-size: 0.85em;
   border-collapse: collapse;
-  margin: 0.3em auto;
+  margin: 0.35em auto;
 }
 section th {
   background-color: #1e40af;
@@ -199,7 +199,7 @@ Al finalizar, serás capaz de:
 
 ## Analogía: El Hotel 🏨
 
-<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px;">
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
 
 <div style="text-align: center;">
 
@@ -223,6 +223,16 @@ Al finalizar, serás capaz de:
     │ 103  ...   │
     └─────────────┘
 ```
+
+### 🏨 = 💻
+
+| Hotel | Computador |
+|-------|------------|
+| Asignar habitaciones | Asignar memoria |
+| Registro huéspedes | Sistema de archivos |
+| Evitar conflictos | Sincronización |
+| Seguridad (llaves) | Permisos/protección |
+| Mantenimiento | Drivers y E/S |
 
 </div>
 
@@ -249,27 +259,15 @@ Al finalizar, serás capaz de:
     └─────────────┘
 ```
 
-</div>
+### 💡 Concepto Clave
+
+**Sin el gerente, los huéspedes pelearían por las habitaciones.**
+
+**Sin el SO, los programas pelearían por la RAM.**
 
 </div>
 
-<div style="text-align: center; margin-top: 20px;">
-
-**Sin el gerente, los huéspedes pelearían por las habitaciones. Sin el SO, los programas pelearían por la RAM.**
-
 </div>
-
----
-
-## El Hotel: ¿Qué hace el gerente?
-
-| Hotel | Computador |
-|-------|------------|
-| Asignar habitaciones | Asignar memoria |
-| Mantener registro de huéspedes | Sistema de archivos |
-| Evitar conflictos | Sincronización de procesos |
-| Seguridad (llaves) | Permisos y protección |
-| Mantenimiento | Drivers y E/S |
 
 ---
 
@@ -1116,185 +1114,60 @@ usuario@so:~$
 
 ## 6. Sistemas Operativos Actuales (2026)
 
-### El panorama de los sistemas operativos por plataforma
+### El panorama por plataforma
 
-<div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px;">
+<div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px;">
 
-<div style="text-align: center; padding: 15px; border: 3px solid #3b82f6; border-radius: 10px;">
+<div style="text-align: center; padding: 12px; border: 3px solid #3b82f6; border-radius: 10px;">
 
 ### 💻 Escritorio
 
 ```
-Windows ████████████████  70%
-macOS   ████████████  16%
-Linux   ████   4%
-Otros   ████   10%
+Windows ████████████  70%
+macOS   ██████  16%
+Linux   ███  4%
+Otros   ███  10%
 ```
 
-#### Windows (Microsoft)
-- **Líder absoluto** en escritorio corporativo
-- Office, SAP, Adobe → ecosistema completo
-- **Hardware兼容:** funciona con cualquier PC
-- Gaming → DirectX
-
-#### macOS (Apple)
-- **Favorito** de creativos (video, música, diseño)
-- Ecosistema Apple integrado (iPhone, iPad, Watch)
-- Desarrollo iOS requiere Mac
-
-#### Linux (Escritorio)
-- Minoría pero creciendo
-- Favorito de desarrolladores
-- Distribuciones: Ubuntu, Mint, Fedora
+**Windows:** Líder corporativo, Office, Gaming
+**macOS:** Creativos, ecosistema Apple
+**Linux:** Desarrolladores, creciendo
 
 </div>
 
-<div style="text-align: center; padding: 15px; border: 3px solid #10b981; border-radius: 10px;">
+<div style="text-align: center; padding: 12px; border: 3px solid #10b981; border-radius: 10px;">
 
 ### 🖥️ Servidores
 
 ```
-Linux ████████████████████████████████  96%
-Windows ████   4%
-Otros   █   1%
+Linux ████████████████████████  96%
+Windows ██  4%
 ```
 
-#### Linux (El rey indiscutible)
-- **96% de servidores web** (Netcraft, 2026)
-- **100% de supercomputadoras** (Top 500)
-- Gratis, estable, uptime de años
-- Docker, Kubernetes → stack cloud native
-
-#### Windows Server
-- 4% en empresas Microsoft
-- Active Directory, Exchange, SharePoint
-
-**¿Por qué Linux domina servidores?**
-- Gratis (sin licenciamiento)
-- Sin GUI ahorra RAM
-- Scripting potente (bash)
-- Seguridad por diseño
+**Linux domina:** 96% servidores web, 100% supercomputadoras
+**Por qué:** Gratis, estable, sin GUI, Docker/K8s
 
 </div>
 
-<div style="text-align: center; padding: 15px; border: 3px solid #f59e0b; border-radius: 10px;">
+<div style="text-align: center; padding: 12px; border: 3px solid #f59e0b; border-radius: 10px;">
 
 ### 📱 Móviles
 
 ```
-Android ████████████████████████████████  71%
-iOS     ████████████████████████  28%
-Otros   █   1%
+Android ████████████████████████  71%
+iOS     ████████████████  28%
 ```
 
-#### Android (Google)
-- **71% del mercado móvil mundial**
-- Código abierto (proyecto AOSP)
-- Ecosistema fragmentado (Samsung, Xiaomi, etc.)
-
-#### iOS (Apple)
-- **28% del mercado** pero **50% de ingresos**
-- Exclusivo hardware Apple
-- Usuarios con mayor gasto promedio
-
-**Insight:** En móvil, Android domina en unidades, iOS domina en ganancias.
+**Android:** 71% unidades, código abierto
+**iOS:** 28% unidades pero 50% ingresos
 
 </div>
 
 </div>
 
----
+<div style="text-align: center; margin-top: 15px; padding: 12px; background: #f0f9ff; border-radius: 8px;">
 
-## ¿Por qué cada SO domina su nicho?
-
-### Análisis de las fortalezas competitivas
-
-<div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px;">
-
-<div>
-
-### 👔 Windows en Escritorio
-
-```
-┌──────────────────────────┐
-│  FACTORES DE ÉXITO       │
-├──────────────────────────┤
-│ ✅ Compatible con todo   │
-│ ✅ Office indispensable   │
-│ ✅ Soporte mundial        │
-│ ✅ Familiaridad           │
-│ ✅ Gaming (DirectX 12)    │
-│ ✅ Hardware variado       │
-└──────────────────────────┘
-```
-
-#### Efecto de Red
-- **Desarrolladores** → Windows por mercado
-- **Usuarios** → Windows por software
-- **Empresas** → Windows por compatibilidad
-
-**Círculo virtuoso:** más usuarios → más software → más usuarios
-
-</div>
-
-<div>
-
-### 🐧 Linux en Servidores
-
-```
-┌──────────────────────────┐
-│  FACTORES DE ÉXITO       │
-├──────────────────────────┤
-│ ✅ Gratis (sin licencia)  │
-│ ✅ Estabilidad extrema    │
-│ ✅ Scripting superior     │
-│ ✅ Seguridad por diseño   │
-│ ✅ Comunidad activa       │
-│ ✅ Cloud-native stack     │
-└──────────────────────────┘
-```
-
-#### Dominio Absoluto
-- **Internet corre Linux:** Google, Facebook, Amazon
-- **Supercomputadoras:** 100% Top 500
-- **IoT y Edge:** Raspberry Pi, routers
-
-**Sin Linux, internet NO funcionaría.**
-
-</div>
-
-<div>
-
-### 🍎 macOS en Creativos
-
-```
-┌──────────────────────────┐
-│  FACTORES DE ÉXITO       │
-├──────────────────────────┤
-│ ✅ Hardware premium       │
-│ ✅ Software creativo      │
-│ ✅ Ecosistema integrado   │
-│ ✅ Experiencia usuario    │
-│ ✅ Desarrollo iOS         │
-│ ✅ Unix underneath       │
-└──────────────────────────┘
-```
-
-#### Nicho Premium
-- **Video profesional:** Final Cut Pro
-- **Diseño gráfico:** Adobe Suite optimizado
-- **Música:** Logic Pro
-- **Desarrollo móvil:** Xcode requerido
-
-**Diseño → Mac. Oficina → Windows. Servidores → Linux.**
-
-</div>
-
-</div>
-
-<div style="text-align: center; margin-top: 20px; padding: 15px; background: #f0f9ff; border-radius: 10px;">
-
-**🎯 Lección:** No existe "el mejor" SO. Cada uno domina donde resuelve mejor un problema específico.
+**💡 Cada SO domina donde resuelve mejor un problema específico: Windows = escritorio, Linux = servidores, iOS = mobile premium**
 
 </div>
 
