@@ -388,10 +388,28 @@ ESCRITURA (write-back):
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="18" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 7" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="18" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 7;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="24">
 <header>IF0099 - Sistemas Operativos I | Unidad 7</header>
-<h2 id="spooling-print-spooler-1">Spooling (Print Spooler)</h2>
-<p><em>(continuación...)</em></p>
-<p><img class="emoji" draggable="false" alt="✅" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2705.svg" data-marp-twemoji=""/> Múltiples usuarios pueden &quot;imprimir&quot; simultáneamente<br />
-<img class="emoji" draggable="false" alt="✅" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2705.svg" data-marp-twemoji=""/> Cola gestionada con prioridades</p>
+<h2 id="spooling-ventajas-y-gesti%C3%B3n">Spooling: Ventajas y Gestión</h2>
+<h3 id="beneficios-del-spooling">Beneficios del Spooling</h3>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code>SIN SPOOLING:                    CON SPOOLING:
+┌────────┐                       ┌──────────┐
+│ App 1  │ espera impresora      │ App 1    │ → spool → termina rápido
+├────────┤                       ├──────────┤
+│ App 2  │ espera impresora      │ App 2    │ → spool → termina rápido
+├────────┤                       ├──────────┤
+│ App 3  │ espera impresora      │ App 3    │ → spool → termina rápido
+└────────┘                       └──────────┘
+                                    │
+                                    ▼
+                               ┌─────────┐
+                               │ Impresora│
+                               │ procesa │
+                               │ cola    │
+                               └─────────┘
+</code></pre>
+<p><img class="emoji" draggable="false" alt="✅" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2705.svg" data-marp-twemoji=""/> <strong>Desacoplamiento:</strong> Aplicaciones terminan rápido<br />
+<img class="emoji" draggable="false" alt="✅" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2705.svg" data-marp-twemoji=""/> <strong>Concurrencia:</strong> Múltiples usuarios imprimen simultáneamente<br />
+<img class="emoji" draggable="false" alt="✅" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2705.svg" data-marp-twemoji=""/> <strong>Priorización:</strong> Admin puede reordenar cola de trabajos<br />
+<img class="emoji" draggable="false" alt="✅" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2705.svg" data-marp-twemoji=""/> <strong>Recuperación:</strong> Trabajos spoolados sobreviven reinicios</p>
 <footer>UNAULA - Ingeniería Informática - 2026-I</footer>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="19" data-paginate="true" data-header="IF0099 - Sistemas Operativos I | Unidad 7" data-footer="UNAULA - Ingeniería Informática - 2026-I" data-theme="default" lang="C" data-marpit-pagination="19" style="--paginate:true;--header:IF0099 - Sistemas Operativos I | Unidad 7;--footer:UNAULA - Ingeniería Informática - 2026-I;--theme:default;" data-marpit-pagination-total="24">
@@ -528,10 +546,11 @@ free -h
 <h2 id="pr%C3%B3xima-clase">Próxima Clase</h2>
 <h3 id="clase-11-implementaci%C3%B3n-de-sistemas-de-archivos">Clase 11: Implementación de Sistemas de Archivos</h3>
 <ul>
-<li>Dominios de protección</li>
-<li>Matriz de acceso</li>
-<li>Control de acceso en Linux/Windows</li>
-<li>Amenazas y mecanismos de defensa</li>
+<li>Estructura interna del filesystem</li>
+<li>Inodos y metadatos</li>
+<li>Asignación de espacio (contigua, enlazada, indexada)</li>
+<li>El sistema ext4 en Linux</li>
+<li>Hard links vs symbolic links</li>
 </ul>
 <p><strong>¡Nos vemos!</strong></p>
 <footer>UNAULA - Ingeniería Informática - 2026-I</footer>
