@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clase 03: Concepto de Proceso | IF0099 - Sistemas Operativos I</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #1e40af;
+            --accent: #059669;
+            --bg-light: #f8fafc;
+            --bg-code: #1e293b;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+        }
+
+        * {margin:0;padding:0;box-sizing:border-box}
+        body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;line-height:1.7;color:var(--text-main);background:var(--bg-light);font-size:16px}
+        .container{max-width:1200px;margin:0 auto;padding:0 20px}
+
+        header{background:linear-gradient(135deg,var(--primary) 0%,var(--secondary) 100%);color:white;padding:3rem 0;margin-bottom:2rem}
+        header h1{font-size:2.2rem;margin-bottom:.5rem;font-weight:700}
+        header .subtitle{font-size:1.1rem;opacity:.9}
+        header .meta{margin-top:1rem;font-size:.9rem;opacity:.8}
+
+        nav{background:white;padding:1.5rem 0;margin-bottom:2rem;border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,0.1)}
+        nav h2{font-size:1.1rem;color:var(--text-muted);margin-bottom:1rem;padding:0 20px}
+        nav ul{list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.5rem;padding:0 20px}
+        nav a{color:var(--primary);text-decoration:none;padding:.5rem;display:block;border-radius:4px;transition:background .2s}
+        nav a:hover{background:var(--bg-light)}
+
+        section{background:white;padding:2rem;margin-bottom:2rem;border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,0.1)}
+        section h2{color:var(--primary);font-size:1.8rem;margin-bottom:1.5rem;padding-bottom:.5rem;border-bottom:3px solid var(--accent)}
+        section h3{color:var(--secondary);font-size:1.4rem;margin:2rem 0 1rem}
+        section h4{color:var(--text-main);font-size:1.1rem;margin:1.5rem 0 .75rem;font-weight:600}
+        p{margin-bottom:1rem}
+
+        figure{margin:2rem 0;text-align:center}
+        figure img{max-width:100%;height:auto;border-radius:8px;box-shadow:0 4px 6px rgba(0,0,0,0.1)}
+        figcaption{margin-top:.75rem;color:var(--text-muted);font-style:italic;font-size:.95rem}
+
+        table{width:100%;border-collapse:collapse;margin:1.5rem 0;font-size:.95rem}
+        th,td{padding:.75rem 1rem;text-align:left;border-bottom:1px solid var(--border)}
+        th{background:var(--bg-light);font-weight:600;color:var(--secondary)}
+        tr:hover{background:var(--bg-light)}
+
+        pre{background:var(--bg-code);color:#e2e8f0;padding:1.5rem;border-radius:8px;overflow-x:auto;margin:1.5rem 0;font-size:.9rem;line-height:1.5}
+        code{font-family:'Consolas','Monaco','Courier New',monospace}
+        p code,li code,td code{background:var(--bg-light);color:var(--primary);padding:.2rem .4rem;border-radius:4px;font-size:.9em}
+        pre code{background:none;padding:0;color:inherit}
+
+        ul,ol{margin-left:1.5rem;margin-bottom:1rem}
+        li{margin-bottom:.5rem}
+
+        .callout{padding:1.5rem;border-radius:8px;margin:1.5rem 0;border-left:4px solid}
+        .callout.info{background:#eff6ff;border-left-color:var(--primary)}
+        .callout.warning{background:#fef3c7;border-left-color:#f59e0b}
+        .callout.success{background:#d1fae5;border-left-color:var(--accent)}
+
+        .ascii-diagram{font-family:'Consolas','Monaco',monospace;font-size:.85rem;line-height:1.2;background:var(--bg-light);padding:1rem;border-radius:4px;overflow-x:auto;white-space:pre}
+
+        .comparison{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin:2rem 0}
+        .comparison>div{background:var(--bg-light);padding:1.5rem;border-radius:8px}
+
+        footer{background:var(--text-main);color:white;padding:2rem 0;text-align:center;margin-top:3rem}
+        footer a{color:var(--accent);text-decoration:none}
+
+        .scroll-top{position:fixed;bottom:2rem;right:2rem;background:var(--primary);color:white;width:45px;height:45px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;transition:opacity .3s;text-decoration:none;font-size:1.5rem}
+        .scroll-top.visible{opacity:1}
+        .scroll-top:hover{background:var(--secondary)}
+
+        .quote{font-style:italic;border-left:4px solid var(--accent);padding-left:1rem;margin:1.5rem 0;color:var(--text-muted)}
+
+        @media(max-width:768px){
+            header h1{font-size:1.6rem}
+            section{padding:1.5rem}
+            nav ul{grid-template-columns:1fr}
+            .comparison{grid-template-columns:1fr}
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Clase 03: Concepto de Proceso</h1>
+            <p class="subtitle">IF0099 - Sistemas Operativos I | Unidad 2 - Procesos</p>
+            <p class="subtitle">Programa vs Proceso, PCB y Estados</p>
+            <p class="meta">Última actualización: 2026-02-01 | Duración: 90 minutos</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <nav>
+            <h2>Contenido de la Clase</h2>
+            <ul>
+                <li><a href="#objetivos">Objetivos de Aprendizaje</a></li>
+                <li><a href="#programa-proceso">1. Programa vs Proceso</a></li>
+                <li><a href="#memoria">2. Estructura de Memoria</a></li>
+                <li><a href="#pcb">3. Process Control Block</a></li>
+                <li><a href="#context-switch">4. Context Switch</a></li>
+                <li><a href="#estados">5. Estados de un Proceso</a></li>
+                <li><a href="#threads">6. Threads (Hilos)</a></li>
+                <li><a href="#modelos-threads">7. Modelos de Threads</a></li>
+                <li><a href="#ipc">8. Comunicación IPC</a></li>
+                <li><a href="#practica">9. Actividad Práctica</a></li>
+            </ul>
+        </nav>
+
+        <section id="objetivos">
+            <h2>Objetivos de Aprendizaje</h2>
+            <p>Al finalizar esta clase, serás capaz de:</p>
+            <ol>
+                <li><strong>Diferenciar</strong> entre programa, proceso y thread</li>
+                <li><strong>Describir</strong> la estructura del PCB (Process Control Block)</li>
+                <li><strong>Explicar</strong> los estados de un proceso y sus transiciones</li>
+                <li><strong>Comparar</strong> los modelos de threads (1:1, M:1, M:N)</li>
+                <li><strong>Describir</strong> los mecanismos de comunicación entre procesos (IPC)</li>
+                <li><strong>Reconocer</strong> los problemas clásicos de IPC</li>
+                <li><strong>Identificar</strong> procesos en un sistema operativo real</li>
+            </ol>
+        </section>
+
+        <section id="programa-proceso">
+            <h2>1. Programa vs Proceso</h2>
+
+            <div class="comparison">
+                <div>
+                    <h3>📝 Conceptos clave</h3>
+                    <table>
+                        <tr>
+                            <th>Concepto</th>
+                            <th>Descripción</th>
+                        </tr>
+                        <tr>
+                            <td><strong>Programa</strong></td>
+                            <td>Código ejecutable almacenado en disco (estático)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Proceso</strong></td>
+                            <td>Programa en ejecución (dinámico)</td>
+                        </tr>
+                    </table>
+
+                    <div class="ascii-diagram">
+┌─────────────┐          ┌─────────────┐
+│   PROGRAMA  │  cargar  │   PROCESO   │
+│  (en disco) │ ───────→ │ (en memoria)│
+│   .exe      │          │             │
+│   estático  │          │  dinámico   │
+└─────────────┘          └─────────────┘
+                    </div>
+
+                    <h3>🍳 Analogía culinaria</h3>
+                    <ul>
+                        <li><strong>Programa</strong> = Receta de cocina (instrucciones en papel)</li>
+                        <li><strong>Proceso</strong> = Acto de cocinar (ejecución de la receta)</li>
+                    </ul>
+
+                    <div class="quote">
+                        La receta no cambia; la cocina sí.<br>
+                        El programa es inerte; el proceso está vivo.
+                    </div>
+                </div>
+
+                <div>
+                    <h3>🔑 Diferencias clave</h3>
+                    <table>
+                        <tr>
+                            <th>Aspecto</th>
+                            <th>Programa</th>
+                            <th>Proceso</th>
+                        </tr>
+                        <tr>
+                            <td><strong>Ubicación</strong></td>
+                            <td>Disco</td>
+                            <td>Memoria RAM</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Estado</strong></td>
+                            <td>Estático</td>
+                            <td>Dinámico</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Recursos</strong></td>
+                            <td>Ninguno</td>
+                            <td>PCB, memoria, archivos</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Vida</strong></td>
+                            <td>Permanente</td>
+                            <td>Temporal</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Cantidad</strong></td>
+                            <td>1 archivo</td>
+                            <td>N instancias</td>
+                        </tr>
+                    </table>
+
+                    <h3>💡 Un programa, múltiples procesos</h3>
+                    <div class="ascii-diagram">
+┌───────────────────────────────────────────────┐
+│               chrome.exe (programa)            │
+│                      │                         │
+│         ┌───────────┬┴───────────┐            │
+│         ▼           ▼            ▼            │
+│   ┌─────────┐ ┌─────────┐ ┌─────────┐        │
+│   │Proceso 1│ │Proceso 2│ │Proceso 3│        │
+│   │ (Tab 1) │ │ (Tab 2) │ │ (Tab 3) │        │
+│   │ PID:1234│ │ PID:1235│ │ PID:1236│        │
+│   └─────────┘ └─────────┘ └─────────┘        │
+└───────────────────────────────────────────────┘
+                    </div>
+
+                    <p><strong>Cada pestaña de Chrome es un proceso separado.</strong></p>
+                </div>
+            </div>
+        </section>
+
+        <section id="memoria">
+            <h2>2. Estructura de un Proceso en Memoria</h2>
+
+            <p>El espacio de direcciones de un proceso se divide en segmentos con propósitos específicos.</p>
+
+            <figure>
+                <img src="../assets/infografias/clase-03-estructura-memoria.png" alt="Estructura de Memoria de un Proceso">
+                <figcaption>Figura 1: Segmentos de memoria de un proceso (TEXT, DATA, BSS, HEAP, STACK)</figcaption>
+            </figure>
+
+            <div class="callout info">
+                <p><strong>Crecimiento:</strong></p>
+                <ul>
+                    <li>Stack crece hacia abajo (direcciones decrecientes)</li>
+                    <li>Heap crece hacia arriba (direcciones crecientes)</li>
+                </ul>
+            </div>
+
+            <h3>🗂️ Los 5 segmentos</h3>
+            <table>
+                <tr>
+                    <th>Segmento</th>
+                    <th>Contenido</th>
+                    <th>Tamaño</th>
+                </tr>
+                <tr>
+                    <td><strong>TEXT</strong></td>
+                    <td>Código ejecutable</td>
+                    <td>Fijo</td>
+                </tr>
+                <tr>
+                    <td><strong>DATA</strong></td>
+                    <td>Variables globales inicializadas</td>
+                    <td>Fijo</td>
+                </tr>
+                <tr>
+                    <td><strong>BSS</strong></td>
+                    <td>Variables globales no inicializadas</td>
+                    <td>Fijo</td>
+                </tr>
+                <tr>
+                    <td><strong>HEAP</strong></td>
+                    <td>Memoria dinámica (malloc/new)</td>
+                    <td>Variable ↑</td>
+                </tr>
+                <tr>
+                    <td><strong>STACK</strong></td>
+                    <td>Variables locales, parámetros, retornos</td>
+                    <td>Variable ↓</td>
+                </tr>
+            </table>
+
+            <div class="ascii-diagram">
+Direcciones ALTAS
+        ↓
+┌─────────────────────────┐
+│       STACK             │ ← Crece hacia ABAJO
+│      (locales)          │    (direcciones ↓)
+├─────────────────────────┤
+│         ↑               │
+│         │               │
+│    Espacio libre        │
+│         │               │
+│         ↓               │
+├─────────────────────────┤
+│       HEAP             │ ← Crece hacia ARRIBA
+│    (dinámica)           │    (direcciones ↑)
+├─────────────────────────┤
+│       BSS              │
+│    (no inicializadas)   │
+├─────────────────────────┤
+│      DATA             │
+│   (inicializadas)      │
+├─────────────────────────┤
+│      TEXT             │
+│    (código)            │
+└─────────────────────────┘
+        ↓
+Direcciones BAJAS
+            </div>
+
+            <h3>💻 Ejemplo en código</h3>
+            <pre><code>int global = 5;         // DATA (inicializada)
+int sin_inicializar;    // BSS (no inicializada)
+
+int main() {
+    int local = 10;     // STACK (variable local)
+    int *ptr = malloc(100); // puntero en STACK
+                          // memoria en HEAP
+
+    *ptr = 20;          // Escribir en HEAP
+    free(ptr);          // Liberar HEAP
+
+    return 0;
+}</code></pre>
+
+            <h3>⚠️ Stack Overflow</h3>
+            <p>Si el stack crece demasiado → <strong>Stack Overflow</strong></p>
+            <ul>
+                <li>Ocurre con recursión infinita</li>
+                <li>Arrays locales muy grandes</li>
+                <li>Demasiadas funciones anidadas</li>
+            </ul>
+        </section>
+
+        <section id="pcb">
+            <h2>3. Process Control Block (PCB)</h2>
+
+            <h3>La "ficha" de cada proceso</h3>
+            <p>El SO mantiene un <strong>PCB</strong> por cada proceso. Contiene TODA la información necesaria para gestionar el proceso.</p>
+
+            <figure>
+                <img src="../assets/infografias/clase-03-pcb.png" alt="PCB - Bloque de Control de Proceso">
+                <figcaption>Figura 2: Estructura del Process Control Block (PCB)</figcaption>
+            </figure>
+
+            <div class="callout warning">
+                <p><strong>💡 El PCB es la estructura de datos más importante en la gestión de procesos</strong></p>
+                <ul>
+                    <li>Sin PCB, el SO no podría suspender y reanudar procesos</li>
+                    <li>El contexto switch es básicamente guardar/cargar PCBs</li>
+                    <li>Cada proceso tiene exactamente un PCB</li>
+                </ul>
+            </div>
+
+            <h3>Campos del PCB</h3>
+            <table>
+                <tr>
+                    <th>Campo</th>
+                    <th>Descripción</th>
+                </tr>
+                <tr>
+                    <td><strong>PID</strong></td>
+                    <td>Identificador único del proceso</td>
+                </tr>
+                <tr>
+                    <td><strong>Estado</strong></td>
+                    <td>Running, Ready, Blocked, etc.</td>
+                </tr>
+                <tr>
+                    <td><strong>Program Counter</strong></td>
+                    <td>Siguiente instrucción a ejecutar</td>
+                </tr>
+                <tr>
+                    <td><strong>Registros CPU</strong></td>
+                    <td>Valores actuales de registros</td>
+                </tr>
+                <tr>
+                    <td><strong>Info de memoria</strong></td>
+                    <td>Límites, tablas de páginas</td>
+                </tr>
+                <tr>
+                    <td><strong>Info de E/S</strong></td>
+                    <td>Archivos abiertos, dispositivos</td>
+                </tr>
+                <tr>
+                    <td><strong>Info de planificación</strong></td>
+                    <td>Prioridad, tiempo de CPU usado</td>
+                </tr>
+            </table>
+
+            <h3>Ver PCB real en Linux</h3>
+            <pre><code># El PCB de un proceso está expuesto en /proc/[PID]/
+$ cat /proc/self/status
+Name:   cat
+State:  R (running)
+Pid:    1234
+PPid:   5678
+Uid:    1000(1000)   1000(1000)   1000(1000)   1000(1000)
+VmSize:     12345 kB
+VmRSS:        678 kB
+...</code></pre>
+        </section>
+
+        <section id="context-switch">
+            <h2>4. Context Switch (Cambio de Contexto)</h2>
+
+            <h3>Cuando el SO cambia de un proceso a otro</h3>
+            <p>El <strong>context switch</strong> es el proceso de guardar el estado de un proceso y cargar el estado de otro.</p>
+
+            <figure>
+                <img src="../assets/infografias/clase-03-cswitch-timeline.png" alt="Diagrama de Context Switch">
+                <figcaption>Figura 3: Timeline de un Context Switch entre procesos</figcaption>
+            </figure>
+
+            <h3>¿Qué sucede durante un context switch?</h3>
+            <div class="ascii-diagram">
+┌─────────────────────────────────────────────────────────┐
+│  1. Proceso A se ejecuta                                │
+│     → Guarda sus registros CPU en su PCB               │
+│     → Guarda su contador de programa                   │
+│     → Actualiza su estado a "LISTO"                     │
+│                                                           │
+│  2. El SO selecciona Proceso B                           │
+│     → Carga los registros CPU del PCB de B              │
+│     → Carga el contador de programa de B                │
+│     → Cambia estado de B a "EJECUTANDO"                 │
+│                                                           │
+│  3. Proceso B continúa ejecutando                        │
+└─────────────────────────────────────────────────────────┘
+            </div>
+
+            <h3>💡 Analogía: Cambio de jugador en un partido</h3>
+            <div class="ascii-diagram">
+Jugador A sale           ↓             Jugador B entra
+─────────────────        │        ─────────────────
+- Se sienta en banco     │        - Se levanta del banco
+- Descansa               │        - Entra a la cancha
+- Entiende la táctica    → Tiempo de → - Conoce la táctica
+                        cambio
+                        ↓
+                        ¡El árbitro silba!
+            </div>
+
+            <h3>⚡ Costo del Context Switch</h3>
+            <table>
+                <tr>
+                    <th>Aspecto</th>
+                    <th>Impacto</th>
+                </tr>
+                <tr>
+                    <td><strong>Tiempo</strong></td>
+                    <td>1-10 microsegundos (parece poco, pero acumula)</td>
+                </tr>
+                <tr>
+                    <td><strong>CPU</strong></td>
+                    <td>La CPU NO hace trabajo útil durante el cambio</td>
+                </tr>
+                <tr>
+                    <td><strong>Frecuencia</strong></td>
+                    <td>Cientos o miles de veces por segundo</td>
+                </tr>
+            </table>
+
+            <div class="callout warning">
+                <p><strong>Por qué importa:</strong> Demasiados context switches = bajo rendimiento</p>
+            </div>
+
+            <h3>Causas de Context Switch</h3>
+            <ol>
+                <li><strong>Timeout:</strong> Proceso agotó su quantum de tiempo</li>
+                <li><strong>E/S:</strong> Proceso solicita entrada/salida (se bloquea)</li>
+                <li><strong>Interrupción:</strong> Evento de hardware requiere atención</li>
+                <li><strong>Prioridad:</strong> Proceso de mayor prioridad debe ejecutarse</li>
+            </ol>
+        </section>
+
+        <section id="estados">
+            <h2>5. Estados de un Proceso</h2>
+
+            <p>Un proceso <strong>siempre está en uno de estos 5 estados</strong> durante su vida útil.</p>
+
+            <figure>
+                <img src="../assets/infografias/so-estados-proceso.png" alt="Estados de un Proceso">
+                <figcaption>Figura 4: Diagrama de estados de un proceso y sus transiciones</figcaption>
+            </figure>
+
+            <h3>Transiciones principales</h3>
+            <ul>
+                <li><strong>Admisión:</strong> Nuevo → Listo</li>
+                <li><strong>Dispatch:</strong> Listo → Ejecutando</li>
+                <li><strong>Preemption/Timeout:</strong> Ejecutando → Listo</li>
+                <li><strong>Solicitud E/S:</strong> Ejecutando → Bloqueado</li>
+                <li><strong>E/S completada:</strong> Bloqueado → Listo</li>
+            </ul>
+
+            <h3>Diagrama detallado</h3>
+            <div class="ascii-diagram">
+       ┌─────────┐
+       │  NUEVO  │  Proceso creado, espera admisión
+       └────┬────┘
+            │ Admisión
+            ▼
+     ┌───────────┐
+     │   LISTO   │  Esperando CPU (en cola)
+     └─────┬─────┘
+           │ Dispatch (seleccionado)
+           ▼
+    ┌─────────────┐
+    │ EJECUTANDO  │  Usando CPU ahora mismo ← Solo 1 por núcleo
+    └──┬──────┬───┘
+       │      │
+       │      │ Timeout o Preemption
+       │      ▼
+       │   ┌───────────┐
+       │   │   LISTO   │
+       │   └───────────┘
+       │
+       │ Solicita E/S o recurso
+       ▼
+  ┌───────────┐
+  │ BLOQUEADO │  Esperando evento (disco, red, etc.)
+  └─────┬─────┘
+       │ Evento completado
+       ▼
+    ┌───────────┐
+    │   LISTO   │
+    └───────────┘
+            </div>
+
+            <h3>💡 Ejemplo real: Ciclo de vida de Firefox</h3>
+            <pre><code>1. NUEVO      → $ firefox &          # fork() crea proceso
+2. LISTO       → [en cola de CPU]     # Espera turno
+3. EJECUTANDO  → [cargando página]     # Usando CPU
+4. BLOQUEADO   → [esperando red]      # Pide datos web
+5. LISTO       → [en cola de nuevo]   # Datos llegaron
+6. EJECUTANDO  → [renderizando]       # CPU de nuevo
+7. TERMINADO   → $ exit               # Usuario cierra</code></pre>
+
+            <div class="callout info">
+                <p><strong>Nota:</strong> Un proceso puede pasar de Ejecutando a Listo <strong>múltiples veces</strong> antes de completar su tarea.</p>
+            </div>
+
+            <h3>Ver procesos en Linux</h3>
+            <pre><code>$ ps aux
+USER    PID  %CPU %MEM    VSZ   RSS TTY  STAT START   TIME COMMAND
+root      1   0.0  0.1 169584 13256 ?    Ss   Jan30   0:02 /sbin/init
+root      2   0.0  0.0      0     0 ?    S    Jan30   0:00 [kthreadd]
+user   1234   2.5  1.2 456789 98765 ?    Sl   10:00   0:30 /usr/bin/code</code></pre>
+
+            <p><strong>Significado de STAT:</strong></p>
+            <ul>
+                <li><strong>R:</strong> Running (ejecutando)</li>
+                <li><strong>S:</strong> Sleeping (bloqueado, esperando)</li>
+                <li><strong>D:</strong> Uninterruptible sleep (E/S)</li>
+                <li><strong>Z:</strong> Zombie (terminado, esperando padre)</li>
+                <li><strong>T:</strong> Stopped (detenido)</li>
+            </ul>
+        </section>
+
+        <section id="threads">
+            <h2>6. Threads (Hilos de Ejecución)</h2>
+
+            <h3>Proceso vs Thread</h3>
+            <table>
+                <tr>
+                    <th>Aspecto</th>
+                    <th>Proceso</th>
+                    <th>Thread (Hilo)</th>
+                </tr>
+                <tr>
+                    <td><strong>Definición</strong></td>
+                    <td>Programa en ejecución</td>
+                    <td>Unidad de ejecución dentro de un proceso</td>
+                </tr>
+                <tr>
+                    <td><strong>Memoria</strong></td>
+                    <td>Espacio propio</td>
+                    <td>Comparte memoria del proceso</td>
+                </tr>
+                <tr>
+                    <td><strong>Recursos</strong></td>
+                    <td>Archivos, sockets, etc.</td>
+                    <td>Stack propio, registros propios</td>
+                </tr>
+                <tr>
+                    <td><strong>Cambio de contexto</strong></td>
+                    <td>Costoso</td>
+                    <td>Más rápido</td>
+                </tr>
+                <tr>
+                    <td><strong>Comunicación</strong></td>
+                    <td>IPC (pipes, sockets)</td>
+                    <td>Memoria compartida directa</td>
+                </tr>
+            </table>
+
+            <h3>💡 Analogía</h3>
+            <div class="callout success">
+                <ul>
+                    <li><strong>Proceso</strong> = Casa independiente (paredes, techo, servicios propios)</li>
+                    <li><strong>Thread</strong> = Habitación dentro de la casa (comparten paredes y servicios)</li>
+                </ul>
+            </div>
+
+            <h3>Modelos de Threads: Comparación</h3>
+            <table>
+                <tr>
+                    <th>Modelo</th>
+                    <th>Threads Usuario</th>
+                    <th>Threads Kernel</th>
+                    <th>¿Concurrencia Múltiples Núcleos?</th>
+                    <th>¿Bloqueo Afecta a Todos?</th>
+                </tr>
+                <tr>
+                    <td><strong>1:1</strong></td>
+                    <td>1 → 1</td>
+                    <td>Igual cantidad</td>
+                    <td>✅ Sí</td>
+                    <td>❌ No</td>
+                </tr>
+                <tr>
+                    <td><strong>M:1</strong></td>
+                    <td>Muchos → 1</td>
+                    <td>1 solo</td>
+                    <td>❌ No</td>
+                    <td>✅ Sí</td>
+                </tr>
+                <tr>
+                    <td><strong>M:N</strong></td>
+                    <td>Muchos → Muchos</td>
+                    <td>Pool variable</td>
+                    <td>✅ Sí</td>
+                    <td>❌ No</td>
+                </tr>
+            </table>
+
+            <h3>Ejemplos reales</h3>
+            <table>
+                <tr>
+                    <th>Aplicación</th>
+                    <th>Enfoque</th>
+                    <th>Por qué</th>
+                </tr>
+                <tr>
+                    <td><strong>Chrome</strong></td>
+                    <td>Múltiples procesos</td>
+                    <td>Aislamiento: si una pestaña crashea, las otras siguen funcionando</td>
+                </tr>
+                <tr>
+                    <td><strong>VS Code</strong></td>
+                    <td>Un proceso, múltiples threads</td>
+                    <td>Comparten el mismo documento y estado del editor</td>
+                </tr>
+                <tr>
+                    <td><strong>Servidor Web</strong></td>
+                    <td>Proceso master + workers</td>
+                    <td>Master gestiona, workers atienden peticiones</td>
+                </tr>
+            </table>
+        </section>
+
+        <section id="ipc">
+            <h2>7. Comunicación entre Procesos (IPC)</h2>
+
+            <h3>Mecanismos de IPC</h3>
+            <table>
+                <tr>
+                    <th>Mecanismo</th>
+                    <th>Tipo</th>
+                    <th>Uso típico</th>
+                </tr>
+                <tr>
+                    <td><strong>Pipes</strong></td>
+                    <td>Unidireccional</td>
+                    <td>Comandos encadenados (<code>ls | grep</code>)</td>
+                </tr>
+                <tr>
+                    <td><strong>Sockets</strong></td>
+                    <td>Bidireccional</td>
+                    <td>Comunicación en red o local</td>
+                </tr>
+                <tr>
+                    <td><strong>Shared Memory</strong></td>
+                    <td>Memoria compartida</td>
+                    <td>Datos grandes, alta velocidad</td>
+                </tr>
+                <tr>
+                    <td><strong>Message Queues</strong></td>
+                    <td>Cola de mensajes</td>
+                    <td>Mensajes tipificados</td>
+                </tr>
+                <tr>
+                    <td><strong>Semáforos</strong></td>
+                    <td>Sincronización</td>
+                    <td>Control de acceso a recursos</td>
+                </tr>
+                <tr>
+                    <td><strong>Signals</strong></td>
+                    <td>Asíncrono</td>
+                    <td>Notificaciones de eventos</td>
+                </tr>
+            </table>
+
+            <h3>Problemas Clásicos de IPC</h3>
+
+            <h4>Productor-Consumidor (Bounded Buffer)</h4>
+            <div class="ascii-diagram">
+┌──────────┐      Pipe      ┌──────────┐
+│ Productor│ ─────────────► │Consumidor│
+│ (escribe)│   (buffer)     │ (lee)    │
+└──────────┘                └──────────┘
+            </div>
+
+            <p><strong>El problema:</strong></p>
+            <ul>
+                <li>Productor escribe datos en un buffer finito</li>
+                <li>Consumidor lee datos del mismo buffer</li>
+                <li>¿Qué pasa si el buffer está <strong>lleno</strong> y el productor quiere escribir?</li>
+                <li>¿Qué pasa si el buffer está <strong>vacío</strong> y el consumidor quiere leer?</li>
+            </ul>
+
+            <p><strong>Solución:</strong> Sincronización con semáforos (<code>empty</code>, <code>full</code>, <code>mutex</code>)</p>
+
+            <h4>Filósofos Comensales</h4>
+            <div class="ascii-diagram">
+      Tenedor 1
+         │
+   Filósofo 1 ─── Tenedor 2 ─── Filósofo 2
+        │                           │
+   Tenedor 5                   Tenedor 3
+        │                           │
+   Filósofo 5 ─── Tenedor 4 ─── Filósofo 3
+            </div>
+
+            <p><strong>El problema: Deadlock</strong></p>
+            <ul>
+                <li>5 filósofos, 5 tenedores (cada filósofo necesita 2)</li>
+                <li>Si todos toman el tenedor izquierdo simultáneamente → <strong>Deadlock</strong></li>
+            </ul>
+
+            <p><strong>Soluciones:</strong></p>
+            <ol>
+                <li>Orden de adquisición de recursos</li>
+                <li>Límite de filósofos comiendo simultáneos (máximo 4)</li>
+                <li>Asimetría en el orden de toma</li>
+            </ol>
+
+            <h4>Lectores-Escritores</h4>
+            <p><strong>El problema: Inanición (Starvation)</strong></p>
+            <div class="ascii-diagram">
+Caso: Escritores esperan mientras lectores llegan constantemente
+
+[Escritor esperando] ← [Lector1] [Lector2] [Lector3] ...
+                        ↓ nuevos lectores llegan
+                        Escritor nunca escribe
+            </div>
+
+            <p><strong>Soluciones:</strong></p>
+            <ol>
+                <li><strong>Prioridad a escritores:</strong> Cuando un escritor espera, no se admiten nuevos lectores</li>
+                <li><strong>Fairness:</strong> Cola FIFO, primero en llegar es atendido</li>
+                <li><strong>Lectores con prioridad:</strong> Escritores esperan a que todos los lectores actuales terminen</li>
+            </ol>
+        </section>
+
+        <section id="practica">
+            <h2>8. Actividad Práctica</h2>
+
+            <h3>En parejas, ejecuten:</h3>
+
+            <div class="callout warning">
+                <p><strong>Nota para usuarios Windows:</strong> Se recomienda usar <strong>WSL</strong> (Windows Subsystem for Linux) o una Máquina Virtual con Ubuntu. Para instalar WSL, abre PowerShell como administrador y ejecuta: <code>wsl --install</code></p>
+            </div>
+
+            <h4>Linux (WSL/Ubuntu/VirtualBox):</h4>
+            <pre><code># Ver procesos con estados
+ps aux | head -20
+
+# Ver árbol de procesos
+pstree -p | head -30
+
+# Información de un proceso específico
+cat /proc/self/status</code></pre>
+
+            <h4>Windows (PowerShell):</h4>
+            <pre><code># Ver procesos
+Get-Process | Select-Object -First 20
+
+# Información detallada
+Get-Process -Name explorer | Format-List *</code></pre>
+        </section>
+
+        <section id="resumen">
+            <h2>Resumen de la Clase</h2>
+
+            <table>
+                <tr>
+                    <th>Concepto</th>
+                    <th>Descripción</th>
+                </tr>
+                <tr>
+                    <td><strong>Programa</strong></td>
+                    <td>Código estático en disco</td>
+                </tr>
+                <tr>
+                    <td><strong>Proceso</strong></td>
+                    <td>Programa en ejecución (con recursos propios)</td>
+                </tr>
+                <tr>
+                    <td><strong>Thread</strong></td>
+                    <td>Unidad de ejecución (comparte memoria del proceso)</td>
+                </tr>
+                <tr>
+                    <td><strong>PCB</strong></td>
+                    <td>Estructura con toda la info del proceso</td>
+                </tr>
+                <tr>
+                    <td><strong>PID</strong></td>
+                    <td>Identificador único de proceso</td>
+                </tr>
+                <tr>
+                    <td><strong>Estados</strong></td>
+                    <td>Nuevo, Listo, Ejecutando, Bloqueado, Terminado</td>
+                </tr>
+                <tr>
+                    <td><strong>Context Switch</strong></td>
+                    <td>Cambio de un proceso a otro</td>
+                </tr>
+                <tr>
+                    <td><strong>IPC</strong></td>
+                    <td>Mecanismos: pipes, sockets, shared memory</td>
+                </tr>
+                <tr>
+                    <td><strong>Modelos de threads</strong></td>
+                    <td>1:1, M:1, M:N</td>
+                </tr>
+            </table>
+
+            <div class="callout info">
+                <h3>Tarea para próxima clase</h3>
+                <p><strong>Investigación (en parejas)</strong></p>
+                <ol>
+                    <li><strong>Investiguen</strong> qué es un "proceso zombie" en Linux</li>
+                    <li><strong>Expliquen</strong> por qué ocurre y cómo se soluciona</li>
+                    <li><strong>Escriban</strong> un programa en C que cree un zombie (código + explicación)</li>
+                </ol>
+                <p><strong>Entrega:</strong> Documento PDF, máximo 2 páginas</p>
+                <p><strong>Sustentación:</strong> Próxima clase, 5 minutos por pareja</p>
+            </div>
+
+            <h3>Próxima Clase</h3>
+            <p><strong>Clase 4: Planificación de Procesos</strong></p>
+            <ul>
+                <li>Algoritmos de planificación</li>
+                <li>FCFS, SJF, Prioridad, Round Robin</li>
+                <li>Métricas: Turnaround, Waiting Time, Response Time</li>
+            </ul>
+
+            <p><strong>¡Nos vemos!</strong></p>
+        </section>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p><strong>IF0099 - Sistemas Operativos I</strong></p>
+            <p>Clase 03: Concepto de Proceso</p>
+            <p>Última actualización: 2026-02-01</p>
+            <p><a href="#">Volver arriba</a></p>
+        </div>
+    </footer>
+
+    <a href="#" class="scroll-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); return false;">↑</a>
+
+    <script>
+        const scrollTopBtn = document.querySelector('.scroll-top');
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                scrollTopBtn.classList.add('visible');
+            } else {
+                scrollTopBtn.classList.remove('visible');
+            }
+        });
+
+        document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

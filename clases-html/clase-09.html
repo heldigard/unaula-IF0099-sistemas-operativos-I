@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clase 09: Sistemas de Archivos | IF0099 - Sistemas Operativos I</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #1e40af;
+            --accent: #059669;
+            --bg-light: #f8fafc;
+            --bg-code: #1e293b;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+        }
+
+        * {margin:0;padding:0;box-sizing:border-box}
+        body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;line-height:1.7;color:var(--text-main);background:var(--bg-light);font-size:16px}
+        .container{max-width:1200px;margin:0 auto;padding:0 20px}
+
+        header{background:linear-gradient(135deg,var(--primary) 0%,var(--secondary) 100%);color:white;padding:3rem 0;margin-bottom:2rem}
+        header h1{font-size:2.2rem;margin-bottom:.5rem;font-weight:700}
+        header .subtitle{font-size:1.1rem;opacity:.9}
+        header .meta{margin-top:1rem;font-size:.9rem;opacity:.8}
+
+        nav{background:white;padding:1.5rem 0;margin-bottom:2rem;border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,0.1)}
+        nav h2{font-size:1.1rem;color:var(--text-muted);margin-bottom:1rem;padding:0 20px}
+        nav ul{list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:.5rem;padding:0 20px}
+        nav a{color:var(--primary);text-decoration:none;padding:.5rem;display:block;border-radius:4px;transition:background .2s}
+        nav a:hover{background:var(--bg-light)}
+
+        section{background:white;padding:2rem;margin-bottom:2rem;border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,0.1)}
+        section h2{color:var(--primary);font-size:1.8rem;margin-bottom:1.5rem;padding-bottom:.5rem;border-bottom:3px solid var(--accent)}
+        section h3{color:var(--secondary);font-size:1.4rem;margin:2rem 0 1rem}
+        section h4{color:var(--text-main);font-size:1.1rem;margin:1.5rem 0 .75rem;font-weight:600}
+        p{margin-bottom:1rem}
+
+        figure{margin:2rem 0;text-align:center}
+        figure img{max-width:100%;height:auto;border-radius:8px;box-shadow:0 4px 6px rgba(0,0,0,0.1)}
+        figcaption{margin-top:.75rem;color:var(--text-muted);font-style:italic;font-size:.95rem}
+
+        table{width:100%;border-collapse:collapse;margin:1.5rem 0;font-size:.95rem}
+        th,td{padding:.75rem 1rem;text-align:left;border-bottom:1px solid var(--border)}
+        th{background:var(--bg-light);font-weight:600;color:var(--secondary)}
+        tr:hover{background:var(--bg-light)}
+
+        pre{background:var(--bg-code);color:#e2e8f0;padding:1.5rem;border-radius:8px;overflow-x:auto;margin:1.5rem 0;font-size:.9rem;line-height:1.5}
+        code{font-family:'Consolas','Monaco','Courier New',monospace}
+        p code,li code,td code{background:var(--bg-light);color:var(--primary);padding:.2rem .4rem;border-radius:4px;font-size:.9em}
+        pre code{background:none;padding:0;color:inherit}
+
+        ul,ol{margin-left:1.5rem;margin-bottom:1rem}
+        li{margin-bottom:.5rem}
+
+        .callout{padding:1.5rem;border-radius:8px;margin:1.5rem 0;border-left:4px solid}
+        .callout.info{background:#eff6ff;border-left-color:var(--primary)}
+        .callout.warning{background:#fef3c7;border-left-color:#f59e0b}
+        .callout.success{background:#d1fae5;border-left-color:var(--accent)}
+        .callout.danger{background:#fee2e2;border-left-color:#ef4444}
+
+        .ascii-diagram{font-family:'Consolas','Monaco',monospace;font-size:.85rem;line-height:1.2;background:var(--bg-light);padding:1rem;border-radius:4px;overflow-x:auto;white-space:pre}
+
+        .comparison{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;margin:2rem 0}
+        .comparison>div{background:var(--bg-light);padding:1.5rem;border-radius:8px}
+        .comparison .check{font-size:1.5rem;color:var(--accent)}
+        .comparison .cross{font-size:1.5rem;color:#ef4444}
+
+        .fs-comparison{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin:2rem 0}
+        .fs-card{background:var(--bg-light);padding:1.5rem;border-radius:8px;border-top:4px solid}
+        .fs-card.fat32{border-color:#ef4444}
+        .fs-card.ntfs{border-color:#3b82f6}
+        .fs-card.ext4{border-color:#f59e0b}
+        .fs-card h4{margin:0 0 .5rem 0;color:var(--secondary)}
+        .fs-card ul{margin:0;padding-left:1rem;list-style:none}
+        .fs-card li{margin-bottom:.25rem;font-size:.9em}
+        .fs-card li::before{content:"• ";color:var(--primary)}
+
+        .inode-structure{background:var(--bg-light);padding:1.5rem;border-radius:8px;margin:1.5rem 0;font-family:'Consolas','Monaco',monospace;font-size:.85rem}
+        .inode-structure .field{margin:.5rem 0;padding:.25rem;background:white;border-radius:4px}
+        .inode-structure .label{color:var(--primary);font-weight:600}
+
+        footer{background:var(--text-main);color:white;padding:2rem 0;text-align:center;margin-top:3rem}
+        footer a{color:var(--accent);text-decoration:none}
+
+        .scroll-top{position:fixed;bottom:2rem;right:2rem;background:var(--primary);color:white;width:45px;height:45px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;transition:opacity .3s;text-decoration:none;font-size:1.5rem}
+        .scroll-top.visible{opacity:1}
+        .scroll-top:hover{background:var(--secondary)}
+
+        @media(max-width:768px){
+            header h1{font-size:1.6rem}
+            section{padding:1.5rem}
+            nav ul{grid-template-columns:1fr}
+            .comparison{grid-template-columns:1fr}
+            .fs-comparison{grid-template-columns:1fr}
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Clase 09: Sistemas de Archivos</h1>
+            <p class="subtitle">IF0099 - Sistemas Operativos I | Unidad 6 - Archivos</p>
+            <p class="subtitle">Organización, Directorios y Sistemas de Archivos Modernos</p>
+            <p class="meta">Última actualización: 2026-02-01 | Duración: 90 minutos</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <nav>
+            <h2>Contenido de la Clase</h2>
+            <ul>
+                <li><a href="#objetivos">Objetivos de Aprendizaje</a></li>
+                <li><a href="#archivo">¿Qué es un Archivo?</a></li>
+                <li><a href="#atributos">Atributos de un Archivo</a></li>
+                <li><a href="#operaciones">Operaciones sobre Archivos</a></li>
+                <li><a href="#directorios">Estructura de Directorios</a></li>
+                <li><a href="#sistemas-fs">Sistemas de Archivos Comunes</a></li>
+                <li><a href="#fat32">FAT32</a></li>
+                <li><a href="#ntfs">NTFS</a></li>
+                <li><a href="#ext4">ext4</a></li>
+                <li><a href="#journaling">Journaling</a></li>
+                <li><a href="#inodos">Inodos</a></li>
+                <li><a href="#fragmentacion">Fragmentación</a></li>
+                <li><a href="#montaje">Montaje de Sistemas</a></li>
+                <li><a href="#practica">Actividad Práctica</a></li>
+                <li><a href="#resumen">Resumen</a></li>
+            </ul>
+        </nav>
+
+        <!-- Objetivos -->
+        <section id="objetivos">
+            <h2>Objetivos de la Clase</h2>
+            <p>Al finalizar esta clase, el estudiante será capaz de:</p>
+            <ol>
+                <li><strong>Definir</strong> qué es un archivo y sus atributos</li>
+                <li><strong>Describir</strong> las operaciones sobre archivos</li>
+                <li><strong>Explicar</strong> diferentes estructuras de directorios</li>
+                <li><strong>Comparar</strong> sistemas de archivos: FAT32, NTFS, ext4</li>
+            </ol>
+
+            <div class="callout info">
+                <strong>En esta clase exploraremos:</strong>
+                <ul>
+                    <li>Cómo los SO organizan archivos en disco</li>
+                    <li>Estructuras de directorios: de árbol, jerárquicas, grafos</li>
+                    <li>Sistemas de archivos modernos: FAT32, NTFS, ext4</li>
+                    <li>Journaling y protección de datos</li>
+                    <li>Inodos y bloques en Linux</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- ¿Qué es un Archivo -->
+        <section id="archivo">
+            <h2>¿Qué es un Archivo?</h2>
+
+            <figure>
+                <img src="../assets/infografias/clase-09-sistemas-archivos.png" alt="Comparación de Sistemas de Archivos">
+                <figcaption>Sistemas de archivos: FAT32, NTFS y ext4</figcaption>
+            </figure>
+
+            <div class="callout info">
+                <h4>Definición</h4>
+                <p>Un <strong>archivo</strong> es una colección de información relacionada, identificada por un nombre, almacenada en memoria secundaria.</p>
+            </div>
+
+            <h4>Desde el punto de vista del usuario</h4>
+            <pre class="ascii-diagram">┌──────────────────────────────────────────┐
+│  informe.docx                            │
+│  ├── Nombre: informe.docx                │
+│  ├── Tipo: Documento Word                │
+│  ├── Tamaño: 2.5 MB                      │
+│  ├── Ubicación: C:\Documentos\           │
+│  └── Modificado: 2026-02-15 14:30        │
+└──────────────────────────────────────────┘</pre>
+
+            <h4>Desde el punto de vista del SO</h4>
+            <pre class="ascii-diagram">┌──────────────────────────────────────────┐
+│  Secuencia de bloques en disco           │
+│  Bloques: 100, 101, 250, 251, 252, ...   │
+└──────────────────────────────────────────┘</pre>
+        </section>
+
+        <!-- Atributos de un Archivo -->
+        <section id="atributos">
+            <h2>Atributos de un Archivo</h2>
+
+            <div class="callout info">
+                <h4>METADATOS DEL ARCHIVO</h4>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Atributo</th>
+                            <th>Descripción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Nombre</strong></td>
+                            <td>Identificador legible para humanos</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Identificador</strong></td>
+                            <td>Número único en el sistema de archivos</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Tipo</strong></td>
+                            <td>.txt, .exe, .jpg, etc.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Ubicación</strong></td>
+                            <td>Puntero a bloques en disco</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Tamaño</strong></td>
+                            <td>bytes / bloques</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Protección</strong></td>
+                            <td>Permisos (rwx)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Hora/Fecha</strong></td>
+                            <td>Creación, modificación, acceso</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Propietario</strong></td>
+                            <td>UID/GID (Linux) o SID (Windows)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Operaciones sobre Archivos -->
+        <section id="operaciones">
+            <h2>Operaciones sobre Archivos</h2>
+            <h3>Operaciones básicas del SO</h3>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Operación</th>
+                        <th>Descripción</th>
+                        <th>System Call (Linux)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Crear</strong></td>
+                        <td>Asignar espacio, crear entrada en directorio</td>
+                        <td><code>creat()</code>, <code>open()</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Abrir</strong></td>
+                        <td>Cargar metadatos en memoria</td>
+                        <td><code>open()</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Leer</strong></td>
+                        <td>Copiar datos a buffer del proceso</td>
+                        <td><code>read()</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Escribir</strong></td>
+                        <td>Copiar datos del buffer al disco</td>
+                        <td><code>write()</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Posicionar</strong></td>
+                        <td>Mover puntero de lectura/escritura</td>
+                        <td><code>lseek()</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Cerrar</strong></td>
+                        <td>Liberar estructuras en memoria</td>
+                        <td><code>close()</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Eliminar</strong></td>
+                        <td>Liberar bloques, eliminar entrada</td>
+                        <td><code>unlink()</code></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>Ejemplo en C</h4>
+            <pre><code>#include &lt;fcntl.h&gt;
+#include &lt;unistd.h&gt;
+
+int main() {
+    // Crear y abrir archivo
+    int fd = open("datos.txt", O_CREAT | O_WRONLY, 0644);
+
+    // Escribir
+    char *texto = "Hola Mundo\n";
+    write(fd, texto, 11);
+
+    // Posicionar al inicio
+    lseek(fd, 0, SEEK_SET);
+
+    // Cerrar
+    close(fd);
+
+    return 0;
+}</code></pre>
+        </section>
+
+        <!-- Estructura de Directorios -->
+        <section id="directorios">
+            <h2>Estructura de Directorios</h2>
+
+            <div class="callout info">
+                <h4>Directorio: archivo especial que contiene lista de archivos</h4>
+                <pre class="ascii-diagram">DIRECTORIO = Lista de entradas
+┌─────────────────────────────────────────┐
+│  Entrada 1: nombre → metadatos/inode    │
+│  Entrada 2: nombre → metadatos/inode    │
+│  Entrada 3: nombre → metadatos/inode    │
+│  ...                                    │
+└─────────────────────────────────────────┘</pre>
+            </div>
+
+            <h4>Tipos de estructuras de directorios:</h4>
+            <ol>
+                <li>Nivel único</li>
+                <li>Dos niveles</li>
+                <li>Árbol</li>
+                <li>Grafo acíclico</li>
+                <li>Grafo general</li>
+            </ol>
+
+            <h4>Directorio de Un Nivel</h4>
+            <pre class="ascii-diagram">┌──────────────────────────────────────────────────────┐
+│                   DIRECTORIO ÚNICO                   │
+├──────────────────────────────────────────────────────┤
+│  cat.exe │ bo.txt │ a.txt │ test.txt │ data.txt │...│
+└──────────────────────────────────────────────────────┘
+
+✅ Simple
+❌ Todos los archivos deben tener nombres únicos
+❌ No hay organización
+❌ No hay privacidad entre usuarios</pre>
+
+            <p><small>Usado en: Primeros sistemas operativos (CP/M)</small></p>
+
+            <h4>Directorio de Dos Niveles</h4>
+            <pre class="ascii-diagram">                    DIRECTORIO MAESTRO
+                ┌─────────┬─────────┬─────────┐
+                │ Usuario1│ Usuario2│ Usuario3│
+                └────┬────┴────┬────┴────┬────┘
+                     │         │         │
+         ┌───────────┘         │         └───────────┐
+         ▼                     ▼                     ▼
+    ┌─────────┐          ┌─────────┐          ┌─────────┐
+    │cat.exe  │          │a.txt    │          │data.txt │
+    │bo.txt   │          │b.txt    │          │prog.exe │
+    └─────────┘          └─────────┘          └─────────┘
+     Usuario1              Usuario2              Usuario3</pre>
+
+            <p><span class="check">✅</span> Cada usuario tiene su espacio<br>
+            <span class="check">✅</span> Pueden repetirse nombres entre usuarios<br>
+            <span class="cross">❌</span> No permite subdirectorios</p>
+
+            <h4>Directorio de Árbol (Jerárquico)</h4>
+            <pre class="ascii-diagram">                         / (raíz)
+                          │
+          ┌───────────────┼───────────────┐
+          ▼               ▼               ▼
+        /home           /etc           /var
+          │               │               │
+    ┌─────┼─────┐         │         ┌─────┴─────┐
+    ▼     ▼     ▼         ▼         ▼           ▼
+  juan  maria  pedro   passwd     log         cache
+    │     │                        │
+    ▼     └──┐                     ▼
+  docs   Desktop                 syslog
+    │       │
+    ▼       ▼
+tesis.pdf foto.jpg</pre>
+
+            <div class="callout success">
+                <strong>Rutas:</strong><br>
+                Absoluta: <code>/home/juan/docs/tesis.pdf</code><br>
+                Relativa: <code>docs/tesis.pdf</code> (desde <code>/home/juan</code>)
+            </div>
+        </section>
+
+        <!-- Sistemas de Archivos Comunes -->
+        <section id="sistemas-fs">
+            <h2>Sistemas de Archivos Comunes</h2>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Sistema</th>
+                        <th>SO</th>
+                        <th>Tamaño máx. archivo</th>
+                        <th>Tamaño máx. partición</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>FAT32</strong></td>
+                        <td>Windows/Linux</td>
+                        <td>4 GB</td>
+                        <td>2 TB</td>
+                    </tr>
+                    <tr>
+                        <td><strong>NTFS</strong></td>
+                        <td>Windows</td>
+                        <td>16 EB</td>
+                        <td>256 TB</td>
+                    </tr>
+                    <tr>
+                        <td><strong>ext4</strong></td>
+                        <td>Linux</td>
+                        <td>16 TB</td>
+                        <td>1 EB</td>
+                    </tr>
+                    <tr>
+                        <td><strong>APFS</strong></td>
+                        <td>macOS</td>
+                        <td>8 EB</td>
+                        <td>8 EB</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- FAT32 -->
+        <section id="fat32">
+            <h2>FAT32 (File Allocation Table)</h2>
+
+            <pre class="ascii-diagram">           FAT (Tabla de Asignación)        Área de Datos
+        ┌───┬───┬───┬───┬───┬───┬───┐    ┌───────────────┐
+Entrada:│ 0 │ 1 │ 2 │ 3 │ 4 │ 5 │ 6 │    │   Bloque 2    │
+        ├───┼───┼───┼───┼───┼───┤    │   (inicio)    │
+Valor:  │ - │ - │ 3 │ 5 │EOF│ 4 │ - │    ├───────────────┤
+        └───┴───┴───┴───┴───┴───┘    │   Bloque 3    │
+              │   │   │   │               ├───────────────┤
+              │   └───│───│──────────┐    │   Bloque 4    │
+              │       │   │          │    ├───────────────┤
+              └───────│───│────────┐ │    │   Bloque 5    │
+                      │   │        │ │    └───────────────┘
+                      │   │        │ │
+Archivo: Inicio=2 → 2→3→5→4→EOF    ▼ ▼
+                                  Orden: 2→3→5→4</pre>
+
+            <div class="callout info">
+                <strong>Funcionamiento:</strong> La FAT es una tabla central que indica el siguiente bloque de cada archivo. Cada entrada corresponde a un bloque de datos. El valor EOF marca fin de archivo.
+            </div>
+
+            <div class="callout warning">
+                <span class="cross">❌</span> Límite 4GB por archivo<br>
+                <span class="cross">❌</span> Sin permisos, sin journaling<br>
+                <span class="check">✅</span> Simple, compatible con todo
+            </div>
+        </section>
+
+        <!-- NTFS -->
+        <section id="ntfs">
+            <h2>NTFS (New Technology File System)</h2>
+
+            <pre class="ascii-diagram">                NTFS ESTRUCTURA
+┌────────────────────────────────────────────────────────┐
+│  MFT (Master File Table)                               │
+│  ┌──────────────────────────────────────────────────┐  │
+│  │ Registro 0: $MFT (tabla misma)                   │  │
+│  │ Registro 1: $MFTMirr (copia de seguridad)        │  │
+│  │ Registro 2: $LogFile (journaling)                │  │
+│  │ Registro 3: $Volume (info del volumen)           │  │
+│  │ ...                                              │  │
+│  │ Registro N: archivo del usuario                  │  │
+│  └──────────────────────────────────────────────────┘  │
+│                                                        │
+│  Cada registro MFT: 1KB                                │
+│  Contiene: Atributos, permisos ACL, timestamps, datos  │
+└────────────────────────────────────────────────────────┘</pre>
+
+            <div class="callout info">
+                <strong>Funcionamiento:</strong> NTFS organiza todo en la Master File Table (MFT), una base de datos de registros de 1KB. El journaling ($LogFile) garantiza consistencia tras fallos.
+            </div>
+
+            <div class="callout success">
+                <span class="check">✅</span> Journaling (recuperación de errores)<br>
+                <span class="check">✅</span> Permisos ACL granulares<br>
+                <span class="check">✅</span> Compresión y cifrado (EFS)
+            </div>
+        </section>
+
+        <!-- ext4 -->
+        <section id="ext4">
+            <h2>ext4 (Fourth Extended Filesystem)</h2>
+
+            <pre class="ascii-diagram">                EXT4 ESTRUCTURA
+┌─────────────────────────────────────────────────────────┐
+│  Superbloque │ Tabla de inodos │ Bloques de datos      │
+├──────────────┴─────────────────┴────────────────────────┤
+│                                                         │
+│  INODO (128 bytes):                                     │
+│  ┌───────────────────────────────────────────────┐     │
+│  │ Modo (permisos) │ UID │ GID │ Tamaño │ Tiempo │     │
+│  │ Punteros a bloques (12 directos + indirectos) │     │
+│  └───────────────────────────────────────────────┘     │
+│                                                         │
+│  El nombre NO está en el inodo (está en directorio)     │
+└─────────────────────────────────────────────────────────┘</pre>
+
+            <div class="callout info">
+                <strong>Funcionamiento:</strong> ext4 usa inodos para almacenar metadatos y punteros a bloques de datos. Los extents permiten asignar bloques contiguos, mejorando rendimiento.
+            </div>
+
+            <div class="callout success">
+                <span class="check">✅</span> Journaling<br>
+                <span class="check">✅</span> Extents (bloques contiguos)<br>
+                <span class="check">✅</span> Asignación retardada
+            </div>
+        </section>
+
+        <!-- Journaling -->
+        <section id="journaling">
+            <h2>Journaling: Protección contra Fallos</h2>
+
+            <div class="comparison">
+                <div>
+                    <h4>SIN JOURNALING</h4>
+                    <ol>
+                        <li>Escribir datos</li>
+                        <li>Actualizar FAT</li>
+                        <li>Actualizar directorio</li>
+                    </ol>
+                    <div class="callout danger">
+                        Si falla en paso 2:<br>
+                        <strong>¡Inconsistencia!</strong>
+                    </div>
+                </div>
+                <div>
+                    <h4>CON JOURNALING</h4>
+                    <ol>
+                        <li>Escribir en log</li>
+                        <li>Escribir datos</li>
+                        <li>Actualizar FAT</li>
+                        <li>Actualizar directorio</li>
+                        <li>Marcar completo</li>
+                    </ol>
+                    <div class="callout success">
+                        Si falla en cualquier paso:<br>
+                        <strong>El log permite recuperar</strong>
+                    </div>
+                </div>
+            </div>
+
+            <h4>Tipos de journaling:</h4>
+            <ul>
+                <li><strong>Metadata only:</strong> Solo cambios de estructura (ext4 default)</li>
+                <li><strong>Full:</strong> Datos y metadata (más lento, más seguro)</li>
+            </ul>
+        </section>
+
+        <!-- Inodos -->
+        <section id="inodos">
+            <h2>Profundizando en Inodos (ext4)</h2>
+            <h3>Estructura detallada de un inodo</h3>
+
+            <div class="inode-structure">
+                <div class="field"><strong>INODO #12345</strong> (128 bytes)</div>
+                <div class="field">Modo: -rw-r--r-- (0644)</div>
+                <div class="field">UID: 1000 (juan) &nbsp;&nbsp; GID: 1000 (juan)</div>
+                <div class="field">Tamaño: 15360 bytes (4 bloques)</div>
+                <div class="field">Links: 1</div>
+                <div class="field"><strong>PUNTEROS A BLOQUES:</strong></div>
+                <div class="field">[0-11] Directos: 1024, 1025, 1026, 1027</div>
+                <div class="field">[12] Indirecto simple: 2048</div>
+                <div class="field">[13] Indirecto doble: 0 (sin usar)</div>
+                <div class="field">[14] Indirecto triple: 0 (sin usar)</div>
+            </div>
+
+            <h4>Ventajas del sistema de inodos:</h4>
+            <ol>
+                <li><strong>Nombre separado del inodo:</strong> Múltiples nombres (hard links)</li>
+                <li><strong>Punteros indirectos:</strong> Archivos gigantes sin desperdiciar espacio</li>
+                <li><strong>Metadata rica:</strong> Timestamps precisos, permisos Unix</li>
+            </ol>
+
+            <h4>Hard Links vs Soft Links</h4>
+
+            <div class="comparison">
+                <div>
+                    <h4>HARD LINK</h4>
+                    <pre><code>$ ln /home/juan/original.txt /home/maria/copia.txt</code></pre>
+                    <p><span class="check">✅</span> Mismo archivo, dos nombres</p>
+                    <p><span class="check">✅</span> Si se borra original.txt, copia.txt sigue funcionando</p>
+                    <p><span class="cross">❌</span> Solo en la misma partición</p>
+                </div>
+                <div>
+                    <h4>SOFT LINK (simbólico)</h4>
+                    <pre><code>$ ln -s /home/juan/original.txt /home/maria/enlace.txt</code></pre>
+                    <p><span class="check">✅</span> Puede cruzar particiones</p>
+                    <p><span class="check">✅</span> Puede apuntar a directorios</p>
+                    <p><span class="cross">❌</span> Si se borra original.txt, enlace.txt queda "roto"</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Fragmentación -->
+        <section id="fragmentacion">
+            <h2>Fragmentación en Diferentes Sistemas</h2>
+
+            <div class="callout info">
+                <h4>FAT32 después de 6 meses de uso</h4>
+                <p>Archivo A: [1][5][9][15][22][31][44]...</p>
+                <p class="warning">Bloques muy dispersos → Tiempo de lectura: LENTO</p>
+            </div>
+
+            <div class="callout success">
+                <h4>ext4 con Extents</h4>
+                <p>Archivo A: [1-7][50-60][100-115]</p>
+                <p>Rangos contiguos → Tiempo de lectura: RÁPIDO</p>
+            </div>
+
+            <div class="callout success">
+                <h4>NTFS con Desfragmentación automática</h4>
+                <p>Archivo A: [10-25][26-40]</p>
+                <p>Mantiene contiguidad → Tiempo de lectura: RÁPIDO</p>
+            </div>
+
+            <h4>Conclusión:</h4>
+            <ul>
+                <li><strong>FAT32:</strong> Requiere desfragmentación manual frecuente</li>
+                <li><strong>NTFS:</strong> Desfragmentación automática en segundo plano</li>
+                <li><strong>ext4:</strong> Alocación retardada previene fragmentación</li>
+            </ul>
+        </section>
+
+        <!-- Montaje -->
+        <section id="montaje">
+            <h2>Montaje de Sistemas de Archivos</h2>
+            <h3>Linux: Un árbol único con múltiples dispositivos</h3>
+
+            <pre class="ascii-diagram">                    / (raíz - /dev/sda1 ext4)
+                     │
+       ┌─────────────┼─────────────┐
+       ▼             ▼             ▼
+     /home         /mnt          /boot
+    (sda2)         │            (sda3)
+      │            │
+      ▼            ▼
+   ext4      /mnt/usb ← montaje de USB (FAT32)
+           /mnt/cd  ← montaje de CD (ISO9660)
+
+Comando: mount /dev/sdb1 /mnt/usb</pre>
+
+            <div class="callout info">
+                <strong>Comando para ver sistemas montados:</strong> <code>df -Th</code>
+            </div>
+        </section>
+
+        <!-- Actividad Práctica -->
+        <section id="practica">
+            <h2>Actividad Práctica</h2>
+            <h3>En parejas (10 min)</h3>
+
+            <div class="callout info">
+                <h4>Terminal Linux (o WSL):</h4>
+                <pre><code># Ver sistemas de archivos montados
+df -Th
+
+# Ver inodo de un archivo
+ls -li archivo.txt
+
+# Crear enlace simbólico
+ln -s /ruta/original enlace
+
+# Ver contenido de directorio (detallado)
+ls -la /</code></pre>
+            </div>
+
+            <h4>Responder:</h4>
+            <p>¿Cuántos sistemas de archivos hay montados? ¿Qué tipos son?</p>
+        </section>
+
+        <!-- Resumen -->
+        <section id="resumen">
+            <h2>Resumen de la Clase</h2>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Concepto</th>
+                        <th>Descripción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Archivo</strong></td>
+                        <td>Unidad lógica de almacenamiento con nombre</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Directorio</strong></td>
+                        <td>Archivo especial que contiene lista de archivos</td>
+                    </tr>
+                    <tr>
+                        <td><strong>FAT32</strong></td>
+                        <td>Simple, compatible, límite 4GB</td>
+                    </tr>
+                    <tr>
+                        <td><strong>NTFS</strong></td>
+                        <td>Windows moderno, journaling, ACL</td>
+                    </tr>
+                    <tr>
+                        <td><strong>ext4</strong></td>
+                        <td>Linux, journaling, extents</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Journaling</strong></td>
+                        <td>Log de operaciones para recuperación</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Montaje</strong></td>
+                        <td>Conectar sistema de archivos al árbol</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Próxima Clase</h3>
+            <p><strong>Clase 10: Gestión de E/S</strong></p>
+            <ul>
+                <li>Dispositivos de E/S</li>
+                <li>Controladores (drivers)</li>
+                <li>DMA (Direct Memory Access)</li>
+                <li>Buffering y caching</li>
+            </ul>
+        </section>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>IF0099 - Sistemas Operativos I | UNAULA - Ingeniería Informática - 2026-I</p>
+            <p><a href="../index.html">← Volver al inicio</a></p>
+        </div>
+    </footer>
+
+    <a href="#" class="scroll-top" id="scrollTop">↑</a>
+
+    <script>
+        // Scroll to top button
+        const scrollTopBtn = document.getElementById('scrollTop');
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                scrollTopBtn.classList.add('visible');
+            } else {
+                scrollTopBtn.classList.remove('visible');
+            }
+        });
+        scrollTopBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href !== '#' && href.length > 1) {
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
