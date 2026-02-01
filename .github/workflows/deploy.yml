@@ -1,4 +1,4 @@
-name: Deploy Marp Slides to GitHub Pages
+name: Deploy HTML Classes to GitHub Pages
 
 on:
   push:
@@ -17,63 +17,17 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
-      - name: Install Marp CLI
-        run: npm install -g @marp-team/marp-cli@latest
-
-      - name: Create output directory
-        run: mkdir -p output
-
-      - name: Convert all Marp files to HTML
+      - name: Copy clases-html to output directory
         run: |
-          for file in $(find clases -name "*.md" -type f); do
-            echo "Converting $file"
-            mkdir -p "output/$(dirname "$file")"
-            marp --html --allow-local-files "$file" -o "output/${file%.md}.html"
-          done
+          mkdir -p output
+          cp -r clases-html/* output/
 
-      - name: Copy assets
+      - name: Copy assets (if any)
         run: |
-          mkdir -p output/assets
-          cp -r assets/* output/assets/ 2>/dev/null || true
-
-      - name: Create index
-        run: |
-          cat > output/index.html << 'EOF'
-          <!DOCTYPE html>
-          <html>
-          <head>
-            <meta charset="UTF-8">
-            <title>IF0099 - Sistemas Operativos I</title>
-            <style>
-              body { font-family: Arial, sans-serif; max-width: 800px; margin: 50px auto; padding: 20px; }
-              h1 { color: #333; }
-              .slide-link { display: block; padding: 10px; margin: 5px 0; text-decoration: none; color: #0066cc; border-left: 3px solid #0066cc; padding-left: 10px; }
-              .slide-link:hover { background: #f5f5f5; }
-              .unit { margin-top: 30px; font-weight: bold; color: #666; }
-            </style>
-          </head>
-          <body>
-            <h1>IF0099 - Sistemas Operativos I</h1>
-            <p>UNAULA - Ingeniería Informática - 2026-I</p>
-            <h2>Clases</h2>
-          EOF
-
-          find output/clases -name "*.html" -type f | sort | while read file; do
-            title=$(basename "$file" .html | sed 's/-/ /g' | sed 's/\b\(.\)/\u\1/g')
-            # Remove 'output/' prefix for the href
-            href="${file#output/}"
-            echo "<a href=\"$href\" class=\"slide-link\">$title</a>" >> output/index.html
-          done
-
-          cat >> output/index.html << 'EOF'
-          </body>
-          </html>
-          EOF
+          if [ -d "assets" ]; then
+            mkdir -p output/assets
+            cp -r assets/* output/assets/ 2>/dev/null || true
+          fi
 
       - name: Deploy to gh-pages branch
         uses: peaceiris/actions-gh-pages@v3

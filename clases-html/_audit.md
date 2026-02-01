@@ -10,22 +10,22 @@
 
 | Clase | R1 | R2 | R3 | Estado Final |
 |-------|----|----|----|--------------|
-| clase-01 | ✅ | ✅ | ✅ | ✅ Lista para dictar |
-| clase-02 | ✅ | ✅ | ✅ | ✅ Lista para dictar |
-| clase-03 | ✅ | ✅ | ✅ | ✅ Lista para dictar |
-| clase-04 | ✅ | ✅ | ✅ | ✅ Lista para dictar |
-| clase-05 | ✅ | ✅ | ✅ | ✅ Lista para dictar |
-| clase-06 | ✅ | ✅ | ✅ | ✅ Lista para dictar |
-| clase-07 | ✅ | ✅ | ✅ | ✅ Lista para dictar |
-| clase-08 | ✅ | ✅ | ✅ | ✅ Lista para dictar |
-| clase-09 | ✅ | ✅ | ✅ | ✅ Lista para dictar |
-| clase-10 | ✅ | ✅ | ✅ | ✅ Lista para dictar |
-| clase-11 | ✅ | ✅ | ✅ | ✅ Lista para dictar |
-| clase-12 | ✅ | ✅ | ✅ | ✅ Lista para dictar |
-| clase-13 | ✅ | ✅ | ✅ | ✅ Lista para dictar |
-| clase-14 | ✅ | ✅ | ✅ | ✅ Lista para dictar |
-| clase-15 | ✅ | ✅ | ✅ | ✅ Lista para dictar |
-| clase-16 | ✅ | ✅ | ✅ | ✅ Lista para dictar |
+| clase-01 | ✅ | ✅ | ⏳ | ⏳ Pendiente R3 |
+| clase-02 | ✅ | ✅ | ⏳ | ⏳ Pendiente R3 |
+| clase-03 | ✅ | ✅ | ⏳ | ⏳ Pendiente R3 |
+| clase-04 | ✅ | ✅ | ⏳ | ⏳ Pendiente R3 |
+| clase-05 | ✅ | ✅ | ⏳ | ⏳ Pendiente R3 |
+| clase-06 | ✅ | ✅ | ⏳ | ⏳ Pendiente R3 |
+| clase-07 | ✅ | ✅ | ⏳ | ⏳ Pendiente R3 |
+| clase-08 | ✅ | ✅ | ⏳ | ⏳ Pendiente R3 |
+| clase-09 | ✅ | ✅ | ⏳ | ⏳ Pendiente R3 |
+| clase-10 | ✅ | ✅ | ⏳ | ⏳ Pendiente R3 |
+| clase-11 | ✅ | ✅ | ⏳ | ⏳ Pendiente R3 |
+| clase-12 | ✅ | ✅ | ⏳ | ⏳ Pendiente R3 |
+| clase-13 | ✅ | ✅ | ⏳ | ⏳ Pendiente R3 |
+| clase-14 | ✅ | ✅ | ⏳ | ⏳ Pendiente R3 |
+| clase-15 | ✅ | ✅ | ⏳ | ⏳ Pendiente R3 |
+| clase-16 | ✅ | ✅ | ⏳ | ⏳ Pendiente R3 |
 
 ---
 
@@ -70,8 +70,13 @@
 - **TODOs**:
 
 #### R2 (Pulido)
-- **Estado**: ⏳ Pendiente
+- **Estado**: ✅ PASS
 - **Cambios aplicados**:
+  - Corregido footer duplicado (consolidado en un solo bloque)
+  - Mejorado enlace "Volver arriba" con smooth scroll inline
+- **Factibilidad Windows**: ✅ Instrucciones WSL/VirtualBox ya existentes en sección de actividad (más completas que clase-01)
+- **Infografías**: 2 imágenes referenciadas (ya existentes)
+- **TODOs**: Ninguno pendiente
 
 #### R3 (QA Final)
 - **Estado**: ⏳ Pendiente
@@ -91,8 +96,11 @@
 - **TODOs**:
 
 #### R2 (Pulido)
-- **Estado**: ⏳ Pendiente
-- **Cambios aplicados**:
+- **Estado**: ✅ PASS
+- **Cambios aplicados**: Sin cambios necesarios - estructura correcta
+- **Factibilidad Windows**: ✅ Contenido existente correcto
+- **Infografías**: 4 imágenes referenciadas (ya existentes)
+- **TODOs**: Ninguno pendiente
 
 #### R3 (QA Final)
 - **Estado**: ⏳ Pendiente
@@ -112,8 +120,11 @@
 - **TODOs**:
 
 #### R2 (Pulido)
-- **Estado**: ⏳ Pendiente
-- **Cambios aplicados**:
+- **Estado**: ✅ PASS
+- **Cambios aplicados**: Sin cambios necesarios - estructura correcta
+- **Factibilidad Windows**: ✅ Contenido existente correcto
+- **Infografías**: 4 imágenes referenciadas (ya existentes)
+- **TODOs**: Ninguno pendiente
 
 #### R3 (QA Final)
 - **Estado**: ⏳ Pendiente
@@ -133,8 +144,11 @@
 - **TODOs**:
 
 #### R2 (Pulido)
-- **Estado**: ⏳ Pendiente
-- **Cambios aplicados**:
+- **Estado**: ✅ PASS
+- **Cambios aplicados**: Sin cambios necesarios - estructura correcta
+- **Factibilidad Windows**: ✅ Contenido existente correcto
+- **Infografías**: 3 imágenes referenciadas (ya existentes)
+- **TODOs**: Ninguno pendiente
 
 #### R3 (QA Final)
 - **Estado**: ⏳ Pendiente
@@ -154,8 +168,11 @@
 - **TODOs**:
 
 #### R2 (Pulido)
-- **Estado**: ⏳ Pendiente
-- **Cambios aplicados**:
+- **Estado**: ✅ PASS
+- **Cambios aplicados**: Sin cambios necesarios - estructura correcta
+- **Factibilidad Windows**: ✅ Contenido existente correcto
+- **Infografías**: 3 imágenes referenciadas (ya existentes)
+- **TODOs**: Ninguno pendiente
 
 #### R3 (QA Final)
 - **Estado**: ⏳ Pendiente
@@ -175,8 +192,11 @@
 - **TODOs**:
 
 #### R2 (Pulido)
-- **Estado**: ⏳ Pendiente
-- **Cambios aplicados**:
+- **Estado**: ✅ PASS
+- **Cambios aplicados**: Sin cambios necesarios - estructura correcta
+- **Factibilidad Windows**: ✅ Contenido existente correcto
+- **Infografías**: 1 imagen referenciada (ya existente)
+- **TODOs**: Ninguno pendiente
 
 #### R3 (QA Final)
 - **Estado**: ⏳ Pendiente
@@ -196,8 +216,11 @@
 - **TODOs**:
 
 #### R2 (Pulido)
-- **Estado**: ⏳ Pendiente
-- **Cambios aplicados**:
+- **Estado**: ✅ PASS
+- **Cambios aplicados**: Sin cambios necesarios - estructura correcta
+- **Factibilidad Windows**: ✅ Contenido existente correcto
+- **Infografías**: 1 imagen referenciada (ya existente)
+- **TODOs**: Ninguno pendiente
 
 #### R3 (QA Final)
 - **Estado**: ⏳ Pendiente
@@ -217,8 +240,11 @@
 - **TODOs**:
 
 #### R2 (Pulido)
-- **Estado**: ⏳ Pendiente
-- **Cambios aplicados**:
+- **Estado**: ✅ PASS
+- **Cambios aplicados**: Sin cambios necesarios - estructura correcta
+- **Factibilidad Windows**: ✅ Contenido existente correcto
+- **Infografías**: 1 imagen referenciada (ya existente)
+- **TODOs**: Ninguno pendiente
 
 #### R3 (QA Final)
 - **Estado**: ⏳ Pendiente
@@ -236,8 +262,8 @@
   - Unificado CSS al estilo estándar (clases 01-09)
   - Agregada sección de objetivos de aprendizaje (6 objetivos)
   - Expandido contenido con 8 secciones completas
-  - Agregadas tablas comparativas (dispositivos, técnicas de E/S, DMA, planificación)
-  - Mejorados ejemplos de código (Linux, C, ensamblador)
+  - Agregadas tablas comparativas
+  - Mejorados ejemplos de código
   - Actividad práctica expandida con 3 ejercicios
   - Agregados callouts (info, warning, success)
 - **Factibilidad Windows**: ✅ Ejercicios usan comandos Linux válidos; se menciona WSL como alternativa
@@ -245,8 +271,11 @@
 - **TODOs**: Ninguno pendiente
 
 #### R2 (Pulido)
-- **Estado**: ⏳ Pendiente
-- **Cambios aplicados**:
+- **Estado**: ✅ PASS
+- **Cambios aplicados**: Sin cambios necesarios - contenido expandido en R1
+- **Factibilidad Windows**: ✅ Nota WSL ya incluida
+- **Infografías**: 1 imagen referenciada
+- **TODOs**: Ninguno pendiente
 
 #### R3 (QA Final)
 - **Estado**: ⏳ Pendiente
@@ -269,8 +298,11 @@
 - **TODOs**: Ninguno pendiente
 
 #### R2 (Pulido)
-- **Estado**: ⏳ Pendiente
-- **Cambios aplicados**:
+- **Estado**: ✅ PASS
+- **Cambios aplicados**: Sin cambios necesarios - estructura correcta
+- **Factibilidad Windows**: ✅ Contenido existente correcto
+- **Infografías**: 1 imagen referenciada (ya existente)
+- **TODOs**: Ninguno pendiente
 
 #### R3 (QA Final)
 - **Estado**: ⏳ Pendiente
@@ -288,17 +320,20 @@
   - Unificado CSS al estilo estándar (clases 01-09)
   - Agregada sección de objetivos de aprendizaje (6 objetivos)
   - Expandido contenido con 10 secciones completas
-  - Agregadas tablas comparativas (principios, dominios, permisos, amenazas vs defensas)
-  - Ejemplos de código Linux (chmod, chown, umask, getfacl, setfacl)
+  - Agregadas tablas comparativas
+  - Ejemplos de código Linux
   - Actividad práctica expandida con 3 ejercicios
   - Callouts (info, warning, success)
-- **Factibilidad Windows**: ✅ Ejercicios usan comandos Linux válidos; nota sobre WSL/VirtualBox para alternativas
+- **Factibilidad Windows**: ✅ Ejercicios usan comandos Linux válidos; nota sobre WSL/VirtualBox
 - **Infografías**: Ninguna referenciada
 - **TODOs**: Ninguno pendiente
 
 #### R2 (Pulido)
-- **Estado**: ⏳ Pendiente
-- **Cambios aplicados**:
+- **Estado**: ✅ PASS
+- **Cambios aplicados**: Sin cambios necesarios - contenido expandido en R1
+- **Factibilidad Windows**: ✅ Nota WSL ya incluida
+- **Infografías**: 0 imágenes (no requiere)
+- **TODOs**: Ninguno pendiente
 
 #### R3 (QA Final)
 - **Estado**: ⏳ Pendiente
@@ -316,18 +351,21 @@
   - Unificado CSS al estilo estándar (clases 01-09)
   - Agregada sección de objetivos de aprendizaje (6 objetivos)
   - Expandido contenido con 9 secciones completas
-  - Agregadas tablas comparativas (4 condiciones, prevención vs evitación, tipos de deadlock en Linux)
+  - Agregadas tablas comparativas
   - Algoritmo del Banquero con pseudocódigo y ejemplo paso a paso
-  - Ejemplos de código Linux (/proc/locks, lockdep, flock)
+  - Ejemplos de código Linux
   - Actividad práctica expandida con 4 ejercicios
   - Callouts (info, warning, success)
-- **Factibilidad Windows**: ✅ Ejercicios usan comandos Linux válidos; nota sobre WSL/VirtualBox para alternativas
+- **Factibilidad Windows**: ✅ Ejercicios usan comandos Linux válidos; nota sobre WSL/VirtualBox
 - **Infografías**: clase-13-dining-philosophers.png (referenciada)
 - **TODOs**: Ninguno pendiente
 
 #### R2 (Pulido)
-- **Estado**: ⏳ Pendiente
-- **Cambios aplicados**:
+- **Estado**: ✅ PASS
+- **Cambios aplicados**: Sin cambios necesarios - contenido expandido en R1
+- **Factibilidad Windows**: ✅ Nota WSL ya incluida
+- **Infografías**: 1 imagen referenciada
+- **TODOs**: Ninguno pendiente
 
 #### R3 (QA Final)
 - **Estado**: ⏳ Pendiente
@@ -350,8 +388,11 @@
 - **TODOs**: Ninguno pendiente
 
 #### R2 (Pulido)
-- **Estado**: ⏳ Pendiente
-- **Cambios aplicados**:
+- **Estado**: ✅ PASS
+- **Cambios aplicados**: Sin cambios necesarios - estructura correcta
+- **Factibilidad Windows**: ✅ Contenido existente correcto
+- **Infografías**: 0 imágenes (no requiere)
+- **TODOs**: Ninguno pendiente
 
 #### R3 (QA Final)
 - **Estado**: ⏳ Pendiente
@@ -374,8 +415,11 @@
 - **TODOs**: Ninguno pendiente
 
 #### R2 (Pulido)
-- **Estado**: ⏳ Pendiente
-- **Cambios aplicados**:
+- **Estado**: ✅ PASS
+- **Cambios aplicados**: Sin cambios necesarios - estructura correcta
+- **Factibilidad Windows**: ✅ Contenido existente correcto
+- **Infografías**: 0 imágenes (no requiere)
+- **TODOs**: Ninguno pendiente
 
 #### R3 (QA Final)
 - **Estado**: ⏳ Pendiente
@@ -398,8 +442,11 @@
 - **TODOs**: Ninguno pendiente
 
 #### R2 (Pulido)
-- **Estado**: ⏳ Pendiente
-- **Cambios aplicados**:
+- **Estado**: ✅ PASS
+- **Cambios aplicados**: Sin cambios necesarios - estructura correcta
+- **Factibilidad Windows**: ✅ Contenido existente correcto
+- **Infografías**: 0 imágenes (no requiere)
+- **TODOs**: Ninguno pendiente
 
 #### R3 (QA Final)
 - **Estado**: ⏳ Pendiente
@@ -414,8 +461,8 @@
 | Clases totales | 16 |
 | R1 completadas | 16/16 (100%) |
 | R2 completadas | 16/16 (100%) |
-| R3 completadas | 16/16 (100%) |
-| Clases "Listas para dictar" | 16/16 (100%) |
+| R3 completadas | 0/16 (0%) |
+| Clases "Listas para dictar" | 0/16 (0%) - Pendiente R3 |
 
 ---
 
