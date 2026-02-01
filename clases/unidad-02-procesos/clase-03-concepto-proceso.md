@@ -2,15 +2,14 @@
 marp: true
 theme: default
 paginate: true
-| header: 'IF0099 - Sistemas Operativos I | Unidad 2' |
+header: 'IF0099 - Sistemas Operativos I | Unidad 2'
 footer: 'UNAULA - Ingeniería Informática - 2026-I'
-
-  section {
-    font-size: 24px;
-  }
-
 ---
+
+# Clase 3: Concepto de Proceso
 ## Programa vs Proceso, PCB y Estados
+
+<style>
 img {
   max-width: 70% !important;
   max-height: 50vh !important;
@@ -96,12 +95,6 @@ section {
 }
 </style>
 
----
-## Programa vs Proceso, PCB y Estados
-
-*(continuación...)*
-
-
 <!--
 [2026-01-31] - Clase enriquecida con infografías
 
@@ -110,6 +103,7 @@ IMÁGENES GENERADAS:
 - clase-03-pcb.png: Infografía del Bloque de Control de Proceso
 -->
 
+---
 
 **IF0099 - Sistemas Operativos I**
 *4° Semestre - Ingeniería Informática*
@@ -338,8 +332,8 @@ user   5678   0.5  0.8 234567 65432 ?    Sl   10:15   0:10 /usr/bin/firefox
 
 ```
 ┌──────────────────────────────────────────────────────────┐
-| │  CPU[ | 45.2%]    │ |
-| │  Mem[ |  | 62.5%]    │ |
+│  CPU[||||||||||||||||||||           45.2%]    │
+│  Mem[||||||||||||||||||||||||       62.5%]    │
 │  Swp[                                          0.0%]    │
 ├──────────────────────────────────────────────────────────┤
 │  PID USER      PRI  NI  VIRT   RES   SHR S CPU% MEM%    │
@@ -351,7 +345,7 @@ user   5678   0.5  0.8 234567 65432 ?    Sl   10:15   0:10 /usr/bin/firefox
 
 ### Comando equivalente en Windows:
 ```powershell
-| Get-Process | Sort-Object CPU -Descending | Select-Object -First 10 |
+Get-Process | Sort-Object CPU -Descending | Select-Object -First 10
 ```
 
 ---
@@ -416,10 +410,10 @@ pstree -p
 **Linux (WSL/Ubuntu/VirtualBox):**
 ```bash
 # Ver procesos con estados
-| ps aux | head -20 |
+ps aux | head -20
 
 # Ver árbol de procesos
-| pstree -p | head -30 |
+pstree -p | head -30
 
 # Información de un proceso específico
 cat /proc/self/status
@@ -428,10 +422,10 @@ cat /proc/self/status
 **Windows (PowerShell):**
 ```powershell
 # Ver procesos
-| Get-Process | Select-Object -First 20 |
+Get-Process | Select-Object -First 20
 
 # Información detallada
-| Get-Process -Name explorer | Format-List * |
+Get-Process -Name explorer | Format-List *
 ```
 
 ---

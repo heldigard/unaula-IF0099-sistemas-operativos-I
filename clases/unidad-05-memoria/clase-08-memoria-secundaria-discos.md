@@ -2,15 +2,13 @@
 marp: true
 theme: default
 paginate: true
-| header: 'IF0099 - Sistemas Operativos I | Unidad 5' |
+header: 'IF0099 - Sistemas Operativos I | Unidad 5'
 footer: 'UNAULA - Ingeniería Informática - 2026-I'
-
-  section {
-    font-size: 24px;
-  }
-
 ---
+
 # Clase 8: Memoria Secundaria y Discos
+
+<style>
 img {
   max-width: 70% !important;
   max-height: 50vh !important;

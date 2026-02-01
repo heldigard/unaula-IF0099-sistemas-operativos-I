@@ -2,15 +2,16 @@
 marp: true
 theme: default
 paginate: true
-| header: 'IF0099 - Sistemas Operativos I | Unidad 8' |
+header: 'IF0099 - Sistemas Operativos I | Unidad 8'
 footer: 'UNAULA - Ingeniería Informática - 2026-I'
-
-  section {
-    font-size: 24px;
-  }
-
 ---
+
+# Clase 14: Programas, Aplicaciones e Interfaces
+
 <style>
+section {
+  font-size: 24px;
+}
 img {
   max-width: 70% !important;
   max-height: 50vh !important;
@@ -59,8 +60,6 @@ section table {
   margin: 0.5em auto;
   table-layout: auto;
 }
----
-## APIs del sistema operativo y llamadas al sistema
 section th {
   background-color: #1e40af;
   color: white;
@@ -99,10 +98,6 @@ section {
 </style>
 
 ---
-## APIs del sistema operativo y llamadas al sistema
-
-*(continuación...)*
-
 
 <!--
 IMÁGENES GENERADAS:
@@ -189,7 +184,7 @@ wc -l archivo.txt
 
 ### Windows PowerShell:
 ```powershell
-| Get-Content archivo.txt | Measure-Object -Line |
+Get-Content archivo.txt | Measure-Object -Line
 ```
 
 ---

@@ -2,15 +2,14 @@
 marp: true
 theme: default
 paginate: true
-| header: 'IF0099 - Sistemas Operativos I | Unidad 3' |
+header: 'IF0099 - Sistemas Operativos I | Unidad 3'
 footer: 'UNAULA - Ingeniería Informática - 2026-I'
-
-  section {
-    font-size: 24px;
-  }
-
 ---
+
+# Clase 4: Algoritmos de Planificación de CPU
 ## Algoritmos FCFS, SJF, Prioridad y Round Robin
+
+<style>
 img {
   max-width: 70% !important;
   max-height: 50vh !important;
@@ -97,10 +96,6 @@ section {
 </style>
 
 ---
-## Algoritmos FCFS, SJF, Prioridad y Round Robin
-
-*(continuación...)*
-
 
 <!--
 [2026-01-31] - Clase enriquecida con infografías

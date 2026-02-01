@@ -2,15 +2,17 @@
 marp: true
 theme: default
 paginate: true
-| header: 'IF0099 - Sistemas Operativos I | Unidad 6' |
+header: 'IF0099 - Sistemas Operativos I | Unidad 6'
 footer: 'UNAULA - Ingeniería Informática - 2026-I'
-
-  section {
-    font-size: 24px;
-  }
-
 ---
+
 # Clase 9: Sistemas de Archivos
+
+<style>
+section {
+  font-size: 20px;
+  overflow: hidden;
+}
 img {
   max-width: 70% !important;
   max-height: 50vh !important;
@@ -95,17 +97,6 @@ section {
   }
 }
 </style>
-
----
-# Clase 9: Sistemas de Archivos
-
-*(continuación...)*
-
-
-<!--
-IMÁGENES GENERADAS:
-- clase-09-sistemas-archivos.png: Comparación de sistemas de archivos FAT32, NTFS y ext4
--->
 
 ---
 ## Organización, Directorios y Sistemas de Archivos Modernos

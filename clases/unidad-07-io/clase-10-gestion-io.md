@@ -2,15 +2,17 @@
 marp: true
 theme: default
 paginate: true
-| header: 'IF0099 - Sistemas Operativos I | Unidad 7' |
+header: 'IF0099 - Sistemas Operativos I | Unidad 7'
 footer: 'UNAULA - Ingeniería Informática - 2026-I'
-
-  section {
-    font-size: 24px;
-  }
-
 ---
+
 # Clase 10: Gestión de Entrada/Salida
+
+<style>
+section {
+  font-size: 20px;
+  overflow: hidden;
+}
 img {
   max-width: 70% !important;
   max-height: 50vh !important;
@@ -95,17 +97,6 @@ section {
   }
 }
 </style>
-
----
-# Clase 10: Gestión de Entrada/Salida
-
-*(continuación...)*
-
-
-<!--
-IMÁGENES GENERADAS:
-- clase-10-dma.png: Infografía sobre DMA y gestión de E/S
--->
 
 ---
 ## Dispositivos, Controladores y DMA
@@ -586,7 +577,7 @@ free -h
 
 ## Próxima Clase
 
-### Clase 10: Protección y Seguridad
+### Clase 11: Implementación de Sistemas de Archivos
 
 - Dominios de protección
 - Matriz de acceso

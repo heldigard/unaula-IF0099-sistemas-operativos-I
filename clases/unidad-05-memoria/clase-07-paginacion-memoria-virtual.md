@@ -1,18 +1,18 @@
 ---
-
 marp: true
 theme: default
 paginate: true
-| header: 'IF0099 - Sistemas Operativos I | Unidad 5' |
+header: 'IF0099 - Sistemas Operativos I | Unidad 5'
 footer: 'UNAULA - Ingeniería Informática - 2026-I'
-
-  section {
-    font-size: 24px;
-  }
-
 ---
+
 # Clase 7: Paginación y Memoria Virtual
+
 <style>
+section {
+  font-size: 20px;
+  overflow: hidden;
+}
 img {
   max-width: 70% !important;
   max-height: 50vh !important;
@@ -97,19 +97,6 @@ section {
   }
 }
 </style>
-
----
-# Clase 7: Paginación y Memoria Virtual
-
-*(continuación...)*
-
-
-
-
-<!--
-IMÁGENES GENERADAS:
-- clase-07-tabla-paginas.png: Infografía sobre paginación, tabla de páginas y memoria virtual
--->
 
 ---
 ## Páginas, Marcos, Tablas y Page Faults
@@ -405,9 +392,13 @@ Page Faults: 9
 
 ```
 | Marcos: 3 | Secuencia de páginas: 1, 2, 3, 4, 1, 2, 5, 1, 2, 3, 4, 5 |
+```
+
 ---
+
 ## Ejemplo: LRU (Continuación)
 
+```
 Paso │ Página │ Marco1 │ Marco2 │ Marco3 │ Page Fault? │ Orden LRU
 ─────┼────────┼────────┼────────┼────────┼─────────────┼──────────
   1  │   1    │   1    │        │        │    ✓        │ 1

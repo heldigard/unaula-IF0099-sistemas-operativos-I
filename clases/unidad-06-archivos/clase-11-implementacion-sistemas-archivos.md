@@ -2,15 +2,17 @@
 marp: true
 theme: default
 paginate: true
-| header: 'IF0099 - Sistemas Operativos I | Unidad 6' |
+header: 'IF0099 - Sistemas Operativos I | Unidad 6'
 footer: 'UNAULA - Ingeniería Informática - 2026-I'
-
-  section {
-    font-size: 24px;
-  }
-
 ---
+
 # Clase 11: Implementación de Sistemas de Archivos
+
+<style>
+section {
+  font-size: 20px;
+  overflow: hidden;
+}
 img {
   max-width: 70% !important;
   max-height: 50vh !important;
@@ -95,17 +97,6 @@ section {
   }
 }
 </style>
-
----
-# Clase 11: Implementación de Sistemas de Archivos
-
-*(continuación...)*
-
-
-<!--
-IMÁGENES GENERADAS:
-- clase-11-inodos.png: Infografía sobre implementación de sistemas de archivos con inodos
--->
 
 ---
 ## Inodos, bloques y estructuras internas

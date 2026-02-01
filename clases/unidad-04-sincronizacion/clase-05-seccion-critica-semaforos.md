@@ -2,15 +2,14 @@
 marp: true
 theme: default
 paginate: true
-| header: 'IF0099 - Sistemas Operativos I | Unidad 4' |
+header: 'IF0099 - Sistemas Operativos I | Unidad 4'
 footer: 'UNAULA - Ingeniería Informática - 2026-I'
-
-  section {
-    font-size: 24px;
-  }
-
 ---
+
+# Clase 5: Sección Crítica y Semáforos
 ## Sección Crítica, Semáforos y Mutex
+
+<style>
 img {
   max-width: 70% !important;
   max-height: 50vh !important;
@@ -97,9 +96,6 @@ section {
 </style>
 
 ---
-## Sección Crítica, Semáforos y Mutex
-
-*(continuación...)*
 
 
 <!--

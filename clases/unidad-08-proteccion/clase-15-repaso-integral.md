@@ -2,15 +2,16 @@
 marp: true
 theme: default
 paginate: true
-| header: 'IF0099 - Sistemas Operativos I | Repaso' |
+header: 'IF0099 - Sistemas Operativos I | Repaso'
 footer: 'UNAULA - Ingeniería Informática - 2026-I'
-
-  section {
-    font-size: 24px;
-  }
-
 ---
+
+# Clase 15: Repaso Integral
+
 <style>
+section {
+  font-size: 24px;
+}
 img {
   max-width: 70% !important;
   max-height: 50vh !important;
@@ -56,8 +57,6 @@ section table {
   max-width: 100%;
   font-size: 0.85em;
   border-collapse: collapse;
----
-## Preparación para el examen final
   margin: 0.5em auto;
   table-layout: auto;
 }
@@ -98,15 +97,6 @@ section {
 }
 </style>
 
----
-## Preparación para el examen final
-
-*(continuación...)*
-
-
-
-**IF0099 - Sistemas Operativos I**
-*4° Semestre - Ingeniería Informática*
 ---
 
 ## Objetivos de Aprendizaje

@@ -2,15 +2,17 @@
 marp: true
 theme: default
 paginate: true
-| header: 'IF0099 - Sistemas Operativos I | Unidad 5' |
+header: 'IF0099 - Sistemas Operativos I | Unidad 5'
 footer: 'UNAULA - Ingeniería Informática - 2026-I'
-
-  section {
-    font-size: 24px;
-  }
-
 ---
-## Conceptos, Partición y Fragmentación
+
+# Clase 6: Conceptos, Partición y Fragmentación
+
+<style>
+section {
+  font-size: 20px;
+  overflow: hidden;
+}
 img {
   max-width: 70% !important;
   max-height: 50vh !important;
@@ -96,12 +98,6 @@ section {
 }
 </style>
 
----
-## Conceptos, Partición y Fragmentación
-
-*(continuación...)*
-
-
 <!--
 [2026-01-31] - Clase enriquecida con infografías
 
@@ -182,11 +178,10 @@ El SO debe:
 ```
 
 ---
+
 ### Representación ASCII:
 
-*(continuación...)*
-
----
+```
 
 ## Direcciones Lógicas vs Físicas
 
@@ -335,11 +330,6 @@ FRAGMENTACIÓN EXTERNA:
 ├──────┤
 │HUECO │ ← 40KB libre
 └──────┘
-
----
-
-
-*(continuación...)*
 
 Total libre: 120KB
 Pero NO podemos cargar un proceso de 100KB

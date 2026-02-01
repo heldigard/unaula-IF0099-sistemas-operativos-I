@@ -2,15 +2,17 @@
 marp: true
 theme: default
 paginate: true
-| header: 'IF0099 - Sistemas Operativos I | Unidad 8' |
+header: 'IF0099 - Sistemas Operativos I | Unidad 8'
 footer: 'UNAULA - Ingeniería Informática - 2026-I'
-
-  section {
-    font-size: 24px;
-  }
-
 ---
+
 # Clase 12: Protección y Seguridad
+
+<style>
+section {
+  font-size: 20px;
+  overflow: hidden;
+}
 img {
   max-width: 70% !important;
   max-height: 50vh !important;
@@ -95,18 +97,6 @@ section {
   }
 }
 </style>
-
----
-# Clase 12: Protección y Seguridad
-
-*(continuación...)*
-
-
-<!--
-IMÁGENES GENERADAS:
-- clase-12-proteccion-seguridad.png: Infografía sobre protección y seguridad en sistemas operativos
-- clase-12-proteccion-seguridad-v2.png: Versión corregida sin errores tipográficos
--->
 
 ---
 ## Dominios, Control de Acceso y Amenazas

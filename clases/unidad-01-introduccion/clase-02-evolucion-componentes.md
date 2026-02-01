@@ -2,15 +2,14 @@
 marp: true
 theme: default
 paginate: true
-| header: 'IF0099 - Sistemas Operativos I | Unidad 1' |
+header: 'IF0099 - Sistemas Operativos I | Unidad 1'
 footer: 'UNAULA - Ingeniería Informática - 2026-I'
-
-  section {
-    font-size: 24px;
-  }
-
 ---
+
+# Clase 2: Evolución y Componentes del SO
 ## De las tarjetas perforadas a la nube
+
+<style>
 img {
   max-width: 70% !important;
   max-height: 50vh !important;
@@ -96,12 +95,6 @@ section {
 }
 </style>
 
----
-## De las tarjetas perforadas a la nube
-
-*(continuación...)*
-
-
 <!--
 [2026-01-31] - Clase enriquecida con infografías
 
@@ -110,6 +103,7 @@ IMÁGENES GENERADAS:
 - so-componentes-arquitectura.png: Diagrama de arquitectura en capas (Hardware, Kernel, Servicios, Apps)
 -->
 
+---
 
 **IF0099 - Sistemas Operativos I**
 *4° Semestre - Ingeniería Informática*
@@ -527,15 +521,17 @@ Programa malicioso → Pide al kernel → Kernel DENIEGA → Sistema seguro
 
 ```powershell
 # Ver información del sistema operativo
-| Get-ComputerInfo | Select-Object CsName, WindowsVersion, OsArchitecture |
+Get-ComputerInfo | Select-Object CsName, WindowsVersion, OsArchitecture
 
 # Ver procesos (top 10 por uso de CPU)
-| Get-Process | Select-Object -First 10 Name, CPU, PM | Sort-Object CPU -Descending |
+Get-Process | Select-Object -First 10 Name, CPU, PM | Sort-Object CPU -Descending
 
 # Ver memoria disponible
-| systeminfo | findstr /C:"Total Physical Memory" /C:"Available Physical Memory" |
+systeminfo | findstr /C:"Total Physical Memory" /C:"Available Physical Memory"
 ```
+
 ---
+
 ## Actividad Práctica (10 min)
 ### En Linux/Ubuntu (Terminal) - Lo que usaremos en el curso:
 
@@ -547,13 +543,14 @@ uname -a                # Información del kernel
 cat /etc/os-release     # Distribución Linux
 
 # Ver procesos (top 10)
-| ps aux | head -11       # Incluye encabezado |
+ps aux | head -11       # Incluye encabezado
 
 # Ver memoria
 free -h                 # Muestra memoria RAM y swap
 ```
 
 3. **Discutan**: ¿Qué información les da cada comando?
+
 ---
 
 ## Resumen de la Clase

@@ -2,15 +2,16 @@
 marp: true
 theme: default
 paginate: true
-| header: 'IF0099 - Sistemas Operativos I | Unidad 8' |
+header: 'IF0099 - Sistemas Operativos I | Unidad 8'
 footer: 'UNAULA - Ingeniería Informática - 2026-I'
-
-  section {
-    font-size: 24px;
-  }
-
 ---
+
+# Clase 13: Sistemas Distribuidos
+
 <style>
+section {
+  font-size: 24px;
+}
 img {
   max-width: 70% !important;
   max-height: 50vh !important;
@@ -59,8 +60,6 @@ section table {
   margin: 0.5em auto;
   table-layout: auto;
 }
----
-## Conceptos, ventajas y desafíos
 section th {
   background-color: #1e40af;
   color: white;
@@ -98,20 +97,6 @@ section {
 }
 </style>
 
----
-## Conceptos, ventajas y desafíos
-
-*(continuación...)*
-
-
-<!--
-IMÁGENES GENERADAS:
-- clase-13-sistemas-distribuidos.png: Arquitectura de sistemas distribuidos y teorema CAP
--->
-
-
-**IF0099 - Sistemas Operativos I**
-*4° Semestre - Ingeniería Informática*
 ---
 
 ## Objetivos de la Clase
