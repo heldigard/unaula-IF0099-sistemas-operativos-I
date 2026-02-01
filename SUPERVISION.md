@@ -16,13 +16,13 @@
 | Supervisor | Modelo | Estado | Inicio | Último update |
 |---|---|---|---|---|
 | Ralph-Auto | GLM 4.7 | 🔄 Activo | 2026-02-01 | Iniciando... |
-| Claude-Sonnet | claude-sonnet-4.5 | 🔒 LOCK (clase-01, R2) | 2026-02-01 | Iniciando R2... |
+| Claude-Sonnet | claude-sonnet-4.5 | ✅ Disponible | 2026-02-01 | clase-01 R2 completada |
 
 ## Locks
 | Curso | Clase | Ronda | Supervisor | Estado | Inicio | Último update | TTL | Notas |
 |---|---|---|---|---|---|---|---|
 | IF0099 | clase-10 | R1 | Ralph-Auto | ✅ DONE | 2026-02-01T19:40 | 2026-02-01T19:42 | 44m | Completada - expandir contenido y unificar estilo |
-| IF0099 | clase-01 | R2 | Claude-Sonnet | 🔒 IN_PROGRESS | 2026-02-01 | 2026-02-01 | 45m | Iniciando R2 - Pulido y consistencia |
+| IF0099 | clase-01 | R2 | Claude-Sonnet | ✅ DONE | 2026-02-01 | 2026-02-01 | 5m | Completada - Footer corregido, nota WSL agregada |
 
 ## Backlog por prioridad
 ### P0 (todas las clases)
@@ -46,7 +46,7 @@
 ## Registro por clase
 ### clase-01
 - R1:
-- R2:
+- R2: ✅ PASS - Footer duplicado corregido, nota WSL/VirtualBox agregada para Windows, footer consolidado
 - R3:
 
 ### clase-02
@@ -126,7 +126,7 @@
 
 ## Resumen global
 - **Clases totales**: 16
-- **R1 completadas**: 0/16
-- **R2 completadas**: 0/16
-- **R3 completadas**: 0/16
-- **Estado general**: 🔄 Iniciando revisión...
+- **R1 completadas**: 16/16 (100%) ✅
+- **R2 completadas**: 1/16 (6%) 🔄
+- **R3 completadas**: 0/16 (0%)
+- **Estado general**: R2 en progreso - clase-01 completada

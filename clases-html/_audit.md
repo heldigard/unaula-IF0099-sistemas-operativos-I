@@ -43,8 +43,14 @@
 - **TODOs**:
 
 #### R2 (Pulido)
-- **Estado**: ⏳ Pendiente
+- **Estado**: ✅ PASS
 - **Cambios aplicados**:
+  - Corregido footer duplicado (consolidado en un solo bloque)
+  - Agregada nota informativa para usuarios Windows sobre WSL/VirtualBox/Git Bash
+  - Mejorado enlace "Volver arriba" con smooth scroll inline
+- **Factibilidad Windows**: ✅ Nota WSL agregada antes de sección de laboratorios
+- **Infografías**: 6 imágenes referenciadas (ya existentes)
+- **TODOs**: Ninguno pendiente
 
 #### R3 (QA Final)
 - **Estado**: ⏳ Pendiente
