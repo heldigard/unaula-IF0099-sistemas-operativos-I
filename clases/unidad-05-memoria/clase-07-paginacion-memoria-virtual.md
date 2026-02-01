@@ -595,11 +595,11 @@ r  b   swpd   free   buff  cache   si   so    bi    bo   in   cs us sy id wa st
 
 | Algoritmo | Complejidad | Eficiencia | Uso Real |
 |-----------|-------------|------------|----------|
-| **Óptimo** | O(n²) | ⭐⭐⭐⭐⭐ | Solo teórico |
-| **FIFO** | O(1) | ⭐⭐ | Sistemas simples |
-| **LRU** | O(n) | ⭐⭐⭐⭐ | Linux, BSD |
-| **Clock** | O(n) | ⭐⭐⭐⭐ | Windows |
-| **LFU** | O(n log n) | ⭐⭐⭐ | Cachés especializadas |
+| **Óptimo** | O(n²) | 5/5 | Solo teórico |
+| **FIFO** | O(1) | 2/5 | Sistemas simples |
+| **LRU** | O(n) | 4/5 | Linux, BSD |
+| **Clock** | O(n) | 4/5 | Windows |
+| **LFU** | O(n log n) | 3/5 | Cachés especializadas |
 
 ### 💡 Observación
 LRU es el más usado en producción por su balance

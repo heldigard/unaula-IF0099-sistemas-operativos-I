@@ -182,17 +182,46 @@ Sin un SO, cada programa tendría que:
 ## 2.1 Gestión de Procesos
 
 ### ¿Qué es un proceso?
-Un **proceso** es un programa en ejecución.
 
-### El SO debe:
-- **Crear** y **terminar** procesos
-- **Suspender** y **reanudar** procesos
-- **Sincronizar** procesos
-- **Comunicar** procesos entre sí
+> Un **proceso** es un programa en ejecución + sus recursos (memoria, archivos, CPU)
+
+### Programa vs Proceso
+
+| Aspecto | Programa | Proceso |
+|---------|----------|---------|
+| **Qué es** | Archivo en disco | Instancia activa en memoria |
+| **Estado** | Pasivo (no hace nada) | Activo (se está ejecutando) |
+| **Ejemplo** | `chrome.exe` en C: | Chrome abierto con 5 pestañas |
+| **Recursos** | Solo ocupa espacio en disco | Usa RAM, CPU, archivos |
+
+### El SO debe gestionar:
+- 🔹 **Crear** y **terminar** procesos (lifecycle)
+- 🔹 **Suspender** y **reanudar** procesos (scheduling)
+- 🔹 **Sincronizar** procesos (evitar conflictos)
+- 🔹 **Comunicar** procesos entre sí (IPC)
+
+### Analogía: Programa = Receta, Proceso = Cocinando
+
+```
+PROGRAMA                    PROCESO
+─────────                  ─────────
+La receta de pasta    →   Alguien cocinando pasta
+(en papel)                  (usando ingredientes, fuego, tiempo)
+```
 
 ### Ejemplo en Windows
 ```
 Ctrl + Shift + Esc → Administrador de Tareas
+```
+Verás: chrome.exe (5 procesos), spotify.exe, vscode.exe, etc.
+
+### Ejemplo en Linux
+```bash
+# Ver todos los procesos
+ps aux
+
+# Ver procesos en tiempo real
+top
 ```
 
 ---
@@ -347,9 +376,9 @@ Desventajas: Overhead por comunicación entre procesos
 
 | Característica | Monolítico | Capas | Microkernel |
 |----------------|------------|-------|-------------|
-| **Rendimiento** | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐ |
-| **Seguridad** | ⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐⭐ |
-| **Mantenibilidad** | ⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐⭐ |
+| **Rendimiento** | 5/5 | 3/5 | 2/5 |
+| **Seguridad** | 2/5 | 3/5 | 5/5 |
+| **Mantenibilidad** | 2/5 | 3/5 | 5/5 |
 | **Ejemplos** | Linux, DOS | THE, VAX | MINIX, QNX |
 
 ### Híbrido (Windows NT, macOS XNU)
@@ -457,9 +486,9 @@ if (pid == 0) {
 
 | Aspecto | GUI | CLI |
 | --------- | ----- | ----- |
-| Facilidad | ⭐⭐⭐⭐⭐ | ⭐⭐ |
-| Potencia | ⭐⭐⭐ | ⭐⭐⭐⭐⭐ |
-| Automatización | ⭐⭐ | ⭐⭐⭐⭐⭐ |
+| Facilidad | 5/5 | 2/5 |
+| Potencia | 3/5 | 5/5 |
+| Automatización | 2/5 | 5/5 |
 | Recursos | Alto consumo | Bajo consumo |
 | Servidores | Poco usado | **Estándar** |
 
