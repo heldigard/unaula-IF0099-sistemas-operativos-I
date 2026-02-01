@@ -228,65 +228,114 @@ top
 
 ## 2.2 Gestión de Memoria
 
-### El SO administra la RAM
+### ¿Qué gestiona el SO?
+
+> El **SO es el administrador de la RAM**: decide quién usa qué y cuándo
+
+### La RAM como un edificio de oficinas
 
 ```
 ┌─────────────────────────────────────┐
-│           MEMORIA RAM               │
+│           EDIFICIO (RAM 16GB)       │
 ├─────────┬─────────┬─────────┬───────┤
-│ Sistema │ Chrome  │ Spotify │ Libre │
-│ Operat. │ (500MB) │ (200MB) │(2.3GB)│
-│ (1GB)   │         │         │       │
+│ Oficina │ Oficina │ Oficina │ Libre │
+│ SO 2GB  │ Chrome  │ Spotify │ 3GB   │
+│         │ 500MB   │ 200MB   │       │
 └─────────┴─────────┴─────────┴───────┘
 ```
 
-### Funciones:
-- Asignar memoria a procesos
-- Liberar memoria cuando termina un proceso
-- Proteger la memoria de un proceso de otros
-- Implementar memoria virtual (swap)
+### Funciones del SO:
+- 🔹 **Asignar** memoria a procesos cuando la necesitan
+- 🔹 **Liberar** memoria cuando un proceso termina
+- 🔹 **Proteger** la memoria (que Chrome no lea datos de Spotify)
+- 🔹 **Memoria virtual** (swap: usar disco como RAM extendida)
+
+### ¿Por qué es importante?
+Sin gestión de memoria, un programa podría escribir en la memoria de otro → **crash** o **brecha de seguridad**
+
+### Ejemplo: Ver uso de memoria
+**Windows:** `Ctrl + Shift + Esc` → pestaña "Rendimiento"
+**Linux:** `free -h` o `top`
 
 ---
 
 ## 2.3 Gestión de Archivos
 
-### Sistema de archivos jerárquico
+### ¿Qué hace el SO?
+
+> El SO organiza tus archivos como **bibliotecario**: sabe dónde está todo
+
+### Sistema de archivos jerárquico (árbol de directorios)
 
 ```
-C:\ (o /)
-├── Windows/ (o /bin)
-├── Program Files/
-├── Users/
-│   └── estudiante/
-│       ├── Documentos/
-│       ├── Descargas/
-│       └── Escritorio/
-└── ...
+📁 C:\ o / (raíz)
+├── 📁 Windows/ o /bin      → Programas del sistema
+├── 📁 Program Files/        → Apps instaladas
+├── 📁 Users/                → Perfiles de usuario
+│   └── 📁 estudiante/
+│       ├── 📁 Documentos/   → Tus archivos
+│       ├── 📁 Descargas/    → Descargas
+│       └── 📁 Escritorio/   → Escritorio
+└── 📁 ...                   → Más carpetas
 ```
 
-### Funciones:
-- Crear, eliminar, renombrar archivos
-- Organizar en directorios
-- Controlar permisos de acceso
-- Gestionar espacio en disco
+### Funciones del SO:
+- 🔹 **Crear, eliminar, renombrar** archivos y carpetas
+- 🔹 **Organizar** en directorios (estructura jerárquica)
+- 🔹 **Permisos**: quién puede leer/escribir (chmod, chown)
+- 🔹 **Gestionar espacio**: ubicación física en disco
+
+### Analogía: Sistema de archivos = Archivo físico
+```
+Disco duro          Archivo de oficinas
+─────────          ──────────────────
+Directorios        Carpetas y archivadores
+Archivos           Documentos individuales
+Permisos           Cerrojos y llaves
+```
+
+### Ejemplo: Comandos básicos
+| Acción | Windows | Linux |
+|--------|---------|-------|
+| Listar | `dir` | `ls` |
+| Crear carpeta | `mkdir` | `mkdir` |
+| Cambiar directorio | `cd` | `cd` |
+| Copiar | `copy` | `cp` |
 
 ---
 
 ## 2.4 Gestión de Entrada/Salida
 
+### ¿Qué es E/S (Input/Output)?
+
+> La comunicación entre el computador y el mundo exterior
+
 ### Dispositivos de E/S
 
-| Entrada | Salida | Ambos |
-| --------- | -------- | ------- |
-| Teclado | Monitor | Disco duro |
-| Mouse | Impresora | USB |
-| Micrófono | Parlantes | Red |
-| Cámara | - | Pantalla táctil |
+| Entrada (Input) | Salida (Output) | Ambos (I/O) |
+|-----------------|-----------------|-------------|
+| ⌨️ Teclado | 🖥️ Monitor | 💾 Disco duro |
+| 🖱️ Mouse | 🖨️ Impresora | 🔌 USB |
+| 🎤 Micrófono | 🔊 Parlantes | 🌐 Red |
+| 📷 Cámara | - | 📱 Pantalla táctil |
+| 🎮 Joystick | 🎧 Auriculares | 💿 CD/DVD |
 
-### El SO:
-- Proporciona **drivers** para cada dispositivo
-- **Abstrae** las diferencias de hardware
-- Maneja **interrupciones** de dispositivos
+### ¿Cómo gestiona el SO los dispositivos?
+
+1. **Drivers**: Software que "habla" el idioma de cada dispositivo
+2. **Abstracción**: Todos los dispositivos se ven como "archivos" para el programa
+3. **Interrupciones**: El dispositivo avisa "¡tengo datos listos!"
+4. **Buffering**: Datos temporales mientras se procesan
+
+### Analogía: El SO como traductor universal
+```
+Programa       →   SO (driver)   →   Impresora
+"imprimir"     →   traduce       →   lenguaje Epson
+```
+
+### Ejemplo: Ver dispositivos
+**Windows:** `Administrador de dispositivos` (devmgmt.msc)
+**Linux:** `lsusb`, `lspci`, `lsblk`
 
 ---
 

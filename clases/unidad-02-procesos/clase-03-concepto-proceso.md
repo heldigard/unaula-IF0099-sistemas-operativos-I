@@ -270,9 +270,50 @@ El SO mantiene un **PCB** por cada proceso. Contiene TODA la información necesa
 
 ### Cuando el SO cambia de un proceso a otro
 
-![Diagrama de Context Switch](../../assets/infografias/clase-03-cswitch-timeline.png)
+> El **context switch** es el proceso de guardar el estado de un proceso y cargar el estado de otro
 
-**El context switch tiene costo** (overhead)
+### ¿Qué sucede durante un context switch?
+
+```
+┌─────────────────────────────────────────────────────────┐
+│  1. Proceso A se ejecuta                                │
+│     → Guarda sus registros CPU en su PCB               │
+│     → Guarda su contador de programa                   │
+│     → Actualiza su estado a "LISTO"                     │
+│                                                           │
+│  2. El SO selecciona Proceso B                           │
+│     → Carga los registros CPU del PCB de B              │
+│     → Carga el contador de programa de B                │
+│     → Cambia estado de B a "EJECUTANDO"                 │
+│                                                           │
+│  3. Proceso B continúa ejecutando                        │
+└─────────────────────────────────────────────────────────┘
+```
+
+### Analogía: Cambio de contextos = Cambio de jugador en un partido
+
+```
+Jugador A sale           ↓             Jugador B entra
+─────────────────        │        ─────────────────
+- Se sienta en banco     │        - Se levanta del banco
+- Descansa               │        - Entra a la cancha
+- Entiende la táctica    → Tiempo de → - Conoce la táctica
+                        cambio
+                        ↓
+                        ¡El árbitro silba!
+```
+
+### Costo del context switch
+
+| Aspecto | Impacto |
+|---------|---------|
+| **Tiempo** | 1-10 microsegundos (parece poco, pero acumula) |
+| **CPU** | La CPU NO hace trabajo útil durante el cambio |
+| **Frecuencia** | Cientos o miles de veces por segundo |
+
+> 💡 **Por qué importa**: Demasiados context switches = bajo rendimiento
+
+![Diagrama de Context Switch](../../assets/infografias/clase-03-cswitch-timeline.png)
 
 ---
 
@@ -280,7 +321,56 @@ El SO mantiene un **PCB** por cada proceso. Contiene TODA la información necesa
 
 ### Modelo de 5 estados
 
+> Un proceso **siempre está en uno de estos 5 estados** durante su vida útil
+
 ![Estados de un Proceso](../../assets/infografias/so-estados-proceso.png)
+
+### Resumen visual de los estados:
+
+```
+       ┌─────────┐
+       │  NUEVO  │  Proceso creado, espera admisión
+       └────┬────┘
+            │ Admisión
+            ▼
+     ┌───────────┐
+     │   LISTO   │  Esperando CPU (en cola)
+     └─────┬─────┘
+           │ Dispatch (seleccionado)
+           ▼
+    ┌─────────────┐
+    │ EJECUTANDO  │  Usando CPU ahora mismo ← Solo 1 por núcleo
+    └──┬──────┬───┘
+       │      │
+       │      │ Timeout o Preemption
+       │      ▼
+       │   ┌───────────┐
+       │   │   LISTO   │
+       │   └───────────┘
+       │
+       │ Solicita E/S o recurso
+       ▼
+  ┌───────────┐
+  │ BLOQUEADO │  Esperando evento (disco, red, etc.)
+  └─────┬─────┘
+        │ Evento completado
+        ▼
+     ┌───────────┐
+     │   LISTO   │
+     └───────────┘
+```
+
+### Ciclo de vida de un proceso (ejemplo real):
+
+```bash
+1. NUEVO      → $ firefox &          # fork() crea proceso
+2. LISTO       → [en cola de CPU]     # Espera turno
+3. EJECUTANDO  → [cargando página]     # Usando CPU
+4. BLOQUEADO   → [esperando red]      # Pide datos web
+5. LISTO       → [en cola de nuevo]   # Datos llegaron
+6. EJECUTANDO  → [renderizando]       # CPU de nuevo
+7. TERMINADO   → $ exit               # Usuario cierra
+```
 
 ---
 
