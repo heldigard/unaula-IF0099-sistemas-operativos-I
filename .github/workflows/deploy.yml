@@ -33,7 +33,7 @@ jobs:
           for file in $(find clases -name "*.md" -type f); do
             echo "Converting $file"
             mkdir -p "output/$(dirname "$file")"
-            marp "$file" -o "output/${file%.md}.html"
+            marp --html --allow-local-files "$file" -o "output/${file%.md}.html"
           done
 
       - name: Copy assets
