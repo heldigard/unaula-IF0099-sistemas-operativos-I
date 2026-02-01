@@ -104,7 +104,7 @@ section {
 **IF0099 - Sistemas Operativos I**
 *4° Semestre - Ingeniería Informática*
 
-![DMA - Acceso Directo a Memoria](../../assets/infografias/clase-10-dma.png){: style="max-width: 80%; max-height: 500px; display: block; margin: 0 auto;"}
+![DMA - Acceso Directo a Memoria](../../assets/infografias/clase-10-dma.png)
 
 ---
 

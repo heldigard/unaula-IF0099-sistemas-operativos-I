@@ -114,10 +114,13 @@ IMÁGENES GENERADAS:
 
 Al finalizar esta clase, el estudiante será capaz de:
 
-1. **Diferenciar** entre programa y proceso
+1. **Diferenciar** entre programa, proceso y thread
 2. **Describir** la estructura del PCB (Process Control Block)
 3. **Explicar** los estados de un proceso y sus transiciones
-4. **Identificar** procesos en un sistema operativo real
+4. **Comparar** los modelos de threads (1:1, M:1, M:N)
+5. **Describir** los mecanismos de comunicación entre procesos (IPC)
+6. **Reconocer** los problemas clásicos de IPC
+7. **Identificar** procesos en un sistema operativo real
 
 **Duración:** 90 minutos
 
@@ -125,11 +128,13 @@ Al finalizar esta clase, el estudiante será capaz de:
 
 ## Agenda
 
-1. Programa vs Proceso (15 min)
-2. Estructura de un proceso en memoria (20 min)
-3. Process Control Block - PCB (20 min)
-4. Estados de un proceso (25 min)
-5. Actividad práctica (10 min)
+1. Programa vs Proceso vs Thread (20 min)
+2. Estructura de un proceso en memoria (15 min)
+3. Process Control Block - PCB (15 min)
+4. Estados de un proceso (20 min)
+5. Modelos de threads (15 min)
+6. Comunicación entre procesos - IPC (15 min)
+7. Actividad práctica (10 min)
 
 ---
 
@@ -185,7 +190,7 @@ Cada pestaña de Chrome es un **proceso separado** con su propio PID.
          │
          ▼
 
-![Estructura de Memoria de un Proceso](../../assets/infografias/clase-03-estructura-memoria.png){: style="max-width: 60%; max-height: 400px; display: block; margin: 0 auto;"}
+![Estructura de Memoria de un Proceso](../../assets/infografias/clase-03-estructura-memoria.png)
 
     Direcciones bajas
 
@@ -220,7 +225,7 @@ int main() {
 
 El SO mantiene un **PCB** por cada proceso. Contiene TODA la información necesaria para gestionar el proceso.
 
-![PCB - Bloque de Control de Proceso](../../assets/infografias/clase-03-pcb.png){: style="max-width: 60%; max-height: 400px; display: block; margin: 0 auto;"}
+![PCB - Bloque de Control de Proceso](../../assets/infografias/clase-03-pcb.png)
 
 ---
 
@@ -265,7 +270,7 @@ El SO mantiene un **PCB** por cada proceso. Contiene TODA la información necesa
 
 ### Cuando el SO cambia de un proceso a otro
 
-![Diagrama de Context Switch](../../assets/infografias/clase-03-cswitch-timeline.png){: style="max-width: 60%; max-height: 400px; display: block; margin: 0 auto;"}
+![Diagrama de Context Switch](../../assets/infografias/clase-03-cswitch-timeline.png)
 
 **El context switch tiene costo** (overhead)
 
@@ -275,7 +280,7 @@ El SO mantiene un **PCB** por cada proceso. Contiene TODA la información necesa
 
 ### Modelo de 5 estados
 
-![Estados de un Proceso](../../assets/infografias/so-estados-proceso.png){: style="max-width: 60%; max-height: 400px; display: block; margin: 0 auto;"}
+![Estados de un Proceso](../../assets/infografias/so-estados-proceso.png)
 
 ---
 
@@ -400,6 +405,200 @@ pstree -p
 
 ---
 
+## 5. Threads (Hilos)
+
+### Proceso vs Thread
+
+| Aspecto | Proceso | Thread (Hilo) |
+|---------|---------|---------------|
+| **Definición** | Programa en ejecución | Unidad de ejecución dentro de un proceso |
+| **Memoria** | Espacio propio | Comparte memoria del proceso |
+| **Recursos** | Archivos, sockets, etc. | Stack propio, registros propios |
+| **Cambio de contexto** | Costoso | Más rápido |
+| **Comunicación** | IPC (pipes, sockets) | Memoria compartida directa |
+| **Fallo** | No afecta a otros | Puede afectar todo el proceso |
+
+---
+
+## Modelos de Threads
+
+### Modelo de 1 a 1 (One-to-One)
+```
+Proceso
+├── Thread 1 (user) ────────► Thread 1 (kernel)
+├── Thread 2 (user) ────────► Thread 2 (kernel)
+└── Thread 3 (user) ────────► Thread 3 (kernel)
+
+✅ Concurrencia real en múltiples núcleos
+✅ Si un thread se bloquea, otros continúan
+❌ Mayor overhead (cada thread es un proceso ligero)
+
+Ejemplo: Linux (NPTL), Windows
+```
+
+### Modelo de Muchos a 1 (Many-to-One)
+```
+Proceso
+├── Thread 1 ──┐
+├── Thread 2 ──┼──► Thread único en kernel
+└── Thread 3 ──┘
+
+✅ Rápido cambio entre threads (no requiere kernel)
+❌ Bloqueo de un thread bloquea todos
+❌ No aprovecha múltiples núcleos
+
+Ejemplo: Green threads (Java antiguo)
+```
+
+### Modelo de Muchos a Muchos
+```
+Proceso
+├── Thread 1 ──┐
+├── Thread 2 ──┼──► Threads kernel (pool)
+├── Thread 3 ──┤      (menos que user threads)
+└── Thread 4 ──┘
+
+✅ Balance entre concurrencia y eficiencia
+✅ Threads en kernel < Threads en usuario
+
+Ejemplo: Solaris, IRIX
+```
+
+---
+
+## Ejemplo de Threads en C (pthreads)
+
+```c
+#include <pthread.h>
+#include <stdio.h>
+
+void* funcion_hilo(void* arg) {
+    int id = *(int*)arg;
+    printf("Hilo %d ejecutándose\n", id);
+    return NULL;
+}
+
+int main() {
+    pthread_t hilo1, hilo2;
+    int id1 = 1, id2 = 2;
+    
+    // Crear threads
+    pthread_create(&hilo1, NULL, funcion_hilo, &id1);
+    pthread_create(&hilo2, NULL, funcion_hilo, &id2);
+    
+    // Esperar a que terminen
+    pthread_join(hilo1, NULL);
+    pthread_join(hilo2, NULL);
+    
+    return 0;
+}
+```
+
+**Compilar:** `gcc -o threads threads.c -lpthread`
+
+---
+
+## 6. Comunicación entre Procesos (IPC)
+
+### Mecanismos de IPC
+
+| Mecanismo | Tipo | Uso típico |
+|-----------|------|------------|
+| **Pipes** | Unidireccional | Comandos encadenados (`ls \| grep`) |
+| **Named Pipes (FIFO)** | Unidireccional | Procesos sin relación de parentesco |
+| **Sockets** | Bidireccional | Comunicación en red o local |
+| **Shared Memory** | Memoria compartida | Datos grandes, alta velocidad |
+| **Message Queues** | Cola de mensajes | Mensajes tipificados |
+| **Semáforos** | Sincronización | Control de acceso a recursos |
+| **Signals** | Asíncrono | Notificaciones de eventos |
+
+---
+
+## Pipes en Linux
+
+### Pipe anónimo (entre padre e hijo)
+```c
+#include <unistd.h>
+
+int pipe_fd[2];  // pipe_fd[0] = lectura, pipe_fd[1] = escritura
+pipe(pipe_fd);
+
+if (fork() == 0) {
+    // Hijo: cierra lectura, escribe
+    close(pipe_fd[0]);
+    write(pipe_fd[1], "Hola", 4);
+    close(pipe_fd[1]);
+} else {
+    // Padre: cierra escritura, lee
+    close(pipe_fd[1]);
+    read(pipe_fd[0], buffer, 4);
+    close(pipe_fd[0]);
+}
+```
+
+### Comando en shell:
+```bash
+ls -la | grep "\.txt" | wc -l
+```
+
+---
+
+## Problemas Clásicos de IPC
+
+### 1. Productor-Consumidor (con pipe)
+```
+┌──────────┐      Pipe      ┌──────────┐
+│ Productor│ ─────────────► │Consumidor│
+│ (escribe)│   (buffer)     │ (lee)    │
+└──────────┘                └──────────┘
+
+Problema: ¿Qué pasa si el buffer está lleno o vacío?
+Solución: Sincronización con semáforos
+```
+
+### 2. Problema de los Filósofos Comensales
+```
+5 filósofos, 5 tenedores (recursos)
+Cada filósofo necesita 2 tenedores para comer
+
+Problema: Deadlock si todos toman el tenedor izquierdo
+Solución: Orden de adquisición de recursos
+```
+
+### 3. Lectores-Escritores
+```
+Múltiples lectores pueden acceder simultáneamente
+Solo un escritor puede acceder (y sin lectores)
+
+Problema: Inanición de escritores si llegan lectores constantemente
+Solución: Prioridad a escritores o fairness
+```
+
+---
+
+## Resumen: Procesos vs Threads
+
+```
+PROCESO (Contenedor de recursos)
+├─ Memoria (código, datos, heap)
+├─ Archivos abiertos
+├─ Sockets
+├─ Permisos
+│
+├─ THREAD 1 ─────┐
+│   ├─ Stack     │
+│   ├─ Registros │
+│   └─ PC        │
+│                ├──► Ejecución concurrente
+├─ THREAD 2 ─────┤    (comparten memoria)
+│   ├─ Stack     │
+│   ├─ Registros │
+│   └─ PC        │
+└─ THREAD 3 ─────┘
+```
+
+---
+
 ## Actividad Práctica (10 min)
 
 ### En parejas, ejecuten:
@@ -435,11 +634,14 @@ Get-Process -Name explorer | Format-List *
 | Concepto | Descripción |
 | ---------- | ------------- |
 | **Programa** | Código estático en disco |
-| **Proceso** | Programa en ejecución |
+| **Proceso** | Programa en ejecución (con recursos propios) |
+| **Thread** | Unidad de ejecución (comparte memoria del proceso) |
 | **PCB** | Estructura con toda la info del proceso |
-| **PID** | Identificador único |
+| **PID** | Identificador único de proceso |
 | **Estados** | Nuevo, Listo, Ejecutando, Bloqueado, Terminado |
 | **Context Switch** | Cambio de un proceso a otro |
+| **IPC** | Mecanismos: pipes, sockets, shared memory |
+| **Modelos de threads** | 1:1, M:1, M:N |
 
 ---
 

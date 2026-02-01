@@ -117,9 +117,12 @@ IMÁGENES GENERADAS:
 Al finalizar esta clase, el estudiante será capaz de:
 
 1. **Explicar** el concepto de planificación de CPU
-2. **Calcular** métricas de rendimiento (turnaround, waiting)
+2. **Calcular** métricas de rendimiento (turnaround, waiting, response)
 3. **Comparar** los algoritmos FCFS, SJF, Prioridad y Round Robin
 4. **Aplicar** cada algoritmo a problemas prácticos
+5. **Describir** algoritmos de tiempo real (RMS, EDF)
+6. **Explicar** planificación en multiprocesadores (SMP, afinidad)
+7. **Evaluar** algoritmos mediante simulación
 
 **Duración:** 90 minutos
 
@@ -129,11 +132,13 @@ Al finalizar esta clase, el estudiante será capaz de:
 
 1. ¿Qué es la planificación de CPU? (10 min)
 2. Métricas de rendimiento (10 min)
-3. Algoritmo FCFS (15 min)
-4. Algoritmo SJF (15 min)
-5. Algoritmo por Prioridad (15 min)
-6. Algoritmo Round Robin (15 min)
-7. Actividad práctica (10 min)
+3. Algoritmo FCFS (10 min)
+4. Algoritmo SJF (10 min)
+5. Algoritmo por Prioridad (10 min)
+6. Algoritmo Round Robin (10 min)
+7. Planificación en tiempo real (10 min)
+8. Planificación multiprocesador (10 min)
+9. Actividad práctica (10 min)
 
 ---
 
@@ -154,7 +159,7 @@ Esto es exactamente lo que hace el scheduler del SO con la CPU.
 
 ### El problema
 
-![Algoritmos de Planificación](../../assets/infografias/clase-04-algoritmos-planificacion.png){: style="max-width: 60%; max-height: 400px; display: block; margin: 0 auto;"}
+![Algoritmos de Planificación](../../assets/infografias/clase-04-algoritmos-planificacion.png)
 
 ---
 
@@ -217,7 +222,7 @@ Esto es exactamente lo que hace el scheduler del SO con la CPU.
 
 ## Diagrama de Gantt Comparativo
 
-![Diagrama de Gantt - Algoritmos de Planificación](../../assets/infografias/clase-04-gantt-algoritmos.png){: style="max-width: 80%; max-height: 500px; display: block; margin: 0 auto;"}
+![Diagrama de Gantt - Algoritmos de Planificación](../../assets/infografias/clase-04-gantt-algoritmos.png)
 
 ---
 
@@ -408,7 +413,7 @@ Aumentar gradualmente la prioridad de procesos que esperan mucho tiempo.
 
 ### "Turnos rotativos" - El más usado
 
-![Round Robin](../../assets/infografias/clase-04-round-robin.png){: style="max-width: 60%; max-height: 400px; display: block; margin: 0 auto;"}
+![Round Robin](../../assets/infografias/clase-04-round-robin.png)
 
 ---
 
@@ -486,7 +491,7 @@ Quantum óptimo:
 
 ## Comparación de Algoritmos
 
-![Comparación de Algoritmos - Gantt](../../assets/infografias/clase-04-comparacion-algoritmos-gantt.png){: style="max-width: 60%; max-height: 400px; display: block; margin: 0 auto;"}
+![Comparación de Algoritmos - Gantt](../../assets/infografias/clase-04-comparacion-algoritmos-gantt.png)
 
 | Algoritmo | Tipo | Starvation | Turnaround | Respuesta |
 | ----------- | ------ | ------------ | ------------ | ----------- |
@@ -494,6 +499,185 @@ Quantum óptimo:
 | **SJF** | Ambos | Sí (procesos largos) | Óptimo | Variable |
 | **Prioridad** | Ambos | Sí | Variable | Alta prioridad: buena |
 | **Round Robin** | Preemptive | No | Medio | Buena para todos |
+
+---
+
+## 7. Planificación en Tiempo Real
+
+### Características de sistemas de tiempo real
+
+> Sistemas donde el **tiempo de respuesta** es crítico
+
+| Tipo | Característica | Ejemplo |
+|------|----------------|---------|
+| **Hard Real-Time** | Cumplimiento estricto obligatorio | Frenos de automóvil, control de reactores |
+| **Soft Real-Time** | Cumplimiento deseable pero no crítico | Streaming de video, juegos |
+
+### Algoritmos de Tiempo Real
+
+#### Rate Monotonic Scheduling (RMS)
+- Prioridad basada en el **periodo** del proceso
+- Menor periodo = Mayor prioridad
+- Óptimo para procesos periódicos
+
+```
+Proceso A: Periodo=50ms, Tiempo_ejecución=20ms
+Proceso B: Periodo=100ms, Tiempo_ejecución=30ms
+
+Prioridad: A > B (porque 50 < 100)
+
+Diagrama:
+0-20ms:  A ejecuta (deadline: 50ms) ✓
+20-50ms: B ejecuta (deadline: 100ms) ✓
+50-70ms: A ejecuta (2da instancia, deadline: 100ms) ✓
+70-100ms: B termina (deadline: 100ms) ✓
+```
+
+**Condición de schedulabilidad:**
+```
+Σ(Ci/Pi) ≤ n * (2^(1/n) - 1)
+
+Donde:
+- Ci = Tiempo de ejecución del proceso i
+- Pi = Periodo del proceso i
+- n = Número de procesos
+```
+
+#### Earliest Deadline First (EDF)
+- Prioridad dinámica: proceso con **deadline más cercano** primero
+- Más flexible que RMS
+- Utilización del CPU hasta 100%
+
+```
+Proceso A: Deadline=50ms, Tiempo=20ms
+Proceso B: Deadline=60ms, Tiempo=25ms
+
+En t=0:
+- A deadline=50, B deadline=60 → Ejecuta A (0-20ms)
+
+En t=20:
+- A terminó, B deadline=60 → Ejecuta B (20-45ms)
+
+En t=45:
+- B terminó antes del deadline ✓
+```
+
+---
+
+## 8. Planificación en Multiprocesadores
+
+### Enfoques para múltiples CPUs
+
+#### Multiprocesador Simétrico (SMP)
+```
+┌─────────────────────────────────────────┐
+│              Cola única                 │
+│  ┌─────┐ ┌─────┐ ┌─────┐ ┌─────┐       │
+│  │ P1  │ │ P2  │ │ P3  │ │ P4  │       │
+│  └─────┘ └─────┘ └─────┘ └─────┘       │
+│       ↓         ↓         ↓             │
+│    ┌─────┐   ┌─────┐   ┌─────┐         │
+│    │CPU 0│   │CPU 1│   │CPU 2│         │
+│    └─────┘   └─────┘   └─────┘         │
+└─────────────────────────────────────────┘
+
+Ventaja: Balance de carga automático
+Desventaja: Contención en la cola
+```
+
+#### Colas Privadas por CPU
+```
+┌─────────────────────────────────────────┐
+│  Cola CPU 0   Cola CPU 1   Cola CPU 2   │
+│  ┌─────┐      ┌─────┐      ┌─────┐     │
+│  │ P1  │      │ P2  │      │ P3  │     │
+│  │ P4  │      │ P5  │      │ P6  │     │
+│  └─────┘      └─────┘      └─────┘     │
+│    ↓            ↓            ↓          │
+│  ┌─────┐      ┌─────┐      ┌─────┐     │
+│  │CPU 0│      │CPU 1│      │CPU 2│     │
+│  └─────┘      └─────┘      └─────┘     │
+└─────────────────────────────────────────┘
+
+Ventaja: Menos contención
+Desventaja: Desbalance de carga posible
+Solución: **Migración de procesos** entre colas
+```
+
+#### Afinidad a Procesador
+```
+Proceso P1 ha estado ejecutando en CPU 0
+Su caché L1/L2 contiene datos de P1
+
+Opción A: Migrar P1 a CPU 1
+- Pérdida de caché (cache misses)
+- Penalidad de rendimiento
+
+Opción B: Mantener P1 en CPU 0
+- Aprovecha caché caliente
+- Mejor rendimiento
+
+Decisión: Afinidad blanda vs afinidad dura
+```
+
+### Algoritmos para Multiprocesadores
+
+#### Partitioned Scheduling
+- Cada procesador tiene su propia cola
+- Procesos asignados a procesadores específicos
+- Simple pero puede causar desbalance
+
+#### Global Scheduling
+- Una cola global para todos los procesadores
+- Procesos migran entre CPUs
+- Mejor balance pero más overhead
+
+#### Gang Scheduling
+- Threads de un mismo proceso ejecutan simultáneamente
+- Útil para aplicaciones paralelas
+- Todos empiezan y terminan juntos
+
+```
+Tiempo: 0        1        2        3
+CPU 0: [P1.T1] [P2.T1] [P1.T1] [P2.T1]
+CPU 1: [P1.T2] [P2.T2] [P1.T2] [P2.T2]
+CPU 2: [P1.T3] [P2.T3] [P1.T3] [P2.T3]
+
+P1 y P2 alternan, todos sus threads juntos
+```
+
+---
+
+## 9. Evaluación de Algoritmos
+
+### Modelos de Evaluación
+
+| Modelo | Descripción | Uso |
+|--------|-------------|-----|
+| **Determinístico** | Carga fija conocida | Análisis teórico |
+| **Queueing Models** | Modelos matemáticos de colas | Predicción de comportamiento |
+| **Simulación** | Simular carga real | Estudio detallado |
+| **Implementación real** | Probar en sistema real | Validación final |
+
+### Métricas de Comparación
+
+```
+Sistema con:
+- 10,000 procesos
+- Mix: 80% CPU-bound, 20% I/O-bound
+- Distribución de ráfagas: exponencial
+
+Resultados simulación:
+┌─────────────────┬──────────┬──────────┬──────────┐
+│    Algoritmo    │ Turnaround│  Waiting │ CPU Use  │
+├─────────────────┼──────────┼──────────┼──────────┤
+│ FCFS            │   45.2   │   23.1   │   89%    │
+│ SJF             │   38.7   │   16.6   │   91%    │
+│ RR (q=10)       │   42.1   │   20.0   │   90%    │
+│ RR (q=100)      │   44.8   │   22.7   │   92%    │
+│ Prioridad       │   41.5   │   19.4   │   88%    │
+└─────────────────┴──────────┴──────────┴──────────┘
+```
 
 ---
 
@@ -518,16 +702,23 @@ Quantum óptimo:
 
 ## Resumen de la Clase
 
-| Algoritmo | Idea principal |
-| ----------- | ---------------- |
-| **FCFS** | Orden de llegada |
-| **SJF** | El más corto primero |
-| **Prioridad** | Según importancia asignada |
-| **Round Robin** | Turnos con quantum fijo |
+| Algoritmo | Idea principal | Tipo |
+| ----------- | ---------------- | ---- |
+| **FCFS** | Orden de llegada | Non-preemptive |
+| **SJF** | El más corto primero | Ambos |
+| **Prioridad** | Según importancia asignada | Ambos |
+| **Round Robin** | Turnos con quantum fijo | Preemptive |
+| **RMS** | Menor periodo = Mayor prioridad | Tiempo real |
+| **EDF** | Deadline más cercano primero | Tiempo real dinámico |
 
 ### Fórmulas:
 - **Turnaround** = Fin - Llegada
 - **Waiting** = Turnaround - Ráfaga
+- **Response** = Primera ejecución - Llegada
+
+### Multiprocesadores:
+- **SMP**: Cola única o colas privadas
+- **Afinidad**: Mantener proceso en mismo CPU para aprovechar caché
 
 ---
 

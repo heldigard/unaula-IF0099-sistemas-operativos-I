@@ -104,7 +104,7 @@ section {
 **IF0099 - Sistemas Operativos I**
 *4° Semestre - Ingeniería Informática*
 
-![Comparación de Sistemas de Archivos](../../assets/infografias/clase-09-sistemas-archivos.png){: style="max-width: 80%; max-height: 500px; display: block; margin: 0 auto;"}
+![Comparación de Sistemas de Archivos](../../assets/infografias/clase-09-sistemas-archivos.png)
 
 ---
 

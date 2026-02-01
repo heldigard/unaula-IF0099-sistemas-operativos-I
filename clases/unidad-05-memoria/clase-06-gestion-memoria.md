@@ -149,7 +149,7 @@ El SO debe:
 
 ## Jerarquía de Memoria
 
-![Jerarquía de Memoria](../../assets/infografias/clase-06-jerarquia-memoria.png){: style="max-width: 60%; max-height: 400px; display: block; margin: 0 auto;"}
+![Jerarquía de Memoria](../../assets/infografias/clase-06-jerarquia-memoria.png)
 
 ---
 ### Representación ASCII:
@@ -183,7 +183,7 @@ El SO debe:
 
 ### Traducción de Direcciones con MMU
 
-![Traducción de Direcciones](../../assets/infografias/clase-06-traduccion-direcciones.png){: style="max-width: 60%; max-height: 400px; display: block; margin: 0 auto;"}
+![Traducción de Direcciones](../../assets/infografias/clase-06-traduccion-direcciones.png)
 
 ---
 
@@ -221,6 +221,85 @@ Fórmula simple (reubicación):
     Dirección Física = Dirección Lógica + Registro Base
     0x4500 = 0x0500 + 0x4000
 ```
+
+---
+
+## Binding de Direcciones
+
+### ¿Cuándo se asignan las direcciones de memoria?
+
+| Etapa | Momento | Descripción |
+|-------|---------|-------------|
+| **Compile time** | Compilación | Direcciones absolutas fijas. Si cambia ubicación, recompilar. (MS-DOS .COM) |
+| **Load time** | Carga | Direcciones relativas, traducidas al cargar. Si cambia, recargar. |
+| **Execution time** | Ejecución | Direcciones lógicas traducidas en tiempo real por MMU. (Sistemas modernos) |
+
+```
+CÓDIGO FUENTE          COMPILACIÓN           CARGA              EJECUCIÓN
+   prog.c      ──►    prog.o      ──►    En memoria     ──►   CPU accede
+                      (relativo)         (direcciones      (MMU traduce
+                                         físicas asignadas)   en tiempo real)
+```
+
+---
+
+## Carga Dinámica
+
+### Cargar rutinas solo cuando se necesitan
+
+```
+PROCESO GRANDE (1MB de código total)
+┌──────────────────────────────────────┐
+│  Funciones frecuentes (cargadas)     │ ◄── Siempre en memoria
+├──────────────────────────────────────┤
+│  Función rara_1()                    │
+│  ┌──────────────────────────────┐    │
+│  │  Código en disco             │    │ ◄── Solo se carga
+│  │  (no ocupa RAM)              │    │     si se llama
+│  └──────────────────────────────┘    │
+├──────────────────────────────────────┤
+│  Función rara_2()                    │
+│  ┌──────────────────────────────┐    │
+│  │  Código en disco             │    │
+│  │  (no ocupa RAM)              │    │
+│  └──────────────────────────────┘    │
+└──────────────────────────────────────┘
+
+Beneficio: Menor uso de memoria, más procesos residentes
+```
+
+**Implementación:**
+- Stub (parche) en lugar de la función real
+- Stub carga la función desde disco y la ejecuta
+- Windows DLLs, Linux shared libraries usan concepto similar
+
+---
+
+## Overlays
+
+### Técnica histórica para programas > memoria disponible
+
+```
+Memoria disponible: 64KB
+Programa: 150KB (no cabe completo)
+
+Solución: Dividir en overlays que se alternan
+
+Overlay 0 (residente):      Overlay 1:          Overlay 2:
+┌──────────────────┐       ┌──────────┐        ┌──────────┐
+│ Código base      │       │ Fase 1   │        │ Fase 3   │
+│ + Driver E/S     │       │ Análisis │        │ Reporte  │
+├──────────────────┤       └──────────┘        └──────────┘
+│                  │            ▲                    ▲
+│  Espacio para    │────────────┴────────────────────┘
+│  overlay         │
+│  (64KB - base)   │  Solo un overlay cargado a la vez
+└──────────────────┘
+
+Flujo: Base carga → Fase 1 → (reemplaza) → Fase 3
+```
+
+**Nota:** Hoy en día rara vez se usa (memoria virtual lo reemplaza)
 
 ---
 
@@ -303,7 +382,7 @@ INICIAL:                    DESPUÉS DE LIBERAR B:
 
 ### Dos tipos de desperdicio de memoria
 
-![Tipos de Fragmentación](../../assets/infografias/clase-06-fragmentacion.png){: style="max-width: 60%; max-height: 400px; display: block; margin: 0 auto;"}
+![Tipos de Fragmentación](../../assets/infografias/clase-06-fragmentacion.png)
 
 ---
 | Tipo | Causa | Dónde ocurre |

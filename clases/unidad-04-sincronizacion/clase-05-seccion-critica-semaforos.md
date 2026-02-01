@@ -118,9 +118,12 @@ IMÁGENES GENERADAS:
 Al finalizar esta clase, el estudiante será capaz de:
 
 1. **Identificar** condiciones de carrera en programas concurrentes
-2. **Explicar** el problema de la sección crítica
-3. **Implementar** soluciones usando semáforos y mutex
-4. **Resolver** el problema del productor-consumidor
+2. **Explicar** el problema de la sección crítica y sus requisitos
+3. **Describir** mecanismos de hardware para sincronización (TAS, CAS)
+4. **Implementar** soluciones usando semáforos y mutex
+5. **Explicar** el concepto de monitores y variables de condición
+6. **Resolver** problemas clásicos: productor-consumidor, filósofos
+7. **Identificar** y prevenir deadlocks
 
 **Duración:** 90 minutos
 
@@ -169,7 +172,7 @@ Tiempo    Proceso A              Memoria          Proceso B
 
 ### Código que accede a recursos compartidos
 
-![Sección Crítica](../../assets/infografias/clase-05-seccion-critica.png){: style="max-width: 60%; max-height: 400px; display: block; margin: 0 auto;"}
+![Sección Crítica](../../assets/infografias/clase-05-seccion-critica.png)
 
 ---
 
@@ -258,6 +261,212 @@ void salir(int i) {
 
 ### ¿Funciona?
 ✅ Cumple los 3 requisitos (para 2 procesos)
+❌ Solo funciona para 2 procesos
+❌ Requiere busy waiting (espera activa)
+
+---
+
+## 4. Hardware de Sincronización
+
+### Instrucciones Atómicas del Procesador
+
+> El hardware proporciona operaciones atómicas (indivisibles) para sincronización
+
+#### Test-and-Set (TAS)
+```c
+// Ejecuta atómicamente (no interrumpible)
+boolean test_and_set(boolean *target) {
+    boolean valor = *target;
+    *target = true;
+    return valor;
+}
+```
+
+**Uso para exclusión mutua:**
+```c
+boolean lock = false;  // Variable compartida
+
+// Entrada a sección crítica
+while (test_and_set(&lock));  // Espera activa hasta obtener lock
+
+// ========= SECCIÓN CRÍTICA =========
+
+// Salida de sección crítica
+lock = false;
+```
+
+---
+
+## Compare-and-Swap (CAS)
+
+### Operación atómica más flexible
+```c
+// Ejecuta atómicamente
+int compare_and_swap(int *valor, int esperado, int nuevo) {
+    int temp = *valor;
+    if (*valor == esperado)
+        *valor = nuevo;
+    return temp;
+}
+```
+
+**Uso para exclusión mutua:**
+```c
+int lock = 0;  // 0 = libre, 1 = ocupado
+
+// Entrada
+while (compare_and_swap(&lock, 0, 1) != 0);
+    // Si lock era 0, lo pone en 1 y sale del while
+    // Si lock era 1, sigue en el while
+
+// ========= SECCIÓN CRÍTICA =========
+
+// Salida
+lock = 0;
+```
+
+**Usado en:** Java, C++11 (atomic), Linux kernel
+
+---
+
+## Lista Enlazada Libre de Bloqueos (Lock-Free)
+
+### Usando CAS para estructuras de datos concurrentes
+```
+┌──────────┐    ┌──────────┐    ┌──────────┐
+│  Nodo A  │───►│  Nodo B  │───►│  Nodo C  │───► NULL
+└──────────┘    └──────────┘    └──────────┘
+```
+
+```c
+// Insertar nodo nuevo después de A
+// PASO 1: Guardar referencias actuales
+nuevo->siguiente = A->siguiente;  // Apunta a B
+
+// PASO 2: Intentar actualizar A->siguiente con CAS
+if (CAS(&A->siguiente, B, nuevo) == B) {
+    // Éxito: A->siguiente ahora apunta a nuevo
+} else {
+    // Fallo: otro hilo modificó A->siguiente
+    // Reintentar desde PASO 1
+}
+```
+
+---
+
+## 5. Monitores
+
+### Concepto de Monitor (Hoare, 1974)
+
+> Un **monitor** es una construcción del lenguaje de programación que encapsula:
+> - Variables compartidas
+> - Procedimientos que operan sobre esas variables
+> - Sincronización implícita
+
+```
+┌─────────────────────────────────────────┐
+│              MONITOR                    │
+│  ┌─────────────────────────────────┐    │
+│  │  Variables privadas             │    │
+│  │  (solo accesibles dentro)       │    │
+│  └─────────────────────────────────┘    │
+│                                          │
+│  ┌─────────────────────────────────┐    │
+│  │  Procedimiento op1()            │    │
+│  │    ... operaciones ...          │    │
+│  └─────────────────────────────────┘    │
+│  ┌─────────────────────────────────┐    │
+│  │  Procedimiento op2()            │    │
+│  │    ... operaciones ...          │    │
+│  └─────────────────────────────────┘    │
+│                                          │
+│  ⚡ Solo UN proceso puede ejecutar       │
+│     un procedimiento del monitor         │
+│     a la vez (exclusión mutua implícita) │
+└─────────────────────────────────────────┘
+```
+
+---
+
+## Variables de Condición
+
+### Dentro de un monitor: sincronización condicional
+
+```
+monitor BufferLimitado {
+    // Variables del monitor
+    item buffer[N];
+    int count = 0;
+    
+    // Variables de condición
+    condition no_lleno;    // Esperar si buffer lleno
+    condition no_vacio;    // Esperar si buffer vacío
+    
+    procedure insertar(item x) {
+        if (count == N)
+            no_lleno.wait;     // Duerme si lleno
+        buffer[in] = x;
+        count++;
+        no_vacio.signal;       // Despierta a consumidor
+    }
+    
+    procedure remover() {
+        if (count == 0)
+            no_vacio.wait;     // Duerme si vacío
+        item = buffer[out];
+        count--;
+        no_lleno.signal;       // Despierta a productor
+        return item;
+    }
+}
+```
+
+---
+
+## Monitores en Java
+
+### Cada objeto tiene un monitor implícito
+```java
+public class CuentaBancaria {
+    private double saldo = 0;
+    
+    // 'synchronized' = monitor
+    public synchronized void depositar(double monto) {
+        saldo += monto;
+    }
+    
+    public synchronized void retirar(double monto) {
+        saldo -= monto;
+    }
+    
+    // Uso de variables de condición
+    public synchronized void retirarSeguro(double monto) 
+            throws InterruptedException {
+        while (saldo < monto) {
+            wait();  // Espera en la variable de condición
+        }
+        saldo -= monto;
+    }
+    
+    public synchronized void depositarNotificar(double monto) {
+        saldo += monto;
+        notifyAll();  // Despierta a los que esperan
+    }
+}
+```
+
+---
+
+## Semáforos vs Mutex vs Monitores
+
+| Característica | Semáforo | Mutex | Monitor |
+|----------------|----------|-------|---------|
+| **Nivel** | Sistema operativo | Biblioteca/Lenguaje | Lenguaje (alto nivel) |
+| **Valor** | 0, 1, 2, ... | 0 o 1 | Implícito (lock implícito) |
+| **Exclusión mutua** | ✅ | ✅ | ✅ (automática) |
+| **Sincronización condicional** | ✅ (con semáforos adicionales) | ❌ | ✅ (variables de condición) |
+| **Errores comunes** | Olvidar signal/wait | Olvidar unlock | Menos probable |
+| **Ejemplos** | `sem_t` (C), `Semaphore` (Java) | `pthread_mutex`, `std::mutex` | Java `synchronized`, C# `lock` |
 
 ---
 
@@ -265,7 +474,7 @@ void salir(int i) {
 
 ### Comparación de mecanismos de sincronización
 
-![Semáforos vs Mutex](../../assets/infografias/clase-05-semaforos-mutex.png){: style="max-width: 80%; max-height: 500px; display: block; margin: 0 auto;"}
+![Semáforos vs Mutex](../../assets/infografias/clase-05-semaforos-mutex.png)
 
 ---
 
@@ -273,7 +482,7 @@ void salir(int i) {
 
 ### Inventados por Dijkstra (1965)
 
-![Semáforos](../../assets/infografias/clase-05-semaforos.png){: style="max-width: 60%; max-height: 400px; display: block; margin: 0 auto;"}
+![Semáforos](../../assets/infografias/clase-05-semaforos.png)
 
 ---
 
@@ -527,9 +736,12 @@ void transferir(Cuenta* origen, Cuenta* destino, int monto) {
 | ---------- | ------------- |
 | **Race condition** | Resultado depende del orden de ejecución |
 | **Sección crítica** | Código que accede a recursos compartidos |
+| **Hardware sync** | TAS, CAS - instrucciones atómicas del procesador |
+| **Monitor** | Construcción del lenguaje con sincronización implícita |
 | **Semáforo** | Variable con wait/signal para sincronización |
 | **Mutex** | Semáforo binario para exclusión mutua |
 | **Deadlock** | Procesos bloqueados esperándose mutuamente |
+| **Prevención** | Romper al menos una condición de Coffman |
 
 ---
 

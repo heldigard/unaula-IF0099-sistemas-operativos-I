@@ -147,7 +147,7 @@ Entender la historia nos ayuda a:
 **Cada generación resolvió problemas específicos de su época.**
 
 
-![Evolución de los Sistemas Operativos](../../assets/infografias/so-evolucion-timeline.png){: style="max-width: 60%; max-height: 400px; display: block; margin: 0 auto;"}
+![Evolución de los Sistemas Operativos](../../assets/infografias/so-evolucion-timeline.png)
 
 ---
 
@@ -302,7 +302,7 @@ Usuario 3 ──┘    Reparte tiempo
 
 ## Componentes de un SO Moderno
 
-![Arquitectura del Sistema Operativo](../../assets/infografias/so-componentes-arquitectura.png){: style="max-width: 60%; max-height: 400px; display: block; margin: 0 auto;"}
+![Arquitectura del Sistema Operativo](../../assets/infografias/so-componentes-arquitectura.png)
 
 ---
 

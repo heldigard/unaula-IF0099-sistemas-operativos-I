@@ -120,8 +120,11 @@ Al finalizar esta clase, el estudiante será capaz de:
 
 1. **Definir** qué es un sistema operativo y su propósito
 2. **Identificar** las funciones principales de un SO
-3. **Comprender** la relación entre hardware, SO y aplicaciones
-4. **Reconocer** los SO más utilizados en la actualidad
+3. **Comparar** las arquitecturas monolítica, por capas y microkernel
+4. **Describir** los servicios que proporciona el SO
+5. **Explicar** el concepto de llamadas al sistema (system calls)
+6. **Comprender** la relación entre hardware, SO y aplicaciones
+7. **Reconocer** los SO más utilizados en la actualidad
 
 **Duración:** 90 minutos
 
@@ -129,11 +132,13 @@ Al finalizar esta clase, el estudiante será capaz de:
 
 ## Agenda
 
-1. ¿Qué es un Sistema Operativo? (20 min)
-2. Funciones principales del SO (25 min)
-3. El SO como interfaz y administrador (20 min)
-4. Sistemas Operativos actuales (15 min)
-5. Actividad práctica (10 min)
+1. ¿Qué es un Sistema Operativo? (15 min)
+2. Funciones principales del SO (20 min)
+3. Arquitecturas del SO (15 min)
+4. Servicios y Llamadas al Sistema (15 min)
+5. El SO como interfaz (10 min)
+6. Sistemas Operativos actuales (10 min)
+7. Actividad práctica (5 min)
 
 ---
 
@@ -143,7 +148,7 @@ Al finalizar esta clase, el estudiante será capaz de:
 
 > Un **Sistema Operativo (SO)** es el software que actúa como intermediario entre el usuario y el hardware del computador, gestionando los recursos y proporcionando servicios a las aplicaciones.
 
-![Capas del Sistema](../../assets/infografias/so-capas-sistema.png){: style="max-width: 60%; max-height: 400px; display: block; margin: 0 auto;"}
+![Capas del Sistema](../../assets/infografias/so-capas-sistema.png)
 
 ### ¿Por qué necesitamos un SO?
 
@@ -162,7 +167,7 @@ Sin un SO, cada programa tendría que:
 
 ### El SO como el "Gerente de un Hotel"
 
-![Analogía del Hotel](../../assets/infografias/so-analogia-hotel.png){: style="max-width: 60%; max-height: 400px; display: block; margin: 0 auto;"}
+![Analogía del Hotel](../../assets/infografias/so-analogia-hotel.png)
 
 ---
 
@@ -170,7 +175,7 @@ Sin un SO, cada programa tendría que:
 
 ### Las 4 funciones fundamentales
 
-![Funciones del SO](../../assets/infografias/so-funciones-principales.png){: style="max-width: 60%; max-height: 400px; display: block; margin: 0 auto;"}
+![Funciones del SO](../../assets/infografias/so-funciones-principales.png)
 
 ---
 
@@ -256,9 +261,180 @@ C:\ (o /)
 
 ---
 
-## 3. El SO como Interfaz
+## 3. Arquitecturas del Sistema Operativo
 
-### Dos tipos de interfaz
+### Tipos de estructura interna
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                 MONOLÍTICO (Linux, DOS)                          │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                  │
+│  ┌──────────────────────────────────────────────────────┐       │
+│  │                    APLICACIONES                       │       │
+│  └──────────────────────────────────────────────────────┘       │
+│                              │                                   │
+│                              ▼                                   │
+│  ┌──────────────────────────────────────────────────────┐       │
+│  │                     KERNEL                           │       │
+│  │  ┌──────┬──────┬──────┬──────┬──────┬──────┐        │       │
+│  │  │Gestor│Gestor│Gestor│Gestor│Gestor│Gestor│        │       │
+│  │  │Proces│Memoria│Archiv│ E/S │Red   │...   │        │       │
+│  │  └──────┴──────┴──────┴──────┴──────┴──────┘        │       │
+│  └──────────────────────────────────────────────────────┘       │
+│                              │                                   │
+│                              ▼                                   │
+│                         HARDWARE                                 │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## Arquitectura por Capas
+
+```
+┌─────────────────────────────────────────────────────────┐
+│  Nivel 5 │ Aplicaciones (shell, utilidades)             │
+├──────────┼──────────────────────────────────────────────┤
+│  Nivel 4 │ Gestión de archivos (file system)            │
+├──────────┼──────────────────────────────────────────────┤
+│  Nivel 3 │ Gestión de memoria virtual                   │
+├──────────┼──────────────────────────────────────────────┤
+│  Nivel 2 │ Gestión de procesos y E/S                    │
+├──────────┼──────────────────────────────────────────────┤
+│  Nivel 1 │ Comunicación con hardware (drivers)          │
+├──────────┼──────────────────────────────────────────────┤
+│  Nivel 0 │ Hardware (CPU, memoria, dispositivos)        │
+└─────────────────────────────────────────────────────────┘
+
+Ventaja: Cada capa solo usa servicios de la inferior
+Ejemplo: THE (Dijkstra, 1968)
+```
+
+---
+
+## Microkernel
+
+```
+┌────────────────────────────────────────────────────────────┐
+│                  MICROKERNEL (MINIX, QNX)                  │
+├────────────────────────────────────────────────────────────┤
+│                                                             │
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐        │
+│  │  Servicio   │  │  Servicio   │  │  Servicio   │        │
+│  │  Archivos   │  │  Procesos   │  │  Memoria    │        │
+│  │  (user)     │  │  (user)     │  │  (user)     │        │
+│  └──────┬──────┘  └──────┬──────┘  └──────┬──────┘        │
+│         │                │                │                │
+│         └────────────────┼────────────────┘                │
+│                          │                                 │
+│                    ┌─────┴─────┐                          │
+│                    │  KERNEL   │  ← Mínimo: IPC,          │
+│                    │ Mínimo    │    scheduling básico     │
+│                    └─────┬─────┘                          │
+│                          │                                 │
+│                          ▼                                 │
+│                      HARDWARE                              │
+└────────────────────────────────────────────────────────────┘
+
+Ventajas: Más seguro (servicios en modo usuario), mantenible
+Desventajas: Overhead por comunicación entre procesos
+```
+
+---
+
+## Comparación de Arquitecturas
+
+| Característica | Monolítico | Capas | Microkernel |
+|----------------|------------|-------|-------------|
+| **Rendimiento** | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐ |
+| **Seguridad** | ⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐⭐ |
+| **Mantenibilidad** | ⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐⭐ |
+| **Ejemplos** | Linux, DOS | THE, VAX | MINIX, QNX |
+
+### Híbrido (Windows NT, macOS XNU)
+Combina lo mejor: núcleo híbrido con drivers en modo usuario.
+
+---
+
+## 4. Servicios del Sistema Operativo
+
+### Qué proporciona el SO a los programas
+
+| Servicio | Descripción | Ejemplo |
+|----------|-------------|---------|
+| **Ejecución de programas** | Cargar y ejecutar procesos | `exec()`, `fork()` |
+| **Operaciones de E/S** | Acceso a dispositivos | `read()`, `write()` |
+| **Manipulación de archivos** | Crear, borrar, organizar | `open()`, `mkdir()` |
+| **Comunicación** | Entre procesos (IPC) | pipes, sockets |
+| **Detección de errores** | Hardware y software | Excepciones, logs |
+| **Asignación de recursos** | CPU, memoria, disco | Scheduler, allocators |
+| **Protección** | Seguridad y acceso | Permisos, ACLs |
+
+---
+
+## 5. Llamadas al Sistema (System Calls)
+
+### La interfaz entre programa y SO
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  MODO USUARIO                    MODO KERNEL               │
+│  ────────────                    ───────────               │
+│                                                             │
+│  Programa                                                   │
+│     │                                                       │
+│     │ printf("Hola")                                        │
+│     ▼                                                       │
+│  Biblioteca C (libc)                                        │
+│     │                                                       │
+│     │ write(fd, buffer, size)                               │
+│     ▼                                                       │
+│  ┌─────────────┐              ┌──────────────────────┐     │
+│  │  TRAP/INT   │ ───────────► │  Manejador de syscall │     │
+│  │  (syscall)  │              │  sys_write()          │     │
+│  └─────────────┘              └──────────────────────┘     │
+│                                          │                  │
+│                                          ▼                  │
+│                                    Driver de disco         │
+│                                          │                  │
+│                                          ▼                  │
+│                                       HARDWARE              │
+└─────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## Categorías de System Calls
+
+| Categoría | Ejemplos (Linux) | Función |
+|-----------|------------------|---------|
+| **Control de procesos** | `fork()`, `exec()`, `exit()`, `wait()` | Crear, terminar procesos |
+| **Manejo de archivos** | `open()`, `read()`, `write()`, `close()` | Operaciones con archivos |
+| **Gestión de dispositivos** | `ioctl()`, `read()`, `write()` | Control de hardware |
+| **Información del sistema** | `getpid()`, `time()`, `uname()` | Datos del sistema |
+| **Comunicación** | `pipe()`, `socket()`, `send()`, `recv()` | IPC y red |
+
+### Ejemplo práctico: Crear un proceso
+```c
+#include <unistd.h>
+#include <sys/types.h>
+
+pid_t pid = fork();    // Crear proceso hijo
+if (pid == 0) {
+    // Código del hijo
+    execl("/bin/ls", "ls", "-l", NULL);  // Ejecutar ls
+} else {
+    // Código del padre
+    wait(NULL);        // Esperar al hijo
+}
+```
+
+---
+
+## 6. El SO como Interfaz
+
+### Dos tipos de interfaz para el usuario
 
 ```
 ┌───────────────────────────────────────────────┐
@@ -291,7 +467,7 @@ C:\ (o /)
 
 ---
 
-## 4. Sistemas Operativos Actuales (2026)
+## 7. Sistemas Operativos Actuales (2026)
 
 ### Panorama Global por Segmento
 
