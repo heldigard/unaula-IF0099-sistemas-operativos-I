@@ -288,9 +288,9 @@ DIRECTORIO = Lista de entradas
   juan  maria  pedro   passwd     log         cache
     │     │                        │
     ▼     └──┐                     ▼
-| docs | syslog |
-    │    Desktop
-    ▼       │
+  docs   Desktop                 syslog
+    │       │
+    ▼       ▼
  tesis.pdf foto.jpg
 ```
 

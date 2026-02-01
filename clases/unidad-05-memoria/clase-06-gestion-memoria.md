@@ -179,10 +179,6 @@ El SO debe:
 
 ---
 
-### Representación ASCII:
-
-```
-
 ## Direcciones Lógicas vs Físicas
 
 ### Traducción de Direcciones con MMU

@@ -402,10 +402,12 @@ Windows usa **Native API** (ntdll.dll), no POSIX.
 **Herramienta equivalente a strace:** **Process Monitor** (de Sysinternals)
 
 ---
-# Python (alto nivel)
 
+## Ejemplo en C usando Syscalls Directamente
 
 ```c
+#include <fcntl.h>
+#include <unistd.h>
 
 int main() {
     // Sin printf - usamos write directo
@@ -428,20 +430,17 @@ int main() {
 }
 ```
 
-
 ```bash
 gcc -o syscall_test syscall_test.c
-
----
-# Python (alto nivel)
-
-*(continuación...)*
-
 strace -c ./syscall_test
-
 cat /tmp/syscall_test.txt
 ```
 
+---
+
+## Comparación: Python vs C
+
+### Python (alto nivel)
 
 ```python
 with open("/tmp/test.txt", "w") as f:
@@ -458,11 +457,16 @@ strace -c ./syscall_test
 **Análisis:** Python hace muchas más syscalls (imports, inicialización, etc.).
 
 ---
-### Tiempo estimado: 60 minutos
 
-Implementa un programa que replique `cat`:
+## 📝 Ejercicio: Implementar `micat`
+
+### Tiempo estimado: 30 minutos
+
+Implementa un programa que replique `cat` usando syscalls directamente:
 
 ```c
+#include <fcntl.h>
+#include <unistd.h>
 
 int main(int argc, char *argv[]) {
     if (argc != 2) {
@@ -485,11 +489,6 @@ int main(int argc, char *argv[]) {
         write(1, buffer, bytes);  // stdout
     }
     
----
-### Tiempo estimado: 60 minutos
-
-*(continuación...)*
-
     close(fd);
     return 0;
 }

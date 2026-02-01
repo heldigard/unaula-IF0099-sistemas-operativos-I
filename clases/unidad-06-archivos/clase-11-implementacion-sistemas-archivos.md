@@ -288,13 +288,8 @@ Un **inodo** (index node) es una estructura de datos que contiene metadatos sobr
 ```
 
 ---
-### ¿Qué es un Inodo?
 
-*(continuación...)*
-
----
-
-### 📦 Punteros de Inodo en Detalle
+## 📦 Punteros de Inodo en Detalle
 
 #### 1. Punteros Directos (12)
 

@@ -482,21 +482,22 @@ CPU → TLB (caché) → Si hit: Memoria física (1 acceso)
 
 ---
 
+## 📝 Ejercicio: Traducción de Direcciones
 
----
 ### Datos:
 
 - Memoria física: 32 KB (8 marcos de 4 KB)
 - Proceso con 3 páginas
 - Tabla de páginas: P0→M5, P1→M2, P2→M7
 
-```
-Traducir las siguientes direcciones lógicas:
+**Traducir las siguientes direcciones lógicas:**
 1) 2048
 2) 5000  
 3) 10240
 
-SOLUCIÓN:
+### Solución:
+
+```
 Tamaño de página = 4096 bytes
 
 1) Dirección 2048:
@@ -510,11 +511,6 @@ Tamaño de página = 4096 bytes
    Desplazamiento = 5000 % 4096 = 904
    Marco = 2 (desde tabla)
    Dir. Física = 2 × 4096 + 904 = 9096 ✓
-
----
-### Datos:
-
-*(continuación...)*
 
 3) Dirección 10240:
    Página = 10240 / 4096 = 2
