@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clase 06: Gestión de Memoria | IF0099 - Sistemas Operativos I</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #1e40af;
+            --accent: #059669;
+            --bg-light: #f8fafc;
+            --bg-code: #1e293b;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+        }
+
+        * {margin:0;padding:0;box-sizing:border-box}
+        body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;line-height:1.7;color:var(--text-main);background:var(--bg-light);font-size:16px}
+        .container{max-width:1200px;margin:0 auto;padding:0 20px}
+
+        header{background:linear-gradient(135deg,var(--primary) 0%,var(--secondary) 100%);color:white;padding:3rem 0;margin-bottom:2rem}
+        header h1{font-size:2.2rem;margin-bottom:.5rem;font-weight:700}
+        header .subtitle{font-size:1.1rem;opacity:.9}
+        header .meta{margin-top:1rem;font-size:.9rem;opacity:.8}
+
+        nav{background:white;padding:1.5rem 0;margin-bottom:2rem;border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,0.1)}
+        nav h2{font-size:1.1rem;color:var(--text-muted);margin-bottom:1rem;padding:0 20px}
+        nav ul{list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:.5rem;padding:0 20px}
+        nav a{color:var(--primary);text-decoration:none;padding:.5rem;display:block;border-radius:4px;transition:background .2s}
+        nav a:hover{background:var(--bg-light)}
+
+        section{background:white;padding:2rem;margin-bottom:2rem;border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,0.1)}
+        section h2{color:var(--primary);font-size:1.8rem;margin-bottom:1.5rem;padding-bottom:.5rem;border-bottom:3px solid var(--accent)}
+        section h3{color:var(--secondary);font-size:1.4rem;margin:2rem 0 1rem}
+        section h4{color:var(--text-main);font-size:1.1rem;margin:1.5rem 0 .75rem;font-weight:600}
+        p{margin-bottom:1rem}
+
+        figure{margin:2rem 0;text-align:center}
+        figure img{max-width:100%;height:auto;border-radius:8px;box-shadow:0 4px 6px rgba(0,0,0,0.1)}
+        figcaption{margin-top:.75rem;color:var(--text-muted);font-style:italic;font-size:.95rem}
+
+        table{width:100%;border-collapse:collapse;margin:1.5rem 0;font-size:.95rem}
+        th,td{padding:.75rem 1rem;text-align:left;border-bottom:1px solid var(--border)}
+        th{background:var(--bg-light);font-weight:600;color:var(--secondary)}
+        tr:hover{background:var(--bg-light)}
+
+        pre{background:var(--bg-code);color:#e2e8f0;padding:1.5rem;border-radius:8px;overflow-x:auto;margin:1.5rem 0;font-size:.9rem;line-height:1.5}
+        code{font-family:'Consolas','Monaco','Courier New',monospace}
+        p code,li code,td code{background:var(--bg-light);color:var(--primary);padding:.2rem .4rem;border-radius:4px;font-size:.9em}
+        pre code{background:none;padding:0;color:inherit}
+
+        ul,ol{margin-left:1.5rem;margin-bottom:1rem}
+        li{margin-bottom:.5rem}
+
+        .callout{padding:1.5rem;border-radius:8px;margin:1.5rem 0;border-left:4px solid}
+        .callout.info{background:#eff6ff;border-left-color:var(--primary)}
+        .callout.warning{background:#fef3c7;border-left-color:#f59e0b}
+        .callout.success{background:#d1fae5;border-left-color:var(--accent)}
+        .callout.danger{background:#fee2e2;border-left-color:#ef4444}
+
+        .ascii-diagram{font-family:'Consolas','Monaco',monospace;font-size:.85rem;line-height:1.2;background:var(--bg-light);padding:1rem;border-radius:4px;overflow-x:auto;white-space:pre}
+
+        .comparison{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin:2rem 0}
+        .comparison>div{background:var(--bg-light);padding:1.5rem;border-radius:8px}
+
+        .memory-block{display:flex;flex-direction:column;gap:2px;margin:1.5rem 0;font-family:'Consolas','Monaco',monospace;font-size:.85rem}
+        .memory-row{display:flex;align-items:center}
+        .memory-label{min-width:100px;padding:4px 8px;background:var(--secondary);color:white;text-align:right}
+        .memory-cell{flex:1;min-height:30px;padding:4px 8px;background:var(--bg-light);border:1px solid var(--border)}
+        .memory-cell.so{background:#dc2626;color:white}
+        .memory-cell.process{background:#2563eb;color:white}
+        .memory-cell.free{background:#d1fae5}
+        .memory-cell.hole{background:#fef3c7}
+        .memory-size{font-size:.75rem;color:var(--text-muted)}
+
+        .hierarchy-pyramid{display:flex;flex-direction:column;align-items:center;margin:2rem 0;font-family:'Consolas','Monaco',monospace;font-size:.85rem}
+        .pyramid-level{background:linear-gradient(135deg,var(--primary),var(--secondary));color:white;padding:.75rem 2rem;margin:2px 0;text-align:center;transition:transform .2s}
+        .pyramid-level:hover{transform:scale(1.02)}
+        .pyramid-level.wide{width:100%}
+        .pyramid-level.medium{width:80%}
+        .pyramid-level.narrow{width:60%}
+
+        .timeline{display:flex;align-items:center;margin:1.5rem 0;gap:1rem;overflow-x:auto;padding:1rem 0}
+        .timeline-item{min-width:120px;text-align:center}
+        .timeline-box{padding:1rem;background:var(--bg-light);border-radius:8px;border:2px solid var(--primary)}
+        .timeline-arrow{font-size:1.5rem;color:var(--text-muted)}
+
+        footer{background:var(--text-main);color:white;padding:2rem 0;text-align:center;margin-top:3rem}
+        footer a{color:var(--accent);text-decoration:none}
+
+        .scroll-top{position:fixed;bottom:2rem;right:2rem;background:var(--primary);color:white;width:45px;height:45px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;transition:opacity .3s;text-decoration:none;font-size:1.5rem}
+        .scroll-top.visible{opacity:1}
+        .scroll-top:hover{background:var(--secondary)}
+
+        @media(max-width:768px){
+            header h1{font-size:1.6rem}
+            section{padding:1.5rem}
+            nav ul{grid-template-columns:1fr}
+            .comparison{grid-template-columns:1fr}
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Clase 06: Gestión de Memoria</h1>
+            <p class="subtitle">IF0099 - Sistemas Operativos I | Unidad 5 - Memoria</p>
+            <p class="subtitle">Conceptos, Partición y Fragmentación</p>
+            <p class="meta">Última actualización: 2026-02-01 | Duración: 90 minutos</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <nav>
+            <h2>Contenido de la Clase</h2>
+            <ul>
+                <li><a href="#objetivos">Objetivos de Aprendizaje</a></li>
+                <li><a href="#importancia">¿Por qué es importante?</a></li>
+                <li><a href="#jerarquia">Jerarquía de Memoria</a></li>
+                <li><a href="#direcciones">Direcciones Lógicas vs Físicas</a></li>
+                <li><a href="#binding">Binding de Direcciones</a></li>
+                <li><a href="#carga-dinamica">Carga Dinámica y Overlays</a></li>
+                <li><a href="#asignacion">Asignación Contigua</a></li>
+                <li><a href="#particion">Partición Fija y Variable</a></li>
+                <li><a href="#fragmentacion">Fragmentación</a></li>
+                <li><a href="#estrategias">Estrategias de Asignación</a></li>
+                <li><a href="#compactacion">Compactación</a></li>
+                <li><a href="#swapping">Swapping</a></li>
+                <li><a href="#proteccion">Protección de Memoria</a></li>
+                <li><a href="#practica">Ejemplos Prácticos</a></li>
+                <li><a href="#resumen">Resumen</a></li>
+            </ul>
+        </nav>
+
+        <!-- Objetivos -->
+        <section id="objetivos">
+            <h2>Objetivos de la Clase</h2>
+            <p>Al finalizar esta clase, el estudiante será capaz de:</p>
+            <ol>
+                <li><strong>Explicar</strong> la jerarquía de memoria</li>
+                <li><strong>Diferenciar</strong> direcciones lógicas y físicas</li>
+                <li><strong>Describir</strong> técnicas de partición de memoria</li>
+                <li><strong>Identificar</strong> fragmentación interna y externa</li>
+            </ol>
+        </section>
+
+        <!-- Importancia -->
+        <section id="importancia">
+            <h2>¿Por qué es importante la gestión de memoria?</h2>
+
+            <div class="callout danger">
+                <h4>EL PROBLEMA</h4>
+                <ul>
+                    <li>Múltiples procesos quieren usar la memoria</li>
+                    <li>La memoria es un recurso LIMITADO y CARO</li>
+                    <li>Cada proceso cree que tiene toda la memoria</li>
+                    <li>Debemos proteger procesos entre sí</li>
+                </ul>
+            </div>
+
+            <h4>El SO debe:</h4>
+            <ul>
+                <li>✓ Asignar memoria a procesos</li>
+                <li>✓ Liberar memoria cuando terminan</li>
+                <li>✓ Proteger la memoria de cada proceso</li>
+                <li>✓ Optimizar el uso de memoria disponible</li>
+            </ul>
+        </section>
+
+        <!-- Jerarquía de Memoria -->
+        <section id="jerarquia">
+            <h2>Jerarquía de Memoria</h2>
+
+            <figure>
+                <img src="../assets/infografias/clase-06-jerarquia-memoria.png" alt="Pirámide de jerarquía de memoria">
+                <figcaption>Jerarquía de memoria: compromiso entre velocidad, costo y capacidad</figcaption>
+            </figure>
+
+            <div class="callout info">
+                <strong>¿Qué muestra esta pirámide?</strong>
+                <ul>
+                    <li><strong>Arriba:</strong> Memoria más rápida, más cara y de menor capacidad (registros, caché)</li>
+                    <li><strong>Abajo:</strong> Memoria más lenta, más barata y de mayor capacidad (SSD, HDD)</li>
+                    <li><strong>Compromiso:</strong> No podemos tener memoria rápida Y barata Y grande; debe haber equilibrio</li>
+                </ul>
+            </div>
+
+            <h4>Representación detallada:</h4>
+            <div class="hierarchy-pyramid">
+                <div class="pyramid-level narrow">Registros (~1 ns, ~KB)</div>
+                <div class="pyramid-level narrow">Caché L1 (~2 ns, ~64KB)</div>
+                <div class="pyramid-level medium">Caché L2/L3 (~10 ns, ~MB)</div>
+                <div class="pyramid-level wide">RAM Principal (~100 ns, ~GB)</div>
+                <div class="pyramid-level wide">SSD (~100 µs, ~TB)</div>
+                <div class="pyramid-level wide">HDD (~10 ms, ~TB)</div>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nivel</th>
+                        <th>Tiempo acceso</th>
+                        <th>Capacidad típica</th>
+                        <th>Costo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Registros</td>
+                        <td>~1 ns</td>
+                        <td>~KB</td>
+                        <td>Muy alto</td>
+                    </tr>
+                    <tr>
+                        <td>Caché L1</td>
+                        <td>~2 ns</td>
+                        <td>~64 KB</td>
+                        <td>Alto</td>
+                    </tr>
+                    <tr>
+                        <td>Caché L2/L3</td>
+                        <td>~10 ns</td>
+                        <td>~MB</td>
+                        <td>Alto</td>
+                    </tr>
+                    <tr>
+                        <td>RAM</td>
+                        <td>~100 ns</td>
+                        <td>~GB</td>
+                        <td>Medio</td>
+                    </tr>
+                    <tr>
+                        <td>SSD</td>
+                        <td>~100 µs</td>
+                        <td>~TB</td>
+                        <td>Bajo</td>
+                    </tr>
+                    <tr>
+                        <td>HDD</td>
+                        <td>~10 ms</td>
+                        <td>~TB</td>
+                        <td>Muy bajo</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Direcciones Lógicas vs Físicas -->
+        <section id="direcciones">
+            <h2>Direcciones Lógicas vs Físicas</h2>
+            <h3>Traducción de Direcciones con MMU</h3>
+
+            <figure>
+                <img src="../assets/infografias/clase-06-traduccion-direcciones.png" alt="Diagrama de traducción de direcciones lógicas a físicas">
+                <figcaption>La MMU traduce direcciones lógicas a físicas en tiempo real</figcaption>
+            </figure>
+
+            <div class="callout info">
+                <strong>¿Qué es la MMU?</strong>
+                <ul>
+                    <li><strong>Memory Management Unit:</strong> Hardware especializado dentro del CPU</li>
+                    <li><strong>Función:</strong> Traduce direcciones "que ve el programa" a direcciones "reales en la RAM"</li>
+                    <li><strong>Beneficio:</strong> Cada proceso cree que tiene toda la memoria para sí solo (aislamiento)</li>
+                </ul>
+            </div>
+
+            <h4>Dos perspectivas de la memoria:</h4>
+
+            <div class="comparison">
+                <div>
+                    <h4>PROCESO</h4>
+                    <p style="font-size:0.9em;color:var(--text-muted)">Ve direcciones lógicas</p>
+                    <pre class="ascii-diagram">┌─────────────┐
+│   Código    │ 0x0000
+├─────────────┤
+│   Datos     │ 0x1000
+├─────────────┤
+│   Heap      │ 0x2000
+├─────────────┤
+│   Stack     │ 0x3000
+└─────────────┘</pre>
+                </div>
+                <div>
+                    <h4>MEMORIA FÍSICA</h4>
+                    <p style="font-size:0.9em;color:var(--text-muted)">Direcciones reales</p>
+                    <pre class="ascii-diagram">┌─────────────┐ 0x0000
+│     SO      │
+├─────────────┤ 0x1000
+│  Proceso A  │
+├─────────────┤ 0x3000
+│  Proceso B  │
+├─────────────┤ 0x5000
+│    Libre    │
+└─────────────┘</pre>
+                </div>
+            </div>
+
+            <div class="callout warning">
+                <strong>MMU</strong> (Memory Management Unit): Traduce direcciones lógicas a físicas
+            </div>
+
+            <h4>Fórmula de traducción (reubicación):</h4>
+            <pre><code>Dirección Física = Dirección Lógica + Registro Base</code></pre>
+
+            <div class="memory-block">
+                <div class="memory-row">
+                    <div class="memory-label">CPU</div>
+                    <div class="memory-cell">Dir. Lógica: 0x0500</div>
+                </div>
+                <div class="memory-row">
+                    <div class="memory-label">MMU</div>
+                    <div class="memory-cell">+ Registro Base: 0x4000</div>
+                </div>
+                <div class="memory-row">
+                    <div class="memory-label">Resultado</div>
+                    <div class="memory-cell" style="background:var(--accent);color:white">Dir. Física: 0x4500 ✓</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Binding de Direcciones -->
+        <section id="binding">
+            <h2>Binding de Direcciones</h2>
+            <h3>¿Cuándo se asignan las direcciones de memoria?</h3>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Etapa</th>
+                        <th>Momento</th>
+                        <th>Descripción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Compile time</strong></td>
+                        <td>Compilación</td>
+                        <td>Direcciones absolutas fijas. Si cambia ubicación, recompilar. (MS-DOS .COM)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Load time</strong></td>
+                        <td>Carga</td>
+                        <td>Direcciones relativas, traducidas al cargar. Si cambia, recargar.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Execution time</strong></td>
+                        <td>Ejecución</td>
+                        <td>Direcciones lógicas traducidas en tiempo real por MMU. (Sistemas modernos)</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>Ciclo de vida de las direcciones:</h4>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-box">
+                        <strong>CÓDIGO<br>FUENTE</strong><br>
+                        <small>prog.c</small>
+                    </div>
+                </div>
+                <div class="timeline-arrow">→</div>
+                <div class="timeline-item">
+                    <div class="timeline-box">
+                        <strong>COMPILACIÓN</strong><br>
+                        <small>prog.o<br>(relativo)</small>
+                    </div>
+                </div>
+                <div class="timeline-arrow">→</div>
+                <div class="timeline-item">
+                    <div class="timeline-box">
+                        <strong>CARGA</strong><br>
+                        <small>En memoria<br>(físicas)</small>
+                    </div>
+                </div>
+                <div class="timeline-arrow">→</div>
+                <div class="timeline-item">
+                    <div class="timeline-box">
+                        <strong>EJECUCIÓN</strong><br>
+                        <small>CPU accede<br>(MMU traduce)</small>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Carga Dinámica y Overlays -->
+        <section id="carga-dinamica">
+            <h2>Carga Dinámica</h2>
+            <h3>Cargar rutinas solo cuando se necesitan</h3>
+
+            <div class="callout info">
+                <strong>Idea:</strong> Mantener solo el código frecuentemente usado en memoria; cargar funciones raras desde disco solo cuando se llaman.
+            </div>
+
+            <pre class="ascii-diagram">PROCESO GRANDE (1MB de código total)
+┌──────────────────────────────────────┐
+│  Funciones frecuentes (cargadas)     │ ◄── Siempre en memoria
+├──────────────────────────────────────┤
+│  Función rara_1()                    │
+│  ┌──────────────────────────────┐    │
+│  │  Código en disco             │    │ ◄── Solo se carga
+│  │  (no ocupa RAM)              │    │     si se llama
+│  └──────────────────────────────┘    │
+├──────────────────────────────────────┤
+│  Función rara_2()                    │
+│  ┌──────────────────────────────┐    │
+│  │  Código en disco             │    │
+│  │  (no ocupa RAM)              │    │
+│  └──────────────────────────────┘    │
+└──────────────────────────────────────┘
+
+Beneficio: Menor uso de memoria, más procesos residentes</pre>
+
+            <h4>Implementación:</h4>
+            <ul>
+                <li><strong>Stub (parche):</strong> Pequeño código en lugar de la función real</li>
+                <li>Stub carga la función desde disco y la ejecuta</li>
+                <li>Windows DLLs, Linux shared libraries usan concepto similar</li>
+            </ul>
+
+            <h3>Overlays</h3>
+            <p>Técnica histórica para programas > memoria disponible</p>
+
+            <pre class="ascii-diagram">Memoria disponible: 64KB
+Programa: 150KB (no cabe completo)
+
+Solución: Dividir en overlays que se alternan
+
+Overlay 0 (residente):      Overlay 1:          Overlay 2:
+┌──────────────────┐       ┌──────────┐        ┌──────────┐
+│ Código base      │       │ Fase 1   │        │ Fase 3   │
+│ + Driver E/S     │       │ Análisis │        │ Reporte  │
+├──────────────────┤       └──────────┘        └──────────┘
+│                  │            ▲                    ▲
+│  Espacio para    │────────────┴────────────────────┘
+│  overlay         │
+│  (64KB - base)   │  Solo un overlay cargado a la vez
+└──────────────────┘
+
+Flujo: Base carga → Fase 1 → (reemplaza) → Fase 3</pre>
+
+            <div class="callout warning">
+                <strong>Nota:</strong> Hoy en día rara vez se usa (memoria virtual lo reemplaza)
+            </div>
+        </section>
+
+        <!-- Asignación Contigua -->
+        <section id="asignacion">
+            <h2>Asignación Contigua</h2>
+            <h3>Cada proceso ocupa un bloque continuo de memoria</h3>
+
+            <div class="memory-block">
+                <div class="memory-row">
+                    <div class="memory-label">0 MB</div>
+                    <div class="memory-cell so">Sistema Operativo</div>
+                </div>
+                <div class="memory-row">
+                    <div class="memory-label">100 MB</div>
+                    <div class="memory-cell process">Proceso A (200KB)</div>
+                </div>
+                <div class="memory-row">
+                    <div class="memory-label">300 MB</div>
+                    <div class="memory-cell process">Proceso B (150KB)</div>
+                </div>
+                <div class="memory-row">
+                    <div class="memory-label">450 MB</div>
+                    <div class="memory-cell free">LIBRE (550KB)</div>
+                </div>
+                <div class="memory-row">
+                    <div class="memory-label">1 MB</div>
+                    <div class="memory-cell">Fin de memoria</div>
+                </div>
+            </div>
+
+            <div class="callout info">
+                <strong>Idea clave:</strong> El proceso ocupa un bloque seguido, lo que <strong>simplifica</strong> la traducción de direcciones, pero <strong>dificulta</strong> la entrada de procesos grandes cuando hay huecos dispersos.
+            </div>
+        </section>
+
+        <!-- Partición Fija y Variable -->
+        <section id="particion">
+            <h2>Partición Fija</h2>
+            <h3>Memoria dividida en particiones de tamaño fijo</h3>
+
+            <div class="comparison">
+                <div>
+                    <h4>PARTICIONES FIJAS</h4>
+                    <div class="memory-block">
+                        <div class="memory-row">
+                            <div class="memory-label">256KB</div>
+                            <div class="memory-cell process">Proceso A (200KB)</div>
+                        </div>
+                        <div class="memory-row">
+                            <div class="memory-cell" style="background:#fef3c7">░░░ 56KB libre</div>
+                        </div>
+                        <div class="memory-row">
+                            <div class="memory-label">256KB</div>
+                            <div class="memory-cell process">Proceso B (256KB)</div>
+                        </div>
+                        <div class="memory-row">
+                            <div class="memory-label">256KB</div>
+                            <div class="memory-cell free">LIBRE</div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h4>ASIGNACIÓN</h4>
+                    <div class="memory-block">
+                        <div class="memory-row">
+                            <div class="memory-cell process">Proceso A</div>
+                        </div>
+                        <div class="memory-row">
+                            <div class="memory-cell" style="background:#fef3c7">█████░░░░ 56KB</div>
+                        </div>
+                        <div class="memory-row">
+                            <div class="memory-cell">Fragmentación interna</div>
+                        </div>
+                        <div class="memory-row">
+                            <div class="memory-cell process">Proceso B</div>
+                        </div>
+                        <div class="memory-row">
+                            <div class="memory-cell">███████████</div>
+                        </div>
+                        <div class="memory-row">
+                            <div class="memory-cell free">LIBRE</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="callout danger">
+                <strong>Problema:</strong> Fragmentación interna (espacio desperdiciado dentro de particiones)
+            </div>
+
+            <h3>Partición Variable (Dinámica)</h3>
+            <p>Particiones del tamaño exacto que necesita cada proceso</p>
+
+            <div class="comparison">
+                <div>
+                    <h4>INICIAL</h4>
+                    <div class="memory-block">
+                        <div class="memory-row">
+                            <div class="memory-label">SO</div>
+                            <div class="memory-cell so">Sistema Operativo</div>
+                        </div>
+                        <div class="memory-row">
+                            <div class="memory-label">A</div>
+                            <div class="memory-cell process">Proceso A (200KB)</div>
+                        </div>
+                        <div class="memory-row">
+                            <div class="memory-label">B</div>
+                            <div class="memory-cell process">Proceso B (150KB)</div>
+                        </div>
+                        <div class="memory-row">
+                            <div class="memory-label">C</div>
+                            <div class="memory-cell process">Proceso C (300KB)</div>
+                        </div>
+                        <div class="memory-row">
+                            <div class="memory-label">Libre</div>
+                            <div class="memory-cell free">LIBRE</div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h4>DESPUÉS DE LIBERAR B</h4>
+                    <div class="memory-block">
+                        <div class="memory-row">
+                            <div class="memory-label">SO</div>
+                            <div class="memory-cell so">Sistema Operativo</div>
+                        </div>
+                        <div class="memory-row">
+                            <div class="memory-label">A</div>
+                            <div class="memory-cell process">Proceso A (200KB)</div>
+                        </div>
+                        <div class="memory-row">
+                            <div class="memory-label">Hueco</div>
+                            <div class="memory-cell hole">HUECO (150KB)</div>
+                        </div>
+                        <div class="memory-row">
+                            <div class="memory-label">C</div>
+                            <div class="memory-cell process">Proceso C (300KB)</div>
+                        </div>
+                        <div class="memory-row">
+                            <div class="memory-label">Libre</div>
+                            <div class="memory-cell free">LIBRE</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="callout warning">
+                <strong>Problema:</strong> Fragmentación externa (huecos entre procesos)
+            </div>
+        </section>
+
+        <!-- Fragmentación -->
+        <section id="fragmentacion">
+            <h2>Fragmentación</h2>
+            <h3>Dos tipos de desperdicio de memoria</h3>
+
+            <figure>
+                <img src="../assets/infografias/clase-06-fragmentacion.png" alt="Comparación fragmentación interna vs externa">
+                <figcaption>Fragmentación interna vs externa: dos caras del mismo problema</figcaption>
+            </figure>
+
+            <div class="callout info">
+                <strong>¿Por qué ocurre la fragmentación?</strong>
+                <ul>
+                    <li><strong>Interna:</strong> Se asigna más memoria de la solicitada (particiones fijas)</li>
+                    <li><strong>Externa:</strong> Procesos cargados y descargados dejan "huecos" entre ellos</li>
+                    <li><strong>Consecuencia:</strong> Memoria disponible pero inutilizable para procesos grandes</li>
+                </ul>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Tipo</th>
+                        <th>Causa</th>
+                        <th>Dónde ocurre</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Interna</strong></td>
+                        <td>Proceso no usa toda su partición</td>
+                        <td>Partición fija</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Externa</strong></td>
+                        <td>Huecos entre procesos</td>
+                        <td>Partición variable</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>Ejemplo de Fragmentación Externa:</h4>
+            <div class="memory-block">
+                <div class="memory-row">
+                    <div class="memory-cell process">A (usado)</div>
+                </div>
+                <div class="memory-row">
+                    <div class="memory-cell hole">HUECO 50KB libre</div>
+                </div>
+                <div class="memory-row">
+                    <div class="memory-cell process">B (usado)</div>
+                </div>
+                <div class="memory-row">
+                    <div class="memory-cell hole">HUECO 30KB libre</div>
+                </div>
+                <div class="memory-row">
+                    <div class="memory-cell process">C (usado)</div>
+                </div>
+                <div class="memory-row">
+                    <div class="memory-cell hole">HUECO 40KB libre</div>
+                </div>
+            </div>
+
+            <div class="callout danger">
+                <strong>Total libre:</strong> 120KB<br>
+                <strong>PERO</strong> NO podemos cargar un proceso de 100KB<br>
+                <small>(huecos no son contiguos)</small>
+            </div>
+        </section>
+
+        <!-- Estrategias de Asignación -->
+        <section id="estrategias">
+            <h2>Estrategias de Asignación</h2>
+            <h3>¿Qué hueco elegir para un nuevo proceso?</h3>
+
+            <div class="callout info">
+                <strong>Escenario:</strong> Proceso nuevo: 80KB<br>
+                Huecos disponibles: 100KB, 200KB, 90KB, 150KB
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Estrategia</th>
+                        <th>Descripción</th>
+                        <th>Elige</th>
+                        <th>Comentario</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>First Fit</strong></td>
+                        <td>Primer hueco suficiente</td>
+                        <td>100KB</td>
+                        <td>Rápido, buenos resultados generales</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Best Fit</strong></td>
+                        <td>Hueco más pequeño suficiente</td>
+                        <td>90KB</td>
+                        <td>Deja huecos pequeños (inútiles)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Worst Fit</strong></td>
+                        <td>Hueco más grande</td>
+                        <td>200KB</td>
+                        <td>Deja huecos grandes (útiles)</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>¿Cuál es mejor?</h4>
+            <ul>
+                <li><strong>First Fit:</strong> Rápido, buenos resultados generales</li>
+                <li><strong>Best Fit:</strong> Puede crear muchos huecos pequeños inutilizables</li>
+                <li><strong>Worst Fit:</strong> Produce pocos huecos grandes, más útiles</li>
+            </ul>
+        </section>
+
+        <!-- Compactación -->
+        <section id="compactacion">
+            <h2>Compactación</h2>
+            <h3>Solución a la fragmentación externa</h3>
+
+            <div class="comparison">
+                <div>
+                    <h4>ANTES</h4>
+                    <div class="memory-block">
+                        <div class="memory-row">
+                            <div class="memory-cell process">A</div>
+                        </div>
+                        <div class="memory-row">
+                            <div class="memory-cell hole">HUECO</div>
+                        </div>
+                        <div class="memory-row">
+                            <div class="memory-cell process">B</div>
+                        </div>
+                        <div class="memory-row">
+                            <div class="memory-cell hole">HUECO</div>
+                        </div>
+                        <div class="memory-row">
+                            <div class="memory-cell process">C</div>
+                        </div>
+                        <div class="memory-row">
+                            <div class="memory-cell hole">HUECO</div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h4>DESPUÉS (compactación)</h4>
+                    <div class="memory-block">
+                        <div class="memory-row">
+                            <div class="memory-cell process">A</div>
+                        </div>
+                        <div class="memory-row">
+                            <div class="memory-cell process">B</div>
+                        </div>
+                        <div class="memory-row">
+                            <div class="memory-cell process">C</div>
+                        </div>
+                        <div class="memory-row">
+                            <div class="memory-cell free">LIBRE (120KB contiguo)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="callout warning">
+                <strong>Problema:</strong> Costoso (hay que mover procesos en memoria, reubicar direcciones)
+            </div>
+
+            <h4>Requisitos para compactación:</h4>
+            <ul>
+                <li>Relocación dinámica (direcciones lógicas vs físicas)</li>
+                <li>Tiempo de CPU para mover datos</li>
+                <li>Posible pausa en la ejecución de procesos</li>
+            </ul>
+        </section>
+
+        <!-- Swapping -->
+        <section id="swapping">
+            <h2>Swapping</h2>
+            <h3>Mover procesos entre RAM y disco</h3>
+
+            <div class="comparison">
+                <div>
+                    <h4>MEMORIA RAM</h4>
+                    <div class="memory-block">
+                        <div class="memory-row">
+                            <div class="memory-cell so">SO</div>
+                        </div>
+                        <div class="memory-row">
+                            <div class="memory-cell process">Proceso A</div>
+                        </div>
+                        <div class="memory-row">
+                            <div class="memory-cell process">Proceso B → swap out</div>
+                        </div>
+                        <div class="memory-row">
+                            <div class="memory-cell process">Proceso C</div>
+                        </div>
+                        <div class="memory-row">
+                            <div class="memory-cell free">[espacio]</div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h4>DISCO (Swap)</h4>
+                    <div class="memory-block">
+                        <div class="memory-row">
+                            <div class="memory-cell hole">...</div>
+                        </div>
+                        <div class="memory-row">
+                            <div class="memory-cell process">Proceso D (swapped out)</div>
+                        </div>
+                        <div class="memory-row">
+                            <div class="memory-cell hole">...</div>
+                        </div>
+                        <div class="memory-row">
+                            <div class="memory-cell process">Proceso E (swapped out)</div>
+                        </div>
+                        <div class="memory-row">
+                            <div class="memory-cell hole">...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="callout info">
+                <strong>Swap out:</strong> Mover proceso de RAM a disco<br>
+                <strong>Swap in:</strong> Mover proceso de disco a RAM<br>
+                <strong>Beneficio:</strong> Permite ejecutar más procesos de los que caben en RAM
+            </div>
+
+            <h4>Consideraciones:</h4>
+            <ul>
+                <li>El tiempo de acceso a disco es ~100,000 veces más lento que RAM</li>
+                <li>Se necesita espacio en disco dedicado (partición swap)</li>
+                <li>Si hay demasiado swapping, el sistema se vuelve lento (thrashing)</li>
+            </ul>
+        </section>
+
+        <!-- Protección de Memoria -->
+        <section id="proteccion">
+            <h2>Protección de Memoria</h2>
+            <h3>Evitar que un proceso acceda a memoria de otro</h3>
+
+            <div class="callout info">
+                <strong>Registros de Protección:</strong>
+                <ul>
+                    <li><strong>Base:</strong> Dirección inicial del proceso</li>
+                    <li><strong>Límite:</strong> Tamaño máximo del proceso</li>
+                </ul>
+            </div>
+
+            <h4>Mecanismo de verificación:</h4>
+            <div class="memory-block">
+                <div class="memory-row">
+                    <div class="memory-label">Registros</div>
+                    <div class="memory-cell">Base = 0x4000, Límite = 0x2000</div>
+                </div>
+                <div class="memory-row">
+                    <div class="memory-label">Caso 1</div>
+                    <div class="memory-cell">Dir. lógica: 0x0500</div>
+                </div>
+                <div class="memory-row">
+                    <div class="memory-label">Verificación</div>
+                    <div class="memory-cell" style="background:var(--accent);color:white">¿0x0500 < 0x2000? → SÍ ✓</div>
+                </div>
+                <div class="memory-row">
+                    <div class="memory-label">Resultado</div>
+                    <div class="memory-cell">Dir. física = 0x4000 + 0x0500 = 0x4500 ✓</div>
+                </div>
+            </div>
+
+            <div class="memory-block">
+                <div class="memory-row">
+                    <div class="memory-label">Caso 2</div>
+                    <div class="memory-cell">Dir. lógica: 0x3000</div>
+                </div>
+                <div class="memory-row">
+                    <div class="memory-label">Verificación</div>
+                    <div class="memory-cell" style="background:#ef4444;color:white">¿0x3000 < 0x2000? → NO ✗</div>
+                </div>
+                <div class="memory-row">
+                    <div class="memory-label">Resultado</div>
+                    <div class="memory-cell" style="background:#ef4444;color:white">TRAP: Segmentation Fault!</div>
+                </div>
+            </div>
+
+            <div class="callout danger">
+                <strong>Segmentation Fault:</strong> Error cuando un proceso intenta acceder a memoria fuera de su límite
+            </div>
+        </section>
+
+        <!-- Ejemplos Prácticos -->
+        <section id="practica">
+            <h2>Ejemplos Prácticos en Linux</h2>
+
+            <h4>Ver uso de memoria del sistema:</h4>
+            <pre><code>$ free -h
+              total        used        free      shared  buff/cache   available
+Mem:           16Gi       5.2Gi       3.8Gi       512Mi       7.0Gi       10Gi
+Swap:          2.0Gi       0.0Gi       2.0Gi</code></pre>
+
+            <h4>Ver mapa de memoria de un proceso:</h4>
+            <pre><code>$ cat /proc/self/maps
+00400000-00452000 r-xp  /bin/cat     (código)
+00651000-00652000 r--p  /bin/cat     (datos)
+00652000-00653000 rw-p  /bin/cat     (datos)
+7f8a...          r-xp  /lib/libc.so  (biblioteca)
+7ffc...          rw-p  [stack]       (pila)</code></pre>
+
+            <h4>Ver estadísticas de memoria:</h4>
+            <pre><code>$ vmstat 1
+procs -----------memory---------- ---swap--
+ r  b   swpd   free   buff  cache   si   so
+ 1  0      0 3887264 234567 7340928   0    0</code></pre>
+
+            <div class="callout success">
+                <strong>Lectura rápida:</strong> <code>free</code> y <code>cache</code> muestran memoria disponible; <code>si/so</code> indica swapping.
+            </div>
+        </section>
+
+        <!-- Resumen -->
+        <section id="resumen">
+            <h2>Resumen de la Clase</h2>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Concepto</th>
+                        <th>Descripción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Dir. Lógica</strong></td>
+                        <td>Dirección generada por CPU</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Dir. Física</strong></td>
+                        <td>Dirección real en RAM</td>
+                    </tr>
+                    <tr>
+                        <td><strong>MMU</strong></td>
+                        <td>Traduce direcciones lógicas a físicas</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Frag. Interna</strong></td>
+                        <td>Espacio desperdiciado dentro de partición</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Frag. Externa</strong></td>
+                        <td>Huecos entre procesos</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Swapping</strong></td>
+                        <td>Mover procesos a/desde disco</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Compactación</strong></td>
+                        <td>Mover procesos para unificar huecos</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="callout info">
+                <h4>Tarea para próxima clase</h4>
+                <p><strong>Investigación en parejas:</strong></p>
+                <ol>
+                    <li>Investigar qué es la <strong>paginación</strong> de memoria</li>
+                    <li>¿Cómo resuelve el problema de fragmentación externa?</li>
+                    <li>¿Qué es una <strong>tabla de páginas</strong>?</li>
+                </ol>
+                <p><strong>Entrega:</strong> Resumen de 1 página</p>
+                <p><strong>Sustentación:</strong> Inicio de próxima clase</p>
+            </div>
+
+            <h3>Próxima Clase</h3>
+            <p><strong>Clase 7: Paginación y Segmentación</strong></p>
+            <ul>
+                <li>Paginación: páginas y marcos</li>
+                <li>Tabla de páginas</li>
+                <li>Segmentación</li>
+                <li>Memoria virtual</li>
+            </ul>
+        </section>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p><strong>IF0099 - Sistemas Operativos I</strong> • <a href="index.html">Índice de Clases</a></p>
+        <div class="container">
+            <p>IF0099 - Sistemas Operativos I | UNAULA - Ingeniería Informática - 2026-I</p>
+            <p><a href="../index.html">← Volver al inicio</a></p>
+        </div>
+    </footer>
+
+    <a href="#" class="scroll-top" id="scrollTop">↑</a>
+
+    <script>
+        // Scroll to top button
+        const scrollTopBtn = document.getElementById('scrollTop');
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                scrollTopBtn.classList.add('visible');
+            } else {
+                scrollTopBtn.classList.remove('visible');
+            }
+        });
+        scrollTopBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href !== '#' && href.length > 1) {
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

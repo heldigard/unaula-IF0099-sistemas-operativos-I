@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clase 10: Gestión de Entrada/Salida (E/S) | IF0099 - Sistemas Operativos I</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #1e40af;
+            --accent: #059669;
+            --bg-light: #f8fafc;
+            --bg-code: #1e293b;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+        }
+
+        * {margin:0;padding:0;box-sizing:border-box}
+        body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;line-height:1.7;color:var(--text-main);background:var(--bg-light);font-size:16px}
+        .container{max-width:1200px;margin:0 auto;padding:0 20px}
+
+        header{background:linear-gradient(135deg,var(--primary) 0%,var(--secondary) 100%);color:white;padding:3rem 0;margin-bottom:2rem}
+        header h1{font-size:2.2rem;margin-bottom:.5rem;font-weight:700}
+        header .subtitle{font-size:1.1rem;opacity:.9}
+        header .meta{margin-top:1rem;font-size:.9rem;opacity:.8}
+
+        nav{background:white;padding:1.5rem 0;margin-bottom:2rem;border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,0.1)}
+        nav h2{font-size:1.1rem;color:var(--text-muted);margin-bottom:1rem;padding:0 20px}
+        nav ul{list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:.5rem;padding:0 20px}
+        nav a{color:var(--primary);text-decoration:none;padding:.5rem;display:block;border-radius:4px;transition:background .2s}
+        nav a:hover{background:var(--bg-light)}
+
+        section{background:white;padding:2rem;margin-bottom:2rem;border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,0.1)}
+        section h2{color:var(--primary);font-size:1.8rem;margin-bottom:1.5rem;padding-bottom:.5rem;border-bottom:3px solid var(--accent)}
+        section h3{color:var(--secondary);font-size:1.4rem;margin:2rem 0 1rem}
+        section h4{color:var(--text-main);font-size:1.1rem;margin:1.5rem 0 .75rem;font-weight:600}
+        p{margin-bottom:1rem}
+
+        figure{margin:2rem 0;text-align:center}
+        figure img{max-width:100%;height:auto;border-radius:8px;box-shadow:0 4px 6px rgba(0,0,0,0.1)}
+        figcaption{margin-top:.75rem;color:var(--text-muted);font-style:italic;font-size:.95rem}
+
+        table{width:100%;border-collapse:collapse;margin:1.5rem 0;font-size:.95rem}
+        th,td{padding:.75rem 1rem;text-align:left;border-bottom:1px solid var(--border)}
+        th{background:var(--bg-light);font-weight:600;color:var(--secondary)}
+        tr:hover{background:var(--bg-light)}
+
+        pre{background:var(--bg-code);color:#e2e8f0;padding:1.5rem;border-radius:8px;overflow-x:auto;margin:1.5rem 0;font-size:.9rem;line-height:1.5}
+        code{font-family:'Consolas','Monaco','Courier New',monospace}
+        p code,li code,td code{background:var(--bg-light);color:var(--primary);padding:.2rem .4rem;border-radius:4px;font-size:.9em}
+        pre code{background:none;padding:0;color:inherit}
+
+        ul,ol{margin-left:1.5rem;margin-bottom:1rem}
+        li{margin-bottom:.5rem}
+
+        .callout{padding:1.5rem;border-radius:8px;margin:1.5rem 0;border-left:4px solid}
+        .callout.info{background:#eff6ff;border-left-color:var(--primary)}
+        .callout.warning{background:#fef3c7;border-left-color:#f59e0b}
+        .callout.success{background:#d1fae5;border-left-color:var(--accent)}
+        .callout.danger{background:#fee2e2;border-left-color:#ef4444}
+
+        .comparison{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin:2rem 0}
+        .comparison>div{background:var(--bg-light);padding:1.5rem;border-radius:8px}
+
+        .diagram-box{background:var(--bg-code);color:#e2e8f0;padding:1.5rem;border-radius:8px;margin:1.5rem 0;font-family:'Consolas','Monaco',monospace;font-size:.85rem;line-height:1.2;overflow-x:auto}
+
+        footer{background:var(--text-main);color:white;padding:2rem 0;text-align:center;margin-top:3rem}
+        footer a{color:var(--accent);text-decoration:none}
+
+        .scroll-top{position:fixed;bottom:2rem;right:2rem;background:var(--primary);color:white;width:45px;height:45px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;transition:opacity .3s;text-decoration:none;font-size:1.5rem}
+        .scroll-top.visible{opacity:1}
+        .scroll-top:hover{background:var(--secondary)}
+
+        @media(max-width:768px){
+            header h1{font-size:1.6rem}
+            section{padding:1.5rem}
+            nav ul{grid-template-columns:1fr}
+            .comparison{grid-template-columns:1fr}
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Clase 10: Gestión de Entrada/Salida (E/S)</h1>
+            <p class="subtitle">IF0099 - Sistemas Operativos I | Unidad 7 - E/S</p>
+            <p class="subtitle">Dispositivos, Controladores, Técnicas y DMA</p>
+            <p class="meta">Última actualización: 2026-02-01 | Duración: 90 minutos</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <nav>
+            <h2>Contenido de la Clase</h2>
+            <ul>
+                <li><a href="#objetivos">Objetivos de Aprendizaje</a></li>
+                <li><a href="#intro">1. Introducción a la E/S</a></li>
+                <li><a href="#dispositivos">2. Tipos de Dispositivos</a></li>
+                <li><a href="#comunicacion">3. Comunicación CPU-Dispositivo</a></li>
+                <li><a href="#tecnicas">4. Técnicas de E/S</a></li>
+                <li><a href="#dma">5. DMA - Acceso Directo a Memoria</a></li>
+                <li><a href="#buffering">6. Buffering y Caching</a></li>
+                <li><a href="#planificacion">7. Planificación de Disco</a></li>
+                <li><a href="#practica">8. Actividad Práctica</a></li>
+                <li><a href="#resumen">Resumen</a></li>
+            </ul>
+        </nav>
+
+        <section id="objetivos">
+            <h2>Objetivos de Aprendizaje</h2>
+            <p>Al finalizar esta clase, serás capaz de:</p>
+            <ol>
+                <li><strong>Clasificar</strong> dispositivos de E/S (bloque, carácter, red)</li>
+                <li><strong>Explicar</strong> la diferencia entre port-mapped I/O y memory-mapped I/O</li>
+                <li><strong>Comparar</strong> técnicas de E/S: polling, interrupciones, DMA</li>
+                <li><strong>Analizar</strong> el funcionamiento del DMA y sus ventajas</li>
+                <li><strong>Evaluar</strong> algoritmos de planificación de disco</li>
+                <li><strong>Usar</strong> herramientas para monitorear E/S en Linux</li>
+            </ol>
+        </section>
+
+        <section id="intro">
+            <h2>1. Introducción a la Gestión de E/S</h2>
+
+            <figure>
+                <img src="../assets/infografias/clase-10-dma.png" alt="DMA - Acceso Directo a Memoria">
+                <figcaption>DMA permite transferencia directa disco → RAM sin involucrar a la CPU en cada byte</figcaption>
+            </figure>
+
+            <p>La gestión de entrada/salida (E/S) es uno de los aspectos fundamentales de un sistema operativo. Las CPU son extremadamente rápidas, mientras que los dispositivos periféricos son relativamente lentos. El SO debe gestionar esta diferencia de velocidad eficientemente.</p>
+
+            <div class="callout info">
+                <strong>Problema central:</strong> La CPU puede procesar miles de millones de instrucciones por segundo, pero un disco duro tarda milisegundos en acceder un dato. Sin gestión adecuada, la CPU desperdiciaría la mayor parte del tiempo esperando.
+            </div>
+
+            <h3>Componentes de la E/S</h3>
+            <ul>
+                <li><strong>Dispositivo:</strong> Hardware periférico (teclado, disco, red)</li>
+                <li><strong>Controlador:</strong> Chip que gestiona un dispositivo específico</li>
+                <li><strong>Driver:</strong> Software que comunica el SO con el controlador</li>
+                <li><strong>Subsistema de E/S:</strong> Capa del SO que gestiona todas las operaciones</li>
+            </ul>
+        </section>
+
+        <section id="dispositivos">
+            <h2>2. Tipos de Dispositivos</h2>
+
+            <p>Los dispositivos se clasifican según cómo acceden a los datos:</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Tipo</th>
+                        <th>Acceso</th>
+                        <th>Ejemplos</th>
+                        <th>Características</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Bloque</strong></td>
+                        <td>Por bloques fijos</td>
+                        <td>Disco duro, SSD, USB, CD-ROM</td>
+                        <td>512B o 4KB por bloque. Acceso aleatorio.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Carácter</strong></td>
+                        <td>Stream (byte a byte)</td>
+                        <td>Teclado, mouse, puerto serial, impresora</td>
+                        <td>Sin estructura de bloques. Secuencial.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Red</strong></td>
+                        <td>Por paquetes</td>
+                        <td>Ethernet, WiFi, Bluetooth</td>
+                        <td>Protocolos de red. Paquetes de tamaño variable.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="comparison">
+                <div>
+                    <h4>📦 Dispositivos de Bloque</h4>
+                    <ul>
+                        <li>Almacenan datos en bloques de tamaño fijo</li>
+                        <li>Permiten acceso aleatorio</li>
+                        <li>Optimizados para rendimiento</li>
+                        <li>Se acceden como archivos</li>
+                    </ul>
+                    <pre><code>/dev/sda     # Primer disco
+/dev/sda1    # Primera partición
+/dev/nvme0n1 # SSD NVMe</code></pre>
+                </div>
+                <div>
+                    <h4>⌨️ Dispositivos de Carácter</h4>
+                    <ul>
+                        <li>Transmiten datos como stream</li>
+                        <li>No tienen estructura de bloques</li>
+                        <li>Uso es interactivo o secuencial</li>
+                        <li>Se acceden como stream</li>
+                    </ul>
+                    <pre><code>/dev/ttyS0  # Puerto serie
+/dev/tty1    # Terminal virtual
+/dev/input/mouse</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <section id="comunicacion">
+            <h2>3. Comunicación CPU-Dispositivo</h2>
+
+            <p>La CPU necesita comunicarse con los controladores de dispositivo. Existen dos enfoques principales:</p>
+
+            <div class="comparison">
+                <div>
+                    <h4>Port-Mapped I/O</h4>
+                    <p>Los registros del controlador se mapean a puertos de E/S separados de la memoria.</p>
+                    <pre><code>; Ensamblador x86
+IN AL, 0x60    ; Lee del puerto 0x60 (teclado)
+OUT 0x64, AL   ; Escribe al puerto 0x64</code></pre>
+                    <ul>
+                        <li>Instrucciones especiales: IN, OUT</li>
+                        <li>Los puertos tienen espacio de direcciones propio</li>
+                        <li>Típico en arquitecturas x86</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Memory-Mapped I/O (MMIO)</h4>
+                    <p>Los registros del controlador se mapean a direcciones de memoria normales.</p>
+                    <pre><code>// C con MMIO
+#define REG_BASE 0xFFFF0000
+volatile uint32_t* reg = (uint32_t*)REG_BASE;
+*reg = 0x01;           // Escribir al registro
+dato = *reg;         // Leer del registro</code></pre>
+                    <ul>
+                        <li>Solo se usan instrucciones normales de memoria</li>
+                        <li>Simplifica el hardware y el software</li>
+                        <li>Típico en arquitecturas ARM, RISC-V</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="tecnicas">
+            <h2>4. Técnicas de Gestión de E/S</h2>
+
+            <h3>4.1 Polling (Consulta Periódica)</h3>
+
+            <p>La CPU pregunta repetidamente si el dispositivo tiene datos listo.</p>
+
+            <pre><code>// Ejemplo de polling
+while (1) {
+    if (teclado_listo()) {
+        char c = leer_teclado();
+        procesar(c);
+    }
+    // Hacer otras cosas mientras tanto...
+}</code></pre>
+
+            <div class="callout warning">
+                <strong>Problema:</strong> La CPU desperdicia ciclos verificando constantemente. Si el teclado se usa 1 vez por segundo, la CPU verifica millones de veces innecesariamente.
+            </div>
+
+            <p><strong>Uso típico:</strong> Sistemas simples, sistemas de tiempo real críticos donde no se pueden usar interrupciones.</p>
+
+            <h3>4.2 Interrupciones</h3>
+
+            <p>El dispositivo notifica a la CPU cuando necesita atención. La CPU puede hacer otras tareas mientras espera.</p>
+
+            <pre><code>1. Proceso solicita E/S (ej: leer archivo)
+2. SO inicia operación y bloquea el proceso
+3. Proceso pasa a estado WAITING
+4. CPU puede ejecutar otros procesos
+5. Dispositivo termina y genera IRQ (Interrupt Request)
+6. SO atiende la interrupción (ISR - Interrupt Service Routine)
+7. SO despierta al proceso y le entrega los datos</code></pre>
+
+            <div class="callout success">
+                <strong>Ventaja:</strong> La CPU no desperdicia ciclos. Puede hacer otro trabajo útil mientras el dispositivo prepara los datos.
+            </div>
+
+            <p><strong>Uso típico:</strong> Casi todos los sistemas operativos modernos.</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Aspecto</th>
+                        <th>Polling</th>
+                        <th>Interrupciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Uso de CPU</strong></td>
+                        <td>Alto (espera activa)</td>
+                        <td>Bajo (espera pasiva)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Complejidad</strong></td>
+                        <td>Baja</td>
+                        <td>Media</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Responsividad</strong></td>
+                        <td>Inmediata</td>
+                        <td>Depende de latencia</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Overhead</strong></td>
+                        <td>Cero</td>
+                        <td>Cambio de contexto (~100-1000 ciclos)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="dma">
+            <h2>5. DMA - Acceso Directo a Memoria</h2>
+
+            <p>Para transferencias grandes (como leer un archivo), ni polling ni interrupciones son eficientes. DMA (Direct Memory Access) permite que el dispositivo transfiera datos directamente a la memoria sin intervención de la CPU.</p>
+
+            <h3>Flujo de una operación DMA</h3>
+
+            <div class="diagram-box">
+<pre>1. CPU programa al controlador DMA:
+   - Dirección fuente     (ej: buffer del disco)
+   - Dirección destino    (ej: RAM en 0x1000000)
+   - Cantidad de datos    (ej: 4KB)
+   - Dirección de IRQ     (para notificar al terminar)
+
+2. DMA toma control del bus del sistema
+
+3. DMA transfiere datos:
+   - Cycle Stealing: Roba ciclos del bus gradualmente
+   - Burst Mode: Transfiere un bloque completo y luego libera
+
+4. Al terminar, DMA genera IRQ a la CPU
+
+5. CPU recibe notificación y procesa los datos
+</pre>
+            </div>
+
+            <div class="callout success">
+                <strong>Ventaja clave:</strong> La CPU está libre para hacer otro trabajo durante toda la transferencia. Para 1 MB de datos, la CPU solo pierde ~1000 ciclos (inicialización + finalización) en lugar de millones.
+            </div>
+
+            <h3>Componentes DMA</h3>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Componente</th>
+                        <th>Función</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Controlador DMA</strong></td>
+                        <td>Gestiona la transferencia sin intervención de la CPU</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Canal DMA</strong></td>
+                        <td>Cada canal puede manejar una transferencia independiente</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Flip-Flop</strong></td>
+                        <td>Indica si el DMA está ocupado o libre</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Registro Dirección</strong></td>
+                        <td>Dirección de memoria de origen/destino</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Registro Contador</strong></td>
+                        <td>Cantidad de datos a transferir</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="buffering">
+            <h2>6. Buffering y Caching</h2>
+
+            <h3>Buffering (Almacenamiento Intermedio)</h3>
+            <p>Un buffer es un área de memoria que almacena temporalmente datos mientras se transfieren entre dos dispositivos con velocidades diferentes.</p>
+
+            <div class="comparison">
+                <div>
+                    <h4>Sin Buffer</h4>
+                    <pre><code>Producto → Consumidor
+[   rápido ]  [  lento ]
+❌ Productor bloquea
+❌ Consumidor espera</code></pre>
+                </div>
+                <div>
+                    <h4>Con Buffer</h4>
+                    <pre><code>Producto → [BUFFER] → Consumidor
+[  rápido ] [  datos  ] [ lento ]
+✅ Productor escribe al buffer
+✅ Consumidor lee del buffer
+✅ No bloqueos</code></pre>
+                </div>
+            </div>
+
+            <h3>Page Cache (Caché de Páginas)</h3>
+            <p>El SO mantiene en RAM páginas de archivos accedidos recientemente. Esto reduce drásticamente los accesos a disco.</p>
+
+            <pre><code># Ver page cache en Linux
+free -h
+Mem: 7.5G  2.1G  3.2G  2.2G  28% /
+                ↑      ↑      ↑
+              Total  Usado  Cache
+
+# Limpiar caches (como root)
+echo 3 > /proc/sys/vm/drop_caches</code></pre>
+
+            <div class="callout info">
+                <strong>Nota:</strong> La memoria usada como caché se puede liberar automáticamente cuando un proceso necesita más RAM.
+            </div>
+        </section>
+
+        <section id="planificacion">
+            <h2>7. Planificación de Disco</h2>
+
+            <p>El disco tiene múltiples solicitudes pendientes. ¿En qué orden atenderlas? El objetivo es minimizar el movimiento del cabezal (seek time), que es la operación más lenta.</p>
+
+            <h3>Métricas de Rendimiento</h3>
+
+            <ul>
+                <li><strong>Seek time:</strong> Tiempo en mover el cabezal a la pista correcta (~5-10ms)</li>
+                <li><strong>Latencia rotacional:</strong> Tiempo en que el disco gira hasta el sector correcto (~3ms promedio)</li>
+                <li><strong>Tiempo de transferencia:</strong> Tiempo en leer los datos (~0.1ms por KB)</li>
+            </ul>
+
+            <h3>Algoritmos de Planificación</h3>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Algoritmo</th>
+                        <th>Descripción</th>
+                        <th>Ventaja</th>
+                        <th>Desventaja</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>FCFS</strong><br>First Come First Served</td>
+                        <td>Atender en orden de llegada</td>
+                        <td>Justo, simple</td>
+                        <td>Mucho movimiento de cabezal</td>
+                    </tr>
+                    <tr>
+                        <td><strong>SSTF</strong><br>Shortest Seek Time First</td>
+                        <td>Atender el más cercano primero</td>
+                        <td>Mejor rendimiento promedio</td>
+                        <td>Posible inanición</td>
+                    </tr>
+                    <tr>
+                        <td><strong>SCAN</strong><br>Elevator</td>
+                        <td>Mover cabezal de un extremo a otro</td>
+                        <td>Justicia temporal</td>
+                        <td>Mayor tiempo de espera</td>
+                    </tr>
+                    <tr>
+                        <td><strong>C-SCAN</strong><br>Circular SCAN</td>
+                        <td>Como SCAN pero regresa al inicio</td>
+                        <td>Tiempo de espera más uniforme</td>
+                        <td>No aprovecha viajes de vuelta</td>
+                    </tr>
+                    <tr>
+                        <td><strong>LOOK</strong></td>
+                        <td>Como SCAN pero va solo hasta el último pedido</td>
+                        <td>Mejor que SCAN</td>
+                        <td>Más complejo</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>Ejemplo: FCFS vs SSTF</h4>
+
+            <pre><code>Solicitudes (cilindros): 98, 183, 37, 122, 14, 124, 65, 67
+Cabezal inicial: 53
+
+FCFS: 53→98→183→37→122→14→124→65→67
+Movimiento total: 680 cilindros
+
+SSTF: 53→65→67→37→14→98→122→124→183
+Movimiento total: 236 cilindros ✅</code></pre>
+        </section>
+
+        <section id="practica">
+            <h2>8. Actividad Práctica</h2>
+
+            <h3>Ejercicio 1: Explorar Dispositivos en Linux</h3>
+
+            <pre><code># Listar dispositivos de bloque
+lsblk
+
+# Ver información detallada de discos
+fdisk -l
+
+# Ver particiones
+df -h
+
+# Ver estadísticas de E/S
+iostat -x 1 5
+
+# Ver interrupciones por CPU
+cat /proc/interrupts | head -20</code></pre>
+
+            <h3>Ejercicio 2: Analizar E/S de un Comando</h3>
+
+            <pre><code># Usar strace para ver syscalls de E/S
+strace -e open,read,write,close cat /etc/hostname
+
+# Usar strace con contador
+strace -c ls /tmp
+
+# Analizar un programa en ejecución
+strace -p $(pidof nombre_proceso)</code></pre>
+
+            <h3>Ejercicio 3: Simular Algoritmos de Planificación</h3>
+
+            <p>Calcular el movimiento del cabezal para esta secuencia con FCFS, SSTF y SCAN:</p>
+
+            <pre><code>Solicitudes: 82, 170, 43, 140, 24, 16, 190
+Cabezal inicial: 50
+
+FCFS: __________________________
+SSTF: __________________________
+SCAN (dirección creciente): __________________________
+
+Compara los resultados.
+¿Cuál es más eficiente?</code></pre>
+
+            <p><strong>Tiempo estimado:</strong> 30 minutos</p>
+        </section>
+
+        <section id="resumen">
+            <h2>Resumen de la Clase</h2>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Concepto</th>
+                        <th>Idea Clave</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td><strong>Dispositivos de bloque</strong></td><td>Acceso por bloques fijos (disco, SSD)</td></tr>
+                    <tr><td><strong>Dispositivos de carácter</strong></td><td>Acceso stream (teclado, mouse)</td></tr>
+                    <tr><td><strong>Port-mapped I/O</strong></td><td>Puertos separados de memoria (IN/OUT)</td></tr>
+                    <tr><td><strong>Memory-mapped I/O</strong></td><td>Registros en direcciones de memoria</td></tr>
+                    <tr><td><strong>Polling</strong></td><td>CPU verifica repetidamente (desperdicia ciclos)</td></tr>
+                    <tr><td><strong>Interrupciones</strong></td><td>Dispositivo notifica a CPU (eficiente)</td></tr>
+                    <tr><td><strong>DMA</strong></td><td>Transferencia directa a RAM sin CPU</td></tr>
+                    <tr><td><strong>Buffering</strong></td><td>Almacenamiento intermedio para desacoplar velocidades</td></tr>
+                    <tr><td><strong>Page Cache</strong></td><td>RAM usada como caché de archivos</td></tr>
+                    <tr><td><strong>SSTF</strong></td><td>Atender solicitud más cercana primero</td></tr>
+                    <tr><td><strong>SCAN</strong></td><td>Algoritmo del elevador (ida y vuelta)</td></tr>
+                </tbody>
+            </table>
+
+            <div class="callout success">
+                <strong>Concepto fundamental:</strong> La gestión de E/S es el arte de balancear el rendimiento de la CPU con la latencia de los dispositivos. Las técnicas modernas (interrupciones + DMA + caching) permiten que la CPU haga trabajo útil mientras espera que los dispositivos lentos terminen sus operaciones.
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p><strong>IF0099 - Sistemas Operativos I</strong> • <a href="index.html">Índice de Clases</a></p>
+        <p>IF0099 - Sistemas Operativos I | UNAULA - Ingeniería Informática - 2026-I</p>
+        <p>Clase 10: Gestión de Entrada/Salida (E/S)</p>
+    </footer>
+
+    <a href="#" class="scroll-top" id="scrollTop" aria-label="Scroll to top">↑</a>
+
+    <script>
+        const scrollTopBtn = document.getElementById('scrollTop');
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                scrollTopBtn.classList.add('visible');
+            } else {
+                scrollTopBtn.classList.remove('visible');
+            }
+        });
+        scrollTopBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    </script>
+</body>
+</html>

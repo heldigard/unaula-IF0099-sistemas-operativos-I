@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clase 04: Algoritmos de Planificación de CPU | IF0099 - Sistemas Operativos I</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #1e40af;
+            --accent: #059669;
+            --bg-light: #f8fafc;
+            --bg-code: #1e293b;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+        }
+
+        * {margin:0;padding:0;box-sizing:border-box}
+        body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;line-height:1.7;color:var(--text-main);background:var(--bg-light);font-size:16px}
+        .container{max-width:1200px;margin:0 auto;padding:0 20px}
+
+        header{background:linear-gradient(135deg,var(--primary) 0%,var(--secondary) 100%);color:white;padding:3rem 0;margin-bottom:2rem}
+        header h1{font-size:2.2rem;margin-bottom:.5rem;font-weight:700}
+        header .subtitle{font-size:1.1rem;opacity:.9}
+        header .meta{margin-top:1rem;font-size:.9rem;opacity:.8}
+
+        nav{background:white;padding:1.5rem 0;margin-bottom:2rem;border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,0.1)}
+        nav h2{font-size:1.1rem;color:var(--text-muted);margin-bottom:1rem;padding:0 20px}
+        nav ul{list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.5rem;padding:0 20px}
+        nav a{color:var(--primary);text-decoration:none;padding:.5rem;display:block;border-radius:4px;transition:background .2s}
+        nav a:hover{background:var(--bg-light)}
+
+        section{background:white;padding:2rem;margin-bottom:2rem;border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,0.1)}
+        section h2{color:var(--primary);font-size:1.8rem;margin-bottom:1.5rem;padding-bottom:.5rem;border-bottom:3px solid var(--accent)}
+        section h3{color:var(--secondary);font-size:1.4rem;margin:2rem 0 1rem}
+        section h4{color:var(--text-main);font-size:1.1rem;margin:1.5rem 0 .75rem;font-weight:600}
+        p{margin-bottom:1rem}
+
+        figure{margin:2rem 0;text-align:center}
+        figure img{max-width:100%;height:auto;border-radius:8px;box-shadow:0 4px 6px rgba(0,0,0,0.1)}
+        figcaption{margin-top:.75rem;color:var(--text-muted);font-style:italic;font-size:.95rem}
+
+        table{width:100%;border-collapse:collapse;margin:1.5rem 0;font-size:.95rem}
+        th,td{padding:.75rem 1rem;text-align:left;border-bottom:1px solid var(--border)}
+        th{background:var(--bg-light);font-weight:600;color:var(--secondary)}
+        tr:hover{background:var(--bg-light)}
+
+        pre{background:var(--bg-code);color:#e2e8f0;padding:1.5rem;border-radius:8px;overflow-x:auto;margin:1.5rem 0;font-size:.9rem;line-height:1.5}
+        code{font-family:'Consolas','Monaco','Courier New',monospace}
+        p code,li code,td code{background:var(--bg-light);color:var(--primary);padding:.2rem .4rem;border-radius:4px;font-size:.9em}
+        pre code{background:none;padding:0;color:inherit}
+
+        ul,ol{margin-left:1.5rem;margin-bottom:1rem}
+        li{margin-bottom:.5rem}
+
+        .callout{padding:1.5rem;border-radius:8px;margin:1.5rem 0;border-left:4px solid}
+        .callout.info{background:#eff6ff;border-left-color:var(--primary)}
+        .callout.warning{background:#fef3c7;border-left-color:#f59e0b}
+        .callout.success{background:#d1fae5;border-left-color:var(--accent)}
+
+        .ascii-diagram{font-family:'Consolas','Monaco',monospace;font-size:.85rem;line-height:1.2;background:var(--bg-light);padding:1rem;border-radius:4px;overflow-x:auto;white-space:pre}
+
+        .comparison{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin:2rem 0}
+        .comparison>div{background:var(--bg-light);padding:1.5rem;border-radius:8px}
+
+        .gantt{display:flex;align-items:center;margin:2rem 0;font-family:'Consolas','Monaco',monospace;font-size:.8rem}
+        .gantt-bar{height:30px;background:var(--primary);color:white;display:flex;align-items:center;justify-content:center;border-radius:4px;margin:0 2px}
+        .gantt-id{width:80px;text-align:right;padding-right:10px}
+        .gantt-timeline{flex:1;display:flex;height:30px}
+        .gantt-empty{flex:1;border-bottom:1px solid var(--border)}
+
+        footer{background:var(--text-main);color:white;padding:2rem 0;text-align:center;margin-top:3rem}
+        footer a{color:var(--accent);text-decoration:none}
+
+        .scroll-top{position:fixed;bottom:2rem;right:2rem;background:var(--primary);color:white;width:45px;height:45px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;transition:opacity .3s;text-decoration:none;font-size:1.5rem}
+        .scroll-top.visible{opacity:1}
+        .scroll-top:hover{background:var(--secondary)}
+
+        @media(max-width:768px){
+            header h1{font-size:1.6rem}
+            section{padding:1.5rem}
+            nav ul{grid-template-columns:1fr}
+            .comparison{grid-template-columns:1fr}
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Clase 04: Algoritmos de Planificación de CPU</h1>
+            <p class="subtitle">IF0099 - Sistemas Operativos I | Unidad 3 - Planificación</p>
+            <p class="subtitle">Algoritmos FCFS, SJF, Prioridad y Round Robin</p>
+            <p class="meta">Última actualización: 2026-02-01 | Duración: 90 minutos</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <nav>
+            <h2>Contenido de la Clase</h2>
+            <ul>
+                <li><a href="#objetivos">Objetivos de Aprendizaje</a></li>
+                <li><a href="#que-es">1. ¿Qué es la Planificación?</a></li>
+                <li><a href="#metricas">2. Métricas de Rendimiento</a></li>
+                <li><a href="#fcfs">3. FCFS - First Come First Served</a></li>
+                <li><a href="#sjf">4. SJF - Shortest Job First</a></li>
+                <li><a href="#prioridad">5. Planificación por Prioridad</a></li>
+                <li><a href="#rr">6. Round Robin</a></li>
+                <li><a href="#tiempo-real">7. Planificación en Tiempo Real</a></li>
+                <li><a href="#multiprocesador">8. Planificación en Multiprocesadores</a></li>
+                <li><a href="#practica">9. Actividad Práctica</a></li>
+            </ul>
+        </nav>
+
+        <section id="objetivos">
+            <h2>Objetivos de Aprendizaje</h2>
+            <p>Al finalizar esta clase, serás capaz de:</p>
+            <ol>
+                <li><strong>Explicar</strong> el concepto de planificación de CPU</li>
+                <li><strong>Calcular</strong> métricas de rendimiento (turnaround, waiting, response)</li>
+                <li><strong>Comparar</strong> los algoritmos FCFS, SJF, Prioridad y Round Robin</li>
+                <li><strong>Aplicar</strong> cada algoritmo a problemas prácticos</li>
+                <li><strong>Describir</strong> algoritmos de tiempo real (RMS, EDF)</li>
+                <li><strong>Explicar</strong> planificación en multiprocesadores (SMP, afinidad)</li>
+                <li><strong>Evaluar</strong> algoritmos mediante simulación</li>
+            </ol>
+        </section>
+
+        <section id="que-es">
+            <h2>1. ¿Qué es la Planificación de CPU?</h2>
+
+            <div class="comparison">
+                <div>
+                    <h3>🏦 La analogía del banco</h3>
+                    <p>Imagina una ventanilla de banco con una sola persona atendiendo:</p>
+                    <ul>
+                        <li>👥 Múltiples clientes esperando (procesos)</li>
+                        <li>💼 Cada uno con diferentes necesidades (tiempo de ejecución)</li>
+                        <li>⏰ Algunos tienen urgencia (prioridad)</li>
+                        <li>🎯 Queremos atender a todos eficientemente</li>
+                    </ul>
+                    <p><strong>¿Cómo decidimos el orden de atención?</strong></p>
+                    <p>Esto es exactamente lo que hace el scheduler del SO con la CPU.</p>
+
+                    <h3>📊 Representación</h3>
+                    <div class="ascii-diagram">
+        Cola de procesos LISTOS
+┌─────┐ ┌─────┐ ┌─────┐ ┌─────┐
+│ P1  │ │ P2  │ │ P3  │ │ P4  │ ──→ ? ──→ [CPU]
+└─────┘ └─────┘ └─────┘ └─────┘
+                                     │
+                    ¿Quién va primero?
+                    </div>
+                </div>
+
+                <div>
+                    <h3>📋 Tipos de Planificación</h3>
+                    <table>
+                        <tr>
+                            <th>Tipo</th>
+                            <th>Cuándo actúa</th>
+                            <th>Frecuencia</th>
+                        </tr>
+                        <tr>
+                            <td><strong>Largo plazo</strong></td>
+                            <td>Admitir procesos nuevos</td>
+                            <td>Minutos/horas</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Mediano plazo</strong></td>
+                            <td>Swap in/out de memoria</td>
+                            <td>Segundos/minutos</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Corto plazo</strong></td>
+                            <td>Elegir proceso para CPU</td>
+                            <td>Milisegundos</td>
+                        </tr>
+                    </table>
+
+                    <p><strong>Nosotros enfocamos en planificación de corto plazo</strong></p>
+
+                    <h3>⚡ Preemptive vs Non-Preemptive</h3>
+                    <table>
+                        <tr>
+                            <th>Característica</th>
+                            <th>Non-Preemptive</th>
+                            <th>Preemptive</th>
+                        </tr>
+                        <tr>
+                            <td><strong>Interrupción</strong></td>
+                            <td>El SO NO puede quitar la CPU</td>
+                            <td>El SO PUEDE interrumpir</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Cuándo termina</strong></td>
+                            <td>Proceso termina o se bloquea</td>
+                            <td>Timeout o prioridad</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Uso</strong></td>
+                            <td>Sistemas antiguos</td>
+                            <td>Sistemas modernos</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section id="metricas">
+            <h2>2. Métricas de Rendimiento</h2>
+
+            <div class="comparison">
+                <div>
+                    <h3>📊 Tabla de procesos ejemplo</h3>
+                    <table>
+                        <tr>
+                            <th>Proceso</th>
+                            <th>Llegada</th>
+                            <th>Ráfaga</th>
+                        </tr>
+                        <tr>
+                            <td>P1</td>
+                            <td>0</td>
+                            <td>5</td>
+                        </tr>
+                        <tr>
+                            <td>P2</td>
+                            <td>1</td>
+                            <td>3</td>
+                        </tr>
+                        <tr>
+                            <td>P3</td>
+                            <td>2</td>
+                            <td>8</td>
+                        </tr>
+                    </table>
+
+                    <h3>📏 Métricas a calcular</h3>
+                    <table>
+                        <tr>
+                            <th>Métrica</th>
+                            <th>Fórmula</th>
+                        </tr>
+                        <tr>
+                            <td><strong>Turnaround Time</strong></td>
+                            <td>Fin - Llegada</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Waiting Time</strong></td>
+                            <td>Turnaround - Ráfaga</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Response Time</strong></td>
+                            <td>Primera ejecución - Llegada</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div>
+                    <h3>💡 Interpretación de métricas</h3>
+
+                    <p><strong>Turnaround Time</strong> (Tiempo de retorno)</p>
+                    <div class="callout info">
+                        <p>Tiempo total desde que el proceso llega hasta que termina completamente</p>
+                        <div class="ascii-diagram">
+        Llegada                 Fin
+          │───────────────────────│
+                  Turnaround
+                        </div>
+                    </div>
+
+                    <p><strong>Waiting Time</strong> (Tiempo de espera)</p>
+                    <div class="callout warning">
+                        <p>Tiempo que el proceso pasa en cola esperando CPU</p>
+                        <div class="ascii-diagram">
+          Espera     Ejecuta    Espera
+                │────────│           │
+               Waiting
+                        </div>
+                    </div>
+
+                    <p><strong>Response Time</strong> (Tiempo de respuesta)</p>
+                    <div class="callout success">
+                        <p>Tiempo hasta la primera ejecución</p>
+                        <div class="ascii-diagram">
+        Llegada   Primera CPU
+          │──────────│
+              Response
+                        </div>
+                    </div>
+
+                    <p><strong>Objetivo:</strong> Minimizar TODAS las métricas (a veces hay trade-offs)</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="fcfs">
+            <h2>3. FCFS - First Come, First Served</h2>
+
+            <h3>"El primero que llega, primero se atiende"</h3>
+
+            <p><strong>Características:</strong></p>
+            <ul>
+                <li>Non-preemptive</li>
+                <li>Simple de implementar</li>
+                <li>Puede causar el <strong>efecto convoy</strong></li>
+            </ul>
+
+            <h3>Ejemplo con diagrama</h3>
+            <div class="ascii-diagram">
+Llegada:  P1(0), P2(1), P3(2)
+Ráfaga:   P1=5,  P2=3,  P3=8
+
+Tiempo:  0    5    8         16
+         │────│────│─────────│
+         │ P1 │ P2 │   P3    │
+            </div>
+
+            <h4>Cálculo de métricas</h4>
+            <table>
+                <tr>
+                    <th>Proceso</th>
+                    <th>Llegada</th>
+                    <th>Ráfaga</th>
+                    <th>Inicio</th>
+                    <th>Fin</th>
+                    <th>Turnaround</th>
+                    <th>Waiting</th>
+                </tr>
+                <tr>
+                    <td>P1</td>
+                    <td>0</td>
+                    <td>5</td>
+                    <td>0</td>
+                    <td>5</td>
+                    <td>5-0=<strong>5</strong></td>
+                    <td>5-5=<strong>0</strong></td>
+                </tr>
+                <tr>
+                    <td>P2</td>
+                    <td>1</td>
+                    <td>3</td>
+                    <td>5</td>
+                    <td>8</td>
+                    <td>8-1=<strong>7</strong></td>
+                    <td>7-3=<strong>4</strong></td>
+                </tr>
+                <tr>
+                    <td>P3</td>
+                    <td>2</td>
+                    <td>8</td>
+                    <td>8</td>
+                    <td>16</td>
+                    <td>16-2=<strong>14</strong></td>
+                    <td>14-8=<strong>6</strong></td>
+                </tr>
+            </table>
+
+            <p><strong>Promedios:</strong></p>
+            <ul>
+                <li>Turnaround promedio: (5+7+14)/3 = <strong>8.67</strong></li>
+                <li>Waiting promedio: (0+4+6)/3 = <strong>3.33</strong></li>
+            </ul>
+        </section>
+
+        <section id="sjf">
+            <h2>4. SJF - Shortest Job First</h2>
+
+            <h3>"El más corto primero"</h3>
+
+            <p><strong>Características:</strong></p>
+            <ul>
+                <li>Puede ser preemptive (SRTF) o non-preemptive</li>
+                <li><strong>Óptimo</strong> en términos de waiting time promedio</li>
+                <li>Problema: ¿Cómo saber el tiempo de ráfaga?</li>
+            </ul>
+
+            <div class="comparison">
+                <div>
+                    <h4>📊 Ejemplo SJF Non-preemptive</h4>
+                    <div class="ascii-diagram">
+Llegada:  P1(0), P2(1), P3(2)
+Ráfaga:   P1=5,  P2=3,  P3=8
+
+Tiempo:  0    5    8         16
+         │────│────│─────────│
+         │ P1 │ P2 │   P3    │  (P1 ya empezó)
+         │────│────│─────────│
+                    </div>
+                </div>
+
+                <div>
+                    <h4>⚡ Efecto Convoy en FCFS</h4>
+                    <div class="callout warning">
+                        <p>Cuando un proceso largo bloquea a los cortos</p>
+                        <div class="ascii-diagram">
+Procesos: P1(ráfaga=100), P2(ráfaga=1), P3(ráfaga=1)
+
+FCFS:
+│──────────────────────────────────────────│─│─│
+│                  P1 (100)                │P2│P3│
+0                                         100 101 102
+
+P2 espera 100 unidades para ejecutar solo 1
+P3 espera 101 unidades para ejecutar solo 1
+
+¡MUY INEFICIENTE!
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h4>📊 Ejemplo con llegadas diferentes</h4>
+            <table>
+                <tr>
+                    <th>Proceso</th>
+                    <th>Llegada</th>
+                    <th>Ráfaga</th>
+                </tr>
+                <tr>
+                    <td>P1</td>
+                    <td>0</td>
+                    <td>7</td>
+                </tr>
+                <tr>
+                    <td>P2</td>
+                    <td>2</td>
+                    <td>4</td>
+                </tr>
+                <tr>
+                    <td>P3</td>
+                    <td>4</td>
+                    <td>1</td>
+                </tr>
+                <tr>
+                    <td>P4</td>
+                    <td>5</td>
+                    <td>4</td>
+                </tr>
+            </table>
+
+            <p><strong>Orden SJF:</strong> P1 → P3 → P2 → P4</p>
+        </section>
+
+        <section id="prioridad">
+            <h2>5. Planificación por Prioridad</h2>
+
+            <p>Cada proceso tiene un número de prioridad. <strong>Menor número = Mayor prioridad</strong>.</p>
+
+            <table>
+                <tr>
+                    <th>Proceso</th>
+                    <th>Llegada</th>
+                    <th>Ráfaga</th>
+                    <th>Prioridad</th>
+                </tr>
+                <tr>
+                    <td>P1</td>
+                    <td>0</td>
+                    <td>5</td>
+                    <td>3</td>
+                </tr>
+                <tr>
+                    <td>P2</td>
+                    <td>0</td>
+                    <td>3</td>
+                    <td>1 (alta)</td>
+                </tr>
+                <tr>
+                    <td>P3</td>
+                    <td>0</td>
+                    <td>8</td>
+                    <td>2</td>
+                </tr>
+            </table>
+
+            <p><strong>Orden de ejecución:</strong> P2 → P3 → P1</p>
+
+            <div class="callout warning">
+                <h4>⚠️ Problema: Starvation (Inanición)</h4>
+                <p>Procesos de baja prioridad pueden no ejecutarse nunca si constantemente llegan procesos de alta prioridad.</p>
+                <div class="ascii-diagram">
+P1 (prioridad=5) ───────────────→ NUNCA EJECUTA
+                    ↑ ↑ ↑ ↑ ↑ ↑
+         P_alta P_alta P_alta P_alta P_alta
+         (prioridad=1)
+                </div>
+                <p><strong>Solución:</strong> <strong>Aging (Envejecimiento)</strong> - Aumentar gradualmente la prioridad de procesos que esperan mucho tiempo.</p>
+            </div>
+        </section>
+
+        <section id="rr">
+            <h2>6. Round Robin (RR)</h2>
+
+            <h3>"Turnos rotativos" - El más usado</h3>
+
+            <figure>
+                <img src="../assets/infografias/clase-04-round-robin.png" alt="Diagrama circular del algoritmo Round Robin">
+                    <figcaption>Figura 1: Diagrama circular del algoritmo Round Robin</figcaption>
+                </figure>
+
+            <p><strong>Características:</strong></p>
+            <ul>
+                <li>Preemptive</li>
+                <li>Cada proceso recibe un <strong>quantum</strong> (tiempo máximo)</li>
+                <li>Después del quantum, va al final de la cola</li>
+                <li><strong>Justo:</strong> todos reciben CPU eventualmente</li>
+            </ul>
+
+            <h4>Ejemplo con Quantum = 4</h4>
+            <table>
+                <tr>
+                    <th>Proceso</th>
+                    <th>Llegada</th>
+                    <th>Ráfaga</th>
+                </tr>
+                <tr>
+                    <td>P1</td>
+                    <td>0</td>
+                    <td>10</td>
+                </tr>
+                <tr>
+                    <td>P2</td>
+                    <td>0</td>
+                    <td>4</td>
+                </tr>
+                <tr>
+                    <td>P3</td>
+                    <td>0</td>
+                    <td>5</td>
+                </tr>
+            </table>
+
+            <div class="gantt">
+                <div class="gantt-timeline">
+                    <div class="gantt-empty"></div>
+                    <div class="gantt-bar" style="width:200px">P1(0-4)</div>
+                    <div class="gantt-empty"></div>
+                    <div class="gantt-bar" style="width:200px">P2(4-8)</div>
+                    <div class="gantt-empty"></div>
+                    <div class="gantt-bar" style="width:200px">P3(8-12)</div>
+                    <div class="gantt-empty"></div>
+                    <div class="gantt-bar" style="width:200px">P1(12-16)</div>
+                    <div class="gantt-empty"></div>
+                    <div class="gantt-bar" style="width:200px">P3(16-17)</div>
+                    <div class="gantt-empty"></div>
+                    <div class="gantt-bar" style="width:200px">P1(17-19)</div>
+                </div>
+                <div class="gantt-id">t=0-</div>
+            </div>
+
+            <p><strong>Promedios:</strong> Turnaround: 14.67, Waiting: 8.33</p>
+
+            <h3>¿Qué quantum elegir?</h3>
+            <table>
+                <tr>
+                    <th>Quantum</th>
+                    <th>Efecto</th>
+                </tr>
+                <tr>
+                    <td><strong>Muy pequeño</strong></td>
+                    <td>Muchos context switches → overhead</td>
+                </tr>
+                <tr>
+                    <td><strong>Muy grande</strong></td>
+                    <td>Se comporta como FCFS</td>
+                </tr>
+                <tr>
+                    <td><strong>Típico</strong></td>
+                    <td>10-100 ms</td>
+                </tr>
+            </table>
+        </section>
+
+        <section id="comparacion">
+            <h2>Comparación de Algoritmos</h2>
+
+            <figure>
+                <img src="../assets/infografias/clase-04-gantt-algoritmos.png" alt="Diagrama de Gantt comparativo de algoritmos">
+                <figcaption>Figura 2: Comparación visual de diagramas de Gantt para todos los algoritmos</figcaption>
+            </figure>
+
+            <table>
+                <tr>
+                    <th>Algoritmo</th>
+                    <th>Tipo</th>
+                    <th>Starvation</th>
+                    <th>Turnaround</th>
+                    <th>Respuesta</th>
+                </tr>
+                <tr>
+                    <td><strong>FCFS</strong></td>
+                    <td>Non-preemptive</td>
+                    <td>No</td>
+                    <td>Alto si hay convoy</td>
+                    <td>Variable</td>
+                </tr>
+                <tr>
+                    <td><strong>SJF</strong></td>
+                    <td>Ambos</td>
+                    <td>Sí (procesos largos)</td>
+                    <td>Óptimo</td>
+                    <td>Variable</td>
+                </tr>
+                <tr>
+                    <td><strong>Prioridad</strong></td>
+                    <td>Ambos</td>
+                    <td>Sí</td>
+                    <td>Variable</td>
+                    <td>Alta prioridad: buena</td>
+                </tr>
+                <tr>
+                    <td><strong>Round Robin</strong></td>
+                    <td>Preemptive</td>
+                    <td>No</td>
+                    <td>Medio</td>
+                    <td>Buena para todos</td>
+                </tr>
+            </table>
+        </section>
+
+        <section id="tiempo-real">
+            <h2>7. Planificación en Tiempo Real</h2>
+
+            <p><strong>Sistemas de tiempo real:</strong> Donde el <strong>tiempo de respuesta</strong> es crítico.</p>
+
+            <table>
+                <tr>
+                    <th>Tipo</th>
+                    <th>Característica</th>
+                    <th>Ejemplo</th>
+                </tr>
+                <tr>
+                    <td><strong>Hard Real-Time</strong></td>
+                    <td>Cumplimiento estricto obligatorio</td>
+                    <td>Frenos de automóvil, control de reactores</td>
+                </tr>
+                <tr>
+                    <td><strong>Soft Real-Time</strong></td>
+                    <td>Cumplimiento deseable pero no crítico</td>
+                    <td>Streaming de video, juegos</td>
+                </tr>
+            </table>
+
+            <h3>Algoritmo RMS (Rate Monotonic Scheduling)</h3>
+            <ul>
+                <li>Prioridad basada en el <strong>periodo</strong> del proceso</li>
+                <li>Menor periodo = Mayor prioridad</li>
+                <li>Óptimo para procesos periódicos</li>
+            </ul>
+
+            <h3>Algoritmo EDF (Earliest Deadline First)</h3>
+            <ul>
+                <li>Prioridad dinámica: proceso con <strong>deadline más cercano</strong> primero</li>
+                <li>Más flexible que RMS</li>
+                <td>Utilización del CPU hasta 100%</li>
+            </ul>
+        </section>
+
+        <section id="multiprocesador">
+            <h2>8. Planificación en Multiprocesadores</h2>
+
+            <h3>Multiprocesador Simétrico (SMP)</h3>
+
+            <div class="callout info">
+                <h4>Cola única</h4>
+                <p>Una cola global alimenta múltiples CPUs. Ventaja: Balance de carga automático. Desventaja: Contención en la cola.</p>
+                <h4>Colas privadas</h4>
+                <p>Cada CPU tiene su propia cola. Ventaja: Menos contención. Desventaja: Desbalance de carga posible.</p>
+            </div>
+
+            <h3>Afinidad a Procesador</h3>
+            <div class="ascii-diagram">
+Proceso P1 ha estado ejecutando en CPU 0
+Su caché L1/L2 contiene datos de P1
+
+Opción A: Migrar P1 a CPU 1
+- Pérdida de caché (cache misses)
+- Penalidad de rendimiento
+
+Opción B: Mantener P1 en CPU 0
+- Aprovecha caché caliente
+- Mejor rendimiento
+
+Decisión: Afinidad blanda vs afinidad dura
+            </div>
+        </section>
+
+        <section id="practica">
+            <h2>9. Actividad Práctica</h2>
+
+            <h3>En parejas, calculen para Round Robin (Q=3):</h3>
+
+            <table>
+                <tr>
+                    <th>Proceso</th>
+                    <th>Llegada</th>
+                    <th>Ráfaga</th>
+                </tr>
+                <tr>
+                    <td>P1</td>
+                    <td>0</td>
+                    <td>8</td>
+                </tr>
+                <tr>
+                    <td>P2</td>
+                    <td>1</td>
+                    <td>4</td>
+                </tr>
+                <tr>
+                    <td>P3</td>
+                    <td>2</td>
+                    <td>9</td>
+                </tr>
+                <tr>
+                    <td>P4</td>
+                    <td>3</td>
+                    <td>5</td>
+                </tr>
+            </table>
+
+            <p><strong>Actividades:</strong></p>
+            <ol>
+                <li>Dibujen el diagrama de Gantt</li>
+                <li>Calculen Turnaround y Waiting para cada proceso</li>
+                <li>Calculen los promedios</li>
+            </ol>
+        </section>
+
+        <section id="resumen">
+            <h2>Resumen de la Clase</h2>
+
+            <h3>Algoritmos de Planificación</h3>
+            <table>
+                <tr>
+                    <th>Algoritmo</th>
+                    <th>Idea principal</th>
+                    <th>Tipo</th>
+                </tr>
+                <tr>
+                    <td><strong>FCFS</strong></td>
+                    <td>Orden de llegada</td>
+                    <td>Non-preemptive</td>
+                </tr>
+                <tr>
+                    <td><strong>SJF</strong></td>
+                    <td>El más corto primero</td>
+                    <td>Ambos</td>
+                </tr>
+                <tr>
+                    <td><strong>Prioridad</strong></td>
+                    <td>Según importancia asignada</td>
+                    <td>Ambos</td>
+                </tr>
+                <tr>
+                    <td><strong>Round Robin</strong></td>
+                    <td>Turnos con quantum fijo</td>
+                    <td>Preemptive</td>
+                </tr>
+                <tr>
+                    <td><strong>RMS</strong></td>
+                    <td>Menor periodo = Mayor prioridad</td>
+                    <td>Tiempo real</td>
+                </tr>
+                <tr>
+                    <td><strong>EDF</strong></td>
+                    <td>Deadline más cercano primero</td>
+                    <td>Tiempo real dinámico</td>
+                </tr>
+            </table>
+
+            <h3>Fórmulas clave:</h3>
+            <ul>
+                <li><strong>Turnaround</strong> = Fin - Llegada</li>
+                <li><strong>Waiting</strong> = Turnaround - Ráfaga</li>
+                <li><strong>Response</strong> = Primera ejecución - Llegada</li>
+            </ul>
+        </section>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p><strong>IF0099 - Sistemas Operativos I</strong> • <a href="index.html">Índice de Clases</a></p>
+        <div class="container">
+            <p><strong>IF0099 - Sistemas Operativos I</strong></p>
+            <p>Clase 04: Algoritmos de Planificación de CPU</p>
+            <p>Última actualización: 2026-02-01</p>
+            <p><a href="#">Volver arriba</a></p>
+        </div>
+    </footer>
+
+    <a href="#" class="scroll-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); return false;">↑</a>
+
+    <script>
+        const scrollTopBtn = document.querySelector('.scroll-top');
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                scrollTopBtn.classList.add('visible');
+            } else {
+                scrollTopBtn.classList.remove('visible');
+            }
+        });
+
+        document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

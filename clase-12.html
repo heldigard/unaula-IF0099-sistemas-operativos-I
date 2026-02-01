@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clase 12: Protección y Seguridad | IF0099 - Sistemas Operativos I</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #1e40af;
+            --accent: #059669;
+            --bg-light: #f8fafc;
+            --bg-code: #1e293b;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+        }
+
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;line-height:1.7;color:var(--text-main);background:var(--bg-light);font-size:16px}
+        .container{max-width:1200px;margin:0 auto;padding:0 20px}
+
+        header{background:linear-gradient(135deg,var(--primary) 0%,var(--secondary) 100%);color:white;padding:3rem 0;margin-bottom:2rem}
+        header h1{font-size:2.2rem;margin-bottom:.5rem;font-weight:700}
+        header .subtitle{font-size:1.1rem;opacity:.9}
+        header .meta{margin-top:1rem;font-size:.9rem;opacity:.8}
+
+        nav{background:white;padding:1.5rem 0;margin-bottom:2rem;border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,0.1)}
+        nav h2{font-size:1.1rem;color:var(--text-muted);margin-bottom:1rem;padding:0 20px}
+        nav ul{list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:.5rem;padding:0 20px}
+        nav a{color:var(--primary);text-decoration:none;padding:.5rem;display:block;border-radius:4px;transition:background .2s}
+        nav a:hover{background:var(--bg-light)}
+
+        section{background:white;padding:2rem;margin-bottom:2rem;border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,0.1)}
+        section h2{color:var(--primary);font-size:1.8rem;margin-bottom:1.5rem;padding-bottom:.5rem;border-bottom:3px solid var(--accent)}
+        section h3{color:var(--secondary);font-size:1.4rem;margin:2rem 0 1rem}
+        section h4{color:var(--text-main);font-size:1.1rem;margin:1.5rem 0 .75rem;font-weight:600}
+        p{margin-bottom:1rem}
+
+        figure{margin:2rem 0;text-align:center}
+        figure img{max-width:100%;height:auto;border-radius:8px;box-shadow:0 4px 6px rgba(0,0,0,0.1)}
+        figcaption{margin-top:.75rem;color:var(--text-muted);font-style:italic;font-size:.95rem}
+
+        table{width:100%;border-collapse:collapse;margin:1.5rem 0;font-size:.95rem}
+        th,td{padding:.75rem 1rem;text-align:left;border-bottom:1px solid var(--border)}
+        th{background:var(--bg-light);font-weight:600;color:var(--secondary)}
+        tr:hover{background:var(--bg-light)}
+
+        pre{background:var(--bg-code);color:#e2e8f0;padding:1.5rem;border-radius:8px;overflow-x:auto;margin:1.5rem 0;font-size:.9rem;line-height:1.5}
+        code{font-family:'Consolas','Monaco','Courier New',monospace}
+        p code,li code,td code{background:var(--bg-light);color:var(--primary);padding:.2rem .4rem;border-radius:4px;font-size:.9em}
+        pre code{background:none;padding:0;color:inherit}
+
+        ul,ol{margin-left:1.5rem;margin-bottom:1rem}
+        li{margin-bottom:.5rem}
+
+        .callout{padding:1.5rem;border-radius:8px;margin:1.5rem 0;border-left:4px solid}
+        .callout.info{background:#eff6ff;border-left-color:var(--primary)}
+        .callout.warning{background:#fef3c7;border-left-color:#f59e0b}
+        .callout.success{background:#d1fae5;border-left-color:var(--accent)}
+        .callout.danger{background:#fee2e2;border-left-color:#ef4444}
+
+        .comparison{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin:2rem 0}
+        .comparison>div{background:var(--bg-light);padding:1.5rem;border-radius:8px}
+
+        footer{background:var(--text-main);color:white;padding:2rem 0;text-align:center;margin-top:3rem}
+        footer a{color:var(--accent);text-decoration:none}
+
+        .scroll-top{position:fixed;bottom:2rem;right:2rem;background:var(--primary);color:white;width:45px;height:45px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;transition:opacity .3s;text-decoration:none;font-size:1.5rem}
+        .scroll-top.visible{opacity:1}
+        .scroll-top:hover{background:var(--secondary)}
+
+        @media(max-width:768px){
+            header h1{font-size:1.6rem}
+            section{padding:1.5rem}
+            nav ul{grid-template-columns:1fr}
+            .comparison{grid-template-columns:1fr}
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Clase 12: Protección y Seguridad</h1>
+            <p class="subtitle">IF0099 - Sistemas Operativos I | Unidad 8 - Seguridad</p>
+            <p class="subtitle">Dominios de Protección, Permisos y Amenazas</p>
+            <p class="meta">Última actualización: 2026-02-01 | Duración: 90 minutos</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <nav>
+            <h2>Contenido de la Clase</h2>
+            <ul>
+                <li><a href="#objetivos">Objetivos de Aprendizaje</a></li>
+                <li><a href="#intro">1. Introducción</a></li>
+                <li><a href="#diferencia">2. Protección vs Seguridad</a></li>
+                <li><a href="#principios">3. Principios de Protección</a></li>
+                <li><a href="#dominios">4. Dominios de Protección</a></li>
+                <li><a href="#matriz">5. Matriz de Acceso</a></li>
+                <li><a href="#permisos">6. Permisos en Unix/Linux</a></li>
+                <li><a href="#permisos-especiales">7. Permisos Especiales</a></li>
+                <li><a href="#amenazas">8. Amenazas Comunes</a></li>
+                <li><a href="#defensas">9. Mecanismos de Defensa</a></li>
+                <li><a href="#practica">10. Actividad Práctica</a></li>
+                <li><a href="#resumen">Resumen</a></li>
+            </ul>
+        </nav>
+
+        <section id="objetivos">
+            <h2>Objetivos de Aprendizaje</h2>
+            <p>Al finalizar esta clase, serás capaz de:</p>
+            <ol>
+                <li><strong>Diferenciar</strong> entre protección y seguridad de sistemas</li>
+                <li><strong>Explicar</strong> el principio de mínimo privilegio</li>
+                <li><strong>Describir</strong> dominios de protección y la matriz de acceso</li>
+                <li><strong>Interpretar</strong> permisos Unix/Linux (UGO, SUID, SGID, Sticky bit)</li>
+                <li><strong>Reconocer</strong> amenazas comunes y sus defensas</li>
+                <li><strong>Aplicar</strong> comandos de gestión de permisos en Linux</li>
+            </ol>
+        </section>
+
+        <section id="intro">
+            <h2>1. Introducción a la Protección y Seguridad</h2>
+
+            <figure>
+                <img src="../assets/infografias/clase-12-proteccion-seguridad-v2.png" alt="Protección vs Seguridad" style="max-width:100%;height:auto;border-radius:6px">
+                <figcaption>Diferencia entre protección (mecanismos internos) y seguridad (defensas frente a amenazas)</figcaption>
+            </figure>
+
+            <div class="callout info">
+                <strong>Pregunta fundamental:</strong> ¿Cómo evitamos que un proceso malicioso borre archivos importantes? ¿Cómo prevenimos que un usuario acceda a información confidencial?
+            </div>
+
+            <h3>¿Qué es Protección?</h3>
+            <p><strong>Protección</strong> se refiere a los mecanismos internos del SO para controlar el acceso a los recursos del sistema. Es una cuestión de <strong>política de control de acceso</strong>:</p>
+
+            <ul>
+                <li>¿Quién puede acceder a qué recurso?</li>
+                <li>¿Qué operaciones puede realizar (lectura, escritura, ejecución)?</li>
+                <li>¿Cómo se garantiza esto?</li>
+            </ul>
+
+            <h3>¿Qué es Seguridad?</h3>
+            <p><strong>Seguridad</strong> se refiere a las defensas contra <strong>amenazas externas</strong>:</p>
+
+            <ul>
+                <li><strong>Malware:</strong> Virus, gusanos, ransomware</li>
+                <li><strong>Ataques de red:</strong> Intrusos, sniffing, DoS</li>
+                <li><strong>Ataques locales:</strong> Elevación de privilegios, exploits</li>
+                <li><strong>Ingeniería social:</strong> Phishing, suplantación</li>
+            </ul>
+
+            <div class="callout warning">
+                <strong>Distinción clave:</strong> Protección es sobre <strong>control interno</strong>; seguridad es sobre <strong>defensa externa</strong>.
+            </div>
+        </section>
+
+        <section id="diferencia">
+            <h2>2. Protección vs Seguridad</h2>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Aspecto</th>
+                        <th>Protección</th>
+                        <th>Seguridad</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Objetivo</strong></td>
+                        <td>Controlar acceso entre procesos legítimos</td>
+                        <td>Defender contra amenazas externas</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Enfoque</strong></td>
+                        <td>Prevenir abusos internos</td>
+                        <td>Prevenir ataques externos</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Ejemplo</strong></td>
+                        <td>Que un usuario no borre archivos de otro</td>
+                        <td>Que un virus no infecte el sistema</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Mecanismos</strong></td>
+                        <td>Permisos, dominios, ACL</td>
+                        <td>Firewalls, antivirus, cifrado</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="comparison">
+                <div>
+                    <h4>🛡️ Protección</h4>
+                    <ul>
+                        <li>Control de accesos</li>
+                        <li>Autenticación de usuarios</li>
+                        <li>Permisos de archivos</li>
+                        <li>Aislamiento de procesos</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>🔒 Seguridad</h4>
+                    <ul>
+                        <li>Firewall</li>
+                        <li>Antivirus</li>
+                        <li>Cifrado de datos</li>
+                        <li>Detección de intrusiones</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="principios">
+            <h2>3. Principios de Protección</h2>
+
+            <h3>Principio de Mínimo Privilegio</h3>
+
+            <div class="callout success">
+                <strong>Regla de oro:</strong> Un proceso debe tener exactamente los privilegios que necesita para realizar su tarea, ni más ni menos.
+            </div>
+
+            <p>Este principio minimiza el daño potencial si un proceso es comprometido.</p>
+
+            <h4>Ejemplos:</h4>
+
+            <pre><code># ❌ MAL: Servidor web corriendo como root
+sudo httpd    # Tiene acceso total al sistema
+
+# ✅ BIEN: Servidor web con usuario dedicado
+chown -R www-data:www-data /var/www
+su - www-data
+httpd       # Solo puede acceder a /var/www</code></pre>
+
+            <pre><code># ❌ MAL: Cliente de correo con permisos de administrador
+sudo thunderbird   # Puede leer cualquier archivo
+
+# ✅ BIEN: Cliente de correo como usuario normal
+thunderbird         # Solo sus propios archivos</code></pre>
+
+            <h3>Principio de Falla Segura</h3>
+
+            <p>Si un mecanismo de protección falla, debe <strong>negar el acceso por defecto</strong> en lugar de permitirla.</p>
+
+            <div class="callout warning">
+                <strong>Ejemplo:</strong> Si un firewall falla, debe bloquear todo el tráfico en lugar de permitir todo.
+            </div>
+        </section>
+
+        <section id="dominios">
+            <h2>4. Dominios de Protección</h2>
+
+            <p>Un <strong>dominio de protección</strong> es un conjunto de permisos que se aplican a un proceso o usuario.</p>
+
+            <h3>Jerarquía de Dominios</h3>
+
+            <div class="diagram-box">
+<pre>┌─────────────────────────────────────────────────────┐
+│  Sistema (Ring 0) - Kernel                              │
+│  - Acceso total al hardware                                    │
+│  - Puede acceder a toda la memoria                             │
+├─────────────────────────────────────────────────────┤
+│  Supervisor (Ring 1) - SO                                   │
+│  - Gestiona procesos, memoria, E/S                            │
+│  - Puede crear dominios de usuario                                │
+├─────────────────────────────────────────────────────┤
+│  Usuario (Ring 3) - Aplicaciones                          │
+│  - Acceso limitado a sus propios recursos                     │
+│  - No puede acceder directamente al hardware                      │
+└─────────────────────────────────────────────────────┘</pre>
+            </div>
+
+            <h3>Ejemplo de Dominios en Unix</h3>
+
+            <pre><code># Usuario root (dominio privilegiado)
+root@server:~# cat /etc/shadow    # ✅ Puede leer
+root@server:~# fdisk /dev/sda      # ✅ Puede particionar
+root@server:~# kill -9 1234        # ✅ Puede matar procesos
+
+# Usuario ordinario (dominio sin privilegios)
+usuario@server:~$ cat /etc/shadow   # ❌ Permiso denegado
+usuario@server:~$ fdisk /dev/sda     # ❌ Operación no permitida
+usuario@server:~$ kill -9 1234       # ❌ Solo procesos propios</code></pre>
+        </section>
+
+        <section id="matriz">
+            <h2>5. Matriz de Acceso</h2>
+
+            <p>La <strong>matriz de acceso</strong> es un modelo conceptual que muestra qué procesos tienen acceso a qué objetos.</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th colspan="3">Objetos</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th rowspan="4">Dominios</th>
+                        <td>Archivo A</td>
+                        <td>Archivo B</td>
+                        <td>Dispositivo</td>
+                    </tr>
+                    <tr>
+                        <td>Proceso 1</td>
+                        <td>✅ Leer</td>
+                        <td>-</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>Proceso 2</td>
+                        <td>✅ Leer, Escribir</td>
+                        <td>-</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>Proceso 3</td>
+                        <td>-</td>
+                        <td>✅ Leer</td>
+                        <td>✅ Abrir</td>
+                    </tr>
+                    <tr>
+                        <td>Proceso 4</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>✅ Leer, Escribir</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="callout info">
+                <strong>Nota:</strong> Esta matriz es conceptual. En la práctica, se implementa mediante ACLs (Listas de Control de Acceso) o capabilities.
+            </div>
+        </section>
+
+        <section id="permisos">
+            <h2>6. Permisos en Unix/Linux</h2>
+
+            <h3>Modelo UGO (User, Group, Others)</h3>
+
+            <p>Unix usa un modelo de permisos basado en tres categorías:</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Categoría</th>
+                        <th>Símbolo</th>
+                        <th>Descripción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>User (u)</strong></td>
+                        <td>Primer triplet (rwx)</td>
+                        <td>Dueño del archivo</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Group (g)</strong></td>
+                        <td>Segundo triplet (rwx)</td>
+                        <td>Grupo del archivo</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Others (o)</strong></td>
+                        <td>Tercer triplet (rwx)</td>
+                        <td>Resto de usuarios</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>Tipos de Permisos</h4>
+
+            <pre><code>r - Read    (leer)
+w - Write   (escribir)
+x - eXecute (ejecutar)</code></pre>
+
+            <h4>Notación Octal</h4>
+
+            <pre><code>-rwxr-xr-x  1 juan developers 1024 Feb 15 10:30 archivo.txt
+│  │  │     │     │     │       │
+│  │  │     │     │     │       │
+│  │  │     │     │     │       │
+└──┴──┴─────┴─────┴─────┴─────┴─────┴───
+   │  │     │     │     │       │
+   │  │     │     │     │       │
+   └──┴─────┴─────┴─────┴─────┘
+      │     │
+      └─┴───┘
+      6   4   4
+    rwx r-x r-x</code></pre>
+
+            <div class="callout success">
+                <strong>Cálculo rápido:</strong>
+                <br>r = 4, w = 2, x = 1 → 4+2+1 = 7 → rwx
+                <br>Para directorios: rwx = 4+2+1 = 7, directorio necesita x para entrar
+            </div>
+        </section>
+
+        <section id="permisos-especiales">
+            <h2>7. Permisos Especiales en Linux</h2>
+
+            <h3>SUID (Set User ID)</h3>
+
+            <p>Cuando se ejecuta un archivo con SUID, el proceso corre con los privilegios del <strong>dueño del archivo</strong>, no del usuario que lo ejecuta.</p>
+
+            <pre><code># Ejemplo: /usr/bin/passwd
+$ ls -l /usr/bin/passwd
+-rwsr-xr-x  1 root root 73465 Feb 15 10:30 /usr/bin/passwd
+ │             │     │
+ │             │     └─→ Dueño = root
+ │             └─→ s = SUID activo
+
+$ cat /etc/shadow    # Solo root puede leer
+$ passwd              # Sin embargo, cualquier usuario puede cambiar su clave
+
+# ¿Cómo funciona? passwd se ejecuta como root temporalmente</code></pre>
+
+            <h3>SGID (Set Group ID)</h3>
+
+            <p>Similar a SUID, pero para grupos. Útil para directorios compartidos.</p>
+
+            <pre><code># Crear directorio colaborativo
+mkdir /proyecto
+chown -R :developers /proyecto
+chmod g+s /proyecto        # SGID activo
+
+# Cualquier archivo creado en /proyecto pertenece al grupo developers
+ls -ld /proyecto
+drwxrwsr-x  2 root developers 4096 Feb 15 10:30 /proyecto
+ │                │
+                └─→ s = SGID activo</code></pre>
+
+            <h3>Sticky Bit</h3>
+
+            <p>Usado típicamente en directorios compartidos como <code>/tmp</code>. Solo el <strong>propietario de un archivo</strong> puede borrarlo, incluso si otros tienen permisos de escritura.</p>
+
+            <pre><code># Ejemplo: /tmp
+$ ls -ld /tmp
+drwxrwxrwt  10 root root 4096 Feb 15 10:30 /tmp
+ │                │
+                └─→ t = Sticky bit activo
+
+$ touch /tmp/archivo1.txt
+$ chmod 777 /tmp/archivo1.txt
+
+# Otro usuario puede escribir en el archivo
+$ echo "hola" >> /tmp/archivo1.txt   # ✅ Puede escribir
+
+# Pero NO puede borrarlo (si no es el propietario)
+$ rm /tmp/archivo1.txt               # ❌ Permission denied</code></pre>
+        </section>
+
+        <section id="amenazas">
+            <h2>8. Amenazas Comunes y Defensas</h2>
+
+            <h3>Buffer Overflow</h3>
+
+            <p>El ataque clásico más común. Ocurre cuando un programa escribe más allá del límite de un buffer en memoria.</p>
+
+            <pre><code>// Código vulnerable
+void vulnerable(char* input) {
+    char buf[64];           // Buffer de 64 bytes
+    strcpy(buf, input);     // ❌ No verifica longitud!
+}
+
+// Ataque
+vulnerable("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABBBBBB");
+// Escribe más de 64 bytes, sobrescribe la pila de retorno</code></pre>
+
+            <h4>Defensas contra Buffer Overflow</h4>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Mecanismo</th>
+                        <th>Qué hace</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>ASLR</strong></td>
+                        <td>Randomiza las direcciones de memoria</td>
+                    </tr>
+                    <tr>
+                        <td><strong>NX bit</strong></td>
+                        <td>Marca ciertas áreas de memoria como no ejecutable</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Stack Canaries</strong></td>
+                        <td>Inserta valores de verificación entre variables</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Fortify Source</strong></td>
+                        <td>Extensiones de GCC que verifican llamadas a funciones</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Ingeniería Social</h3>
+
+            <p>Ataques que engañan a usuarios para que revelen información sensible.</p>
+
+            <div class="callout danger">
+                <strong>Ejemplo de Phishing:</strong>
+                <pre>"Estimado usuario: su cuenta será bloqueada en 24 horas. Haga clic aquí para verificar: http://banco-seguro.com (sitio falso)"</pre>
+            </div>
+
+            <h4>Defensas</h4>
+
+            <ul>
+                <li><strong>Educación:</strong> Enseñar a identificar URLs sospechosas</li>
+                <li><strong>Verificación:</strong> Siempre verificar la URL real antes de hacer clic</li>
+                <li><strong>Autenticación de dos factores (2FA)</strong></li>
+                <li><strong>Filtros de correo:</strong> Detectar phishing</li>
+            </ul>
+        </section>
+
+        <section id="defensas">
+            <h2>9. Mecanismos de Defensa</h2>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Mecanismo</th>
+                        <th>Tipo</th>
+                        <th>Qué protege</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Autenticación</strong></td>
+                        <td>Preventiva</td>
+                        <td>Acceso no autorizado</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Cifrado</strong></td>
+                        <td>Preventiva/Detectiva</td>
+                        <td>Intercepción de datos</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Firewall</strong></td>
+                        <td>Preventiva</td>
+                        <td>Tráfico malicioso de red</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Antivirus</strong></td>
+                        <td>Detectiva</td>
+                        <td>Malware, virus</td>
+                    </tr>
+                    <tr>
+                        <td><strong>IDS/IPS</strong></td>
+                        <td>Detectiva/Preventiva</td>
+                        <td>Intrusos, ataques</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="practica">
+            <h2>10. Actividad Práctica</h2>
+
+            <h3>Ejercicio 1: Ver Permisos</h3>
+
+            <pre><code># Ver permisos detallados
+ls -l /etc/passwd /etc/shadow
+
+# Ver tu usuario y grupos
+id
+
+# Crear archivo de prueba
+touch prueba_permisos.txt
+ls -l prueba_permisos.txt
+
+# Cambiar permisos
+chmod 750 prueba_permisos.txt    # rwxr-xr---
+ls -l prueba_permisos.txt
+
+# Ver propietario y grupo
+stat prueba_permisos.txt</code></pre>
+
+            <h3>Ejercicio 2: SUID en Acción</h3>
+
+            <pre><code># Buscar archivos con SUID
+find / -perm -4000 -user root 2>/dev/null | head -10
+
+# Ver archivos SGID
+find / -perm -2000 -group 2>/dev/null | head -10
+
+# Analizar un SUID conocido
+ls -l /usr/bin/sudo
+ls -l /usr/bin/passwd
+ls -l /usr/bin/su</code></pre>
+
+            <div class="callout warning">
+                <strong>Nota:</strong> Los archivos SUID/SGID son potenciales vectores de escalada de privilegios si tienen vulnerabilidades.
+            </div>
+
+            <h3>Ejercicio 3: Sticky Bit</h3>
+
+            <pre><code># Crear directorio compartido
+mkdir /tmp/compartido
+
+# Activar sticky bit
+chmod +t /tmp/compartido
+
+# Crear archivos como diferentes usuarios
+# (simulado - en práctica real necesitarías múltiples usuarios)
+echo "Desde usuario 1" > /tmp/compartido/arch1.txt
+echo "Desde usuario 2" > /tmp/compartido/arch2.txt
+
+# Intentar borrar archivo de otro usuario
+rm /tmp/compartido/arch1.txt    # Error si no eres propietario</code></pre>
+
+            <p><strong>Tiempo estimado:</strong> 30 minutos</p>
+        </section>
+
+        <section id="resumen">
+            <h2>Resumen de la Clase</h2>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Concepto</th>
+                        <th>Idea Clave</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td><strong>Protección</strong></td><td>Control de acceso entre procesos legítimos</td></tr>
+                    <tr><td><strong>Seguridad</strong></td><td>Defensa contra amenazas externas</td></tr>
+                    <tr><td><strong>Mínimo privilegio</strong></td><td>Dar solo los permisos necesarios, ni más ni menos</td></tr>
+                    <tr><td><strong>Falla segura</strong></td><td>Si falla, negar acceso por defecto</td></tr>
+                    <tr><td><strong>UGO</strong></td><td>Modelo Unix: User, Group, Others</td></tr>
+                    <tr><td><strong>SUID</strong></td><td>Ejecuta como dueño (root tipicamente)</td></tr>
+                    <tr><td><strong>SGID</strong></td><td>Ejecuta como grupo del archivo</td></tr>
+                    <tr><td><strong>Sticky bit</strong></td><td>Solo dueño puede borrar sus archivos</td></tr>
+                    <tr><td><strong>Buffer overflow</strong></td><td>Escribir más allá del límite del buffer</td></tr>
+                    <tr><td><strong>ASLR</strong></td><td>Randomiza direcciones de memoria</td></tr>
+                    <tr><td><strong>Ingeniería social</strong></td><td>Engañar usuarios para revelar información</td></tr>
+                </tbody>
+            </table>
+
+            <div class="callout success">
+                <strong>Concepto fundamental:</strong> La protección es el fundamento que permite la seguridad. Sin mecanismos de protección efectivos, las defensas de seguridad son inútiles.
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p><strong>IF0099 - Sistemas Operativos I</strong> • <a href="index.html">Índice de Clases</a></p>
+        <p>IF0099 - Sistemas Operativos I | UNAULA - Ingeniería Informática - 2026-I</p>
+        <p>Clase 12: Protección y Seguridad</p>
+    </footer>
+
+    <a href="#" class="scroll-top" id="scrollTop" aria-label="Scroll to top">↑</a>
+
+    <script>
+        const scrollTopBtn = document.getElementById('scrollTop');
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                scrollTopBtn.classList.add('visible');
+            } else {
+                scrollTopBtn.classList.remove('visible');
+            }
+        });
+        scrollTopBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    </script>
+</body>
+</html>

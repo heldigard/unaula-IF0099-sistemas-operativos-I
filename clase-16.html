@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clase 16: Examen Final - IF0099 Sistemas Operativos I</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: var(--bg-light);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+
+        h1 {
+            color: #667eea;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            color: #555;
+            font-size: 1.5em;
+            font-weight: normal;
+        }
+
+        .course-info {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            display: inline-block;
+        }
+
+        .content {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .section {
+            margin-bottom: 50px;
+        }
+
+        .section h2 {
+            color: #667eea;
+            font-size: 2em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+            font-weight: 600;
+        }
+
+        .section h3 {
+            color: #764ba2;
+            font-size: 1.5em;
+            margin: 25px 0 15px 0;
+            padding-left: 15px;
+            border-left: 4px solid #764ba2;
+        }
+
+        .section h4 {
+            color: #555;
+            font-size: 1.2em;
+            margin: 20px 0 10px 0;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+
+        ul, ol {
+            margin-left: 30px;
+            margin-bottom: 15px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        .objective-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-size: 1.1em;
+        }
+
+        .objective-box strong {
+            display: block;
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #e9ecef;
+        }
+
+        .info-box {
+            background: #e3f2fd;
+            border-left: 5px solid #2196f3;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .warning-box {
+            background: #fff3e0;
+            border-left: 5px solid #ff9800;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .success-box {
+            background: #e8f5e9;
+            border-left: 5px solid #4caf50;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .danger-box {
+            background: #ffebee;
+            border-left: 5px solid #f44336;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        pre {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+        }
+
+        .inline-code {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            color: #c7254e;
+        }
+
+        .topic-card {
+            background: #f8f9fa;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .topic-card h4 {
+            color: #667eea;
+            margin-top: 0;
+        }
+
+        .checklist {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .checklist li {
+            padding: 10px 0 10px 35px;
+            position: relative;
+            border-bottom: 1px solid #eee;
+        }
+
+        .checklist li:before {
+            content: '☐';
+            position: absolute;
+            left: 0;
+            font-size: 1.2em;
+            color: #667eea;
+        }
+
+        .checklist li.checked:before {
+            content: '☑';
+            color: #4caf50;
+        }
+
+        .faq-item {
+            margin: 20px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .faq-question {
+            font-weight: 600;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .faq-answer {
+            color: #555;
+            padding-left: 15px;
+        }
+
+        .tip-box {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            font-weight: 500;
+        }
+
+        .tip-box strong {
+            display: block;
+            font-size: 1.1em;
+            margin-bottom: 10px;
+            color: #2d3436;
+        }
+
+        .weight-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+
+        .weight-high {
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        .weight-medium {
+            background: #fff3e0;
+            color: #ef6c00;
+        }
+
+        .weight-low {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .unit-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .unit-card {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .unit-card:hover {
+            border-color: #667eea;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+        }
+
+        .unit-card h4 {
+            color: #667eea;
+            margin: 0 0 15px 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 30px;
+            background: #e0e0e0;
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        .scroll-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 20px;
+            cursor: pointer;
+            display: none;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+
+        .scroll-top:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+        }
+
+        .scroll-top.show {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 1.8em; }
+            h2 { font-size: 1.3em; }
+            .container { padding: 10px; }
+            header, .content { padding: 20px; }
+        }
+
+        footer {
+            background: #333;
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        footer a {
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Clase 16: Examen Final</h1>
+            <h2>Evaluación Integral del Curso</h2>
+            <div class="course-info">
+                <strong>IF0099 - Sistemas Operativos I</strong><br>
+                4° Semestre - Ingeniería Informática - UNAULA 2026-I
+            </div>
+        </header>
+
+        <main class="content">
+            <!-- Sección: Objetivo -->
+            <section class="section">
+                <div class="objective-box">
+                    <strong>🎯 Objetivo del Examen</strong>
+                    Evaluar la comprensión integral de los conceptos fundamentales de sistemas operativos y la capacidad de aplicarlos a problemas prácticos.
+                </div>
+            </section>
+
+            <!-- Sección: Formato del Examen -->
+            <section class="section">
+                <h2>📋 Formato del Examen</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Aspecto</th>
+                            <th>Detalle</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Duración</strong></td>
+                            <td>90-120 minutos</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Formato</strong></td>
+                            <td>Teórico + práctico</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Temas</strong></td>
+                            <td>Todo el curso (Unidades 1-8)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Materiales</strong></td>
+                            <td>Calculadora básica permitida</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Consultas</strong></td>
+                            <td>Solo para aclarar enunciados</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="info-box">
+                    <strong>Indicaciones Generales:</strong>
+                    <ul>
+                        <li><strong>Duración:</strong> 90 minutos</li>
+                        <li><strong>Formato:</strong> Teórico + práctico</li>
+                        <li><strong>Temas:</strong> Todo el curso</li>
+                        <li><strong>Reglas:</strong> Sin acceso a internet</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Sección: Estructura del Examen -->
+            <section class="section">
+                <h2>Estructura del Examen</h2>
+                <p>El examen consta de 4 partes principales:</p>
+                <ol>
+                    <li><strong>Conceptos fundamentales</strong> (20%)</li>
+                    <li><strong>Procesos y planificación</strong> (20%)</li>
+                    <li><strong>Memoria y archivos</strong> (30%)</li>
+                    <li><strong>E/S, protección, distribuidos</strong> (30%)</li>
+                </ol>
+
+                <div class="tip-box">
+                    <strong>💡 Recomendaciones</strong>
+                    <ul>
+                        <li>Leer cada pregunta con calma</li>
+                        <li>Justificar respuestas con conceptos vistos</li>
+                        <li>Revisar cálculos de planificación</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Sección: Guía de Preparación -->
+            <section class="section">
+                <h2>📚 Guía de Preparación para el Examen Final</h2>
+
+                <h3>Distribución de Puntos</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Sección</th>
+                            <th>Tipo</th>
+                            <th>Puntos</th>
+                            <th>Tiempo sugerido</th>
+                            <th>Habilidades evaluadas</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Parte 1</strong></td>
+                            <td>Conceptos Teóricos</td>
+                            <td>30%</td>
+                            <td>30 min</td>
+                            <td>Comprensión, definiciones</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Parte 2</strong></td>
+                            <td>Análisis de Casos</td>
+                            <td>40%</td>
+                            <td>45 min</td>
+                            <td>Aplicación, análisis</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Parte 3</strong></td>
+                            <td>Ejercicios Prácticos</td>
+                            <td>30%</td>
+                            <td>45 min</td>
+                            <td>Cálculos, código</td>
+                        </tr>
+                        <tr>
+                            <td><strong>TOTAL</strong></td>
+                            <td></td>
+                            <td><strong>100%</strong></td>
+                            <td><strong>120 min</strong></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Distribución Temática Aproximada</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Unidad</th>
+                            <th>Peso</th>
+                            <th>Temas clave</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>1-2</strong></td>
+                            <td><span class="weight-badge weight-medium">20%</span></td>
+                            <td>Procesos, estados, PCB</td>
+                        </tr>
+                        <tr>
+                            <td><strong>3</strong></td>
+                            <td><span class="weight-badge weight-medium">20%</span></td>
+                            <td>Planificación FCFS, SJF, RR</td>
+                        </tr>
+                        <tr>
+                            <td><strong>4</strong></td>
+                            <td><span class="weight-badge weight-low">15%</span></td>
+                            <td>Sincronización, semáforos, deadlock</td>
+                        </tr>
+                        <tr>
+                            <td><strong>5-6</strong></td>
+                            <td><span class="weight-badge weight-high">25%</span></td>
+                            <td>Memoria virtual, paginación, archivos</td>
+                        </tr>
+                        <tr>
+                            <td><strong>7-8</strong></td>
+                            <td><span class="weight-badge weight-medium">20%</span></td>
+                            <td>E/S, protección, distribuidos</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Sección: Temas por Unidad -->
+            <section class="section">
+                <h2>📖 Temas Principales a Estudiar</h2>
+
+                <div class="unit-grid">
+                    <!-- Unidad 1-2 -->
+                    <div class="unit-card">
+                        <h4>Unidad 1-2: Introducción y Procesos <span class="weight-badge weight-medium">20%</span></h4>
+                        <div class="topic-card">
+                            <h4>Conceptos clave:</h4>
+                            <ul>
+                                <li>✅ Definición de Sistema Operativo</li>
+                                <li>✅ Funciones del SO (gestión de recursos)</li>
+                                <li>✅ Modos de operación (usuario vs kernel)</li>
+                                <li>✅ Estructura de un proceso (PCB)</li>
+                                <li>✅ Estados de proceso</li>
+                                <li>✅ Cambio de contexto</li>
+                            </ul>
+                            <div class="info-box">
+                                <strong>Pregunta tipo:</strong><br>
+                                Un proceso ejecuta <span class="inline-code">read()</span> para leer de disco. ¿Qué transición de estados ocurre?<br>
+                                <strong>Respuesta:</strong> Ejecución → Bloqueado (esperando I/O)
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Unidad 3 -->
+                    <div class="unit-card">
+                        <h4>Unidad 3: Planificación de CPU <span class="weight-badge weight-medium">20%</span></h4>
+                        <div class="topic-card">
+                            <h4>Algoritmos a dominar:</h4>
+                            <ul>
+                                <li>✅ FCFS (First-Come First-Served)</li>
+                                <li>✅ SJF (Shortest Job First)</li>
+                                <li>✅ SRTF (Shortest Remaining Time First)</li>
+                                <li>✅ Round Robin</li>
+                                <li>✅ Prioridades</li>
+                            </ul>
+                            <div class="info-box">
+                                <strong>Ejercicio tipo:</strong><br>
+                                Procesos: P1(24ms), P2(3ms), P3(3ms)<br>
+                                Calcular tiempo de espera promedio con FCFS vs SJF<br><br>
+                                <strong>Solución:</strong><br>
+                                FCFS: (0+24+27)/3 = 17ms<br>
+                                SJF: (0+3+6)/3 = 3ms
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Unidad 4 -->
+                    <div class="unit-card">
+                        <h4>Unidad 4: Sincronización <span class="weight-badge weight-low">15%</span></h4>
+                        <div class="topic-card">
+                            <h4>Conceptos clave:</h4>
+                            <ul>
+                                <li>✅ Race condition</li>
+                                <li>✅ Sección crítica</li>
+                                <li>✅ Semáforos (mutex, contador)</li>
+                                <li>✅ Problemas clásicos: Productor-Consumidor, Lectores-Escritores</li>
+                            </ul>
+                            <div class="info-box">
+                                <strong>Código tipo a analizar:</strong>
+                                <pre><code>sem_t mutex = 1;
+int counter = 0;
+
+// Thread 1
+sem_wait(&mutex);
+counter++;
+sem_post(&mutex);
+
+// Thread 2
+sem_wait(&mutex);
+counter--;
+sem_post(&mutex);</code></pre>
+                                <strong>Pregunta:</strong> ¿Hay race condition?<br>
+                                <strong>Respuesta:</strong> No, está protegido por mutex.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Unidad 5 -->
+                    <div class="unit-card">
+                        <h4>Unidad 5: Gestión de Memoria <span class="weight-badge weight-high">20%</span></h4>
+                        <div class="topic-card">
+                            <h4>Conceptos clave:</h4>
+                            <ul>
+                                <li>✅ Jerarquía de memoria (registros → cache → RAM → disco)</li>
+                                <li>✅ Paginación: dirección virtual → dirección física</li>
+                                <li>✅ Tabla de páginas</li>
+                                <li>✅ TLB (Translation Lookaside Buffer)</li>
+                                <li>✅ Page fault</li>
+                                <li>✅ Algoritmos de reemplazo: FIFO, LRU, Óptimo</li>
+                            </ul>
+                            <div class="info-box">
+                                <strong>Ejercicio tipo:</strong><br>
+                                Sistema: páginas de 4KB, RAM de 16MB<br>
+                                Dirección virtual: 0x3004<br>
+                                ¿Qué página? ¿Qué offset?<br><br>
+                                <strong>Solución:</strong><br>
+                                Página = 0x3004 / 4096 = 3<br>
+                                Offset = 0x3004 % 4096 = 4
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Unidad 6-7 -->
+                    <div class="unit-card">
+                        <h4>Unidad 6-7: Sistemas de Archivos <span class="weight-badge weight-medium">15%</span></h4>
+                        <div class="topic-card">
+                            <h4>Conceptos clave:</h4>
+                            <ul>
+                                <li>✅ FAT vs ext4 vs NTFS</li>
+                                <li>✅ Inodos: estructura, punteros directos/indirectos</li>
+                                <li>✅ Hard links vs Soft links</li>
+                                <li>✅ Fragmentación interna vs externa</li>
+                                <li>✅ Journaling</li>
+                            </ul>
+                            <div class="info-box">
+                                <strong>Pregunta tipo:</strong><br>
+                                ¿Cuál es la capacidad máxima teórica de un inodo ext4 con:<br>
+                                - 12 punteros directos<br>
+                                - 1 indirecto simple<br>
+                                - Bloques de 4KB<br>
+                                - Punteros de 4 bytes (1024 por bloque)<br><br>
+                                <strong>Solución:</strong><br>
+                                Directos: 12 × 4KB = 48KB<br>
+                                Indirecto: 1024 × 4KB = 4MB<br>
+                                Total: ~4MB (sin contar doble/triple)
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Unidad 8 -->
+                    <div class="unit-card">
+                        <h4>Unidad 8: Protección y Seguridad <span class="weight-badge weight-low">10%</span></h4>
+                        <div class="topic-card">
+                            <h4>Conceptos clave:</h4>
+                            <ul>
+                                <li>✅ Autenticación vs Autorización</li>
+                                <li>✅ Control de acceso (ACL, matriz)</li>
+                                <li>✅ Cifrado simétrico vs asimétrico</li>
+                                <li>✅ Firewalls, IDS/IPS</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Sistemas Distribuidos -->
+                    <div class="unit-card">
+                        <h4>Sistemas Distribuidos <span class="weight-badge weight-low">5%</span></h4>
+                        <div class="topic-card">
+                            <h4>Conceptos clave:</h4>
+                            <ul>
+                                <li>✅ Teorema CAP</li>
+                                <li>✅ Replicación</li>
+                                <li>✅ Consenso (Raft, Paxos)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sección: Ejercicios de Práctica -->
+            <section class="section">
+                <h2>🎯 Ejercicios de Práctica</h2>
+
+                <h3>Ejercicio 1: Planificación Round Robin</h3>
+                <div class="info-box">
+                    <strong>Datos:</strong>
+                    <ul>
+                        <li>Quantum = 4ms</li>
+                        <li>Procesos: P1(8ms), P2(4ms), P3(9ms)</li>
+                        <li>Orden de llegada: P1, P2, P3</li>
+                    </ul>
+                    <br>
+                    <strong>Calcular:</strong>
+                    <ol>
+                        <li>Diagrama de Gantt</li>
+                        <li>Tiempo de espera de cada proceso</li>
+                        <li>Tiempo de espera promedio</li>
+                        <li>Tiempo de retorno promedio</li>
+                    </ol>
+                    <br>
+                    <strong>Solución esperada:</strong>
+                    <pre><code>Gantt: P1(0-4) P2(4-8) P3(8-12) P1(12-16) P3(16-20) P3(20-21)
+Espera: P1=8ms, P2=0ms, P3=7ms → Promedio=5ms</code></pre>
+                </div>
+
+                <h3>Ejercicio 2: Traducción de Direcciones</h3>
+                <div class="info-box">
+                    <strong>Sistema:</strong>
+                    <ul>
+                        <li>Páginas: 1KB (1024 bytes)</li>
+                        <li>Tabla de páginas:</li>
+                    </ul>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Página Virtual</th>
+                                <th>Marco Físico</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>0</td><td>5</td></tr>
+                            <tr><td>1</td><td>2</td></tr>
+                            <tr><td>2</td><td>8</td></tr>
+                            <tr><td>3</td><td>1</td></tr>
+                        </tbody>
+                    </table>
+                    <br>
+                    <strong>Traducir:</strong>
+                    <ol>
+                        <li>Dirección virtual 0x0500 (1280 decimal)</li>
+                        <li>Dirección virtual 0x0A00 (2560 decimal)</li>
+                    </ol>
+                    <br>
+                    <strong>Solución:</strong>
+                    <ol>
+                        <li>1280 / 1024 = Página 1, Offset 256 → Marco 2, Offset 256 → Física: 2×1024+256 = 2304</li>
+                        <li>2560 / 1024 = Página 2, Offset 512 → Marco 8, Offset 512 → Física: 8×1024+512 = 8704</li>
+                    </ol>
+                </div>
+
+                <h3>Ejercicio 3: Semáforos</h3>
+                <div class="warning-box">
+                    <strong>Identificar el error en este código:</strong>
+                    <pre><code>sem_t s1 = 1, s2 = 1;
+
+// Thread A
+sem_wait(&s1);
+sem_wait(&s2);
+// Critical section
+sem_post(&s1);
+sem_post(&s2);
+
+// Thread B
+sem_wait(&s2);
+sem_wait(&s1);
+// Critical section
+sem_post(&s2);
+sem_post(&s1);</code></pre>
+                    <strong>Problema:</strong> Deadlock potencial (orden inverso de adquisición)
+                    <br><br>
+                    <strong>Solución:</strong> Ambos threads deben adquirir en el mismo orden.
+                </div>
+            </section>
+
+            <!-- Sección: Material de Estudio -->
+            <section class="section">
+                <h2>📖 Material de Estudio Recomendado</h2>
+
+                <h3>Recursos Principales</h3>
+                <ol>
+                    <li><strong>Slides de clase:</strong> Repasar todas las presentaciones</li>
+                    <li><strong>Libro:</strong> "Operating System Concepts" - Silberschatz (Cap. 1-13)</li>
+                    <li><strong>Videos:</strong>
+                        <ul>
+                            <li>MIT OpenCourseWare: 6.828</li>
+                            <li>Neso Academy: Operating Systems playlist</li>
+                        </ul>
+                    </li>
+                </ol>
+
+                <h3>Práctica Adicional</h3>
+                <ul>
+                    <li><strong>Simulador de planificación:</strong> https://cpuschedulingvisualizer.com/</li>
+                    <li><strong>Simulador de paginación:</strong> https://www.cs.usfca.edu/~galles/visualization/PagingTable.html</li>
+                </ul>
+            </section>
+
+            <!-- Sección: Checklist -->
+            <section class="section">
+                <h2>✅ Checklist de Preparación</h2>
+
+                <h3>2 semanas antes:</h3>
+                <ul class="checklist">
+                    <li>Revisar todos los slides de clase</li>
+                    <li>Identificar temas débiles</li>
+                    <li>Resolver ejercicios de cada unidad</li>
+                </ul>
+
+                <h3>1 semana antes:</h3>
+                <ul class="checklist">
+                    <li>Rehacer todas las actividades prácticas</li>
+                    <li>Estudiar en grupo (discutir conceptos)</li>
+                    <li>Crear resumen de fórmulas y algoritmos</li>
+                </ul>
+
+                <h3>3 días antes:</h3>
+                <ul class="checklist">
+                    <li>Resolver exámenes de años anteriores (si disponibles)</li>
+                    <li>Repasar ejercicios que se equivocaron</li>
+                    <li>Descansar bien</li>
+                </ul>
+
+                <h3>Día del examen:</h3>
+                <ul class="checklist">
+                    <li>Llegar 15 min antes</li>
+                    <li>Leer todas las preguntas primero</li>
+                    <li>Administrar tiempo (40 min por sección)</li>
+                </ul>
+            </section>
+
+            <!-- Sección: Consejos -->
+            <section class="section">
+                <h2>💡 Consejos para el Examen</h2>
+                <div class="success-box">
+                    <ol>
+                        <li><strong>Lee cuidadosamente:</strong> Muchos errores son por malinterpretar la pregunta</li>
+                        <li><strong>Administra el tiempo:</strong> No te quedes atascado en una pregunta</li>
+                        <li><strong>Muestra tu trabajo:</strong> En ejercicios de cálculo, los pasos parciales dan puntos</li>
+                        <li><strong>Verifica:</strong> Si terminas antes, revisa respuestas</li>
+                        <li><strong>Mantén la calma:</strong> Si no sabes una, sigue con la siguiente</li>
+                    </ol>
+                </div>
+            </section>
+
+            <!-- Sección: FAQ -->
+            <section class="section">
+                <h2>❓ Preguntas Frecuentes</h2>
+
+                <div class="faq-item">
+                    <div class="faq-question">P: ¿Puedo traer material de consulta?</div>
+                    <div class="faq-answer">R: No, el examen es sin material. Pero puedes traer calculadora básica.</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">P: ¿Habrá preguntas de programación?</div>
+                    <div class="faq-answer">R: Sí, leer/analizar código C (no escribir desde cero).</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">P: ¿Qué pasa si no termino?</div>
+                    <div class="faq-answer">R: Intenta responder algo de cada sección. Puntos parciales cuentan.</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">P: ¿Puedo hacer preguntas durante el examen?</div>
+                    <div class="faq-answer">R: Solo para aclarar enunciados ambiguos, no sobre contenido.</div>
+                </div>
+            </section>
+
+            <!-- Sección: Mensaje Final -->
+            <section class="section">
+                <div class="tip-box" style="text-align: center; font-size: 1.2em;">
+                    <strong>🎓 ¡Mucho Éxito!</strong><br><br>
+                    Recuerda: El examen evalúa comprensión, no memorización.<br>
+                    Enfócate en entender conceptos y saber aplicarlos.<br><br>
+                    <strong>¡Tú puedes!</strong>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <button class="scroll-top" onclick="scrollToTop()">↑</button>
+
+    <script>
+        // Scroll to top button
+        const scrollTopBtn = document.querySelector('.scroll-top');
+
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                scrollTopBtn.classList.add('show');
+            } else {
+                scrollTopBtn.classList.remove('show');
+            }
+        });
+
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+    </script>
+
+    <footer>
+        <div class="container">
+            <p><strong>IF0099 - Sistemas Operativos I</strong> • <a href="index.html">Índice de Clases</a></p>
+        </div>
+    </footer>
+</body>
+</html>

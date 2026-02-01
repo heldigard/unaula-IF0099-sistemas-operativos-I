@@ -1,0 +1,1596 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clase 01: ¿Qué es un Sistema Operativo? | IF0099 - Sistemas Operativos I</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #1e40af;
+            --accent: #059669;
+            --bg-light: #f8fafc;
+            --bg-code: #1e293b;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.7;
+            color: var(--text-main);
+            background: var(--bg-light);
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 3rem 0;
+            margin-bottom: 2rem;
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        header .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        header .meta {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Navigation */
+        nav {
+            background: white;
+            padding: 1.5rem 0;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        nav h2 {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            padding: 0 20px;
+        }
+
+        nav ul {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 0.5rem;
+            padding: 0 20px;
+        }
+
+        nav a {
+            color: var(--primary);
+            text-decoration: none;
+            padding: 0.5rem;
+            display: block;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+
+        nav a:hover {
+            background: var(--bg-light);
+        }
+
+        /* Sections */
+        section {
+            background: white;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        section h2 {
+            color: var(--primary);
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid var(--accent);
+        }
+
+        section h3 {
+            color: var(--secondary);
+            font-size: 1.4rem;
+            margin: 2rem 0 1rem;
+        }
+
+        section h4 {
+            color: var(--text-main);
+            font-size: 1.1rem;
+            margin: 1.5rem 0 0.75rem;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 1rem;
+        }
+
+        /* Figures */
+        figure {
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        figure img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        figcaption {
+            margin-top: 0.75rem;
+            color: var(--text-muted);
+            font-style: italic;
+            font-size: 0.95rem;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.95rem;
+        }
+
+        th, td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            background: var(--bg-light);
+            font-weight: 600;
+            color: var(--secondary);
+        }
+
+        tr:hover {
+            background: var(--bg-light);
+        }
+
+        /* Code blocks */
+        pre {
+            background: var(--bg-code);
+            color: #e2e8f0;
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+        }
+
+        p code, li code, td code {
+            background: var(--bg-light);
+            color: var(--primary);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+        }
+
+        /* Lists */
+        ul, ol {
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Callout boxes */
+        .callout {
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            border-left: 4px solid;
+        }
+
+        .callout.info {
+            background: #eff6ff;
+            border-left-color: var(--primary);
+        }
+
+        .callout.warning {
+            background: #fef3c7;
+            border-left-color: #f59e0b;
+        }
+
+        .callout.success {
+            background: #d1fae5;
+            border-left-color: var(--accent);
+        }
+
+        .callout-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Checkboxes for exercises */
+        .exercise {
+            background: var(--bg-light);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+        }
+
+        .exercise h4 {
+            margin-top: 0;
+        }
+
+        .checklist {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .checklist li {
+            padding: 0.5rem 0;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+        }
+
+        .checklist li input[type="checkbox"] {
+            margin-top: 0.25rem;
+            width: 18px;
+            height: 18px;
+        }
+
+        /* Details */
+        details {
+            background: var(--bg-light);
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+
+        summary {
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        summary:hover {
+            text-decoration: underline;
+        }
+
+        details[open] summary {
+            margin-bottom: 1rem;
+        }
+
+        /* ASCII diagrams */
+        .ascii-diagram {
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.85rem;
+            line-height: 1.2;
+            background: var(--bg-light);
+            padding: 1rem;
+            border-radius: 4px;
+            overflow-x: auto;
+            white-space: pre;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--text-main);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        footer a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.6rem;
+            }
+
+            section {
+                padding: 1.5rem;
+            }
+
+            nav ul {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Difficulty badges */
+        .difficulty {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .difficulty.easy { background: #d1fae5; color: #065f46; }
+        .difficulty.medium { background: #fef3c7; color: #92400e; }
+        .difficulty.hard { background: #fee2e2; color: #991b1b; }
+
+        /* Scroll indicator */
+        .scroll-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--primary);
+            color: white;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.3s;
+            text-decoration: none;
+            font-size: 1.5rem;
+        }
+
+        .scroll-top.visible {
+            opacity: 1;
+        }
+
+        .scroll-top:hover {
+            background: var(--secondary);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Clase 01: ¿Qué es un Sistema Operativo?</h1>
+            <p class="subtitle">IF0099 - Sistemas Operativos I | Unidad 1 - Introducción</p>
+            <p class="meta">Última actualización: 2026-02-01</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Navigation / Index -->
+        <nav>
+            <h2>Contenido de la Clase</h2>
+            <ul>
+                <li><a href="#objetivos">Objetivos de Aprendizaje</a></li>
+                <li><a href="#que-es-so">1. ¿Qué es un Sistema Operativo?</a></li>
+                <li><a href="#funciones">2. Funciones Principales</a></li>
+                <li><a href="#arquitecturas">3. Arquitecturas del SO</a></li>
+                <li><a href="#system-calls">4. System Calls</a></li>
+                <li><a href="#interfaces">5. Interfaces: GUI vs CLI</a></li>
+                <li><a href="#so-actuales">6. Sistemas Operativos Actuales</a></li>
+                <li><a href="#codigo">7. Código y Laboratorios</a></li>
+                <li><a href="#ejercicios">8. Ejercicios Prácticos</a></li>
+                <li><a href="#referencias">9. Referencias</a></li>
+            </ul>
+        </nav>
+
+        <!-- Objectives -->
+        <section id="objetivos">
+            <h2>Objetivos de Aprendizaje</h2>
+            <p>Al finalizar esta clase, serás capaz de:</p>
+            <ul>
+                <li><strong>Definir</strong> qué es un Sistema Operativo y su papel en un computador</li>
+                <li><strong>Identificar</strong> las funciones principales que realiza un SO</li>
+                <li><strong>Comparar</strong> diferentes arquitecturas de sistemas operativos</li>
+                <li><strong>Explicar</strong> cómo funcionan las system calls (llamadas al sistema)</li>
+                <li><strong>Relacionar</strong> cómo hardware, SO y aplicaciones interactúan entre sí</li>
+                <li><strong>Usar</strong> comandos básicos de Linux para explorar procesos y system calls</li>
+            </ul>
+        </section>
+
+        <!-- Section 1: What is an OS? -->
+        <section id="que-es-so">
+            <h2>1. ¿Qué es un Sistema Operativo?</h2>
+
+            <h3>Definición Formal</h3>
+            <p>Un <strong>Sistema Operativo (SO)</strong> es el software fundamental que gestiona los recursos de hardware y provee servicios para los programas de aplicación. Actúa como intermediario entre el usuario/aplicaciones y el hardware del computador.</p>
+
+            <div class="ascii-diagram">
+┌─────────────────────────────────────────────────────────┐
+│                    CAPA DE APLICACIÓN                   │
+│  (Navegadores, Juegos, Procesadores de texto, etc.)    │
+├─────────────────────────────────────────────────────────┤
+│                  SISTEMA OPERATIVO                      │
+│  (Gestiona recursos, provee servicios, protección)     │
+├─────────────────────────────────────────────────────────┤
+│                      HARDWARE                           │
+│  (CPU, RAM, Disco, Red, Dispositivos E/S)             │
+└─────────────────────────────────────────────────────────┘
+            </div>
+
+            <figure>
+                <img src="../assets/infografias/so-capas-sistema.png" alt="Diagrama de capas del sistema informático">
+                <figcaption>Figura 1: El Sistema Operativo como intermediario entre aplicaciones y hardware</figcaption>
+            </figure>
+
+            <h3>¿Por qué es importante?</h3>
+            <p>El SO es esencial porque:</p>
+            <ol>
+                <li><strong>Abstrae la complejidad del hardware:</strong> Los programadores no necesitan conocer los detalles de cómo funciona cada dispositivo.</li>
+                <li><strong>Maximiza el uso de recursos:</strong> Permite que múltiples programas compartan CPU, RAM y otros recursos eficientemente.</li>
+                <li><strong>Protege el sistema:</strong> Aísla procesos entre sí, evitando que un programa malicioso o con errores afecte a otros.</li>
+                <li><strong>Provee una interfaz uniforme:</strong> El mismo código funciona en diferentes hardware gracias a la abstracción del SO.</li>
+            </ol>
+
+            <h3>Analogía del Gerente de Hotel</h3>
+            <p>Un Sistema Operativo es como el gerente de un hotel:</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Hotel</th>
+                        <th>Computador</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>Huéspedes</td><td>Procesos/Programas</td></tr>
+                    <tr><td>Habitaciones</td><td>Memoria RAM</td></tr>
+                    <tr><td>Gerente</td><td>Sistema Operativo</td></tr>
+                    <tr><td>Recepcionista</td><td>Scheduler (planificador)</td></tr>
+                    <tr><td>Personal de limpieza</td><td>Gestor de memoria</td></tr>
+                    <tr><td>Seguridad</td><td>Protección de procesos</td></tr>
+                </tbody>
+            </table>
+
+            <figure>
+                <img src="../assets/infografias/so-analogia-hotel.png" alt="Analogía del hotel para explicar el Sistema Operativo">
+                <figcaption>Figura 2: Analogía del hotel - sin el gerente, los huéspedes pelearían por las habitaciones; sin el SO, los programas pelearían por la RAM</figcaption>
+            </figure>
+
+            <div class="callout info">
+                <p class="callout-title">Insight Clave</p>
+                <p><strong>Sin el gerente</strong>, los huéspedes pelearían por las habitaciones. <strong>Sin el SO</strong>, los programas pelearían por la RAM, causando caos y crashes del sistema.</p>
+            </div>
+        </section>
+
+        <!-- Section 2: Main Functions -->
+        <section id="funciones">
+            <h2>2. Funciones Principales del Sistema Operativo</h2>
+
+            <figure>
+                <img src="../assets/infografias/so-funciones-principales.png" alt="Funciones principales del Sistema Operativo">
+                <figcaption>Figura 3: Las cuatro funciones principales de un SO</figcaption>
+            </figure>
+
+            <h3>2.1 Gestión de Procesos</h3>
+            <p>Un <strong>proceso</strong> es un programa en ejecución. El SO es responsable de:</p>
+            <ul>
+                <li><strong>Creación y destrucción:</strong> <code>fork()</code> crea procesos, <code>exit()</code> los termina</li>
+                <li><strong>Scheduling (Planificación):</strong> Decide qué proceso ejecuta en cada momento</li>
+                <li><strong>Sincronización:</strong> Coordinación entre procesos que comparten recursos</li>
+                <li><strong>Comunicación (IPC):</strong> Mecanismos para que procesos se intercambien datos</li>
+            </ul>
+
+            <h4>Estados de un Proceso</h4>
+            <div class="ascii-diagram">
+    NUEVO → LISTO → EJECUTANDO → BLOQUEADO → TERMINADO
+              ↑         ↓            ↓
+              └─────────┴────────────┘
+              (scheduler/Interrupciones)
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Estado</th>
+                        <th>Descripción</th>
+                        <th>Ejemplo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>NUEVO</strong></td>
+                        <td>Proceso siendo creado</td>
+                        <td><code>fork()</code> llamado</td>
+                    </tr>
+                    <tr>
+                        <td><strong>LISTO</strong></td>
+                        <td>Esperando por CPU</td>
+                        <td>En cola de ready</td>
+                    </tr>
+                    <tr>
+                        <td><strong>EJECUTANDO</strong></td>
+                        <td>Usando CPU ahora</td>
+                        <td>Instrucciones ejecutándose</td>
+                    </tr>
+                    <tr>
+                        <td><strong>BLOQUEADO</strong></td>
+                        <td>Esperando I/O</td>
+                        <td>Leyendo del disco</td>
+                    </tr>
+                    <tr>
+                        <td><strong>TERMINADO</strong></td>
+                        <td>Ejecución completada</td>
+                        <td><code>exit()</code> llamado</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <figure>
+                <img src="../assets/infografias/so-estados-proceso.png" alt="Diagrama de estados de un proceso">
+                <figcaption>Figura 4: Estados de un proceso y sus transiciones</figcaption>
+            </figure>
+
+            <h3>2.2 Gestión de Memoria</h3>
+            <p>El SO administra la RAM como un edificio de apartamentos:</p>
+            <ul>
+                <li><strong>Asignación:</strong> Dar memoria a procesos cuando la necesitan</li>
+                <li><strong>Liberación:</strong> Recuperar memoria cuando procesos terminan</li>
+                <li><strong>Protección:</strong> Evitar que un proceso acceda a memoria de otro</li>
+                <li><strong>Memoria Virtual:</strong> Usar disco como extensión de RAM (swap/paging)</li>
+            </ul>
+
+            <h4>Problemas Clave en Gestión de Memoria</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Problema</th>
+                        <th>Descripción</th>
+                        <th>Solución</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Fragmentación</strong></td>
+                        <td>Huecos entre bloques de memoria</td>
+                        <td>Compacción, paginación</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Thrashing</strong></td>
+                        <td>Excesivo swapping, CPU inactiva</td>
+                        <td>Aumentar RAM, ajustar parámetros</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Fugas de memoria</strong></td>
+                        <td>Memoria no liberada</td>
+                        <td>Herramientas de detección (valgrind)</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>2.3 Gestión de Archivos</h3>
+            <p>El SO organiza datos en <strong>sistemas de archivos jerárquicos</strong>:</p>
+            <div class="ascii-diagram">
+/ (raíz)
+├── home/
+│   └── usuario/
+│       ├── documentos/
+│       └── imágenes/
+├── usr/
+│   └── bin/
+├── etc/
+└── var/
+            </div>
+
+            <h4>Operaciones Básicas (System Calls)</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Operación</th>
+                        <th>System Call</th>
+                        <th>Descripción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>Crear</td><td><code>creat()</code></td><td>Crea nuevo archivo</td></tr>
+                    <tr><td>Leer</td><td><code>read()</code></td><td>Lee bytes del archivo</td></tr>
+                    <tr><td>Escribir</td><td><code>write()</code></td><td>Escribe bytes al archivo</td></tr>
+                    <tr><td>Abrir</td><td><code>open()</code></td><td>Abre archivo existente</td></tr>
+                    <tr><td>Cerrar</td><td><code>close()</code></td><td>Cierra archivo abierto</td></tr>
+                    <tr><td>Eliminar</td><td><code>unlink()</code></td><td>Borra archivo</td></tr>
+                </tbody>
+            </table>
+
+            <h3>2.4 Gestión de E/S (Entrada/Salida)</h3>
+            <p>El SO controla dispositivos mediante <strong>drivers</strong> y técnicas de E/S:</p>
+
+            <h4>Técnicas de E/S</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Técnica</th>
+                        <th>Descripción</th>
+                        <th>Eficiencia</th>
+                        <th>Uso</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Polling</strong></td>
+                        <td>CPU pregunta repetidamente</td>
+                        <td>Baja</td>
+                        <td>Casi obsoleto</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Interrupciones</strong></td>
+                        <td>Dispositivo avisa a CPU</td>
+                        <td>Alta</td>
+                        <td>Estándar</td>
+                    </tr>
+                    <tr>
+                        <td><strong>DMA</strong></td>
+                        <td>Memoria ↔ Dispositivo directo</td>
+                        <td>Máxima</td>
+                        <td>Discos, red</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Section 3: Architectures -->
+        <section id="arquitecturas">
+            <h2>3. Arquitecturas del Sistema Operativo</h2>
+
+            <figure>
+                <img src="../assets/infografias/so-componentes-arquitectura.png" alt="Componentes y arquitectura del SO">
+                <figcaption>Figura 5: Componentes principales del Sistema Operativo</figcaption>
+            </figure>
+
+            <h3>3.1 Monolítico</h3>
+            <p>Todos los servicios del SO corren en <strong>modo kernel</strong>:</p>
+            <div class="ascii-diagram">
+┌─────────────────────────────────┐
+│   Todas las funciones del SO    │
+│   (Gestión archivos, procesos,   │
+│    memoria, E/S, etc.)          │
+├─────────────────────────────────┤
+│         KERNEL ÚNICO            │
+├─────────────────────────────────┤
+│          HARDWARE               │
+└─────────────────────────────────┘
+            </div>
+
+            <p><strong>Ventajas:</strong></p>
+            <ul>
+                <li>Rápido (sin overhead de comunicación)</li>
+                <li>Simple de implementar</li>
+            </ul>
+            <p><strong>Desventajas:</strong></p>
+            <ul>
+                <li>Difícil de mantener</li>
+                <li>Un fallo = crash del sistema</li>
+                <li>Complejo de depurar</li>
+            </ul>
+            <p><strong>Ejemplos:</strong> Linux, MS-DOS, Unix BSD</p>
+
+            <h3>3.2 Capas (Layered)</h3>
+            <p>El SO está organizado en <strong>capas jerárquicas</strong>:</p>
+            <div class="ascii-diagram">
+┌─────────────────────────────────┐
+│       Nivel 5: Aplicaciones     │
+├─────────────────────────────────┤
+│   Nivel 4: Utilidades           │
+├─────────────────────────────────┤
+│  Nivel 3: Gestión de recursos   │
+├─────────────────────────────────┤
+│   Nivel 2: Núcleo del SO        │
+├─────────────────────────────────┤
+│    Nivel 1: Hardware            │
+├─────────────────────────────────┤
+│      Nivel 0: Físico            │
+└─────────────────────────────────┘
+            </div>
+
+            <p><strong>Ventajas:</strong></p>
+            <ul>
+                <li>Modular y más fácil de mantener</li>
+                <li>Más seguro (capas aíslan funciones)</li>
+            </ul>
+            <p><strong>Desventajas:</strong></p>
+            <ul>
+                <li>Overhead por capas</li>
+                <li>Más lento que monolítico</li>
+            </ul>
+            <p><strong>Ejemplos:</strong> THE, VMS, Windows (híbrido)</p>
+
+            <h3>3.3 Microkernel</h3>
+            <p>Solo lo <strong>esencial</strong> corre en modo kernel; el resto corre en <strong>espacio de usuario</strong>:</p>
+            <div class="ascii-diagram">
+┌──────────────┐  ┌──────────────┐  ┌──────────────┐
+│Servidor      │  │Servidor      │  │Servidor      │
+│Archivos      │  │Procesos      │  │Memoria       │
+│(user space)  │  │(user space)  │  │(user space)  │
+└──────┬───────┘  └──────┬───────┘  └──────┬───────┘
+      │                 │                 │
+      │      IPC        │                 │
+      └────────┬────────┴─────────────────┘
+               │
+        ┌──────▼──────────┐
+        │  MICROKERNEL    │
+        │  (modo kernel)  │
+        │  - IPC          │
+        │  - Scheduling   │
+        │  - Memoria básica│
+        └──────┬──────────┘
+               │
+           HARDWARE
+            </div>
+
+            <p><strong>Ventajas:</strong></p>
+            <ul>
+                <li>Más seguro (menos código en kernel)</li>
+                <li>Flexible (agregar servicios sin recompilar)</li>
+                <li>Más mantenible (fallos en user space no crashean sistema)</li>
+            </ul>
+            <p><strong>Desventajas:</strong></p>
+            <ul>
+                <li>Más lento (IPC entre servicios)</li>
+                <li>Complejo de diseñar</li>
+            </ul>
+            <p><strong>Ejemplos:</strong> MINIX 3, QNX, GNU Hurd</p>
+        </section>
+
+        <!-- Section 4: System Calls -->
+        <section id="system-calls">
+            <h2>4. System Calls (Llamadas al Sistema)</h2>
+
+            <h3>¿Qué son las System Calls?</h3>
+            <p>Las <strong>system calls</strong> son la <strong>puerta de entrada</strong> al kernel. Son funciones que permiten a los programas solicitar servicios del SO que requieren privilegios especiales.</p>
+
+            <h3>Flujo de una System Call</h3>
+            <div class="ascii-diagram">
+Usuario                    Kernel
+  │                          │
+  │ printf("hola")           │
+  ▼                          │
+┌─────────┐                 │
+│ libc    │                 │
+│ write() │                 │
+└────┬────┘                 │
+     │                      │
+     │ syscall (TRAP)        │
+     ▼                      │
+┌─────────┐ ──────────────► │
+│  TRAP   │  Cambio modo    │
+│ (cambio │  usuario→kernel │
+│  modo)  │                 │
+         ─────────────────► │
+                             ▼
+                    ┌──────────────┐
+                    │ sys_write()  │
+                    │ - Valida     │
+                    │ - Ejecuta    │
+                    │ - Retorna    │
+                    └──────────────┘
+                             │
+         ◄──────────────────┘
+     │                        │
+     ▼                        │
+┌─────────┐                   │
+│ libc    │                   │
+└────┬────┘                   │
+     │                        │
+     ▼                        │
+  printf()                     │
+     │                        │
+     ▼                        │
+  Usuario                      │
+            </div>
+
+            <h3>Categorías de System Calls</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Categoría</th>
+                        <th>Ejemplos</th>
+                        <th>Propósito</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Control de procesos</strong></td>
+                        <td><code>fork()</code>, <code>exec()</code>, <code>wait()</code>, <code>exit()</code></td>
+                        <td>Crear/destruir procesos</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Manipulación archivos</strong></td>
+                        <td><code>open()</code>, <code>read()</code>, <code>write()</code>, <code>close()</code></td>
+                        <td>Operaciones I/O</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Gestión directorios</strong></td>
+                        <td><code>mkdir()</code>, <code>rmdir()</code>, <code>chdir()</code></td>
+                        <td>Navegar sistema archivos</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Comunicaciones</strong></td>
+                        <td><code>socket()</code>, <code>bind()</code>, <code>listen()</code>, <code>accept()</code></td>
+                        <td>Comunicación en red</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Información sistema</strong></td>
+                        <td><code>getpid()</code>, <code>getuid()</code>, <code>time()</code></td>
+                        <td>Obtener datos del sistema</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Section 5: Interfaces -->
+        <section id="interfaces">
+            <h2>5. El SO como Interfaz: GUI vs CLI</h2>
+
+            <h3>Comparación de Interfaces</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Aspecto</th>
+                        <th>GUI (Gráfica)</th>
+                        <th>CLI (Comandos)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Facilidad de uso</strong></td>
+                        <td>Muy fácil</td>
+                        <td>Curva de aprendizaje</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Potencia</strong></td>
+                        <td>Limitada</td>
+                        <td>Completa</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Automatización</strong></td>
+                        <td>Difícil</td>
+                        <td>Fácil (scripts)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Recursos</strong></td>
+                        <td>~500MB RAM</td>
+                        <td>~5MB RAM</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Uso ideal</strong></td>
+                        <td>Usuarios casuales</td>
+                        <td>Administradores, desarrolladores</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p><strong>Ejemplos de GUI:</strong> Windows Explorer, macOS Finder, GNOME Nautilus</p>
+            <p><strong>Ejemplos de CLI:</strong> bash, zsh, PowerShell, cmd</p>
+        </section>
+
+        <!-- Section 6: Current OS -->
+        <section id="so-actuales">
+            <h2>6. Sistemas Operativos Actuales (2026)</h2>
+
+            <h3>Por Plataforma</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Plataforma</th>
+                        <th>Líder</th>
+                        <th>Cuota de mercado</th>
+                        <th>Por qué</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Escritorio</strong></td>
+                        <td>Windows</td>
+                        <td>70%</td>
+                        <td>Compatibilidad, Office, Gaming</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Servidores</strong></td>
+                        <td>Linux</td>
+                        <td>96%</td>
+                        <td>Gratis, estable, Docker/K8s</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Móviles</strong></td>
+                        <td>Android</td>
+                        <td>71%</td>
+                        <td>Código abierto, ecosistema</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <figure>
+                <img src="../assets/infografias/so-evolucion-timeline.png" alt="Evolución histórica de los Sistemas Operativos">
+                <figcaption>Figura 6: Evolución de los Sistemas Operativos a través del tiempo</figcaption>
+            </figure>
+
+            <div class="callout success">
+                <p class="callout-title">Insight del Mercado</p>
+                <p>Cada SO domina donde resuelve mejor un problema específico. Windows domina en escritorio por compatibilidad con juegos y software de productividad. Linux domina en servidores por su estabilidad y herramientas como Docker/Kubernetes. Android domina en móviles por ser abierto y tener un ecosistema masivo de aplicaciones.</p>
+            </div>
+        </section>
+
+        <!-- Section 7: Code and Labs -->
+        <section id="codigo">
+            <h2>7. Código y Laboratorios</h2>
+
+            <h3>System Calls en C</h3>
+
+            <h4>Ejemplo 1: Crear un Proceso con fork()</h4>
+            <pre><code>// fork_example.c - Demostración de fork()
+#include &lt;stdio.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;sys/types.h&gt;
+
+int main() {
+    pid_t pid;
+
+    printf("ANTES del fork() - Solo un proceso\n");
+
+    // fork() crea un proceso idéntico (hijo)
+    pid = fork();
+
+    if (pid == 0) {
+        // Código del proceso HIJO
+        printf("HIJO: Mi PID es %d\n", getpid());
+        printf("HIJO: El PID de mi padre es %d\n", getppid());
+    } else if (pid > 0) {
+        // Código del proceso PADRE
+        printf("PADRE: Mi PID es %d\n", getpid());
+        printf("PADRE: El PID de mi hijo es %d\n", pid);
+    } else {
+        // Error en fork()
+        perror("Error en fork()");
+        return 1;
+    }
+
+    printf("FIN: Ambos procesos ejecutan esto\n");
+    return 0;
+}</code></pre>
+
+            <p><strong>Compilar:</strong> <code>gcc fork_example.c -o fork_example</code></p>
+            <p><strong>Ejecutar:</strong> <code>./fork_example</code></p>
+
+            <p><strong>Salida esperada:</strong></p>
+            <pre><code>ANTES del fork() - Solo un proceso
+PADRE: Mi PID es 1234
+PADRE: El PID de mi hijo es 1235
+FIN: Ambos procesos ejecutan esto
+HIJO: Mi PID es 1235
+HIJO: El PID de mi padre es 1234
+FIN: Ambos procesos ejecutan esto</code></pre>
+
+            <div class="callout warning">
+                <p class="callout-title">Nota sobre el orden de ejecución</p>
+                <p>El orden en que aparecen las líneas puede variar entre ejecuciones. Esto es porque el scheduler del SO decide qué proceso ejecuta primero. ¡Es parte de la magia de la programación concurrente!</p>
+            </div>
+
+            <h4>Ejemplo 2: Ver Información del Sistema</h4>
+            <pre><code>// sysinfo_example.c - Obtener información del sistema
+#include &lt;stdio.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;sys/types.h&gt;
+
+int main() {
+    printf("=== Información del Sistema ===\n");
+    printf("PID de este proceso: %d\n", getpid());
+    printf("PID del proceso padre: %d\n", getppid());
+    printf("UID del usuario: %d\n", getuid());
+    printf("GID del grupo: %d\n", getgid());
+
+    return 0;
+}</code></pre>
+
+            <h4>Ejemplo 3: Leer un Archivo (System Calls)</h4>
+            <pre><code>// read_file.c - Lectura de archivo con system calls
+#include &lt;stdio.h&gt;
+#include &lt;fcntl.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;stdlib.h&gt;
+
+#define BUFFER_SIZE 1024
+
+int main(int argc, char *argv[]) {
+    int fd;
+    char buffer[BUFFER_SIZE];
+    ssize_t bytes_read;
+
+    if (argc != 2) {
+        fprintf(stderr, "Uso: %s &lt;archivo&gt;\n", argv[0]);
+        return 1;
+    }
+
+    // Abrir archivo (system call: open)
+    fd = open(argv[1], O_RDONLY);
+    if (fd == -1) {
+        perror("Error al abrir archivo");
+        return 1;
+    }
+
+    // Leer archivo (system call: read)
+    while ((bytes_read = read(fd, buffer, BUFFER_SIZE - 1)) > 0) {
+        buffer[bytes_read] = '\0';
+        printf("%s", buffer);
+    }
+
+    if (bytes_read == -1) {
+        perror("Error al leer archivo");
+    }
+
+    // Cerrar archivo (system call: close)
+    close(fd);
+
+    return 0;
+}</code></pre>
+
+            <h3>Errores Comunes en C</h3>
+
+            <h4>Tabla de Errores Frecuentes</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Error</th>
+                        <th>Causa</th>
+                        <th>Solución</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Segmentation fault</strong></td>
+                        <td>Acceso a memoria inválida</td>
+                        <td>Verificar punteros, límites de arreglos</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Bus error</strong></td>
+                        <td>Alineación de memoria incorrecta</td>
+                        <td>Usar tipos correctos de datos</td>
+                    </tr>
+                    <tr>
+                        <td><strong>implicit declaration</strong></td>
+                        <td>Falta include</td>
+                        <td>Agregar <code>#include</code> correspondiente</td>
+                    </tr>
+                    <tr>
+                        <td><strong>undefined reference</strong></td>
+                        <td>Falta linker library</td>
+                        <td>Agregar <code>-l</code> (ej: <code>-lpthread</code>)</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Debugging con gdb</h3>
+            <pre><code># Compilar con símbolos de depuración
+gcc -g programa.c -o programa
+
+# Iniciar gdb
+gdb ./programa
+
+# Comandos útiles de gdb
+(gdb) run           # Ejecutar programa
+(gdb) bt            # Backtrace (ver pila de llamadas)
+(gdb) print var     # Imprimir valor de variable
+(gdb) break main    # Punto de ruptura en main
+(gdb) next          # Ejecutar siguiente línea
+(gdb) step          # Paso a paso (entra en funciones)
+(gdb) continue      # Continuar ejecución
+(gdb) quit          # Salir de gdb</code></pre>
+
+            <div class="callout info">
+                <p class="callout-title">Nota para Usuarios Windows</p>
+                <p>Los laboratorios de esta clase usan comandos de Linux. Si usas Windows, tienes estas opciones:</p>
+                <ul>
+                    <li><strong>WSL (Windows Subsystem for Linux)</strong>: Recomendado. Instala WSL2 con Ubuntu desde PowerShell: <code>wsl --install</code></li>
+                    <li><strong>VirtualBox</strong>: Ejecuta una máquina virtual con Ubuntu</li>
+                    <li><strong>Git Bash</strong>: Opción limitada pero funciona para comandos básicos</li>
+                </ul>
+            </div>
+
+            <h3>Laboratorios Linux</h3>
+
+            <h4>Lab 1: Explorar Procesos</h4>
+            <p><strong>Objetivo:</strong> Entender cómo el SO gestiona procesos activos.</p>
+
+            <pre><code># Ver todos los procesos
+ps aux
+
+# Ver procesos en tiempo real
+top
+
+# Ver procesos en formato árbol
+pstree
+
+# Ver información de un proceso específico
+ps -p 1 -o pid,ppid,cmd
+
+# Ver archivos abiertos por un proceso
+lsof -p $$
+
+# Ver mapa de memoria del proceso actual
+cat /proc/self/maps</code></pre>
+
+            <p><strong>Salida esperada de <code>ps aux</code>:</strong></p>
+            <pre><code>USER   PID %CPU %MEM    VSZ   RSS TTY   STAT START  TIME COMMAND
+root     1  0.0  0.1  21500  3400 ?      Ss   10:00  0:01 /sbin/init
+user   1234  0.5  1.2 345000 45000 ?      Sl   10:01  0:05 /usr/lib/firefox/firefox</code></pre>
+
+            <h4>Lab 2: Explorar Memoria</h4>
+            <pre><code># Ver uso de memoria
+free -h
+
+# Ver memoria en detalle
+cat /proc/meminfo
+
+# Ver uso de memoria por proceso
+ps aux --sort=-%mem | head -10
+
+# Ver dispositivos de bloque (discos)
+lsblk
+
+# Ver uso de disco
+df -h
+
+# Ver estadísticas de E/S
+iostat -x 1 5</code></pre>
+
+            <h4>Lab 3: System Calls en Vivo</h4>
+            <pre><code># Rastrear system calls de un programa
+strace ls -la
+
+# Rastrear system calls de un proceso en ejecución
+strace -p 1234
+
+# Ver network system calls
+strace -e trace=network curl https://example.com
+
+# Contar system calls por tipo
+strace -c ls</code></pre>
+
+            <p><strong>Salida de <code>strace ls -la</code>:</strong></p>
+            <pre><code>execve("/usr/bin/ls", ["ls", "-la"], 0x7ffeb...) = 0
+brk(NULL)                               = 0x55555000
+access("/etc/ld.so.nohwcap", F_OK)      = -1 ENOENT
+mmap(NULL, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x7f1234000
+open("/etc/ld.so.cache", O_RDONLY|O_CLOEXEC) = 3
+...</code></pre>
+        </section>
+
+        <!-- Section 8: Exercises -->
+        <section id="ejercicios">
+            <h2>8. Ejercicios Prácticos</h2>
+
+            <div class="exercise">
+                <h4>Ejercicio 1: Tu Primer fork() <span class="difficulty easy">Fácil</span></h4>
+                <p><strong>Objetivo:</strong> Crear tu primer proceso hijo usando <code>fork()</code></p>
+                <p><strong>Tiempo estimado:</strong> 15 minutos</p>
+
+                <p><strong>Enunciado:</strong> Escribe un programa en C que:</p>
+                <ol>
+                    <li>Cree un proceso hijo usando <code>fork()</code></li>
+                    <li>El proceso padre debe imprimir "PADRE: Hola soy el padre"</li>
+                    <li>El proceso hijo debe imprimir "HIJO: Hola soy el hijo"</li>
+                    <li>Ambos deben imprimir su PID</li>
+                </ol>
+
+                <p><strong>Instrucciones Paso a Paso:</strong></p>
+                <ul class="checklist">
+                    <li><input type="checkbox"> <strong>Paso 1:</strong> Crear archivo <code>fork_basico.c</code></li>
+                    <li><input type="checkbox"> <strong>Paso 2:</strong> Incluir las librerías necesarias</li>
+                    <li><input type="checkbox"> <strong>Paso 3:</strong> Escribir la función main</li>
+                    <li><input type="checkbox"> <strong>Paso 4:</strong> Compilar el programa</li>
+                    <li><input type="checkbox"> <strong>Paso 5:</strong> Ejecutar y observar salida</li>
+                    <li><input type="checkbox"> <strong>Paso 6:</strong> Ejecutar múltiples veces</li>
+                </ul>
+
+                <details>
+                    <summary>Ver solución completa</summary>
+                    <pre><code>// fork_basico.c
+#include &lt;stdio.h&gt;
+#include &lt;unistd.h&gt;
+
+int main() {
+    pid_t pid;
+
+    pid = fork();
+
+    if (pid == 0) {
+        // Proceso hijo
+        printf("HIJO: Hola soy el hijo\n");
+        printf("HIJO: Mi PID es %d\n", getpid());
+        printf("HIJO: El PID de mi padre es %d\n", getppid());
+    } else if (pid > 0) {
+        // Proceso padre
+        printf("PADRE: Hola soy el padre\n");
+        printf("PADRE: Mi PID es %d\n", getpid());
+        printf("PADRE: El PID de mi hijo es %d\n", pid);
+    } else {
+        // Error
+        perror("Error en fork()");
+        return 1;
+    }
+
+    return 0;
+}</code></pre>
+                    <p><strong>Compilar y ejecutar:</strong></p>
+                    <pre><code>gcc fork_basico.c -o fork_basico
+./fork_basico</code></pre>
+                </details>
+            </div>
+
+            <div class="exercise">
+                <h4>Ejercicio 2: Explorador de Procesos <span class="difficulty easy">Fácil</span></h4>
+                <p><strong>Objetivo:</strong> Usar comandos de Linux para explorar procesos activos</p>
+                <p><strong>Tiempo estimado:</strong> 10 minutos</p>
+
+                <p><strong>Enunciado:</strong> Usa comandos de Linux para responder estas preguntas:</p>
+                <ol>
+                    <li>¿Cuántos procesos están corriendo en tu sistema?</li>
+                    <li>¿Cuál es el PID del proceso init (PID 1)?</li>
+                    <li>¿Qué proceso consume más CPU?</li>
+                    <li>¿Qué proceso consume más memoria?</li>
+                </ol>
+
+                <p><strong>Instrucciones:</strong></p>
+                <ul class="checklist">
+                    <li><input type="checkbox"> <strong>Paso 1:</strong> Contar todos los procesos: <code>ps aux | wc -l</code></li>
+                    <li><input type="checkbox"> <strong>Paso 2:</strong> Ver el proceso init: <code>ps -p 1 -o pid,ppid,cmd</code></li>
+                    <li><input type="checkbox"> <strong>Paso 3:</strong> Ver procesos ordenados por CPU</li>
+                    <li><input type="checkbox"> <strong>Paso 4:</strong> Ver procesos ordenados por memoria</li>
+                    <li><input type="checkbox"> <strong>Paso 5:</strong> Ver tu proceso actual: <code>ps -p $$</code></li>
+                </ul>
+            </div>
+
+            <div class="exercise">
+                <h4>Ejercicio 3: Multiproceso con wait() <span class="difficulty medium">Medio</span></h4>
+                <p><strong>Objetivo:</strong> Crear múltiples procesos y esperar su terminación</p>
+                <p><strong>Tiempo estimado:</strong> 20 minutos</p>
+
+                <p><strong>Enunciado:</strong> Escribe un programa que:</p>
+                <ol>
+                    <li>Cree 3 procesos hijos</li>
+                    <li>Cada hijo imprime un número (1, 2, 3) y espera 1 segundo</li>
+                    <li>El padre espera a que todos los hijos terminen</li>
+                    <li>El padre imprime "Todos los hijos terminaron"</li>
+                </ol>
+
+                <details>
+                    <summary>Ver solución completa</summary>
+                    <pre><code>// multiproceso.c
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;sys/wait.h&gt;
+
+int main() {
+    pid_t pid;
+    int num_hijos = 3;
+
+    printf("Padre: PID=%d, creando %d hijos\n", getpid(), num_hijos);
+
+    for (int i = 1; i &lt;= num_hijos; i++) {
+        pid = fork();
+
+        if (pid == 0) {
+            // Proceso hijo
+            printf("  Hijo %d: PID=%d, padre PID=%d\n",
+                   i, getpid(), getppid());
+            sleep(1);
+            printf("  Hijo %d: Terminando\n", i);
+            exit(0);
+        } else if (pid &lt; 0) {
+            perror("Error en fork()");
+            return 1;
+        }
+    }
+
+    // Proceso padre espera a todos
+    for (int i = 1; i &lt;= num_hijos; i++) {
+        wait(NULL);
+    }
+
+    printf("Padre: Todos los %d hijos terminaron\n", num_hijos);
+
+    return 0;
+}</code></pre>
+                    <p><strong>Compilar y ejecutar:</strong></p>
+                    <pre><code>gcc multiproceso.c -o multiproceso
+./multiproceso</code></pre>
+                </details>
+            </div>
+
+            <div class="exercise">
+                <h4>Ejercicio 4: Análisis de System Calls <span class="difficulty medium">Medio</span></h4>
+                <p><strong>Objetivo:</strong> Observar las system calls que hace un programa</p>
+                <p><strong>Tiempo estimado:</strong> 15 minutos</p>
+
+                <p><strong>Enunciado:</strong> Usa <code>strace</code> para analizar qué system calls hacen diferentes comandos.</p>
+
+                <ul class="checklist">
+                    <li><input type="checkbox"> <strong>Paso 1:</strong> Instalar strace si no está disponible</li>
+                    <li><input type="checkbox"> <strong>Paso 2:</strong> Rastrear <code>ls</code>: <code>strace ls -la 2>&1 | head -20</code></li>
+                    <li><input type="checkbox"> <strong>Paso 3:</strong> Rastrear <code>cat</code></li>
+                    <li><input type="checkbox"> <strong>Paso 4:</strong> Contar system calls por tipo: <code>strace -c ls</code></li>
+                    <li><input type="checkbox"> <strong>Paso 5:</strong> Rastrear solo system calls de archivos</li>
+                </ul>
+
+                <details>
+                    <summary>Ver análisis de system calls típico</summary>
+                    <p><strong>System calls comunes en <code>ls -la</code>:</strong></p>
+                    <ol>
+                        <li><code>execve()</code> - Ejecuta el comando ls</li>
+                        <li><code>brk()</code> - Asigna memoria</li>
+                        <li><code>access()</code> - Verifica permisos</li>
+                        <li><code>mmap()</code> - Mapea memoria</li>
+                        <li><code>open()</code> - Abre directorios</li>
+                        <li><code>getdents()</code> - Lee entradas de directorio</li>
+                        <li><code>write()</code> - Escribe salida</li>
+                    </ol>
+                </details>
+            </div>
+
+            <div class="exercise">
+                <h4>Ejercicio 5: Mini-Explorador de Archivos <span class="difficulty hard">Difícil</span></h4>
+                <p><strong>Objetivo:</strong> Crear un programa que liste archivos como <code>ls</code></p>
+                <p><strong>Tiempo estimado:</strong> 30 minutos</p>
+
+                <p><strong>Enunciado:</strong> Escribe un programa en C que:</p>
+                <ol>
+                    <li>Abrir el directorio actual</li>
+                    <li>Liste todos los archivos</li>
+                    <li>Para cada archivo, muestre: nombre, tamaño, permisos</li>
+                    <li>Use system calls directamente (no usar <code>system("ls")</code>)</li>
+                </ol>
+
+                <details>
+                    <summary>Ver solución completa</summary>
+                    <pre><code>// mini_ls.c - Mini explorador de archivos
+#include &lt;stdio.h&gt;
+#include &lt;dirent.h&gt;
+#include &lt;sys/stat.h&gt;
+#include &lt;sys/types.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;pwd.h&gt;
+#include &lt;grp.h&gt;
+
+void print_permissions(mode_t mode) {
+    printf((mode &amp; S_IRUSR) ? "r" : "-");
+    printf((mode &amp; S_IWUSR) ? "w" : "-");
+    printf((mode &amp; S_IXUSR) ? "x" : "-");
+    printf((mode &amp; S_IRGRP) ? "r" : "-");
+    printf((mode &amp; S_IWGRP) ? "w" : "-");
+    printf((mode &amp; S_IXGRP) ? "x" : "-");
+    printf((mode &amp; S_IROTH) ? "r" : "-");
+    printf((mode &amp; S_IWOTH) ? "w" : "-");
+    printf((mode &amp; S_IXOTH) ? "x" : "-");
+}
+
+int main() {
+    DIR *d;
+    struct dirent *dir;
+    struct stat file_stat;
+    struct passwd *pw;
+    struct grp *gr;
+
+    d = opendir(".");
+    if (!d) {
+        perror("opendir");
+        return 1;
+    }
+
+    printf("Permisos    Usuario  Grupo    Tamaño    Nombre\n");
+    printf("---------   ------   ------   -------   --------\n");
+
+    while ((dir = readdir(d)) != NULL) {
+        if (stat(dir-&gt;d_name, &amp;file_stat) == 0) {
+            print_permissions(file_stat.st_mode);
+
+            pw = getpwuid(file_stat.st_uid);
+            gr = getgrgid(file_stat.st_gid);
+
+            printf("   %-8s %-8s %8ld   %s\n",
+                   pw ? pw-&gt;pw_name : "unknown",
+                   gr ? gr-&gt;gr_name : "unknown",
+                   file_stat.st_size,
+                   dir-&gt;d_name);
+        }
+    }
+
+    closedir(d);
+    return 0;
+}</code></pre>
+                    <p><strong>Compilar y ejecutar:</strong></p>
+                    <pre><code>gcc mini_ls.c -o mini_ls
+./mini_ls</code></pre>
+                </details>
+            </div>
+        </section>
+
+        <!-- Section 9: References -->
+        <section id="referencias">
+            <h2>9. Referencias y Recursos</h2>
+
+            <h3>Bibliografía Recomendada</h3>
+            <ol>
+                <li><strong>Tanenbaum, Andrew S.</strong> <em>Modern Operating Systems</em>. 5th Edition. Pearson, 2024.</li>
+                <li><strong>Silberschatz, Abraham; Galvin, Peter B.; Gagne, Greg.</strong> <em>Operating System Concepts</em>. 10th Edition, Wiley, 2018. (El "dinosaurio")</li>
+                <li><strong>Stallings, William.</strong> <em>Operating Systems: Internals and Design Principles</em>. 9th Edition, Pearson, 2022.</li>
+                <li><strong>Love, Robert.</strong> <em>Linux Kernel Development</em>. 3rd Edition, Addison-Wesley, 2010.</li>
+            </ol>
+
+            <h3>Recursos Online</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Recurso</th>
+                        <th>Descripción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Linux man pages</strong></td>
+                        <td>Documentación completa de system calls Linux</td>
+                    </tr>
+                    <tr>
+                        <td><strong>POSIX Specification</strong></td>
+                        <td>Estándar IEEE 1003.1 (POSIX)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Beej's Guide to Unix IPC</strong></td>
+                        <td>Guía excelente sobre IPC, forks, pipes</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Linux Journey</strong></td>
+                        <td>Tutorial interactivo de comandos Linux</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Herramientas de Linux</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Herramienta</th>
+                        <th>Propósito</th>
+                        <th>Instalación</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>strace</code></td><td>Rastrear system calls</td><td><code>sudo apt install strace</code></td></tr>
+                    <tr><td><code>ltrace</code></td><td>Rastrear llamadas a librerías</td><td><code>sudo apt install ltrace</code></td></tr>
+                    <tr><td><code>lsof</code></td><td>Listar archivos abiertos</td><td><code>sudo apt install lsof</code></td></tr>
+                    <tr><td><code>htop</code></td><td>Monitor de procesos interactivo</td><td><code>sudo apt install htop</code></td></tr>
+                    <tr><td><code>valgrind</code></td><td>Detectar fugas de memoria</td><td><code>sudo apt install valgrind</code></td></tr>
+                </tbody>
+            </table>
+
+            <h3>Comandos Útiles de Referencia</h3>
+
+            <h4>Gestión de Procesos</h4>
+            <pre><code># Ver todos los procesos
+ps aux
+
+# Ver proceso específico
+ps -p 1234
+
+# Matar proceso
+kill 1234
+kill -9 1234  # forzado
+
+# Ver procesos en tiempo real
+top
+htop  # más amigable</code></pre>
+
+            <h4>Debugging</h4>
+            <pre><code># Rastrear system calls
+strace ./programa
+
+# Rastrear proceso en ejecución
+strace -p 1234
+
+# Ver archivos abiertos
+lsof -p 1234
+
+# Depurador
+gdb ./programa</code></pre>
+
+            <h3>Práctica Recomendada</h3>
+            <p><strong>Para Dominar System Calls en C:</strong></p>
+            <ol>
+                <li>Escribir código todos los días (comienza con <code>fork()</code>, <code>wait()</code>, <code>exit()</code>)</li>
+                <li>Leer man pages: <code>man 2 fork</code>, <code>man 2 open</code>, etc.</li>
+                <li>Usar <code>strace</code> para aprender: <code>strace ls -la</code></li>
+                <li>Compilar con advertencias máximas: <code>gcc -Wall -Wextra -pedantic programa.c</code></li>
+                <li>Usar valgrind para detectar errores: <code>valgrind --leak-check=full ./programa</code></li>
+            </ol>
+        </section>
+
+        <!-- Key Concepts Summary -->
+        <section id="resumen">
+            <h2>Resumen de Conceptos Clave</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Concepto</th>
+                        <th>Definición</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td><strong>Sistema Operativo</strong></td><td>Software intermediario entre usuario y hardware</td></tr>
+                    <tr><td><strong>Proceso</strong></td><td>Programa en ejecución con sus recursos</td></tr>
+                    <tr><td><strong>System Call</strong></td><td>Puerta controlada al kernel</td></tr>
+                    <tr><td><strong>Kernel</strong></td><td>Núcleo del SO, corre en modo privilegiado</td></tr>
+                    <tr><td><strong>Arquitectura</strong></td><td>Cómo se organiza el SO internamente</td></tr>
+                    <tr><td><strong>GUI</strong></td><td>Interfaz gráfica de usuario</td></tr>
+                    <tr><td><strong>CLI</strong></td><td>Interfaz de línea de comandos</td></tr>
+                </tbody>
+            </table>
+        </section>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p><strong>IF0099 - Sistemas Operativos I</strong> • Clase 01: ¿Qué es un Sistema Operativo?</p>
+            <p>Última actualización: 2026-02-01 • <a href="index.html">Índice de Clases</a></p>
+            <p><a href="#" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); return false;">Volver arriba ↑</a></p>
+        </div>
+    </footer>
+
+    <a href="#" class="scroll-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); return false;">↑</a>
+
+    <script>
+        // Show/hide scroll-to-top button
+        const scrollTopBtn = document.querySelector('.scroll-top');
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                scrollTopBtn.classList.add('visible');
+            } else {
+                scrollTopBtn.classList.remove('visible');
+            }
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
