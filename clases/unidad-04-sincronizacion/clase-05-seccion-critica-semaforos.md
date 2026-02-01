@@ -203,26 +203,70 @@ Tiempo    Proceso A              Memoria          Proceso B
 
 ## Requisitos de la Solución
 
-### Una buena solución debe garantizar:
+### Una buena solución debe garantizar
+
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+
+<div>
+
+#### ✅ Los 3 requisitos
 
 | Requisito | Descripción |
-| ----------- | ------------- |
+|-----------|-------------|
 | **Exclusión mutua** | Solo un proceso en la sección crítica |
 | **Progreso** | Si nadie está en SC, alguien puede entrar |
 | **Espera limitada** | Un proceso no debe esperar infinitamente |
 
-```
-// Estructura general de la solución
+#### 📝 Estructura general
+
+```c
 while (true) {
     ENTRADA_SECCION_CRITICA();   // Solicitar permiso
-    
+
     // ... sección crítica ...
-    
+
     SALIDA_SECCION_CRITICA();    // Liberar permiso
-    
+
     // ... resto del código ...
 }
 ```
+
+</div>
+
+<div>
+
+#### 🎯 ¿Por qué son necesarios?
+
+**Exclusión Mutua**
+```
+Sin ella:
+Proceso A: saldo = 1000 + 100
+Proceso B: saldo = 1000 - 50
+Resultado: saldo inconsistente
+```
+
+**Progreso**
+```
+Sin progreso:
+Si un proceso fuera de SC impide
+que otros entren, nadie avanza.
+```
+
+**Espera Limitada**
+```
+Sin ella:
+Un proceso puede esperar
+indefinidamente (inanición).
+```
+
+#### 💡 Soluciones
+- **Hardware**: TAS, CAS (instrucciones atómicas)
+- **Software**: Semáforos, Mutex, Monitores
+- **Lenguaje**: Java synchronized, C# lock
+
+</div>
+
+</div>
 
 ---
 
