@@ -381,6 +381,14 @@
             margin-top: 0;
             color: var(--primary);
         }
+
+        .actividad{background:var(--light);border-left:5px solid var(--accent);padding:1.5rem;margin:1.5rem 0;border-radius:4px}
+        .actividad h3{color:var(--primary);margin-bottom:1rem}
+        .actividad p{margin-bottom:.75rem}
+        .actividad strong{color:var(--secondary)}
+        .evaluacion{background:#fef3c7;border-left:5px solid #f59e0b;padding:1.5rem;margin:1.5rem 0;border-radius:8px}
+        .evaluacion h3{color:#b45309;margin-bottom:1rem}
+        .evaluacion .porcentaje{font-size:2rem;font-weight:700;color:#d97706;margin:.5rem 0}
     </style>
 </head>
 <body>
@@ -404,7 +412,8 @@
                 <li><a href="#evitacion">Evitación</a></li>
                 <li><a href="#deteccion">Detección y Recuperación</a></li>
                 <li><a href="#linux">Deadlocks en Linux</a></li>
-                <li><a href="#ejercicios">Ejercicios Prácticos</a></li>
+                <li><a href="#evaluacion-e5">Evaluación E5 (15%)</a></li>
+                <li><a href="#ejercicios">Ejercicios Prácticos (Opcional)</a></li>
             </ul>
         </nav>
 
@@ -1040,8 +1049,25 @@ flock -x 3
             </div>
         </section>
 
+        <!-- Evaluación E5 -->
+        <section id="evaluacion-e5" class="evaluacion">
+            <h2>Evaluación E5: Informe - Conceptos Fundamentales</h2>
+            <div class="callout warning">
+                <strong>Fecha:</strong> 2026-05-06 | <strong>Porcentaje:</strong> 15%
+                <br><strong>Evaluación programada:</strong> Consultar plataforma virtual para instrucciones completas.
+            </div>
+        </section>
+
         <section id="ejercicios">
-            <h2>Ejercicios Prácticos</h2>
+            <h2>Ejercicios Prácticos (Opcional)</h2>
+
+            <section class="actividad">
+                <h3>Actividad: Ejercicios de Deadlock</h3>
+                <p><strong>Tipo:</strong> Opcional (práctica)</p>
+                <p><strong>Relacionado con:</strong> Análisis de deadlocks y algoritmos</p>
+                <p><strong>Entregable:</strong> Ninguno (para practicar)</p>
+                <p><strong>Propósito:</strong> Practicar detección y resolución de deadlocks</p>
+            </section>
 
             <div class="exercise">
                 <h4>Ejercicio 1: Detectar Deadlock en Wait-For Graph</h4>

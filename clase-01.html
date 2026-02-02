@@ -377,6 +377,11 @@
         .scroll-top:hover {
             background: var(--secondary);
         }
+
+        .actividad{background:var(--bg-light);border-left:5px solid var(--accent);padding:1.5rem;margin:1.5rem 0;border-radius:4px}
+        .actividad h3{color:var(--primary);margin-bottom:1rem}
+        .actividad p{margin-bottom:.75rem}
+        .actividad strong{color:var(--secondary)}
     </style>
 </head>
 <body>
@@ -401,7 +406,7 @@
                 <li><a href="#interfaces">5. Interfaces: GUI vs CLI</a></li>
                 <li><a href="#so-actuales">6. Sistemas Operativos Actuales</a></li>
                 <li><a href="#codigo">7. Código y Laboratorios</a></li>
-                <li><a href="#ejercicios">8. Ejercicios Prácticos</a></li>
+                <li><a href="#ejercicios">8. Ejercicios Prácticos (Opcional)</a></li>
                 <li><a href="#referencias">9. Referencias</a></li>
             </ul>
         </nav>
@@ -1187,7 +1192,15 @@ open("/etc/ld.so.cache", O_RDONLY|O_CLOEXEC) = 3
 
         <!-- Section 8: Exercises -->
         <section id="ejercicios">
-            <h2>8. Ejercicios Prácticos</h2>
+            <h2>8. Ejercicios Prácticos (Opcional)</h2>
+
+            <section class="actividad">
+                <h3>Actividad: Ejercicios de Introducción a SO</h3>
+                <p><strong>Tipo:</strong> Opcional (práctica)</p>
+                <p><strong>Relacionado con:</strong> Conceptos fundamentales de sistemas operativos</p>
+                <p><strong>Entregable:</strong> Ninguno (para practicar)</p>
+                <p><strong>Propósito:</strong> Practicar con fork(), system calls y conceptos básicos</p>
+            </section>
 
             <div class="exercise">
                 <h4>Ejercicio 1: Tu Primer fork() <span class="difficulty easy">Fácil</span></h4>
