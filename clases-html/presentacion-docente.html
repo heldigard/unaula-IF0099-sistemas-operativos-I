@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Presentación del Docente | IF0099 - Sistemas Operativos I</title>
+  <style>
+    :root {
+      --bg: #f7f7f4;
+      --ink: #1f2933;
+      --muted: #52606d;
+      --brand: #1e3a8a;
+      --accent: #3b82f6;
+      --card: #ffffff;
+      --line: #d9e2ec;
+      --linux-orange: #dd4814;
+      --terminal-green: #00aa00;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "IBM Plex Sans", "Segoe UI", Tahoma, sans-serif;
+      color: var(--ink);
+      background: var(--bg);
+      line-height: 1.65;
+    }
+    header {
+      background: linear-gradient(135deg, #0b2d6b, #1e40af);
+      color: #fff;
+      padding: 36px 20px 28px;
+    }
+    header .wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    header h1 {
+      font-family: "Merriweather", Georgia, serif;
+      margin: 8px 0 10px;
+      font-size: 2.2rem;
+    }
+    header .meta {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+      margin-top: 18px;
+      background: rgba(255, 255, 255, 0.12);
+      padding: 16px;
+      border-radius: 12px;
+    }
+    header ul {
+      margin: 8px 0 0 18px;
+    }
+    nav {
+      max-width: 1100px;
+      margin: 18px auto 0;
+      padding: 14px 18px;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+    }
+    nav ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 8px 14px;
+    }
+    nav a {
+      color: var(--brand);
+      text-decoration: none;
+      padding: 8px 10px;
+      border-radius: 8px;
+      background: #eef2ff;
+      display: block;
+    }
+    nav a:hover { background: #dbeafe; }
+    main {
+      max-width: 1100px;
+      margin: 18px auto 60px;
+      padding: 0 20px;
+    }
+    section {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 22px;
+      margin: 18px 0;
+    }
+    h2 {
+      margin-top: 0;
+      color: var(--brand);
+      font-size: 1.6rem;
+      border-bottom: 3px solid var(--accent);
+      padding-bottom: 6px;
+    }
+    h3 { color: #0b2d6b; margin-top: 20px; }
+    h4 { color: #2f4b7c; margin-top: 16px; }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+      align-items: start;
+    }
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      align-items: start;
+    }
+    .note {
+      background: #f0f4ff;
+      border-left: 4px solid var(--accent);
+      padding: 10px 12px;
+      border-radius: 8px;
+      color: var(--muted);
+    }
+    .warning-box {
+      background: #fef2f2;
+      border-left: 4px solid #dc2626;
+      padding: 10px 12px;
+      border-radius: 8px;
+      color: #991b1b;
+    }
+    .success-box {
+      background: #f0fdf4;
+      border-left: 4px solid #22c55e;
+      padding: 10px 12px;
+      border-radius: 8px;
+      color: #166534;
+    }
+    table { width: 100%; border-collapse: collapse; margin: 10px 0; }
+    th, td { border: 1px solid var(--line); padding: 8px 10px; text-align: left; }
+    th { background: #f1f5f9; }
+    /* Responsive */
+    @media (max-width: 768px) {
+      header h1 { font-size: 1.6rem; }
+      header .meta { grid-template-columns: 1fr; }
+      nav ul { grid-template-columns: 1fr; }
+      .grid-2, .grid-3 { grid-template-columns: 1fr; }
+      section { padding: 16px; }
+    }
+    /* Print styles */
+    @media print {
+      header, nav, footer { background: white !important; color: black !important; }
+      a[href]:after { content: " (" attr(href) ")"; font-size: 0.8em; }
+    }
+
+    /* Tech badges */
+    .tech-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+      color: #fff;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      margin: 4px 4px 4px 0;
+      font-weight: 600;
+    }
+
+    .linux-badge {
+      background: linear-gradient(135deg, #dd4814, #ff6b35);
+    }
+
+    .terminal-badge {
+      background: linear-gradient(135deg, #00aa00, #00cc00);
+      font-family: 'Courier New', monospace;
+    }
+
+    /* Timeline */
+    .timeline {
+      position: relative;
+      padding-left: 30px;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 8px;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: linear-gradient(to bottom, #3b82f6, #1e3a8a);
+    }
+    .timeline-item {
+      position: relative;
+      margin-bottom: 20px;
+      padding-left: 20px;
+    }
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -24px;
+      top: 6px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #3b82f6;
+      border: 3px solid #fff;
+      box-shadow: 0 0 0 2px #3b82f6;
+    }
+
+    /* Highlight box */
+    .highlight-box {
+      background: linear-gradient(135deg, #eff6ff, #dbeafe);
+      border: 2px solid var(--accent);
+      border-radius: 12px;
+      padding: 20px;
+      margin: 20px 0;
+    }
+    .highlight-box h3 {
+      margin-top: 0;
+      color: var(--brand);
+    }
+
+    /* Profile section */
+    .profile-section {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .profile-avatar {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #3b82f6, #1e40af);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      color: #fff;
+      flex-shrink: 0;
+    }
+    .profile-info {
+      flex: 1;
+      min-width: 250px;
+    }
+
+    /* Terminal style */
+    .terminal {
+      background: #1e1e1e;
+      color: #00ff00;
+      padding: 16px;
+      border-radius: 8px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.9rem;
+      overflow-x: auto;
+    }
+    .terminal .prompt {
+      color: #00ff00;
+    }
+    .terminal .command {
+      color: #ffffff;
+    }
+    .terminal .output {
+      color: #aaaaaa;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <div>IF0099 - Sistemas Operativos I</div>
+      <h1>Presentación del Docente</h1>
+      <div>Universidad Autónoma Latinoamericana - UNAULA | Semestre 2026-I</div>
+      <div class="meta">
+        <div>
+          <strong>Docente</strong>
+          <ul>
+            <li><strong>Nombre:</strong> Eldigardo Camacho</li>
+            <li><strong>Correo:</strong> eldigardo.camacho3380@unaula.edu.com</li>
+            <li><strong>Horario:</strong> Miércoles 06:00 - 09:00</li>
+          </ul>
+        </div>
+        <div>
+          <strong>Información del Curso</strong>
+          <ul>
+            <li><strong>Código:</strong> IF0099</li>
+            <li><strong>Créditos:</strong> 3</li>
+            <li><strong>Semestre:</strong> 6° (2026-I)</li>
+            <li><strong>Prerrequisito:</strong> Fundamentos de Programación</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <nav>
+    <ul>
+      <li><a href="#sobre-mi">Sobre el Docente</a></li>
+      <li><a href="#curso">Sobre el Curso</a></li>
+      <li><a href="#metodologia">Metodología</a></li>
+      <li><a href="#evaluacion">Evaluaciones</a></li>
+      <li><a href="#proyectos">Proyectos</a></li>
+      <li><a href="#recursos">Recursos</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <section id="sobre-mi">
+      <h2>Sobre el Docente</h2>
+
+      <div class="profile-section">
+        <div class="profile-avatar">👨‍🏫</div>
+        <div class="profile-info">
+          <h3>Eldigardo Camacho</h3>
+          <p>Docente del área de Ingeniería Aplicada con experiencia en sistemas operativos, programación de bajo nivel y administración de sistemas Linux.</p>
+          <p><strong>Horario de atención:</strong> Coordine con el docente por correo electrónico.</p>
+        </div>
+      </div>
+
+      <div class="highlight-box">
+        <h3>Mi Filosofía de Enseñanza</h3>
+        <div class="grid-2">
+          <div>
+            <h4>Teoría + Práctica</h4>
+            <p>Los sistemas operativos no se entienden solo leyendo. Es necesario <strong>programar system calls en C</strong>, <strong>experimentar con Linux</strong>, y <strong>construir soluciones</strong>.</p>
+          </div>
+          <div>
+            <h4>Debajo del Capó</h4>
+            <p>Entender qué pasa cuando ejecutas un programa. ¿Cómo se gestiona la memoria? ¿Cómo se planifican los procesos? <strong>El kernel no es magia, es código.</strong></p>
+          </div>
+        </div>
+      </div>
+
+      <h3>Áreas de Especialización</h3>
+      <div class="grid-3">
+        <div>
+          <h4>🐧 Sistemas Operativos</h4>
+          <p>
+            <span class="tech-badge linux-badge">Linux</span>
+            <span class="tech-badge">Windows</span>
+            <span class="tech-badge">Kernel</span>
+            <span class="tech-badge">Internals</span>
+          </p>
+        </div>
+        <div>
+          <h4>💻 Programación</h4>
+          <p>
+            <span class="tech-badge">C</span>
+            <span class="tech-badge">Python</span>
+            <span class="tech-badge">Assembly</span>
+            <span class="tech-badge terminal-badge">Bash</span>
+          </p>
+        </div>
+        <div>
+          <h4>🔧 Herramientas</h4>
+          <p>
+            <span class="tech-badge">GCC</span>
+            <span class="tech-badge">Make</span>
+            <span class="tech-badge">GDB</span>
+            <span class="tech-badge">VirtualBox</span>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="curso">
+      <h2>Sobre el Curso</h2>
+
+      <h3>Descripción</h3>
+      <p><strong>IF0099 - Sistemas Operativos I</strong> es un curso de <strong>3 créditos</strong> del <strong>6° semestre</strong> que proporciona los fundamentos teóricos y prácticos de los sistemas operativos modernos.</p>
+
+      <div class="note">
+        <strong>Objetivo principal:</strong> Comprender cómo funcionan los componentes internos de un SO (procesos, memoria, archivos, E/S) y desarrollar habilidades para administrar sistemas Linux.
+      </div>
+
+      <div class="terminal">
+        <div><span class="prompt">student@linux:~$</span> <span class="command">whoami</span></div>
+        <div class="output">future_systems_programmer</div>
+        <div><span class="prompt">student@linux:~$</span> <span class="command">cat ~/goals.txt</span></div>
+        <div class="output">
+          - Understand process management<br>
+          - Master memory allocation<br>
+          - Learn filesystem internals<br>
+          - Build systems from scratch
+        </div>
+        <div><span class="prompt">student@linux:~$</span> <span class="command">_</span></div>
+      </div>
+
+      <h3>¿Qué aprenderás?</h3>
+
+      <div class="timeline">
+        <div class="timeline-item">
+          <h4>Unidad 1: Introducción a Sistemas Operativos</h4>
+          <p>Arquitectura de SO, servicios, llamadas al sistema, evolución histórica.</p>
+        </div>
+        <div class="timeline-item">
+          <h4>Unidad 2: Gestión de Procesos</h4>
+          <p>Procesos vs threads, PCB, estados, operaciones, comunicación IPC.</p>
+        </div>
+        <div class="timeline-item">
+          <h4>Unidad 3: Planificación de CPU</h4>
+          <p>Algoritmos de planificación, criterios, tiempo real, multiprocesadores.</p>
+        </div>
+        <div class="timeline-item">
+          <h4>Unidad 4: Sincronización y Deadlocks</h4>
+          <p>Sección crítica, semáforos, monitores, problemas clásicos, detección de deadlocks.</p>
+        </div>
+        <div class="timeline-item">
+          <h4>Unidad 5: Gestión de Memoria</h4>
+          <p>Paginación, segmentación, memoria virtual, swapping, algoritmos de reemplazo.</p>
+        </div>
+        <div class="timeline-item">
+          <h4>Unidad 6: Sistemas de Archivos</h4>
+          <p>Estructura de archivos, directorios, montaje, implementación (FAT, NTFS, ext4).</p>
+        </div>
+        <div class="timeline-item">
+          <h4>Unidad 7: Gestión de E/S</h4>
+          <p>Hardware de E/S, polling, interrupciones, DMA, planificación de disco.</p>
+        </div>
+        <div class="timeline-item">
+          <h4>Unidad 8: Protección y Seguridad</h4>
+          <p>Dominios de protección, capabilities, seguridad en sistemas distribuidos.</p>
+        </div>
+      </div>
+
+      <h3>Tecnologías que Usaremos</h3>
+      <div class="grid-2">
+        <div>
+          <h4>🐧 Sistemas</h4>
+          <table>
+            <tr><td><strong>Linux</strong></td><td>Ubuntu Server/Desktop</td></tr>
+            <tr><td><strong>Windows</strong></td><td>Para comparación</td></tr>
+            <tr><td><strong>Virtualización</strong></td><td>VirtualBox, VMware</td></tr>
+            <tr><td><strong>Terminal</strong></td><td>Bash, SSH</td></tr>
+          </table>
+        </div>
+        <div>
+          <h4>💻 Lenguajes y Herramientas</h4>
+          <table>
+            <tr><td><strong>C</strong></td><td>System calls de Linux</td></tr>
+            <tr><td><strong>Python</strong></td><td>Automatización</td></tr>
+            <tr><td><strong>Bash</strong></td><td>Scripting</td></tr>
+            <tr><td><strong>GCC/GDB</strong></td><td>Compilación y debugging</td></tr>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="metodologia">
+      <h2>Metodología de Enseñanza</h2>
+
+      <div class="grid-2">
+        <div>
+          <h3>Estrategias Pedagógicas</h3>
+          <table>
+            <thead>
+              <tr><th>Componente</th><th>Descripción</th><th>% Tiempo</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Clases teóricas</td><td>Exposición de conceptos</td><td>35%</td></tr>
+              <tr><td>Programación en C</td><td>System calls y práctica</td><td>35%</td></tr>
+              <tr><td>Laboratorios Linux</td><td>Administración de sistemas</td><td>20%</td></tr>
+              <tr><td>Proyectos</td><td>Aplicaciones completas</td><td>10%</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div>
+          <h3>Enfoque Práctico</h3>
+          <div class="terminal" style="font-size: 0.8rem;">
+            <div><span class="prompt">gcc</span> <span class="command">process.c -o process</span></div>
+            <div><span class="prompt">./process</span></div>
+            <div class="output">
+              PID: 12345<br>
+              Parent PID: 12340<br>
+              Process created successfully!
+            </div>
+            <div><span class="prompt">_</span></div>
+          </div>
+          <p style="margin-top: 16px;">
+            <strong>No solo aprenderás la teoría:</strong> programarás system calls reales, crearás procesos, implementarás sincronización, y construirás tus propias herramientas.
+          </p>
+        </div>
+      </div>
+
+      <h3>Expectativas y Normas</h3>
+      <div class="grid-2">
+        <div>
+          <h4>✅ Lo que espero de ti</h4>
+          <ul>
+            <li><strong>Asistencia mínima:</strong> 80% de las clases</li>
+            <li><strong>Participación activa:</strong> Preguntas, aportes, curiosidad</li>
+            <li><strong>Entregas puntuales:</strong> Respetar los plazos</li>
+            <li><strong>Código original:</strong> Integridad académica</li>
+            <li><strong>Mentalidad experimental:</strong> No tengas miedo de "romper" cosas en las VMs</li>
+          </ul>
+        </div>
+        <div>
+          <h4>🤝 Lo que puedes esperar de mí</h4>
+          <ul>
+            <li><strong>Clases preparadas:</strong> Teoría + demos en vivo</li>
+            <li><strong>VMs preconfiguradas:</strong> Para arrancar rápido</li>
+            <li><strong>Feedback código:</strong> Code reviews constructivos</li>
+            <li><strong>Apoyo proyectos:</strong> Guía técnica</li>
+            <li><strong>Compromiso:</strong> Con tu aprendizaje</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="evaluacion">
+      <h2>Sistema de Evaluación</h2>
+
+      <div class="warning-box">
+        <strong>Nota importante:</strong> Este curso combina teoría y práctica. Las evaluaciones incluyen quizzes conceptuales, laboratorios de programación en C, y proyectos integradores.
+      </div>
+
+      <h3>Cronograma de Evaluaciones</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Evaluación</th>
+            <th>Peso</th>
+            <th>Semana</th>
+            <th>Tipo</th>
+            <th>Descripción</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>E1</strong></td>
+            <td>15%</td>
+            <td>4</td>
+            <td>Quiz + Taller</td>
+            <td>Introducción a SO, arquitectura, llamadas al sistema</td>
+          </tr>
+          <tr>
+            <td><strong>E2</strong></td>
+            <td>15%</td>
+            <td>7</td>
+            <td>Lab + Sustentación</td>
+            <td>Gestión de procesos, IPC, programación en C</td>
+          </tr>
+          <tr>
+            <td><strong>E3</strong></td>
+            <td>20%</td>
+            <td>10</td>
+            <td>Proyecto</td>
+            <td>Planificación y sincronización de procesos</td>
+          </tr>
+          <tr>
+            <td><strong>E4</strong></td>
+            <td>15%</td>
+            <td>14</td>
+            <td>Lab + Sustentación</td>
+            <td>Gestión de memoria, paginación, memoria virtual</td>
+          </tr>
+          <tr>
+            <td><strong>E5</strong></td>
+            <td>15%</td>
+            <td>16</td>
+            <td>Proyecto</td>
+            <td>Sistemas de archivos, E/S, implementación</td>
+          </tr>
+          <tr>
+            <td><strong>E6 (Final)</strong></td>
+            <td>20%</td>
+            <td>19-21</td>
+            <td>Examen</td>
+            <td>Evaluación integral teórico-práctica</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Seguimientos Universitarios</h3>
+      <div class="grid-3">
+        <div class="success-box">
+          <h4>Primer Seguimiento</h4>
+          <p><strong>50% del curso</strong></p>
+          <p>E1 (15%) + E2 (15%) + E3 (20%)</p>
+          <p><strong>Fecha límite:</strong> 27 de marzo, 2026</p>
+        </div>
+        <div class="success-box">
+          <h4>Segundo Seguimiento</h4>
+          <p><strong>80% del curso</strong></p>
+          <p>E4 (15%) + E5 (15%)</p>
+          <p><strong>Fecha límite:</strong> 15 de mayo, 2026</p>
+        </div>
+        <div class="success-box">
+          <h4>Tercer Seguimiento</h4>
+          <p><strong>100% del curso</strong></p>
+          <p>Examen Final (20%)</p>
+          <p><strong>Fecha límite:</strong> 28 de mayo, 2026</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="proyectos">
+      <h2>Proyectos del Curso</h2>
+
+      <div class="highlight-box">
+        <h3>Enfoque Práctico: Programación de System Calls</h3>
+        <p>Este curso no es solo teoría. <strong>Programarás en C</strong> usando las system calls de Linux para crear procesos, manejar memoria, sincronizar threads y trabajar con archivos.</p>
+      </div>
+
+      <div class="grid-2">
+        <div>
+          <h3>🔧 Proyecto 1: Process Manager en C</h3>
+          <p><strong>Semana 1-4</strong></p>
+          <ul>
+            <li>Crear y terminar procesos con <code>fork()</code> y <code>exec()</code></li>
+            <li>Implementar comunicación entre procesos (pipes)</li>
+            <li>Analizar el PCB y estados de procesos</li>
+          </ul>
+          <p><strong>Tecnología:</strong> C, Linux System Calls</p>
+          <p><strong>Entrega:</strong> Código + documentación</p>
+        </div>
+
+        <div>
+          <h3>⚡ Proyecto 2: Planificador de CPU</h3>
+          <p><strong>Semana 5-7</strong></p>
+          <ul>
+            <li>Implementar algoritmos de planificación</li>
+            <li>FCFS, SJF, Round Robin, Prioridad</li>
+            <li>Comparar rendimiento y métricas</li>
+          </ul>
+          <p><strong>Tecnología:</strong> C, Estructuras de datos</p>
+          <p><strong>Entrega:</strong> Simulador + análisis</p>
+        </div>
+
+        <div>
+          <h3>🔒 Proyecto 3: Sincronización de Threads</h3>
+          <p><strong>Semana 8-10</strong></p>
+          <ul>
+            <li>Problemas clásicos: productor-consumidor, lectores-escritores</li>
+            <li>Implementar semáforos y mutex</li>
+            <li>Detectar y prevenir deadlocks</li>
+          </ul>
+          <p><strong>Tecnología:</strong> Pthreads, Semáforos</p>
+          <p><strong>Entrega:</strong> Código con sincronización</p>
+        </div>
+
+        <div>
+          <h3>💾 Proyecto 4: Memory Manager Simulator</h3>
+          <p><strong>Semana 11-14</strong></p>
+          <ul>
+            <li>Simular paginación y segmentación</li>
+            <li>Implementar algoritmos de reemplazo (LRU, FIFO)</li>
+            <li>Gestionar memoria virtual y swapping</li>
+          </ul>
+          <p><strong>Tecnología:</strong> C, Estructuras de memoria</p>
+          <p><strong>Entrega:</strong> Simulador completo</p>
+        </div>
+
+        <div style="grid-column: 1 / -1;">
+          <h3>🏆 Proyecto Final: Mini-Sistema de Archivos</h3>
+          <p><strong>Semana 15-18</strong></p>
+          <div class="grid-2">
+            <div>
+              <h4>Objetivo</h4>
+              <p>Implementar un sistema de archivos completo desde cero:</p>
+              <ul>
+                <li>Estructura de directorios jerárquica</li>
+                <li>Operaciones CRUD (crear, leer, actualizar, borrar)</li>
+                <li>Gestión de espacio en disco</li>
+                <li>Metadatos y permisos</li>
+                <li>Montaje y desmontaje</li>
+              </ul>
+            </div>
+            <div>
+              <h4>Entregables</h4>
+              <ul>
+                <li>Código fuente en C</li>
+                <li>Documentación técnica</li>
+                <li>Pruebas y casos de uso</li>
+                <li>Sustentación oral</li>
+              </ul>
+              <div class="note">
+                <strong>Este proyecto demuestra que entiendes cómo funcionan los archivos "debajo del capó".</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="recursos">
+      <h2>Recursos y Herramientas</h2>
+
+      <h3>Software Necesario</h3>
+      <div class="grid-2">
+        <div>
+          <h4>🖥️ Máquinas Virtuales</h4>
+          <ul>
+            <li><strong>VirtualBox</strong> - Gratuito y multiplataforma</li>
+            <li><strong>Ubuntu Server/Desktop ISO</strong> - Sistema operativo</li>
+            <li><strong>VMware Workstation</strong> - Alternativa comercial</li>
+            <li><strong>WSL2</strong> - Windows Subsystem for Linux</li>
+          </ul>
+          <div class="note">
+            <strong>Requisitos:</strong> 8GB RAM mínimo, 20GB espacio libre, CPU con virtualización
+          </div>
+        </div>
+        <div>
+          <h4>🔧 Herramientas de Desarrollo</h4>
+          <ul>
+            <li><strong>GCC</strong> - Compilador de C</li>
+            <li><strong>GDB</strong> - Debugger</li>
+            <li><strong>Make</strong> - Build automation</li>
+            <li><strong>VS Code</strong> - Editor con extensiones C/C++</li>
+            <li><strong>Git</strong> - Control de versiones</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3>Bibliografía Recomendada</h3>
+      <div class="grid-3">
+        <div>
+          <h4>📖 Libros Clásicos</h4>
+          <ul>
+            <li><em>Sistemas Operativos Modernos</em> - Andrew S. Tanenbaum</li>
+            <li><em>Operating System Concepts</em> - Silberschatz, Galvin, Gagne</li>
+            <li><em>The Linux Programming Interface</em> - Michael Kerrisk</li>
+          </ul>
+        </div>
+        <div>
+          <h4>🌐 Documentación</h4>
+          <ul>
+            <li><a href="https://man7.org/linux/man-pages/" target="_blank">Linux Manual Pages</a></li>
+            <li><a href="https://www.kernel.org/doc/html/latest/" target="_blank">Linux Kernel Docs</a></li>
+            <li><a href="https://tldp.org/" target="_blank">The Linux Documentation Project</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>🎓 Recursos Online</h4>
+          <ul>
+            <li><a href="https://ss64.com/bash/" target="_blank">Linux Command Reference</a></li>
+            <li><a href="https://wiki.osdev.org/" target="_blank">OS Dev Wiki</a></li>
+            <li><a href="https://linuxjourney.com/" target="_blank">Linux Journey</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <h3>Comandos Esenciales de Linux</h3>
+      <div class="grid-2">
+        <div>
+          <h4>📁 Sistema de Archivos</h4>
+          <div class="terminal" style="font-size: 0.75rem;">
+            <div><span class="prompt">$</span> <span class="command">ls -la</span> <span class="output"># Listar archivos</span></div>
+            <div><span class="prompt">$</span> <span class="command">cd /home/user</span> <span class="output"># Cambiar directorio</span></div>
+            <div><span class="prompt">$</span> <span class="command">pwd</span> <span class="output"># Directorio actual</span></div>
+            <div><span class="prompt">$</span> <span class="command">mkdir proyecto</span> <span class="output"># Crear directorio</span></div>
+            <div><span class="prompt">$</span> <span class="command">rm file.txt</span> <span class="output"># Eliminar archivo</span></div>
+          </div>
+        </div>
+        <div>
+          <h4>⚡ Procesos y Sistema</h4>
+          <div class="terminal" style="font-size: 0.75rem;">
+            <div><span class="prompt">$</span> <span class="command">ps aux</span> <span class="output"># Listar procesos</span></div>
+            <div><span class="prompt">$</span> <span class="command">top</span> <span class="output"># Monitor de sistema</span></div>
+            <div><span class="prompt">$</span> <span class="command">kill -9 1234</span> <span class="output"># Matar proceso</span></div>
+            <div><span class="prompt">$</span> <span class="command">df -h</span> <span class="output"># Espacio en disco</span></div>
+            <div><span class="prompt">$</span> <span class="command">free -m</span> <span class="output"># Memoria libre</span></div>
+          </div>
+        </div>
+      </div>
+
+      <h3>Consejos para el Éxito</h3>
+      <div class="grid-2">
+        <div>
+          <h4>💡 Durante el semestre</h4>
+          <ul>
+            <li><strong>Practica en la terminal:</strong> No tengas miedo de CLI</li>
+            <li><strong>Experimenta:</strong> Las VMs son para "romper" y aprender</li>
+            <li><strong>Lee código fuente:</strong> Mira ejemplos reales de Linux</li>
+            <li><strong>Debug en GDB:</strong> Aprende a depurar tus programas</li>
+          </ul>
+        </div>
+        <div>
+          <h4>🚀 Para tu carrera</h4>
+          <ul>
+            <li><strong>Linux es esencial:</strong> Dominarlo es un superpoder</li>
+            <li><strong>Conocer el kernel:</strong> Te hace mejor programador</li>
+            <li><strong>Automatización:</strong> Scripting te ahorra horas</li>
+            <li><strong>DevOps:</strong> Este curso es base para DevOps</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="mensaje-final">
+      <h2>Mensaje Final</h2>
+
+      <div class="highlight-box" style="text-align: center;">
+        <h3>¡Bienvenidos a Sistemas Operativos I!</h3>
+        <p style="font-size: 1.1rem; margin: 20px 0;">
+          Este semestre no solo aprenderemos teoría de SO. <strong>Descubriremos qué pasa realmente cuando ejecutas un programa.</strong>
+        </p>
+        <p style="font-size: 1.1rem; margin: 20px 0;">
+          Desde cómo el CPU decide qué proceso ejecutar, hasta cómo se gestiona la memoria virtual. <strong>El kernel es código, y lo leeremos y entenderemos.</strong>
+        </p>
+        <p style="font-size: 1.1rem; margin: 20px 0;">
+          Mi compromiso es guiarte en este viaje. Tu compromiso es <strong>programar, experimentar, hacer preguntas y aprender</strong>.
+        </p>
+        <div style="margin-top: 30px;">
+          <p style="font-size: 1.2rem; font-weight: 600; color: var(--brand);">
+            ¡Nos vemos en la Clase 1! 🐧⚡
+          </p>
+        </div>
+      </div>
+
+      <div class="grid-2" style="margin-top: 30px;">
+        <div class="note">
+          <h4>📧 Contacto</h4>
+          <p><strong>Email:</strong> eldigardo.camacho3380@unaula.edu.com</p>
+          <p><strong>Horario de atención:</strong> Coordine por correo</p>
+        </div>
+        <div class="note">
+          <h4>🐧 Recurso Útil</h4>
+          <p><strong>Man pages:</strong> <code>man [comando]</code> en la terminal</p>
+          <p>Toda la documentación de Linux está a tu alcance</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer style="background:#1e293b;color:#fff;text-align:center;padding:24px;margin-top:40px;">
+    <p><strong>IF0099 - Sistemas Operativos I</strong></p>
+    <p>UNAULA - Ingeniería Informática - 2026-I</p>
+    <p style="margin-top: 10px; font-size: 0.9rem; color: #94a3b8;">Docente: Eldigardo Camacho | eldigardo.camacho3380@unaula.edu.com</p>
+  </footer>
+</body>
+</html>
