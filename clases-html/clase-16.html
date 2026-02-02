@@ -391,6 +391,14 @@
         footer a:hover {
             text-decoration: underline;
         }
+
+        .actividad{background:var(--light);border-left:5px solid var(--accent);padding:1.5rem;margin:1.5rem 0;border-radius:4px}
+        .actividad h3{color:var(--primary);margin-bottom:1rem}
+        .actividad p{margin-bottom:.75rem}
+        .actividad strong{color:var(--secondary)}
+        .evaluacion{background:#fef3c7;border-left:5px solid #f59e0b;padding:1.5rem;margin:1.5rem 0;border-radius:8px}
+        .evaluacion h3{color:#b45309;margin-bottom:1rem}
+        .evaluacion .porcentaje{font-size:2rem;font-weight:700;color:#d97706;margin:.5rem 0}
     </style>
 </head>
 <body>
@@ -405,6 +413,15 @@
         </header>
 
         <main class="content">
+            <!-- Evaluación EF - Examen Final -->
+            <section id="evaluacion-ef" class="evaluacion">
+                <h2>Examen Final: Evaluación Integral</h2>
+                <div class="callout warning">
+                    <strong>Fecha:</strong> 2026-05-27 | <strong>Porcentaje:</strong> 20%
+                    <br><strong>Evaluación programada:</strong> Consultar plataforma virtual para instrucciones completas.
+                </div>
+            </section>
+
             <!-- Sección: Objetivo -->
             <section class="section">
                 <div class="objective-box">
@@ -728,9 +745,9 @@ sem_post(&mutex);</code></pre>
 
             <!-- Sección: Ejercicios de Práctica -->
             <section class="section">
-                <h2>🎯 Ejercicios de Práctica</h2>
+                <h2>🎯 Ejercicios de Práctica (Opcional)</h2>
 
-                <h3>Ejercicio 1: Planificación Round Robin</h3>
+                <h3>Ejercicio 1: Planificación Round Robin (Opcional)</h3>
                 <div class="info-box">
                     <strong>Datos:</strong>
                     <ul>
@@ -752,7 +769,7 @@ sem_post(&mutex);</code></pre>
 Espera: P1=8ms, P2=0ms, P3=7ms → Promedio=5ms</code></pre>
                 </div>
 
-                <h3>Ejercicio 2: Traducción de Direcciones</h3>
+                <h3>Ejercicio 2: Traducción de Direcciones (Opcional)</h3>
                 <div class="info-box">
                     <strong>Sistema:</strong>
                     <ul>
@@ -787,7 +804,7 @@ Espera: P1=8ms, P2=0ms, P3=7ms → Promedio=5ms</code></pre>
                     </ol>
                 </div>
 
-                <h3>Ejercicio 3: Semáforos</h3>
+                <h3>Ejercicio 3: Semáforos (Opcional)</h3>
                 <div class="warning-box">
                     <strong>Identificar el error en este código:</strong>
                     <pre><code>sem_t s1 = 1, s2 = 1;

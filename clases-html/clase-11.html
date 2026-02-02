@@ -415,6 +415,14 @@
             .main-content { padding: 20px; }
             .index ul { grid-template-columns: 1fr; }
         }
+
+        .actividad{background:var(--light);border-left:5px solid var(--accent);padding:1.5rem;margin:1.5rem 0;border-radius:4px}
+        .actividad h3{color:var(--primary);margin-bottom:1rem}
+        .actividad p{margin-bottom:.75rem}
+        .actividad strong{color:var(--secondary)}
+        .evaluacion{background:#fef3c7;border-left:5px solid #f59e0b;padding:1.5rem;margin:1.5rem 0;border-radius:8px}
+        .evaluacion h3{color:#b45309;margin-bottom:1rem}
+        .evaluacion .porcentaje{font-size:2rem;font-weight:700;color:#d97706;margin:.5rem 0}
     </style>
 </head>
 <body>
@@ -427,7 +435,7 @@
 
         <article class="main-content">
             <nav class="index">
-                <h2>Índice de Contenidos</h2>
+                <h2>Contenido de la Clase</h2>
                 <ul>
                     <a href="#objetivos">Objetivos de la Clase</a>
                     <a href="#agenda">Agenda</a>
@@ -443,7 +451,8 @@
                     <a href="#indirecto-triple">Indirecto Triple</a>
                     <a href="#ver-inodos">Ver Inodos en Linux</a>
                     <a href="#hard-soft">Hard Links vs Symbolic Links</a>
-                    <a href="#actividad">Actividad Práctica</a>
+                    <a href="#evaluacion-e4">Evaluación E4 (15%)</a>
+                    <a href="#actividad">Actividad Práctica (Opcional)</a>
                     <a href="#resumen">Resumen</a>
                 </ul>
             </nav>
@@ -974,8 +983,25 @@ Inodo 67890 (symlink):
                 </table>
             </section>
 
+            <!-- Evaluación E4 -->
+            <section id="evaluacion-e4" class="evaluacion">
+                <h2>Evaluación E4: Reporte - Seguridad de SO</h2>
+                <div class="callout warning">
+                    <strong>Fecha:</strong> 2026-04-22 | <strong>Porcentaje:</strong> 15%
+                    <br><strong>Evaluación programada:</strong> Consultar plataforma virtual para instrucciones completas.
+                </div>
+            </section>
+
             <section id="actividad">
-                <h2>💻 Actividad Práctica: Explorando Inodos</h2>
+                <h2>💻 Actividad Práctica (Opcional): Explorando Inodos</h2>
+
+                <section class="actividad">
+                    <h3>Actividad: Exploración de Inodos y Links</h3>
+                    <p><strong>Tipo:</strong> Opcional (práctica)</p>
+                    <p><strong>Relacionado con:</strong> Comandos de sistemas de archivos en Linux</p>
+                    <p><strong>Entregable:</strong> Ninguno (para practicar)</p>
+                    <p><strong>Propósito:</strong> Practicar con inodos, hard links y symbolic links</p>
+                </section>
 
                 <h3>Ejercicio 1: Observar Inodos</h3>
                 <pre><code># 1. Crear archivo de prueba
