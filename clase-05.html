@@ -434,6 +434,11 @@ escribir_cuenta(saldo);         escribir_cuenta(saldo);</code></pre>
                 <figcaption>El problema de la sección crítica: garantizar que solo un proceso acceda al recurso compartido</figcaption>
             </figure>
 
+            <figure>
+                <img src="../assets/diagramas-svg/seccion-critica.svg" alt="Diagrama SVG de sección crítica y sincronización">
+                <figcaption>Figura X: Diagrama de sección crítica y mecanismos de sincronización</figcaption>
+            </figure>
+
             <h4>Idea clave</h4>
             <ul>
                 <li><strong>Sección crítica:</strong> fragmento donde se <strong>lee/modifica</strong> un recurso compartido</li>
@@ -1040,6 +1045,11 @@ wait(sem2);  ← espera sem2      wait(sem1);  ← espera sem1
                  ¡DEADLOCK!</pre>
                 </div>
             </div>
+
+            <figure>
+                <img src="../assets/diagramas-svg/deadlock.svg" alt="Diagrama SVG de deadlock y estrategias de manejo">
+                <figcaption>Figura X: Deadlock, condiciones necesarias y estrategias de prevención y recuperación</figcaption>
+            </figure>
 
             <h3>Condiciones para Deadlock</h3>
             <p><strong>Las 4 condiciones de Coffman (todas necesarias):</strong></p>
