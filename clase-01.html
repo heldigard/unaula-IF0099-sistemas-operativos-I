@@ -350,6 +350,43 @@
         .difficulty.medium { background: #fef3c7; color: #92400e; }
         .difficulty.hard { background: #fee2e2; color: #991b1b; }
 
+        /* Video resources */
+        .video-resource {
+            background: var(--bg-light);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--primary);
+        }
+
+        .video-resource h3 {
+            margin-top: 0;
+            margin-bottom: 0.75rem;
+            font-size: 1.1rem;
+            color: var(--secondary);
+        }
+
+        .video-resource p {
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .video-resource a {
+            display: inline-block;
+            margin-top: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 0.85rem;
+            transition: background 0.2s;
+        }
+
+        .video-resource a:hover {
+            background: var(--secondary);
+        }
+
         /* Scroll indicator */
         .scroll-top {
             position: fixed;
@@ -516,6 +553,11 @@
               └─────────┴────────────┘
               (scheduler/Interrupciones)
             </div>
+
+            <figure>
+                <img src="../assets/diagramas-svg/estados-proceso.svg" alt="Diagrama SVG de estados de proceso">
+                <figcaption>Figura 4.1: Diagrama interactivo de estados de proceso con transiciones</figcaption>
+            </figure>
 
             <table>
                 <thead>
@@ -1604,6 +1646,46 @@ gdb ./programa</code></pre>
                 <li>Compilar con advertencias máximas: <code>gcc -Wall -Wextra -pedantic programa.c</code></li>
                 <li>Usar valgrind para detectar errores: <code>valgrind --leak-check=full ./programa</code></li>
             </ol>
+        </section>
+
+        <!-- Videos Recomendados -->
+        <section id="videos">
+            <h2>🎥 Videos Recomendados</h2>
+
+            <div class="video-resource">
+                <h3>Video 1: What is an Operating System?</h3>
+                <p><strong>Concepto:</strong> Introducción visual a los sistemas operativos</p>
+                <p><strong>Duración:</strong> 12 minutos</p>
+                <p><strong>Nivel:</strong> Básico</p>
+                <p><strong>Por qué verlo:</strong> Excelente introducción con animaciones que explican la función del SO</p>
+                <p><strong>Canal:</strong> Neso Academy</p>
+                <a href="https://www.youtube.com/watch?v=QM5LK9o-RUI" target="_blank">▶ Ver en YouTube</a>
+            </div>
+
+            <div class="video-resource">
+                <h3>Video 2: Types of Operating Systems</h3>
+                <p><strong>Concepto:</strong> Clasificación de SO (batch, tiempo real, distribuido, etc.)</p>
+                <p><strong>Duración:</strong> 10 minutos</p>
+                <p><strong>Nivel:</strong> Básico</p>
+                <p><strong>Por qué verlo:</strong> Complementa la clasificación vista en clase</p>
+                <p><strong>Canal:</strong> Simple Learning</p>
+                <a href="https://www.youtube.com/watch?v=kC552hqqJPE" target="_blank">▶ Ver en YouTube</a>
+            </div>
+
+            <div class="video-resource">
+                <h3>Video 3: User Mode vs Kernel Mode</h3>
+                <p><strong>Concepto:</strong> Diferencia entre modo usuario y kernel</p>
+                <p><strong>Duración:</strong> 8 minutos</p>
+                <p><strong>Nivel:</strong> Intermedio</p>
+                <p><strong>Por qué verlo:</strong> Entender por qué el SO necesita modos de operación</p>
+                <p><strong>Canal:</strong> Tech With Tim</p>
+                <a href="https://www.youtube.com/watch?v=1iEb8hGqYkA" target="_blank">▶ Ver en YouTube</a>
+            </div>
+
+            <div class="callout info">
+                <p class="callout-title">💡 Tip de Estudio</p>
+                <p>Antes de ver cada video, lee el tema correspondiente en la clase. Esto te ayudará a identificar qué conceptos ya entiendes y cuáles necesitas reforzar. Toma notas de las ideas clave, no de detalles específicos.</p>
+            </div>
         </section>
 
         <!-- Key Concepts Summary -->
