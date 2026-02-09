@@ -415,7 +415,8 @@
                 <li><a href="#tiempo-real">7. Planificación en Tiempo Real</a></li>
                 <li><a href="#multiprocesador">8. Planificación en Multiprocesadores</a></li>
                 <li><a href="#evaluacion-e1">9. Evaluación E1 (15%)</a></li>
-                <li><a href="#practica">10. Actividad Práctica (Opcional)</a></li>
+                <li><a href="#laboratorio">10. Laboratorio</a></li>
+                <li><a href="#practica">11. Actividad Práctica (Opcional)</a></li>
             </ul>
         </nav>
 
@@ -603,7 +604,7 @@
         </section>
 
         <section id="fcfs">
-            <h2>3. FCFS - First Come, First Served</h2>
+            <h2>3. <abbr title="First Come First Served - Primero en llegar, primero en ser atendido">FCFS</abbr> - First Come, First Served</h2>
 
             <h3>"El primero que llega, primero se atiende"</h3>
 
@@ -672,7 +673,7 @@ Tiempo:  0    5    8         16
         </section>
 
         <section id="sjf">
-            <h2>4. SJF - Shortest Job First</h2>
+            <h2>4. <abbr title="Shortest Job First - El trabajo más corto primero">SJF</abbr> - Shortest Job First</h2>
 
             <h3>"El más corto primero"</h3>
 
@@ -798,7 +799,7 @@ P1 (prioridad=5) ───────────────→ NUNCA EJECUTA
         </section>
 
         <section id="rr">
-            <h2>6. Round Robin (RR)</h2>
+            <h2>6. <abbr title="Round Robin - Turnos rotativos con quantum de tiempo">Round Robin</abbr> (RR)</h2>
 
             <h3>"Turnos rotativos" - El más usado</h3>
 
@@ -1003,8 +1004,81 @@ Decisión: Afinidad blanda vs afinidad dura
             </div>
         </section>
 
+        <!-- Section 10: Laboratorio -->
+        <section id="laboratorio">
+            <h2>10. Laboratorio Práctico</h2>
+
+            <h3>AWS 01: Introducción a EC2 - Computación en la Nube</h3>
+            <p>En este laboratorio crearás tu primera instancia EC2 en Amazon Web Services y te conectarás a ella.</p>
+
+            <div class="callout warning">
+                <p class="callout-title">Requisitos Previos</p>
+                <ul>
+                    <li>Cuenta de AWS (requiere tarjeta de crédito)</li>
+                    <li>Conocimiento básico de Linux (Labs 00-02 completados)</li>
+                    <li>Compromiso de APAGAR instancias cuando no las uses</li>
+                </ul>
+            </div>
+
+            <div class="callout info">
+                <p class="callout-title">Objetivos del Laboratorio</p>
+                <ul>
+                    <li>Crear cuenta AWS con Free Tier</li>
+                    <li>Lanzar una instancia EC2 t2.micro gratuita</li>
+                    <li>Conectarse por SSH a la instancia</li>
+                    <li>Explorar procesos y memoria en un servidor real</li>
+                </ul>
+            </div>
+
+            <h4>¿Por qué EC2 en lugar de simuladores?</h4>
+            <table>
+                <tr>
+                    <th>Aspecto</th>
+                    <th>Simuladores</th>
+                    <th>EC2 Real</th>
+                </tr>
+                <tr>
+                    <td><strong>Recursos</strong></td>
+                    <td>Limitados</td>
+                    <td>Reales (CPU, RAM, disco)</td>
+                </tr>
+                <tr>
+                    <td><strong>Experiencia</strong></td>
+                    <td>Simulada</td>
+                    <td>Producción real</td>
+                </tr>
+                <tr>
+                    <td><strong>SSH</strong></td>
+                    <td>No disponible</td>
+                    <td>Conexión real por SSH</td>
+                </tr>
+                <tr>
+                    <td><strong>Costo</strong></td>
+                    <td>Gratis</td>
+                    <td>Free Tier (750 horas/mes)</td>
+                </tr>
+            </table>
+
+            <h4>Actividades del Laboratorio</h4>
+            <ol>
+                <li>Crear cuenta AWS y configurar Free Tier</li>
+                <li>Generar par de claves SSH para acceso</li>
+                <li>Lanzar instancia EC2 con Amazon Linux 2</li>
+                <li>Conectarse por SSH desde tu computadora</li>
+                <li>Explorar procesos reales: <code>ps aux</code>, <code>top</code>, <code>/proc</code></li>
+                <li>**APAGAR la instancia** al terminar</li>
+            </ol>
+
+            <div class="callout success">
+                <p class="callout-title">¡Advertencia de Costo!<p>Las instancias EC2 cuestan dinero si las de</p>
+                jas encendidas. SIEMPRE verifica que tu instancia esté DETENIDA cuando no la uses. El Free Tier te da 750 horas/mes, pero solo si usas la instancia t2.micro o t3.micro.</p>
+            </div>
+
+            <p><strong>Acceso al laboratorio:</strong> <a href="../laboratorios-html/lab-aws-01-introduccion-ec2.html" target="_blank">Ver guía completa del AWS Lab 01 →</a></p>
+        </section>
+
         <section id="practica">
-            <h2>10. Actividad Práctica (Opcional)</h2>
+            <h2>11. Actividad Práctica (Opcional)</h2>
 
             <section class="actividad">
                 <h3>Actividad: Ejercicios de Planificación</h3>

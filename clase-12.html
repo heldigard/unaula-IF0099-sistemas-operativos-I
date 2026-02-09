@@ -465,7 +465,7 @@ thunderbird         # Solo sus propios archivos</code></pre>
         </section>
 
         <section id="dominios">
-            <h2>4. Dominios de Protección</h2>
+            <h2>4. <abbr title="Dominio de Protección - Conjunto de permisos que se aplican a un proceso o usuario">Dominios de Protección</abbr></h2>
 
             <p>Un <strong>dominio de protección</strong> es un conjunto de permisos que se aplican a un proceso o usuario.</p>
 
@@ -501,7 +501,7 @@ usuario@server:~$ kill -9 1234       # ❌ Solo procesos propios</code></pre>
         </section>
 
         <section id="matriz">
-            <h2>5. Matriz de Acceso</h2>
+            <h2>5. <abbr title="Matriz de Acceso - Modelo conceptual que muestra qué procesos tienen acceso a qué objetos">Matriz de Acceso</abbr></h2>
 
             <p>La <strong>matriz de acceso</strong> es un modelo conceptual que muestra qué procesos tienen acceso a qué objetos.</p>
 
@@ -547,14 +547,14 @@ usuario@server:~$ kill -9 1234       # ❌ Solo procesos propios</code></pre>
             </table>
 
             <div class="callout info">
-                <strong>Nota:</strong> Esta matriz es conceptual. En la práctica, se implementa mediante ACLs (Listas de Control de Acceso) o capabilities.
+                <strong>Nota:</strong> Esta matriz es conceptual. En la práctica, se implementa mediante <abbr title="ACL - Access Control List (Lista de Control de Acceso)">ACLs</abbr> (Listas de Control de Acceso) o capabilities.
             </div>
         </section>
 
         <section id="permisos">
             <h2>6. Permisos en Unix/Linux</h2>
 
-            <h3>Modelo UGO (User, Group, Others)</h3>
+            <h3>Modelo <abbr title="UGO - Modelo de permisos Unix basado en User (propietario), Group (grupo), y Others (otros)">UGO</abbr> (User, Group, Others)</h3>
 
             <p>Unix usa un modelo de permisos basado en tres categorías:</p>
 
@@ -616,7 +616,7 @@ x - eXecute (ejecutar)</code></pre>
         <section id="permisos-especiales">
             <h2>7. Permisos Especiales en Linux</h2>
 
-            <h3>SUID (Set User ID)</h3>
+            <h3><abbr title="SUID - Set User ID - Bit que hace que un archivo se ejecute con los privilegios del dueño del archivo">SUID</abbr> (Set User ID)</h3>
 
             <p>Cuando se ejecuta un archivo con SUID, el proceso corre con los privilegios del <strong>dueño del archivo</strong>, no del usuario que lo ejecuta.</p>
 
@@ -632,7 +632,7 @@ $ passwd              # Sin embargo, cualquier usuario puede cambiar su clave
 
 # ¿Cómo funciona? passwd se ejecuta como root temporalmente</code></pre>
 
-            <h3>SGID (Set Group ID)</h3>
+            <h3><abbr title="SGID - Set Group ID - Bit que hace que los archivos nuevos en un directorio hereden el grupo del directorio">SGID</abbr> (Set Group ID)</h3>
 
             <p>Similar a SUID, pero para grupos. Útil para directorios compartidos.</p>
 
@@ -647,7 +647,7 @@ drwxrwsr-x  2 root developers 4096 Feb 15 10:30 /proyecto
  │                │
                 └─→ s = SGID activo</code></pre>
 
-            <h3>Sticky Bit</h3>
+            <h3><abbr title="Sticky Bit - Bit de permiso que hace que solo el dueño de un archivo pueda borrarlo en directorios compartidos">Sticky Bit</abbr></h3>
 
             <p>Usado típicamente en directorios compartidos como <code>/tmp</code>. Solo el <strong>propietario de un archivo</strong> puede borrarlo, incluso si otros tienen permisos de escritura.</p>
 
@@ -670,7 +670,7 @@ $ rm /tmp/archivo1.txt               # ❌ Permission denied</code></pre>
         <section id="amenazas">
             <h2>8. Amenazas Comunes y Defensas</h2>
 
-            <h3>Buffer Overflow</h3>
+            <h3><abbr title="Buffer Overflow - Desbordamiento de buffer que ocurre cuando un programa escribe más allá del límite de memoria asignado">Buffer Overflow</abbr></h3>
 
             <p>El ataque clásico más común. Ocurre cuando un programa escribe más allá del límite de un buffer en memoria.</p>
 
@@ -695,15 +695,15 @@ vulnerable("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABBBBBB");
                 </thead>
                 <tbody>
                     <tr>
-                        <td><strong>ASLR</strong></td>
+                        <td><strong><abbr title="ASLR - Address Space Layout Randomization - Randomiza las direcciones de memoria para dificultar exploits">ASLR</abbr></strong></td>
                         <td>Randomiza las direcciones de memoria</td>
                     </tr>
                     <tr>
-                        <td><strong>NX bit</strong></td>
+                        <td><strong><abbr title="NX bit - No-Execute bit - Marca ciertas áreas de memoria como no ejecutables para prevenir código malicioso">NX bit</abbr></strong></td>
                         <td>Marca ciertas áreas de memoria como no ejecutable</td>
                     </tr>
                     <tr>
-                        <td><strong>Stack Canaries</strong></td>
+                        <td><strong><abbr title="Stack Canaries - Canarios de pila que detectan desbordamientos de buffer insertando valores de verificación">Stack Canaries</abbr></strong></td>
                         <td>Inserta valores de verificación entre variables</td>
                     </tr>
                     <tr>
@@ -713,7 +713,7 @@ vulnerable("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABBBBBB");
                 </tbody>
             </table>
 
-            <h3>Ingeniería Social</h3>
+            <h3><abbr title="Ingeniería Social - Ataques que engañan a usuarios para que revelen información sensible o realicen acciones involuntarias">Ingeniería Social</abbr></h3>
 
             <p>Ataques que engañan a usuarios para que revelen información sensible.</p>
 
@@ -727,7 +727,7 @@ vulnerable("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABBBBBB");
             <ul>
                 <li><strong>Educación:</strong> Enseñar a identificar URLs sospechosas</li>
                 <li><strong>Verificación:</strong> Siempre verificar la URL real antes de hacer clic</li>
-                <li><strong>Autenticación de dos factores (2FA)</strong></li>
+                <li><strong>Autenticación de dos factores (<abbr title="2FA - Two-Factor Authentication - Autenticación que requiere dos formas de verificación">2FA</abbr>)</strong></li>
                 <li><strong>Filtros de correo:</strong> Detectar phishing</li>
             </ul>
         </section>
@@ -755,7 +755,7 @@ vulnerable("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABBBBBB");
                         <td>Intercepción de datos</td>
                     </tr>
                     <tr>
-                        <td><strong>Firewall</strong></td>
+                        <td><strong><abbr title="Firewall - Cortafuegos que filtra el tráfico de red basado en reglas de seguridad">Firewall</abbr></strong></td>
                         <td>Preventiva</td>
                         <td>Tráfico malicioso de red</td>
                     </tr>
@@ -765,7 +765,7 @@ vulnerable("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABBBBBB");
                         <td>Malware, virus</td>
                     </tr>
                     <tr>
-                        <td><strong>IDS/IPS</strong></td>
+                        <td><strong><abbr title="IDS/IPS - Intrusion Detection System / Intrusion Prevention System - Sistemas de detección y prevención de intrusiones">IDS/IPS</abbr></strong></td>
                         <td>Detectiva/Preventiva</td>
                         <td>Intrusos, ataques</td>
                     </tr>
@@ -868,6 +868,25 @@ rm /tmp/compartido/arch1.txt    # Error si no eres propietario</code></pre>
         <p>IF0099 - Sistemas Operativos I | UNAULA - Ingeniería Informática - 2026-I</p>
         <p>Clase 12: Protección y Seguridad</p>
     </footer>
+
+    <!-- Section: Laboratorio -->
+    <section id="laboratorio">
+        <h2>Laboratorio</h2>
+
+        <h3>Protección y Seguridad en Linux</h3>
+        <p>Practica con permisos, SUID, SGID, sticky bit y gestión de usuarios en un servidor real.</p>
+
+        <div class="evaluacion">
+            <h3>Objetivos del Laboratorio</h3>
+            <ul>
+                <li>Configurar permisos avanzados</li>
+                <li>Gestionar usuarios y grupos</li>
+                <li>Implementar políticas de acceso</li>
+            </ul>
+        </div>
+
+        <p><a href="../laboratorios-html/index.html">Ver índice de Laboratorios →</a></p>
+    </section>
 
     <a href="#" class="scroll-top" id="scrollTop" aria-label="Scroll to top">↑</a>
 

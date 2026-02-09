@@ -439,7 +439,7 @@
 
             <div class="comparison">
                 <div>
-                    <h4>Port-Mapped I/O</h4>
+                    <h4><abbr title="Port-Mapped I/O - E/S mapeada a puertos con instrucciones especiales (IN/OUT)">Port-Mapped I/O</abbr></h4>
                     <p>Los registros del controlador se mapean a puertos de E/S separados de la memoria.</p>
                     <pre><code>; Ensamblador x86
 IN AL, 0x60    ; Lee del puerto 0x60 (teclado)
@@ -451,7 +451,7 @@ OUT 0x64, AL   ; Escribe al puerto 0x64</code></pre>
                     </ul>
                 </div>
                 <div>
-                    <h4>Memory-Mapped I/O (MMIO)</h4>
+                    <h4><abbr title="Memory-Mapped I/O - E/S mapeada a direcciones de memoria normales">Memory-Mapped I/O</abbr> (MMIO)</h4>
                     <p>Los registros del controlador se mapean a direcciones de memoria normales.</p>
                     <pre><code>// C con MMIO
 #define REG_BASE 0xFFFF0000
@@ -470,7 +470,7 @@ dato = *reg;         // Leer del registro</code></pre>
         <section id="tecnicas">
             <h2>4. Técnicas de Gestión de E/S</h2>
 
-            <h3>4.1 Polling (Consulta Periódica)</h3>
+            <h3>4.1 <abbr title="Polling - Consulta periódica por parte de la CPU para verificar dispositivos">Polling</abbr> (Consulta Periódica)</h3>
 
             <p>La CPU pregunta repetidamente si el dispositivo tiene datos listo.</p>
 
@@ -489,7 +489,7 @@ while (1) {
 
             <p><strong>Uso típico:</strong> Sistemas simples, sistemas de tiempo real críticos donde no se pueden usar interrupciones.</p>
 
-            <h3>4.2 Interrupciones</h3>
+            <h3>4.2 <abbr title="Interrupciones (Interrupts) - Señales de hardware que notifican a la CPU cuando un dispositivo requiere atención">Interrupciones</abbr></h3>
 
             <p>El dispositivo notifica a la CPU cuando necesita atención. La CPU puede hacer otras tareas mientras espera.</p>
 
@@ -552,7 +552,7 @@ while (1) {
    - Dirección fuente     (ej: buffer del disco)
    - Dirección destino    (ej: RAM en 0x1000000)
    - Cantidad de datos    (ej: 4KB)
-   - Dirección de IRQ     (para notificar al terminar)
+   - Dirección de <abbr title="IRQ (Interrupt Request) - Petición de interrupción de hardware">IRQ</abbr>     (para notificar al terminar)
 
 2. DMA toma control del bus del sistema
 
@@ -560,7 +560,7 @@ while (1) {
    - Cycle Stealing: Roba ciclos del bus gradualmente
    - Burst Mode: Transfiere un bloque completo y luego libera
 
-4. Al terminar, DMA genera IRQ a la CPU
+4. Al terminar, DMA genera <abbr title="IRQ (Interrupt Request) - Petición de interrupción de hardware">IRQ</abbr> a la CPU
 
 5. CPU recibe notificación y procesa los datos
 </pre>
@@ -607,7 +607,7 @@ while (1) {
         <section id="buffering">
             <h2>6. Buffering y Caching</h2>
 
-            <h3>Buffering (Almacenamiento Intermedio)</h3>
+            <h3><abbr title="Buffering - Almacenamiento intermedio en memoria para desacoplar dispositivos con velocidades diferentes">Buffering</abbr> (Almacenamiento Intermedio)</h3>
             <p>Un buffer es un área de memoria que almacena temporalmente datos mientras se transfieren entre dos dispositivos con velocidades diferentes.</p>
 
             <div class="comparison">
@@ -628,7 +628,7 @@ while (1) {
                 </div>
             </div>
 
-            <h3>Page Cache (Caché de Páginas)</h3>
+            <h3><abbr title="Page Cache - Caché de páginas de archivos en RAM para reducir accesos a disco">Page Cache</abbr> (Caché de Páginas)</h3>
             <p>El SO mantiene en RAM páginas de archivos accedidos recientemente. Esto reduce drásticamente los accesos a disco.</p>
 
             <pre><code># Ver page cache en Linux
@@ -677,25 +677,25 @@ echo 3 > /proc/sys/vm/drop_caches</code></pre>
                         <td>Mucho movimiento de cabezal</td>
                     </tr>
                     <tr>
-                        <td><strong>SSTF</strong><br>Shortest Seek Time First</td>
+                        <td><strong><abbr title="SSTF - Shortest Seek Time First - Atender solicitud de disco más cercana primero">SSTF</abbr></strong><br>Shortest Seek Time First</td>
                         <td>Atender el más cercano primero</td>
                         <td>Mejor rendimiento promedio</td>
                         <td>Posible inanición</td>
                     </tr>
                     <tr>
-                        <td><strong>SCAN</strong><br>Elevator</td>
+                        <td><strong><abbr title="SCAN - Algoritmo de planificación de disco que mueve el cabezal de un extremo a otro (elevator)">SCAN</abbr></strong><br>Elevator</td>
                         <td>Mover cabezal de un extremo a otro</td>
                         <td>Justicia temporal</td>
                         <td>Mayor tiempo de espera</td>
                     </tr>
                     <tr>
-                        <td><strong>C-SCAN</strong><br>Circular SCAN</td>
+                        <td><strong><abbr title="C-SCAN - Circular SCAN - Algoritmo que regresa al inicio después de llegar al extremo">C-SCAN</abbr></strong><br>Circular SCAN</td>
                         <td>Como SCAN pero regresa al inicio</td>
                         <td>Tiempo de espera más uniforme</td>
                         <td>No aprovecha viajes de vuelta</td>
                     </tr>
                     <tr>
-                        <td><strong>LOOK</strong></td>
+                        <td><strong><abbr title="LOOK - Algoritmo de planificación de disco optimizado que va solo hasta el último pedido">LOOK</abbr></strong></td>
                         <td>Como SCAN pero va solo hasta el último pedido</td>
                         <td>Mejor que SCAN</td>
                         <td>Más complejo</td>
@@ -776,8 +776,8 @@ Compara los resultados.
                 <tbody>
                     <tr><td><strong>Dispositivos de bloque</strong></td><td>Acceso por bloques fijos (disco, SSD)</td></tr>
                     <tr><td><strong>Dispositivos de carácter</strong></td><td>Acceso stream (teclado, mouse)</td></tr>
-                    <tr><td><strong>Port-mapped I/O</strong></td><td>Puertos separados de memoria (IN/OUT)</td></tr>
-                    <tr><td><strong>Memory-mapped I/O</strong></td><td>Registros en direcciones de memoria</td></tr>
+                    <tr><td><strong><abbr title="Port-Mapped I/O - E/S mapeada a puertos con instrucciones especiales (IN/OUT)">Port-mapped I/O</abbr></strong></td><td>Puertos separados de memoria (IN/OUT)</td></tr>
+                    <tr><td><strong><abbr title="Memory-Mapped I/O - E/S mapeada a direcciones de memoria normales">Memory-mapped I/O</abbr></strong></td><td>Registros en direcciones de memoria</td></tr>
                     <tr><td><strong>Polling</strong></td><td>CPU verifica repetidamente (desperdicia ciclos)</td></tr>
                     <tr><td><strong>Interrupciones</strong></td><td>Dispositivo notifica a CPU (eficiente)</td></tr>
                     <tr><td><strong>DMA</strong></td><td>Transferencia directa a RAM sin CPU</td></tr>
@@ -792,6 +792,27 @@ Compara los resultados.
                 <strong>Concepto fundamental:</strong> La gestión de E/S es el arte de balancear el rendimiento de la CPU con la latencia de los dispositivos. Las técnicas modernas (interrupciones + DMA + caching) permiten que la CPU haga trabajo útil mientras espera que los dispositivos lentos terminen sus operaciones.
             </div>
         </section>
+
+        <!-- Section: Laboratorio -->
+        <section id="laboratorio">
+            <h2>Laboratorio</h2>
+
+            <h3>Sistemas de Archivos en AWS EC2</h3>
+            <p>Trabaja con sistemas de archivos reales, particiones y montajes en un servidor EC2.</p>
+
+            <div class="callout info">
+                <p class="callout-title">Objetivos del Laboratorio</p>
+                <ul>
+                    <li>Crear y formatear particiones</li>
+                    <li>Montar sistemas de archivos</li>
+                    <li>Configurar mounting automático</li>
+                </ul>
+            </div>
+
+            <p><strong>Próximamente:</strong> AWS Lab 04 - Sistemas de Archivos</p>
+            <p><a href="../laboratorios-html/index.html">Ver índice de Laboratorios →</a></p>
+        </section>
+
     </div>
 
     <footer>

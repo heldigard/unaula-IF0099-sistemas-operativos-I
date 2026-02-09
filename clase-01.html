@@ -408,6 +408,7 @@
                 <li><a href="#codigo">7. Código y Laboratorios</a></li>
                 <li><a href="#ejercicios">8. Ejercicios Prácticos (Opcional)</a></li>
                 <li><a href="#referencias">9. Referencias</a></li>
+                <li><a href="#laboratorio">10. Laboratorio</a></li>
             </ul>
         </nav>
 
@@ -441,7 +442,7 @@
 │  (Gestiona recursos, provee servicios, protección)     │
 ├─────────────────────────────────────────────────────────┤
 │                      HARDWARE                           │
-│  (CPU, RAM, Disco, Red, Dispositivos E/S)             │
+│  (<abbr title="Central Processing Unit">CPU</abbr>, <abbr title="Random Access Memory">RAM</abbr>, Disco, Red, Dispositivos <abbr title="Entrada/Salida">E/S</abbr>)             │
 └─────────────────────────────────────────────────────────┘
             </div>
 
@@ -505,7 +506,7 @@
                 <li><strong>Creación y destrucción:</strong> <code>fork()</code> crea procesos, <code>exit()</code> los termina</li>
                 <li><strong>Scheduling (Planificación):</strong> Decide qué proceso ejecuta en cada momento</li>
                 <li><strong>Sincronización:</strong> Coordinación entre procesos que comparten recursos</li>
-                <li><strong>Comunicación (IPC):</strong> Mecanismos para que procesos se intercambien datos</li>
+                <li><strong>Comunicación (<abbr title="Inter-Process Communication">IPC</abbr>):</strong> Mecanismos para que procesos se intercambien datos</li>
             </ul>
 
             <h4>Estados de un Proceso</h4>
@@ -655,7 +656,7 @@
                         <td>Estándar</td>
                     </tr>
                     <tr>
-                        <td><strong>DMA</strong></td>
+                        <td><strong><abbr title="Direct Memory Access">DMA</abbr></strong></td>
                         <td>Memoria ↔ Dispositivo directo</td>
                         <td>Máxima</td>
                         <td>Discos, red</td>
@@ -862,8 +863,8 @@ Usuario                    Kernel
                 <thead>
                     <tr>
                         <th>Aspecto</th>
-                        <th>GUI (Gráfica)</th>
-                        <th>CLI (Comandos)</th>
+                        <th><abbr title="Graphical User Interface">GUI</abbr> (Gráfica)</th>
+                        <th><abbr title="Command Line Interface">CLI</abbr> (Comandos)</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -962,6 +963,7 @@ int main() {
     pid_t pid;
 
     printf("ANTES del fork() - Solo un proceso\n");
+    printf("PID: <abbr title=\"Process Identifier\">PID</abbr> es = %d\n", getpid());
 
     // fork() crea un proceso idéntico (hijo)
     pid = fork();
@@ -1011,8 +1013,8 @@ int main() {
     printf("=== Información del Sistema ===\n");
     printf("PID de este proceso: %d\n", getpid());
     printf("PID del proceso padre: %d\n", getppid());
-    printf("UID del usuario: %d\n", getuid());
-    printf("GID del grupo: %d\n", getgid());
+    printf("UID: <abbr title="User Identifier">UID</abbr> del usuario: %d\n", getuid());
+    printf("GID: <abbr title="Group Identifier">GID</abbr> del grupo: %d\n", getgid());
 
     return 0;
 }</code></pre>
@@ -1446,6 +1448,63 @@ int main() {
 ./mini_ls</code></pre>
                 </details>
             </div>
+        </section>
+
+        <!-- Section 10: Laboratorio -->
+        <section id="laboratorio">
+            <h2>10. Laboratorio Práctico</h2>
+
+            <h3>Lab 00: Introducción a Simuladores de Linux</h3>
+            <p>En este laboratorio aprenderás a usar simuladores de Linux en línea para practicar sin instalar nada.</p>
+
+            <div class="callout info">
+                <p class="callout-title">Objetivos del Laboratorio</p>
+                <ul>
+                    <li>Conocer JSLinux, DistroTest y otros simuladores gratuitos</li>
+                    <li>Navegar la interfaz de línea de comandos (CLI)</li>
+                    <li>Practicar comandos básicos de Linux</li>
+                </ul>
+            </div>
+
+            <h4>Simuladores Recomendados</h4>
+            <table>
+                <tr>
+                    <th>Simulador</th>
+                    <th>URL</th>
+                    <th>Características</th>
+                </tr>
+                <tr>
+                    <td><strong>JSLinux</strong></td>
+                    <td><a href="https://bellard.org/jslinux/" target="_blank">bellard.org/jslinux</a></td>
+                    <td>Rápido, múltiples distribuciones</td>
+                </tr>
+                <tr>
+                    <td><strong>DistroTest</strong></td>
+                    <td><a href="https://distrotest.net/" target="_blank">distrotest.net</a></td>
+                    <td>100+ distribuciones, modo gráfico</td>
+                </tr>
+                <tr>
+                    <td><strong>Copy.sh</strong></td>
+                    <td><a href="https://copy.sh/v86/" target="_blank">copy.sh/v86</a></td>
+                    <td>Arranque rápido, varias distros</td>
+                </tr>
+            </table>
+
+            <h4>Instrucciones del Laboratorio</h4>
+            <ol>
+                <li>Abre el simulador JSLinux en tu navegador</li>
+                <li>Explora la interfaz y familiarízate con el terminal</li>
+                <li>Ejecuta comandos básicos: <code>ls</code>, <code>pwd</code>, <code>whoami</code>, <code>date</code></li>
+                <li>Crea archivos y directorios</li>
+                <li>Investiga más comandos usando el manual: <code>man comando</code></li>
+            </ol>
+
+            <div class="callout warning">
+                <p class="callout-title">Nota Importante</p>
+                <p>Los simuladores son geniales para practicar, pero el curso te enseña Linux real. ¡Después del lab-00, sigue con los laboratorios en tu máquina real!</p>
+            </div>
+
+            <p><strong>Acceso al laboratorio:</strong> <a href="../laboratorios-html/lab-00-introduccion-simuladores.html" target="_blank">Ver guía completa del Lab 00 →</a></p>
         </section>
 
         <!-- Section 9: References -->

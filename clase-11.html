@@ -478,7 +478,7 @@
 
                 <div class="comparison-table">
                     <div class="comparison-card">
-                        <h4>📋 Superblock</h4>
+                        <h4>📋 <abbr title="Superbloque (Superblock) - Estructura que contiene información global del sistema de archivos">Superblock</abbr></h4>
                         <ul>
                             <li>Tamaño total del FS</li>
                             <li>Tipo de filesystem</li>
@@ -487,7 +487,7 @@
                         </ul>
                     </div>
                     <div class="comparison-card">
-                        <h4>🗺️ Bitmaps</h4>
+                        <h4>🗺️ <abbr title="Bitmaps - Mapas de bits que registran qué bloques e inodos están libres u ocupados">Bitmaps</abbr></h4>
                         <ul>
                             <li>Bitmap de bloques libres</li>
                             <li>Bitmap de inodos libres</li>
@@ -607,7 +607,7 @@
 
                 <div class="comparison-table">
                     <div class="comparison-card">
-                        <h4>📦 Contigua</h4>
+                        <h4>📦 <abbr title="Asignación Contigua - Asignación de bloques consecutivos en disco">Contigua</abbr></h4>
                         <ul>
                             <li><strong>Idea:</strong> Bloques consecutivos</li>
                             <li><strong>Ventaja:</strong> Acceso secuencial rápido</li>
@@ -621,7 +621,7 @@ Bloque 100 → 101 → 102
                     </div>
 
                     <div class="comparison-card">
-                        <h4>🔗 Enlazada</h4>
+                        <h4>🔗 <abbr title="Asignación Enlazada - Cada bloque contiene un puntero al siguiente bloque">Enlazada</abbr></h4>
                         <ul>
                             <li><strong>Idea:</strong> Cada bloque apunta al siguiente</li>
                             <li><strong>Ventaja:</strong> Fácil crecer</li>
@@ -635,7 +635,7 @@ Bloque 100 → 101 → 102
                     </div>
 
                     <div class="comparison-card">
-                        <h4>📑 Indexada</h4>
+                        <h4>📑 <abbr title="Asignación Indexada - Usa bloques índice con punteros a los bloques de datos">Indexada</abbr></h4>
                         <ul>
                             <li><strong>Idea:</strong> Bloque índice con punteros</li>
                             <li><strong>Ventaja:</strong> Acceso directo</li>
@@ -673,7 +673,7 @@ Inodo → [Índice]
                     </div>
 
                     <div class="comparison-card">
-                        <h4>📊 Extents</h4>
+                        <h4>📊 <abbr title="Extents - Bloques contiguos tratados como una unidad para reducir fragmentación">Extents</abbr></h4>
                         <ul>
                             <li>Reemplaza bitmap clásico</li>
                             <li>Un extent = bloque contiguo</li>
@@ -894,7 +894,7 @@ debugfs&gt; quit                  # Salir</code></pre>
 
                 <div class="comparison-table">
                     <div class="comparison-card">
-                        <h4>🔗 Hard Link</h4>
+                        <h4>🔗 <abbr title="Hard Link - Enlace duro que apunta al mismo inodo con múltiples nombres">Hard Link</abbr></h4>
                         <p>Mismo inodo, contador de links incrementado.</p>
                         <pre><code>ln archivo.txt hardlink.txt</code></pre>
                         <div class="diagram-box" style="font-size: 0.8em;">
@@ -909,7 +909,7 @@ Inodo 12345:
                     </div>
 
                     <div class="comparison-card">
-                        <h4>🔀 Symbolic Link (Soft Link)</h4>
+                        <h4>🔀 <abbr title="Symbolic Link (Symlink) - Enlace simbólico que apunta a la ruta de otro archivo como texto">Symbolic Link</abbr> (Soft Link)</h4>
                         <p>Nuevo inodo que contiene la ruta como texto.</p>
                         <pre><code>ln -s archivo.txt symlink.txt</code></pre>
                         <div class="diagram-box" style="font-size: 0.8em;">
@@ -1033,20 +1033,20 @@ df -i
                         </tr>
                     </thead>
                     <tbody>
-                        <tr><td><strong>Superblock</strong></td><td>Información global del FS (tamaño, estado, conteos)</td></tr>
-                        <tr><td><strong>Bitmaps</strong></td><td>Registra qué bloques e inodos están libres/ocupados</td></tr>
+                        <tr><td><strong><abbr title="Superbloque (Superblock) - Estructura que contiene información global del sistema de archivos">Superblock</abbr></strong></td><td>Información global del FS (tamaño, estado, conteos)</td></tr>
+                        <tr><td><strong><abbr title="Bitmaps - Mapas de bits que registran qué bloques e inodos están libres u ocupados">Bitmaps</abbr></strong></td><td>Registra qué bloques e inodos están libres/ocupados</td></tr>
                         <tr><td><strong>Inodo</strong></td><td>Metadatos y punteros a bloques (sin nombre)</td></tr>
                         <tr><td><strong>Directorio</strong></td><td>Tabla nombre → inodo</td></tr>
-                        <tr><td><strong>Asignación contigua</strong></td><td>Rápida pero causa fragmentación</td></tr>
-                        <tr><td><strong>Asignación enlazada</strong></td><td>Fácil crecer pero acceso lento</td></tr>
-                        <tr><td><strong>Asignación indexada</strong></td><td>Acceso directo con bloques índice</td></tr>
+                        <tr><td><strong><abbr title="Asignación Contigua - Asignación de bloques consecutivos en disco">Asignación contigua</abbr></strong></td><td>Rápida pero causa fragmentación</td></tr>
+                        <tr><td><strong><abbr title="Asignación Enlazada - Cada bloque contiene un puntero al siguiente bloque">Asignación enlazada</abbr></strong></td><td>Fácil crecer pero acceso lento</td></tr>
+                        <tr><td><strong><abbr title="Asignación Indexada - Usa bloques índice con punteros a los bloques de datos">Asignación indexada</abbr></strong></td><td>Acceso directo con bloques índice</td></tr>
                         <tr><td><strong>ext4</strong></td><td>Journaling + extents + asignación indexada</td></tr>
                         <tr><td><strong>Punteros directos</strong></td><td>12 bloques (~48 KB) - acceso muy rápido</td></tr>
                         <tr><td><strong>Indirecto simple</strong></td><td>1024 bloques (~4 MB) - 2 niveles</td></tr>
                         <tr><td><strong>Indirecto doble</strong></td><td>1024² bloques (~4 GB) - 3 niveles</td></tr>
                         <tr><td><strong>Indirecto triple</strong></td><td>1024³ bloques (~4 TB) - 4 niveles</td></tr>
-                        <tr><td><strong>Hard link</strong></td><td>Mismo inodo, contador de links</td></tr>
-                        <tr><td><strong>Symbolic link</strong></td><td>Nuevo inodo, contiene ruta como texto</td></tr>
+                        <tr><td><strong><abbr title="Hard Link - Enlace duro que apunta al mismo inodo con múltiples nombres">Hard link</abbr></strong></td><td>Mismo inodo, contador de links</td></tr>
+                        <tr><td><strong><abbr title="Symbolic Link (Symlink) - Enlace simbólico que apunta a la ruta de otro archivo como texto">Symbolic link</abbr></strong></td><td>Nuevo inodo, contiene ruta como texto</td></tr>
                     </tbody>
                 </table>
 
@@ -1068,6 +1068,26 @@ df -i
                 </ul>
                 <p><strong>¡Nos vemos!</strong></p>
             </div>
+
+            <!-- Section: Laboratorio -->
+            <section id="laboratorio">
+                <h2>Laboratorio</h2>
+
+                <h3>Sistemas de Archivos en AWS EC2</h3>
+                <p>Trabaja con sistemas de archivos reales, particiones y montajes en un servidor EC2.</p>
+
+                <div class="info-box">
+                    <strong>Objetivos del Laboratorio</strong>
+                    <ul>
+                        <li>Crear y formatear particiones</li>
+                        <li>Montar sistemas de archivos</li>
+                        <li>Configurar mounting automático</li>
+                    </ul>
+                </div>
+
+                <p><strong>Próximamente:</strong> AWS Lab 04 - Sistemas de Archivos</p>
+                <p><a href="../laboratorios-html/index.html">Ver índice de Laboratorios →</a></p>
+            </section>
         </article>
 
         <footer>

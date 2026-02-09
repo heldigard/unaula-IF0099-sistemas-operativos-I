@@ -578,7 +578,7 @@ with open("datos.txt", "r") as f:
             </section>
 
             <section id="syscalls">
-                <h2>2. System Calls: La Puerta al Kernel</h2>
+                <h2>2. <abbr title="System Call (Syscall) - Llamada al sistema que permite a un programa en modo usuario solicitar servicios del kernel">System Calls</abbr>: La Puerta al Kernel</h2>
 
                 <h3>¿Qué son las System Calls?</h3>
 
@@ -587,14 +587,14 @@ with open("datos.txt", "r") as f:
                 <div class="ring-diagram">
 <pre>
 ┌───────────────────────────────────┐
-│      MODO USUARIO (Ring 3)        │
+│      <abbr title="User Space (Modo Usuario) - Espacio de memoria con privilegios limitados donde ejecutan las aplicaciones">MODO USUARIO</abbr> (Ring 3)        │
 │                                   │
 │  Aplicación                       │
 │    ↓ (open, read, write...)       │
-│  Biblioteca C (libc)              │
-│    ↓ (syscall wrapper)            │
+│  <abbr title="libc - Biblioteca estándar de C que proporciona wrappers de system calls">Biblioteca C (libc)</abbr>              │
+│    ↓ (<abbr title="Wrapper - Función contenedora que simplifica el acceso a system calls o APIs">syscall wrapper</abbr>)            │
 ├───────────────────────────────────┤ ← TRAP/INT: Cambio de modo
-│      MODO KERNEL (Ring 0)         │
+│      <abbr title="Kernel Space (Modo Kernel) - Espacio de memoria con privilegios totales donde ejecuta el sistema operativo">MODO KERNEL</abbr> (Ring 0)         │
 │                                   │
 │  Despachador de Syscalls          │
 │    ↓ (tabla de syscalls)          │
@@ -771,7 +771,7 @@ printf("Hola %s, tienes %d mensajes\n", nombre, count);
 // write() - Syscall directo
 write(1, "Hola\n", 5);  // fd=1 (stdout)</code></pre>
 
-                <h3>La Biblioteca C (libc)</h3>
+                <h3>La Biblioteca C (<abbr title="libc - Biblioteca estándar de C que proporciona wrappers de system calls">libc</abbr>)</h3>
 
                 <h4>Funciones de la libc:</h4>
                 <table>
@@ -898,7 +898,7 @@ CloseHandle(pi.hProcess);</code></pre>
             <section id="strace">
                 <h2>5. Ejemplos Prácticos y strace</h2>
 
-                <h3>La Herramienta <code>strace</code></h3>
+                <h3>La Herramienta <code><abbr title="strace - Herramienta de Linux para rastrear y mostrar system calls realizadas por un proceso">strace</abbr></code></h3>
 
                 <p><strong>strace</strong> intercepta y muestra todas las system calls que realiza un proceso.</p>
 
@@ -1161,6 +1161,25 @@ man 2 syscalls  # Lista de syscalls de Linux</code></pre>
                         <li><strong>Repositorio:</strong> <code>strace</code> en GitHub (código fuente)</li>
                     </ul>
                 </div>
+            </section>
+
+            <!-- Section: Laboratorio -->
+            <section id="laboratorio">
+                <h2>Laboratorio</h2>
+
+                <h3>System Calls y strace</h3>
+                <p>Practica con system calls reales y usa strace para analizar programas.</p>
+
+                <div class="info-box">
+                    <strong>Objetivos del Laboratorio</strong>
+                    <ul>
+                        <li>Usar strace para analizar programas</li>
+                        <li>Identificar system calls comunes</li>
+                        <li>Comparar rendimiento de diferentes implementaciones</li>
+                    </ul>
+                </div>
+
+                <p><a href="../laboratorios-html/index.html">Ver índice de Laboratorios →</a></p>
             </section>
         </article>
 

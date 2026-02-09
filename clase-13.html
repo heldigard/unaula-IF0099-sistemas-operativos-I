@@ -487,17 +487,17 @@
                         <td>Una impresora, un archivo en modo exclusivo</td>
                     </tr>
                     <tr>
-                        <td><strong>2. Hold and Wait</strong></td>
+                        <td><strong><abbr title="Hold and Wait - Condición donde un proceso mantiene recursos mientras espera otros">Hold and Wait</abbr></strong></td>
                         <td>Un proceso holds recursos mientras espera otros</td>
                         <td>Proceso holds Archivo A, espera Archivo B</td>
                     </tr>
                     <tr>
-                        <td><strong>3. No Preemption</strong></td>
+                        <td><strong><abbr title="No Preemption - Condición donde los recursos no pueden ser tomados por la fuerza">No Preemption</abbr></strong></td>
                         <td>Los recursos no pueden ser tomados por la fuerza</td>
                         <td>No se puede quitar una impresora a mitad de trabajo</td>
                     </tr>
                     <tr>
-                        <td><strong>4. Circular Wait</strong></td>
+                        <td><strong><abbr title="Circular Wait - Condición donde existe una cadena circular de procesos esperando recursos">Circular Wait</abbr></strong></td>
                         <td>Cadena circular de procesos cada uno esperando al siguiente</td>
                         <td>P1 → P2 → P3 → P1 (espera recursos)</td>
                     </tr>
@@ -689,7 +689,7 @@ Available: 2
 - P1 puede completar (necesita 6, hay 11)
 → ESTADO SEGURO (secuencia: P3 → P2 → P1)</code></pre>
 
-            <h3>Algoritmo del Banquero (Banker's Algorithm)</h3>
+            <h3>Algoritmo del Banquero (<abbr title="Banker's Algorithm - Algoritmo de evitación de deadlock que verifica si el sistema permanece en estado seguro">Banker's Algorithm</abbr>)</h3>
             <p>Diseñado por Dijkstra (1965), este algoritmo decide si conceder una solicitud de recurso mantiene el sistema en un estado seguro.</p>
 
             <div class="callout.info">
@@ -799,7 +799,7 @@ Available 3 3 2
             </div>
 
             <h3>Algoritmo de Detección (Un Recurso por Tipo)</h3>
-            <pre><code># Grafo de espera: Wait-For Graph
+            <pre><code># Grafo de espera: <abbr title="Wait-For Graph - Grafo de espera usado para detectar deadlocks buscando ciclos">Wait-For Graph</abbr>
 1. Construir grafo: vértices = procesos
 2. Edge Pᵢ → Pⱼ si Pᵢ espera recurso held por Pⱼ
 
@@ -1188,6 +1188,26 @@ echo "Got both locks!"
                     </ul>
                 </div>
             </div>
+        </section>
+
+        <!-- Section: Laboratorio -->
+        <section id="laboratorio">
+            <h2>Laboratorio</h2>
+
+            <h3>Proyecto: Simulador de Planificador CPU</h3>
+            <p>Implementa algoritmos FCFS, SJF, Round Robin y Priority en C.</p>
+
+            <div class="checklist">
+                <h4>Objetivos</h4>
+                <ul>
+                    <li>Implementar múltiples algoritmos de planificación</li>
+                    <li>Calcular métricas (turnaround, waiting, response)</li>
+                    <li>Comparar rendimiento de diferentes algoritmos</li>
+                </ul>
+            </div>
+
+            <p><strong>Próximamente:</strong> PROY 01 - Simulador de Planificador</p>
+            <p><a href="../laboratorios-html/index.html">Ver índice de Laboratorios →</a></p>
         </section>
     </div>
 

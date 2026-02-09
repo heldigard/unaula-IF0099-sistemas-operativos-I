@@ -366,7 +366,8 @@
                 <li><a href="#threads">6. Threads (Hilos)</a></li>
                 <li><a href="#modelos-threads">7. Modelos de Threads</a></li>
                 <li><a href="#ipc">8. Comunicación IPC</a></li>
-                <li><a href="#practica">9. Actividad Práctica (Opcional)</a></li>
+                <li><a href="#laboratorio">9. Laboratorio</a></li>
+                <li><a href="#practica">10. Actividad Práctica (Opcional)</a></li>
             </ul>
         </nav>
 
@@ -507,12 +508,12 @@
                     <th>Tamaño</th>
                 </tr>
                 <tr>
-                    <td><strong>TEXT</strong></td>
+                    <td><strong><abbr title="Código ejecutable del programa">TEXT</abbr></strong></td>
                     <td>Código ejecutable</td>
                     <td>Fijo</td>
                 </tr>
                 <tr>
-                    <td><strong>DATA</strong></td>
+                    <td><strong><abbr title="Variables globales inicializadas">DATA</abbr></strong></td>
                     <td>Variables globales inicializadas</td>
                     <td>Fijo</td>
                 </tr>
@@ -522,12 +523,12 @@
                     <td>Fijo</td>
                 </tr>
                 <tr>
-                    <td><strong>HEAP</strong></td>
+                    <td><strong><abbr title="Memoria dinámica (montículo)">HEAP</abbr></strong></td>
                     <td>Memoria dinámica (malloc/new)</td>
                     <td>Variable ↑</td>
                 </tr>
                 <tr>
-                    <td><strong>STACK</strong></td>
+                    <td><strong><abbr title="Pila de ejecución (variables locales)">STACK</abbr></strong></td>
                     <td>Variables locales, parámetros, retornos</td>
                     <td>Variable ↓</td>
                 </tr>
@@ -663,10 +664,10 @@ VmRSS:        678 kB
         </section>
 
         <section id="context-switch">
-            <h2>4. Context Switch (Cambio de Contexto)</h2>
+            <h2>4. <abbr title="Cambio de contexto entre procesos">Context Switch</abbr> (Cambio de Contexto)</h2>
 
             <h3>Cuando el SO cambia de un proceso a otro</h3>
-            <p>El <strong>context switch</strong> es el proceso de guardar el estado de un proceso y cargar el estado de otro.</p>
+            <p>El <strong><abbr title="Cambio de contexto entre procesos">context switch</abbr></strong> es el proceso de guardar el estado de un proceso y cargar el estado de otro.</p>
 
             <figure>
                 <img src="../assets/infografias/clase-03-cswitch-timeline.png" alt="Diagrama de Context Switch">
@@ -826,7 +827,7 @@ user   1234   2.5  1.2 456789 98765 ?    Sl   10:00   0:30 /usr/bin/code</code><
                 <tr>
                     <th>Aspecto</th>
                     <th>Proceso</th>
-                    <th>Thread (Hilo)</th>
+                    <th><abbr title="Hilo de ejecución ligero">Thread</abbr> (Hilo)</th>
                 </tr>
                 <tr>
                     <td><strong>Definición</strong></td>
@@ -859,7 +860,7 @@ user   1234   2.5  1.2 456789 98765 ?    Sl   10:00   0:30 /usr/bin/code</code><
             <div class="callout success">
                 <ul>
                     <li><strong>Proceso</strong> = Casa independiente (paredes, techo, servicios propios)</li>
-                    <li><strong>Thread</strong> = Habitación dentro de la casa (comparten paredes y servicios)</li>
+                    <li><strong><abbr title="Hilo de ejecución ligero">Thread</abbr></strong> = Habitación dentro de la casa (comparten paredes y servicios)</li>
                 </ul>
             </div>
 
@@ -1024,8 +1025,70 @@ Caso: Escritores esperan mientras lectores llegan constantemente
             </ol>
         </section>
 
+        <!-- Section 9: Laboratorio -->
+        <section id="laboratorio">
+            <h2>9. Laboratorio Práctico</h2>
+
+            <h3>Lab 02: Permisos y Usuarios en Linux</h3>
+            <p>En este laboratorio explorarás el sistema de permisos de Linux y la gestión de usuarios.</p>
+
+            <div class="callout info">
+                <p class="callout-title">Objetivos del Laboratorio</p>
+                <ul>
+                    <li>Entender el modelo de permisos UGO (User-Group-Other)</li>
+                    <li>Manipular permisos con <code>chmod</code></li>
+                    <li>Cambiar propietario y grupo con <code>chown</code></li>
+                    <li>Crear y gestionar usuarios y grupos</li>
+                </ul>
+            </div>
+
+            <h4>Comandos de Permisos</h4>
+            <table>
+                <tr>
+                    <th>Comando</th>
+                    <th>Ejemplo</th>
+                    <th>Descripción</th>
+                </tr>
+                <tr>
+                    <td><code>chmod</code></td>
+                    <td><code>chmod 755 archivo</code></td>
+                    <td>Cambia permisos (rwxr-xr-x)</td>
+                </tr>
+                <tr>
+                    <td><code>chown</code></td>
+                    <td><code>chown usuario:grupo archivo</code></td>
+                    <td>Cambia propietario y grupo</td>
+                </tr>
+                <tr>
+                    <td><code>chgrp</code></td>
+                    <td><code>chgrp grupo archivo</code></td>
+                    <td>Cambia solo el grupo</td>
+                </tr>
+                <tr>
+                    <td><code>umask</code></td>
+                    <td><code>umask 022</code></td>
+                    <td>Establece permisos por defecto</td>
+                </tr>
+            </table>
+
+            <h4>Ejercicios del Laboratorio</h4>
+            <ol>
+                <li>Identifica los permisos de archivos en tu directorio: <code>ls -l</code></li>
+                <li>Crea un archivo y experimenta con diferentes permisos</li>
+                <li>Observa qué sucede cuando intentas acceder a archivos sin permisos</li>
+                <li>Crea un usuario de prueba y experimenta con sudo</li>
+            </ol>
+
+            <div class="callout success">
+                <p class="callout-title">Conceptos Clave</p>
+                <p>Los permisos determinan quién puede leer, escribir o ejecutar archivos. Un error aquí puede exponer tu sistema o hacerlo inaccesible.</p>
+            </div>
+
+            <p><strong>Acceso al laboratorio:</strong> <a href="../laboratorios-html/lab-02-permisos-usuarios.html" target="_blank">Ver guía completa del Lab 02 →</a></p>
+        </section>
+
         <section id="practica">
-            <h2>8. Actividad Práctica (Opcional)</h2>
+            <h2>10. Actividad Práctica (Opcional)</h2>
 
             <section class="actividad">
                 <h3>Actividad: Exploración de Procesos</h3>

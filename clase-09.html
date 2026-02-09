@@ -401,6 +401,7 @@
                 <li><a href="#fragmentacion">Fragmentación</a></li>
                 <li><a href="#montaje">Montaje de Sistemas</a></li>
                 <li><a href="#practica">Actividad Práctica</a></li>
+                <li><a href="#laboratorio">Laboratorio</a></li>
                 <li><a href="#resumen">Resumen</a></li>
             </ul>
         </nav>
@@ -708,7 +709,7 @@ tesis.pdf foto.jpg</pre>
 
         <!-- FAT32 -->
         <section id="fat32">
-            <h2>FAT32 (File Allocation Table)</h2>
+            <h2><abbr title="File Allocation Table - Tabla de asignación de archivos">FAT32</abbr> (File Allocation Table)</h2>
 
             <pre class="ascii-diagram">           FAT (Tabla de Asignación)        Área de Datos
         ┌───┬───┬───┬───┬───┬───┬───┐    ┌───────────────┐
@@ -738,7 +739,7 @@ Archivo: Inicio=2 → 2→3→5→4→EOF    ▼ ▼
 
         <!-- NTFS -->
         <section id="ntfs">
-            <h2>NTFS (New Technology File System)</h2>
+            <h2><abbr title="New Technology File System - Sistema de archivos nuevo technology">NTFS</abbr> (New Technology File System)</h2>
 
             <pre class="ascii-diagram">                NTFS ESTRUCTURA
 ┌────────────────────────────────────────────────────────┐
@@ -769,7 +770,7 @@ Archivo: Inicio=2 → 2→3→5→4→EOF    ▼ ▼
 
         <!-- ext4 -->
         <section id="ext4">
-            <h2>ext4 (Fourth Extended Filesystem)</h2>
+            <h2><abbr title="Fourth Extended Filesystem - Cuarto sistema de archivos extendido">ext4</abbr> (Fourth Extended Filesystem)</h2>
 
             <pre class="ascii-diagram">                EXT4 ESTRUCTURA
 ┌─────────────────────────────────────────────────────────┐
@@ -798,7 +799,7 @@ Archivo: Inicio=2 → 2→3→5→4→EOF    ▼ ▼
 
         <!-- Journaling -->
         <section id="journaling">
-            <h2>Journaling: Protección contra Fallos</h2>
+            <h2><abbr title="Journaling - Registro de transacciones para recuperación del sistema">Journaling</abbr>: Protección contra Fallos</h2>
 
             <div class="comparison">
                 <div>
@@ -838,7 +839,7 @@ Archivo: Inicio=2 → 2→3→5→4→EOF    ▼ ▼
 
         <!-- Inodos -->
         <section id="inodos">
-            <h2>Profundizando en Inodos (ext4)</h2>
+            <h2>Profundizando en <abbr title="Inodo - Índice de nodo o estructura de datos de archivo">Inodos</abbr> (ext4)</h2>
             <h3>Estructura detallada de un inodo</h3>
 
             <div class="inode-structure">
@@ -913,7 +914,7 @@ Archivo: Inicio=2 → 2→3→5→4→EOF    ▼ ▼
 
         <!-- Montaje -->
         <section id="montaje">
-            <h2>Montaje de Sistemas de Archivos</h2>
+            <h2><abbr title="Montaje - Montaje de sistemas de archivos en el árbol de directorios">Montaje</abbr> de Sistemas de Archivos</h2>
             <h3>Linux: Un árbol único con múltiples dispositivos</h3>
 
             <pre class="ascii-diagram">                    / (raíz - /dev/sda1 ext4)
@@ -1011,6 +1012,25 @@ ls -la /</code></pre>
             </ul>
         </section>
     </div>
+
+    <!-- Section: Laboratorio -->
+    <section id="laboratorio">
+        <h2>Laboratorio</h2>
+
+        <h3>Trabajo con Sistemas de Archivos</h3>
+        <p>Crea, modifica y gestiona archivos y directorios en Linux real.</p>
+
+        <div class="callout info">
+            <strong>Objetivos del Laboratorio</strong>
+            <ul>
+                <li>Crear y organizar estructuras de directorios</li>
+                <li>Configurar permisos y atributos especiales</li>
+                <li>Montar y desmontar sistemas de archivos</li>
+            </ul>
+        </div>
+
+        <p><a href="../laboratorios-html/index.html">Ver índice de Laboratorios →</a></p>
+    </section>
 
     <footer>
         <div class="container">

@@ -368,6 +368,7 @@
                 <li><a href="#overhead">Cálculo de Overhead</a></li>
                 <li><a href="#ejercicio-tlb">Ejercicio TLB Miss Rate</a></li>
                 <li><a href="#actividad">Actividad Práctica</a></li>
+                <li><a href="#laboratorio">Laboratorio</a></li>
                 <li><a href="#resumen">Resumen</a></li>
                 <li><a href="#evaluacion">Evaluación</a></li>
             </ul>
@@ -594,12 +595,12 @@ El resto está en DISCO (swap)
         </section>
 
         <section id="page-fault">
-            <h2>Page Fault (Fallo de Página)</h2>
+            <h2><abbr title="Page Fault - Fallo de página cuando la página no está en memoria">Page Fault</abbr> (Fallo de Página)</h2>
             <div class="ascii-diagram">
 ┌─────────────────────────────────────────────────────────────┐
 │  1. CPU genera dirección lógica                             │
 │                    ↓                                        │
-│  2. MMU consulta tabla de páginas                           │
+│  2. <abbr title="Memory Management Unit - Unidad de Gestión de Memoria">MMU</abbr> consulta tabla de páginas                           │
 │                    ↓                                        │
 │  3. Bit válido = 0 → TRAP (page fault)                      │
 │                    ↓                                        │
@@ -649,7 +650,7 @@ El resto está en DISCO (swap)
         </section>
 
         <section id="thrashing">
-            <h2>Thrashing</h2>
+            <h2><abbr title="Thrashing - Estado excesivo de page faults que degrada el rendimiento">Thrashing</abbr></h2>
             <p><strong>Cuando el sistema pasa más tiempo haciendo page faults que ejecutando</strong></p>
             <div class="ascii-diagram">
      Utilización
@@ -673,7 +674,7 @@ El resto está en DISCO (swap)
         </section>
 
         <section id="working-set">
-            <h2>Working Set (Conjunto de Trabajo)</h2>
+            <h2><abbr title="Working Set - Conjunto de páginas activamente usadas por un proceso">Working Set</abbr> (Conjunto de Trabajo)</h2>
             <p><strong>Páginas activamente usadas por un proceso</strong></p>
             <div class="ascii-diagram">
 Si un proceso usa las páginas: 1, 2, 1, 3, 2, 1, 4, 1, 2, 3
@@ -1011,5 +1012,25 @@ EMAT = 0.95 × 102 + 0.05 × 202
             });
         });
     </script>
+
+    <!-- Section: Laboratorio -->
+    <section id="laboratorio">
+        <h2>Laboratorio</h2>
+
+        <h3>Paginación y Memoria Virtual</h3>
+        <p>Explora tablas de páginas, TLB y memoria virtual en Linux real.</p>
+
+        <div class="callout info">
+            <strong>Objetivos del Laboratorio</strong>
+            <ul>
+                <li>Analizar tablas de páginas</li>
+                <li>Observar TLB misses</li>
+                <li>Experimentar con page faults</li>
+            </ul>
+        </div>
+
+        <p><a href="../laboratorios-html/index.html">Ver índice de Laboratorios →</a></p>
+    </section>
+
 </body>
 </html>
