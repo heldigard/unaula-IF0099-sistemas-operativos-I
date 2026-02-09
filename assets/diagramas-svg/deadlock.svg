@@ -1,75 +1,75 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 950 700" style="background: #f8fafc; font-family: Arial, sans-serif;">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 750" style="background: #f8fafc; font-family: Arial, sans-serif;">
   <!-- Título -->
-  <text x="475" y="30" text-anchor="middle" font-size="24" font-weight="bold" fill="#1e293b">Deadlock (Interbloqueo)</text>
+  <text x="550" y="30" text-anchor="middle" font-size="24" font-weight="bold" fill="#1e293b">Deadlock (Interbloqueo)</text>
 
   <!-- Subtítulo -->
-  <text x="475" y="55" text-anchor="middle" font-size="13" fill="#64748b">Cuando dos o más procesos se esperan mutuamente y nadie puede avanzar</text>
+  <text x="550" y="55" text-anchor="middle" font-size="13" fill="#64748b">Cuando dos o más procesos se esperan mutuamente y nadie puede avanzar</text>
 
   <!-- Definición -->
   <g id="definicion">
-    <rect x="50" y="80" width="850" height="50" rx="8" fill="#fee2e2" stroke="#dc2626" stroke-width="2"/>
-    <text x="475" y="100" text-anchor="middle" font-size="14" font-weight="bold" fill="#991b1b">¿Qué es un Deadlock?</text>
-    <text x="475" y="120" text-anchor="middle" font-size="12" fill="#7f1d1d">Situación donde un conjunto de procesos está esperando recursos que solo pueden ser liberados por otros procesos del conjunto</text>
+    <rect x="50" y="80" width="1000" height="55" rx="8" fill="#fee2e2" stroke="#dc2626" stroke-width="2"/>
+    <text x="550" y="102" text-anchor="middle" font-size="14" font-weight="bold" fill="#991b1b">¿Qué es un Deadlock?</text>
+    <text x="550" y="122" text-anchor="middle" font-size="12" fill="#7f1d1d">Situación donde procesos esperan recursos que solo otros pueden liberar</text>
   </g>
 
   <!-- 4 Condiciones Necesarias -->
   <g id="condiciones">
-    <text x="250" y="170" text-anchor="middle" font-size="15" font-weight="bold" fill="#1e293b">4 Condiciones Necesarias (TODAS deben ocurrir)</text>
+    <text x="550" y="170" text-anchor="middle" font-size="15" font-weight="bold" fill="#1e293b">4 Condiciones Necesarias (TODAS deben ocurrir)</text>
 
     <!-- Condiciones -->
-    <rect x="50" y="190" width="200" height="80" rx="5" fill="#fef3c7" stroke="#ca8a04" stroke-width="2"/>
-    <text x="150" y="210" text-anchor="middle" font-size="12" font-weight="bold" fill="#9a3412">1. Exclusión Mutua</text>
-    <text x="60" y="230" font-size="10" fill="#92400e">Solo un proceso usa</text>
-    <text x="60" y="245" font-size="10" fill="#92400e">el recurso a la vez</text>
-    <text x="60" y="260" font-size="10" fill="#92400e">ej: impresora</text>
+    <rect x="60" y="195" width="230" height="90" rx="5" fill="#fef3c7" stroke="#ca8a04" stroke-width="2"/>
+    <text x="175" y="217" text-anchor="middle" font-size="12" font-weight="bold" fill="#9a3412">1. Exclusión Mutua</text>
+    <text x="75" y="237" font-size="10" fill="#92400e">Solo un proceso usa</text>
+    <text x="75" y="252" font-size="10" fill="#92400e">el recurso a la vez</text>
+    <text x="75" y="267" font-size="10" fill="#92400e">ej: impresora</text>
 
-    <rect x="270" y="190" width="200" height="80" rx="5" fill="#fef3c7" stroke="#ca8a04" stroke-width="2"/>
-    <text x="370" y="210" text-anchor="middle" font-size="12" font-weight="bold" fill="#9a3412">2. Retener y Esperar</text>
-    <text x="280" y="230" font-size="10" fill="#92400e">Mantiene recursos</text>
-    <text x="280" y="245" font-size="10" fill="#92400e">mientras espera otros</text>
-    <text x="280" y="260" font-size="10" fill="#92400e">ej: tiene A, espera B</text>
+    <rect x="310" y="195" width="230" height="90" rx="5" fill="#fef3c7" stroke="#ca8a04" stroke-width="2"/>
+    <text x="425" y="217" text-anchor="middle" font-size="12" font-weight="bold" fill="#9a3412">2. Retener y Esperar</text>
+    <text x="325" y="237" font-size="10" fill="#92400e">Mantiene recursos</text>
+    <text x="325" y="252" font-size="10" fill="#92400e">mientras espera otros</text>
+    <text x="325" y="267" font-size="10" fill="#92400e">ej: tiene A, espera B</text>
 
-    <rect x="490" y="190" width="200" height="80" rx="5" fill="#fef3c7" stroke="#ca8a04" stroke-width="2"/>
-    <text x="590" y="210" text-anchor="middle" font-size="12" font-weight="bold" fill="#9a3412">3. No Apropiación</text>
-    <text x="500" y="230" font-size="10" fill="#92400e">Recursos no pueden</text>
-    <text x="500" y="245" font-size="10" fill="#92400e">ser quitados</text>
-    <text x="500" y="260" font-size="10" fill="#92400e">fuerzosamente</text>
+    <rect x="560" y="195" width="230" height="90" rx="5" fill="#fef3c7" stroke="#ca8a04" stroke-width="2"/>
+    <text x="675" y="217" text-anchor="middle" font-size="12" font-weight="bold" fill="#9a3412">3. No Apropiación</text>
+    <text x="575" y="237" font-size="10" fill="#92400e">Recursos no pueden</text>
+    <text x="575" y="252" font-size="10" fill="#92400e">ser quitados</text>
+    <text x="575" y="267" font-size="10" fill="#92400e">fuerzosamente</text>
 
-    <rect x="710" y="190" width="200" height="80" rx="5" fill="#fef3c7" stroke="#ca8a04" stroke-width="2"/>
-    <text x="810" y="210" text-anchor="middle" font-size="12" font-weight="bold" fill="#9a3412">4. Espera Circular</text>
-    <text x="720" y="230" font-size="10" fill="#92400e">Cadena circular de</text>
-    <text x="720" y="245" font-size="10" fill="#92400e">procesos esperándose</text>
-    <text x="720" y="260" font-size="10" fill="#92400e">unos a otros</text>
+    <rect x="810" y="195" width="230" height="90" rx="5" fill="#fef3c7" stroke="#ca8a04" stroke-width="2"/>
+    <text x="925" y="217" text-anchor="middle" font-size="12" font-weight="bold" fill="#9a3412">4. Espera Circular</text>
+    <text x="825" y="237" font-size="10" fill="#92400e">Cadena circular de</text>
+    <text x="825" y="252" font-size="10" fill="#92400e">procesos esperándose</text>
+    <text x="825" y="267" font-size="10" fill="#92400e">unos a otros</text>
   </g>
 
   <!-- Ejemplo Visual de Deadlock -->
   <g id="ejemplo-deadlock">
-    <text x="250" y="300" text-anchor="middle" font-size="15" font-weight="bold" fill="#dc2626">Ejemplo: Deadlock entre 2 Procesos</text>
+    <text x="550" y="310" text-anchor="middle" font-size="15" font-weight="bold" fill="#dc2626">Ejemplo: Deadlock entre 2 Procesos</text>
 
     <!-- Proceso A -->
     <g id="proceso-a">
-      <circle cx="150" cy="400" r="40" fill="#3b82f6" opacity="0.8"/>
-      <text x="150" y="405" text-anchor="middle" font-size="14" font-weight="bold" fill="white">P1</text>
+      <circle cx="200" cy="420" r="50" fill="#3b82f6" opacity="0.8"/>
+      <text x="200" y="425" text-anchor="middle" font-size="16" font-weight="bold" fill="white">P1</text>
     </g>
 
     <!-- Recurso A -->
     <g id="recurso-a">
-      <rect x="250" y="360" width="60" height="80" rx="5" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
-      <text x="280" y="385" text-anchor="middle" font-size="10" font-weight="bold" fill="#1e40af">R1</text>
-      <text x="280" y="420" text-anchor="middle" font-size="9" fill="#64748b">Impresora</text>
+      <rect x="320" y="370" width="80" height="100" rx="5" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+      <text x="360" y="400" text-anchor="middle" font-size="11" font-weight="bold" fill="#1e40af">R1</text>
+      <text x="360" y="445" text-anchor="middle" font-size="9" fill="#64748b">Impresora</text>
     </g>
 
     <!-- Recurso B -->
     <g id="recurso-b">
-      <rect x="640" y="360" width="60" height="80" rx="5" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
-      <text x="670" y="385" text-anchor="middle" font-size="10" font-weight="bold" fill="#166534">R2</text>
-      <text x="670" y="420" text-anchor="middle" font-size="9" fill="#64748b">Escáner</text>
+      <rect x="700" y="370" width="80" height="100" rx="5" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+      <text x="740" y="400" text-anchor="middle" font-size="11" font-weight="bold" fill="#166534">R2</text>
+      <text x="740" y="445" text-anchor="middle" font-size="9" fill="#64748b">Escáner</text>
     </g>
 
     <!-- Proceso B -->
     <g id="proceso-b">
-      <circle cx="800" cy="400" r="40" fill="#22c55e" opacity="0.8"/>
-      <text x="800" y="405" text-anchor="middle" font-size="14" font-weight="bold" fill="white">P2</text>
+      <circle cx="900" cy="420" r="50" fill="#22c55e" opacity="0.8"/>
+      <text x="900" y="425" text-anchor="middle" font-size="16" font-weight="bold" fill="white">P2</text>
     </g>
 
     <!-- Flechas de espera circular -->
@@ -80,46 +80,46 @@
     </defs>
 
     <!-- P1 tiene R1 -->
-    <line x1="190" y1="390" x2="250" y2="390" stroke="#3b82f6" stroke-width="3"/>
-    <text x="220" y="380" text-anchor="middle" font-size="9" fill="#3b82f6">tiene</text>
+    <line x1="250" y1="410" x2="320" y2="410" stroke="#3b82f6" stroke-width="3"/>
+    <text x="285" y="400" text-anchor="middle" font-size="9" fill="#3b82f6">tiene</text>
 
     <!-- P2 tiene R2 -->
-    <line x1="760" y1="390" x2="700" y2="390" stroke="#22c55e" stroke-width="3"/>
-    <text x="730" y="380" text-anchor="middle" font-size="9" fill="#22c55e">tiene</text>
+    <line x1="850" y1="410" x2="780" y2="410" stroke="#22c55e" stroke-width="3"/>
+    <text x="815" y="400" text-anchor="middle" font-size="9" fill="#22c55e">tiene</text>
 
     <!-- P1 espera R2 -->
-    <path d="M 150 360 Q 150 320 670 320 L 670 350" stroke="#dc2626" stroke-width="2" stroke-dasharray="5,5" marker-end="url(#arrow-red)"/>
-    <text x="400" y="315" text-anchor="middle" font-size="10" fill="#dc2626">espera</text>
+    <path d="M 200 370 Q 200 330 740 330 L 740 360" stroke="#dc2626" stroke-width="2" stroke-dasharray="5,5" marker-end="url(#arrow-red)"/>
+    <text x="450" y="325" text-anchor="middle" font-size="10" fill="#dc2626">espera</text>
 
     <!-- P2 espera R1 -->
-    <path d="M 800 440 Q 800 480 280 480 L 280 450" stroke="#dc2626" stroke-width="2" stroke-dasharray="5,5" marker-end="url(#arrow-red)"/>
-    <text x="550" y="495" text-anchor="middle" font-size="10" fill="#dc2626">espera</text>
+    <path d="M 900 470 Q 900 510 360 510 L 360 480" stroke="#dc2626" stroke-width="2" stroke-dasharray="5,5" marker-end="url(#arrow-red)"/>
+    <text x="650" y="525" text-anchor="middle" font-size="10" fill="#dc2626">espera</text>
 
     <!-- Resultado -->
-    <rect x="350" y="520" width="250" height="40" rx="5" fill="#fee2e2" stroke="#dc2626" stroke-width="2"/>
-    <text x="475" y="545" text-anchor="middle" font-size="13" font-weight="bold" fill="#991b1b">⛔ DEADLOCK: Nadie avanza</text>
+    <rect x="400" y="550" width="300" height="45" rx="5" fill="#fee2e2" stroke="#dc2626" stroke-width="2"/>
+    <text x="550" y="578" text-anchor="middle" font-size="14" font-weight="bold" fill="#991b1b">⛔ DEADLOCK: Nadie avanza</text>
   </g>
 
   <!-- Estrategias de Manejo -->
   <g id="estrategias">
-    <text x="750" y="580" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e293b">Estrategias de Manejo</text>
+    <text x="550" y="630" text-anchor="middle" font-size="15" font-weight="bold" fill="#1e293b">Estrategias de Manejo</text>
 
-    <rect x="50" y="600" width="250" height="80" rx="5" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
-    <text x="175" y="620" text-anchor="middle" font-size="12" font-weight="bold" fill="#1e40af">1. Prevención</text>
-    <text x="60" y="640" font-size="10" fill="#64748b">• Romper 1 condición necesaria</text>
-    <text x="60" y="655" font-size="10" fill="#64748b">• Ej: pedir todos recursos juntos</text>
-    <text x="60" y="670" font-size="10" fill="#64748b">• Costo: baja utilización</text>
+    <rect x="60" y="650" width="300" height="85" rx="5" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+    <text x="210" y="672" text-anchor="middle" font-size="12" font-weight="bold" fill="#1e40af">1. Prevención</text>
+    <text x="75" y="692" font-size="10" fill="#64748b">• Romper 1 condición necesaria</text>
+    <text x="75" y="707" font-size="10" fill="#64748b">• Ej: pedir todos recursos juntos</text>
+    <text x="75" y="722" font-size="10" fill="#64748b">• Costo: baja utilización</text>
 
-    <rect x="320" y="600" width="250" height="80" rx="5" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
-    <text x="445" y="620" text-anchor="middle" font-size="12" font-weight="bold" fill="#166534">2. Evitación</text>
-    <text x="330" y="640" font-size="10" fill="#64748b">• Algoritmo del Banquero</text>
-    <text x="330" y="655" font-size="10" fill="#64748b">• Analizar antes de asignar</text>
-    <text x="330" y="670" font-size="10" fill="#64748b">• Costo: overhead alto</text>
+    <rect x="380" y="650" width="300" height="85" rx="5" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+    <text x="530" y="672" text-anchor="middle" font-size="12" font-weight="bold" fill="#166534">2. Evitación</text>
+    <text x="395" y="692" font-size="10" fill="#64748b">• Algoritmo del Banquero</text>
+    <text x="395" y="707" font-size="10" fill="#64748b">• Analizar antes de asignar</text>
+    <text x="395" y="722" font-size="10" fill="#64748b">• Costo: overhead alto</text>
 
-    <rect x="590" y="600" width="250" height="80" rx="5" fill="#fef3c7" stroke="#ca8a04" stroke-width="2"/>
-    <text x="715" y="620" text-anchor="middle" font-size="12" font-weight="bold" fill="#9a3412">3. Detección y Recuperación</text>
-    <text x="600" y="640" font-size="10" fill="#92400e">• Detectar ciclos en grafo</text>
-    <text x="600" y="655" font-size="10" fill="#92400e">• Matar proceso o preempción</text>
-    <text x="600" y="670" font-size="10" fill="#92400e">• Costo: pérdida de trabajo</text>
+    <rect x="700" y="650" width="340" height="85" rx="5" fill="#fef3c7" stroke="#ca8a04" stroke-width="2"/>
+    <text x="870" y="672" text-anchor="middle" font-size="12" font-weight="bold" fill="#9a3412">3. Detección y Recuperación</text>
+    <text x="715" y="692" font-size="10" fill="#92400e">• Detectar ciclos en grafo</text>
+    <text x="715" y="707" font-size="10" fill="#92400e">• Matar proceso o preempción</text>
+    <text x="715" y="722" font-size="10" fill="#92400e">• Costo: pérdida de trabajo</text>
   </g>
 </svg>

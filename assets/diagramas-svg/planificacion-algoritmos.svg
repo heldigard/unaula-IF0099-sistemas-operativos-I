@@ -1,15 +1,15 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" style="background: #f8fafc; font-family: Arial, sans-serif;">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 750" style="background: #f8fafc; font-family: Arial, sans-serif;">
   <!-- Título -->
-  <text x="500" y="30" text-anchor="middle" font-size="24" font-weight="bold" fill="#1e293b">Algoritmos de Planificación de CPU</text>
+  <text x="550" y="30" text-anchor="middle" font-size="24" font-weight="bold" fill="#1e293b">Algoritmos de Planificación de CPU</text>
 
   <!-- Subtítulo -->
-  <text x="500" y="55" text-anchor="middle" font-size="13" fill="#64748b">Comparación visual de los principales algoritmos de scheduling</text>
+  <text x="550" y="55" text-anchor="middle" font-size="13" fill="#64748b">Comparación visual de los principales algoritmos de scheduling</text>
 
   <!-- Escenario de ejemplo -->
   <g id="escenario">
-    <rect x="50" y="80" width="900" height="50" rx="5" fill="#fef9c3" stroke="#ca8a04" stroke-width="1"/>
-    <text x="500" y="100" text-anchor="middle" font-size="13" font-weight="bold" fill="#854d0e">Escenario de ejemplo:</text>
-    <text x="500" y="120" text-anchor="middle" font-size="12" fill="#92400e">Procesos: P1 (llega t=0, burst=5), P2 (llega t=1, burst=3), P3 (llega t=2, burst=8)</text>
+    <rect x="50" y="80" width="1000" height="50" rx="5" fill="#fef9c3" stroke="#ca8a04" stroke-width="1"/>
+    <text x="550" y="100" text-anchor="middle" font-size="13" font-weight="bold" fill="#854d0e">Escenario de ejemplo:</text>
+    <text x="550" y="120" text-anchor="middle" font-size="12" fill="#92400e">Procesos: P1 (llega t=0, burst=5), P2 (llega t=1, burst=3), P3 (llega t=2, burst=8)</text>
   </g>
 
   <!-- FCFS -->
@@ -75,50 +75,50 @@
     <text x="120" y="460" text-anchor="middle" font-size="10" fill="#64748b">Justo, pero contexto frecuente aumenta overhead</text>
   </g>
 
-  <!-- Tabla comparativa -->
+  <!-- Tabla comparativa - AGRANDADA -->
   <g id="tabla">
-    <rect x="520" y="180" width="430" height="280" rx="5" fill="white" stroke="#e2e8f0" stroke-width="1"/>
-    <text x="735" y="200" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e293b">Comparación de Algoritmos</text>
+    <rect x="520" y="150" width="530" height="320" rx="5" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+    <text x="785" y="175" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e293b">Comparación de Algoritmos</text>
 
     <!-- Encabezados -->
-    <text x="540" y="225" font-size="11" font-weight="bold" fill="#64748b">Algoritmo</text>
-    <text x="670" y="225" font-size="11" font-weight="bold" fill="#64748b">Tiempo Prom.</text>
-    <text x="770" y="225" font-size="11" font-weight="bold" fill="#64748b">Throughput</text>
-    <text x="870" y="225" font-size="11" font-weight="bold" fill="#64748b">Uso</text>
+    <text x="545" y="200" font-size="11" font-weight="bold" fill="#64748b">Algoritmo</text>
+    <text x="680" y="200" font-size="11" font-weight="bold" fill="#64748b">Tiempo Prom.</text>
+    <text x="805" y="200" font-size="11" font-weight="bold" fill="#64748b">Throughput</text>
+    <text x="950" y="200" font-size="11" font-weight="bold" fill="#64748b">Uso Recomendado</text>
 
-    <line x1="530" y1="235" x2="920" y2="235" stroke="#e2e8f0" stroke-width="1"/>
+    <line x1="530" y1="215" x2="1030" y2="215" stroke="#e2e8f0" stroke-width="1"/>
 
     <!-- FCFS -->
-    <text x="540" y="255" font-size="11" font-weight="bold" fill="#3b82f6">FCFS</text>
-    <text x="670" y="255" font-size="10" fill="#64748b">Alto</text>
-    <text x="770" y="255" font-size="10" fill="#64748b">Bajo</text>
-    <text x="870" y="255" font-size="10" fill="#64748b">Batch simple</text>
+    <text x="545" y="240" font-size="11" font-weight="bold" fill="#3b82f6">FCFS</text>
+    <text x="680" y="240" font-size="10" fill="#64748b">Alto</text>
+    <text x="805" y="240" font-size="10" fill="#64748b">Bajo</text>
+    <text x="950" y="240" font-size="10" fill="#64748b">Batch simple</text>
 
     <!-- SJF -->
-    <text x="540" y="280" font-size="11" font-weight="bold" fill="#22c55e">SJF</text>
-    <text x="670" y="280" font-size="10" fill="#16a34a">Mínimo ✓</text>
-    <text x="770" y="280" font-size="10" fill="#64748b">Alto</text>
-    <text x="870" y="280" font-size="10" fill="#64748b">Interactivo</text>
+    <text x="545" y="270" font-size="11" font-weight="bold" fill="#22c55e">SJF</text>
+    <text x="680" y="270" font-size="10" fill="#16a34a">Mínimo ✓</text>
+    <text x="805" y="270" font-size="10" fill="#64748b">Alto</text>
+    <text x="950" y="270" font-size="10" fill="#64748b">Interactivo</text>
 
     <!-- Priority -->
-    <text x="540" y="305" font-size="11" font-weight="bold" fill="#f59e0b">Priority</text>
-    <text x="670" y="305" font-size="10" fill="#64748b">Variable</text>
-    <text x="770" y="305" font-size="10" fill="#64748b">Alto</text>
-    <text x="870" y="305" font-size="10" fill="#dc2626">⚠️ Starvation</text>
+    <text x="545" y="300" font-size="11" font-weight="bold" fill="#f59e0b">Priority</text>
+    <text x="680" y="300" font-size="10" fill="#64748b">Variable</text>
+    <text x="805" y="300" font-size="10" fill="#64748b">Alto</text>
+    <text x="950" y="300" font-size="10" fill="#dc2626">⚠️ Starvation</text>
 
     <!-- RR -->
-    <text x="540" y="330" font-size="11" font-weight="bold" fill="#ec4899">Round Robin</text>
-    <text x="670" y="330" font-size="10" fill="#64748b">Moderado</text>
-    <text x="770" y="330" font-size="10" fill="#16a34a">Máximo ✓</text>
-    <text x="870" y="330" font-size="10" fill="#64748b">Timesharing</text>
+    <text x="545" y="330" font-size="11" font-weight="bold" fill="#ec4899">Round Robin</text>
+    <text x="680" y="330" font-size="10" fill="#64748b">Moderado</text>
+    <text x="805" y="330" font-size="10" fill="#16a34a">Máximo ✓</text>
+    <text x="950" y="330" font-size="10" fill="#64748b">Timesharing</text>
 
-    <line x1="530" y1="345" x2="920" y2="345" stroke="#e2e8f0" stroke-width="1"/>
+    <line x1="530" y1="355" x2="1030" y2="355" stroke="#e2e8f0" stroke-width="1"/>
 
     <!-- Notas -->
-    <text x="540" y="370" font-size="10" font-weight="bold" fill="#1e293b">Notas:</text>
-    <text x="540" y="390" font-size="9" fill="#64748b">• SJF es óptimo pero imposible en la práctica (no conocemos burst time)</text>
-    <text x="540" y="408" font-size="9" fill="#64748b">• RR es el más usado en sistemas interactivos (Linux usa variantes)</text>
-    <text x="540" y="426" font-size="9" fill="#64748b">• Priority puede combinarse con RR para evitar starvation</text>
+    <text x="545" y="380" font-size="10" font-weight="bold" fill="#1e293b">Notas:</text>
+    <text x="545" y="400" font-size="9" fill="#64748b">• SJF es óptimo pero requiere conocer burst time</text>
+    <text x="545" y="418" font-size="9" fill="#64748b">• RR es usado en sistemas interactivos</text>
+    <text x="545" y="436" font-size="9" fill="#64748b">• Priority puede combinarse con RR</text>
   </g>
 
   <!-- Leyenda de procesos -->
@@ -135,13 +135,33 @@
 
   <!-- Conceptos clave -->
   <g id="conceptos">
-    <rect x="250" y="500" width="700" height="80" rx="5" fill="#fef3c7" stroke="#ca8a04" stroke-width="1"/>
-    <text x="600" y="520" text-anchor="middle" font-size="12" font-weight="bold" fill="#854d0e">Conceptos Clave de Planificación</text>
+    <rect x="250" y="500" width="800" height="80" rx="5" fill="#fef3c7" stroke="#ca8a04" stroke-width="1"/>
+    <text x="650" y="520" text-anchor="middle" font-size="12" font-weight="bold" fill="#854d0e">Conceptos Clave de Planificación</text>
     <text x="270" y="540" font-size="10" fill="#92400e">• <tspan font-weight="bold">Throughput:</tspan> Procesos completados por unidad de tiempo</text>
     <text x="270" y="556" font-size="10" fill="#92400e">• <tspan font-weight="bold">Turnaround time:</tspan> Tiempo desde llegada hasta terminación</text>
-    <text x="270" y="572" font-size="10" fill="#92400e">• <tspan font-weight="bold">Waiting time:</tspan> Tiempo esperando en la cola de ready</text>
+    <text x="270" y="572" font-size="10" fill="#92400e">• <tspan font-weight="bold">Waiting time:</tspan> Tiempo esperando en cola de ready</text>
   </g>
 
   <!-- Footer -->
-  <text x="500" y="620" text-anchor="middle" font-size="11" fill="#94a3b8" font-style="italic">En sistemas reales se usan algoritmos híbridos como CFS (Completely Fair Scheduler) en Linux</text>
+  <text x="550" y="620" text-anchor="middle" font-size="11" fill="#94a3b8" font-style="italic">En sistemas reales se usan algoritmos híbridos como CFS en Linux</text>
+
+  <!-- Métricas de rendimiento -->
+  <g id="metricas">
+    <rect x="20" y="640" width="1030" height="100" rx="5" fill="#e0e7ff" stroke="#4f46e5" stroke-width="1"/>
+    <text x="550" y="660" text-anchor="middle" font-size="12" font-weight="bold" fill="#3730a3">Métricas de Rendimiento del Ejemplo</text>
+
+    <text x="50" y="685" font-size="10" font-weight="bold" fill="#1e293b">FCFS:</text>
+    <text x="100" y="685" font-size="10" fill="#64748b">Waiting=(0+4+6)/3=3.33</text>
+
+    <text x="300" y="685" font-size="10" font-weight="bold" fill="#1e293b">SJF:</text>
+    <text x="350" y="685" font-size="10" fill="#16a34a">Waiting=(0+4+6)/3=3.33 (mejor para este caso)</text>
+
+    <text x="650" y="685" font-size="10" font-weight="bold" fill="#1e293b">RR (q=2):</text>
+    <text x="720" y="685" font-size="10" fill="#64748b">Waiting=(6+2+6)/3=4.67</text>
+
+    <text x="50" y="710" font-size="10" font-weight="bold" fill="#1e293b">Priority:</text>
+    <text x="120" y="710" font-size="10" fill="#64748b">Depende de prioridades asignadas</text>
+
+    <text x="400" y="710" font-size="10" fill="#4f46e5" font-style="italic">RR sacrifica tiempo promedio por equidad y tiempo de respuesta</text>
+  </g>
 </svg>
