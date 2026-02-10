@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laboratorio 0: VirtualBox + Ubuntu Server | IF0099 - Sistemas Operativos I</title>
+    <!-- Prism.js CSS para syntax highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #1e40af;
+            --accent: #059669;
+            --bg-light: #f8fafc;
+            --bg-code: #1e293b;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --warning: #f59e0b;
+            --danger: #dc2626;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.7;
+            color: var(--text-main);
+            background: var(--bg-light);
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 3rem 0;
+            margin-bottom: 2rem;
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        header .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        header .meta {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .warning-box {
+            background: #fffbeb;
+            border-left: 4px solid var(--warning);
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 8px;
+        }
+
+        .warning-box h3 {
+            color: #92400e;
+            margin-bottom: 0.5rem;
+        }
+
+        .success-box {
+            background: #f0fdf4;
+            border-left: 4px solid var(--accent);
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 8px;
+        }
+
+        .success-box h3 {
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        section {
+            background: white;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        section h2 {
+            color: var(--primary);
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid var(--accent);
+        }
+
+        section h3 {
+            color: var(--secondary);
+            font-size: 1.4rem;
+            margin: 2rem 0 1rem;
+        }
+
+        section h4 {
+            color: var(--text-main);
+            font-size: 1.1rem;
+            margin: 1.5rem 0 0.75rem;
+            font-weight: 600;
+        }
+
+        pre[class*="language-"] {
+            background: var(--bg-code);
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', monospace;
+        }
+
+        .exercise {
+            background: #eff6ff;
+            border-left: 4px solid var(--primary);
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 8px;
+        }
+
+        .exercise h4 {
+            color: var(--primary);
+            margin-top: 0;
+        }
+
+        .step {
+            background: var(--bg-light);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 6px;
+            border-left: 3px solid var(--primary);
+        }
+
+        .step-number {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }
+
+        .download-link {
+            display: inline-block;
+            background: var(--accent);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            margin: 1rem 0;
+            font-weight: 600;
+        }
+
+        .download-link:hover {
+            background: #047857;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+        }
+
+        th, td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            background: var(--bg-light);
+            font-weight: 600;
+            color: var(--secondary);
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .nav-btn {
+            background: var(--primary);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .nav-btn:hover {
+            background: var(--secondary);
+        }
+
+        .nav-btn:disabled {
+            background: var(--text-muted);
+            cursor: not-allowed;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 2rem 0;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .screenshot {
+            background: var(--bg-light);
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            text-align: center;
+        }
+
+        .screenshot img {
+            max-width: 100%;
+            border-radius: 4px;
+        }
+
+        .screenshot-caption {
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Laboratorio 0: VirtualBox + Ubuntu Server</h1>
+            <p class="subtitle">IF0099 - Sistemas Operativos I | 2026-I</p>
+            <p class="meta">Duración: 120 minutos | Nivel: Introductorio</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="success-box">
+            <h3>Entorno de Laboratorio Virtual</h3>
+            <p>En este curso utilizaremos <strong>VirtualBox</strong> para crear máquinas virtuales de <strong>Ubuntu Server 22.04 LTS</strong>. Este enfoque te proporcionará un entorno de servidor Linux real y completo, idéntico al usado en entornos de producción.</p>
+            <p style="margin-top: 1rem;"><strong>Ventajas:</strong> Entorno real de servidor, persistencia completa,Sin restricciones de tiempo, Ideal para aprender administración de sistemas.</p>
+        </div>
+
+        <section>
+            <h2>Objetivos del Laboratorio</h2>
+            <ul>
+                <li>Instalar y configurar VirtualBox en tu computadora</li>
+                <li>Descargar e instalar Ubuntu Server 22.04 LTS en una máquina virtual</li>
+                <li>Configurar red y acceso SSH a la VM</li>
+                <li>Realizar configuración inicial del servidor</li>
+                <li>Verificar el funcionamiento de la VM</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Paso 1: Instalar VirtualBox</h2>
+
+            <h3>¿Qué es VirtualBox?</h3>
+            <p>VirtualBox es un software de virtualización x86 que permite ejecutar múltiples sistemas operativos simultáneamente. Es gratuito, de código abierto, y funciona en Windows, macOS, y Linux.</p>
+
+            <div class="exercise">
+                <h4>Actividad: Descargar e Instalar VirtualBox</h4>
+
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <strong>Descargar VirtualBox:</strong> Visita el sitio oficial y descarga la versión para tu sistema operativo:
+                    <br><br>
+                    <a href="https://www.virtualbox.org/wiki/Downloads" target="_blank" class="download-link">Descargar VirtualBox</a>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <strong>Ejecutar el instalador:</strong> Abre el archivo descargado y sigue el asistente de instalación.
+                    <ul style="margin-top: 0.5rem; margin-left: 2rem;">
+                        <li>Acepta los términos del acuerdo de licencia</li>
+                        <li>Mantén las opciones predeterminadas recomendadas</li>
+                        <li>El instalador puede pedir reiniciar tu computadora</li>
+                    </ul>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <strong>Verificar instalación:</strong> Abre VirtualBox desde el menú de aplicaciones. Deberías ver la interfaz principal con el botón "Nueva" para crear una VM.
+                </div>
+
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <strong>Descargar Ubuntu Server:</strong> Descarga la ISO de Ubuntu Server 22.04 LTS:
+                    <br><br>
+                    <a href="https://ubuntu.com/download/server" target="_blank" class="download-link">Descargar Ubuntu Server 22.04 LTS</a>
+                    <p style="margin-top: 0.5rem; font-size: 0.9rem; color: var(--text-muted);">Nota: El archivo ISO pesa aproximadamente 3.6 GB. La descarga puede tomar tiempo según tu conexión.</p>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>Paso 2: Crear la Máquina Virtual</h2>
+
+            <div class="exercise">
+                <h4>Actividad: Configurar una Nueva VM en VirtualBox</h4>
+
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <strong>Crear nueva VM:</strong> En VirtualBox, haz clic en el botón <strong>"Nueva"</strong> (New).
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <strong>Nombre y sistema operativo:</strong>
+                    <ul style="margin-top: 0.5rem; margin-left: 2rem;">
+                        <li><strong>Nombre:</strong> Ubuntu-Server-IF0099</li>
+                        <li><strong>Carpeta de máquina:</strong> Elige una ubicación con suficiente espacio (mínimo 25 GB)</li>
+                        <li><strong>Tipo:</strong> Linux</li>
+                        <li><strong>Versión:</strong> Ubuntu (64-bit)</li>
+                    </ul>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <strong>Memoria RAM:</strong> Asigna memoria a la VM.
+                    <ul style="margin-top: 0.5rem; margin-left: 2rem;">
+                        <li><strong>Mínimo recomendado:</strong> 2048 MB (2 GB)</li>
+                        <li><strong>Óptimo:</strong> 4096 MB (4 GB) si tu computadora lo permite</li>
+                    </ul>
+                    <p style="margin-top: 0.5rem;">Nota: La memoria RAM se comparte entre tu host y la VM. No asignes más del 50% de tu RAM total.</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <strong>Disco duro:</strong> Crea un disco duro virtual.
+                    <ul style="margin-top: 0.5rem; margin-left: 2rem;">
+                        <li><strong>Tipo de archivo:</strong> VDI (VirtualBox Disk Image)</li>
+                        <li><strong>Almacenamiento:</strong> Dinámicamente asignado</li>
+                        <li><strong>Tamaño:</strong> 25.00 GB (mínimo recomendado)</li>
+                    </ul>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">5</span>
+                    <strong>Resumen:</strong> Revisa la configuración y haz clic en <strong>"Finalizar"</strong>. La VM aparecerá en el panel izquierdo de VirtualBox.
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>Paso 3: Configurar la VM</h2>
+
+            <div class="exercise">
+                <h4>Actividad: Ajustes de Red y Sistema</h4>
+
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <strong>Configurar red:</strong> Con la VM seleccionada, haz clic en <strong>"Configuración"</strong> → <strong>"Red"</strong>.
+                    <ul style="margin-top: 0.5rem; margin-left: 2rem;">
+                        <li><strong>Adaptador 1:</strong> Habilitado</li>
+                        <li><strong>Conectado a:</strong> NAT</li>
+                        <li><strong>Avanzado:</strong> Habilitar "Cable conectado"</li>
+                    </ul>
+                    <p style="margin-top: 0.5rem;">NAT permite que la VM tenga acceso a Internet a través de la conexión de tu host.</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <strong>Montar la ISO:</strong> En <strong>"Configuración"</strong> → <strong>"Almacenamiento"</strong>:
+                    <ul style="margin-top: 0.5rem; margin-left: 2rem;">
+                        <li>Controlador: IDE Secundario</li>
+                        <li>Haz clic en el icono del disco óptico vacío</li>
+                        <li>Selecciona "Elegir un archivo de disco óptico"</li>
+                        <li>Navega a donde descargaste la ISO de Ubuntu Server</li>
+                        <li>Selecciona el archivo <code>ubuntu-22.04.x-live-server-amd64.iso</code></li>
+                    </ul>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <strong>Configurar portapapeles (opcional):</strong> Para poder copiar/pegar entre host y VM:
+                    <ul style="margin-top: 0.5rem; margin-left: 2rem;">
+                        <li><strong>"Configuración"</strong> → <strong>"General"</strong> → <strong>"Portapapeles"</strong></li>
+                        <li>Selecciona "Bidireccional"</li>
+                        <li>También puedes habilitar "Arrastrar y soltar" → "Bidireccional"</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>Paso 4: Instalar Ubuntu Server</h2>
+
+            <div class="exercise">
+                <h4>Actividad: Instalación del Sistema Operativo</h4>
+
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <strong>Iniciar la VM:</strong> Haz clic en <strong>"Iniciar"</strong> en VirtualBox. La VM arrancará desde la ISO.
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span
+                    ><strong>Pantalla de inicio:</strong> Selecciona <strong>"Try or Install Ubuntu Server"</strong> y presiona Enter.
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <strong>Idioma:</strong> Selecciona tu idioma preferido y continúa.
+                </div>
+
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <strong>Configuración de red:</strong> Ubuntu detectará y configurará automáticamente la red (usando DHCP).
+                    <p style="margin-top: 0.5rem;">Anota la dirección IP que se asigne (ej: 10.0.2.15).</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">5</span>
+                    <strong>Configurar proxy:</strong> Si no usas un proxy, deja esto en blanco y continúa.
+                </div>
+
+                <div class="step">
+                    <span class="step-number">6</span>
+                    <strong>Dirección del mirror:</strong> Selecciona el mirror más cercano a tu ubicación geográfica.
+                </div>
+
+                <div class="step">
+                    <span class="step-number">7</span>
+                    <strong>Almacenamiento:</strong> Selecciona <strong>"Usar todo el disco"</strong> para una configuración automática con LVM.
+                </div>
+
+                <div class="step">
+                    <span class="step-number">8</span>
+                    <strong>Perfil de usuario:</strong> Crea tu usuario:
+                    <ul style="margin-top: 0.5rem; margin-left: 2rem;">
+                        <li><strong>Nombre:</strong> Tu nombre</li>
+                        <li><strong>Nombre de servidor:</strong> if0099-server</li>
+                        <li><strong>Nombre de usuario:</strong> if0099 (o tu preferencia)</li>
+                        <li><strong>Contraseña:</strong> Elige una contraseña segura y recuérdala</li>
+                    </ul>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">9</span>
+                    <strong>Actualizaciones automáticas:</strong> Selecciona <strong>"Sin actualizaciones automáticas"</strong> para este laboratorio (preferimos control manual).
+                </div>
+
+                <div class="step">
+                    <span class="step-number">10</span>
+                    <strong>Selección de software:</strong> Para este curso, NO selecciones ningún paquete adicional (OpenSSH se instalará manualmente después).
+                </div>
+
+                <div class="step">
+                    <span class="step-number">11</span>
+                    <strong>Instalación:</strong> El instalador procederá a instalar el sistema. Esto puede tomar varios minutos.
+                </div>
+
+                <div class="step">
+                    <span class="step-number">12</span>
+                    <strong>Reiniciar:</strong> Cuando se complete, haz clic en <strong>"Reiniciar ahora"</strong>. La VM se reiniciará.
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>Paso 5: Configuración Inicial del Servidor</h2>
+
+            <div class="exercise">
+                <h4>Actividad: Primeros Pasos en Ubuntu Server</h4>
+
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <strong>Iniciar sesión:</strong> En la pantalla de login, ingresa tu nombre de usuario y contraseña creados durante la instalación.
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <strong>Verificar el sistema:</strong> Ejecuta el comando para ver información del sistema:
+                    <pre><code class="language-bash">uname -a</code></pre>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <strong>Verificar versión de Ubuntu:</strong>
+                    <pre><code class="language-bash">cat /etc/os-release</code></pre>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <strong>Verificar conectividad de red:</strong>
+                    <pre><code class="language-bash">ping -c 4 google.com</code></pre>
+                    <p style="margin-top: 0.5rem;">Si recibes respuestas, tu VM tiene conexión a Internet.</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">5</span>
+                    <strong>Actualizar el sistema:</strong> Es una buena práctica actualizar los paquetes:
+                    <pre><code class="language-bash">sudo apt update
+sudo apt upgrade -y</code></pre>
+                    <p style="margin-top: 0.5rem;">Nota: Ingresa tu contraseña cuando se solicite.</p>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>Paso 6: Habilitar Acceso SSH</h2>
+
+            <div class="success-box">
+                <h3>¿Por qué SSH?</h3>
+                <p>SSH (Secure Shell) te permite acceder a tu servidor de forma remota desde la terminal de tu computadora host. Esto es más cómodo que trabajar directamente en la ventana de VirtualBox.</p>
+            </div>
+
+            <div class="exercise">
+                <h4>Actividad: Instalar y Configurar SSH</h4>
+
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <strong>Instalar OpenSSH Server:</strong>
+                    <pre><code class="language-bash">sudo apt install openssh-server -y</code></pre>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <strong>Verificar que SSH está ejecutándose:</strong>
+                    <pre><code class="language-bash">sudo systemctl status ssh</code></pre>
+                    <p style="margin-top: 0.5rem;">Deberías ver "active (running)" en verde.</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <strong>Obtener la IP de la VM:</strong>
+                    <pre><code class="language-bash">ip addr show | grep inet</code></pre>
+                    <p style="margin-top: 0.5rem;">Busca la dirección en la interfaz que no es "lo" (loopback). Generalmente es algo como 10.0.2.15.</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <strong>Conectarse desde el host:</strong> Abre una terminal en tu computadora (fuera de VirtualBox) y ejecuta:
+                    <pre><code class="language-bash">ssh tu_usuario@10.0.2.15</code></pre>
+                    <p style="margin-top: 0.5rem;">Reemplaza <code>tu_usuario</code> con el nombre de usuario que creaste y <code>10.0.2.15</code> con la IP de tu VM.</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">5</span>
+                    <strong>Aceptar fingerprint:</strong> La primera vez, verás un mensaje sobre fingerprint. Escribe <code>yes</code> para continuar.
+                </div>
+
+                <div class="step">
+                    <span class="step-number">6</span>
+                    <strong>Ingresar contraseña:</strong> Ingresa la contraseña de tu usuario en la VM.
+                </div>
+
+                <div class="step">
+                    <span class="step-number">7</span>
+                    <strong>¡Éxito!</strong> Ahora estás conectado a tu VM via SSH. El prompt cambiará para mostrar que estás en el servidor remoto.
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>Paso 7: Crear una Snapshot</h2>
+
+            <div class="warning-box">
+                <h3>Snapshot: Punto de Restauración</h3>
+                <p>Una snapshot captura el estado exacto de tu VM en un momento dado. Si algo sale mal en el futuro, puedes restaurar la snapshot en lugar de reinstalar todo.</p>
+            </div>
+
+            <div class="exercise">
+                <h4>Actividad: Crear Snapshot Inicial</h4>
+
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <strong>Apagar la VM correctamente:</strong> Desde SSH o la consola de VirtualBox:
+                    <pre><code class="language-bash">sudo poweroff</code></pre>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <strong>Crear snapshot:</strong> En VirtualBox, con la VM seleccionada:
+                    <ul style="margin-top: 0.5rem; margin-left: 2rem;">
+                        <li>Haz clic en <strong>"Máquina"</strong> → <strong>"Tomar snapshot"</strong></li>
+                        <li><strong>Nombre:</strong> Post-Instalación Base</li>
+                        <li><strong>Descripción:</strong> Ubuntu Server 22.04 LTS instalado, SSH habilitado, sistema actualizado</li>
+                        <li>Haz clic en <strong>"Aceptar"</strong></li>
+                    </ul>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <strong>Verificar snapshot:</strong> La snapshot aparecerá en <strong>"Máquina"</strong> → <strong>"Snapshots"</strong>. Puedes crear snapshots adicionales después de cada laboratorio.
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>Tabla de Referencia: Comandos Básicos</h2>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Comando</th>
+                        <th>Descripción</th>
+                        <th>Ejemplo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>sudo</code></td>
+                        <td>Ejecutar como superusuario</td>
+                        <td><code>sudo apt update</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>apt update</code></td>
+                        <td>Actualizar lista de paquetes</td>
+                        <td><code>sudo apt update</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>apt upgrade</code></td>
+                        <td>Actualizar paquetes instalados</td>
+                        <td><code>sudo apt upgrade -y</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>systemctl</code></td>
+                        <td>Gestionar servicios</td>
+                        <td><code>sudo systemctl status ssh</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>ip addr</code></td>
+                        <td>Ver configuración de red</td>
+                        <td><code>ip addr show</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>ping</code></td>
+                        <td>Probar conectividad</td>
+                        <td><code>ping -c 4 google.com</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>poweroff</code></td>
+                        <td>Apagar el sistema</td>
+                        <td><code>sudo poweroff</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>reboot</code></td>
+                        <td>Reiniciar el sistema</td>
+                        <td><code>sudo reboot</code></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section>
+            <h2>Entregables del Laboratorio</h2>
+
+            <div class="success-box">
+                <h3>Lo que debes completar</h3>
+                <ol style="margin-top: 1rem;">
+                    <li>✅ VirtualBox instalado en tu computadora</li>
+                    <li>✅ VM de Ubuntu Server 22.04 LTS creada y funcionando</li>
+                    <li>✅ Ubuntu Server instalado y actualizado</li>
+                    <li>✅ Usuario creado con contraseña segura</li>
+                    <li>✅ Conexión a Internet funcionando en la VM</li>
+                    <li>✅ OpenSSH Server instalado y ejecutándose</li>
+                    <li>✅ Acceso SSH funcionando desde tu host</li>
+                    <li>✅ Snapshot inicial creada (llamada "Post-Instalación Base")</li>
+                </ol>
+            </div>
+        </section>
+
+        <section>
+            <h2>Preguntas de Reflexión</h2>
+            <ol>
+                <li>¿Cuál es la diferencia entre una máquina virtual y un simulador en línea?</li>
+                <li>¿Por qué usamos Ubuntu Server en lugar de Ubuntu Desktop?</li>
+                <li>¿Qué ventajas ofrece el acceso SSH versus trabajar directamente en la consola de VirtualBox?</li>
+                <li>¿Para qué sirve crear snapshots de la VM?</li>
+                <li>¿Cómo afecta la cantidad de RAM asignada a la VM el rendimiento de tu computadora host?</li>
+            </ol>
+        </section>
+
+        <section>
+            <h2>Preparación para el Próximo Laboratorio</h2>
+            <p>Para el próximo laboratorio, necesitarás:</p>
+            <ul>
+                <li>✅ VM de Ubuntu Server funcionando correctamente</li>
+                <li>✅ Acceso SSH configurado y funcionando</li>
+                <li>✅ Snapshot inicial creada como punto de restauración</li>
+                <li>✅ Entender cómo ejecutar comandos básicos en la terminal</li>
+            </ul>
+
+            <div class="warning-box">
+                <h3>Recordatorio</h3>
+                <p>Todos los laboratorios futuros usarán esta VM de Ubuntu Server. NO elimines esta VM hasta completar el curso. Puedes crear snapshots adicionales después de cada laboratorio para tener puntos de restauración.</p>
+            </div>
+        </section>
+
+        <div class="nav-buttons">
+            <button class="nav-btn" disabled>← Anterior</button>
+            <a href="lab-01-comandos-basicos.html" class="nav-btn">Siguiente: Comandos Básicos →</a>
+        </div>
+
+        <div class="footer">
+            <p>IF0099 - Sistemas Operativos I | 2026-I | Ing. Eldigardo Camacho</p>
+            <p>Laboratorio 0: VirtualBox + Ubuntu Server</p>
+        </div>
+    </div>
+
+    <!-- Prism.js para syntax highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            Prism.highlightAll();
+        });
+    </script>
+</body>
+</html>
