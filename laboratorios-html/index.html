@@ -219,23 +219,26 @@
         </div>
 
         <div class="warning-box">
-            <h3>⚠️ Importante: Uso de Recursos</h3>
-            <p>Los laboratorios 00-02 usan simuladores en línea (GRATIS). Los laboratorios AWS requieren una cuenta de AWS con tarjeta de crédito, pero pueden ser completamente GRATIS si sigues las instrucciones cuidadosamente.</p>
+            <h3>⚠️ Importante: Requisitos Previos</h3>
+            <p><strong>Lab 00:</strong> Requiere VirtualBox instalado y al menos 20GB de espacio libre y 4GB de RAM (8GB recomendado). Descargar ISO de Ubuntu Server 22.04 LTS.</p>
+            <p style="margin-top: 0.5rem;"><strong>Labs 01-02:</strong> Usan la VM de Ubuntu Server creada en Lab 00.</p>
+            <p style="margin-top: 0.5rem;"><strong>Lab AWS:</strong> Requiere cuenta de AWS con tarjeta de crédito, pero puede ser GRATIS si sigues las instrucciones.</p>
         </div>
 
         <!-- Laboratorios Básicos -->
         <div class="lab-section">
             <h2>Fundamentos de Linux</h2>
-            <p style="margin-bottom: 1.5rem;">Laboratorios introductorios para familiarizarse con la línea de comandos de Linux usando simuladores en línea gratuitos.</p>
+            <p style="margin-bottom: 1.5rem;">Laboratorios introductorios para familiarizarse con VirtualBox, Ubuntu Server y la línea de comandos de Linux.</p>
 
             <div class="lab-grid">
                 <a href="lab-00-introduccion-simuladores.html" class="lab-card">
                     <span class="lab-number">LAB 00</span>
-                    <h3 class="lab-title">Introducción a Simuladores de Linux</h3>
-                    <p class="lab-description">Conoce JSLinux, DistroTest y otros simuladores de Linux en línea. No requieren instalación.</p>
+                    <h3 class="lab-title">VirtualBox + Ubuntu Server</h3>
+                    <p class="lab-description">Instala VirtualBox, crea una máquina virtual con Ubuntu Server 22.04 LTS y configúrala para el curso.</p>
                     <div class="lab-meta">
-                        <span>⏱️ 90 min</span>
+                        <span>⏱️ 120 min</span>
                         <span>📊 Introductorio</span>
+                        <span class="status-badge available">Requerido</span>
                     </div>
                 </a>
 
@@ -324,47 +327,6 @@
             </div>
         </div>
 
-        <!-- Laboratorios de Proyectos -->
-        <div class="lab-section">
-            <h2>Proyectos Integradores</h2>
-            <p style="margin-bottom: 1.5rem;">Proyectos prácticos que integran múltiples conceptos del curso.</p>
-
-            <div class="lab-grid">
-                <div class="lab-card">
-                    <span class="lab-number">PROY 01</span>
-                    <h3 class="lab-title">Simulador de Planificador CPU</h3>
-                    <p class="lab-description">Implementa FCFS, SJF, Round Robin y Priority en C.</p>
-                    <div class="lab-meta">
-                        <span>⏱️ 180 min</span>
-                        <span>📊 Avanzado</span>
-                        <span class="status-badge coming-soon">Próximamente</span>
-                    </div>
-                </div>
-
-                <div class="lab-card">
-                    <span class="lab-number">PROY 02</span>
-                    <h3 class="lab-title">Productor-Consumidor con Semáforos</h3>
-                    <p class="lab-description">Implementa el problema clásico de sincronización en C.</p>
-                    <div class="lab-meta">
-                        <span>⏱️ 180 min</span>
-                        <span>📊 Avanzado</span>
-                        <span class="status-badge coming-soon">Próximamente</span>
-                    </div>
-                </div>
-
-                <div class="lab-card">
-                    <span class="lab-number">PROY 03</span>
-                    <h3 class="lab-title">Sistema de Archivos Simple</h3>
-                    <p class="lab-description">Crea un FS básico con inodos, bloques y metadatos.</p>
-                    <div class="lab-meta">
-                        <span>⏱️ 240 min</span>
-                        <span>📊 Experto</span>
-                        <span class="status-badge coming-soon">Próximamente</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <!-- Recursos Adicionales -->
         <div class="lab-section">
             <h2>Recursos Adicionales</h2>
@@ -404,9 +366,9 @@
             <h3>📋 Recomendaciones</h3>
             <ol style="margin-left: 1.5rem; margin-top: 1rem;">
                 <li style="margin-bottom: 0.5rem;"><strong>Completa los laboratorios en orden:</strong> Cada laboratorio asume conocimientos del anterior.</li>
-                <li style="margin-bottom: 0.5rem;"><strong>Usa los simuladores primero:</strong> Los Labs 00-02 son perfectos para empezar sin costos.</li>
-                <li style="margin-bottom: 0.5rem;"><strong>Cuidado con AWS:</strong> Solo crea instancias EC2 cuando estés listo para usarlas.</li>
-                <li style="margin-bottom: 0.5rem;"><strong>APAGA TODO:</strong> Nunca dejes instancias EC2 encendidas cuando no las uses.</li>
+                <li style="margin-bottom: 0.5rem;"><strong>Lab 00 es fundamental:</strong> Debes completar Lab 00 antes de continuar, ya que Labs 01-02 usan la VM creada.</li>
+                <li style="margin-bottom: 0.5rem;"><strong>Crea snapshots:</strong> Usa snapshots de VirtualBox antes de cambios importantes para poder revertir.</li>
+                <li style="margin-bottom: 0.5rem;"><strong>Cuidado con AWS:</strong> Solo crea instancias EC2 cuando estés listo para usarlas (Lab AWS es opcional).</li>
                 <li style="margin-bottom: 0.5rem;"><strong>Documenta tu trabajo:</strong> Toma notas de lo que aprendes en cada laboratorio.</li>
             </ol>
         </div>
