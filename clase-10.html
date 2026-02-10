@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clase 10: Gestión de Entrada/Salida (E/S) | IF0099 - Sistemas Operativos I</title>
+    <title>Clase 10: Permisos y Seguridad en Windows | IF0099 - Sistemas Operativos I</title>
     <style>
         :root {
             --primary: #2563eb;
@@ -116,23 +116,6 @@
             margin-bottom: 1rem;
         }
 
-        figure {
-            margin: 2rem 0;
-            text-align: center;
-        }
-        figure img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        figcaption {
-            margin-top: 0.75rem;
-            color: var(--text-muted);
-            font-style: italic;
-            font-size: 0.95rem;
-        }
-
         table {
             width: 100%;
             border-collapse: collapse;
@@ -222,18 +205,6 @@
             border-radius: 8px;
         }
 
-        .diagram-box {
-            background: var(--bg-code);
-            color: #e2e8f0;
-            padding: 1.5rem;
-            border-radius: 8px;
-            margin: 1.5rem 0;
-            font-family: 'Consolas', 'Monaco', monospace;
-            font-size: 0.85rem;
-            line-height: 1.2;
-            overflow-x: auto;
-        }
-
         footer {
             background: var(--text-main);
             color: white;
@@ -308,10 +279,10 @@
 <body>
     <header>
         <div class="container">
-            <h1>Clase 10: Gestión de Entrada/Salida (E/S)</h1>
-            <p class="subtitle">IF0099 - Sistemas Operativos I | Unidad 7 - E/S</p>
-            <p class="subtitle">Dispositivos, Controladores, Técnicas y DMA</p>
-            <p class="meta">Última actualización: 2026-02-01 | Duración: 90 minutos</p>
+            <h1>Clase 10: Permisos y Seguridad en Windows</h1>
+            <p class="subtitle">IF0099 - Sistemas Operativos I | Unidad 5 - Archivos y Permisos</p>
+            <p class="subtitle">NTFS, Permisos NTFS, SMB Shares y PowerShell</p>
+            <p class="meta">Última actualización: 2026-02-10 | Duración: 90 minutos</p>
         </div>
     </header>
 
@@ -320,14 +291,14 @@
             <h2>Contenido de la Clase</h2>
             <ul>
                 <li><a href="#objetivos">Objetivos de Aprendizaje</a></li>
-                <li><a href="#intro">1. Introducción a la E/S</a></li>
-                <li><a href="#dispositivos">2. Tipos de Dispositivos</a></li>
-                <li><a href="#comunicacion">3. Comunicación CPU-Dispositivo</a></li>
-                <li><a href="#tecnicas">4. Técnicas de E/S</a></li>
-                <li><a href="#dma">5. DMA - Acceso Directo a Memoria</a></li>
-                <li><a href="#buffering">6. Buffering y Caching</a></li>
-                <li><a href="#planificacion">7. Planificación de Disco</a></li>
-                <li><a href="#practica">8. Actividad Práctica (Opcional)</a></li>
+                <li><a href="#intro">1. Introducción a Permisos Windows</a></li>
+                <li><a href="#sistemas-archivos">2. Sistemas de Archivos (NTFS vs FAT32)</a></li>
+                <li><a href="#permisos-ntfs">3. Permisos NTFS</a></li>
+                <li><a href="#powershell">4. Gestión con PowerShell</a></li>
+                <li><a href="#smb">5. Compartir Archivos (SMB)</a></li>
+                <li><a href="#usuarios">6. Usuarios y Grupos</a></li>
+                <li><a href="#practica">7. Actividad Práctica</a></li>
+                <li><a href="#entregable">8. Entregable</a></li>
                 <li><a href="#resumen">Resumen</a></li>
             </ul>
         </nav>
@@ -336,431 +307,474 @@
             <h2>Objetivos de Aprendizaje</h2>
             <p>Al finalizar esta clase, serás capaz de:</p>
             <ol>
-                <li><strong>Clasificar</strong> dispositivos de E/S (bloque, carácter, red)</li>
-                <li><strong>Explicar</strong> la diferencia entre port-mapped I/O y memory-mapped I/O</li>
-                <li><strong>Comparar</strong> técnicas de E/S: polling, interrupciones, DMA</li>
-                <li><strong>Analizar</strong> el funcionamiento del DMA y sus ventajas</li>
-                <li><strong>Evaluar</strong> algoritmos de planificación de disco</li>
-                <li><strong>Usar</strong> herramientas para monitorear E/S en Linux</li>
+                <li><strong>Diferenciar</strong> entre NTFS y FAT32</li>
+                <li><strong>Configurar</strong> permisos NTFS básicos y avanzados</li>
+                <li><strong>Gestionar</strong> permisos con PowerShell</li>
+                <li><strong>Compartir</strong> carpetas vía SMB</li>
+                <li><strong>Crear</strong> usuarios y grupos en Windows Server</li>
+                <li><strong>Verificar</strong> permisos desde cliente Linux</li>
             </ol>
         </section>
 
         <section id="intro">
-            <h2>1. Introducción a la Gestión de E/S</h2>
-
-            <figure>
-                <img src="../assets/infografias/clase-10-dma.png" alt="DMA - Acceso Directo a Memoria">
-                <figcaption>DMA permite transferencia directa disco → RAM sin involucrar a la CPU en cada byte</figcaption>
-            </figure>
-
-            <p>La gestión de entrada/salida (E/S) es uno de los aspectos fundamentales de un sistema operativo. Las CPU son extremadamente rápidas, mientras que los dispositivos periféricos son relativamente lentos. El SO debe gestionar esta diferencia de velocidad eficientemente.</p>
+            <h2>1. Introducción a Permisos en Windows</h2>
 
             <div class="callout info">
-                <strong>Problema central:</strong> La CPU puede procesar miles de millones de instrucciones por segundo, pero un disco duro tarda milisegundos en acceder un dato. Sin gestión adecuada, la CPU desperdiciaría la mayor parte del tiempo esperando.
+                <strong>Concepto fundamental:</strong> Windows Server utiliza un modelo de seguridad basado en ACLs (Access Control Lists) mucho más granular que el modelo UGO de Linux.
             </div>
 
-            <h3>Componentes de la E/S</h3>
+            <h3>Modelo de Seguridad de Windows</h3>
             <ul>
-                <li><strong>Dispositivo:</strong> Hardware periférico (teclado, disco, red)</li>
-                <li><strong>Controlador:</strong> Chip que gestiona un dispositivo específico</li>
-                <li><strong>Driver:</strong> Software que comunica el SO con el controlador</li>
-                <li><strong>Subsistema de E/S:</strong> Capa del SO que gestiona todas las operaciones</li>
+                <li><strong>ACLs:</strong> Listas de Control de Acceso</li>
+                <li><strong>ACEs:</strong> Entradas de Control de Acceso (Access Control Entries)</li>
+                <li><strong>SIDs:</strong> Security Identifiers (identificadores únicos)</li>
+                <li><strong>Tokens de acceso:</strong> Contienen información de seguridad del usuario</li>
+            </ul>
+
+            <h3>Jerarquía de Permisos</h3>
+            <ul>
+                <li><strong>Permisos NTFS:</strong> Controlan acceso local a archivos y carpetas</li>
+                <li><strong>Permisos de Compartido (Share):</strong> Controlan acceso vía red</li>
+                <li><strong>Permisos Combinados:</strong> Se aplica el más restrictivo de ambos</li>
             </ul>
         </section>
 
-        <section id="dispositivos">
-            <h2>2. Tipos de Dispositivos</h2>
+        <section id="sistemas-archivos">
+            <h2>2. Sistemas de Archivos: NTFS vs FAT32</h2>
 
-            <p>Los dispositivos se clasifican según cómo acceden a los datos:</p>
-
+            <h3>Comparación</h3>
             <table>
                 <thead>
                     <tr>
-                        <th>Tipo</th>
-                        <th>Acceso</th>
-                        <th>Ejemplos</th>
-                        <th>Características</th>
+                        <th>Característica</th>
+                        <th>NTFS</th>
+                        <th>FAT32</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td><strong>Bloque</strong></td>
-                        <td>Por bloques fijos</td>
-                        <td>Disco duro, SSD, USB, CD-ROM</td>
-                        <td>512B o 4KB por bloque. Acceso aleatorio.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Carácter</strong></td>
-                        <td>Stream (byte a byte)</td>
-                        <td>Teclado, mouse, puerto serial, impresora</td>
-                        <td>Sin estructura de bloques. Secuencial.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Red</strong></td>
-                        <td>Por paquetes</td>
-                        <td>Ethernet, WiFi, Bluetooth</td>
-                        <td>Protocolos de red. Paquetes de tamaño variable.</td>
-                    </tr>
+                    <tr><td><strong>Permisos</strong></td><td>ACLs completas</td><td>Solo lectura/oculto/sistema</td></tr>
+                    <tr><td><strong>Tamaño máximo archivo</strong></td><td>16 TB (teóricamente ilimitado)</td><td>4 GB</td></tr>
+                    <tr><td><strong>Tamaño máximo volumen</strong></td><td>256 TB</td><td>2 TB</td></tr>
+                    <tr><td><strong>Compresión</strong></td><td>Sí</td><td>No</td></tr>
+                    <tr><td><strong>Encriptación (EFS)</strong></td><td>Sí</td><td>No</td></tr>
+                    <tr><td><strong>Journaling</strong></td><td>Sí</td><td>No</td></tr>
+                    <tr><td><strong>Recuperación errores</strong></td><td>Excelente</td><td>Básica</td></tr>
+                    <tr><td><strong>Cuotas de disco</strong></td><td>Sí</td><td>No</td></tr>
                 </tbody>
             </table>
 
-            <div class="comparison">
-                <div>
-                    <h4>📦 Dispositivos de Bloque</h4>
-                    <ul>
-                        <li>Almacenan datos en bloques de tamaño fijo</li>
-                        <li>Permiten acceso aleatorio</li>
-                        <li>Optimizados para rendimiento</li>
-                        <li>Se acceden como archivos</li>
-                    </ul>
-                    <pre><code>/dev/sda     # Primer disco
-/dev/sda1    # Primera partición
-/dev/nvme0n1 # SSD NVMe</code></pre>
-                </div>
-                <div>
-                    <h4>⌨️ Dispositivos de Carácter</h4>
-                    <ul>
-                        <li>Transmiten datos como stream</li>
-                        <li>No tienen estructura de bloques</li>
-                        <li>Uso es interactivo o secuencial</li>
-                        <li>Se acceden como stream</li>
-                    </ul>
-                    <pre><code>/dev/ttyS0  # Puerto serie
-/dev/tty1    # Terminal virtual
-/dev/input/mouse</code></pre>
-                </div>
+            <div class="callout success">
+                <strong>Recomendación:</strong> Siempre usar NTFS en servidores de producción. FAT32 solo para compatibilidad con sistemas antiguos o dispositivos USB.
             </div>
+
+            <h3>Ver Tipo de Sistema de Archivos</h3>
+            <pre><code># PowerShell
+Get-Volume
+
+# Comando diskpart
+diskpart
+list volume</code></pre>
+
+            <h3>Convertir a NTFS</h3>
+            <pre><code># Convertir volumen C: a NTFS (sin pérdida de datos)
+Convert C: /FS:NTFS</code></pre>
         </section>
 
-        <section id="comunicacion">
-            <h2>3. Comunicación CPU-Dispositivo</h2>
+        <section id="permisos-ntfs">
+            <h2>3. Permisos NTFS</h2>
 
-            <p>La CPU necesita comunicarse con los controladores de dispositivo. Existen dos enfoques principales:</p>
+            <h3>Permisos Básicos</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Permiso</th>
+                        <th>Descripción</th>
+                        <th>Carpeta</th>
+                        <th>Archivo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>Full Control</td><td>Control total</td><td>✅</td><td>✅</td></tr>
+                    <tr><td>Modify</td><td>Modificar</td><td>✅</td><td>✅</td></tr>
+                    <tr><td>Read & execute</td><td>Leer y ejecutar</td><td>✅</td><td>✅</td></tr>
+                    <tr><td>List folder contents</td><td>Listar contenido</td><td>✅</td><td>❌</td></tr>
+                    <tr><td>Read</td><td>Leer</td><td>✅</td><td>✅</td></tr>
+                    <tr><td>Write</td><td>Escribir</td><td>✅</td><td>✅</td></tr>
+                </tbody>
+            </table>
 
-            <div class="comparison">
-                <div>
-                    <h4><abbr title="Port-Mapped I/O - E/S mapeada a puertos con instrucciones especiales (IN/OUT)">Port-Mapped I/O</abbr></h4>
-                    <p>Los registros del controlador se mapean a puertos de E/S separados de la memoria.</p>
-                    <pre><code>; Ensamblador x86
-IN AL, 0x60    ; Lee del puerto 0x60 (teclado)
-OUT 0x64, AL   ; Escribe al puerto 0x64</code></pre>
-                    <ul>
-                        <li>Instrucciones especiales: IN, OUT</li>
-                        <li>Los puertos tienen espacio de direcciones propio</li>
-                        <li>Típico en arquitecturas x86</li>
-                    </ul>
-                </div>
-                <div>
-                    <h4><abbr title="Memory-Mapped I/O - E/S mapeada a direcciones de memoria normales">Memory-Mapped I/O</abbr> (MMIO)</h4>
-                    <p>Los registros del controlador se mapean a direcciones de memoria normales.</p>
-                    <pre><code>// C con MMIO
-#define REG_BASE 0xFFFF0000
-volatile uint32_t* reg = (uint32_t*)REG_BASE;
-*reg = 0x01;           // Escribir al registro
-dato = *reg;         // Leer del registro</code></pre>
-                    <ul>
-                        <li>Solo se usan instrucciones normales de memoria</li>
-                        <li>Simplifica el hardware y el software</li>
-                        <li>Típico en arquitecturas ARM, RISC-V</li>
-                    </ul>
-                </div>
+            <h3>Permisos Avanzados</h3>
+            <ul>
+                <li><strong>Traverse folder:</strong> Navegar carpetas</li>
+                <li><strong>Create files:</strong> Crear archivos</li>
+                <li><strong>Create folders:</strong> Crear subcarpetas</li>
+                <li><strong>Delete subfolders:</strong> Borrar subcarpetas</li>
+                <li><strong>Delete:</strong> Borrar</li>
+                <li><strong>Read attributes:</strong> Leer atributos</li>
+                <li><strong>Write attributes:</strong> Escribir atributos</li>
+                <li><strong>Read permissions:</strong> Leer permisos</li>
+                <li><strong>Change permissions:</strong> Cambiar permisos</li>
+                <li><strong>Take ownership:</strong> Tomar ownership</li>
+            </ul>
+
+            <h3>Herencia de Permisos</h3>
+            <div class="callout info">
+                <strong>Herencia:</strong> Por defecto, las subcarpetas y archivos heredan los permisos de la carpeta padre. Puedes desactivar la herencia para configurar permisos explícitos.
             </div>
+
+            <pre><code># Ver permisos con PowerShell
+Get-Acl C:\Carpeta | Format-List
+
+# Ver permisos en formato tabla
+Get-Acl C:\Carpeta | Select-Object -ExpandProperty Access</code></pre>
         </section>
 
-        <section id="tecnicas">
-            <h2>4. Técnicas de Gestión de E/S</h2>
+        <section id="powershell">
+            <h2>4. Gestión con PowerShell</h2>
 
-            <h3>4.1 <abbr title="Polling - Consulta periódica por parte de la CPU para verificar dispositivos">Polling</abbr> (Consulta Periódica)</h3>
+            <h3>Ver Permisos</h3>
+            <pre><code># Ver ACL de una carpeta
+Get-Acl C:\Datos\Proyectos
 
-            <p>La CPU pregunta repetidamente si el dispositivo tiene datos listo.</p>
+# Ver ACL en formato legible
+Get-Acl C:\Datos\Proyectos | Format-List
 
-            <pre><code>// Ejemplo de polling
-while (1) {
-    if (teclado_listo()) {
-        char c = leer_teclado();
-        procesar(c);
-    }
-    // Hacer otras cosas mientras tanto...
+# Exportar ACL a archivo
+Get-Acl C:\Datos\Proyectos | Export-Clixml acl.xml</code></pre>
+
+            <h3>Configurar Permisos NTFS</h3>
+            <pre><code># Variables
+$carpeta = "C:\Datos\Proyectos"
+$usuario = "DOMAIN\juanperez"
+
+# Dar permisos de lectura
+$acl = Get-Acl $carpeta
+$accessRule = New-Object System.Security.AccessControl.FileSystemAccessRule(
+    $usuario,
+    "ReadAndExecute",
+    "ContainerInherit,ObjectInherit",
+    "None",
+    "Allow"
+)
+$acl.SetAccessRule($accessRule)
+Set-Acl $carpeta $acl
+
+# Dar permisos completos
+$fullControl = New-Object System.Security.AccessControl.FileSystemAccessRule(
+    $usuario,
+    "FullControl",
+    "Allow"
+)
+$acl.SetAccessRule($fullControl)
+Set-Acl $carpeta $acl</code></pre>
+
+            <h3>Script Completo de Configuración</h3>
+            <pre><code># Script para configurar carpeta compartida
+$carpeta = "C:\Compartido\Documentos"
+$grupoLectura = "DOMAIN\Lectores"
+$grupoEscritura = "DOMAIN\Editores"
+
+# Crear carpeta si no existe
+if (-not (Test-Path $carpeta)) {
+    New-Item -ItemType Directory -Path $carpeta -Force
+}
+
+# Obtener ACL actual
+$acl = Get-Acl $carpeta
+
+# Deshabilitar herencia
+$acl.SetAccessRuleProtection($true, $false)
+
+# Agregar permisos de lectura
+$ruleLectura = New-Object System.Security.AccessControl.FileSystemAccessRule(
+    $grupoLectura,
+    "ReadAndExecute",
+    "ContainerInherit,ObjectInherit",
+    "None",
+    "Allow"
+)
+$acl.AddAccessRule($ruleLectura)
+
+# Agregar permisos de escritura
+$ruleEscritura = New-Object System.Security.AccessControl.FileSystemAccessRule(
+    $grupoEscritura,
+    "Modify",
+    "ContainerInherit,ObjectInherit",
+    "None",
+    "Allow"
+)
+$acl.AddAccessRule($ruleEscritura)
+
+# Aplicar ACL
+Set-Acl $carpeta $acl
+
+Write-Host "Permisos configurados correctamente"</code></pre>
+
+            <h3>Quitar Permisos</h3>
+            <pre><code># Quitar permiso específico
+$acl = Get-Acl C:\Datos\Proyectos
+$usuario = "DOMAIN\usuario_antiguo"
+
+# Buscar y eliminar regla
+$ruleToRemove = $acl.Access | Where-Object {
+    $_.IdentityReference.Value -eq $usuario
+}
+
+if ($ruleToRemove) {
+    $acl.RemoveAccessRule($ruleToRemove)
+    Set-Acl C:\Datos\Proyectos $acl
 }</code></pre>
+        </section>
+
+        <section id="smb">
+            <h2>5. Compartir Archivos (SMB)</h2>
+
+            <h3>Diferencia: Permisos NTFS vs Share</h3>
+            <div class="comparison">
+                <div>
+                    <h4>Permisos NTFS</h4>
+                    <ul>
+                        <li>Se aplican localmente</li>
+                        <li>Funcionan siempre</li>
+                        <li>Más granulares</li>
+                        <li>Se aplican primero</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Permisos Share</h4>
+                    <ul>
+                        <li>Se aplican vía red</li>
+                        <li>Solo para SMB/NFS</li>
+                        <li>Menos granulares</li>
+                        <li>Luego se combinan con NTFS</li>
+                    </ul>
+                </div>
+            </div>
 
             <div class="callout warning">
-                <strong>Problema:</strong> La CPU desperdicia ciclos verificando constantemente. Si el teclado se usa 1 vez por segundo, la CPU verifica millones de veces innecesariamente.
+                <strong>Regla:</strong> El acceso final es el <strong>MÁS RESTRICTIVO</strong> entre permisos NTFS y Share. Si NTFS es Read y Share es Full Control, el resultado es Read.
             </div>
 
-            <p><strong>Uso típico:</strong> Sistemas simples, sistemas de tiempo real críticos donde no se pueden usar interrupciones.</p>
+            <h3>Crear Compartido SMB con PowerShell</h3>
+            <pre><code># Crear carpeta
+$carpeta = "C:\Compartido\Publico"
+New-Item -ItemType Directory -Path $carpeta -Force
 
-            <h3>4.2 <abbr title="Interrupciones (Interrupts) - Señales de hardware que notifican a la CPU cuando un dispositivo requiere atención">Interrupciones</abbr></h3>
+# Crear usuario para pruebas (opcional)
+$Password = ConvertTo-SecureString "P@ssw0rd123" -AsPlainText -Force
+New-LocalUser -Name "usuario1" -Password $Password -FullName "Usuario de Prueba"
 
-            <p>El dispositivo notifica a la CPU cuando necesita atención. La CPU puede hacer otras tareas mientras espera.</p>
+# Compartir carpeta
+New-SmbShare -Name "Publico" -Path $carpeta -FullAccess "Administradores","usuario1" -ReadAccess "Todos"
 
-            <pre><code>1. Proceso solicita E/S (ej: leer archivo)
-2. SO inicia operación y bloquea el proceso
-3. Proceso pasa a estado WAITING
-4. CPU puede ejecutar otros procesos
-5. Dispositivo termina y genera IRQ (Interrupt Request)
-6. SO atiende la interrupción (ISR - Interrupt Service Routine)
-7. SO despierta al proceso y le entrega los datos</code></pre>
+# Verificar el compartido
+Get-SmbShare</code></pre>
 
-            <div class="callout success">
-                <strong>Ventaja:</strong> La CPU no desperdicia ciclos. Puede hacer otro trabajo útil mientras el dispositivo prepara los datos.
-            </div>
+            <h3>Configurar Permisos de Compartido</h3>
+            <pre><code># Ver permisos actuales del share
+Get-SmbShareAccess -Name "Publico"
 
-            <p><strong>Uso típico:</strong> Casi todos los sistemas operativos modernos.</p>
+# Agregar usuario con permisos de lectura
+Grant-SmbShareAccess -Name "Publico" -AccountName "DOMAIN\usuario" -AccessRight Read -Force
 
-            <table>
-                <thead>
-                    <tr>
-                        <th>Aspecto</th>
-                        <th>Polling</th>
-                        <th>Interrupciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Uso de CPU</strong></td>
-                        <td>Alto (espera activa)</td>
-                        <td>Bajo (espera pasiva)</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Complejidad</strong></td>
-                        <td>Baja</td>
-                        <td>Media</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Responsividad</strong></td>
-                        <td>Inmediata</td>
-                        <td>Depende de latencia</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Overhead</strong></td>
-                        <td>Cero</td>
-                        <td>Cambio de contexto (~100-1000 ciclos)</td>
-                    </tr>
-                </tbody>
-            </table>
+# Agregar usuario con permisos completos
+Grant-SmbShareAccess -Name "Publico" -AccountName "DOMAIN\admin" -AccessRight Full -Force
+
+# Quitar permiso
+Revoke-SmbShareAccess -Name "Publico" -AccountName "DOMAIN\usuario_antiguo" -Force</code></pre>
+
+            <h3>Verificar desde Cliente Linux</h3>
+            <pre><code># Instalar smbclient
+sudo apt install smbclient
+
+# Listar shares disponibles
+smbclient -L //192.168.1.100 -U usuario1
+
+# Acceder a un share
+smbclient //192.168.1.100/Publico -U usuario1
+
+# Comandos dentro de smbclient
+smb: \> ls
+smb: \> get archivo.txt
+smb: \> put subida.txt
+smb: \> exit</code></pre>
+
+            <h3>Montar Share en Linux</h3>
+            <pre><code># Crear punto de montaje
+sudo mkdir -p /mnt/compartido
+
+# Montar temporalmente
+sudo mount -t cifs //192.168.1.100/Publico /mnt/compartido \
+    -o username=usuario1,password=P@ssw0rd123
+
+# Montar permanentemente (en /etc/fstab)
+//192.168.1.100/Publico /mnt/compartido cifs \
+    username=usuario1,password=P@ssw0rd123,uid=1000,gid=1000 0 0</code></pre>
         </section>
 
-        <section id="dma">
-            <h2>5. DMA - Acceso Directo a Memoria</h2>
+        <section id="usuarios">
+            <h2>6. Usuarios y Grupos en Windows Server</h2>
 
-            <p>Para transferencias grandes (como leer un archivo), ni polling ni interrupciones son eficientes. DMA (Direct Memory Access) permite que el dispositivo transfiera datos directamente a la memoria sin intervención de la CPU.</p>
+            <h3>Gestión de Usuarios con PowerShell</h3>
+            <pre><code># Crear usuario local
+$Password = ConvertTo-SecureString "P@ssw0rd123" -AsPlainText -Force
+New-LocalUser -Name "juanperez" -Password $Password -FullName "Juan Perez" -Description "Usuario de Desarrollo"
 
-            <h3>Flujo de una operación DMA</h3>
+# Ver todos los usuarios locales
+Get-LocalUser
 
-            <div class="diagram-box">
-<pre>1. CPU programa al controlador DMA:
-   - Dirección fuente     (ej: buffer del disco)
-   - Dirección destino    (ej: RAM en 0x1000000)
-   - Cantidad de datos    (ej: 4KB)
-   - Dirección de <abbr title="IRQ (Interrupt Request) - Petición de interrupción de hardware">IRQ</abbr>     (para notificar al terminar)
+# Habilitar/deshabilitar usuario
+Disable-LocalUser -Name "juanperez"
+Enable-LocalUser -Name "juanperez"
 
-2. DMA toma control del bus del sistema
+# Eliminar usuario
+Remove-LocalUser -Name "juanperez"</code></pre>
 
-3. DMA transfiere datos:
-   - Cycle Stealing: Roba ciclos del bus gradualmente
-   - Burst Mode: Transfiere un bloque completo y luego libera
+            <h3>Gestión de Grupos</h3>
+            <pre><code># Crear grupo local
+New-LocalGroup -Name "Desarrollo" -Description "Equipo de Desarrollo"
 
-4. Al terminar, DMA genera <abbr title="IRQ (Interrupt Request) - Petición de interrupción de hardware">IRQ</abbr> a la CPU
+# Ver todos los grupos
+Get-LocalGroup
 
-5. CPU recibe notificación y procesa los datos
-</pre>
+# Agregar usuario a grupo
+Add-LocalGroupMember -Group "Desarrollo" -Member "juanperez"
+
+# Ver miembros de un grupo
+Get-LocalGroupMember -Group "Desarrollo"
+
+# Quitar usuario de grupo
+Remove-LocalGroupMember -Group "Desarrollo" -Member "juanperez"</code></pre>
+
+            <h3>Usuarios de Dominio (Active Directory)</h3>
+            <pre><code># Crear usuario de dominio
+New-ADUser -SamAccountName "maria.lopez" `
+    -UserPrincipalName "maria.lopez@domain.local" `
+    -Name "Maria Lopez" `
+    -GivenName "Maria" `
+    -Surname "Lopez" `
+    -Enabled $true `
+    -ChangePasswordAtLogon $true `
+    -AccountPassword (ConvertTo-SecureString "P@ssw0rd123" -AsPlainText -Force)
+
+# Agregar a grupo de dominio
+Add-ADGroupMember -Identity "Domain Admins" -Members "maria.lopez"</code></pre>
+
+            <div class="callout warning">
+                <strong>Nota:</strong> Los comandos de Active Directory requieren el módulo RSAT-AD-PowerShell y privilegios de administrador de dominio.
             </div>
-
-            <div class="callout success">
-                <strong>Ventaja clave:</strong> La CPU está libre para hacer otro trabajo durante toda la transferencia. Para 1 MB de datos, la CPU solo pierde ~1000 ciclos (inicialización + finalización) en lugar de millones.
-            </div>
-
-            <h3>Componentes DMA</h3>
-
-            <table>
-                <thead>
-                    <tr>
-                        <th>Componente</th>
-                        <th>Función</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Controlador DMA</strong></td>
-                        <td>Gestiona la transferencia sin intervención de la CPU</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Canal DMA</strong></td>
-                        <td>Cada canal puede manejar una transferencia independiente</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Flip-Flop</strong></td>
-                        <td>Indica si el DMA está ocupado o libre</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Registro Dirección</strong></td>
-                        <td>Dirección de memoria de origen/destino</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Registro Contador</strong></td>
-                        <td>Cantidad de datos a transferir</td>
-                    </tr>
-                </tbody>
-            </table>
-        </section>
-
-        <section id="buffering">
-            <h2>6. Buffering y Caching</h2>
-
-            <h3><abbr title="Buffering - Almacenamiento intermedio en memoria para desacoplar dispositivos con velocidades diferentes">Buffering</abbr> (Almacenamiento Intermedio)</h3>
-            <p>Un buffer es un área de memoria que almacena temporalmente datos mientras se transfieren entre dos dispositivos con velocidades diferentes.</p>
-
-            <div class="comparison">
-                <div>
-                    <h4>Sin Buffer</h4>
-                    <pre><code>Producto → Consumidor
-[   rápido ]  [  lento ]
-❌ Productor bloquea
-❌ Consumidor espera</code></pre>
-                </div>
-                <div>
-                    <h4>Con Buffer</h4>
-                    <pre><code>Producto → [BUFFER] → Consumidor
-[  rápido ] [  datos  ] [ lento ]
-✅ Productor escribe al buffer
-✅ Consumidor lee del buffer
-✅ No bloqueos</code></pre>
-                </div>
-            </div>
-
-            <h3><abbr title="Page Cache - Caché de páginas de archivos en RAM para reducir accesos a disco">Page Cache</abbr> (Caché de Páginas)</h3>
-            <p>El SO mantiene en RAM páginas de archivos accedidos recientemente. Esto reduce drásticamente los accesos a disco.</p>
-
-            <pre><code># Ver page cache en Linux
-free -h
-Mem: 7.5G  2.1G  3.2G  2.2G  28% /
-                ↑      ↑      ↑
-              Total  Usado  Cache
-
-# Limpiar caches (como root)
-echo 3 > /proc/sys/vm/drop_caches</code></pre>
-
-            <div class="callout info">
-                <strong>Nota:</strong> La memoria usada como caché se puede liberar automáticamente cuando un proceso necesita más RAM.
-            </div>
-        </section>
-
-        <section id="planificacion">
-            <h2>7. Planificación de Disco</h2>
-
-            <p>El disco tiene múltiples solicitudes pendientes. ¿En qué orden atenderlas? El objetivo es minimizar el movimiento del cabezal (seek time), que es la operación más lenta.</p>
-
-            <h3>Métricas de Rendimiento</h3>
-
-            <ul>
-                <li><strong>Seek time:</strong> Tiempo en mover el cabezal a la pista correcta (~5-10ms)</li>
-                <li><strong>Latencia rotacional:</strong> Tiempo en que el disco gira hasta el sector correcto (~3ms promedio)</li>
-                <li><strong>Tiempo de transferencia:</strong> Tiempo en leer los datos (~0.1ms por KB)</li>
-            </ul>
-
-            <h3>Algoritmos de Planificación</h3>
-
-            <table>
-                <thead>
-                    <tr>
-                        <th>Algoritmo</th>
-                        <th>Descripción</th>
-                        <th>Ventaja</th>
-                        <th>Desventaja</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>FCFS</strong><br>First Come First Served</td>
-                        <td>Atender en orden de llegada</td>
-                        <td>Justo, simple</td>
-                        <td>Mucho movimiento de cabezal</td>
-                    </tr>
-                    <tr>
-                        <td><strong><abbr title="SSTF - Shortest Seek Time First - Atender solicitud de disco más cercana primero">SSTF</abbr></strong><br>Shortest Seek Time First</td>
-                        <td>Atender el más cercano primero</td>
-                        <td>Mejor rendimiento promedio</td>
-                        <td>Posible inanición</td>
-                    </tr>
-                    <tr>
-                        <td><strong><abbr title="SCAN - Algoritmo de planificación de disco que mueve el cabezal de un extremo a otro (elevator)">SCAN</abbr></strong><br>Elevator</td>
-                        <td>Mover cabezal de un extremo a otro</td>
-                        <td>Justicia temporal</td>
-                        <td>Mayor tiempo de espera</td>
-                    </tr>
-                    <tr>
-                        <td><strong><abbr title="C-SCAN - Circular SCAN - Algoritmo que regresa al inicio después de llegar al extremo">C-SCAN</abbr></strong><br>Circular SCAN</td>
-                        <td>Como SCAN pero regresa al inicio</td>
-                        <td>Tiempo de espera más uniforme</td>
-                        <td>No aprovecha viajes de vuelta</td>
-                    </tr>
-                    <tr>
-                        <td><strong><abbr title="LOOK - Algoritmo de planificación de disco optimizado que va solo hasta el último pedido">LOOK</abbr></strong></td>
-                        <td>Como SCAN pero va solo hasta el último pedido</td>
-                        <td>Mejor que SCAN</td>
-                        <td>Más complejo</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <h4>Ejemplo: FCFS vs SSTF</h4>
-
-            <pre><code>Solicitudes (cilindros): 98, 183, 37, 122, 14, 124, 65, 67
-Cabezal inicial: 53
-
-FCFS: 53→98→183→37→122→14→124→65→67
-Movimiento total: 680 cilindros
-
-SSTF: 53→65→67→37→14→98→122→124→183
-Movimiento total: 236 cilindros ✅</code></pre>
         </section>
 
         <section id="practica">
-            <h2>8. Actividad Práctica</h2>
+            <h2>7. Actividad Práctica</h2>
 
-            <h3>Ejercicio 1: Explorar Dispositivos en Linux</h3>
+            <div class="actividad">
+                <h3>Ejercicio 1: Configurar Servidor de Archivos</h3>
+                <p><strong>Objetivo:</strong> Crear servidor de archivos con 3 usuarios y permisos diferenciados</p>
 
-            <pre><code># Listar dispositivos de bloque
-lsblk
+                <h4>Paso 1: Crear Estructura</h4>
+                <pre><code># Crear directorios
+New-Item -ItemType Directory -Path "C:\ServidorArchivos\Publico" -Force
+New-Item -ItemType Directory -Path "C:\ServidorArchivos\Proyectos" -Force
+New-Item -ItemType Directory -Path "C:\ServidorArchivos\Confidencial" -Force</code></pre>
 
-# Ver información detallada de discos
-fdisk -l
+                <h4>Paso 2: Crear Usuarios</h4>
+                <pre><code># Crear usuarios
+$pass1 = ConvertTo-SecureString "User1Pass" -AsPlainText -Force
+$pass2 = ConvertTo-SecureString "User2Pass" -AsPlainText -Force
+$pass3 = ConvertTo-SecureString "User3Pass" -AsPlainText -Force
 
-# Ver particiones
-df -h
+New-LocalUser -Name "usuario1" -Password $pass1 -FullName "Usuario 1"
+New-LocalUser -Name "usuario2" -Password $pass2 -FullName "Usuario 2"
+New-LocalUser -Name "usuario3" -Password $pass3 -FullName "Usuario 3"</code></pre>
 
-# Ver estadísticas de E/S
-iostat -x 1 5
+                <h4>Paso 3: Configurar Permisos NTFS</h4>
+                <pre><code># Público: todos pueden leer y escribir
+$aclPublico = Get-Acl "C:\ServidorArchivos\Publico"
+$ruleTodos = New-Object System.Security.AccessControl.FileSystemAccessRule(
+    "Todos","Modify","ContainerInherit,ObjectInherit","None","Allow"
+)
+$aclPublico.AddAccessRule($ruleTodos)
+Set-Acl "C:\ServidorArchivos\Publico" $aclPublico
 
-# Ver interrupciones por CPU
-cat /proc/interrupts | head -20</code></pre>
+# Proyectos: usuario1 y usuario2 pueden editar
+$aclProyectos = Get-Acl "C:\ServidorArchivos\Proyectos"
+$aclProyectos.SetAccessRuleProtection($true,$false)
 
-            <h3>Ejercicio 2: Analizar E/S de un Comando</h3>
+$ruleUser1 = New-Object System.Security.AccessControl.FileSystemAccessRule(
+    "usuario1","Modify","ContainerInherit,ObjectInherit","None","Allow"
+)
+$aclProyectos.AddAccessRule($ruleUser1)
 
-            <pre><code># Usar strace para ver syscalls de E/S
-strace -e open,read,write,close cat /etc/hostname
+$ruleUser2 = New-Object System.Security.AccessControl.FileSystemAccessRule(
+    "usuario2","Modify","ContainerInherit,ObjectInherit","None","Allow"
+)
+$aclProyectos.AddAccessRule($ruleUser2)
 
-# Usar strace con contador
-strace -c ls /tmp
+Set-Acl "C:\ServidorArchivos\Proyectos" $aclProyectos</code></pre>
 
-# Analizar un programa en ejecución
-strace -p $(pidof nombre_proceso)</code></pre>
+                <h4>Paso 4: Crear Compartidos SMB</h4>
+                <pre><code># Crear shares
+New-SmbShare -Name "Publico" -Path "C:\ServidorArchivos\Publico" -FullAccess "Administradores" -ReadAccess "Todos"
+New-SmbShare -Name "Proyectos" -Path "C:\ServidorArchivos\Proyectos" -FullAccess "usuario1","usuario2"
+New-SmbShare -Name "Confidencial" -Path "C:\ServidorArchivos\Confidencial" -FullAccess "Administradores"</code></pre>
+            </div>
 
-            <h3>Ejercicio 3: Simular Algoritmos de Planificación</h3>
+            <div class="actividad">
+                <h3>Ejercicio 2: Verificar desde Cliente</h3>
+                <p><strong>Objetivo:</strong> Conectarse desde Linux y verificar permisos</p>
+                <pre><code># Desde cliente Linux
+# Listar shares
+smbclient -L //IP_DEL_SERVIDOR -U usuario1
 
-            <p>Calcular el movimiento del cabezal para esta secuencia con FCFS, SSTF y SCAN:</p>
+# Acceder a share público
+smbclient //IP_DEL_SERVIDOR/Publico -U usuario1
+smb: \> ls
+smb: \> put prueba.txt
 
-            <pre><code>Solicitudes: 82, 170, 43, 140, 24, 16, 190
-Cabezal inicial: 50
+# Intentar acceder a confidencial (debería fallar)
+smbclient //IP_DEL_SERVIDOR/Confidencial -U usuario1</code></pre>
+            </div>
 
-FCFS: __________________________
-SSTF: __________________________
-SCAN (dirección creciente): __________________________
+            <p><strong>Tiempo estimado:</strong> 60 minutos</p>
+        </section>
 
-Compara los resultados.
-¿Cuál es más eficiente?</code></pre>
+        <section id="entregable">
+            <h2>8. Entregable</h2>
 
-            <p><strong>Tiempo estimado:</strong> 30 minutos</p>
+            <div class="callout info">
+                <h3>Servidor de Archivos Configurado</h3>
+                <p><strong>Requisitos:</strong></p>
+            </div>
+
+            <ol>
+                <li><strong>Servidor Windows Server con:</strong>
+                    <ul>
+                        <li>3 usuarios de prueba creados</li>
+                        <li>3 grupos: Lectores, Editores, Administradores</li>
+                        <li>Estructura de directorios compartidos</li>
+                    </ul>
+                </li>
+                <li><strong>Permisos configurados:</strong>
+                    <ul>
+                        <li>carpeta Pública: todos pueden leer/escribir</li>
+                        <li>carpeta Proyectos: Editores pueden modificar, Lectores solo leer</li>
+                        <li>carpeta Confidencial: solo Administradores</li>
+                    </ul>
+                </li>
+                <li><strong>Evidencias:</strong>
+                    <ul>
+                        <li>Capturas de pantalla de permisos NTFS</li>
+                        <li>Capturas de SMB shares configurados</li>
+                        <li>Prueba de acceso desde cliente (smbclient)</li>
+                        <li>Script PowerShell de configuración</li>
+                    </ul>
+                </li>
+            </ol>
+
+            <div class="callout warning">
+                <strong>Fecha de entrega:</strong> Consultar plataforma virtual
+            </div>
         </section>
 
         <section id="resumen">
@@ -770,95 +784,45 @@ Compara los resultados.
                 <thead>
                     <tr>
                         <th>Concepto</th>
-                        <th>Idea Clave</th>
+                        <th>Descripción</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr><td><strong>Dispositivos de bloque</strong></td><td>Acceso por bloques fijos (disco, SSD)</td></tr>
-                    <tr><td><strong>Dispositivos de carácter</strong></td><td>Acceso stream (teclado, mouse)</td></tr>
-                    <tr><td><strong><abbr title="Port-Mapped I/O - E/S mapeada a puertos con instrucciones especiales (IN/OUT)">Port-mapped I/O</abbr></strong></td><td>Puertos separados de memoria (IN/OUT)</td></tr>
-                    <tr><td><strong><abbr title="Memory-Mapped I/O - E/S mapeada a direcciones de memoria normales">Memory-mapped I/O</abbr></strong></td><td>Registros en direcciones de memoria</td></tr>
-                    <tr><td><strong>Polling</strong></td><td>CPU verifica repetidamente (desperdicia ciclos)</td></tr>
-                    <tr><td><strong>Interrupciones</strong></td><td>Dispositivo notifica a CPU (eficiente)</td></tr>
-                    <tr><td><strong>DMA</strong></td><td>Transferencia directa a RAM sin CPU</td></tr>
-                    <tr><td><strong>Buffering</strong></td><td>Almacenamiento intermedio para desacoplar velocidades</td></tr>
-                    <tr><td><strong>Page Cache</strong></td><td>RAM usada como caché de archivos</td></tr>
-                    <tr><td><strong>SSTF</strong></td><td>Atender solicitud más cercana primero</td></tr>
-                    <tr><td><strong>SCAN</strong></td><td>Algoritmo del elevador (ida y vuelta)</td></tr>
+                    <tr><td><strong>NTFS</strong></td><td>Sistema de archivos con seguridad avanzada</td></tr>
+                    <tr><td><strong>FAT32</strong></td><td>Sistema simple, sin permisos avanzados</td></tr>
+                    <tr><td><strong>ACL</strong></td><td>Lista de Control de Acceso</td></tr>
+                    <tr><td><strong>ACE</strong></td><td>Entrada de Control de Acceso</td></tr>
+                    <tr><td><strong>Get-Acl / Set-Acl</strong></td><td>Gestionar permisos NTFS</td></tr>
+                    <tr><td><strong>Permisos NTFS</strong></td><td>Controlan acceso local</td></tr>
+                    <tr><td><strong>Permisos Share</strong></td><td>Controlan acceso vía red</td></tr>
+                    <tr><td><strong>New-SmbShare</strong></td><td>Crear compartido SMB</td></tr>
+                    <tr><td><strong>smbclient</strong></td><td>Cliente Linux para SMB</td></tr>
+                    <tr><td><strong>New-LocalUser</strong></td><td>Crear usuario local</td></tr>
                 </tbody>
             </table>
 
             <div class="callout success">
-                <strong>Concepto fundamental:</strong> La gestión de E/S es el arte de balancear el rendimiento de la CPU con la latencia de los dispositivos. Las técnicas modernas (interrupciones + DMA + caching) permiten que la CPU haga trabajo útil mientras espera que los dispositivos lentos terminen sus operaciones.
-            </div>
-        </section>
-
-        <!-- Section: Laboratorio -->
-        <section id="laboratorio">
-            <h2>Laboratorio</h2>
-
-            <h3>Sistemas de Archivos en AWS EC2</h3>
-            <p>Trabaja con sistemas de archivos reales, particiones y montajes en un servidor EC2.</p>
-
-            <div class="callout info">
-                <p class="callout-title">Objetivos del Laboratorio</p>
-                <ul>
-                    <li>Crear y formatear particiones</li>
-                    <li>Montar sistemas de archivos</li>
-                    <li>Configurar mounting automático</li>
-                </ul>
+                <strong>Concepto fundamental:</strong> Windows Server combina permisos NTFS y permisos de compartido para proporcionar seguridad multicapa. El permiso más restrictivo es el que se aplica.
             </div>
 
-            <p><strong>Próximamente:</strong> AWS Lab 04 - Sistemas de Archivos</p>
-            <p><a href="../laboratorios-html/index.html">Ver índice de Laboratorios →</a></p>
-        </section>
-
-        <!-- Videos Recomendados -->
-        <section id="videos">
-            <h2>Videos Recomendados</h2>
-
-            <div class="video-resource">
-                <h3>Video 1: How I/O Devices Work</h3>
-                <p><strong>Concepto:</strong> Funcionamiento interno de dispositivos E/S</p>
-                <p><strong>Duración:</strong> 12 minutos</p>
-                <p><strong>Nivel:</strong> Básico</p>
-                <p><strong>Por qué verlo:</strong> Entender cómo el SO interactúa con dispositivos</p>
-                <p><strong>Canal:</strong> Learn Engineering</p>
-                <a href="https://www.youtube.com/watch?v=FG-pNPxG2Do" target="_blank">Ver en YouTube</a>
-            </div>
-
-            <div class="video-resource">
-                <h3>Video 2: DMA Direct Memory Access</h3>
-                <p><strong>Concepto:</strong> Cómo DMA permite transferir datos sin CPU</p>
-                <p><strong>Duración:</strong> 10 minutos</p>
-                <p><strong>Nivel:</strong> Intermedio</p>
-                <p><strong>Por qué verlo:</strong> Entender el papel de DMA en la eficiencia</p>
-                <p><strong>Canal:</strong> Ben Eater</p>
-                <a href="https://www.youtube.com/watch?v=I0E2mdMW6A8" target="_blank">Ver en YouTube</a>
-            </div>
-
-            <div class="video-resource">
-                <h3>Video 3: I/O Scheduling Explained</h3>
-                <p><strong>Concepto:</strong> Algoritmos de planificación de E/S</p>
-                <p><strong>Duración:</strong> 11 minutos</p>
-                <p><strong>Nivel:</strong> Intermedio</p>
-                <p><strong>Por qué verlo:</strong> Complementa la planificación de disco</p>
-                <p><strong>Canal:</strong> Gate Smashers</p>
-                <a href="https://www.youtube.com/watch?v=7iNJ_g54yNQ" target="_blank">Ver en YouTube</a>
-            </div>
-
-            <div class="callout info">
-                <p class="callout-title">Tip de Estudio</p>
-                <p>Antes de ver cada video, lee el tema correspondiente en la clase. Esto te ayudará a identificar qué conceptos ya entiendes y cuáles necesitas reforzar.</p>
-            </div>
+            <h3>Próxima Clase</h3>
+            <p><strong>Clase 11: Almacenamiento y LVM</strong></p>
+            <ul>
+                <li>MBR vs GPT</li>
+                <li>Sistemas de archivos (ext4)</li>
+                <li>LVM (Physical Volumes, Volume Groups, Logical Volumes)</li>
+                <li>RAID básico</li>
+                <li>Configuración de /etc/fstab</li>
+            </ul>
         </section>
     </div>
 
     <footer>
         <div class="container">
             <p><strong>IF0099 - Sistemas Operativos I</strong> • <a href="index.html">Índice de Clases</a></p>
-        <p>IF0099 - Sistemas Operativos I | UNAULA - Ingeniería Informática - 2026-I</p>
-        <p>Clase 10: Gestión de Entrada/Salida (E/S)</p>
+            <p>IF0099 - Sistemas Operativos I | UNAULA - Ingeniería Informática - 2026-I</p>
+            <p>Clase 10: Permisos y Seguridad en Windows</p>
+        </div>
     </footer>
 
     <a href="#" class="scroll-top" id="scrollTop" aria-label="Scroll to top">↑</a>

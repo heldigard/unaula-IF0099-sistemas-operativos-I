@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clase 02: Evolución y Componentes del SO | IF0099 - Sistemas Operativos I</title>
+    <title>Clase 02: Linux Terminal - Comandos Esenciales | IF0099 - Sistemas Operativos I</title>
+    <!-- Prism.js CSS para syntax highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
     <style>
         :root {
             --primary: #2563eb;
@@ -129,25 +131,6 @@
             margin-bottom: 1rem;
         }
 
-        figure {
-            margin: 2rem 0;
-            text-align: center;
-        }
-
-        figure img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-
-        figcaption {
-            margin-top: 0.75rem;
-            color: var(--text-muted);
-            font-style: italic;
-            font-size: 0.95rem;
-        }
-
         table {
             width: 100%;
             border-collapse: collapse;
@@ -247,25 +230,17 @@
             white-space: pre;
         }
 
-        .generation-box {
+        .actividad {
             background: var(--bg-light);
+            border-left: 5px solid var(--accent);
             padding: 1.5rem;
-            border-radius: 8px;
             margin: 1.5rem 0;
-            border-left: 4px solid var(--primary);
+            border-radius: 4px;
         }
 
-        .comparison {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-            margin: 2rem 0;
-        }
-
-        .comparison > div {
-            background: var(--bg-light);
-            padding: 1.5rem;
-            border-radius: 8px;
+        .actividad h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
         }
 
         footer {
@@ -281,46 +256,6 @@
             text-decoration: none;
         }
 
-        .scroll-top {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            background: var(--primary);
-            color: white;
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            opacity: 0;
-            transition: opacity 0.3s;
-            text-decoration: none;
-            font-size: 1.5rem;
-        }
-
-        .scroll-top.visible {
-            opacity: 1;
-        }
-
-        .scroll-top:hover {
-            background: var(--secondary);
-        }
-
-        .quote {
-            font-style: italic;
-            border-left: 4px solid var(--accent);
-            padding-left: 1rem;
-            margin: 1.5rem 0;
-            color: var(--text-muted);
-        }
-
-        .quote strong {
-            color: var(--text-main);
-            font-style: normal;
-        }
-
         @media (max-width: 768px) {
             header h1 {
                 font-size: 1.6rem;
@@ -333,25 +268,73 @@
             nav ul {
                 grid-template-columns: 1fr;
             }
-
-            .comparison {
-                grid-template-columns: 1fr;
-            }
         }
 
-        .actividad{background:var(--bg-light);border-left:5px solid var(--accent);padding:1.5rem;margin:1.5rem 0;border-radius:4px}
-        .actividad h3{color:var(--primary);margin-bottom:1rem}
-        .actividad p{margin-bottom:.75rem}
-        .actividad strong{color:var(--secondary)}
+        /* Code blocks with syntax highlighting */
+        pre {
+            background: #1e1e1e !important;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            overflow-x: auto;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        pre code {
+            font-family: 'Fira Code', 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: #d4d4d4;
+        }
+
+        /* Inline code */
+        code:not(pre code) {
+            background: #e2e8f0;
+            color: #c026d3;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-family: 'Fira Code', 'Consolas', 'Monaco', monospace;
+            font-size: 0.9em;
+        }
+
+        .code-header {
+            background: #2d2d2d;
+            color: #9cdcfe;
+            padding: 0.5rem 1rem;
+            border-radius: 8px 8px 0 0;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+        }
+
+        .code-block {
+            border-radius: 8px;
+            overflow: hidden;
+            margin: 1.5rem 0;
+        }
+
+        .code-block pre {
+            margin: 0;
+            border-radius: 0;
+        }
+
+        .terminal-block pre {
+            background: #0c0c0c !important;
+            border: 1px solid #333;
+        }
+
+        .terminal-block .code-header {
+            background: #1a1a1a;
+            color: #22c55e;
+        }
     </style>
 </head>
 <body>
     <header>
         <div class="container">
-            <h1>Clase 02: Evolución y Componentes del SO</h1>
-            <p class="subtitle">IF0099 - Sistemas Operativos I | Unidad 1 - Introducción</p>
-            <p class="subtitle">De las tarjetas perforadas a la nube</p>
-            <p class="meta">Última actualización: 2026-02-01 | Duración: 90 minutos</p>
+            <h1>Clase 02: Linux Terminal - Comandos Esenciales</h1>
+            <p class="subtitle">IF0099 - Sistemas Operativos I | Módulo 1: Fundamentos y Virtualización</p>
+            <p class="subtitle">Dominando la línea de comandos de Linux</p>
+            <p class="meta">Última actualización: 2026-02-10 | Duración: 90 minutos | 70% Práctica</p>
         </div>
     </header>
 
@@ -361,19 +344,14 @@
             <h2>Contenido de la Clase</h2>
             <ul>
                 <li><a href="#objetivos">Objetivos de Aprendizaje</a></li>
-                <li><a href="#historia">1. ¿Por qué estudiar la evolución?</a></li>
-                <li><a href="#gen0">2. Generación 0: Sin SO (1940s)</a></li>
-                <li><a href="#gen1">3. Primera Generación: Batch (1950s)</a></li>
-                <li><a href="#gen2">4. Segunda Generación: Multiprogramación</a></li>
-                <li><a href="#unix">5. Nacimiento de UNIX (1969)</a></li>
-                <li><a href="#gen3">6. Tercera Generación: Time-Sharing</a></li>
-                <li><a href="#gen4">7. Cuarta Generación: PCs (1980s)</a></li>
-                <li><a href="#gen5">8. Quinta Generación: SO Modernos</a></li>
-                <li><a href="#componentes">9. Componentes del SO</a></li>
-                <li><a href="#modos">10. Modo Usuario vs Kernel</a></li>
-                <li><a href="#practica">11. Actividad Práctica (Opcional)</a></li>
-                <li><a href="#laboratorio">12. Laboratorio</a></li>
-                <li><a href="#resumen">13. Resumen</a></li>
+                <li><a href="#teoria">1. Estructura de Directorios Linux</a></li>
+                <li><a href="#navegacion">2. Navegación Básica</a></li>
+                <li><a href="#archivos">3. Manipulación de Archivos</a></li>
+                <li><a href="#visualizacion">4. Visualización de Archivos</a></li>
+                <li><a href="#permisos">5. Permisos Básicos</a></li>
+                <li><a href="#ejercicio">6. Ejercicio Integrador</a></li>
+                <li><a href="#practica">7. Actividad Práctica</a></li>
+                <li><a href="#entregable">Entregable</a></li>
             </ul>
         </nav>
 
@@ -381,1873 +359,689 @@
         <section id="objetivos">
             <h2>Objetivos de Aprendizaje</h2>
             <p>Al finalizar esta clase, serás capaz de:</p>
-
-            <div class="comparison">
-                <div>
-                    <h3>📚 Histórico</h3>
-                    <table>
-                        <tr>
-                            <th>Objetivo</th>
-                            <th>Habilidad</th>
-                        </tr>
-                        <tr>
-                            <td><strong>Describir</strong> evolución histórica</td>
-                            <td>Comprensión temporal</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Identificar</strong> generaciones de SO</td>
-                            <td>Análisis de épocas</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Relacionar</strong> contexto con diseño</td>
-                            <td>Síntesis</td>
-                        </tr>
-                    </table>
-                </div>
-
-                <div>
-                    <h3>🏗️ Técnico</h3>
-                    <table>
-                        <tr>
-                            <th>Objetivo</th>
-                            <th>Habilidad</th>
-                        </tr>
-                        <tr>
-                            <td><strong>Explicar</strong> componentes principales</td>
-                            <td>Análisis estructural</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Diferenciar</strong> modo usuario vs kernel</td>
-                            <td>Comparación crítica</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Reconocer</strong> system calls clave</td>
-                            <td>Identificación</td>
-                        </tr>
-                    </table>
-                </div>
-            </div>
-        </section>
-
-        <!-- Introduction -->
-        <section id="historia">
-            <h2>1. ¿Por qué estudiar la evolución de los SO?</h2>
-
-            <div class="comparison">
-                <div>
-                    <h3>📚 Valor de la Historia</h3>
-                    <p>Entender la historia nos ayuda a:</p>
-                    <table>
-                        <tr>
-                            <th>Beneficio</th>
-                            <th>Explicación</th>
-                        </tr>
-                        <tr>
-                            <td><strong>Comprender diseño actual</strong></td>
-                            <td>Las decisiones del pasado moldean el presente</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Aprender de errores</strong></td>
-                            <td>No repetir fracasos históricos</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Anticipar tendencias</strong></td>
-                            <td>Patrones se repiten</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Valorar complejidad</strong></td>
-                            <td>Lo que damos por sentado tomó décadas</td>
-                        </tr>
-                    </table>
-
-                    <div class="quote">
-                        <strong>"Aquellos que no pueden recordar el pasado están condenados a repetirlo."</strong><br>
-                        — George Santayana
-                    </div>
-
-                    <p><strong>En SO:</strong> Cada generación resolvió problemas específicos de su época.</p>
-                </div>
-
-                <div>
-                    <h3>📊 Hitos Clave en la Evolución</h3>
-                    <table>
-                        <tr>
-                            <th>Período</th>
-                            <th>Avance</th>
-                            <th>Problema Resuelto</th>
-                        </tr>
-                        <tr>
-                            <td><strong>1940s</strong></td>
-                            <td>Sin SO</td>
-                            <td>Programación con cables</td>
-                        </tr>
-                        <tr>
-                            <td><strong>1950s</strong></td>
-                            <td>Batch</td>
-                            <td>Automatizar trabajos</td>
-                        </tr>
-                        <tr>
-                            <td><strong>1960s</strong></td>
-                            <td>Multiprogramación</td>
-                            <td>CPU ociosa en E/S</td>
-                        </tr>
-                        <tr>
-                            <td><strong>1970s</strong></td>
-                            <td>Time-sharing</td>
-                            <td>Usuarios interactivos</td>
-                        </tr>
-                        <tr>
-                            <td><strong>1980s</strong></td>
-                            <td>GUI PC</td>
-                            <td>Computación masiva</td>
-                        </tr>
-                        <tr>
-                            <td><strong>2000s+</strong></td>
-                            <td>Cloud/<abbr title="Virtual Machine">VM</abbr></td>
-                            <td>Escalabilidad</td>
-                        </tr>
-                    </table>
-
-                    <div class="ascii-diagram">
-1940      1960      1980      2000      2020
- │         │         │         │         │
- ▼         ▼         ▼         ▼         ▼
-Sin SO  →  Batch  →  Multi   →   PC    → Cloud
-                    prog           GUI      VMs
-                    </div>
-
-                    <div class="callout success">
-                        <p><strong>Insight:</strong> Cada década trajo un paradigma nuevo impulsado por hardware más poderoso.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Generation 0 -->
-        <section id="gen0">
-            <h2>2. Generación 0: Sin Sistema Operativo (1940-1950)</h2>
-
-            <h3>La era de los "gigantes" computacionales</h3>
-
-            <div class="comparison">
-                <div>
-                    <h4>🔌 Características</h4>
-                    <table>
-                        <tr>
-                            <th>Aspecto</th>
-                            <th>Descripción</th>
-                        </tr>
-                        <tr>
-                            <td><strong>Hardware</strong></td>
-                            <td><abbr title="Electronic Numerical Integrator and Computer">ENIAC</abbr> (1945), <abbr title="Universal Automatic Computer">UNIVAC</abbr> I (1951)</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Tamaño</strong></td>
-                            <td>Ocupaban habitaciones completas</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Programación</strong></td>
-                            <td>Cables y switches físicos</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Uso</strong></td>
-                            <td>Cálculos balísticos, censos</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Costo</strong></td>
-                            <td>Millones de dólares</td>
-                        </tr>
-                    </table>
-
-                    <div class="ascii-diagram">
-    ┌──────────────────────────────┐
-    │                              │
-    │    🏭 <abbr title="Electronic Numerical Integrator and Computer">ENIAC</abbr> (1945)           │
-    │    30 toneladas              │
-    │    17,468 válvulas            │
-    │    174 kW de potencia         │
-    │                              │
-    │   [Programador cableando]     │
-    │         │                    │
-    │         ▼                    │
-    │    ┌─────────────┐            │
-    │    │  SWITCHES    │           │
-    │    │  CABLES      │           │
-    │    └─────────────┘            │
-    └──────────────────────────────┘
-                    </div>
-
-                    <h4>⚠️ Problemas</h4>
-                    <ul>
-                        <li><strong>Tiempo perdido</strong> reconectando cables</li>
-                        <li><strong>Errores humanos</strong> frecuentes</li>
-                        <li><strong>Un programa</strong> = toda la máquina</li>
-                        <li><strong>Sin concepto</strong> de "software de sistema"</li>
-                    </ul>
-                </div>
-
-                <div>
-                    <div class="callout warning">
-                        <p class="callout-title">💡 Insight Histórico</p>
-                        <p>"Programar la ENIAC era como reconectar una central telefónica cada vez que querías hacer una llamada."</p>
-                    </div>
-
-                    <h4>📊 Comparación: 1940s vs Hoy</h4>
-                    <table>
-                        <tr>
-                            <th>Métrica</th>
-                            <th>1940s</th>
-                            <th>Hoy</th>
-                        </tr>
-                        <tr>
-                            <td>Peso</td>
-                            <td>30 toneladas</td>
-                            <td>Gramos</td>
-                        </tr>
-                        <tr>
-                            <td>Energía</td>
-                            <td>174 kW</td>
-                            <td>5-15 W</td>
-                        </tr>
-                        <tr>
-                            <td>Velocidad</td>
-                            <td>~5,000 ops/s</td>
-                            <td>~100,000 M ops/s</td>
-                        </tr>
-                        <tr>
-                            <td>Costo</td>
-                            <td>~$500,000</td>
-                            <td>~$500</td>
-                        </tr>
-                    </table>
-
-                    <h4>🎯 ¿Por qué estudiarlos?</h4>
-                    <ul>
-                        <li><strong>Origen de conceptos:</strong> todavía usamos herencia de esta época</li>
-                        <li><strong>Contexto:</strong> entender por qué los SO surgieron como respuesta a estos problemas</li>
-                        <li><strong>Agradecimiento:</strong> valorar lo fácil que es programar hoy</li>
-                    </ul>
-
-                    <div class="callout success">
-                        <p><strong>💡 Lección:</strong> La necesidad es la madre de la invención. Estos problemas extremos impulsaron la creación de los primeros sistemas operativos.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Generation 1 -->
-        <section id="gen1">
-            <h2>3. Primera Generación: Procesamiento por Lotes (1950-1965)</h2>
-
-            <h3>Batch Processing: Automatizando el flujo</h3>
-
-            <div class="comparison">
-                <div>
-                    <h4>📦 El flujo del batch</h4>
-                    <div class="ascii-diagram">
-PROGRAMADOR           OPERADOR           COMPUTADORA
-    │                    │                    │
-    │ Escribe            │ Perfora            │
-    │ en papel           │ tarjetas           │
-    ▼                    ▼                    ▼
-┌────────┐          ┌────────┐          ┌────────┐
-│ CÓDIGO  │          │TARJETAS│          │  LOTE  │
-│ FUENTE │          │PERFORADAS│         │ACUMU-  │
-└────────┘          └────────┘          │ LADO   │
-                                        └───┬────┘
-                                            │
-                       (horas después)      ▼
-                                            │
-                                        ┌────────┐
-                                        │SALIDA  │
-                                        │IMPRESA │
-                                        └────────┘
-                    </div>
-
-                    <h4>🎯 Ventajas del Sistema de Lotes</h4>
-                    <table>
-                        <tr>
-                            <th>Aspecto</th>
-                            <th>Sin Sistema</th>
-                            <th>Con Batch</th>
-                        </tr>
-                        <tr>
-                            <td><strong>Preparación</strong></td>
-                            <td>Manual</td>
-                            <td>Automatizada</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Throughput</strong></td>
-                            <td>1 trabajo/hora</td>
-                            <td>Varios/hora</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Eficiencia</strong></td>
-                            <td>CPU ociosa mucho</td>
-                            <td>CPU casi siempre ocupada</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Errores</strong></td>
-                            <td>Frecuentes</td>
-                            <td>Detectados antes</td>
-                        </tr>
-                    </table>
-
-                    <h4>⚙️ Primer SO: GM-NAA I/O (1956)</h4>
-                    <ul>
-                        <li><strong>Creado por:</strong> General Motors e IBM</li>
-                        <li><strong>Innovación:</strong> Primer SO de producción real</li>
-                        <li><strong>Función:</strong> Automatizar procesamiento de nómina de GM</li>
-                        <li><strong>Impacto:</strong> Probó que los SO valían la inversión</li>
-                    </ul>
-                </div>
-
-                <div>
-                    <h4>🏭 Secuencia de un Job Batch</h4>
-                    <div class="ascii-diagram">
-┌────────────────────────────────────────┐
-│ 1. PROGRAMADOR                           │
-│    Escribe código en FORTRAN/COBOL      │
-└────────────┬───────────────────────────┘
-             │ Tarjetas perforadas
-             ▼
-┌────────────────────────────────────────┐
-│ 2. OPERADOR                            │
-│    Prepara tarjetas y tarjetas          │
-│    Incluye: código + datos + control    │
-└────────────┬───────────────────────────┘
-             │ Se acumulan en lote
-             ▼
-┌────────────────────────────────────────┐
-│ 3. LECTOR DE TARJETAS                  │
-│    Lee tarjetas a alta velocidad        │
-└────────────┬───────────────────────────┘
-             │ Datos en memoria
-             ▼
-┌────────────────────────────────────────┐
-│ 4. COMPUTADORA PROCESA                │
-│    Ejecuta secuencialmente             │
-│    Uno tras otro                       │
-└────────────┬───────────────────────────┘
-             │ Resultados listos
-             ▼
-┌────────────────────────────────────────┐
-│ 5. IMPRESORA                           │
-│    Salida en papel (horas después)     │
-└────────────────────────────────────────┘
-                    </div>
-
-                    <h4>📊 Limitaciones</h4>
-                    <table>
-                        <tr>
-                            <th>Problema</th>
-                            <th>Explicación</th>
-                        </tr>
-                        <tr>
-                            <td><strong>Sin interactividad</strong></td>
-                            <td>No puedes corregir errores en tiempo real</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Turnaround largo</strong></td>
-                            <td>Horas o días para resultados</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Sin debugging</strong></td>
-                            <td>Casi imposible encontrar bugs</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Ineficiente</strong></td>
-                            <td>CPU espera E/S del siguiente job</td>
-                        </tr>
-                    </table>
-
-                    <div class="callout info">
-                        <p><strong>💡 Evolución clave:</strong> El concepto de "cola de trabajos" (job queue) nació aquí y todavía lo usamos hoy (printers, batch jobs).</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Generation 2 -->
-        <section id="gen2">
-            <h2>4. Segunda Generación: Multiprogramación (1965-1980)</h2>
-
-            <h3>🎯 El problema: CPU esperando E/S</h3>
-
-            <div class="ascii-diagram">
-SIN MULTIPROGRAMACIÓN        CON MULTIPROGRAMACIÓN
-┌──────────────────┐         ┌──────────────────┐
-│ CPU: 10% ocupada │         │ CPU: 95% ocupada  │
-│ E/S: 90% tiempo  │         │ E/S: 5% tiempo   │
-└──────────────────┘         └──────────────────┘
-
-Porque cuando un programa      Ahora CPU NO espera:
-lee del disco, CPU ociosa     - Mientras A lee, B corre
-porque no hay otro programa    - Mientras B escribe, C corre
-que ejecutar.
-            </div>
-
-            <div class="comparison">
-                <div>
-                    <h4>💾 Memoria con Múltiples Programas</h4>
-                    <div class="ascii-diagram">
-┌────────────────────────────────┐
-│         MEMORIA RAM            │
-├────────────────────────────────┤
-│  Sistema Operativo             │
-├────────────────────────────────┤
-│  Programa A                     │ ← esperando E/S
-│  (en espera de disco)           │
-├────────────────────────────────┤
-│  Programa B  ◀─────► CPU        │ ← ejecutando ahora
-│  (usa CPU activamente)          │
-├────────────────────────────────┤
-│  Programa C                     │ ← esperando E/S
-│  (en espera de red)             │
-└────────────────────────────────┘
-
-La CPU cambia de programa cuando
-uno hace E/S. A → B → C → A → B ...
-                    </div>
-
-                    <h4>🚀 Innovación Clave</h4>
-                    <table>
-                        <tr>
-                            <th>Aspecto</th>
-                            <th>Antes</th>
-                            <th>Después</th>
-                        </tr>
-                        <tr>
-                            <td><strong>Uso de CPU</strong></td>
-                            <td>~10-20%</td>
-                            <td>~80-95%</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Throughput</strong></td>
-                            <td>1 job/hora</td>
-                            <td>3-5 jobs/hora</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Eficiencia</strong></td>
-                            <td>Muy baja</td>
-                            <td>Muy alta</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Costo</strong></td>
-                            <td>Alto por job</td>
-                            <td>Bajo por job</td>
-                        </tr>
-                    </table>
-                </div>
-
-                <div>
-                    <h4>🏭 Sistemas Importantes</h4>
-
-                    <div class="generation-box">
-                        <h4>IBM <abbr title="Operating System/360">OS/360</abbr> (1964)</h4>
-                        <ul>
-                            <li><strong>Primer SO de "propósito general"</strong></li>
-                            <li><strong>Familia de SOs</strong> para diferentes hardware</li>
-                            <li><strong>Conceptos introducidos:</strong>
-                                <ul>
-                                    <li>Job control language (JCL)</li>
-                                    <li>Spooling (Simultaneous Peripheral Operations On-Line)</li>
-                                    <li>Multiprogramación real</li>
-                                </ul>
-                            </li>
-                        </ul>
-                        <div class="quote">
-                            OS/360 fue el proyecto de software más grande de la época: 5,000 personas-año
-                        </div>
-                    </div>
-
-                    <div class="generation-box">
-                        <h4><abbr title="Multiplexed Information and Computing Service">MULTICS</abbr> (1969)</h4>
-                        <ul>
-                            <li><strong>Proyecto conjunto:</strong> Bell Labs, MIT, GE</li>
-                            <li><strong>Objetivo:</strong> SO "universal" para todas las necesidades</li>
-                            <li><strong>Resultado:</strong> Demasiado complejo, proyecto cancelado</li>
-                            <li><strong>Legado:</strong> Ideas que inspiraron UNIX</li>
-                        </ul>
-                        <div class="quote">
-                            <abbr title="Multiplexed Information and Computing Service">MULTICS</abbr> era "todo para todos": Muy potente, Muy complejo, Muy caro, Falló por sobre-ingeniería
-                        </div>
-                    </div>
-
-                    <div class="callout success">
-                        <p><strong>💡 Evolución clave:</strong> Multiprogramación = El kernel cambia de programa activo cada milisegundo, maximizando uso de CPU.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- UNIX -->
-        <section id="unix">
-            <h2>5. Nacimiento de UNIX (1969)</h2>
-
-            <h3>📖 La historia de cómo un proyecto fallido creó el SO más influyente</h3>
-
-            <div class="comparison">
-                <div>
-                    <h4>🔬 El contexto: MULTICS</h4>
-                    <div class="ascii-diagram">
-┌─────────────────────────────────────┐
-│           <abbr title="Multiplexed Information and Computing Service">MULTICS</abbr> (1964-1969)        │
-│                                     │
-│  Objetivo: SO "perfecto" universal   │
-│  Problema: Demasiado complejo        │
-│  Resultado: Proyecto cancelado      │
-│                                     │
-│  Bell Labs se retira del proyecto   │
-└─────────────────────────────────────┘
-           │ Ken Thompson, Dennis Ritchie
-           │ decepcionados, deciden
-           │ crear su propio SO minimalista
-           ▼
-┌─────────────────────────────────────┐
-│           UNIX (1969)               │
-│                                     │
-│  Filosofía: "Haz una cosa bien"     │
-│  Simple, elegante, poderoso          │
-└─────────────────────────────────────┘
-                    </div>
-
-                    <h4>🎯 Los Creadores</h4>
-                    <table>
-                        <tr>
-                            <th>Persona</th>
-                            <th>Rol</th>
-                            <th>Contribución</th>
-                        </tr>
-                        <tr>
-                            <td><strong>Ken Thompson</strong></td>
-                            <td>Arquitecto principal</td>
-                            <td>Diseñó UNIX, escribió B</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Dennis Ritchie</strong></td>
-                            <td>Creador de C</td>
-                            <td>Inventó C, reescribió UNIX</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Douglas McIlroy</strong></td>
-                            <td>Filosofía</td>
-                            <td>"Pipes", filosofía UNIX</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Brian Kernighan</strong></td>
-                            <td>Documentación</td>
-                            <td>Explicó UNIX al mundo</td>
-                        </tr>
-                    </table>
-                </div>
-
-                <div>
-                    <h4>💡 Innovaciones Revolucionarias</h4>
-
-                    <div class="generation-box">
-                        <h5>1. Escrito en C (Portabilidad)</h5>
-                        <div class="ascii-diagram">
-ANTES (SO en ensamblador):
-┌──────────────────┐
-│ SO IBM 360       │ → Solo corre en IBM 360
-│ (ensamblador)    │
-└──────────────────┘
-
-DESPUÉS (UNIX en C):
-┌──────────────────┐        ┌──────────────┐
-│ UNIX en C        │   ──►  │ <abbr title="Program Data Processor-11">PDP-11</abbr>       │
-└──────────────────┘        │ VAX          │
-                            │ x86          │
-                            │ ARM          │
-                            └──────────────┘
-
-UN SO corre en CUALQUIER hardware
-con solo recompilar.
-                        </div>
-                    </div>
-
-                    <div class="generation-box">
-                        <h5>2. Filosofía "Haz una cosa y hazla bien"</h5>
-                        <table>
-                            <tr>
-                                <th>Programa</th>
-                                <th>Función</th>
-                                <th>Combinar</th>
-                            </tr>
-                            <tr>
-                                <td><code>ls</code></td>
-                                <td>Listar archivos</td>
-                                <td><code>ls | grep .txt</code></td>
-                            </tr>
-                            <tr>
-                                <td><code>grep</code></td>
-                                <td>Buscar texto</td>
-                                <td><code>cat file | grep error</code></td>
-                            </tr>
-                            <tr>
-                                <td><code>cat</code></td>
-                                <td>Mostrar archivo</td>
-                                <td><code>cat file | wc -l</code></td>
-                            </tr>
-                            <tr>
-                                <td><code>wc</code></td>
-                                <td>Contar líneas</td>
-                                <td><code>ls | wc -l</code></td>
-                            </tr>
-                        </table>
-                        <p><strong>Pequeñas herramientas que se combinan = Poder infinito</strong></p>
-                    </div>
-
-                    <div class="generation-box">
-                        <h5>4. Herencia que define el mundo actual</h5>
-                        <div class="ascii-diagram">
-UNIX (1969)
-   │
-   ├───→ Linux (1991) → Servidores, Android, <abbr title="Internet of Things">IoT</abbr>
-   ├───→ <abbr title="Berkeley Software Distribution">BSD</abbr> → macOS, iOS
-   ├───→ <abbr title="Minimal Unix">Minix</abbr> → Educación
-   └───→ Plan 9 → Inspiración para Go
-                        </div>
-                        <p><strong>El 99% de internet corre descendientes de UNIX.</strong></p>
-                    </div>
-
-                    <div class="callout success">
-                        <p><strong>🎯 Lección:</strong> A veces, un fracaso (<abbr title="Multiplexed Information and Computing Service">MULTICS</abbr>) conduce a un éxito aún mayor (UNIX). La simplicidad gana.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Generation 3 -->
-        <section id="gen3">
-            <h2>6. Tercera Generación: Tiempo Compartido (1970-1990)</h2>
-
-            <h3>⏱️ Time-Sharing: Interactividad para múltiples usuarios</h3>
-
-            <div class="comparison">
-                <div>
-                    <h4>💡 El concepto: "Tajadas" de tiempo</h4>
-                    <div class="ascii-diagram">
-CPU de 1 segundo se divide en "tajadas":
-
-┌─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┐
-│100ms│100ms│100ms│100ms│100ms│100ms│100ms│100ms│100ms│
-└──┬──┴──┬──┴──┬──┴──┬──┴──┬──┴──┬──┴──┬──┴──┬──┘
-   │   │   │   │   │   │   │   │   │
-   ▼   ▼   ▼   ▼   ▼   ▼   ▼   ▼   ▼   ▼
-Usuario Usuario Usuario Usuario Usuario Usuario Usuario
-  1      2      3      4      5      6      7      8
-
-Cada usuario tiene la ILLUSIÓN de
-exclusividad, pero comparten la CPU.
-                    </div>
-
-                    <h4>🎯 Problema Resuelto</h4>
-                    <table>
-                        <tr>
-                            <th>Antes (Batch)</th>
-                            <th>Después (Time-Sharing)</th>
-                        </tr>
-                        <tr>
-                            <td>Horas de espera</td>
-                            <td>Respuesta inmediata</td>
-                        </tr>
-                        <tr>
-                            <td>Sin interactividad</td>
-                            <td>Interactivo</td>
-                        </tr>
-                        <tr>
-                            <td>Un usuario a la vez</td>
-                            <td>Decenas de usuarios</td>
-                        </tr>
-                        <tr>
-                            <td>Debugging difícil</td>
-                            <td>Debugging en tiempo real</td>
-                        </tr>
-                    </table>
-
-                    <h4>⚙️ Cómo funciona</h4>
-                    <div class="ascii-diagram">
-1. Usuario presiona tecla
-   ↓
-2. SO guarda contexto del programa actual
-   ↓
-3. SO carga programa del usuario
-   ↓
-4. Usuario tiene CPU por su "tajada"
-   ↓
-5. SO interrumpe y cambia a siguiente usuario
-   ↓
-6. (Repetir muy rápido)
-
-Todo esto ocurre en milisegundos.
-                    </div>
-                </div>
-
-                <div>
-                    <h4>🏛️ Sistemas Importantes</h4>
-
-                    <div class="generation-box">
-                        <h5>UNIX (1969-presente) - El estándar</h5>
-                        <p>Características innovadoras:</p>
-                        <ul>
-                            <li>Time-sharing real</li>
-                            <li>Jerarquía de archivos</li>
-                            <li>Permisos de usuario</li>
-                            <li>Shell programable</li>
-                            <li>Todo es un archivo</li>
-                            <li>Escrito en C (portable)</li>
-                        </ul>
-
-                        <table>
-                            <tr>
-                                <th>Año</th>
-                                <th>Versión</th>
-                                <th>Innovación</th>
-                            </tr>
-                            <tr>
-                                <td>1969</td>
-                                <td>UNIX v1</td>
-                                <td>Primer sistema time-sharing</td>
-                            </tr>
-                            <tr>
-                                <td>1971</td>
-                                <td>UNIX v4</td>
-                                <td>Pipes (comunicación entre procesos)</td>
-                            </tr>
-                            <tr>
-                                <td>1973</td>
-                                <td>UNIX v5</td>
-                                <td>Primera versión portátil</td>
-                            </tr>
-                            <tr>
-                                <td>1977</td>
-                                <td><abbr title="Berkeley Software Distribution">BSD</abbr></td>
-                                <td>Berkeley sockets (red)</td>
-                            </tr>
-                            <tr>
-                                <td>1983</td>
-                                <td>System V</td>
-                                <td>IPC System V, semáforos</td>
-                            </tr>
-                        </table>
-                    </div>
-
-                    <h4>📊 Comparativa de Sistemas de los 70s</h4>
-                    <table>
-                        <tr>
-                            <th>Sistema</th>
-                            <th>Hardware</th>
-                            <th>Usuarios</th>
-                            <th>Uso principal</th>
-                        </tr>
-                        <tr>
-                            <td>UNIX</td>
-                            <td>PDP-11, VAX</td>
-                            <td>~50-100</td>
-                            <td>Academia, investigación</td>
-                        </tr>
-                        <tr>
-                            <td><abbr title="Virtual Memory System">VMS</abbr></td>
-                            <td>VAX</td>
-                            <td>~100</td>
-                            <td>Empresas, ingeniería</td>
-                        </tr>
-                        <tr>
-                            <td>CP/M</td>
-                            <td>8080, Z80</td>
-                            <td>1</td>
-                            <td>Oficina, juegos tempranos</td>
-                        </tr>
-                        <tr>
-                            <td>DOS</td>
-                            <td>8086</td>
-                            <td>1</td>
-                            <td>Jogos, ofimática</td>
-                        </tr>
-                    </table>
-
-                    <div class="callout info">
-                        <p><strong>💡 Evolución clave:</strong> Time-sharing + Terminales remotas = Primera forma de "computación en la nube" (mainframes con terminales tontas).</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Generation 4 -->
-        <section id="gen4">
-            <h2>7. Cuarta Generación: Computadoras Personales (1980-2000)</h2>
-
-            <h3>🏠 La revolución del PC: Computación para todos</h3>
-
-            <div class="comparison">
-                <div>
-                    <h4>📊 Línea de tiempo del PC</h4>
-                    <div class="ascii-diagram">
-1975          1981          1984          1991          1995
- │             │             │             │             │
- ▼             ▼             ▼             ▼             ▼
-Altair        IBM PC         Mac           Linux         Win 95
-8800          (MS-DOS)       (GUI)         (Open)        (GUI masivo)
-                    </div>
-
-                    <h4>🎯 Sistemas que Definieron una Época</h4>
-                    <table>
-                        <tr>
-                            <th>Año</th>
-                            <th>Sistema</th>
-                            <th>Importancia Histórica</th>
-                        </tr>
-                        <tr>
-                            <td><strong>1981</strong></td>
-                            <td><strong>MS-DOS</strong></td>
-                            <td>IBM PC, dominio empresarial</td>
-                        </tr>
-                        <tr>
-                            <td><strong>1984</strong></td>
-                            <td><strong>Mac OS</strong></td>
-                            <td>Primera GUI comercial exitosa</td>
-                        </tr>
-                        <tr>
-                            <td><strong>1985</strong></td>
-                            <td>Windows 1.0</td>
-                            <td>Intento de GUI sobre DOS</td>
-                        </tr>
-                        <tr>
-                            <td><strong>1991</strong></td>
-                            <td><strong>Linux</strong></td>
-                            <td>SO libre y abierto</td>
-                        </tr>
-                        <tr>
-                            <td><strong>1995</strong></td>
-                            <td><strong>Windows 95</strong></td>
-                            <td>GUI dominante en hogares</td>
-                        </tr>
-                        <tr>
-                            <td><strong>1998</strong></td>
-                            <td><strong>Windows 98</strong></td>
-                            <td>Internet integrado</td>
-                        </tr>
-                    </table>
-
-                    <h4>🚀 Transformación Social</h4>
-                    <table>
-                        <tr>
-                            <th>Antes (1980)</th>
-                            <th>Después (2000)</th>
-                        </tr>
-                        <tr>
-                            <td>Computadoras = empresas</td>
-                            <td>Computadoras = hogares</td>
-                        </tr>
-                        <tr>
-                            <td>Programadores = expertos</td>
-                            <td>Cualquiera programa</td>
-                        </tr>
-                        <tr>
-                            <td>Internet = académicos</td>
-                            <td>Internet = todos</td>
-                        </tr>
-                        <tr>
-                            <td>Costo = $5,000+</td>
-                            <td>Costo = $500</td>
-                        </tr>
-                    </table>
-                </div>
-
-                <div>
-                    <h4>💡 La Guerra de los SO</h4>
-                    <div class="ascii-diagram">
-┌─────────────┐                    ┌─────────────┐
-│   DOS       │                    │   Mac OS    │
-│   $ prompt  │                    │   🖼️  GUI   │
-│   c:\>       │                    │   Mouse      │
-│             │                    │   Iconos     │
-└─────────────┘                    └─────────────┘
-     │                                   │
-     │     1991: Linux nace           │
-     │     1995: Win 95 une GUI       │
-     │           │                    │
-     ▼           ▼                    ▼
-┌─────────────────────────────────────────┐
-│  El gana: GUI + Compatibilidad        │
-│  (Microsoft)                          │
-│                                         │
-│  Los perdedores:                       │
-│  - Mac: Cerrado, hardware caro          │
-│  - Linux: Técnico, sin GUI             │
-└─────────────────────────────────────────┘
-                    </div>
-
-                    <h4>📈 Números de la Revolución del PC</h4>
-                    <table>
-                        <tr>
-                            <th>Métrica</th>
-                            <th>1981</th>
-                            <th>1990</th>
-                            <th>2000</th>
-                            <th>2010</th>
-                        </tr>
-                        <tr>
-                            <td>PCs vendidos/año</td>
-                            <td>~0.2M</td>
-                            <td>~10M</td>
-                            <td>~140M</td>
-                            <td>~350M</td>
-                        </tr>
-                        <tr>
-                            <td>Penetración hogares</td>
-                            <td><1%</td>
-                            <td>~20%</td>
-                            <td>~60%</td>
-                            <td>~80%</td>
-                        </tr>
-                        <tr>
-                            <td>Costo promedio</td>
-                            <td>$3,000</td>
-                            <td>$1,500</td>
-                            <td>$800</td>
-                            <td>$500</td>
-                        </tr>
-                    </table>
-
-                    <div class="callout success">
-                        <p><strong>💡 Evolución clave:</strong> El PC + GUI = Democratización de la computación. Ya no necesitabas ser ingeniero para usar un computador.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Generation 5 -->
-        <section id="gen5">
-            <h2>8. Quinta Generación: SO Modernos (2000-presente)</h2>
-
-            <h3>🌐 La era de la conectividad total y la computación ubicua</h3>
-
-            <div class="comparison">
-                <div>
-                    <h4>⚡ Características Definitorias</h4>
-                    <table>
-                        <tr>
-                            <th>Característica</th>
-                            <th>Descripción</th>
-                            <th>Ejemplo</th>
-                        </tr>
-                        <tr>
-                            <td><strong>Multitarea real</strong></td>
-                            <td>Múltiples núcleos, múltiples CPUs</td>
-                            <td>Tu PC hace 100 cosas a la vez</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Conectividad total</strong></td>
-                            <td>Redes, Internet, 5G</td>
-                            <td>Todo siempre conectado</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Seguridad avanzada</strong></td>
-                            <td>Encriptación, permisos granulares</td>
-                            <td>FaceID, HTTPS, sandbox</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Virtualización</strong></td>
-                            <td>VMs, contenedores</td>
-                            <td>Docker, KVM, Hyper-V</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Cloud native</strong></td>
-                            <td>Servicios on-demand</td>
-                            <td>AWS, Azure, GCP</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Computación móvil</strong></td>
-                            <td>Smartphones = computadores potentes</td>
-                            <td>Tu celular es más rápido que PCs de 2010</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Edge computing</strong></td>
-                            <td>Procesamiento en el borde</td>
-                            <td>IoT, sensores, CDN</td>
-                        </tr>
-                    </table>
-
-                    <h4>🔮 Tendencias emergentes (2026+)</h4>
-                    <table>
-                        <tr>
-                            <th>Tendencia</th>
-                            <th>Explicación</th>
-                            <th>Impacto</th>
-                        </tr>
-                        <tr>
-                            <td><strong>AI-native OS</strong></td>
-                            <td>SO optimizados para ML chips</td>
-                            <td>Windows Copilot, Apple Intelligence</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Container-first</strong></td>
-                            <td>Microservicios + contenedores</td>
-                            <td>Kubernetes everywhere</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Real-time OS</strong></td>
-                            <td>Latencia ultrabaja</td>
-                            <td>Automotrización, VR/AR</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Energy-aware</strong></td>
-                            <td>Optimización de batería</td>
-                            <td>Chips ARM en servidores</td>
-                        </tr>
-                    </table>
-                </div>
-
-                <div>
-                    <h4>🖥️ Ejemplos Actuales por Categoría</h4>
-
-                    <div class="generation-box">
-                        <h5>Desktop</h5>
-                        <p><strong>Windows 11 (2021+)</strong> - Interfaz híbrida, WSL 2 (Linux integrado)</p>
-                        <p><strong>macOS</strong> - ARM64 (Apple Silicon), Continuidad iOS/macOS</p>
-                        <p><strong>Linux Desktop</strong> - Ubuntu LTS, Fedora, Pop!_OS, Mint</p>
-                    </div>
-
-                    <div class="generation-box">
-                        <h5>Móvil</h5>
-                        <p><strong>Android (Google)</strong> - 71% market share, 24,000+ modelos</p>
-                        <p><strong>iOS (Apple)</strong> - 28% market share, ecosistema cerrado</p>
-                    </div>
-
-                    <div class="generation-box">
-                        <h5>Servidor</h5>
-                        <p><strong>Distribuciones empresariales:</strong> RHEL, Ubuntu LTS, Debian, SUSE</p>
-                        <p><strong>SO Cloud:</strong> Amazon Linux, Azure Linux, Google COS</p>
-                    </div>
-
-                    <div class="callout success">
-                        <p><strong>💡 Evolución clave:</strong> Ya no hay "el" SO dominante. Hay múltiples SOs para diferentes usos, y todos coexisten en un ecosistema conectado.</p>
-                    </div>
-                </div>
-            </div>
-
-            <figure>
-                <img src="../assets/infografias/so-evolucion-timeline.png" alt="Evolución histórica de los Sistemas Operativos">
-                <figcaption>Figura 1: Línea de tiempo de la evolución de los Sistemas Operativos desde 1940 hasta hoy</figcaption>
-            </figure>
-        </section>
-
-        <!-- Components -->
-        <section id="componentes">
-            <h2>9. Componentes de un SO Moderno</h2>
-
-            <h3>Capas de Abstracción: El modelo de cebolla</h3>
-
-            <div class="ascii-diagram" style="text-align: center; margin: 2rem 0;">
-┌─────────────────────────────────────────────────┐
-│                  APLICACIONES                   │ ← Usuario interactúa aquí
-├─────────────────────────────────────────────────┤
-│              UTILIDADES DEL SISTEMA             │
-│    (Administrador archivos, Terminal, etc.)     │
-├─────────────────────────────────────────────────┤
-│                    SHELL                        │
-│         (Intérprete de comandos / GUI)          │
-├─────────────────────────────────────────────────┤
-│            LLAMADAS AL SISTEMA (<abbr title="Application Programming Interface">API</abbr>)            │ ← La frontera crucial
-├─────────────────────────────────────────────────┤
-│                   KERNEL                        │
-│  ┌──────────┬──────────┬──────────┬──────────┐ │
-│  │ Gestor   │ Gestor   │ Sistema  │ Gestor   │ │
-│  │ Procesos │ Memoria  │ Archivos │   E/S    │ │
-│  └──────────┴──────────┴──────────┴──────────┘ │
-├─────────────────────────────────────────────────┤
-│                   HARDWARE                      │ ← Componentes físicos
-└─────────────────────────────────────────────────┘
-            </div>
-
-            <figure>
-                <img src="../assets/diagramas-svg/arquitectura-capas.svg" alt="Diagrama SVG de arquitectura en capas del SO">
-                <figcaption>Figura X: Arquitectura en capas del Sistema Operativo - del hardware a las aplicaciones</figcaption>
-            </figure>
-
-            <div class="comparison">
-                <div>
-                    <h4>🧅 ¿Por qué "capas"?</h4>
-                    <p>Cada capa <strong>oculta la complejidad</strong> de la inferior.</p>
-
-                    <h4>📋 Responsabilidades por Capa</h4>
-                    <table>
-                        <tr>
-                            <th>Capa</th>
-                            <th>Responsabilidad</th>
-                            <th>Ejemplos</th>
-                        </tr>
-                        <tr>
-                            <td><strong>Aplicaciones</strong></td>
-                            <td>Funcionalidad para usuario</td>
-                            <td>Chrome, VS Code, juegos</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Utilidades</strong></td>
-                            <td>Herramientas del sistema</td>
-                            <td>FileManager, TaskManager</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Shell</strong></td>
-                            <td>Puente usuario-kernel</td>
-                            <td>bash, PowerShell, Explorador</td>
-                        </tr>
-                        <tr>
-                            <td><strong>System Calls</strong></td>
-                            <td>API oficial del SO</td>
-                            <td>open(), read(), fork()</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Kernel</strong></td>
-                            <td>Gestión de recursos</td>
-                            <td>CPU, RAM, disco, red</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Hardware</strong></td>
-                            <td>Componentes físicos</td>
-                            <td>CPU, RAM, SSD, GPU</td>
-                        </tr>
-                    </table>
-                </div>
-
-                <div>
-                    <h4>💡 Insight: La transición clave</h4>
-                    <div class="callout warning">
-                        <p><strong>Las system calls son la ÚNICA forma válida</strong> de que un programa acceda a servicios del kernel.</p>
-                    </div>
-
-                    <div class="ascii-diagram">
-Aplicación ──✖──> Hardware directo
-              │
-              └──> System Call ──> Kernel ──> Hardware
-                    </div>
-
-                    <p><strong>Sin system calls:</strong> Caos, inseguridad, crashes</p>
-                    <p><strong>Con system calls:</strong> Orden, seguridad, estabilidad</p>
-                </div>
-            </div>
-
-            <figure>
-                <img src="../assets/infografias/so-componentes-arquitectura.png" alt="Componentes y arquitectura del Sistema Operativo">
-                <figcaption>Figura 2: Arquitectura en capas de un Sistema Operativo moderno</figcaption>
-            </figure>
-        </section>
-
-        <!-- Kernel -->
-        <section id="kernel">
-            <h2>10. El Kernel (Núcleo)</h2>
-
-            <h3>El corazón del Sistema Operativo</h3>
-
-            <div class="comparison">
-                <div>
-                    <h4>💓 Por qué es el "corazón"</h4>
-                    <div class="ascii-diagram">
-         Aplicaciones
-              │
-              ▼
-    ┌─────────────────┐
-    │     KERNEL      │ ← Siempre en memoria
-    │                 │ ← Código privilegiado
-    │ - Planificador  │ ← Acceso a hardware
-    │ - Memoria       │
-    │ - Drivers       │
-    │ - Sistema arch. │
-    └─────────────────┘
-              │
-              ▼
-         Hardware
-                    </div>
-
-                    <h4>🎯 Responsabilidades Principales</h4>
-                    <table>
-                        <tr>
-                            <th>Componente</th>
-                            <th>Función</th>
-                        </tr>
-                        <tr>
-                            <td><strong>Planificador</strong></td>
-                            <td>Decide qué proceso ejecuta</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Gestor de memoria</strong></td>
-                            <td>Asigna RAM a procesos</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Sistema de archivos</strong></td>
-                            <td>Organiza datos en disco</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Drivers E/S</strong></td>
-                            <td>Habla con hardware</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Gestor de procesos</strong></td>
-                            <td>Crea, destruye procesos</td>
-                        </tr>
-                    </table>
-                </div>
-
-                <div>
-                    <h4>🏗️ Tipos de Kernel</h4>
-                    <table>
-                        <tr>
-                            <th>Tipo</th>
-                            <th>Estructura</th>
-                            <th>Ventajas</th>
-                            <th>Ejemplos</th>
-                        </tr>
-                        <tr>
-                            <td><strong>Monolítico</strong></td>
-                            <td>Todo en un espacio</td>
-                            <td>Rápido, directo</td>
-                            <td>Linux, DOS</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Microkernel</strong></td>
-                            <td>Mínimo en kernel</td>
-                            <td>Seguro, flexible</td>
-                            <td>Minix, QNX, seL4</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Híbrido</strong></td>
-                            <td>Mezcla de ambos</td>
-                            <td>Balance</td>
-                            <td>macOS, Windows NT</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Exokernel</strong></td>
-                            <td>Mínimo absoluto</td>
-                            <td>Flexibilidad total</td>
-                            <td>Investigación</td>
-                        </tr>
-                    </table>
-
-                    <h4>⚖️ Comparativa</h4>
-                    <div class="ascii-diagram">
-MONOLÍTICO                    MICROKERNEL
-┌─────────────┐              ┌──────────┐
-│   KERNEL    │              │  Kernel  │
-│             │              │  mínimo  │
-│ Todo junto  │              └─────┬────┘
-│             │                    │
-│ - Rápido    │              ┌──────▼──────┐
-│ - Complejo  │              │   Servicios │
-│ - Crash total│             │   en user   │
-└─────────────┘              └─────────────┘
-                    </div>
-
-                    <div class="callout info">
-                        <p><strong>Nota:</strong> Linux es monolítico con módulos cargables → "lo mejor de ambos mundos"</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Shell -->
-        <section id="shell">
-            <h2>11. El Shell</h2>
-
-            <h3>Interfaz entre usuario y kernel</h3>
-
-            <div class="comparison">
-                <div>
-                    <h4>🔄 El flujo de trabajo</h4>
-                    <div class="ascii-diagram">
-┌────────────────────────────────────────┐
-│            USUARIO                     │
-└───────────────┬────────────────────────┘
-                │ escribe comando
-                ▼
-┌────────────────────────────────────────┐
-│             SHELL                      │
-│  $ ls -la /home                        │
-│                                        │
-│  - Interpreta el comando               │
-│  - Llama al kernel                     │
-│  - Muestra resultado                   │
-└───────────────┬────────────────────────┘
-                │ llamada al sistema
-                ▼
-┌────────────────────────────────────────┐
-│            KERNEL                      │
-└────────────────────────────────────────┘
-                    </div>
-
-                    <h4>🎭 Dos tipos de Shell</h4>
-                    <table>
-                        <tr>
-                            <th>Tipo</th>
-                            <th>Descripción</th>
-                            <th>Ejemplos</th>
-                        </tr>
-                        <tr>
-                            <td><strong>CLI</strong></td>
-                            <td>Comandos de texto</td>
-                            <td>bash, zsh, PowerShell</td>
-                        </tr>
-                        <tr>
-                            <td><strong>GUI</strong></td>
-                            <td>Interfaz gráfica</td>
-                            <td>Explorador Windows, Finder</td>
-                        </tr>
-                    </table>
-                </div>
-
-                <div>
-                    <h4>🐚 Shells CLI populares</h4>
-                    <table>
-                        <tr>
-                            <th>Shell</th>
-                            <th>Características</th>
-                            <th>Uso típico</th>
-                        </tr>
-                        <tr>
-                            <td><strong>bash</strong></td>
-                            <td>Estándar <strong>POSIX</strong> (<abbr title="Portable Operating System Interface">POSIX</abbr>), omnipresente</td>
-                            <td>Linux, macOS (antes)</td>
-                        </tr>
-                        <tr>
-                            <td><strong>zsh</strong></td>
-                            <td>Autocompletado avanzado, themes</td>
-                            <td>macOS default</td>
-                        </tr>
-                        <tr>
-                            <td><strong>PowerShell</strong></td>
-                            <td>Orientado a objetos, .NET</td>
-                            <td>Windows admin</td>
-                        </tr>
-                        <tr>
-                            <td><strong>fish</strong></td>
-                            <td>Autocompletado inteligente, UX-friendly</td>
-                            <td>Principiantes</td>
-                        </tr>
-                    </table>
-
-                    <h4>💻 GUI como Shell</h4>
-                    <div class="callout warning">
-                        <p><strong>EXPLORADOR WINDOWS = Shell gráfico</strong></p>
-                        <p>Click carpeta → Explorador interpreta → Llama a kernel → Muestra contenido</p>
-                        <p>Lo MISMO que bash, pero con clics en lugar de comandos de texto.</p>
-                    </div>
-
-                    <div class="callout success">
-                        <p><strong>El shell NO es el kernel.</strong> Es un programa CORRIENDO en modo usuario que SOLICITA servicios al kernel.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- System Calls -->
-        <section id="system-calls">
-            <h2>12. Llamadas al Sistema (System Calls)</h2>
-
-            <h3>La <abbr title="Application Programming Interface">API</abbr> del Sistema Operativo</h3>
-
-            <div class="comparison">
-                <div>
-                    <h4>🔌 Por qué son necesarias</h4>
-                    <pre><code>// Ejemplo: Abrir un archivo
-int fd = open("/home/user/archivo.txt", O_RDONLY);
-
-// El programa NO accede al disco directamente
-// Pide al kernel que lo haga por él</code></pre>
-
-                    <div class="ascii-diagram">
-┌─────────────┐                    ┌─────────────┐
-│  PROGRAMA   │                    │   HARDWARE  │
-│             │                    │             │
-│ "Quiero     │────✖────directo──→│  (DISCO)    │
-│  leer disco"│                    │             │
-└──────┬──────┘                    └─────────────┘
-       │
-       │ System Call
-       ▼
-┌─────────────┐
-│   KERNEL    │ ← Verifica permisos
-│             │ ← Accede a hardware
-│ "Autorizado"│ ← Devuelve datos
-└──────┬──────┘
-       │
-       ▼
-┌─────────────┐
-│  PROGRAMA   │ ← Recibe datos
-│   (datos)   │
-└─────────────┘
-                    </div>
-                </div>
-
-                <div>
-                    <h4>📂 Categorías de System Calls</h4>
-                    <table>
-                        <tr>
-                            <th>Categoría</th>
-                            <th>Propósito</th>
-                            <th>Ejemplos</th>
-                        </tr>
-                        <tr>
-                            <td><strong>Procesos</strong></td>
-                            <td>Crear/destruir procesos</td>
-                            <td>fork(), exec(), exit(), wait()</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Archivos</strong></td>
-                            <td>Manipular archivos</td>
-                            <td>open(), read(), write(), close()</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Dispositivos</strong></td>
-                            <td>Acceder a hardware</td>
-                            <td>ioctl(), read(), write()</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Información</strong></td>
-                            <td>Obtener datos del sistema</td>
-                            <td>getpid(), time(), uname()</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Comunicación</strong></td>
-                            <td>Enviar/recibir datos</td>
-                            <td>pipe(), socket(), send()</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Memoria</strong></td>
-                            <td>Gestión de memoria</td>
-                            <td>mmap(), brk(), sbrk()</td>
-                        </tr>
-                    </table>
-
-                    <h4>🎯 Ejemplo real: `ls -la`</h4>
-                    <div class="ascii-diagram">
-$ ls -la /home
-
-bash ejecuta:
-1. getuid() → Verificar permisos
-2. opendir("/home") → Abrir directorio
-3. readdir() → Leer entrada
-4. stat() → Obtener metadatos
-5. printf() → Mostrar en pantalla
-6. closedir() → Cerrar directorio
-
-¡6 system calls para un simple ls!
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- User vs Kernel Mode -->
-        <section id="modos">
-            <h2>13. Modo Usuario vs Modo Kernel</h2>
-
-            <h3>Los "Anillos" de Protección (Protection Rings)</h3>
-
-            <p>Los procesadores modernos implementan <strong>4 niveles de privilegio</strong> (0-3), aunque la mayoría de SO solo usan 2:</p>
-
-            <div class="ascii-diagram">
-┌─────────────────────────────────────────────────────┐
-│  Ring 0  │  MODO KERNEL  │  Kernel, drivers         │
-│          │  (Máximo)     │  Acceso total            │
-├─────────────────────────────────────────────────────┤
-│  Ring 1  │  (No usado)   │  Reservado               │
-├─────────────────────────────────────────────────────┤
-│  Ring 2  │  (No usado)   │  Reservado               │
-├─────────────────────────────────────────────────────┤
-│  Ring 3  │  MODO USUARIO │  Aplicaciones normales   │
-│          │  (Mínimo)     │  Acceso restringido      │
-└─────────────────────────────────────────────────────┘
-            </div>
-
-            <div class="comparison">
-                <div>
-                    <h4>🔵 MODO USUARIO (Ring 3)</h4>
-                    <ul>
-                        <li><strong>Aplicaciones normales</strong> (Chrome, VS Code, juegos)</li>
-                        <li><strong>NO puede acceder hardware directamente</strong></li>
-                        <li><strong>Memoria aislada</strong> (solo su espacio asignado)</li>
-                        <li><strong>Instrucciones prohibidas:</strong> IN, OUT, CLI, HLT</li>
-                        <li><strong>Si falla:</strong> Solo muere la aplicación</li>
-                        <li><strong>Ejemplo:</strong> <code>printf()</code> → solicita servicio al kernel</li>
-                    </ul>
-                </div>
-
-                <div>
-                    <h4>🔴 MODO KERNEL (Ring 0)</h4>
-                    <ul>
-                        <li><strong>Código del SO y drivers</strong></li>
-                        <li><strong>Acceso total al hardware</strong></li>
-                        <li><strong>Toda la memoria accesible</strong></li>
-                        <li><strong>Puede ejecutar cualquier instrucción</strong></li>
-                        <li><strong>Si falla:</strong> CRASH/BSoD/Pánico del kernel</li>
-                        <li><strong>Ejemplo:</strong> <code>sys_write()</code> → escribe directo en hardware</li>
-                    </ul>
-                </div>
-            </div>
-
-            <h4>Tabla de Instrucciones Permitidas</h4>
-            <table>
-                <tr>
-                    <th>Instrucción</th>
-                    <th>Descripción</th>
-                    <th>Ring 3</th>
-                    <th>Ring 0</th>
-                </tr>
-                <tr>
-                    <td><code>MOV</code></td>
-                    <td>Mover datos</td>
-                    <td>✅</td>
-                    <td>✅</td>
-                </tr>
-                <tr>
-                    <td><code>ADD</code></td>
-                    <td>Sumar</td>
-                    <td>✅</td>
-                    <td>✅</td>
-                </tr>
-                <tr>
-                    <td><code>JMP</code></td>
-                    <td>Saltar</td>
-                    <td>✅</td>
-                    <td>✅</td>
-                </tr>
-                <tr>
-                    <td><code>IN</code> / <code>OUT</code></td>
-                    <td>Acceso a puertos E/S</td>
-                    <td>❌</td>
-                    <td>✅</td>
-                </tr>
-                <tr>
-                    <td><code>CLI</code> / <code>STI</code></td>
-                    <td>Des/habilitar interrupciones</td>
-                    <td>❌</td>
-                    <td>✅</td>
-                </tr>
-                <tr>
-                    <td><code>HLT</code></td>
-                    <td>Detener CPU</td>
-                    <td>❌</td>
-                    <td>✅</td>
-                </tr>
-            </table>
-
-            <div class="callout warning">
-                <p><strong>Resultado en Ring 3:</strong> Si un programa intenta ejecutar <code>IN</code> o <code>HLT</code>, la CPU genera una <strong>excepción de protección general</strong> (General Protection Fault) y el SO termina el proceso.</p>
-            </div>
-
-            <h3>¿Por qué separar modos?</h3>
-
-            <p><strong>Seguridad y estabilidad</strong></p>
-
-            <p><strong>Sin separación:</strong></p>
-            <div class="ascii-diagram">
-Programa malicioso → Accede a toda la memoria → DESASTRE
-            </div>
-
-            <p><strong>Con separación:</strong></p>
-            <div class="ascii-diagram">
-Programa malicioso → Pide al kernel → Kernel DENIEGA → Sistema seguro
-            </div>
-
-            <h4>Transición entre Modos: El Mecanismo</h4>
-            <div class="ascii-diagram">
-┌─────────────────────────────────────────────────┐
-│                MODO USUARIO (Ring 3)            │
-│                                                 │
-│   programa ejecuta: read(fd, buffer, 100)       │
-│                         │                       │
-│   [Instrucción syscall/int 0x80]                │
-└─────────────────────────┼───────────────────────┘
-                          │ TRAP (Interrupción)
-                          ▼
-┌─────────────────────────────────────────────────┐
-│                MODO KERNEL (Ring 0)             │
-│                                                 │
-│   1. Guardar contexto (registros)               │
-│   2. Verificar permisos del fd                  │
-│   3. Validar dirección de buffer                │
-│   4. Ejecutar lectura física del disco          │
-│   5. Copiar datos a espacio de usuario          │
-│   6. Restaurar contexto                         │
-│                         │                       │
-└─────────────────────────┼───────────────────────┘
-                          │ IRET (Return)
-                          ▼
-┌─────────────────────────────────────────────────┐
-│                MODO USUARIO (Ring 3)            │
-│   programa continúa con datos en buffer         │
-└─────────────────────────────────────────────────┘
-            </div>
-        </section>
-
-        <!-- Practice -->
-        <section id="practica">
-            <h2>14. Actividad Práctica (Opcional)</h2>
-
-            <section class="actividad">
-                <h3>Actividad: Preparación del Entorno de Trabajo</h3>
-                <p><strong>Tipo:</strong> Opcional (práctica)</p>
-                <p><strong>Relacionado con:</strong> Configuración del entorno Linux</p>
-                <p><strong>Entregable:</strong> Ninguno (para practicar)</p>
-                <p><strong>Propósito:</strong> Configurar WSL o máquina virtual para los laboratorios</p>
-            </section>
-
-            <h3>En parejas, preparen su entorno de trabajo</h3>
-
-            <div class="comparison">
-                <div>
-                    <h4>🪟 Para estudiantes con Windows</h4>
-                    <p>Los comandos de Linux del curso NO funcionan directamente en Windows. Tienen dos opciones para practicar:</p>
-
-                    <div class="generation-box">
-                        <h5>Opción 1: WSL (Recomendada)</h5>
-                        <p>Linux dentro de Windows</p>
-                        <ol>
-                            <li>Abran PowerShell como administrador</li>
-                            <li>Ejecuten: <code>wsl --install</code></li>
-                            <li>Reinicien el computador</li>
-                            <li>Abran "Ubuntu" desde el menú de inicio</li>
-                        </ol>
-                    </div>
-
-                    <div class="generation-box">
-                        <h5>Opción 2: Máquina Virtual</h5>
-                        <ol>
-                            <li>Instalen VirtualBox: <a href="https://www.virtualbox.org/">https://www.virtualbox.org/</a></li>
-                            <li>Descarguen Ubuntu LTS ISO: <a href="https://ubuntu.com/download">https://ubuntu.com/download</a></li>
-                            <li>Sigan el tutorial del Laboratorio 1 para crear la VM</li>
-                        </ol>
-                    </div>
-
-                    <p><strong>En este curso usaremos Linux (Ubuntu)</strong></p>
-                </div>
-
-                <div>
-                    <h4>🐧 En Linux/Ubuntu (Terminal)</h4>
-                    <p>Abren Terminal (en WSL o VM) y ejecuten:</p>
-
-                    <pre><code># Ver información del sistema
-uname -a                # Información del kernel
-cat /etc/os-release     # Distribución Linux
-
-# Ver procesos (top 10)
-ps aux | head -11       # Incluye encabezado
-
-# Ver memoria
-free -h                 # Muestra memoria RAM y swap</code></pre>
-
-                    <h4>🪟 En Windows (PowerShell)</h4>
-                    <p>Comandos nativos de Windows:</p>
-
-                    <pre><code># Ver información del sistema operativo
-Get-ComputerInfo | Select-Object CsName, WindowsVersion, OsArchitecture
-
-# Ver procesos (top 10 por uso de CPU)
-Get-Process | Select-Object -First 10 Name, CPU, PM | Sort-Object CPU -Descending
-
-# Ver memoria disponible
-systeminfo | findstr /C:"Total Physical Memory" /C:"Available Physical Memory"</code></pre>
-
-                    <h4>💬 Discusión en parejas</h4>
-                    <ol>
-                        <li><strong>Expliquen</strong> qué información aporta cada comando</li>
-                        <li><strong>Comparen</strong> resultados entre Windows y Linux</li>
-                        <li><strong>Conclusión breve:</strong> ¿Qué datos del SO te parecen más relevantes?</li>
-                    </ol>
-                </div>
-            </div>
-        </section>
-
-        <!-- Section 12: Laboratorio -->
-        <section id="laboratorio">
-            <h2>12. Laboratorio Práctico</h2>
-
-            <h3>Lab 01: Comandos Básicos de Linux</h3>
-            <p>En este laboratorio practicarás los comandos fundamentales de Linux que usarás durante todo el curso.</p>
+            <ul>
+                <li><strong>Navegar</strong> el sistema de archivos de Linux desde la terminal</li>
+                <li><strong>Crear, copiar, mover y eliminar</strong> archivos y directorios</li>
+                <li><strong>Visualizar</strong> el contenido de archivos de diferentes formas</li>
+                <li><strong>Entender y modificar</strong> permisos básicos de archivos</li>
+                <li><strong>Escribir scripts bash</strong> simples para automatizar tareas</li>
+            </ul>
 
             <div class="callout info">
-                <p class="callout-title">Objetivos del Laboratorio</p>
-                <ul>
-                    <li> Navegar el sistema de archivos</li>
-                    <li>Crear, copiar, mover y eliminar archivos/directorios</li>
-                    <li>Ver y modificar permisos básicos</li>
-                    <li>Usar pipes y redirección</li>
-                </ul>
+                <p class="callout-title">Prerrequisitos</p>
+                <p>Debes tener <strong>Ubuntu Server</strong> instalado en VirtualBox (Clase 01) o tener acceso a una terminal Linux.</p>
+            </div>
+        </section>
+
+        <!-- Theory: Directory Structure -->
+        <section id="teoria">
+            <h2>1. Estructura de Directorios de Linux</h2>
+
+            <h3>El Sistema de Archivos Jerárquico</h3>
+            <p>Linux usa una estructura de árbol con un directorio raíz <code>/</code>. Todos los archivos y directorios cuelgan de este punto.</p>
+
+            <div class="ascii-diagram">
+/ (raíz)
+├── bin/        → Programas esenciales (ls, cp, cat)
+├── boot/       → Archivos de arranque
+├── dev/        → Dispositivos (sda, tty, null)
+├── etc/        → Configuración del sistema
+├── home/       → Directorios de usuarios
+│   └── usuario/
+│       ├── documentos/
+│       ├── descargas/
+│       └── proyecto/
+├── lib/        → Librerías del sistema
+├── opt/        → Software opcional
+├── proc/       → Información del kernel (virtual)
+├── root/       → Home del superusuario
+├── sbin/       → Binarios del sistema
+├── tmp/        → Archivos temporales
+├── usr/        → Programas de usuario
+└── var/        → Datos variables (logs, spool)
             </div>
 
-            <h4>Comandos que Practicaremos</h4>
+            <h4>Directorios Importantes para Conocer</h4>
             <table>
                 <tr>
-                    <th>Categoría</th>
-                    <th>Comandos</th>
-                    <th>Descripción</th>
+                    <th>Directorio</th>
+                    <th>Contenido</th>
+                    <th>Uso Común</th>
                 </tr>
                 <tr>
-                    <td><strong>Navegación</strong></td>
-                    <td><code>ls</code>, <code>cd</code>, <code>pwd</code></td>
-                    <td>Listar, cambiar directorio, ruta actual</td>
+                    <td><code>/home</code></td>
+                    <td>Directorios personales de usuarios</td>
+                    <td>Tus archivos y proyectos</td>
                 </tr>
                 <tr>
-                    <td><strong>Archivos</strong></td>
-                    <td><code>cp</code>, <code>mv</code>, <code>rm</code>, <code>mkdir</code></td>
-                    <td>Copiar, mover, eliminar, crear directorios</td>
+                    <td><code>/etc</code></td>
+                    <td>Archivos de configuración</td>
+                    <td><code>passwd</code>, <code>fstab</code>, <code>ssh/</code></td>
                 </tr>
                 <tr>
-                    <td><strong>Información</strong></td>
-                    <td><code>cat</code>, <code>less</code>, <code>head</code>, <code>tail</code></td>
-                    <td>Ver contenido de archivos</td>
+                    <td><code>/var</code></td>
+                    <td>Datos variables</td>
+                    <td><code>/var/log</code> para logs</td>
                 </tr>
                 <tr>
-                    <td><strong>Permisos</strong></td>
-                    <td><code>chmod</code>, <code>chown</code></td>
-                    <td>Cambiar permisos y propietario</td>
+                    <td><code>/tmp</code></td>
+                    <td>Archivos temporales</td>
+                    <td>Se vacía al reiniciar</td>
                 </tr>
             </table>
 
-            <h4>Ejercicios del Laboratorio</h4>
-            <ol>
-                <li>Navega a tu directorio personal: <code>cd ~</code></li>
-                <li>Crea una estructura de directorios para el curso</li>
-                <li>Copia archivos de ejemplo y manipúlalos</li>
-                <li>Experimenta con permisos (<code>chmod 755</code>, <code>chmod 644</code>)</li>
-            </ol>
+            <h3>Path Absoluto vs Relativo</h3>
+            <table>
+                <tr>
+                    <th>Tipo</th>
+                    <th>Descripción</th>
+                    <th>Ejemplo</th>
+                </tr>
+                <tr>
+                    <td><strong>Absoluto</strong></td>
+                    <td>Desde la raíz <code>/</code></td>
+                    <td><code>/home/usuario/documentos</code></td>
+                </tr>
+                <tr>
+                    <td><strong>Relativo</strong></td>
+                    <td>Desde el directorio actual</td>
+                    <td><code>documentos</code> o <code>../documentos</code></td>
+                </tr>
+            </table>
 
-            <div class="callout warning">
-                <p class="callout-title">Consejo</p>
-                <p>¡Practica estos comandos hasta que los conozcas de memoria! Son la base de todo lo que viene después.</p>
+            <div class="ascii-diagram">
+Ejemplo de paths:
+
+Si estás en: /home/usuario/
+
+Path absoluto:
+  /etc/passwd          → Siempre funciona desde cualquier lugar
+
+Path relativo:
+  documentos/          → Directorio en el lugar actual
+  ../otro_usuario/     → Un nivel arriba
+  ./script.sh          → Directorio actual (./ es opcional)
             </div>
 
-            <p><strong>Acceso al laboratorio:</strong> <a href="../laboratorios-html/lab-01-comandos-basicos.html" target="_blank">Ver guía completa del Lab 01 →</a></p>
+            <div class="callout success">
+                <p class="callout-title">Recordatorio</p>
+                <p><code>~</code> (tilde) es un atajo para tu directorio home. <code>cd ~/documentos</code> te lleva a <code>/home/tu_usuario/documentos</code>.</p>
+            </div>
+        </section>
+
+        <!-- Navigation Commands -->
+        <section id="navegacion">
+            <h2>2. Navegación Básica (15 min)</h2>
+
+            <h3>Comandos Esenciales</h3>
+            <table>
+                <tr>
+                    <th>Comando</th>
+                    <th>Descripción</th>
+                    <th>Ejemplo</th>
+                </tr>
+                <tr>
+                    <td><code>pwd</code></td>
+                    <td>Print Working Directory - Mostrar directorio actual</td>
+                    <td><code>pwd</code></td>
+                </tr>
+                <tr>
+                    <td><code>ls</code></td>
+                    <td>List - Listar archivos</td>
+                    <td><code>ls -la</code></td>
+                </tr>
+                <tr>
+                    <td><code>cd</code></td>
+                    <td>Change Directory - Cambiar directorio</td>
+                    <td><code>cd /etc</code></td>
+                </tr>
+            </table>
+
+            <h3>Ejemplos Prácticos</h3>
+            <pre><code class="language-bash"># Mostrar directorio actual
+estudiante@ubuntu-server:~$ pwd
+/home/estudiante
+
+# Listar archivos (simple)
+estudiante@ubuntu-server:~$ ls
+descargas  documentos  proyectos
+
+# Listar con detalles (-l) y ocultos (-a)
+estudiante@ubuntu-server:~$ ls -la
+total 24
+drwxr-xr-x 5 estudiante estudiante 4096 Feb 10 10:30 .
+drwxr-xr-x 3 root       root       4096 Feb 10 09:00 ..
+drwxr-xr-x 2 estudiante estudiante 4096 Feb 10 10:15 descargas
+drwxr-xr-x 2 estudiante estudiante 4096 Feb 10 10:20 documentos
+drwxr-xr-x 2 estudiante estudiante 4096 Feb 10 10:25 proyectos
+-rw-r--r-- 1 estudiante estudiante  123 Feb 10 10:28 .bashrc
+
+# Cambiar a /etc
+estudiante@ubuntu-server:~$ cd /etc
+estudiante@ubuntu-server:/etc$ pwd
+/etc
+
+# Volver al home (~)
+estudiante@ubuntu-server:/etc$ cd ~
+estudiante@ubuntu-server:~$ pwd
+/home/estudiante
+
+# Ir al directorio anterior (..)
+estudiante@ubuntu-server:~/documentos$ cd ..
+estudiante@ubuntu-server:~$ pwd
+/home/estudiante</code></pre>
+
+            <div class="callout warning">
+                <p class="callout-title">Atención con los archivos ocultos</p>
+                <p>En Linux, los archivos que empiezan con <code>.</code> (punto) son ocultos. Usa <code>ls -a</code> para verlos todos.</p>
+            </div>
+        </section>
+
+        <!-- File Manipulation -->
+        <section id="archivos">
+            <h2>3. Manipulación de Archivos (15 min)</h2>
+
+            <h3>Comandos de Gestión</h3>
+            <table>
+                <tr>
+                    <th>Comando</th>
+                    <th>Descripción</th>
+                    <th>Ejemplo</th>
+                </tr>
+                <tr>
+                    <td><code>touch</code></td>
+                    <td>Crear archivo vacío o actualizar timestamp</td>
+                    <td><code>touch archivo.txt</code></td>
+                </tr>
+                <tr>
+                    <td><code>mkdir</code></td>
+                    <td>Make Directory - Crear directorio</td>
+                    <td><code>mkdir dir_prueba</code></td>
+                </tr>
+                <tr>
+                    <td><code>cp</code></td>
+                    <td>Copy - Copiar archivos</td>
+                    <td><code>cp origen.txt copia.txt</code></td>
+                </tr>
+                <tr>
+                    <td><code>mv</code></td>
+                    <td>Move - Mover o renombrar</td>
+                    <td><code>mv viejo.txt nuevo.txt</code></td>
+                </tr>
+                <tr>
+                    <td><code>rm</code></td>
+                    <td>Remove - Eliminar archivos</td>
+                    <td><code>rm archivo.txt</code></td>
+                </tr>
+                <tr>
+                    <td><code>rm -r</code></td>
+                    <td>Remove recursive - Eliminar directorios</td>
+                    <td><code>rm -r directorio/</code></td>
+                </tr>
+            </table>
+
+            <h3>Ejemplos Prácticos</h3>
+            <pre><code class="language-bash"># Crear estructura de directorios
+estudiante@ubuntu-server:~$ mkdir -p proyecto/{src,docs,tests}
+estudiante@ubuntu-server:~$ ls proyecto/
+docs  src  tests
+
+# Crear archivos
+estudiante@ubuntu-server:~$ touch proyecto/src/main.py
+estudiante@ubuntu-server:~$ touch proyecto/src/utils.py
+estudiante@ubuntu-server:~$ touch proyecto/docs/README.md
+
+# Copiar archivo
+estudiante@ubuntu-server:~$ cp proyecto/src/main.py proyecto/src/main.py.bak
+
+# Mover/renombrar (mv hace ambas cosas)
+estudiante@ubuntu-server:~$ mv proyecto/src/main.py.bak proyecto/src/main_backup.py
+
+# Verificar
+estudiante@ubuntu-server:~$ ls proyecto/src/
+main.py  main_backup.py  utils.py
+
+# Eliminar archivo
+estudiante@ubuntu-server:~$ rm proyecto/src/main_backup.py
+
+# Eliminar directorio completo
+estudiante@ubuntu-server:~$ rm -r proyecto/tests/
+estudiante@ubuntu-server:~$ ls proyecto/
+docs  src</code></pre>
+
+            <div class="callout warning">
+                <p class="callout-title">⚠️ CUIDADO: rm -rf</p>
+                <p><code>rm -rf</code> elimina recursivamente y sin preguntar. Un error puede borrar archivos importantes. Siempre verifica el comando antes de presionar Enter.</p>
+            </div>
+        </section>
+
+        <!-- File Viewing -->
+        <section id="visualizacion">
+            <h2>4. Visualización de Archivos (10 min)</h2>
+
+            <h3>Comandos de Lectura</h3>
+            <table>
+                <tr>
+                    <th>Comando</th>
+                    <th>Descripción</th>
+                    <th>Cuándo usarlo</th>
+                </tr>
+                <tr>
+                    <td><code>cat</code></td>
+                    <td>Muestra todo el contenido</td>
+                    <td>Archivos pequeños</td>
+                </tr>
+                <tr>
+                    <td><code>less</code></td>
+                    <td>Permite navegar (paginar)</td>
+                    <td>Archivos grandes</td>
+                </tr>
+                <tr>
+                    <td><code>head</code></td>
+                    <td>Primeras líneas (defecto: 10)</td>
+                    <td>Ver inicio de archivo</td>
+                </tr>
+                <tr>
+                    <td><code>tail</code></td>
+                    <td>Últimas líneas (defecto: 10)</td>
+                    <td>Ver final de archivo/logs</td>
+                </tr>
+                <tr>
+                    <td><code>grep</code></td>
+                    <td>Busca un patrón en archivo</td>
+                    <td>Encontrar texto específico</td>
+                </tr>
+            </table>
+
+            <h3>Ejemplos Prácticos</h3>
+            <pre><code class="language-bash"># Ver contenido completo (cat)
+estudiante@ubuntu-server:~$ cat /etc/hostname
+ubuntu-server
+
+# Ver archivo grande con paginación (less)
+estudiante@ubuntu-server:~$ less /var/log/syslog
+# Usa: q para salir, flechas para navegar, /patrón para buscar
+
+# Ver primeras 5 líneas
+estudiante@ubuntu-server:~$ head -n 5 /etc/passwd
+root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+bin:x:2:2:bin:/bin:/usr/sbin/nologin
+sys:x:3:3:sys:/dev:/usr/sbin/nologin
+sync:x:4:65534:sync:/bin:/bin/sync
+
+# Ver últimas 5 líneas
+estudiante@ubuntu-server:~$ tail -n 5 /etc/passwd
+
+# Buscar texto específico
+estudiante@ubuntu-server:~$ grep "root" /etc/passwd
+root:x:0:0:root:/root:/bin/bash
+
+# Combinaciones potentes
+estudiante@ubuntu-server:~$ ps aux | grep "apache"
+# Muestra procesos de apache
+
+# Ver logs en tiempo real
+estudiante@ubuntu-server:~$ tail -f /var/log/syslog
+# Ctrl+C para salir</code></pre>
+
+            <div class="callout info">
+                <p class="callout-title">Tip Útil</p>
+                <p><code>grep</code> es uno de los comandos más útiles. Combínalo con <code>|</code> (pipe) para filtrar salida de otros comandos.</p>
+            </div>
+        </section>
+
+        <!-- Permissions -->
+        <section id="permisos">
+            <h2>5. Permisos Básicos (15 min)</h2>
+
+            <h3>Sistema de Permisos Linux</h3>
+            <p>Cada archivo en Linux tiene permisos para tres categorías:</p>
+            <ul>
+                <li><strong>Usuario (u)</strong> - El dueño del archivo</li>
+                <li><strong>Grupo (g)</strong> - El grupo del archivo</li>
+                <li><strong>Otros (o)</strong> - El resto de usuarios</li>
+            </ul>
+
+            <h3>Tipos de Permiso</h3>
+            <div class="ascii-diagram">
+Tipos de permiso:
+  r (read)    = 4 = Lectura
+  w (write)   = 2 = Escritura
+  x (execute) = 1 = Ejecución
+
+Ejemplo: 755
+  7 = 4+2+1 = rwx (propietario: todo)
+  5 = 4+1   = r-x (grupo: leer y ejecutar)
+  5 = 4+1   = r-x (otros: leer y ejecutar)
+
+drwxr-xr-x archivo.txt
+  d = directorio
+  rwx = permisos propietario
+  r-x = permisos grupo
+  r-x = permisos otros
+            </div>
+
+            <h3>Comandos de Permisos</h3>
+            <table>
+                <tr>
+                    <th>Comando</th>
+                    <th>Descripción</th>
+                    <th>Ejemplo</th>
+                </tr>
+                <tr>
+                    <td><code>chmod</code></td>
+                    <td>Change Mode - Cambiar permisos</td>
+                    <td><code>chmod 755 script.sh</code></td>
+                </tr>
+                <tr>
+                    <td><code>chmod +x</code></td>
+                    <td>Agregar permiso de ejecución</td>
+                    <td><code>chmod +x script.sh</code></td>
+                </tr>
+                <tr>
+                    <td><code>chown</code></td>
+                    <td>Change Owner - Cambiar dueño</td>
+                    <td><code>chown user:grupo file</code></td>
+                </tr>
+                <tr>
+                    <td><code>sudo</code></td>
+                    <td>SuperUser DO - Ejecutar como root</td>
+                    <td><code>sudo apt update</code></td>
+                </tr>
+            </table>
+
+            <h3>Ejemplos Prácticos</h3>
+            <pre><code class="language-bash"># Ver permisos actuales
+estudiante@ubuntu-server:~$ ls -la script.sh
+-rw-r--r-- 1 estudiante estudiante 123 Feb 10 10:30 script.sh
+# No es ejecutable (no tiene 'x')
+
+# Hacer ejecutable con +x
+estudiante@ubuntu-server:~$ chmod +x script.sh
+estudiante@ubuntu-server:~$ ls -la script.sh
+-rwxr-xr-x 1 estudiante estudiante 123 Feb 10 10:30 script.sh
+# Ahora es ejecutable
+
+# Usar notación numérica
+estudiante@ubuntu-server:~$ chmod 644 archivo.txt
+# 6 = rw- (propietario)
+# 4 = r-- (grupo)
+# 4 = r-- (otros)
+
+# Quitar permiso de escritura a otros
+estudiante@ubuntu-server:~$ chmod o-w archivo.txt
+
+# Cambiar propietario (requiere sudo)
+estudiante@ubuntu-server:~$ sudo chown root:root archivo.txt
+estudiante@ubuntu-server:~$ ls -la archivo.txt
+-rw-r--r-- 1 root root 456 Feb 10 10:35 archivo.txt</code></pre>
+
+            <div class="callout info">
+                <p class="callout-title">Permisos Comunes</p>
+                <ul>
+                    <li><code>644</code> = Archivos normales (rw-r--r--)</li>
+                    <li><code>755</code> = Scripts ejecutables (rwxr-xr-x)</li>
+                    <li><code>600</code> = Archivos privados (rw-------)</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Integration Exercise -->
+        <section id="ejercicio">
+            <h2>6. Ejercicio Integrador (10 min)</h2>
+
+            <h3>Crear Estructura de Proyecto</h3>
+            <p>Crea la siguiente estructura de directorios y archivos:</p>
+
+            <div class="ascii-diagram">
+proyecto_so/
+├── documentos/
+│   ├── notas.txt
+│   └── referencias.txt
+└── scripts/
+    ├── respaldo.sh
+    └── monitoreo.sh
+            </div>
+
+            <h3>Solución Paso a Paso</h3>
+            <pre><code class="language-bash"># 1. Crear estructura de directorios
+mkdir -p proyecto_so/{documentos,scripts}
+
+# 2. Crear archivos vacíos
+touch proyecto_so/documentos/notas.txt
+touch proyecto_so/documentos/referencias.txt
+touch proyecto_so/scripts/respaldo.sh
+touch proyecto_so/scripts/monitoreo.sh
+
+# 3. Verificar estructura
+tree proyecto_so 2>/dev/null || find proyecto_so -type f
+
+proyecto_so/
+├── documentos/
+│   ├── notas.txt
+│   └── referencias.txt
+└── scripts/
+    ├── respaldo.sh
+    └── monitoreo.sh
+
+# 4. Hacer scripts ejecutables
+chmod +x proyecto_so/scripts/*.sh
+
+# 5. Verificar permisos
+ls -la proyecto_so/scripts/
+total 8
+-rwxr-xr-x 1 estudiante estudiante 0 Feb 10 11:00 monitoreo.sh
+-rwxr-xr-x 1 estudiante estudiante 0 Feb 10 11:00 respaldo.sh</code></pre>
+        </section>
+
+        <!-- Practice Activity -->
+        <section id="practica">
+            <h2>7. Actividad Práctica</h2>
+
+            <div class="actividad">
+                <h3>Actividad: Script de Automatización</h3>
+                <p><strong>Tiempo:</strong> 20 minutos</p>
+                <p><strong>Objetivo:</strong> Crear un script bash que automatice la creación de estructuras de directorios</p>
+            </div>
+
+            <h3>Script Bash: crear_estructura.sh</h3>
+            <pre><code class="language-bash">#!/bin/bash
+# Nombre: crear_estructura.sh
+# Autor: [Tu Nombre]
+# Fecha: 2026-02-10
+# Descripción: Script para crear estructura de proyecto
+
+echo "=== Creando Estructura de Proyecto ==="
+echo ""
+
+# Crear directorios principales
+echo "1. Creando directorios..."
+mkdir -p proyecto/{src,docs,tests,data,output}
+echo "   ✓ Directorios creados"
+
+# Crear archivos base
+echo ""
+echo "2. Creando archivos base..."
+touch proyecto/src/main.py
+touch proyecto/src/utils.py
+touch proyecto/docs/README.md
+touch proyecto/docs/NOTAS.md
+touch proyecto/tests/test_main.py
+echo "   ✓ Archivos creados"
+
+# Escribir contenido en README
+echo ""
+echo "3. Escribiendo README.md..."
+cat > proyecto/docs/README.md << 'EOF'
+# Proyecto de Sistemas Operativos
+
+## Estructura
+- src/: Código fuente
+- docs/: Documentación
+- tests/: Pruebas unitarias
+- data/: Datos de entrada
+- output/: Resultados
+
+## Autor
+[Tu Nombre]
+EOF
+echo "   ✓ README.md creado"
+
+# Establecer permisos
+echo ""
+echo "4. Estableciendo permisos..."
+chmod +x proyecto/src/main.py
+chmod +x proyecto/tests/test_main.py
+echo "   ✓ Permisos establecidos"
+
+# Mostrar estructura final
+echo ""
+echo "=== Estructura Creada ==="
+tree proyecto 2>/dev/null || find proyecto | sed 's|[^/]*/| |g'
+
+# Mostrar espacio usado
+echo ""
+echo "Espacio en disco usado:"
+du -sh proyecto
+
+echo ""
+echo "¡Proyecto creado exitosamente!"</code></pre>
+
+            <h3>Para Usar el Script</h3>
+            <pre><code class="language-bash"># 1. Crear el archivo del script
+nano crear_estructura.sh
+# Pegar el contenido anterior
+# Ctrl+O para guardar, Ctrl+X para salir
+
+# 2. Hacer el script ejecutable
+chmod +x crear_estructura.sh
+
+# 3. Ejecutar el script
+./crear_estructura.sh
+
+# 4. Verificar resultado
+ls -la proyecto/</code></pre>
+
+            <div class="callout success">
+                <p class="callout-title">Tip</p>
+                <p>Si usas <code>mkdir -p</code>, no obtendrás error si el directorio ya existe. El flag <code>-p</code> crea directorios padre si es necesario.</p>
+            </div>
+        </section>
+
+        <!-- Deliverable -->
+        <section id="entregable">
+            <h2>Entregable de la Clase 02</h2>
+
+            <div class="actividad">
+                <h3>Entregable: Script Bash Personalizado</h3>
+                <p><strong>Fecha de entrega:</strong> Próxima clase</p>
+                <p><strong>Lo que debes entregar:</strong></p>
+                <ol>
+                    <li><strong>Script bash:</strong> Un script <code>mi_primer_script.sh</code> que:
+                        <ul>
+                            <li>Cree una estructura de directorios (a tu elección)</li>
+                            <li>Copie un archivo a <code>/tmp</code></li>
+                            <li>Muestre el uso de disco con <code>df -h</code></li>
+                        </ul>
+                    </li>
+                    <li><strong>Capturas de pantalla:</strong>
+                        <ul>
+                            <li>Ejecución del script</li>
+                            <li>Resultado de <code>ls -la</code> mostrando la estructura creada</li>
+                        </ul>
+                    </li>
+                    <li><strong>README.md:</strong> Documentación breve del script</li>
+                </ol>
+
+                <h3>Rúbrica de Evaluación</h3>
+                <table>
+                    <tr>
+                        <th>Criterio</th>
+                        <th>Puntos</th>
+                    </tr>
+                    <tr>
+                        <td>Script ejecutable y sin errores</td>
+                        <td>3 puntos</td>
+                    </tr>
+                    <tr>
+                        <td>Estructura de directorios correcta</td>
+                        <td>2 puntos</td>
+                    </tr>
+                    <tr>
+                        <td>Comentarios explicativos en el script</td>
+                        <td>1 punto</td>
+                    </tr>
+                    <tr>
+                        <td>README.md claro y completo</td>
+                        <td>1 punto</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Total</strong></td>
+                        <td><strong>7 puntos</strong></td>
+                    </tr>
+                </table>
+            </div>
         </section>
 
         <!-- Summary -->
         <section id="resumen">
             <h2>Resumen de la Clase</h2>
 
+            <h3>Comandos Aprendidos</h3>
             <table>
                 <tr>
-                    <th>Generación</th>
-                    <th>Época</th>
-                    <th>Característica</th>
+                    <th>Categoría</th>
+                    <th>Comandos</th>
                 </tr>
                 <tr>
-                    <td>0</td>
-                    <td>1940s</td>
-                    <td>Sin SO</td>
+                    <td><strong>Navegación</strong></td>
+                    <td>pwd, ls, cd</td>
                 </tr>
                 <tr>
-                    <td>1</td>
-                    <td>1950s</td>
-                    <td>Procesamiento por lotes</td>
+                    <td><strong>Archivos</strong></td>
+                    <td>touch, mkdir, cp, mv, rm</td>
                 </tr>
                 <tr>
-                    <td>2</td>
-                    <td>1960s</td>
-                    <td>Multiprogramación</td>
+                    <td><strong>Visualización</strong></td>
+                    <td>cat, less, head, tail, grep</td>
                 </tr>
                 <tr>
-                    <td>3</td>
-                    <td>1970s</td>
-                    <td>Tiempo compartido</td>
-                </tr>
-                <tr>
-                    <td>4</td>
-                    <td>1980s</td>
-                    <td>PCs y GUI</td>
-                </tr>
-                <tr>
-                    <td>5</td>
-                    <td>2000s+</td>
-                    <td>Modernos, cloud, móviles</td>
+                    <td><strong>Permisos</strong></td>
+                    <td>chmod, chown, sudo</td>
                 </tr>
             </table>
 
-            <h3>Componentes: Kernel + Shell + Utilidades + System Calls</h3>
-
-            <div class="callout info">
-                <p><strong>Tarea para próxima clase:</strong></p>
-                <ol>
-                    <li>Descargar VirtualBox: <a href="https://www.virtualbox.org/">https://www.virtualbox.org/</a></li>
-                    <li>Descargar Ubuntu 24.04 LTS ISO: <a href="https://ubuntu.com/download">https://ubuntu.com/download</a></li>
-                    <li>Leer el manual del Laboratorio 1</li>
-                </ol>
-                <p><strong>En la próxima clase:</strong> Instalaremos Linux en máquina virtual</p>
-            </div>
-
-            <h3>Próxima Clase</h3>
-            <p><strong>Clase 3: Concepto de Proceso</strong></p>
+            <h3>Conceptos Clave</h3>
             <ul>
-                <li>¿Qué es un proceso?</li>
-                <li>Diferencia entre proceso y programa</li>
-                <li>PCB (Process Control Block)</li>
-                <li>Estados de un proceso</li>
+                <li><strong>Estructura jerárquica:</strong> Linux organiza archivos en un árbol desde <code>/</code></li>
+                <li><strong>Path absoluto vs relativo:</strong> Absoluto empieza con <code>/</code>, relativo desde donde estás</li>
+                <li><strong>Permisos rwx:</strong> Read (4), Write (2), Execute (1)</li>
+                <li><strong>Scripts bash:</strong> Automatizan tareas repetitivas</li>
             </ul>
 
-            <p><strong>¡Nos vemos!</strong></p>
-        </section>
-
-        <!-- Videos Recomendados -->
-        <section id="videos">
-            <h2>Videos Recomendados</h2>
-
-            <div class="video-resource">
-                <h3>Video 1: Operating System Structure</h3>
-                <p><strong>Concepto:</strong> Estructura del SO: kernel, shell, aplicaciones</p>
-                <p><strong>Duración:</strong> 15 minutos</p>
-                <p><strong>Nivel:</strong> Básico</p>
-                <p><strong>Por qué verlo:</strong> Complementa la arquitectura de sistemas operativos</p>
-                <p><strong>Canal:</strong> Neso Academy</p>
-                <a href="https://www.youtube.com/watch?v=H7Cj5z78bEw" target="_blank">Ver en YouTube</a>
-            </div>
-
-            <div class="video-resource">
-                <h3>Video 2: Kernel vs User Mode</h3>
-                <p><strong>Concepto:</strong> Diferencia entre modo kernel y modo usuario</p>
-                <p><strong>Duración:</strong> 10 minutos</p>
-                <p><strong>Nivel:</strong> Intermedio</p>
-                <p><strong>Por qué verlo:</strong> Entender cómo el SO protege los recursos</p>
-                <p><strong>Canal:</strong> CodeVault</p>
-                <a href="https://www.youtube.com/watch?v=7aOndFscPkc" target="_blank">Ver en YouTube</a>
-            </div>
-
-            <div class="video-resource">
-                <h3>Video 3: Monolithic vs Microkernel</h3>
-                <p><strong>Concepto:</strong> Comparación de arquitecturas de kernel</p>
-                <p><strong>Duración:</strong> 12 minutos</p>
-                <p><strong>Nivel:</strong> Intermedio</p>
-                <p><strong>Por qué verlo:</strong> Comprender las diferencias entre Linux y Minix</p>
-                <p><strong>Canal:</strong> GeeksforGeeks</p>
-                <a href="https://www.youtube.com/watch?v=F18U2jQ8i8Q" target="_blank">Ver en YouTube</a>
-            </div>
-
             <div class="callout info">
-                <p class="callout-title">Tip de Estudio</p>
-                <p>Antes de ver cada video, lee el tema correspondiente en la clase. Esto te ayudará a identificar qué conceptos ya entiendes y cuáles necesitas reforzar.</p>
+                <p class="callout-title">Próxima Clase</p>
+                <p><strong>Clase 03: Windows Server 2022</strong></p>
+                <ul>
+                    <li>Instalación de Windows Server 2022</li>
+                    <li>Configuración inicial</li>
+                    <li>PowerShell: el equivalente a bash en Windows</li>
+                    <li>Comparativa de comandos Linux vs PowerShell</li>
+                </ul>
             </div>
         </section>
     </div>
 
     <footer>
         <div class="container">
-            <p><strong>IF0099 - Sistemas Operativos I</strong> • Clase 02: Evolución y Componentes del SO</p>
-            <p>Última actualización: 2026-02-01 • <a href="index.html">Índice de Clases</a></p>
-            <p><a href="#" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); return false;">Volver arriba ↑</a></p>
+            <p><strong>IF0099 - Sistemas Operativos I</strong> • Clase 02: Linux Terminal - Comandos Esenciales</p>
+            <p>Última actualización: 2026-02-10 • <a href="index.html">Índice de Clases</a></p>
+            <p>Plan Práctico v2.0 | 70% Práctica</p>
         </div>
     </footer>
 
-    <a href="#" class="scroll-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); return false;">↑</a>
-
     <script>
-        const scrollTopBtn = document.querySelector('.scroll-top');
-        window.addEventListener('scroll', () => {
-            if (window.pageYOffset > 300) {
-                scrollTopBtn.classList.add('visible');
-            } else {
-                scrollTopBtn.classList.remove('visible');
-            }
-        });
-
         document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
@@ -2259,6 +1053,15 @@ systeminfo | findstr /C:"Total Physical Memory" /C:"Available Physical Memory"</
                     });
                 }
             });
+        });
+    </script>
+
+    <!-- Prism.js para syntax highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            Prism.highlightAll();
         });
     </script>
 </body>

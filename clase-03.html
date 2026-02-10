@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clase 03: Concepto de Proceso | IF0099 - Sistemas Operativos I</title>
+    <title>Clase 03: Windows Server 2022 | IF0099 - Sistemas Operativos I</title>
+    <!-- Prism.js CSS para syntax highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
     <style>
         :root {
             --primary: #2563eb;
@@ -129,25 +131,6 @@
             margin-bottom: 1rem;
         }
 
-        figure {
-            margin: 2rem 0;
-            text-align: center;
-        }
-
-        figure img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-
-        figcaption {
-            margin-top: 0.75rem;
-            color: var(--text-muted);
-            font-style: italic;
-            font-size: 0.95rem;
-        }
-
         table {
             width: 100%;
             border-collapse: collapse;
@@ -255,6 +238,28 @@
             border-radius: 8px;
         }
 
+        .os-badge {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+
+        .practice-badge {
+            display: inline-block;
+            background: var(--accent);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+
         footer {
             background: var(--text-main);
             color: white;
@@ -341,15 +346,72 @@
                 grid-template-columns: 1fr;
             }
         }
+
+        /* Code blocks with syntax highlighting */
+        pre {
+            background: #1e1e1e !important;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            overflow-x: auto;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        pre code {
+            font-family: 'Fira Code', 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: #d4d4d4;
+        }
+
+        /* Inline code */
+        code:not(pre code) {
+            background: #e2e8f0;
+            color: #c026d3;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-family: 'Fira Code', 'Consolas', 'Monaco', monospace;
+            font-size: 0.9em;
+        }
+
+        .code-header {
+            background: #2d2d2d;
+            color: #9cdcfe;
+            padding: 0.5rem 1rem;
+            border-radius: 8px 8px 0 0;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+        }
+
+        .code-block {
+            border-radius: 8px;
+            overflow: hidden;
+            margin: 1.5rem 0;
+        }
+
+        .code-block pre {
+            margin: 0;
+            border-radius: 0;
+        }
+
+        .terminal-block pre {
+            background: #0c0c0c !important;
+            border: 1px solid #333;
+        }
+
+        .terminal-block .code-header {
+            background: #1a1a1a;
+            color: #22c55e;
+        }
     </style>
 </head>
 <body>
     <header>
         <div class="container">
-            <h1>Clase 03: Concepto de Proceso</h1>
-            <p class="subtitle">IF0099 - Sistemas Operativos I | Unidad 2 - Procesos</p>
-            <p class="subtitle">Programa vs Proceso, PCB y Estados</p>
-            <p class="meta">Última actualización: 2026-02-01 | Duración: 90 minutos</p>
+            <h1>Clase 03: Windows Server 2022</h1>
+            <p class="subtitle">IF0099 - Sistemas Operativos I | Módulo 1 - Fundamentos y Virtualización</p>
+            <p class="subtitle">Introducción a Windows Server y PowerShell</p>
+            <p class="meta">Última actualización: 2026-02-10 | Duración: 90 minutos | 70% Práctica</p>
         </div>
     </header>
 
@@ -358,16 +420,13 @@
             <h2>Contenido de la Clase</h2>
             <ul>
                 <li><a href="#objetivos">Objetivos de Aprendizaje</a></li>
-                <li><a href="#programa-proceso">1. Programa vs Proceso</a></li>
-                <li><a href="#memoria">2. Estructura de Memoria</a></li>
-                <li><a href="#pcb">3. Process Control Block</a></li>
-                <li><a href="#context-switch">4. Context Switch</a></li>
-                <li><a href="#estados">5. Estados de un Proceso</a></li>
-                <li><a href="#threads">6. Threads (Hilos)</a></li>
-                <li><a href="#modelos-threads">7. Modelos de Threads</a></li>
-                <li><a href="#ipc">8. Comunicación IPC</a></li>
-                <li><a href="#laboratorio">9. Laboratorio</a></li>
-                <li><a href="#practica">10. Actividad Práctica (Opcional)</a></li>
+                <li><a href="#que-es">1. ¿Qué es Windows Server?</a></li>
+                <li><a href="#edicion-desktop">2. Server vs Desktop (10 min)</a></li>
+                <li><a href="#instalacion">3. Instalación en VirtualBox (30 min)</a></li>
+                <li><a href="#configuracion">4. Configuración Inicial (15 min)</a></li>
+                <li><a href="#powershell">5. PowerShell Básico (25 min)</a></li>
+                <li><a href="#comparacion">6. Linux vs PowerShell (10 min)</a></li>
+                <li><a href="#actividad">7. Actividad Práctica</a></li>
             </ul>
         </nav>
 
@@ -375,790 +434,654 @@
             <h2>Objetivos de Aprendizaje</h2>
             <p>Al finalizar esta clase, serás capaz de:</p>
             <ol>
-                <li><strong>Diferenciar</strong> entre programa, proceso y thread</li>
-                <li><strong>Describir</strong> la estructura del PCB (Process Control Block)</li>
-                <li><strong>Explicar</strong> los estados de un proceso y sus transiciones</li>
-                <li><strong>Comparar</strong> los modelos de threads (1:1, M:1, M:N)</li>
-                <li><strong>Describir</strong> los mecanismos de comunicación entre procesos (IPC)</li>
-                <li><strong>Reconocer</strong> los problemas clásicos de IPC</li>
-                <li><strong>Identificar</strong> procesos en un sistema operativo real</li>
+                <li><strong>Diferenciar</strong> Windows Server de Windows Desktop</li>
+                <li><strong>Instalar</strong> Windows Server 2022 en VirtualBox</li>
+                <li><strong>Configurar</strong> red y nombre del servidor</li>
+                <li><strong>Usar</strong> PowerShell para administración básica</li>
+                <li><strong>Comparar</strong> comandos de Linux con PowerShell</li>
+                <li><strong>Crear</strong> scripts PowerShell simples</li>
             </ol>
         </section>
 
-        <section id="programa-proceso">
-            <h2>1. Programa vs Proceso</h2>
+        <section id="que-es">
+            <h2>1. ¿Qué es Windows Server?</h2>
+
+            <p><strong>Windows Server</strong> es un sistema operativo diseñado para <strong>servidores</strong> - máquinas que proveen servicios a otros computadores (clientes) en una red.</p>
 
             <div class="comparison">
                 <div>
-                    <h3>📝 Conceptos clave</h3>
-                    <table>
-                        <tr>
-                            <th>Concepto</th>
-                            <th>Descripción</th>
-                        </tr>
-                        <tr>
-                            <td><strong>Programa</strong></td>
-                            <td>Código ejecutable almacenado en disco (estático)</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Proceso</strong></td>
-                            <td>Programa en ejecución (dinámico)</td>
-                        </tr>
-                    </table>
-
-                    <div class="ascii-diagram">
-┌─────────────┐          ┌─────────────┐
-│   PROGRAMA  │  cargar  │   PROCESO   │
-│  (en disco) │ ───────→ │ (en memoria)│
-│   .exe      │          │             │
-│   estático  │          │  dinámico   │
-└─────────────┘          └─────────────┘
-                    </div>
-
-                    <h3>🍳 Analogía culinaria</h3>
+                    <h3>🖥️ Windows Desktop</h3>
+                    <p><strong>Diseñado para:</strong> Usuarios individuales</p>
+                    <p><strong>Uso típico:</strong></p>
                     <ul>
-                        <li><strong>Programa</strong> = Receta de cocina (instrucciones en papel)</li>
-                        <li><strong>Proceso</strong> = Acto de cocinar (ejecución de la receta)</li>
+                        <li>Ofimática (Word, Excel)</li>
+                        <li>Navegación web</li>
+                        <li>Juegos</li>
+                        <li>Desarrollo personal</li>
                     </ul>
-
-                    <div class="quote">
-                        La receta no cambia; la cocina sí.<br>
-                        El programa es inerte; el proceso está vivo.
-                    </div>
+                    <p><strong>Ediciones:</strong> Home, Pro, Enterprise</p>
+                    <p><strong>Interfaz:</strong> Orientada a consumo</p>
                 </div>
-
                 <div>
-                    <h3>🔑 Diferencias clave</h3>
-                    <table>
-                        <tr>
-                            <th>Aspecto</th>
-                            <th>Programa</th>
-                            <th>Proceso</th>
-                        </tr>
-                        <tr>
-                            <td><strong>Ubicación</strong></td>
-                            <td>Disco</td>
-                            <td>Memoria RAM</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Estado</strong></td>
-                            <td>Estático</td>
-                            <td>Dinámico</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Recursos</strong></td>
-                            <td>Ninguno</td>
-                            <td>PCB, memoria, archivos</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Vida</strong></td>
-                            <td>Permanente</td>
-                            <td>Temporal</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Cantidad</strong></td>
-                            <td>1 archivo</td>
-                            <td>N instancias</td>
-                        </tr>
-                    </table>
-
-                    <h3>💡 Un programa, múltiples procesos</h3>
-                    <div class="ascii-diagram">
-┌───────────────────────────────────────────────┐
-│               chrome.exe (programa)            │
-│                      │                         │
-│         ┌───────────┬┴───────────┐            │
-│         ▼           ▼            ▼            │
-│   ┌─────────┐ ┌─────────┐ ┌─────────┐        │
-│   │Proceso 1│ │Proceso 2│ │Proceso 3│        │
-│   │ (Tab 1) │ │ (Tab 2) │ │ (Tab 3) │        │
-│   │ PID:1234│ │ PID:1235│ │ PID:1236│        │
-│   └─────────┘ └─────────┘ └─────────┘        │
-└───────────────────────────────────────────────┘
-                    </div>
-
-                    <p><strong>Cada pestaña de Chrome es un proceso separado.</strong></p>
+                    <h3>🏢 Windows Server</h3>
+                    <p><strong>Diseñado para:</strong> Servicios de red</p>
+                    <p><strong>Uso típico:</strong></p>
+                    <ul>
+                        <li>Servidor de archivos (SMB)</li>
+                        <li>Servidor web (IIS)</li>
+                        <li>Active Directory</li>
+                        <li>Servidor de bases de datos</li>
+                    </ul>
+                    <p><strong>Ediciones:</strong> Essentials, Standard, Datacenter</p>
+                    <p><strong>Interfaz:</strong> Orientada a administración</p>
                 </div>
             </div>
-        </section>
 
-        <section id="memoria">
-            <h2>2. Estructura de un Proceso en Memoria</h2>
-
-            <p>El espacio de direcciones de un proceso se divide en segmentos con propósitos específicos.</p>
-
-            <figure>
-                <img src="../assets/infografias/clase-03-estructura-memoria.png" alt="Estructura de Memoria de un Proceso">
-                <figcaption>Figura 1: Segmentos de memoria de un proceso (TEXT, DATA, BSS, HEAP, STACK)</figcaption>
-            </figure>
-
-            <div class="callout info">
-                <p><strong>Crecimiento:</strong></p>
-                <ul>
-                    <li>Stack crece hacia abajo (direcciones decrecientes)</li>
-                    <li>Heap crece hacia arriba (direcciones crecientes)</li>
-                </ul>
-            </div>
-
-            <h3>🗂️ Los 5 segmentos</h3>
+            <h3>🎯 Casos de uso de Windows Server</h3>
             <table>
                 <tr>
-                    <th>Segmento</th>
-                    <th>Contenido</th>
-                    <th>Tamaño</th>
-                </tr>
-                <tr>
-                    <td><strong><abbr title="Código ejecutable del programa">TEXT</abbr></strong></td>
-                    <td>Código ejecutable</td>
-                    <td>Fijo</td>
-                </tr>
-                <tr>
-                    <td><strong><abbr title="Variables globales inicializadas">DATA</abbr></strong></td>
-                    <td>Variables globales inicializadas</td>
-                    <td>Fijo</td>
-                </tr>
-                <tr>
-                    <td><strong>BSS</strong></td>
-                    <td>Variables globales no inicializadas</td>
-                    <td>Fijo</td>
-                </tr>
-                <tr>
-                    <td><strong><abbr title="Memoria dinámica (montículo)">HEAP</abbr></strong></td>
-                    <td>Memoria dinámica (malloc/new)</td>
-                    <td>Variable ↑</td>
-                </tr>
-                <tr>
-                    <td><strong><abbr title="Pila de ejecución (variables locales)">STACK</abbr></strong></td>
-                    <td>Variables locales, parámetros, retornos</td>
-                    <td>Variable ↓</td>
-                </tr>
-            </table>
-
-            <div class="callout info">
-                <p class="callout-title">Definición: BSS</p>
-                <p><strong>BSS</strong> (<strong>Block Started Symbol</strong>) es una sección de memoria que contiene variables globales y estáticas no inicializadas. El kernel reserva espacio para estas variables pero no las almacena en el ejecutable, lo que ahorra espacio en disco.</p>
-                <p><strong>Por qué importa:</strong> Permite que programas tengan variables globales sin inflar innecesariamente el tamaño del archivo ejecutable.</p>
-                <p><strong>Ejemplo:</strong> <code>int counter; // va a BSS</code></p>
-            </div>
-
-            <div class="ascii-diagram">
-Direcciones ALTAS
-        ↓
-┌─────────────────────────┐
-│       STACK             │ ← Crece hacia ABAJO
-│      (locales)          │    (direcciones ↓)
-├─────────────────────────┤
-│         ↑               │
-│         │               │
-│    Espacio libre        │
-│         │               │
-│         ↓               │
-├─────────────────────────┤
-│       HEAP             │ ← Crece hacia ARRIBA
-│    (dinámica)           │    (direcciones ↑)
-├─────────────────────────┤
-│       BSS              │
-│    (no inicializadas)   │
-├─────────────────────────┤
-│      DATA             │
-│   (inicializadas)      │
-├─────────────────────────┤
-│      TEXT             │
-│    (código)            │
-└─────────────────────────┘
-        ↓
-Direcciones BAJAS
-            </div>
-
-            <h3>💻 Ejemplo en código</h3>
-            <pre><code>int global = 5;         // DATA (inicializada)
-int sin_inicializar;    // BSS (no inicializada)
-
-int main() {
-    int local = 10;     // STACK (variable local)
-    int *ptr = malloc(100); // puntero en STACK
-                          // memoria en HEAP
-
-    *ptr = 20;          // Escribir en HEAP
-    free(ptr);          // Liberar HEAP
-
-    return 0;
-}</code></pre>
-
-            <h3>⚠️ Stack Overflow</h3>
-            <p>Si el stack crece demasiado → <strong>Stack Overflow</strong></p>
-            <ul>
-                <li>Ocurre con recursión infinita</li>
-                <li>Arrays locales muy grandes</li>
-                <li>Demasiadas funciones anidadas</li>
-            </ul>
-        </section>
-
-        <section id="pcb">
-            <h2>3. Process Control Block (PCB)</h2>
-
-            <h3>La "ficha" de cada proceso</h3>
-            <p>El SO mantiene un <strong>PCB</strong> por cada proceso. Contiene TODA la información necesaria para gestionar el proceso.</p>
-
-            <figure>
-                <img src="../assets/infografias/clase-03-pcb.png" alt="PCB - Bloque de Control de Proceso">
-                <figcaption>Figura 2: Estructura del Process Control Block (PCB)</figcaption>
-            </figure>
-
-            <div class="callout warning">
-                <p><strong>💡 El PCB es la estructura de datos más importante en la gestión de procesos</strong></p>
-                <ul>
-                    <li>Sin PCB, el SO no podría suspender y reanudar procesos</li>
-                    <li>El contexto switch es básicamente guardar/cargar PCBs</li>
-                    <li>Cada proceso tiene exactamente un PCB</li>
-                </ul>
-            </div>
-
-            <h3>Campos del PCB</h3>
-            <table>
-                <tr>
-                    <th>Campo</th>
+                    <th>Servicio</th>
                     <th>Descripción</th>
-                </tr>
-                <tr>
-                    <td><strong>PID</strong></td>
-                    <td>Identificador único del proceso</td>
-                </tr>
-                <tr>
-                    <td><strong>Estado</strong></td>
-                    <td>Running, Ready, Blocked, etc.</td>
-                </tr>
-                <tr>
-                    <td><strong>Program Counter</strong></td>
-                    <td>Siguiente instrucción a ejecutar</td>
-                </tr>
-                <tr>
-                    <td><strong>Registros CPU</strong></td>
-                    <td>Valores actuales de registros</td>
-                </tr>
-                <tr>
-                    <td><strong>Info de memoria</strong></td>
-                    <td>Límites, tablas de páginas</td>
-                </tr>
-                <tr>
-                    <td><strong>Info de E/S</strong></td>
-                    <td>Archivos abiertos, dispositivos</td>
-                </tr>
-                <tr>
-                    <td><strong>Info de planificación</strong></td>
-                    <td>Prioridad, tiempo de CPU usado</td>
-                </tr>
-            </table>
-
-            <h3>Ver PCB real en Linux</h3>
-            <pre><code># El PCB de un proceso está expuesto en /proc/[PID]/
-$ cat /proc/self/status
-Name:   cat
-State:  R (running)
-Pid:    1234
-PPid:   5678
-Uid:    1000(1000)   1000(1000)   1000(1000)   1000(1000)
-VmSize:     12345 kB
-VmRSS:        678 kB
-...</code></pre>
-        </section>
-
-        <section id="context-switch">
-            <h2>4. <abbr title="Cambio de contexto entre procesos">Context Switch</abbr> (Cambio de Contexto)</h2>
-
-            <h3>Cuando el SO cambia de un proceso a otro</h3>
-            <p>El <strong><abbr title="Cambio de contexto entre procesos">context switch</abbr></strong> es el proceso de guardar el estado de un proceso y cargar el estado de otro.</p>
-
-            <figure>
-                <img src="../assets/infografias/clase-03-cswitch-timeline.png" alt="Diagrama de Context Switch">
-                <figcaption>Figura 3: Timeline de un Context Switch entre procesos</figcaption>
-            </figure>
-
-            <h3>¿Qué sucede durante un context switch?</h3>
-            <div class="ascii-diagram">
-┌─────────────────────────────────────────────────────────┐
-│  1. Proceso A se ejecuta                                │
-│     → Guarda sus registros CPU en su PCB               │
-│     → Guarda su contador de programa                   │
-│     → Actualiza su estado a "LISTO"                     │
-│                                                           │
-│  2. El SO selecciona Proceso B                           │
-│     → Carga los registros CPU del PCB de B              │
-│     → Carga el contador de programa de B                │
-│     → Cambia estado de B a "EJECUTANDO"                 │
-│                                                           │
-│  3. Proceso B continúa ejecutando                        │
-└─────────────────────────────────────────────────────────┘
-            </div>
-
-            <h3>💡 Analogía: Cambio de jugador en un partido</h3>
-            <div class="ascii-diagram">
-Jugador A sale           ↓             Jugador B entra
-─────────────────        │        ─────────────────
-- Se sienta en banco     │        - Se levanta del banco
-- Descansa               │        - Entra a la cancha
-- Entiende la táctica    → Tiempo de → - Conoce la táctica
-                        cambio
-                        ↓
-                        ¡El árbitro silba!
-            </div>
-
-            <h3>⚡ Costo del Context Switch</h3>
-            <table>
-                <tr>
-                    <th>Aspecto</th>
-                    <th>Impacto</th>
-                </tr>
-                <tr>
-                    <td><strong>Tiempo</strong></td>
-                    <td>1-10 microsegundos (parece poco, pero acumula)</td>
-                </tr>
-                <tr>
-                    <td><strong>CPU</strong></td>
-                    <td>La CPU NO hace trabajo útil durante el cambio</td>
-                </tr>
-                <tr>
-                    <td><strong>Frecuencia</strong></td>
-                    <td>Cientos o miles de veces por segundo</td>
-                </tr>
-            </table>
-
-            <div class="callout warning">
-                <p><strong>Por qué importa:</strong> Demasiados context switches = bajo rendimiento</p>
-            </div>
-
-            <h3>Causas de Context Switch</h3>
-            <ol>
-                <li><strong>Timeout:</strong> Proceso agotó su quantum de tiempo</li>
-                <li><strong>E/S:</strong> Proceso solicita entrada/salida (se bloquea)</li>
-                <li><strong>Interrupción:</strong> Evento de hardware requiere atención</li>
-                <li><strong>Prioridad:</strong> Proceso de mayor prioridad debe ejecutarse</li>
-            </ol>
-        </section>
-
-        <section id="estados">
-            <h2>5. Estados de un Proceso</h2>
-
-            <p>Un proceso <strong>siempre está en uno de estos 5 estados</strong> durante su vida útil.</p>
-
-            <figure>
-                <img src="../assets/infografias/so-estados-proceso.png" alt="Estados de un Proceso">
-                <figcaption>Figura 4: Diagrama de estados de un proceso y sus transiciones</figcaption>
-            </figure>
-
-            <h3>Transiciones principales</h3>
-            <ul>
-                <li><strong>Admisión:</strong> Nuevo → Listo</li>
-                <li><strong>Dispatch:</strong> Listo → Ejecutando</li>
-                <li><strong>Preemption/Timeout:</strong> Ejecutando → Listo</li>
-                <li><strong>Solicitud E/S:</strong> Ejecutando → Bloqueado</li>
-                <li><strong>E/S completada:</strong> Bloqueado → Listo</li>
-            </ul>
-
-            <h3>Diagrama detallado</h3>
-            <div class="ascii-diagram">
-       ┌─────────┐
-       │  NUEVO  │  Proceso creado, espera admisión
-       └────┬────┘
-            │ Admisión
-            ▼
-     ┌───────────┐
-     │   LISTO   │  Esperando CPU (en cola)
-     └─────┬─────┘
-           │ Dispatch (seleccionado)
-           ▼
-    ┌─────────────┐
-    │ EJECUTANDO  │  Usando CPU ahora mismo ← Solo 1 por núcleo
-    └──┬──────┬───┘
-       │      │
-       │      │ Timeout o Preemption
-       │      ▼
-       │   ┌───────────┐
-       │   │   LISTO   │
-       │   └───────────┘
-       │
-       │ Solicita E/S o recurso
-       ▼
-  ┌───────────┐
-  │ BLOQUEADO │  Esperando evento (disco, red, etc.)
-  └─────┬─────┘
-       │ Evento completado
-       ▼
-    ┌───────────┐
-    │   LISTO   │
-    └───────────┘
-            </div>
-
-            <h3>💡 Ejemplo real: Ciclo de vida de Firefox</h3>
-            <pre><code>1. NUEVO      → $ firefox &          # fork() crea proceso
-2. LISTO       → [en cola de CPU]     # Espera turno
-3. EJECUTANDO  → [cargando página]     # Usando CPU
-4. BLOQUEADO   → [esperando red]      # Pide datos web
-5. LISTO       → [en cola de nuevo]   # Datos llegaron
-6. EJECUTANDO  → [renderizando]       # CPU de nuevo
-7. TERMINADO   → $ exit               # Usuario cierra</code></pre>
-
-            <div class="callout info">
-                <p><strong>Nota:</strong> Un proceso puede pasar de Ejecutando a Listo <strong>múltiples veces</strong> antes de completar su tarea.</p>
-            </div>
-
-            <h3>Ver procesos en Linux</h3>
-            <pre><code>$ ps aux
-USER    PID  %CPU %MEM    VSZ   RSS TTY  STAT START   TIME COMMAND
-root      1   0.0  0.1 169584 13256 ?    Ss   Jan30   0:02 /sbin/init
-root      2   0.0  0.0      0     0 ?    S    Jan30   0:00 [kthreadd]
-user   1234   2.5  1.2 456789 98765 ?    Sl   10:00   0:30 /usr/bin/code</code></pre>
-
-            <p><strong>Significado de STAT:</strong></p>
-            <ul>
-                <li><strong>R:</strong> Running (ejecutando)</li>
-                <li><strong>S:</strong> Sleeping (bloqueado, esperando)</li>
-                <li><strong>D:</strong> Uninterruptible sleep (E/S)</li>
-                <li><strong>Z:</strong> Zombie (terminado, esperando padre)</li>
-                <li><strong>T:</strong> Stopped (detenido)</li>
-            </ul>
-        </section>
-
-        <section id="threads">
-            <h2>6. Threads (Hilos de Ejecución)</h2>
-
-            <h3>Proceso vs Thread</h3>
-            <table>
-                <tr>
-                    <th>Aspecto</th>
-                    <th>Proceso</th>
-                    <th><abbr title="Hilo de ejecución ligero">Thread</abbr> (Hilo)</th>
-                </tr>
-                <tr>
-                    <td><strong>Definición</strong></td>
-                    <td>Programa en ejecución</td>
-                    <td>Unidad de ejecución dentro de un proceso</td>
-                </tr>
-                <tr>
-                    <td><strong>Memoria</strong></td>
-                    <td>Espacio propio</td>
-                    <td>Comparte memoria del proceso</td>
-                </tr>
-                <tr>
-                    <td><strong>Recursos</strong></td>
-                    <td>Archivos, sockets, etc.</td>
-                    <td>Stack propio, registros propios</td>
-                </tr>
-                <tr>
-                    <td><strong>Cambio de contexto</strong></td>
-                    <td>Costoso</td>
-                    <td>Más rápido</td>
-                </tr>
-                <tr>
-                    <td><strong>Comunicación</strong></td>
-                    <td>IPC (pipes, sockets)</td>
-                    <td>Memoria compartida directa</td>
-                </tr>
-            </table>
-
-            <h3>💡 Analogía</h3>
-            <div class="callout success">
-                <ul>
-                    <li><strong>Proceso</strong> = Casa independiente (paredes, techo, servicios propios)</li>
-                    <li><strong><abbr title="Hilo de ejecución ligero">Thread</abbr></strong> = Habitación dentro de la casa (comparten paredes y servicios)</li>
-                </ul>
-            </div>
-
-            <h3>Modelos de Threads: Comparación</h3>
-            <table>
-                <tr>
-                    <th>Modelo</th>
-                    <th>Threads Usuario</th>
-                    <th>Threads Kernel</th>
-                    <th>¿Concurrencia Múltiples Núcleos?</th>
-                    <th>¿Bloqueo Afecta a Todos?</th>
-                </tr>
-                <tr>
-                    <td><strong>1:1</strong></td>
-                    <td>1 → 1</td>
-                    <td>Igual cantidad</td>
-                    <td>✅ Sí</td>
-                    <td>❌ No</td>
-                </tr>
-                <tr>
-                    <td><strong>M:1</strong></td>
-                    <td>Muchos → 1</td>
-                    <td>1 solo</td>
-                    <td>❌ No</td>
-                    <td>✅ Sí</td>
-                </tr>
-                <tr>
-                    <td><strong>M:N</strong></td>
-                    <td>Muchos → Muchos</td>
-                    <td>Pool variable</td>
-                    <td>✅ Sí</td>
-                    <td>❌ No</td>
-                </tr>
-            </table>
-
-            <h3>Ejemplos reales</h3>
-            <table>
-                <tr>
-                    <th>Aplicación</th>
-                    <th>Enfoque</th>
-                    <th>Por qué</th>
-                </tr>
-                <tr>
-                    <td><strong>Chrome</strong></td>
-                    <td>Múltiples procesos</td>
-                    <td>Aislamiento: si una pestaña crashea, las otras siguen funcionando</td>
-                </tr>
-                <tr>
-                    <td><strong>VS Code</strong></td>
-                    <td>Un proceso, múltiples threads</td>
-                    <td>Comparten el mismo documento y estado del editor</td>
-                </tr>
-                <tr>
-                    <td><strong>Servidor Web</strong></td>
-                    <td>Proceso master + workers</td>
-                    <td>Master gestiona, workers atienden peticiones</td>
-                </tr>
-            </table>
-        </section>
-
-        <section id="ipc">
-            <h2>7. Comunicación entre Procesos (IPC)</h2>
-
-            <h3>Mecanismos de IPC</h3>
-            <table>
-                <tr>
-                    <th>Mecanismo</th>
-                    <th>Tipo</th>
-                    <th>Uso típico</th>
-                </tr>
-                <tr>
-                    <td><strong>Pipes</strong></td>
-                    <td>Unidireccional</td>
-                    <td>Comandos encadenados (<code>ls | grep</code>)</td>
-                </tr>
-                <tr>
-                    <td><strong>Sockets</strong></td>
-                    <td>Bidireccional</td>
-                    <td>Comunicación en red o local</td>
-                </tr>
-                <tr>
-                    <td><strong>Shared Memory</strong></td>
-                    <td>Memoria compartida</td>
-                    <td>Datos grandes, alta velocidad</td>
-                </tr>
-                <tr>
-                    <td><strong>Message Queues</strong></td>
-                    <td>Cola de mensajes</td>
-                    <td>Mensajes tipificados</td>
-                </tr>
-                <tr>
-                    <td><strong>Semáforos</strong></td>
-                    <td>Sincronización</td>
-                    <td>Control de acceso a recursos</td>
-                </tr>
-                <tr>
-                    <td><strong>Signals</strong></td>
-                    <td>Asíncrono</td>
-                    <td>Notificaciones de eventos</td>
-                </tr>
-            </table>
-
-            <h3>Problemas Clásicos de IPC</h3>
-
-            <h4>Productor-Consumidor (Bounded Buffer)</h4>
-            <div class="ascii-diagram">
-┌──────────┐      Pipe      ┌──────────┐
-│ Productor│ ─────────────► │Consumidor│
-│ (escribe)│   (buffer)     │ (lee)    │
-└──────────┘                └──────────┘
-            </div>
-
-            <p><strong>El problema:</strong></p>
-            <ul>
-                <li>Productor escribe datos en un buffer finito</li>
-                <li>Consumidor lee datos del mismo buffer</li>
-                <li>¿Qué pasa si el buffer está <strong>lleno</strong> y el productor quiere escribir?</li>
-                <li>¿Qué pasa si el buffer está <strong>vacío</strong> y el consumidor quiere leer?</li>
-            </ul>
-
-            <p><strong>Solución:</strong> Sincronización con semáforos (<code>empty</code>, <code>full</code>, <code>mutex</code>)</p>
-
-            <h4>Filósofos Comensales</h4>
-            <div class="ascii-diagram">
-      Tenedor 1
-         │
-   Filósofo 1 ─── Tenedor 2 ─── Filósofo 2
-        │                           │
-   Tenedor 5                   Tenedor 3
-        │                           │
-   Filósofo 5 ─── Tenedor 4 ─── Filósofo 3
-            </div>
-
-            <p><strong>El problema: Deadlock</strong></p>
-            <ul>
-                <li>5 filósofos, 5 tenedores (cada filósofo necesita 2)</li>
-                <li>Si todos toman el tenedor izquierdo simultáneamente → <strong>Deadlock</strong></li>
-            </ul>
-
-            <p><strong>Soluciones:</strong></p>
-            <ol>
-                <li>Orden de adquisición de recursos</li>
-                <li>Límite de filósofos comiendo simultáneos (máximo 4)</li>
-                <li>Asimetría en el orden de toma</li>
-            </ol>
-
-            <h4>Lectores-Escritores</h4>
-            <p><strong>El problema: Inanición (Starvation)</strong></p>
-            <div class="ascii-diagram">
-Caso: Escritores esperan mientras lectores llegan constantemente
-
-[Escritor esperando] ← [Lector1] [Lector2] [Lector3] ...
-                        ↓ nuevos lectores llegan
-                        Escritor nunca escribe
-            </div>
-
-            <p><strong>Soluciones:</strong></p>
-            <ol>
-                <li><strong>Prioridad a escritores:</strong> Cuando un escritor espera, no se admiten nuevos lectores</li>
-                <li><strong>Fairness:</strong> Cola FIFO, primero en llegar es atendido</li>
-                <li><strong>Lectores con prioridad:</strong> Escritores esperan a que todos los lectores actuales terminen</li>
-            </ol>
-        </section>
-
-        <!-- Section 9: Laboratorio -->
-        <section id="laboratorio">
-            <h2>9. Laboratorio Práctico</h2>
-
-            <h3>Lab 02: Permisos y Usuarios en Linux</h3>
-            <p>En este laboratorio explorarás el sistema de permisos de Linux y la gestión de usuarios.</p>
-
-            <div class="callout info">
-                <p class="callout-title">Objetivos del Laboratorio</p>
-                <ul>
-                    <li>Entender el modelo de permisos UGO (User-Group-Other)</li>
-                    <li>Manipular permisos con <code>chmod</code></li>
-                    <li>Cambiar propietario y grupo con <code>chown</code></li>
-                    <li>Crear y gestionar usuarios y grupos</li>
-                </ul>
-            </div>
-
-            <h4>Comandos de Permisos</h4>
-            <table>
-                <tr>
-                    <th>Comando</th>
                     <th>Ejemplo</th>
-                    <th>Descripción</th>
                 </tr>
                 <tr>
-                    <td><code>chmod</code></td>
-                    <td><code>chmod 755 archivo</code></td>
-                    <td>Cambia permisos (rwxr-xr-x)</td>
+                    <td><strong>AD DS</strong></td>
+                    <td>Active Directory Domain Services</td>
+                    <td>Autenticación centralizada en empresas</td>
                 </tr>
                 <tr>
-                    <td><code>chown</code></td>
-                    <td><code>chown usuario:grupo archivo</code></td>
-                    <td>Cambia propietario y grupo</td>
+                    <td><strong>File Server</strong></td>
+                    <td>Compartición de archivos via SMB</td>
+                    <td>Carpetas compartidas departamentales</td>
                 </tr>
                 <tr>
-                    <td><code>chgrp</code></td>
-                    <td><code>chgrp grupo archivo</code></td>
-                    <td>Cambia solo el grupo</td>
+                    <td><strong>IIS</strong></td>
+                    <td>Internet Information Services</td>
+                    <td>Hospedaje de aplicaciones ASP.NET</td>
                 </tr>
                 <tr>
-                    <td><code>umask</code></td>
-                    <td><code>umask 022</code></td>
-                    <td>Establece permisos por defecto</td>
+                    <td><strong>DHCP</strong></td>
+                    <td>Dynamic Host Configuration Protocol</td>
+                    <td>Asignación automática de IPs</td>
+                </tr>
+                <tr>
+                    <td><strong>DNS</strong></td>
+                    <td>Domain Name System</td>
+                    <td>Resolución de nombres en red interna</td>
                 </tr>
             </table>
 
-            <h4>Ejercicios del Laboratorio</h4>
-            <ol>
-                <li>Identifica los permisos de archivos en tu directorio: <code>ls -l</code></li>
-                <li>Crea un archivo y experimenta con diferentes permisos</li>
-                <li>Observa qué sucede cuando intentas acceder a archivos sin permisos</li>
-                <li>Crea un usuario de prueba y experimenta con sudo</li>
-            </ol>
-
-            <div class="callout success">
-                <p class="callout-title">Conceptos Clave</p>
-                <p>Los permisos determinan quién puede leer, escribir o ejecutar archivos. Un error aquí puede exponer tu sistema o hacerlo inaccesible.</p>
+            <div class="callout info">
+                <p><strong>💡 Dato clave:</strong> Windows Server 2022 está basado en Windows 10, pero con roles y características orientadas a servidores. No está diseñado para uso personal.</p>
             </div>
-
-            <p><strong>Acceso al laboratorio:</strong> <a href="../laboratorios-html/lab-02-permisos-usuarios.html" target="_blank">Ver guía completa del Lab 02 →</a></p>
         </section>
 
-        <section id="practica">
-            <h2>10. Actividad Práctica (Opcional)</h2>
+        <section id="edicion-desktop">
+            <h2>2. Windows Server vs Windows Desktop <span class="os-badge">Teoría</span><span class="practice-badge">10 min</span></h2>
 
-            <section class="actividad">
-                <h3>Actividad: Exploración de Procesos</h3>
-                <p><strong>Tipo:</strong> Opcional (práctica)</p>
-                <p><strong>Relacionado con:</strong> Comandos de gestión de procesos</p>
-                <p><strong>Entregable:</strong> Ninguno (para practicar)</p>
-                <p><strong>Propósito:</strong> Practicar con ps, pstree y /proc</p>
-            </section>
+            <h3>Diferencias técnicas principales</h3>
+            <table>
+                <tr>
+                    <th>Característica</th>
+                    <th>Windows Desktop</th>
+                    <th>Windows Server</th>
+                </tr>
+                <tr>
+                    <td><strong>Conexiones simultáneas</strong></td>
+                    <td>1-2 usuarios (RDP limitado)</td>
+                    <td>Ilimitadas (con licencias)</td>
+                </tr>
+                <tr>
+                    <td><strong>RAM máxima</strong></td>
+                    <td>Limitada por edición</td>
+                    <td>Hasta 24 TB (Datacenter)</td>
+                </tr>
+                <tr>
+                    <td><strong>Roles de servidor</strong></td>
+                    <td>No disponibles</td>
+                    <td>AD DS, DHCP, DNS, IIS, etc.</td>
+                </tr>
+                <tr>
+                    <td><strong>Interfaz</strong></td>
+                    <td>Desktop completo</td>
+                    <td>Opción Server Core (sin GUI)</td>
+                </tr>
+                <tr>
+                    <td><strong>Actualizaciones</strong></td>
+                    <td>Windows Update automático</td>
+                    <td>Controladas por administrador</td>
+                </tr>
+                <tr>
+                    <td><strong>Precio</strong></td>
+                    <td>Incluido con PC</td>
+                    <td>Por licencia + CALs</td>
+                </tr>
+            </table>
 
-            <h3>En parejas, ejecuten:</h3>
+            <h3>💰 Modelo de licenciamiento</h3>
+            <p><strong>Windows Server:</strong> Requiere dos tipos de licencias:</p>
+            <ul>
+                <li><strong>Licencia del servidor:</strong> Por núcleo de procesador</li>
+                <li><strong>CAL (Client Access License):</strong> Por usuario o dispositivo que accede</li>
+            </ul>
 
             <div class="callout warning">
-                <p><strong>Nota para usuarios Windows:</strong> Se recomienda usar <strong>WSL</strong> (Windows Subsystem for Linux) o una Máquina Virtual con Ubuntu. Para instalar WSL, abre PowerShell como administrador y ejecuta: <code>wsl --install</code></p>
+                <p><strong>⚠️ Importante:</strong> Windows Server NO es gratis. Para fines educativos, puedes usar evaluaciones de 180 días o licencias académicas.</p>
             </div>
-
-            <h4>Linux (WSL/Ubuntu/VirtualBox):</h4>
-            <pre><code># Ver procesos con estados
-ps aux | head -20
-
-# Ver árbol de procesos
-pstree -p | head -30
-
-# Información de un proceso específico
-cat /proc/self/status</code></pre>
-
-            <h4>Windows (PowerShell):</h4>
-            <pre><code># Ver procesos
-Get-Process | Select-Object -First 20
-
-# Información detallada
-Get-Process -Name explorer | Format-List *</code></pre>
         </section>
 
-        <!-- Videos Recomendados -->
-        <section id="videos">
-            <h2>🎥 Videos Recomendados</h2>
+        <section id="instalacion">
+            <h2>3. Instalación de Windows Server 2022 <span class="os-badge">Práctica</span><span class="practice-badge">30 min</span></h2>
 
-            <div class="video-resource">
-                <h3>Video 1: Process vs Program</h3>
-                <p><strong>Concepto:</strong> Diferencia entre programa y proceso</p>
-                <p><strong>Duración:</strong> 8 minutos</p>
-                <p><strong>Nivel:</strong> Básico</p>
-                <p><strong>Por qué verlo:</strong> Excelente explicación visual con analogías de la vida real</p>
-                <p><strong>Canal:</strong> Neso Academy</p>
-                <a href="https://www.youtube.com/watch?v=VRcmlVafq54" target="_blank">▶ Ver en YouTube</a>
+            <h3>Paso 1: Descargar ISO (Antes de clase)</h3>
+            <p><strong>Opción 1 - Evaluación gratuita (180 días):</strong></p>
+            <ul>
+                <li>Ir a: <a href="https://www.microsoft.com/en-us/evalcenter/evaluate-windows-server-2022" target="_blank">Microsoft Evaluation Center</a></li>
+                <li>Descargar: Windows Server 2022 (ISO con Experiencia Desktop)</li>
+                <li>Tamaño: ~5 GB</li>
+            </ul>
+
+            <p><strong>Opción 2 - Licencia académica (si disponible):</strong></p>
+            <ul>
+                <li>A través del portal de Azure Dev Tools for Teaching</li>
+                <li>Requiere cuenta institucional</li>
+            </ul>
+
+            <h3>Paso 2: Crear VM en VirtualBox</h3>
+            <pre><code class="language-powershell"># 1. Nueva VM
+Nombre: WS2022-01
+Tipo: Microsoft Windows
+Versión: Windows 10 (64-bit) [Windows Server 2022 no está en lista, usar Windows 10]
+
+# 2. Configuración de hardware
+Memoria base: 4096 MB (4 GB mínimo recomendado)
+Procesador: 2 CPU
+Video: 128 MB
+
+# 3. Disco duro
+Tamaño: 60 GB dinámico (VHD)
+
+# 4. Red
+Adaptador 1: Adaptador Puente (Bridged)
+OPCIONAL: Adaptador 2: Solo Host (Host-Only) para red aislada</code></pre>
+
+            <h3>Paso 3: Montar ISO e instalar</h3>
+            <pre><code class="language-powershell"># 1. Configuración VM → Almacenamiento
+# 2. Controlador SATA → Agregar disco óptico
+# 3. Seleccionar el archivo ISO de Windows Server 2022
+
+# 4. Iniciar VM
+# 5. Seguir el asistente de instalación:</code></pre>
+
+            <div class="ascii-diagram">
+┌────────────────────────────────────────────────────┐
+│  Windows Server 2022 Setup                         │
+├────────────────────────────────────────────────────┤
+│  1. Idioma: Español (Latinamérica)                 │
+│  2. Hora: Hora estándal de México                  │
+│  3. Teclado: Español (Latinoamérica)               │
+│                                                     │
+│  [Siguiente] → [Instalar ahora]                    │
+├────────────────────────────────────────────────────┤
+│  4. Ingresar clave de producto:                    │
+│     → [No tengo clave de producto] (evaluación)    │
+│                                                     │
+│  5. Edición:                                       │
+│     → Windows Server 2022 Standard (Experiencia    │
+│        de Desktop) [RECOMENDADO]                   │
+│                                                     │
+│  6. Términos de licencia: ☑ Acepto los términos   │
+│                                                     │
+│  7. Tipo de instalación:                           │
+│     → Personalizada: Solo instalar Windows         │
+│                                                     │
+│  8. Partición:                                     │
+│     → Espacio no asignado → [Siguiente]            │
+│                                                     │
+│  9. Esperar instalación... (~15-30 min)            │
+└────────────────────────────────────────────────────┘
             </div>
 
-            <div class="video-resource">
-                <h3>Video 2: Process State Diagram</h3>
-                <p><strong>Concepto:</strong> Estados del proceso y transiciones</p>
-                <p><strong>Duración:</strong> 10 minutos</p>
-                <p><strong>Nivel:</strong> Básico</p>
-                <p><strong>Por qué verlo:</strong> Complementa el diagrama de estados visto en clase</p>
-                <p><strong>Canal:</strong> GeeksLesson</p>
-                <a href="https://www.youtube.com/watch?v=k_wOUVHYJgY" target="_blank">▶ Ver en YouTube</a>
+            <h3>Paso 4: Configuración inicial (OOBE)</h3>
+            <pre><code class="language-powershell"># 1. Contraseña de Administrator
+#    - Debe ser fuerte (mayúsculas, minúsculas, números, símbolos)
+#    - Anótala, la necesitarás
+
+# 2. Network Location
+#    - [Sí] para red de trabajo/empresa
+#    - [No] para red pública
+
+# 3. Windows Update
+#    - [Recomendado] Buscar actualizaciones
+
+# 4. Server Manager se abrirá automáticamente</code></pre>
+
+            <div class="callout success">
+                <p><strong>✅ Hit:</strong> Después de la instalación, presiona <code>Ctrl + Alt + Supr</code> para desbloquear. En VirtualBox, usa <code>Host (Ctrl derecho) + Supr</code>.</p>
+            </div>
+        </section>
+
+        <section id="configuracion">
+            <h2>4. Configuración Inicial del Servidor <span class="os-badge">Práctica</span><span class="practice-badge">15 min</span></h2>
+
+            <h3>Paso 1: Cambiar nombre del servidor</h3>
+            <pre><code class="language-powershell"># Opción 1: Server Manager
+Server Manager → Local Server → Properties → COMPUTER NAME
+→ [Change] → Nuevo nombre: WS2022-01 → [OK] → Reiniciar
+
+# Opción 2: PowerShell (Recomendado)
+Rename-Computer -NewName "WS2022-01" -Restart
+# Para reiniciar manualmente:
+Restart-Computer</code></pre>
+
+            <h3>Paso 2: Configurar red IP estática</h3>
+            <pre><code class="language-powershell"># Ver configuración actual
+Get-NetIPAddress
+
+# Configurar IP estática (reemplazar con tus datos)
+New-NetIPAddress `
+    -InterfaceAlias "Ethernet" `
+    -IPAddress 192.168.1.100 `
+    -PrefixLength 24 `
+    -DefaultGateway 192.168.1.1
+
+# Configurar DNS
+Set-DnsClientServerAddress `
+    -InterfaceAlias "Ethernet" `
+    -ServerAddresses 192.168.1.1, 8.8.8.8
+
+# Verificar configuración
+ipconfig
+ping 8.8.8.8</code></pre>
+
+            <h3>Paso 3: Configurar actualizaciones automáticas</h3>
+            <pre><code class="language-powershell"># Abrir Settings
+sconfig
+
+# Menu:
+8. Windows Update Settings
+→ A (Automatic)
+→ 3 (Every day)
+→ 03:00 (3 AM)
+
+# Volver al menú principal
+15. Exit</code></pre>
+
+            <h3>Paso 4: Habilitar Remote Desktop</h3>
+            <pre><code class="language-powershell"># Via PowerShell
+Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server' `
+    -Name "fDenyTSConnections" -Value 0
+
+# Habilitar en firewall
+Enable-NetFirewallRule -DisplayGroup "Remote Desktop"
+
+# Verificar estado
+Get-WmiObject -class "Win32_TSGeneralSetting" -Namespace root\cimv2\terminalservices</code></pre>
+
+            <div class="callout warning">
+                <p><strong>⚠️ Seguridad:</strong> Solo habilita RDP si es necesario. Usa VPN y contraseñas fuertes. Considera cambiar el puerto por defecto (3389).</p>
+            </div>
+        </section>
+
+        <section id="powershell">
+            <h2>5. PowerShell Básico <span class="os-badge">Práctica</span><span class="practice-badge">25 min</span></h2>
+
+            <h3>¿Qué es PowerShell?</h3>
+            <p><strong>PowerShell</strong> es un shell de línea de comandos y lenguaje de scripting diseñado para administración de sistemas. A diferencia de CMD:</p>
+            <ul>
+                <li>Basado en objetos (.NET), no texto</li>
+                <li>Comandos consistentes (Verb-Noun)</li>
+                <li>Pipeline poderoso</li>
+                <li>Orientado a administración, no usuario final</li>
+            </ul>
+
+            <h3>Abrir PowerShell</h3>
+            <pre><code class="language-powershell"># Opción 1: Buscar "PowerShell" en Start Menu
+# Opción 2: Win + X → Windows PowerShell
+# Opción 3: Server Manager → Tools → PowerShell</code></pre>
+
+            <h3>Comandos básicos equivalentes a Linux</h3>
+            <table>
+                <tr>
+                    <th>Tarea</th>
+                    <th>Linux</th>
+                    <th>PowerShell</th>
+                </tr>
+                <tr>
+                    <td>Listar archivos</td>
+                    <td><code>ls</code></td>
+                    <td><code>Get-ChildItem</code> (alias: <code>ls</code>, <code>dir</code>)</td>
+                </tr>
+                <tr>
+                    <td>Directorio actual</td>
+                    <td><code>pwd</code></td>
+                    <td><code>Get-Location</code> (alias: <code>pwd</code>)</td>
+                </tr>
+                <tr>
+                    <td>Cambiar directorio</td>
+                    <td><code>cd</code></td>
+                    <td><code>Set-Location</code> (alias: <code>cd</code>)</td>
+                </tr>
+                <tr>
+                    <td>Ver procesos</td>
+                    <td><code>ps</code></td>
+                    <td><code>Get-Process</code></td>
+                </tr>
+                <tr>
+                    <td>Ver servicios</td>
+                    <td><code>systemctl status</code></td>
+                    <td><code>Get-Service</code></td>
+                </tr>
+                <tr>
+                    <td>Crear archivo</td>
+                    <td><code>touch</code></td>
+                    <td><code>New-Item -ItemType File</code></td>
+                </tr>
+                <tr>
+                    <td>Crear directorio</td>
+                    <td><code>mkdir</code></td>
+                    <td><code>New-Item -ItemType Directory</code></td>
+                </tr>
+                <tr>
+                    <td>Copiar archivo</td>
+                    <td><code>cp</code></td>
+                    <td><code>Copy-Item</code></td>
+                </tr>
+                <tr>
+                    <td>Mover archivo</td>
+                    <td><code>mv</code></td>
+                    <td><code>Move-Item</code></td>
+                </tr>
+                <tr>
+                    <td>Borrar archivo</td>
+                    <td><code>rm</code></td>
+                    <td><code>Remove-Item</code></td>
+                </tr>
+                <tr>
+                    <td>Ver contenido</td>
+                    <td><code>cat</code></td>
+                    <td><code>Get-Content</code></td>
+                </tr>
+                <tr>
+                    <td>Buscar en texto</td>
+                    <td><code>grep</code></td>
+                    <td><code>Select-String</code></td>
+                </tr>
+            </table>
+
+            <h3>Ejercicio: Navegación y archivos</h3>
+            <pre><code class="language-powershell"># 1. Ver ubicación actual
+Get-Location
+
+# 2. Listar archivos
+Get-ChildItem
+
+# 3. Ir a C:\ (raíz)
+Set-Location C:\
+
+# 4. Crear directorio de proyecto
+New-Item -ItemType Directory -Path "C:\ProyectoSO"
+
+# 5. Entrar al directorio
+Set-Location "C:\ProyectoSO"
+
+# 6. Crear archivo de texto
+"Mi primer archivo en PowerShell" | Out-File "notas.txt"
+
+# 7. Ver contenido del archivo
+Get-Content "notas.txt"
+
+# 8. Crear subdirectorios
+New-Item -ItemType Directory -Path "Documentos"
+New-Item -ItemType Directory -Path "Scripts"
+
+# 9. Copiar archivo
+Copy-Item "notas.txt" "Documentos\notas-copia.txt"
+
+# 10. Mover archivo
+Move-Item "notas.txt" "Documentos\notas-original.txt"
+
+# 11. Listar estructura
+Get-ChildItem -Recurse</code></pre>
+
+            <h3>Trabajo con procesos</h3>
+            <pre><code class="language-powershell"># Ver todos los procesos
+Get-Process
+
+# Buscar proceso específico
+Get-Process | Where-Object {$_.Name -like "svchost"}
+
+# Ver procesos con alto uso de CPU
+Get-Process | Where-Object {$_.CPU -gt 10} | Sort-Object CPU -Descending
+
+# Matar proceso (cuidado)
+Stop-Process -Name "notepad" -Force
+
+# Matar por PID
+Stop-Process -Id 1234 -Force</code></pre>
+
+            <h3>Trabajo con servicios</h3>
+            <pre><code class="language-powershell"># Ver todos los servicios
+Get-Service
+
+# Ver servicios corriendo
+Get-Service | Where-Object {$_.Status -eq "Running"}
+
+# Buscar servicio específico
+Get-Service -Name "Spooler"
+
+# Iniciar servicio
+Start-Service -Name "Spooler"
+
+# Detener servicio
+Stop-Service -Name "Spooler" -Force
+
+# Reiniciar servicio
+Restart-Service -Name "Spooler"</code></pre>
+
+            <h3>Obtener ayuda</h3>
+            <pre><code class="language-powershell"># Ayuda de comando
+Get-Help Get-Process
+
+# Ayuda con ejemplos
+Get-Help Get-Process -Examples
+
+# Ayuda online (abre navegador)
+Get-Help Get-Process -Online
+
+# Actualizar ayuda (requiere admin)
+Update-Help</code></pre>
+        </section>
+
+        <section id="comparacion">
+            <h2>6. Comparación: Linux vs PowerShell <span class="os-badge">Práctica</span><span class="practice-badge">10 min</span></h2>
+
+            <h3>Tabla de equivalencias</h3>
+            <table>
+                <tr>
+                    <th>Categoría</th>
+                    <th>Linux</th>
+                    <th>PowerShell</th>
+                </tr>
+                <tr>
+                    <td><strong>Navegación</strong></td>
+                    <td><code>pwd, ls, cd</code></td>
+                    <td><code>Get-Location, Get-ChildItem, Set-Location</code></td>
+                </tr>
+                <tr>
+                    <td><strong>Archivos</strong></td>
+                    <td><code>touch, mkdir, cp, mv, rm</code></td>
+                    <td><code>New-Item, Copy-Item, Move-Item, Remove-Item</code></td>
+                </tr>
+                <tr>
+                    <td><strong>Texto</strong></td>
+                    <td><code>cat, grep, head, tail, less</code></td>
+                    <td><code>Get-Content, Select-String, Select-Object</code></td>
+                </tr>
+                <tr>
+                    <td><strong>Procesos</strong></td>
+                    <td><code>ps, top, kill</code></td>
+                    <td><code>Get-Process, Stop-Process</code></td>
+                </tr>
+                <tr>
+                    <td><strong>Servicios</strong></td>
+                    <td><code>systemctl status/stop/start</code></td>
+                    <td><code>Get-Service, Stop-Service, Start-Service</code></td>
+                </tr>
+                <tr>
+                    <td><strong>Permisos</strong></td>
+                    <td><code>chmod, chown</code></td>
+                    <td><code>icacls, Get-Acl, Set-Acl</code></td>
+                </tr>
+                <tr>
+                    <td><strong>Red</strong></td>
+                    <td><code>ifconfig, ping, ssh</code></td>
+                    <td><code>Get-NetIPAddress, Test-Connection, Enter-PSSession</code></td>
+                </tr>
+                <tr>
+                    <td><strong>Paquetes</strong></td>
+                    <td><code>apt, yum, dnf</code></td>
+                    <td><code>Get-WindowsFeature, Install-WindowsFeature</code></td>
+                </tr>
+            </table>
+
+            <h3>Diferencias filosóficas</h3>
+            <div class="comparison">
+                <div>
+                    <h4>🐧 Linux</h4>
+                    <ul>
+                        <li><strong>"Todo es un archivo"</strong> - Dispositivos, procesos, sockets</li>
+                        <li><strong>Basado en texto</strong> - Los comandos manejan strings</li>
+                        <li><strong>Pipelines de texto</strong> - <code>|</code> conecta stdout a stdin</li>
+                        <li><strong>Comandos cortos</strong> - <code>ls, cd, cp, mv</code></li>
+                        <li><strong>Config en texto</strong> - Archivos .conf en /etc</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>🪟 PowerShell</h4>
+                    <ul>
+                        <li><strong>"Todo es un objeto"</strong> - Objetos .NET estructurados</li>
+                        <li><strong>Basado en objetos</strong> - Los comandos manejan propiedades</li>
+                        <li><strong>Pipelines de objetos</strong> - <code>|</code> pasa objetos completos</li>
+                        <li><strong>Verbos descriptivos</strong> - <code>Get-ChildItem, Set-Location</code></li>
+                        <li><strong>Config en Registry</strong> - HKLM:\, HKCU:\</li>
+                    </ul>
+                </div>
             </div>
 
-            <div class="video-resource">
-                <h3>Video 3: fork() and exec() System Calls</h3>
-                <p><strong>Concepto:</strong> Cómo funcionan fork() y exec() en Linux</p>
-                <p><strong>Duración:</strong> 15 minutos</p>
-                <p><strong>Nivel:</strong> Intermedio</p>
-                <p><strong>Por qué verlo:</strong> Demostración práctica de creación de procesos</p>
-                <p><strong>Canal:</strong> Jacob Sorber</p>
-                <a href="https://www.youtube.com/watch?v=HhezP8YEeiQ" target="_blank">▶ Ver en YouTube</a>
-            </div>
+            <h3>Ejemplo: Pipeline en Linux vs PowerShell</h3>
+            <pre><code class="language-powershell"># LINUX - Pipeline de TEXTO
+# Listar procesos, buscar "chrome", tomar top 5
+ps aux | grep chrome | head -5
+# Resultado: Líneas de texto
+
+# POWERSHELL - Pipeline de OBJETOS
+# Listar procesos, filtrar "chrome", ordenar por CPU, tomar top 5
+Get-Process | Where-Object {$_.Name -like "*chrome*"} |
+               Sort-Object CPU -Descending |
+               Select-Object -First 5
+# Resultado: Objetos de proceso con propiedades accesibles</code></pre>
 
             <div class="callout info">
-                <p class="callout-title">💡 Tip de Estudio</p>
-                <p>Después de ver estos videos, practica con el comando <code>ps aux</code> para ver procesos reales en tu sistema. Intenta identificar el PID (Process ID) y PPID (Parent PID) de diferentes procesos.</p>
+                <p><strong>💡 Ventaja de objetos:</strong> En PowerShell, puedes acceder a propiedades específicas del objeto resultado. Por ejemplo: <code>(Get-Process chrome).CPU</code> te da el tiempo de CPU directamente.</p>
+            </div>
+        </section>
+
+        <section id="actividad">
+            <h2>7. Actividad Práctica</h2>
+
+            <div class="actividad">
+                <h3>🎯 Actividad: Configuración de Windows Server 2022</h3>
+                <p><strong>Tipo:</strong> Práctica obligatoria</p>
+                <p><strong>Duración:</strong> Fuera de clase (2 horas estimadas)</p>
+                <p><strong>Entregable:</strong> Script PowerShell + capturas de pantalla</p>
+
+                <h4>Requisitos:</h4>
+                <ol>
+                    <li>Crear una VM Windows Server 2022 en VirtualBox</li>
+                    <li>Configurar nombre de servidor: <code>WS-[TuApellido]</code></li>
+                    <li>Configurar IP estática en red Host-Only</li>
+                    <li>Crear un script PowerShell que automatice tareas comunes</li>
+                </ol>
+
+                <h4>Script PowerShell requerido:</h4>
+                <p>Nombre: <code>configurar_servidor.ps1</code></p>
+                <pre><code class="language-powershell"># Script: configurar_servidor.ps1
+# Autor: [Tu nombre]
+# Fecha: 2026-02-10
+# Descripción: Configuración inicial de Windows Server
+
+# 1. Mostrar información del sistema
+Write-Host "=== Información del Sistema ===" -ForegroundColor Cyan
+Get-ComputerInfo | Select-Object OsName, WindowsVersion, CsName
+
+# 2. Crear estructura de directorios
+Write-Host "`n=== Creando directorios ===" -ForegroundColor Green
+$dirs = @("C:\ProyectoSO\Documentos", "C:\ProyectoSO\Scripts", "C:\ProyectoSO\Logs")
+foreach ($dir in $dirs) {
+    New-Item -ItemType Directory -Path $dir -Force | Out-Null
+    Write-Host "Creado: $dir"
+}
+
+# 3. Crear archivo de registro
+Write-Host "`n=== Creando archivo de logs ===" -ForegroundColor Green
+$logFile = "C:\ProyectoSO\Logs\config_$(Get-Date -Format 'yyyyMMdd').log"
+"Configuración completada: $(Get-Date)" | Out-File $logFile
+Write-Host "Log creado: $logFile"
+
+# 4. Mostrar procesos con alto uso de CPU
+Write-Host "`n=== Top 5 procesos por CPU ===" -ForegroundColor Yellow
+Get-Process | Sort-Object CPU -Descending | Select-Object -First 5 |
+    Format-Table Name, CPU, Id -AutoSize
+
+# 5. Mostrar servicios corriendo
+Write-Host "`n=== Servicios en ejecución ===" -ForegroundColor Yellow
+Get-Service | Where-Object {$_.Status -eq "Running"} |
+    Select-Object -First 10 |
+    Format-Table Name, Status, DisplayName -AutoSize
+
+Write-Host "`n=== Script completado ===" -ForegroundColor Green</code></pre>
+
+                <h4>Capturas de pantalla requeridas:</h4>
+                <ul>
+                    <li>Server Manager mostrando nombre del servidor</li>
+                    <li>PowerShell ejecutando el script</li>
+                    <li>Salida del script (directorios creados, log, top procesos)</li>
+                    <li>Configuración de red (ipconfig)</li>
+                </ul>
+
+                <h4>Rúbrica de evaluación:</h4>
+                <table>
+                    <tr>
+                        <th>Criterio</th>
+                        <th>Puntaje</th>
+                    </tr>
+                    <tr>
+                        <td>VM funciona correctamente (arranca, no errores)</td>
+                        <td>20%</td>
+                    </tr>
+                    <tr>
+                        <td>Nombre de servidor configurado</td>
+                        <td>10%</td>
+                    </tr>
+                    <tr>
+                        <td>Red IP estática configurada</td>
+                        <td>20%</td>
+                    </tr>
+                    <tr>
+                        <td>Script PowerShell funciona sin errores</td>
+                        <td>30%</td>
+                    </tr>
+                    <tr>
+                        <td>Capturas completas y claras</td>
+                        <td>20%</td>
+                    </tr>
+                </table>
+
+                <h4>Entrega:</h4>
+                <p><strong>Formato:</strong> PDF con capturas + código del script</p>
+                <p><strong>Nombre:</strong> <code>Actividad03_WindowsServer_[Apellido].pdf</code></p>
+                <p><strong>Fecha límite:</strong> Próxima clase</p>
             </div>
         </section>
 
@@ -1171,61 +1094,59 @@ Get-Process -Name explorer | Format-List *</code></pre>
                     <th>Descripción</th>
                 </tr>
                 <tr>
-                    <td><strong>Programa</strong></td>
-                    <td>Código estático en disco</td>
+                    <td><strong>Windows Server</strong></td>
+                    <td>SO para servidores, no uso personal</td>
                 </tr>
                 <tr>
-                    <td><strong>Proceso</strong></td>
-                    <td>Programa en ejecución (con recursos propios)</td>
+                    <td><strong>Roles de servidor</strong></td>
+                    <td>AD, DHCP, DNS, IIS, File Server</td>
                 </tr>
                 <tr>
-                    <td><strong>Thread</strong></td>
-                    <td>Unidad de ejecución (comparte memoria del proceso)</td>
+                    <td><strong>PowerShell</strong></td>
+                    <td>Shell basado en objetos .NET</td>
                 </tr>
                 <tr>
-                    <td><strong>PCB</strong></td>
-                    <td>Estructura con toda la info del proceso</td>
+                    <td><strong>Verb-Noun</strong></td>
+                    <td>Convención de nombres (Get-Process, Stop-Service)</td>
                 </tr>
                 <tr>
-                    <td><strong>PID</strong></td>
-                    <td>Identificador único de proceso</td>
+                    <td><strong>Pipeline</strong></td>
+                    <td>Pasa objetos entre comandos (|)</td>
                 </tr>
                 <tr>
-                    <td><strong>Estados</strong></td>
-                    <td>Nuevo, Listo, Ejecutando, Bloqueado, Terminado</td>
-                </tr>
-                <tr>
-                    <td><strong>Context Switch</strong></td>
-                    <td>Cambio de un proceso a otro</td>
-                </tr>
-                <tr>
-                    <td><strong>IPC</strong></td>
-                    <td>Mecanismos: pipes, sockets, shared memory</td>
-                </tr>
-                <tr>
-                    <td><strong>Modelos de threads</strong></td>
-                    <td>1:1, M:1, M:N</td>
+                    <td><strong>Aliases</strong></td>
+                    <td>ls = Get-ChildItem, pwd = Get-Location</td>
                 </tr>
             </table>
 
             <div class="callout info">
-                <h3>Tarea para próxima clase</h3>
-                <p><strong>Investigación (en parejas)</strong></p>
-                <ol>
-                    <li><strong>Investiguen</strong> qué es un "proceso zombie" en Linux</li>
-                    <li><strong>Expliquen</strong> por qué ocurre y cómo se soluciona</li>
-                    <li><strong>Escriban</strong> un programa en C que cree un zombie (código + explicación)</li>
-                </ol>
-                <p><strong>Entrega:</strong> Documento PDF, máximo 2 páginas</p>
-                <p><strong>Sustentación:</strong> Próxima clase, 5 minutos por pareja</p>
+                <h3>Comandos clave memorizados</h3>
+                <pre><code class="language-powershell"># Navegación
+Get-Location        # pwd
+Set-Location C:\    # cd
+Get-ChildItem       # ls
+
+# Archivos
+New-Item -ItemType File -Path "test.txt"
+Copy-Item src.txt dst.txt
+Remove-Item old.txt
+
+# Procesos
+Get-Process notepad
+Stop-Process -Id 1234
+
+# Servicios
+Get-Service Spooler
+Restart-Service Spooler</code></pre>
             </div>
 
             <h3>Próxima Clase</h3>
-            <p><strong>Clase 4: Planificación de Procesos</strong></p>
+            <p><strong>Clase 04: Estructura del Sistema Operativo</strong></p>
             <ul>
-                <li>Algoritmos de planificación</li>
-                <li>FCFS, SJF, Prioridad, Round Robin</li>
-                <li>Métricas: Turnaround, Waiting Time, Response Time</li>
+                <li>Kernel, Shell, System Calls</li>
+                <li>Modo Usuario vs Modo Kernel</li>
+                <li>Arquitectura monolítica vs microkernel</li>
+                <li>Comandos: uname, lsmod, strace</li>
             </ul>
 
             <p><strong>¡Nos vemos!</strong></p>
@@ -1235,11 +1156,7 @@ Get-Process -Name explorer | Format-List *</code></pre>
     <footer>
         <div class="container">
             <p><strong>IF0099 - Sistemas Operativos I</strong> • <a href="index.html">Índice de Clases</a></p>
-        <div class="container">
-            <p><strong>IF0099 - Sistemas Operativos I</strong></p>
-            <p>Clase 03: Concepto de Proceso</p>
-            <p>Última actualización: 2026-02-01</p>
-            <p><a href="#">Volver arriba</a></p>
+            <p>Clase 03: Windows Server 2022 | Última actualización: 2026-02-10</p>
         </div>
     </footer>
 
@@ -1263,6 +1180,15 @@ Get-Process -Name explorer | Format-List *</code></pre>
                     target.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }
             });
+        });
+    </script>
+
+    <!-- Prism.js para syntax highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-powershell.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            Prism.highlightAll();
         });
     </script>
 </body>

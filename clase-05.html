@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clase 05: Sección Crítica y Semáforos | IF0099 - Sistemas Operativos I</title>
+    <title>Clase 05: Procesos en Linux | IF0099 - Sistemas Operativos I</title>
+    <!-- Prism.js CSS para syntax highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
     <style>
         :root {
             --primary: #2563eb;
@@ -116,23 +118,6 @@
             margin-bottom: 1rem;
         }
 
-        figure {
-            margin: 2rem 0;
-            text-align: center;
-        }
-        figure img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        figcaption {
-            margin-top: 0.75rem;
-            color: var(--text-muted);
-            font-style: italic;
-            font-size: 0.95rem;
-        }
-
         table {
             width: 100%;
             border-collapse: collapse;
@@ -210,17 +195,6 @@
             border-left-color: #ef4444;
         }
 
-        .ascii-diagram {
-            font-family: 'Consolas', 'Monaco', monospace;
-            font-size: 0.85rem;
-            line-height: 1.2;
-            background: var(--bg-light);
-            padding: 1rem;
-            border-radius: 4px;
-            overflow-x: auto;
-            white-space: pre;
-        }
-
         .comparison {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -233,19 +207,22 @@
             border-radius: 8px;
         }
 
-        .deadlock-diagram {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin: 2rem 0;
-            font-family: 'Consolas', 'Monaco', monospace;
-            font-size: 0.8rem;
-        }
-        .deadlock-box {
-            border: 2px solid var(--secondary);
-            padding: 1rem;
-            border-radius: 8px;
+        .actividad {
             background: var(--bg-light);
+            border-left: 5px solid var(--accent);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+        .actividad h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        .actividad p {
+            margin-bottom: 0.75rem;
+        }
+        .actividad strong {
+            color: var(--secondary);
         }
 
         footer {
@@ -285,42 +262,6 @@
             background: var(--secondary);
         }
 
-        .buffer-diagram {
-            display: flex;
-            justify-content: center;
-            gap: 0.5rem;
-            margin: 1.5rem 0;
-        }
-        .buffer-cell {
-            width: 50px;
-            height: 50px;
-            border: 2px solid var(--secondary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: var(--bg-light);
-            font-family: monospace;
-            border-radius: 4px;
-        }
-
-        .actividad {
-            background: var(--bg-light);
-            border-left: 5px solid var(--accent);
-            padding: 1.5rem;
-            margin: 1.5rem 0;
-            border-radius: 4px;
-        }
-        .actividad h3 {
-            color: var(--primary);
-            margin-bottom: 1rem;
-        }
-        .actividad p {
-            margin-bottom: 0.75rem;
-        }
-        .actividad strong {
-            color: var(--secondary);
-        }
-
         @media (max-width: 768px) {
             header h1 {
                 font-size: 1.6rem;
@@ -335,15 +276,72 @@
                 grid-template-columns: 1fr;
             }
         }
+
+        /* Code blocks with syntax highlighting */
+        pre {
+            background: #1e1e1e !important;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            overflow-x: auto;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        pre code {
+            font-family: 'Fira Code', 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: #d4d4d4;
+        }
+
+        /* Inline code */
+        code:not(pre code) {
+            background: #e2e8f0;
+            color: #c026d3;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-family: 'Fira Code', 'Consolas', 'Monaco', monospace;
+            font-size: 0.9em;
+        }
+
+        .code-header {
+            background: #2d2d2d;
+            color: #9cdcfe;
+            padding: 0.5rem 1rem;
+            border-radius: 8px 8px 0 0;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+        }
+
+        .code-block {
+            border-radius: 8px;
+            overflow: hidden;
+            margin: 1.5rem 0;
+        }
+
+        .code-block pre {
+            margin: 0;
+            border-radius: 0;
+        }
+
+        .terminal-block pre {
+            background: #0c0c0c !important;
+            border: 1px solid #333;
+        }
+
+        .terminal-block .code-header {
+            background: #1a1a1a;
+            color: #22c55e;
+        }
     </style>
 </head>
 <body>
     <header>
         <div class="container">
-            <h1>Clase 05: Sección Crítica y Semáforos</h1>
-            <p class="subtitle">IF0099 - Sistemas Operativos I | Unidad 4 - Sincronización</p>
-            <p class="subtitle">Sección Crítica, Semáforos y Mutex</p>
-            <p class="meta">Última actualización: 2026-02-01 | Duración: 90 minutos</p>
+            <h1>Clase 05: Procesos en Linux - Gestión y Monitoreo</h1>
+            <p class="subtitle">IF0099 - Sistemas Operativos I | Unidad 3 - Procesos</p>
+            <p class="subtitle">ps, top, htop, kill, señales y systemd</p>
+            <p class="meta">Última actualización: 2026-02-10 | Duración: 90 minutos (teoría: 30 min + práctica: 60 min)</p>
         </div>
     </header>
 
@@ -352,844 +350,812 @@
             <h2>Contenido de la Clase</h2>
             <ul>
                 <li><a href="#objetivos">Objetivos de Aprendizaje</a></li>
-                <li><a href="#concurrencia">El Problema de la Concurrencia</a></li>
-                <li><a href="#race-condition">Condición de Carrera</a></li>
-                <li><a href="#seccion-critica">La Sección Crítica</a></li>
-                <li><a href="#requisitos">Requisitos de la Solución</a></li>
-                <li><a href="#hardware">Hardware de Sincronización</a></li>
-                <li><a href="#monitores">Monitores</a></li>
-                <li><a href="#semaforos">Semáforos</a></li>
-                <li><a href="#productor-consumidor">Productor-Consumidor</a></li>
-                <li><a href="#mutex">Mutex en POSIX</a></li>
-                <li><a href="#deadlock">Deadlock</a></li>
-                <li><a href="#laboratorio">Laboratorio</a></li>
-                <li><a href="#practica">Actividad Práctica (Opcional)</a></li>
+                <li><a href="#introduccion">Introducción a Procesos</a></li>
+                <li><a href="#ciclo-vida">Ciclo de Vida de un Proceso</a></li>
+                <li><a href="#pcb">PCB (Process Control Block)</a></li>
+                <li><a href="#estados">Estados de un Proceso</a></li>
+                <li><a href="#pid-ppid">PID y PPID</a></li>
+                <li><a href="#comandos-basicos">Comandos Básicos</a></li>
+                <li><a href="#ps">Comando ps</a></li>
+                <li><a href="#top-htop">Comandos top y htop</a></li>
+                <li><a href="#kill">kill y Señales</a></li>
+                <li><a href="#prioridades">Prioridades y nice</a></li>
+                <li><a href="#systemd">systemd y systemctl</a></li>
+                <li><a href="#practica">Práctica Guiada</a></li>
+                <li><a href="#entregable">Entregable</a></li>
                 <li><a href="#resumen">Resumen</a></li>
             </ul>
         </nav>
 
         <!-- Objetivos -->
         <section id="objetivos">
-            <h2>Objetivos de la Clase</h2>
-            <p>Al finalizar esta clase, el estudiante será capaz de:</p>
+            <h2>Objetivos de Aprendizaje</h2>
+            <p>Al finalizar esta clase, serás capaz de:</p>
             <ol>
-                <li><strong>Identificar</strong> condiciones de carrera en programas concurrentes</li>
-                <li><strong>Explicar</strong> el problema de la sección crítica y sus requisitos</li>
-                <li><strong>Describir</strong> mecanismos de hardware para sincronización (TAS, CAS)</li>
-                <li><strong>Implementar</strong> soluciones usando semáforos y mutex</li>
-                <li><strong>Explicar</strong> el concepto de monitores y variables de condición</li>
-                <li><strong>Resolver</strong> problemas clásicos: productor-consumidor, filósofos</li>
-                <li><strong>Identificar</strong> y prevenir deadlocks</li>
+                <li><strong>Entender</strong> el concepto de proceso y su ciclo de vida</li>
+                <li><strong>Usar</strong> comandos básicos de gestión de procesos en Linux</li>
+                <li><strong>Monitorear</strong> procesos en tiempo real con top/htop</li>
+                <li><strong>Gestionar</strong> procesos con kill y señales</li>
+                <li><strong>Controlar</strong> servicios con systemd</li>
             </ol>
         </section>
 
-        <!-- El Problema de la Concurrencia -->
-        <section id="concurrencia">
-            <h2>El Problema de la Concurrencia</h2>
-            <h3>Cuando dos procesos acceden al mismo recurso</h3>
-
-            <pre><code>// Proceso A                    // Proceso B
-saldo = leer_cuenta();          saldo = leer_cuenta();
-saldo = saldo + 100;            saldo = saldo - 50;
-escribir_cuenta(saldo);         escribir_cuenta(saldo);</code></pre>
+        <!-- Introducción -->
+        <section id="introduccion">
+            <h2>Introducción a Procesos</h2>
 
             <div class="callout info">
-                <strong>Saldo inicial:</strong> $1000
+                <strong>¿Qué es un proceso?</strong>
+                <ul>
+                    <li>Un programa en ejecución</li>
+                    <li>Tiene su propio espacio de memoria</li>
+                    <li>Identificado por un PID (Process ID)</li>
+                    <li>Contiene: código, datos, stack, heap y PCB</li>
+                </ul>
             </div>
 
-            <h4>¿Qué puede pasar?</h4>
-            <ul>
-                <li><strong>Esperado:</strong> $1000 + $100 - $50 = <strong>$1050</strong></li>
-                <li><strong>Possible:</strong> $1100 o $950 (¡ERROR!)</li>
-            </ul>
-        </section>
-
-        <!-- Condición de Carrera -->
-        <section id="race-condition">
-            <h2>Condición de Carrera (Race Condition)</h2>
-
-            <pre class="ascii-diagram">Tiempo    Proceso A              Memoria          Proceso B
-──────────────────────────────────────────────────────────────────────
-  t1      lee saldo (1000)      [saldo=1000]
-  t2                            [saldo=1000]     lee saldo (1000)
-  t3      suma 100 (local=1100)
-  t4                                             resta 50 (local=950)
-  t5      escribe 1100          [saldo=1100]
-  t6                            [saldo=950]      escribe 950
-──────────────────────────────────────────────────────────────────────
-                                 RESULTADO: $950 (¡perdimos $100!)</pre>
-
-            <div class="callout warning">
-                <strong>Definición:</strong> <em>Race condition</em> - El resultado depende del orden de ejecución (no determinístico)
-            </div>
-        </section>
-
-        <!-- La Sección Crítica -->
-        <section id="seccion-critica">
-            <h2>La <abbr title="Sección Crítica - Fragmento de código que accede a recursos compartidos">Sección Crítica</abbr></h2>
-            <h3>Código que accede a recursos compartidos</h3>
-
-            <figure>
-                <img src="../assets/infografias/clase-05-seccion-critica.png" alt="Diagrama del problema de sección crítica">
-                <figcaption>El problema de la sección crítica: garantizar que solo un proceso acceda al recurso compartido</figcaption>
-            </figure>
-
-            <figure>
-                <img src="../assets/diagramas-svg/seccion-critica.svg" alt="Diagrama SVG de sección crítica y sincronización">
-                <figcaption>Figura X: Diagrama de sección crítica y mecanismos de sincronización</figcaption>
-            </figure>
-
-            <h4>Idea clave</h4>
-            <ul>
-                <li><strong>Sección crítica:</strong> fragmento donde se <strong>lee/modifica</strong> un recurso compartido</li>
-                <li><strong>Riesgo:</strong> si dos procesos entran a la vez, el estado puede quedar inconsistente</li>
-                <li><strong>Solución:</strong> garantizar <strong>exclusión mutua</strong> (solo uno a la vez)</li>
-            </ul>
-
-            <h4>Representación del problema</h4>
-            <pre class="ascii-diagram">┌────────────────────────────────────────────────────────┐
-│                     PROCESO                            │
-├────────────────────────────────────────────────────────┤
-│   Código normal (no crítico)                           │
-├────────────────────────────────────────────────────────┤
-│   ┌──────────────────────────────────────────────┐    │
-│   │         SECCIÓN CRÍTICA                      │    │
-│   │   - Accede a variable compartida             │    │
-│   │   - Modifica recurso común                   │    │
-│   │   - Solo UN proceso a la vez                 │    │
-│   └──────────────────────────────────────────────┘    │
-├────────────────────────────────────────────────────────┤
-│   Código normal (no crítico)                           │
-└────────────────────────────────────────────────────────┘</pre>
-        </section>
-
-        <!-- Requisitos de la Solución -->
-        <section id="requisitos">
-            <h2>Requisitos de la Solución</h2>
-            <h3>Una buena solución debe garantizar</h3>
-
-            <table>
-                <thead>
-                    <tr>
-                        <th>Requisito</th>
-                        <th>Descripción</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Exclusión mutua</strong></td>
-                        <td>Solo un proceso en la sección crítica</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Progreso</strong></td>
-                        <td>Si nadie está en SC, alguien puede entrar</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Espera limitada</strong></td>
-                        <td>Un proceso no debe esperar infinitamente</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <h3>Estructura general</h3>
-            <pre><code>while (true) {
-    ENTRADA_SECCION_CRITICA();   // Solicitar permiso
-
-    // ... sección crítica ...
-
-    SALIDA_SECCION_CRITICA();    // Liberar permiso
-
-    // ... resto del código ...
-}</code></pre>
-
+            <h4>Diferencia entre programa y proceso:</h4>
             <div class="comparison">
                 <div>
-                    <h4>¿Por qué son necesarios?</h4>
-                    <p><strong>Exclusión Mutua</strong></p>
-                    <p style="font-size:0.9em;color:var(--text-muted)">Sin ella:<br>
-                    Proceso A: saldo = 1000 + 100<br>
-                    Proceso B: saldo = 1000 - 50<br>
-                    Resultado: saldo inconsistente</p>
-
-                    <p><strong>Progreso</strong></p>
-                    <p style="font-size:0.9em;color:var(--text-muted)">Sin progreso:<br>
-                    Si un proceso fuera de SC impide<br>
-                    que otros entren, nadie avanza.</p>
-
-                    <p><strong>Espera Limitada</strong></p>
-                    <p style="font-size:0.9em;color:var(--text-muted)">Sin ella:<br>
-                    Un proceso puede esperar<br>
-                    indefinidamente (inanición).</p>
-                </div>
-                <div>
-                    <h4>Soluciones</h4>
+                    <h4>Programa</h4>
                     <ul>
-                        <li><strong>Hardware:</strong> TAS, CAS (instrucciones atómicas)</li>
-                        <li><strong>Software:</strong> Semáforos, Mutex, Monitores</li>
-                        <li><strong>Lenguaje:</strong> Java synchronized, C# lock</li>
+                        <li>Archivo en disco</li>
+                        <li>Código ejecutable</li>
+                        <li>Pasivo (estático)</li>
+                        <li>Ejemplo: <code>/bin/bash</code></li>
                     </ul>
-
-                    <h4>Ejemplo: Algoritmo de Peterson</h4>
-                    <pre><code>int flag[2] = {false, false};
-int turno;
-
-void entrar(int i) {
-    int j = 1 - i;
-    flag[i] = true;       // Quiero entrar
-    turno = j;            // Doy prioridad al otro
-    while (flag[j] && turno == j);  // Espero
-}
-
-void salir(int i) {
-    flag[i] = false;      // Ya no quiero estar
-}</code></pre>
-                    <p style="font-size:0.85em;color:var(--text-muted)">✅ Cumple los 3 requisitos (para 2 procesos)<br>
-                    ❌ Solo funciona para 2 procesos<br>
-                    ❌ Requiere busy waiting (espera activa)</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Hardware de Sincronización -->
-        <section id="hardware">
-            <h2>Hardware de Sincronización</h2>
-            <h3>Instrucciones Atómicas del Procesador</h3>
-
-            <div class="callout info">
-                El hardware proporciona operaciones atómicas (indivisibles) para sincronización
-            </div>
-
-            <div class="callout info">
-                <p class="callout-title">Definición: TAS (Test-And-Set)</p>
-                <p><strong>TAS</strong> es una instrucción atómica de hardware que lee un valor de memoria y lo establece en 1 en una sola operación indivisible. Es la base primitiva para implementar locks y mecanismos de sincronización.</p>
-            </div>
-
-            <h4>Test-and-Set (TAS)</h4>
-            <pre><code>// Ejecuta atómicamente (no interrumpible)
-boolean test_and_set(boolean *target) {
-    boolean valor = *target;
-    *target = true;
-    return valor;
-}</code></pre>
-
-            <p><strong>Uso para exclusión mutua:</strong></p>
-            <pre><code>boolean lock = false;  // Variable compartida
-
-// Entrada a sección crítica
-while (test_and_set(&lock));  // Espera activa hasta obtener lock
-
-// ========= SECCIÓN CRÍTICA ==========
-
-// Salida de sección crítica
-lock = false;</code></pre>
-
-            <div class="callout info">
-                <p class="callout-title">Definición: CAS (Compare-And-Swap)</p>
-                <p><strong>CAS</strong> es una instrucción atómica que compara un valor en memoria con un valor esperado, y si son iguales, lo reemplaza con un nuevo valor. Es fundamental para implementar estructuras de datos lock-free y algoritmos sin bloqueos.</p>
-            </div>
-
-            <h4>Compare-and-Swap (CAS)</h4>
-            <pre><code>// Ejecuta atómicamente
-int compare_and_swap(int *valor, int esperado, int nuevo) {
-    int temp = *valor;
-    if (*valor == esperado)
-        *valor = nuevo;
-    return temp;
-}</code></pre>
-
-            <p><strong>Uso para exclusión mutua:</strong></p>
-            <pre><code>int lock = 0;  // 0 = libre, 1 = ocupado
-
-// Entrada
-while (compare_and_swap(&lock, 0, 1) != 0);
-    // Si lock era 0, lo pone en 1 y sale del while
-    // Si lock era 1, sigue en el while
-
-// ========= SECCIÓN CRÍTICA ==========
-
-// Salida
-lock = 0;</code></pre>
-
-            <div class="callout success">
-                <strong>Usado en:</strong> Java, C++11 (atomic), Linux kernel
-            </div>
-
-            <h4>Busy Waiting vs Bloqueo</h4>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Enfoque</th>
-                        <th>Qué hace</th>
-                        <th>Ventaja</th>
-                        <th>Desventaja</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Espera activa (spin)</strong></td>
-                        <td>El proceso gira en un while</td>
-                        <td>Muy rápido si la espera es corta</td>
-                        <td>Consume CPU inútilmente</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Bloqueo</strong></td>
-                        <td>El proceso duerme y espera señal</td>
-                        <td>Ahorra CPU</td>
-                        <td>Mayor latencia por despertar</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <div class="callout warning">
-                <strong>Regla práctica:</strong> spin para secciones muy cortas, bloqueo para esperas largas.
-            </div>
-
-            <h4>Lista Enlazada Libre de Bloqueos (Lock-Free)</h4>
-            <p>Usando CAS para estructuras de datos concurrentes:</p>
-            <pre><code>// Insertar nodo nuevo después de A
-// PASO 1: Guardar referencias actuales
-nuevo->siguiente = A->siguiente;  // Apunta a B
-
-// PASO 2: Intentar actualizar A->siguiente con CAS
-if (CAS(&A->siguiente, B, nuevo) == B) {
-    // Éxito: A->siguiente ahora apunta a nuevo
-} else {
-    // Fallo: otro hilo modificó A->siguiente
-    // Reintentar desde PASO 1
-}</code></pre>
-        </section>
-
-        <!-- Monitores -->
-        <section id="monitores">
-            <h2><abbr title="Monitor - Construcción de lenguaje con sincronización implícita">Monitores</abbr></h2>
-            <h3>Concepto de Monitor (Hoare, 1974)</h3>
-
-            <div class="callout info">
-                Un <strong>monitor</strong> es una construcción del lenguaje de programación que encapsula:<br>
-                • Variables compartidas<br>
-                • Procedimientos que operan sobre esas variables<br>
-                • Sincronización implícita
-            </div>
-
-            <pre class="ascii-diagram">┌─────────────────────────────────────────┐
-│              MONITOR                    │
-│  ┌─────────────────────────────────┐    │
-│  │  Variables privadas             │    │
-│  │  (solo accesibles dentro)       │    │
-│  └─────────────────────────────────┘    │
-│                                          │
-│  ┌─────────────────────────────────┐    │
-│  │  Procedimiento op1()            │    │
-│  │    ... operaciones ...          │    │
-│  └─────────────────────────────────┘    │
-│  ┌─────────────────────────────────┐    │
-│  │  Procedimiento op2()            │    │
-│  │    ... operaciones ...          │    │
-│  └─────────────────────────────────┘    │
-│                                          │
-│  ⚡ Solo UN proceso puede ejecutar       │
-│     un procedimiento del monitor         │
-│     a la vez (exclusión mutua implícita) │
-└─────────────────────────────────────────┘</pre>
-
-            <h3>Variables de Condición</h3>
-            <p>Dentro de un monitor: sincronización condicional</p>
-
-            <pre><code>monitor BufferLimitado {
-    // Variables del monitor
-    item buffer[N];
-    int count = 0;
-
-    // Variables de condición
-    condition no_lleno;    // Esperar si buffer lleno
-    condition no_vacio;    // Esperar si buffer vacío
-
-    procedure insertar(item x) {
-        if (count == N)
-            no_lleno.wait;     // Duerme si lleno
-        buffer[in] = x;
-        count++;
-        no_vacio.signal;       // Despierta a consumidor
-    }
-
-    procedure remover() {
-        if (count == 0)
-            no_vacio.wait;     // Duerme si vacío
-        item = buffer[out];
-        count--;
-        no_lleno.signal;       // Despierta a productor
-        return item;
-    }
-}</code></pre>
-
-            <h3>Monitores en Java</h3>
-            <pre><code>public class CuentaBancaria {
-    private double saldo = 0;
-
-    // 'synchronized' = monitor
-    public synchronized void depositar(double monto) {
-        saldo += monto;
-    }
-
-    public synchronized void retirar(double monto) {
-        saldo -= monto;
-    }
-
-    // Uso de variables de condición
-    public synchronized void retirarSeguro(double monto)
-            throws InterruptedException {
-        while (saldo < monto) {
-            wait();  // Espera en la variable de condición
-        }
-        saldo -= monto;
-    }
-
-    public synchronized void depositarNotificar(double monto) {
-        saldo += monto;
-        notifyAll();  // Despierta a los que esperan
-    }
-}</code></pre>
-
-            <h3>Comparación: Semáforos vs Mutex vs Monitores</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Característica</th>
-                        <th>Semáforo</th>
-                        <th>Mutex</th>
-                        <th>Monitor</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Nivel</strong></td>
-                        <td>Sistema operativo</td>
-                        <td>Biblioteca/Lenguaje</td>
-                        <td>Lenguaje (alto nivel)</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Valor</strong></td>
-                        <td>0, 1, 2, ...</td>
-                        <td>0 o 1</td>
-                        <td>Implícito (lock implícito)</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Exclusión mutua</strong></td>
-                        <td>✅</td>
-                        <td>✅</td>
-                        <td>✅ (automática)</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Sincronización condicional</strong></td>
-                        <td>✅ (con semáforos adicionales)</td>
-                        <td>❌</td>
-                        <td>✅ (variables de condición)</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Errores comunes</strong></td>
-                        <td>Olvidar signal/wait</td>
-                        <td>Olvidar unlock</td>
-                        <td>Menos probable</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Ejemplos</strong></td>
-                        <td><code>sem_t</code> (C), <code>Semaphore</code> (Java)</td>
-                        <td><code>pthread_mutex</code>, <code>std::mutex</code></td>
-                        <td>Java <code>synchronized</code>, C# <code>lock</code></td>
-                    </tr>
-                </tbody>
-            </table>
-        </section>
-
-        <!-- Semáforos -->
-        <section id="semaforos">
-            <h2><abbr title="Semáforo - Mecanismo de sincronización con contador entero">Semáforos</abbr></h2>
-            <h3>Inventados por Dijkstra (1965)</h3>
-
-            <figure>
-                <img src="../assets/infografias/clase-05-semaforos.png" alt="Visualización de semáforos y operaciones wait/signal">
-                <figcaption>Visualización de semáforos: operaciones wait (P) y signal (V)</figcaption>
-            </figure>
-
-            <h4>Qué resuelven</h4>
-            <ul>
-                <li>Controlan <strong>quién entra</strong> a una sección crítica o a un recurso</li>
-                <li>Permiten <strong>sincronizar</strong> productor-consumidor, lectores-escritores, etc.</li>
-            </ul>
-
-            <p>Un <strong>semáforo</strong> es una variable entera con dos operaciones atómicas:</p>
-
-            <div class="comparison">
-                <div>
-                    <h4>wait(S) o P(S) o down(S)</h4>
-                    <pre><code>if (S > 0)
-    S = S - 1;
-else
-    bloquear proceso;</code></pre>
                 </div>
                 <div>
-                    <h4>signal(S) o V(S) o up(S)</h4>
-                    <pre><code>if (hay procesos esperando)
-    despertar uno;
-else
-    S = S + 1;</code></pre>
+                    <h4>Proceso</h4>
+                    <ul>
+                        <li>Programa en ejecución</li>
+                        <li>En memoria RAM</li>
+                        <li>Activo (dinámico)</li>
+                        <li>Ejemplo: bash con PID 1234</li>
+                    </ul>
                 </div>
             </div>
-
-            <h3>Tipos de Semáforos</h3>
-
-            <h4>Semáforo Binario (Mutex)</h4>
-            <ul>
-                <li>Valores: 0 o 1</li>
-                <li>Usado para exclusión mutua</li>
-            </ul>
-            <pre><code>semaphore mutex = 1;
-
-// Proceso
-wait(mutex);
-// sección crítica
-signal(mutex);</code></pre>
-
-            <h4>Semáforo Contador</h4>
-            <ul>
-                <li>Valores: 0, 1, 2, 3, ...</li>
-                <li>Usado para controlar acceso a N recursos</li>
-            </ul>
-            <pre><code>semaphore recursos = 5;  // 5 recursos disponibles</code></pre>
-
-            <h3>Comparación: Semáforos vs Mutex</h3>
-
-            <figure>
-                <img src="../assets/infografias/clase-05-semaforos-mutex.png" alt="Comparación visual entre semáforos y mutex">
-                <figcaption>Diferencias clave entre semáforos y mutex</figcaption>
-            </figure>
-
-            <ul>
-                <li><strong>Mutex:</strong> exclusión mutua estricta (0/1)</li>
-                <li><strong>Semáforo:</strong> contador de recursos (0..N)</li>
-                <li><strong>Uso típico:</strong> mutex para proteger una sección crítica, semáforo para recursos múltiples</li>
-            </ul>
-
-            <h3>Ejemplo: Exclusión Mutua con Semáforo</h3>
-            <pre><code>#include &lt;semaphore.h&gt;
-
-sem_t mutex;
-int saldo = 1000;  // Variable compartida
-
-void depositar(int monto) {
-    sem_wait(&mutex);       // Entrada a SC
-    saldo = saldo + monto;  // Sección crítica
-    sem_post(&mutex);       // Salida de SC
-}
-
-void retirar(int monto) {
-    sem_wait(&mutex);       // Entrada a SC
-    saldo = saldo - monto;  // Sección crítica
-    sem_post(&mutex);       // Salida de SC
-}
-
-int main() {
-    sem_init(&mutex, 0, 1);  // Inicializar en 1
-    // ... crear threads que llaman depositar/retirar ...
-}</code></pre>
         </section>
 
-        <!-- Productor-Consumidor -->
-        <section id="productor-consumidor">
-            <h2>Problema del Productor-Consumidor</h2>
-            <h3>Buffer limitado compartido</h3>
-
-            <div class="buffer-diagram">
-                <span style="display:flex;align-items:center;font-weight:bold;">PRODUCTOR →</span>
-                <div class="buffer-cell">X</div>
-                <div class="buffer-cell">X</div>
-                <div class="buffer-cell">X</div>
-                <div class="buffer-cell"></div>
-                <div class="buffer-cell"></div>
-                <span style="display:flex;align-items:center;font-weight:bold;">→ CONSUMIDOR</span>
-            </div>
-
-            <pre class="ascii-diagram">                    BUFFER (tamaño N)
-                 ┌───┬───┬───┬───┬───┐
-PRODUCTOR ────→  │ X │ X │ X │   │   │ ────→ CONSUMIDOR
-                 └───┴───┴───┴───┴───┘
-                   0   1   2   3   4
-
-Productor: Genera items y los pone en el buffer
-Consumidor: Saca items del buffer y los usa
-
-Problemas:
-- Productor no puede poner si buffer lleno
-- Consumidor no puede sacar si buffer vacío
-- No pueden acceder al buffer simultáneamente</pre>
-
-            <h3>Solución con Semáforos</h3>
-
-            <h4>Código del Productor</h4>
-            <pre><code>#define N 5  // Tamaño del buffer
-
-sem_t mutex;     // Exclusión mutua para el buffer
-sem_t empty;     // Espacios vacíos disponibles
-sem_t full;      // Items disponibles
-
-void productor() {
-    while (true) {
-        item = producir();
-
-        sem_wait(&empty);    // Esperar espacio vacío
-        sem_wait(&mutex);    // Entrar a SC
-
-        buffer[in] = item;   // Poner item
-        in = (in + 1) % N;
-
-        sem_post(&mutex);    // Salir de SC
-        sem_post(&full);     // Avisar que hay item
-    }
-}</code></pre>
-
-            <h4>Código del Consumidor</h4>
-            <pre><code>void consumidor() {
-    while (true) {
-        sem_wait(&full);     // Esperar item disponible
-        sem_wait(&mutex);    // Entrar a SC
-
-        item = buffer[out];  // Sacar item
-        out = (out + 1) % N;
-
-        sem_post(&mutex);    // Salir de SC
-        sem_post(&empty);    // Avisar que hay espacio
-
-        consumir(item);
-    }
-}
-
-int main() {
-    sem_init(&mutex, 0, 1);
-    sem_init(&empty, 0, N);  // N espacios vacíos
-    sem_init(&full, 0, 0);   // 0 items inicialmente
-    // crear threads...
-}</code></pre>
-
-            <div class="callout success">
-                <strong>Nota:</strong> El orden de los wait es importante. <code>empty/mutex</code> o <code>full/mutex</strong> previene deadlock, pero <code>mutex/empty</strong> podría causarlo.
-            </div>
-        </section>
-
-        <!-- Mutex en POSIX -->
-        <section id="mutex">
-            <h2><abbr title="Mutex - Exclusión mutua (Mutual Exclusion)">Mutex</abbr> en POSIX Threads</h2>
-            <h3>pthread_mutex (más simple que semáforos)</h3>
-
-            <pre><code>#include &lt;pthread.h&gt;
-
-pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
-int contador = 0;
-
-void* incrementar(void* arg) {
-    for (int i = 0; i &lt; 1000000; i++) {
-        pthread_mutex_lock(&lock);    // Adquirir lock
-        contador++;                    // Sección crítica
-        pthread_mutex_unlock(&lock);  // Liberar lock
-    }
-    return NULL;
-}
-
-int main() {
-    pthread_t t1, t2;
-    pthread_create(&t1, NULL, incrementar, NULL);
-    pthread_create(&t2, NULL, incrementar, NULL);
-    pthread_join(t1, NULL);
-    pthread_join(t2, NULL);
-    printf("Contador: %d\n", contador);  // Siempre 2000000
-}</code></pre>
+        <!-- Ciclo de Vida -->
+        <section id="ciclo-vida">
+            <h2>Ciclo de Vida de un Proceso</h2>
 
             <div class="callout info">
-                <strong>Ventajas de pthread_mutex:</strong><br>
-                • Más simple que semáforos para exclusión mutua<br>
-                • Menor overhead que semáforos generales<br>
-                • Diseñado específicamente para secciones críticas
+                <strong>Un proceso pasa por varios estados desde su creación hasta su terminación</strong>
             </div>
+
+            <pre class="ascii-diagram">    ┌─────────────┐
+    │   NUEVO     │  ← Proceso creado
+    └──────┬──────┘
+           │
+           ▼
+    ┌─────────────┐
+    │   LISTO     │  ← Esperando CPU
+    └──────┬──────┘
+           │
+           ▼
+    ┌─────────────┐
+    │ EJECUTANDO  │  ← Usando CPU
+    └──────┬──────┘
+           │
+           ├──► ┌─────────────┐
+           │    │ ESPERANDO   │  ← Esperando I/O
+           │    └──────┬──────┘
+           │           │
+           └───────────┘
+           │
+           ▼
+    ┌─────────────┐
+    │ TERMINADO   │  ← Proceso finalizado
+    └─────────────┘</pre>
         </section>
 
-        <!-- Deadlock -->
-        <section id="deadlock">
-            <h2><abbr title="Deadlock - Interbloqueo o bloqueo mutuo entre procesos">Deadlock</abbr> (Interbloqueo)</h2>
-            <h3>Cuando los procesos se bloquean mutuamente</h3>
+        <!-- PCB -->
+        <section id="pcb">
+            <h2>PCB (Process Control Block)</h2>
+            <h3>Bloque de Control de Proceso</h3>
 
-            <div class="callout warning">
-                <p><strong>¿Qué es un Deadlock?</strong> Dos procesos esperan recursos que el otro tiene, y nadie cede.</p>
-                <p><strong>Ejemplo simple:</strong></p>
-                <pre class="ascii-diagram">Proceso A: "Tengo sem1, necesito sem2" → ESPERA
-Proceso B: "Tengo sem2, necesito sem1" → ESPERA
-                  ↓
-            ¡Nadie avanza! ¡Deadlock!</pre>
+            <div class="callout info">
+                <strong>El PCB es la "huella digital" de un proceso</strong>
+                <ul>
+                    <li>Estructura de datos que contiene toda la información del proceso</li>
+                    <li>Almacenado en el kernel</li>
+                    <li>Cada proceso tiene su propio PCB</li>
+                </ul>
             </div>
 
-            <pre><code>Proceso A:                      Proceso B:
-wait(sem1);  ← tiene sem1       wait(sem2);  ← tiene sem2
-wait(sem2);  ← espera sem2      wait(sem1);  ← espera sem1
-...                             ...</code></pre>
-
-            <div class="deadlock-diagram">
-                <div class="deadlock-box">
-                    <pre class="ascii-diagram">        ┌───────────────────────────────┐
-        │                               │
-        ▼                               │
-   ┌─────────┐   espera    ┌─────────┐ │
-   │    A    │ ──────────→ │    B    │ │
-   │ (sem1)  │             │ (sem2)  │ │
-   └─────────┘ ←────────── └─────────┘ │
-                  espera               │
-        │                               │
-        └───────────────────────────────┘
-                 ¡DEADLOCK!</pre>
-                </div>
-            </div>
-
-            <figure>
-                <img src="../assets/diagramas-svg/deadlock.svg" alt="Diagrama SVG de deadlock y estrategias de manejo">
-                <figcaption>Figura X: Deadlock, condiciones necesarias y estrategias de prevención y recuperación</figcaption>
-            </figure>
-
-            <h3>Condiciones para Deadlock</h3>
-            <p><strong>Las 4 condiciones de Coffman (todas necesarias):</strong></p>
-            <ol>
-                <li><strong>Exclusión mutua:</strong> Recursos no compartibles</li>
-                <li><strong>Retención y espera:</strong> Proceso retiene recursos mientras espera otros</li>
-                <li><strong>No apropiación:</strong> No se pueden quitar recursos por la fuerza</li>
-                <li><strong>Espera circular:</strong> A espera a B, B espera a C, C espera a A</li>
-            </ol>
-
-            <div class="callout warning">
-                <strong>Prevención:</strong> Romper al menos una condición
-            </div>
-
-            <h3>Estrategias frente a Deadlocks</h3>
+            <h4>Contenido del PCB:</h4>
             <table>
                 <thead>
                     <tr>
-                        <th>Estrategia</th>
-                        <th>Idea</th>
+                        <th>Campo</th>
+                        <th>Descripción</th>
                         <th>Ejemplo</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td><strong>Prevención</strong></td>
-                        <td>Evitar que se cumpla alguna condición</td>
-                        <td>Orden fijo de recursos</td>
+                        <td><strong>PID</strong></td>
+                        <td>Process Identifier (único)</td>
+                        <td>1234</td>
                     </tr>
                     <tr>
-                        <td><strong>Evitación</strong></td>
-                        <td>Analizar si un estado es seguro</td>
-                        <td>Algoritmo del banquero</td>
+                        <td><strong>Estado</strong></td>
+                        <td>Estado actual del proceso</td>
+                        <td>Running, Sleeping</td>
                     </tr>
                     <tr>
-                        <td><strong>Detección</strong></td>
-                        <td>Permitir deadlock y detectarlo</td>
-                        <td>Grafo de espera</td>
+                        <td><strong>PC</strong></td>
+                        <td>Program Counter (siguiente instrucción)</td>
+                        <td>0x7f8a4b2c</td>
                     </tr>
                     <tr>
-                        <td><strong>Recuperación</strong></td>
-                        <td>Romper el ciclo</td>
-                        <td>Terminar/rollback procesos</td>
+                        <td><strong>Registros</strong></td>
+                        <td>Estado de los registros del CPU</td>
+                        <td>RAX=0x100, RBX=0x200</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Memoria</strong></td>
+                        <td>Límites de memoria del proceso</td>
+                        <td>Base=0x4000, Límite=0x2000</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Archivos</strong></td>
+                        <td>Archivos abiertos por el proceso</td>
+                        <td>stdin, stdout, /tmp/log</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Estados -->
+        <section id="estados">
+            <h2>Estados de un Proceso en Linux</h2>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Estado</th>
+                        <th>Símbolo ps</th>
+                        <th>Descripción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Running</strong></td>
+                        <td>R</td>
+                        <td>Ejecutándose o en cola de ejecución</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Sleeping</strong></td>
+                        <td>S</td>
+                        <td>Esperando evento interrumpible</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Disk sleep</strong></td>
+                        <td>D</td>
+                        <td>Esperando E/S de disco (no interrumpible)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Stopped</strong></td>
+                        <td>T</td>
+                        <td>Detenido por señal (SIGSTOP, SIGTSTP)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Zombie</strong></td>
+                        <td>Z</td>
+                        <td>Terminado pero no limpiado por padre</td>
                     </tr>
                 </tbody>
             </table>
 
-            <div class="callout danger">
-                <strong>Ejemplo de prevención:</strong> Siempre adquirir locks en el mismo orden. Si el proceso A siempre adquiere sem1 antes que sem2, y el proceso B también, nunca habrá deadlock.
+            <div class="callout warning">
+                <strong>⚠️ Procesos Zombie:</strong>
+                <ul>
+                    <li>Hijo terminó pero padre no hizo wait()</li>
+                    <li>Ocupan entrada en tabla de procesos</li>
+                    <li>Se eliminan cuando el padre termina</li>
+                </ul>
             </div>
         </section>
 
-        <!-- Actividad Práctica -->
-        <section id="practica">
-            <h2>Actividad Práctica</h2>
-            <h3>En parejas (10 min)</h3>
-
-            <ol>
-                <li>Identifiquen la sección crítica en este código:
-                <pre><code>void transferir(Cuenta* origen, Cuenta* destino, int monto) {
-    origen->saldo -= monto;
-    destino->saldo += monto;
-}</code></pre>
-                </li>
-                <li>Agreguen semáforos/mutex para hacerlo thread-safe</li>
-                <li>¿Puede haber deadlock si dos procesos hacen transferencias entre las mismas cuentas en direcciones opuestas?</li>
-            </ol>
-
-            <details>
-                <summary style="cursor:pointer;background:var(--bg-light);padding:1rem;border-radius:4px;margin-top:1rem;">
-                    <strong>Ver solución sugerida</strong>
-                </summary>
-                <div style="background:var(--bg-light);padding:1rem;border-radius:0 0 4px 4px;margin-top:-0.5rem;">
-                    <pre><code>// Solución con mutex por cuenta
-pthread_mutex_t lock_origen;
-pthread_mutex_t lock_destino;
-
-void transferir(Cuenta* origen, Cuenta* destino, int monto) {
-    // PREVENCIÓN DE DEADLOCK: siempre adquirir locks en mismo orden
-    // (por ejemplo, por dirección de memoria o ID de cuenta)
-    Cuenta* primero = (origen &lt; destino) ? origen : destino;
-    Cuenta* segundo = (origen &lt; destino) ? destino : origen;
-
-    pthread_mutex_lock(&amp;primero->lock);
-    pthread_mutex_lock(&amp;segundo->lock);
-
-    origen->saldo -= monto;
-    destino->saldo += monto;
-
-    pthread_mutex_unlock(&amp;segundo->lock);
-    pthread_mutex_unlock(&amp;primero->lock);
-}</code></pre>
-                    <p><strong>Nota:</strong> Al adquirir siempre los locks en un orden fijo (por dirección de memoria), se rompe la condición de espera circular y se previene el deadlock.</p>
-                </div>
-            </details>
-        </section>
-
-        <!-- Videos Recomendados -->
-        <section id="videos">
-            <h2>🎥 Videos Recomendados</h2>
-
-            <div class="video-resource">
-                <h3>Video 1: Critical Section Problem and Solution</h3>
-                <p><strong>Concepto:</strong> Problema de la sección crítica y cómo resolverlo</p>
-                <p><strong>Duración:</strong> 12 minutos</p>
-                <p><strong>Nivel:</strong> Intermedio</p>
-                <p><strong>Por qué verlo:</strong> Excelente explicación del problema con ejemplos visuales</p>
-                <p><strong>Canal:</strong> Neso Academy</p>
-                <a href="https://www.youtube.com/watch?v=7Ek1liaKIDk" target="_blank">▶ Ver en YouTube</a>
-            </div>
-
-            <div class="video-resource">
-                <h3>Video 2: Semaphores in Operating Systems</h3>
-                <p><strong>Concepto:</strong> Semáforos: mecanismo de sincronización</p>
-                <p><strong>Duración:</strong> 16 minutos</p>
-                <p><strong>Nivel:</strong> Intermedio</p>
-                <p><strong>Por qué verlo:</strong> Explicación clara de wait() y signal() con ejemplos</p>
-                <p><strong>Canal:</strong> GeeksforGeeks</p>
-                <a href="https://www.youtube.com/watch?v=XpKfGj0uGnE" target="_blank">▶ Ver en YouTube</a>
-            </div>
-
-            <div class="video-resource">
-                <h3>Video 3: Deadlock Explanation with Examples</h3>
-                <p><strong>Concepto:</strong> Deadlock: causas, prevención y recuperación</p>
-                <p><strong>Duración:</strong> 15 minutos</p>
-                <p><strong>Nivel:</strong> Intermedio</p>
-                <p><strong>Por qué verlo:</strong> Entender las 4 condiciones necesarias para deadlock</p>
-                <p><strong>Canal:</strong> Gate Smashers</p>
-                <a href="https://www.youtube.com/watch?v=mRf7t4hH7iE" target="_blank">▶ Ver en YouTube</a>
-            </div>
+        <!-- PID y PPID -->
+        <section id="pid-ppid">
+            <h2>PID y PPID</h2>
 
             <div class="callout info">
-                <p class="callout-title">💡 Tip de Estudio</p>
-                <p>Los conceptos de sincronización son difíciles de dominar solo con teoría. Practica implementando el problema del productor-consumidor en C usando semáforos. El código está en los laboratorios.</p>
+                <strong>Cada proceso tiene identificadores únicos</strong>
+            </div>
+
+            <div class="comparison">
+                <div>
+                    <h4>PID (Process ID)</h4>
+                    <ul>
+                        <li>Identificador único del proceso</li>
+                        <li>Número entero positivo</li>
+                        <li>Asignado por el kernel</li>
+                        <li>Se reutiliza después de terminar</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>PPID (Parent PID)</h4>
+                    <ul>
+                        <li>PID del proceso padre</li>
+                        <li>Cada proceso tiene un padre (excepto init)</li>
+                        <li>init/systemd es PID 1</li>
+                        <li>Crea jerarquía de procesos</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h4>Ver PID y PPID:</h4>
+            <pre><code class="language-bash">$ ps -ef | grep bash
+root      1234  1000  0 10:00 ?        00:00:01 /bin/bash
+          ↑      ↑
+         PID    PPID</code></pre>
+        </section>
+
+        <!-- Comandos Básicos -->
+        <section id="comandos-basicos">
+            <h2>Comandos Básicos para Gestión de Procesos</h2>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Comando</th>
+                        <th>Descripción</th>
+                        <th>Ejemplo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>ps</strong></td>
+                        <td>Listar procesos (snapshop)</td>
+                        <td><code>ps aux</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>top</strong></td>
+                        <td>Monitoreo en tiempo real</td>
+                        <td><code>top</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>htop</strong></td>
+                        <td>Top mejorado (interfaz amigable)</td>
+                        <td><code>htop</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>kill</strong></td>
+                        <td>Enviar señales a procesos</td>
+                        <td><code>kill 1234</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>killall</strong></td>
+                        <td>Matar procesos por nombre</td>
+                        <td><code>killall firefox</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>pstree</strong></td>
+                        <td>Árbol de procesos</td>
+                        <td><code>pstree -p</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>pgrep</strong></td>
+                        <td>Buscar procesos por nombre</td>
+                        <td><code>pgrep nginx</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>pidof</strong></td>
+                        <td>Obtener PID de proceso</td>
+                        <td><code>pidof sshd</code></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Comando ps -->
+        <section id="ps">
+            <h2>Comando <code>ps</code> - Listar Procesos</h2>
+
+            <div class="callout info">
+                <strong>ps muestra un snapshot de los procesos actuales</strong>
+            </div>
+
+            <h4>Opciones más usadas:</h4>
+
+            <div class="comparison">
+                <div>
+                    <h4>ps aux (estilo BSD)</h4>
+                    <pre><code class="language-bash">$ ps aux
+USER   PID  %CPU %MEM  VSZ   RSS   TTY   STAT START  TIME COMMAND
+root     1   0.0  0.1  168000 12000 ?     Ss   10:00  0:01 /sbin/init
+user   1234  1.5  2.3  456000 234000 ?     Sl   10:05  5:23 /usr/bin/firefox</code></pre>
+
+                    <table>
+                        <tr>
+                            <th>Columna</th>
+                            <th>Significado</th>
+                        </tr>
+                        <tr>
+                            <td>USER</td>
+                            <td>Usuario dueño</td>
+                        </tr>
+                        <tr>
+                            <td>PID</td>
+                            <td>Process ID</td>
+                        </tr>
+                        <tr>
+                            <td>%CPU</td>
+                            <td>Uso de CPU</td>
+                        </tr>
+                        <tr>
+                            <td>%MEM</td>
+                            <td>Uso de memoria</td>
+                        </tr>
+                        <tr>
+                            <td>VSZ</td>
+                            <td>Memoria virtual (KB)</td>
+                        </tr>
+                        <tr>
+                            <td>RSS</td>
+                            <td>Memoria física (KB)</td>
+                        </tr>
+                        <tr>
+                            <td>STAT</td>
+                            <td>Estado</td>
+                        </tr>
+                    </table>
+                </div>
+                <div>
+                    <h4>ps -ef (estilo POSIX)</h4>
+                    <pre><code class="language-bash">$ ps -ef
+UID    PID  PPID  C STIME TTY   TIME     CMD
+root     1     0  0 10:00 ?     00:00:01 /sbin/init
+user  1234  1000  1 10:05 ?     00:05:23 /usr/bin/firefox</code></pre>
+
+                    <table>
+                        <tr>
+                            <th>Columna</th>
+                            <th>Significado</th>
+                        </tr>
+                        <tr>
+                            <td>UID</td>
+                            <td>ID del usuario</td>
+                        </tr>
+                        <tr>
+                            <td>PPID</td>
+                            <td>Parent PID</td>
+                        </tr>
+                        <tr>
+                            <td>C</td>
+                            <td>%CPU (versión antigua)</td>
+                        </tr>
+                        <tr>
+                            <td>STIME</td>
+                            <td>Hora de inicio</td>
+                        </tr>
+                        <tr>
+                            <td>TIME</td>
+                            <td>Tiempo CPU acumulado</td>
+                        </tr>
+                    </table>
+
+                    <h4>Filtrar procesos:</h4>
+                    <pre><code class="language-bash"># Ver procesos de un usuario
+ps -u username
+
+# Ver proceso por PID
+ps -p 1234
+
+# Ver proceso por nombre
+ps -C firefox
+
+# Ver árbol de procesos
+ps -ef --forest</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- top y htop -->
+        <section id="top-htop">
+            <h2>Comandos <code>top</code> y <code>htop</code></h2>
+
+            <h3>top - Monitoreo en tiempo real</h3>
+
+            <div class="callout info">
+                <strong>top muestra procesos actualizándose cada 3 segundos (por defecto)</strong>
+            </div>
+
+            <h4>Salida de top:</h4>
+            <pre class="ascii-diagram">top - 10:30:45 up 2 days, 3:21, 2 users, load average: 0.45, 0.32, 0.28
+Tasks: 234 total,   2 running,  232 sleeping,   0 stopped,   0 zombie
+%Cpu(s):  5.2 us,  2.1 sy,  0.0 ni, 92.3 id,  0.4 wa,  0.0 hi,  0.0 si,  0.0 st
+MiB Mem:  16384.0 total,  8192.0 free,  6144.0 used,  2048.0 buff/cache
+MiB Swap:   2048.0 total,  1024.0 free,  1024.0 used.  9216.0 avail Mem
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+ 1234 user      20   0  456000 234000  12000 R  15.2   2.3   5:23.45 firefox
+ 5678 user      20   0  123000  45000   8000 S   5.1   0.4   1:12.34 code
+ 9012 root      20   0   68000  12000   4000 S   2.3   0.1   0:45.67 sshd</code></pre>
+
+            <h4>Comandos interactivos de top:</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Tecla</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>q</strong></td>
+                        <td>Salir</td>
+                    </tr>
+                    <tr>
+                        <td><strong>M</strong></td>
+                        <td>Ordenar por memoria</td>
+                    </tr>
+                    <tr>
+                        <td><strong>P</strong></td>
+                        <td>Ordenar por CPU</td>
+                    </tr>
+                    <tr>
+                        <td><strong>k</strong></td>
+                        <td>Matar proceso (ingresar PID)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>r</strong></td>
+                        <td>Cambiar prioridad (renice)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>h</strong></td>
+                        <td>Ayuda</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>htop - Versión mejorada</h3>
+
+            <div class="comparison">
+                <div>
+                    <h4>Ventajas de htop</h4>
+                    <ul>
+                        <li>Interfaz colours</li>
+                        <li>Uso de ratón</li>
+                        <li>Visualización gráfica</li>
+                        <li>Más intuitivo</li>
+                        <li>Scroll en la lista</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Comandos en htop</h4>
+                    <ul>
+                        <li><strong>F10</strong> - Salir</li>
+                        <li><strong>F9</strong> - Matar proceso</li>
+                        <li><strong>F7</strong> - Disminuir nice</li>
+                        <li><strong>F8</strong> - Aumentar nice</li>
+                        <li><strong>/</strong> - Buscar proceso</li>
+                        <li><strong>F6</strong> - Ordenar columna</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- kill y señales -->
+        <section id="kill">
+            <h2><code>kill</code> y Señales</h2>
+
+            <div class="callout info">
+                <strong>kill envía señales a procesos para controlar su comportamiento</strong>
+            </div>
+
+            <h3>Señales más comunes:</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Señal</th>
+                        <th>Número</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>SIGTERM</strong></td>
+                        <td>15</td>
+                        <td>Terminación elegante (permite limpieza)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>SIGKILL</strong></td>
+                        <td>9</td>
+                        <td>Terminación inmediata (no se puede ignorar)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>SIGHUP</strong></td>
+                        <td>1</td>
+                        <td>Colgar (recargar configuración)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>SIGINT</strong></td>
+                        <td>2</td>
+                        <td>Interrupción (Ctrl+C)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>SIGSTOP</strong></td>
+                        <td>19</td>
+                        <td>Pausar proceso (no se puede ignorar)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>SIGCONT</strong></td>
+                        <td>18</td>
+                        <td>Continuar proceso pausado</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>Ejemplos de uso:</h4>
+            <pre><code class="language-bash"># Terminar proceso (SIGTERM por defecto)
+kill 1234
+
+# Forzar terminación
+kill -9 1234
+
+# Recargar configuración
+kill -HUP $(pidof nginx)
+
+# Pausar proceso
+kill -STOP 1234
+
+# Continuar proceso pausado
+kill -CONT 1234</code></pre>
+
+            <div class="callout warning">
+                <strong>⚠️ Precaución con SIGKILL (-9):</strong>
+                <ul>
+                    <li>No permite al proceso limpiar recursos</li>
+                    <li>Puede dejar archivos temporales</li>
+                    <li>Puede causar corrupción de datos</li>
+                    <li>Usar SIGTERM (15) primero</li>
+                </ul>
+            </div>
+
+            <h4>Listar todas las señales:</h4>
+            <pre><code class="language-bash">$ kill -l
+1) SIGHUP       2) SIGINT       3) SIGQUIT      4) SIGILL
+5) SIGTRAP      6) SIGABRT      7) SIGBUS       8) SIGFPE
+9) SIGKILL     10) SIGUSR1     11) SIGSEGV     12) SIGUSR2
+13) SIGPIPE     14) SIGALRM     15) SIGTERM     ...</code></pre>
+        </section>
+
+        <!-- Prioridades -->
+        <section id="prioridades">
+            <h2>Prioridades y nice</h2>
+
+            <div class="callout info">
+                <strong>Las prioridades de proceso determinan cuánto tiempo de CPU reciben</strong>
+            </div>
+
+            <h3>Valores nice:</h3>
+            <ul>
+                <li>Rango: <strong>-20 (más alta prioridad)</strong> a <strong>19 (más baja)</strong></li>
+                <li>Valor por defecto: <strong>0</strong></li>
+                <li>Solo root puede usar valores negativos</li>
+                <li>Valores altos = "ser nice" = ceder CPU a otros</li>
+            </ul>
+
+            <pre class="ascii-diagram">Prioridad del Kernel
+    ↑
+ -20 │████████████████████ Alto privilegio (solo root)
+     │
+   0 │████████▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓ Bajo privilegio
+     │
+  19 │                                        ▓▓▓▓▓▓▓
+    └────────────────────────────────────────────→
+    Mayor valor nice = Menor prioridad</pre>
+
+            <h4>Comandos de prioridad:</h4>
+            <pre><code class="language-bash"># Iniciar proceso con nice determinado
+nice -n 10 comando        # Prioridad baja
+nice -n -5 comando        # Prioridad alta (requiere root)
+
+# Cambiar nice de proceso en ejecución
+renice -n 5 -p 1234       # Cambiar a nice 5
+renice +5 -p 1234        # Aumentar nice en 5</code></pre>
+
+            <h4>Ver prioridad y nice:</h4>
+            <pre><code class="language-bash">$ ps -eo pid,ni,pri,comm
+  PID  NI  PRI COMMAND
+    1   0   20 systemd
+ 1234  10   30 firefox
+ 5678  -5   15 jackd</code></pre>
+        </section>
+
+        <!-- systemd -->
+        <section id="systemd">
+            <h2>systemd y systemctl</h2>
+
+            <div class="callout info">
+                <strong>systemd es el sistema de inicialización y gestión de servicios en Linux moderno</strong>
+            </div>
+
+            <h3>Gestión de servicios con systemctl:</h3>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Comando</th>
+                        <th>Descripción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>systemctl start servicio</code></td>
+                        <td>Iniciar servicio</td>
+                    </tr>
+                    <tr>
+                        <td><code>systemctl stop servicio</code></td>
+                        <td>Detener servicio</td>
+                    </tr>
+                    <tr>
+                        <td><code>systemctl restart servicio</code></td>
+                        <td>Reiniciar servicio</td>
+                    </tr>
+                    <tr>
+                        <td><code>systemctl reload servicio</code></td>
+                        <td>Recargar configuración</td>
+                    </tr>
+                    <tr>
+                        <td><code>systemctl status servicio</code></td>
+                        <td>Ver estado del servicio</td>
+                    </tr>
+                    <tr>
+                        <td><code>systemctl enable servicio</code></td>
+                        <td>Habilitar al inicio</td>
+                    </tr>
+                    <tr>
+                        <td><code>systemctl disable servicio</code></td>
+                        <td>Deshabilitar al inicio</td>
+                    </tr>
+                    <tr>
+                        <td><code>systemctl is-enabled servicio</code></td>
+                        <td>Ver si está habilitado</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>Ejemplos prácticos:</h4>
+            <pre><code class="language-bash"># Ver estado de un servicio
+systemctl status nginx
+
+# Iniciar servicio
+sudo systemctl start nginx
+
+# Habilitar al inicio
+sudo systemctl enable nginx
+
+# Ver todos los servicios
+systemctl list-units --type=service
+
+# Ver servicios fallidos
+systemctl --failed
+
+# Ver logs de un servicio
+journalctl -u nginx -f</code></pre>
+        </section>
+
+        <!-- Práctica Guiada -->
+        <section id="practica">
+            <h2>Práctica Guiada</h2>
+
+            <div class="actividad">
+                <h3>Actividad 1: Explorar procesos</h3>
+                <p><strong>Tiempo:</strong> 10 minutos</p>
+                <ol>
+                    <li>Abre una terminal</li>
+                    <li>Ejecuta <code>ps aux | less</code> para ver todos los procesos</li>
+                    <li>Identifica el proceso con mayor uso de CPU</li>
+                    <li>Identifica el proceso con mayor uso de memoria</li>
+                    <li>Busca procesos zombie: <code>ps aux | grep Z</code></li>
+                </ol>
+            </div>
+
+            <div class="actividad">
+                <h3>Actividad 2: Monitoreo en tiempo real</h3>
+                <p><strong>Tiempo:</strong> 10 minutos</p>
+                <ol>
+                    <li>Ejecuta <code>top</code></li>
+                    <li>Observa los procesos que más CPU consumen</li>
+                    <li>Presiona <strong>M</strong> para ordenar por memoria</li>
+                    <li>Presiona <strong>P</strong> para volver a ordenar por CPU</li>
+                    <li>Abre otra terminal y ejecuta <code>htop</code> (si está instalado)</li>
+                </ol>
+            </div>
+
+            <div class="actividad">
+                <h3>Actividad 3: Gestionar procesos</h3>
+                <p><strong>Tiempo:</strong> 15 minutos</p>
+                <ol>
+                    <li>Inicia un proceso en segundo plano: <code>sleep 300 &</code></li>
+                    <li>Obtén su PID: <code>ps aux | grep sleep</code></li>
+                    <li>Cámbialo a estado stopped: <code>kill -STOP [PID]</code></li>
+                    <li>Verifica que está en estado T: <code>ps -p [PID] -o pid,stat,cmd</code></li>
+                    <li>Continúa el proceso: <code>kill -CONT [PID]</code></li>
+                    <li>Termina el proceso: <code>kill [PID]</code></li>
+                </ol>
+            </div>
+
+            <div class="actividad">
+                <h3>Actividad 4: Gestión de servicios</h3>
+                <p><strong>Tiempo:</strong> 10 minutos</p>
+                <ol>
+                    <li>Verifica si SSH está corriendo: <code>systemctl status ssh</code></li>
+                    <li>Lista todos los servicios activos: <code>systemctl list-units --type=service --state=running</code></li>
+                    <li>Verifica si un servicio está habilitado: <code>systemctl is-enabled cron</code></li>
+                    <li>Reinicia un servicio (si tienes permisos): <code>sudo systemctl restart cron</code></li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- Entregable -->
+        <section id="entregable">
+            <h2>Entregable de la Clase</h2>
+
+            <div class="actividad">
+                <h3>Script: monitoreo_procesos.sh</h3>
+                <p><strong>Descripción:</strong> Script en Bash que muestra los 5 procesos que más consumen CPU y memoria</p>
+                <p><strong>Requisitos:</strong></p>
+                <ul>
+                    <li>Mostrar top 5 procesos por CPU</li>
+                    <li>Mostrar top 5 procesos por memoria</li>
+                    <li>Mostrar fecha y hora del reporte</li>
+                    <li>Mostrar carga promedio del sistema</li>
+                    <li>Guardar reporte en archivo con timestamp</li>
+                </ul>
+
+                <h4>Estructura sugerida:</h4>
+                <pre><code class="language-bash">#!/bin/bash
+# monitoreo_procesos.sh
+# Script de monitoreo de procesos
+
+# Fecha y hora
+fecha=$(date +"%Y-%m-%d %H:%M:%S")
+archivo="reporte_$(date +%Y%m%d_%H%M%S).txt"
+
+echo "=== REPORTE DE PROCESOS ===" > "$archivo"
+echo "Fecha: $fecha" >> "$archivo"
+echo "" >> "$archivo"
+
+# Carga promedio
+echo "=== CARGA PROMEDIO ===" >> "$archivo"
+uptime >> "$archivo"
+echo "" >> "$archivo"
+
+# Top 5 CPU
+echo "=== TOP 5 CPU ===" >> "$archivo"
+ps aux --sort=-%cpu | head -6 >> "$archivo"
+echo "" >> "$archivo"
+
+# Top 5 Memoria
+echo "=== TOP 5 MEMORIA ===" >> "$archivo"
+ps aux --sort=-%mem | head -6 >> "$archivo"
+
+echo "Reporte guardado en: $archivo"
+cat "$archivo"</code></pre>
+
+                <p><strong>Instrucciones de entrega:</strong></p>
+                <ol>
+                    <li>Guardar el script como <code>monitoreo_procesos.sh</code></li>
+                    <li>Dar permisos de ejecución: <code>chmod +x monitoreo_procesos.sh</code></li>
+                    <li>Ejecutar el script: <code>./monitoreo_procesos.sh</code></li>
+                    <li>Capturar la salida del script</li>
+                    <li>Entregar: script + captura de ejecución</li>
+                </ol>
             </div>
         </section>
 
         <!-- Resumen -->
         <section id="resumen">
             <h2>Resumen de la Clase</h2>
+
             <table>
                 <thead>
                     <tr>
@@ -1199,59 +1165,51 @@ void transferir(Cuenta* origen, Cuenta* destino, int monto) {
                 </thead>
                 <tbody>
                     <tr>
-                        <td><strong>Race condition</strong></td>
-                        <td>Resultado depende del orden de ejecución</td>
+                        <td><strong>Proceso</strong></td>
+                        <td>Programa en ejecución con su propio espacio de memoria</td>
                     </tr>
                     <tr>
-                        <td><strong>Sección crítica</strong></td>
-                        <td>Código que accede a recursos compartidos</td>
+                        <td><strong>PID</strong></td>
+                        <td>Identificador único del proceso</td>
                     </tr>
                     <tr>
-                        <td><strong>Hardware sync</strong></td>
-                        <td>TAS, CAS - instrucciones atómicas del procesador</td>
+                        <td><strong>PPID</strong></td>
+                        <td>PID del proceso padre</td>
                     </tr>
                     <tr>
-                        <td><strong>Monitor</strong></td>
-                        <td>Construcción del lenguaje con sincronización implícita</td>
+                        <td><strong>PCB</strong></td>
+                        <td>Bloque de Control de Proceso (información del proceso)</td>
                     </tr>
                     <tr>
-                        <td><strong>Semáforo</strong></td>
-                        <td>Variable con wait/signal para sincronización</td>
+                        <td><strong>ps</strong></td>
+                        <td>Listar procesos (snapshot)</td>
                     </tr>
                     <tr>
-                        <td><strong>Mutex</strong></td>
-                        <td>Semáforo binario para exclusión mutua</td>
+                        <td><strong>top/htop</strong></td>
+                        <td>Monitoreo en tiempo real</td>
                     </tr>
                     <tr>
-                        <td><strong>Deadlock</strong></td>
-                        <td>Procesos bloqueados esperándose mutuamente</td>
+                        <td><strong>kill</strong></td>
+                        <td>Enviar señales a procesos</td>
                     </tr>
                     <tr>
-                        <td><strong>Prevención</strong></td>
-                        <td>Romper al menos una condición de Coffman</td>
+                        <td><strong>nice</strong></td>
+                        <td>Prioridad de proceso (-20 a 19)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>systemd</strong></td>
+                        <td>Gestor de servicios en Linux moderno</td>
                     </tr>
                 </tbody>
             </table>
 
-            <div class="callout info">
-                <h4>Evaluación (15% - Eval 2)</h4>
-                <p><strong>Laboratorio + Sustentación: Semana 7</strong></p>
-                <ol>
-                    <li>Implementar productor-consumidor en C con pthreads</li>
-                    <li>Demostrar que funciona correctamente</li>
-                    <li>Explicar cada semáforo y su propósito</li>
-                    <li><strong>Sustentación oral</strong> (5 min por pareja)</li>
-                </ol>
-                <p><strong>Trabajo en parejas</strong></p>
-            </div>
-
             <h3>Próxima Clase</h3>
-            <p><strong>Clase 6: Gestión de Memoria</strong></p>
+            <p><strong>Clase 06: Procesos en Windows</strong></p>
             <ul>
-                <li>Conceptos de memoria principal</li>
-                <li>Direcciones lógicas vs físicas</li>
-                <li>Partición de memoria</li>
-                <li>Fragmentación</li>
+                <li>Task Manager vs Process Explorer</li>
+                <li>PowerShell para gestión de procesos</li>
+                <li>Servicios en Windows</li>
+                <li>Crear servicios con sc.exe</li>
             </ul>
         </section>
     </div>
@@ -1259,8 +1217,7 @@ void transferir(Cuenta* origen, Cuenta* destino, int monto) {
     <footer>
         <div class="container">
             <p><strong>IF0099 - Sistemas Operativos I</strong> • <a href="index.html">Índice de Clases</a></p>
-        <div class="container">
-            <p>IF0099 - Sistemas Operativos I | UNAULA - Ingeniería Informática - 2026-I</p>
+            <p>© 2026 UNAULA - Ingeniería Informática | IF0099 - Sistemas Operativos I</p>
             <p><a href="../index.html">← Volver al inicio</a></p>
         </div>
     </footer>
@@ -1297,24 +1254,13 @@ void transferir(Cuenta* origen, Cuenta* destino, int monto) {
         });
     </script>
 
-    <!-- Section: Laboratorio -->
-    <section id="laboratorio">
-        <h2>Laboratorio</h2>
-
-        <h3>Sincronización de Procesos</h3>
-        <p>Practica con semáforos, mutex y monitores en Linux.</p>
-
-        <div class="callout info">
-            <strong>Objetivos del Laboratorio</strong>
-            <ul>
-                <li>Implementar sección crítica con mutex</li>
-                <li>Resolver problema productor-consumidor</li>
-                <li>Manejar condiciones de carrera</li>
-            </ul>
-        </div>
-
-        <p><a href="../laboratorios-html/index.html">Ver índice de Laboratorios →</a></p>
-    </section>
-
+    <!-- Prism.js para syntax highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            Prism.highlightAll();
+        });
+    </script>
 </body>
 </html>

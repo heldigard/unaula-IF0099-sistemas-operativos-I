@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clase 08: Memoria Secundaria y Discos | IF0099 - Sistemas Operativos I</title>
+    <title>Clase 08: Comunicación entre Procesos (IPC) | IF0099 - Sistemas Operativos I</title>
     <style>
         :root {
             --primary: #2563eb;
@@ -116,23 +116,6 @@
             margin-bottom: 1rem;
         }
 
-        figure {
-            margin: 2rem 0;
-            text-align: center;
-        }
-        figure img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        figcaption {
-            margin-top: 0.75rem;
-            color: var(--text-muted);
-            font-style: italic;
-            font-size: 0.95rem;
-        }
-
         table {
             width: 100%;
             border-collapse: collapse;
@@ -222,83 +205,30 @@
             border-radius: 8px;
         }
 
-        .disk-structure {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 1rem;
-            margin: 2rem 0;
-        }
-        .disk-platter {
-            width: 200px;
-            height: 200px;
-            border-radius: 50%;
-            background: linear-gradient(45deg, #cbd5e1, #94a3b8);
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .disk-platter::before {
-            content: '';
-            position: absolute;
-            width: 40px;
-            height: 40px;
-            background: #64748b;
-            border-radius: 50%;
-        }
-        .disk-spindle {
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            background: #475569;
-            border-radius: 50%;
-        }
-
-        .raid-diagram {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            margin: 1.5rem 0;
-        }
-        .raid-level {
-            background: var(--bg-light);
-            padding: 1rem;
+        .diagram-box {
+            border: 2px solid var(--secondary);
+            padding: 1.5rem;
             border-radius: 8px;
-            border-left: 4px solid var(--primary);
-        }
-        .raid-level h4 {
-            margin: 0 0 0.5rem 0;
-            color: var(--primary);
+            background: var(--bg-light);
+            margin: 1.5rem 0;
         }
 
-        .seek-chart {
-            display: flex;
-            align-items: center;
+        .actividad {
+            background: var(--bg-light);
+            border-left: 5px solid var(--accent);
+            padding: 1.5rem;
             margin: 1.5rem 0;
-            font-family: 'Consolas', 'Monaco', monospace;
-            font-size: 0.85rem;
+            border-radius: 4px;
         }
-        .seek-bar {
-            flex: 1;
-            height: 30px;
-            display: flex;
-            align-items: center;
+        .actividad h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
         }
-        .seek-position {
-            width: 4px;
-            height: 40px;
-            background: var(--accent);
-            position: relative;
+        .actividad p {
+            margin-bottom: 0.75rem;
         }
-        .seek-position::after {
-            content: attr(data-label);
-            position: absolute;
-            top: -20px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 0.75rem;
-            white-space: nowrap;
+        .actividad strong {
+            color: var(--secondary);
         }
 
         footer {
@@ -338,41 +268,6 @@
             background: var(--secondary);
         }
 
-        .actividad {
-            background: var(--bg-light);
-            border-left: 5px solid var(--accent);
-            padding: 1.5rem;
-            margin: 1.5rem 0;
-            border-radius: 4px;
-        }
-        .actividad h3 {
-            color: var(--primary);
-            margin-bottom: 1rem;
-        }
-        .actividad p {
-            margin-bottom: 0.75rem;
-        }
-        .actividad strong {
-            color: var(--secondary);
-        }
-        .evaluacion {
-            background: #fef3c7;
-            border-left: 5px solid #f59e0b;
-            padding: 1.5rem;
-            margin: 1.5rem 0;
-            border-radius: 8px;
-        }
-        .evaluacion h3 {
-            color: #b45309;
-            margin-bottom: 1rem;
-        }
-        .evaluacion .porcentaje {
-            font-size: 2rem;
-            font-weight: 700;
-            color: #d97706;
-            margin: 0.5rem 0;
-        }
-
         @media (max-width: 768px) {
             header h1 {
                 font-size: 1.6rem;
@@ -392,10 +287,10 @@
 <body>
     <header>
         <div class="container">
-            <h1>Clase 08: Memoria Secundaria y Discos</h1>
-            <p class="subtitle">IF0099 - Sistemas Operativos I | Unidad 5 - Memoria</p>
-            <p class="subtitle">Estructura, Planificación y Rendimiento</p>
-            <p class="meta">Última actualización: 2026-02-01 | Duración: 90 minutos</p>
+            <h1>Clase 08: Comunicación entre Procesos (IPC)</h1>
+            <p class="subtitle">IF0099 - Sistemas Operativos I | Unidad 5 - IPC</p>
+            <p class="subtitle">Pipes, Señales, Memoria Compartida y Sockets</p>
+            <p class="meta">Última actualización: 2026-02-10 | Duración: 90 minutos (teoría: 30 min + práctica: 60 min)</p>
         </div>
     </header>
 
@@ -404,580 +299,579 @@
             <h2>Contenido de la Clase</h2>
             <ul>
                 <li><a href="#objetivos">Objetivos de Aprendizaje</a></li>
-                <li><a href="#estructura">Estructura de Discos</a></li>
-                <li><a href="#direccionamiento">Direccionamiento Físico</a></li>
-                <li><a href="#tiempo-acceso">Tiempo de Acceso</a></li>
-                <li><a href="#algoritmos">Algoritmos de Planificación</a></li>
-                <li><a href="#raid">RAID</a></li>
-                <li><a href="#ssd">HDD vs SSD</a></li>
-                <li><a href="#nvme">NVMe vs SATA</a></li>
-                <li><a href="#optimizacion">Optimización</a></li>
-                <li><a href="#evaluacion-e3">Evaluación E3 (20%)</a></li>
-                <li><a href="#practica">Actividad Práctica (Opcional)</a></li>
+                <li><a href="#introduccion">Introducción al IPC</a></li>
+                <li><a href="#pipes">Pipes (Tuberías)</a></li>
+                <li><a href="#pipes-anonimos">Pipes Anónimos</a></li>
+                <li><a href="#pipes-nombrados">Pipes Nombrados (FIFO)</a></li>
+                <li><a href="#senales">Señales</a></li>
+                <li><a href="#memoria">Memoria Compartida</a></li>
+                <li><a href="#sockets">Sockets</a></li>
+                <li><a href="#practica">Práctica Guiada</a></li>
+                <li><a href="#entregable">Entregable</a></li>
                 <li><a href="#resumen">Resumen</a></li>
             </ul>
         </nav>
 
         <!-- Objetivos -->
         <section id="objetivos">
-            <h2>Objetivos de la Clase</h2>
-            <p>Al finalizar esta clase, el estudiante será capaz de:</p>
+            <h2>Objetivos de Aprendizaje</h2>
+            <p>Al finalizar esta clase, serás capaz de:</p>
             <ol>
-                <li><strong>Describir</strong> la estructura física de un disco</li>
-                <li><strong>Explicar</strong> el tiempo de acceso y sus componentes</li>
-                <li><strong>Comparar</strong> algoritmos de planificación de discos</li>
-                <li><strong>Evaluar</strong> estrategias de optimización y caching</li>
+                <li><strong>Entender</strong> los mecanismos de IPC (Inter-Process Communication)</li>
+                <li><strong>Usar</strong> pipes anónimos para comunicación unidireccional</li>
+                <li><strong>Utilizar</strong> pipes nombrados (FIFO) para comunicación entre procesos</li>
+                <li><strong>Implementar</strong> Productor-Consumidor con bash scripts</li>
+                <li><strong>Comprender</strong> señales, memoria compartida y sockets</li>
             </ol>
-
-            <div class="callout info">
-                <strong>En esta clase veremos:</strong>
-                <ul>
-                    <li>Estructura física de HDD y SSD</li>
-                    <li>Tiempo de acceso y rendimiento</li>
-                    <li>Algoritmos de planificación de disco</li>
-                    <li>RAID y almacenamiento moderno</li>
-                </ul>
-            </div>
         </section>
 
-        <!-- Estructura de Discos -->
-        <section id="estructura">
-            <h2>Estructura de un Disco (HDD)</h2>
-            <h3>Componentes principales</h3>
+        <!-- Introducción -->
+        <section id="introduccion">
+            <h2>Introducción al IPC</h2>
 
-            <figure>
-                <img src="../assets/infografias/clase-08-estructura-disco.png" alt="Estructura de Disco Duro">
-                <figcaption>Anatomía de un disco duro: platos, pistas, sectores y cabezal</figcaption>
-            </figure>
+            <div class="callout info">
+                <strong>IPC (Inter-Process Communication): Mecanismos que permiten a los procesos intercambiar datos y sincronizarse</strong>
+            </div>
 
+            <h3>¿Por qué necesitamos IPC?</h3>
+            <ul>
+                <li>Los procesos tienen espacios de memoria aislados</li>
+                <li>Necesitan coordinarse para tareas complejas</li>
+                <li>Compartir datos entre aplicaciones</li>
+                <li>Sincronizar acciones concurrentes</li>
+            </ul>
+
+            <h3>Mecanismos IPC principales:</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Mecanismo</th>
+                        <th>Descripción</th>
+                        <th>Uso típico</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Pipes</strong></td>
+                        <td>Comunicación unidireccional (stream)</td>
+                        <td>Productor-Consumidor</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Señales</strong></td>
+                        <td>Notificaciones de eventos</td>
+                        <td>Control de procesos</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Memoria Compartida</strong></td>
+                        <td>Segmento de memoria accesible por múltiples procesos</td>
+                        <td>Alto rendimiento</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Sockets</strong></td>
+                        <td>Comunicación de red y local</td>
+                        <td>Cliente-Servidor</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Pipes -->
+        <section id="pipes">
+            <h2>Pipes (Tuberías)</h2>
+
+            <div class="callout info">
+                <strong>Un pipe es un canal de comunicación unidireccional entre dos procesos</strong>
+            </div>
+
+            <h3>Características de los Pipes:</h3>
+            <ul>
+                <li><strong>Unidireccional:</strong> Los datos fluyen en una sola dirección</li>
+                <li><strong>Stream:</strong> Flujo de bytes (no mensajes estructurados)</li>
+                <li><strong>FIFO:</strong> First In, First Out (el primero que entra, sale primero)</li>
+                <li><strong>Buffer:</strong> Capacidad limitada (típicamente 64KB en Linux)</li>
+            </ul>
+
+            <h4>Esquema de un Pipe:</h4>
+            <div class="diagram-box">
+                <pre class="ascii-diagram">┌──────────┐      write       ┌──────────┐
+│Productor │ ──────────────────> │Consumidor│
+│ (escritor)│    (pipe)          │ (lector) │
+└──────────┘                     └──────────┘
+
+     │                                 │
+     ├──> pipe[1] (escritura)          │
+     │                                 │
+     │                                 ├──> pipe[0] (lectura)
+     │                                 │
+   stdout                              stdin</pre>
+            </div>
+
+            <h4>Tipos de Pipes:</h4>
             <div class="comparison">
                 <div>
-                    <h4>Componentes Mecánicos</h4>
+                    <h4>Pipe Anónimo</h4>
                     <ul>
-                        <li><strong>Platos:</strong> superficies magnéticas que giran (5400-15000 RPM)</li>
-                        <li><strong>Pistas:</strong> circunferencias concéntricas en cada plato</li>
-                        <li><strong>Sectores:</strong> porciones de una pista (unidad mínima, típico 512B-4KB)</li>
-                        <li><strong>Cabezal:</strong> lee y escribe datos (uno por superficie)</li>
-                        <li><strong>Cilindro:</strong> conjunto de pistas alineadas en todos los platos</li>
+                        <li>Solo entre procesos relacionados (padre-hijo)</li>
+                        <li>No tiene nombre en el sistema de archivos</li>
+                        <li>Desaparece cuando los procesos terminan</li>
+                        <li>Uso: shell (|) y fork()</li>
                     </ul>
                 </div>
                 <div>
-                    <h4>Capacidades Típicas</h4>
+                    <h4>Pipe Nombrado (FIFO)</h4>
                     <ul>
-                        <li><strong>Disco de 1TB:</strong> ~2 billones de sectores</li>
-                        <li><strong>Densidad:</strong> 100-1000 Gb/in²</li>
-                        <li><strong>Latencia HDD:</strong> 2-15 ms</li>
-                        <li><strong>Latencia SSD:</strong> 0.1-0.5 ms</li>
-                    </ul>
-
-                    <h4>Organización Lógica</h4>
-                    <p><code>Sector → Bloque → Cluster</code></p>
-                    <p style="font-size:0.9em;color:var(--text-muted)">El SO gestiona bloques, no sectores</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Direccionamiento Físico -->
-        <section id="direccionamiento">
-            <h2>Direccionamiento Físico</h2>
-
-            <div class="callout info">
-                <h4>Dirección de disco = Cilindro + Cabeza + Sector</h4>
-                <p><strong>Ejemplo:</strong> (1024, 3, 7) = Cilindro 1024, Cabezal 3, Sector 7</p>
-            </div>
-
-            <h4>CHS vs LBA</h4>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Esquema</th>
-                        <th>Nombre</th>
-                        <th>Descripción</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>CHS</strong></td>
-                        <td>Cilindro-Cabezal-Sector</td>
-                        <td>Antiguo, usado por BIOS</td>
-                    </tr>
-                    <tr>
-                        <td><strong>LBA</strong></td>
-                        <td>Logical Block Addressing</td>
-                        <td>Moderno, direccionamiento lineal</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <div class="callout success">
-                <h4>LBA simplifica la gestión</h4>
-                <ul>
-                    <li>El SO ve bloques: 0, 1, 2, 3, ...</li>
-                    <li>El controlador traduce a CHS automáticamente</li>
-                </ul>
-            </div>
-        </section>
-
-        <!-- Tiempo de Acceso -->
-        <section id="tiempo-acceso">
-            <h2>Tiempo de Acceso</h2>
-
-            <div class="callout info">
-                <h4>Fórmula del Tiempo Total</h4>
-                <p><strong>Tiempo total = seek + latencia rotacional + transferencia</strong></p>
-            </div>
-
-            <table>
-                <thead>
-                    <tr>
-                        <th>Componente</th>
-                        <th>Descripción</th>
-                        <th>Tiempo típico</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Seek</strong></td>
-                        <td>Mover el cabezal a la pista correcta</td>
-                        <td>5-10 ms</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Latencia</strong></td>
-                        <td>Esperar que el sector gire hasta el cabezal</td>
-                        <td>2-8 ms</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Transferencia</strong></td>
-                        <td>Leer o escribir datos</td>
-                        <td>0.1-1 ms</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <h4>Ejemplo de cálculo:</h4>
-            <div class="callout warning">
-                <code>8 ms (seek) + 4 ms (latencia) + 1 ms (transfer) = 13 ms</code>
-            </div>
-
-            <p style="font-size:0.9em;color:var(--text-muted)">Nota: El seek suele ser el componente más lento, representando ~60% del tiempo total.</p>
-        </section>
-
-        <!-- Algoritmos de Planificación -->
-        <section id="algoritmos">
-            <h2>Algoritmos de Planificación de Discos</h2>
-
-            <h3>¿Por qué importa?</h3>
-
-            <div class="callout danger">
-                <strong>El problema:</strong> Las solicitudes de E/S llegan desordenadas
-                <ul>
-                    <li>Si atendemos en orden de llegada (FCFS), el cabezal se mueve mucho</li>
-                    <li>Mucho movimiento = mayor tiempo de espera = bajo rendimiento</li>
-                </ul>
-                <strong>Solución:</strong> Reordenar solicitudes para minimizar movimiento del cabezal
-            </div>
-
-            <h3>Algoritmos Principales</h3>
-
-            <div class="comparison">
-                <div>
-                    <h4>FCFS (First-Come, First-Served)</h4>
-                    <p><em>First-Come, First-Served</em></p>
-                    <ul>
-                        <li>Atiende en orden de llegada</li>
-                        <li>Simple pero ineficiente</li>
-                        <li>Puede causar "oscilación" del cabezal</li>
-                    </ul>
-
-                    <h4>SSTF (Shortest Seek Time First)</h4>
-                    <p><em>Shortest Seek Time First</em></p>
-                    <ul>
-                        <li>Atiende la solicitud más cercana</li>
-                        <li>Eficiente pero causa inanición</li>
-                        <li>Solicitudes lejanas esperan mucho</li>
-                    </ul>
-                </div>
-                <div>
-                    <h4>SCAN (Elevator)</h4>
-                    <p><em>Algoritmo del ascensor</em></p>
-                    <ul>
-                        <li>Atiende en una dirección y luego regresa</li>
-                        <li>Justo, pero espera variable</li>
-                        <li>Similar a un ascensor</li>
-                    </ul>
-
-                    <h4>C-SCAN (Circular SCAN)</h4>
-                    <ul>
-                        <li>Atiende en una dirección</li>
-                        <li>Regresa sin servir solicitudes</li>
-                        <li>Tiempo de espera uniforme</li>
-                    </ul>
-
-                    <h4>LOOK / C-LOOK</h4>
-                    <ul>
-                        <li>Como SCAN/C-SCAN</li>
-                        <li>Pero sin ir al extremo innecesario</li>
+                        <li>Entre cualquier proceso</li>
+                        <li>Tiene nombre en el sistema de archivos</li>
+                        <li>Persiste hasta ser eliminado</li>
+                        <li>Uso: comunicación general entre procesos</li>
                     </ul>
                 </div>
             </div>
-
-            <h4>Ejemplo Visual: Algoritmo SCAN</h4>
-
-            <div class="callout info">
-                <p><strong>Solicitudes:</strong> 98, 183, 37, 122, 14, 124, 65, 67</p>
-                <p><strong>Cabezal inicia en:</strong> 53</p>
-                <hr style="margin:1rem 0;border-color:var(--border)">
-                <p><strong>Movimiento (SCAN):</strong></p>
-                <pre class="ascii-diagram">53 → 65 → 67 → 98 → 122 → 124 → 183 → 199
-(regresa) → 37 → 14</pre>
-                <p><strong>Ventaja:</strong> tiempo de espera más uniforme que FCFS y SSTF</p>
-            </div>
-
-            <h4>Tabla Comparativa de Algoritmos</h4>
-
-            <table>
-                <thead>
-                    <tr>
-                        <th>Algoritmo</th>
-                        <th>Ventaja</th>
-                        <th>Desventaja</th>
-                        <th>Uso recomendado</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>FCFS</strong></td>
-                        <td>Simple</td>
-                        <td>Alto movimiento</td>
-                        <td>Sistemas simples</td>
-                    </tr>
-                    <tr>
-                        <td><strong>SSTF</strong></td>
-                        <td>Eficiente</td>
-                        <td>Inanición posible</td>
-                        <td>Carga baja</td>
-                    </tr>
-                    <tr>
-                        <td><strong>SCAN</strong></td>
-                        <td>Justo</td>
-                        <td>Espera variable</td>
-                        <td>Uso general</td>
-                    </tr>
-                    <tr>
-                        <td><strong>C-SCAN</strong></td>
-                        <td>Uniforme</td>
-                        <td>Regreso sin servicio</td>
-                        <td>Servidores</td>
-                    </tr>
-                    <tr>
-                        <td><strong>LOOK</strong></td>
-                        <td>Eficiente</td>
-                        <td>Más complejo</td>
-                        <td>Alta carga</td>
-                    </tr>
-                    <tr>
-                        <td><strong>C-LOOK</strong></td>
-                        <td>Muy eficiente</td>
-                        <td>Más complejo</td>
-                        <td>Producción</td>
-                    </tr>
-                </tbody>
-            </table>
         </section>
 
-        <!-- RAID -->
-        <section id="raid">
-            <h2>RAID (Redundant Array of Independent Disks)</h2>
+        <!-- Pipes Anónimos -->
+        <section id="pipes-anonimos">
+            <h2>Pipes Anónimos</h2>
 
-            <h3>¿Por qué RAID?</h3>
+            <div class="callout info">
+                <strong>Los pipes anónimos son creados por el shell y solo existen mientras los procesos estén activos</strong>
+            </div>
+
+            <h3>Uso en Bash (Shell)</h3>
+
+            <h4>El operador pipe (|):</h4>
+            <pre><code># Ejemplo 1: Listar archivos largos
+ls -l | grep ".txt"
+
+# Ejemplo 2: Contar procesos
+ps aux | grep chrome | wc -l
+
+# Ejemplo 3: Monitorear logs
+tail -f /var/log/syslog | grep "ERROR"</code></pre>
+
+            <h4>Cómo funciona:</h4>
+            <ul>
+                <li>El shell crea un pipe anónimo</li>
+                <li>Redirige stdout del comando 1 al pipe</li>
+                <li>Redirige stdin del comando 2 desde el pipe</li>
+                <li>Ambos comandos se ejecutan en paralelo</li>
+            </ul>
+
+            <h4>Ejemplo detallado:</h4>
+            <pre class="ascii-diagram">Comando: ls -l | grep ".txt"
+
+┌─────────────────────────────────────────────────┐
+│ Shell crea pipe anónimo                        │
+│                                                 │
+│  ls -l          pipe           grep ".txt"      │
+│  [hijo1]    ───────>    [hijo2]                │
+│  stdout                   stdin                 │
+│                                                 │
+│  1. fork() → crea proceso hijo (ls -l)        │
+│  2. fork() → crea proceso hijo (grep)         │
+│  3. pipe() → crea canal de comunicación        │
+└─────────────────────────────────────────────────┘</pre>
+
+            <h4>Ejemplo práctico - Análisis de procesos:</h4>
+            <pre><code># Encontrar los 5 procesos que más CPU consumen
+ps aux | sort -rk 3 | head -6
+
+# Explicación:
+# ps aux      - Lista todos los procesos
+# sort -rk 3  - Ordena por columna 3 (CPU) descendente
+# head -6      - Muestra las primeras 6 líneas (encabezado + 5)</code></pre>
+        </section>
+
+        <!-- Pipes Nombrados -->
+        <section id="pipes-nombrados">
+            <h2>Pipes Nombrados (FIFO)</h2>
+
+            <div class="callout info">
+                <strong>Los pipes nombrados (FIFO) tienen entrada en el sistema de archivos y permiten comunicación entre procesos no relacionados</strong>
+            </div>
+
+            <h3>Crear y usar un FIFO:</h3>
+
+            <h4>Comandos básicos:</h4>
+            <pre><code># 1. Crear el FIFO
+mkfifo /tmp/mi_pipe
+
+# 2. Verificar que se creó
+ls -l /tmp/mi_pipe
+# prw-r--r-- 1 user user 0 feb 10 10:00 /tmp/mi_pipe
+# (la 'p' indica pipe)
+
+# 3. Escribir en el FIFO (bloquea hasta que alguien lea)
+echo "Hola mundo" > /tmp/mi_pipe
+
+# 4. Leer del FIFO (otra terminal)
+cat /tmp/mi_pipe
+
+# 5. Eliminar el FIFO
+rm /tmp/mi_pipe</code></pre>
+
+            <h4>Script Productor (escritor):</h4>
+            <pre><code>#!/bin/bash
+# productor.sh
+FIFO="/tmp/mi_pipe"
+
+# Crear el FIFO si no existe
+[ -p "$FIFO" ] || mkfifo "$FIFO"
+
+echo "Productor: Escribiendo en $FIFO"
+for i in {1..10}; do
+    echo "Mensaje $i"
+    sleep 1
+done > "$FIFO"
+
+echo "Productor: Terminé de escribir"</code></pre>
+
+            <h4>Script Consumidor (lector):</h4>
+            <pre><code>#!/bin/bash
+# consumidor.sh
+FIFO="/tmp/mi_pipe"
+
+echo "Consumidor: Leyendo de $FIFO"
+while read linea; do
+    echo "Consumidor: Recibí - $linea"
+done < "$FIFO"
+
+echo "Consumidor: No hay más datos"</code></pre>
+
+            <h4>Ejecución:</h4>
+            <pre><code># Terminal 1 - Iniciar el consumidor primero
+./consumidor.sh
+
+# Terminal 2 - Ejecutar el productor
+./productor.sh</code></pre>
 
             <div class="callout warning">
-                <p><strong>Problema:</strong> Los discos fallan y son lentos</p>
-                <p><strong>Solución:</strong> RAID combina discos para:</p>
+                <strong>⚠️ Comportamiento de bloqueo:</strong>
                 <ul>
-                    <li><strong>Mejorar rendimiento</strong> (RAID 0)</li>
-                    <li><strong>Añadir redundancia</strong> (RAID 1, 5, 6, 10)</li>
-                    <li><strong>Ambos</strong> (RAID 10)</li>
+                    <li>Si el FIFO está vacío, el lector se bloquea</li>
+                    <li>Si el FIFO está lleno, el escritor se bloquea</li>
+                    <li>Al menos un lector debe estar presente antes de escribir</li>
                 </ul>
             </div>
+        </section>
 
-            <h3>Niveles RAID Comunes</h3>
+        <!-- Señales -->
+        <section id="senales">
+            <h2>Señales</h2>
 
-            <div class="raid-diagram">
-                <div class="raid-level">
-                    <h4>RAID 0 - Striping</h4>
-                    <ul>
-                        <li>Datos divididos entre discos</li>
-                        <li>2x velocidad (teórico)</li>
-                        <li>Sin redundancia</li>
-                        <li><strong class="danger">Si falla 1 disco, se pierde todo</strong></li>
-                    </ul>
-                </div>
-
-                <div class="raid-level">
-                    <h4>RAID 1 - Mirroring</h4>
-                    <ul>
-                        <li>Datos duplicados en 2+ discos</li>
-                        <li>Lectura 2x más rápida</li>
-                        <li>50% de capacidad útil</li>
-                        <li>Sobrevive 1 fallo</li>
-                    </ul>
-                </div>
-
-                <div class="raid-level">
-                    <h4>RAID 5 - Paridad Distribuida</h4>
-                    <ul>
-                        <li>Datos + paridad distribuida</li>
-                        <li>Mínimo 3 discos</li>
-                        <li>Sobrevive 1 fallo</li>
-                        <li>Escritura más lenta</li>
-                    </ul>
-                </div>
-
-                <div class="raid-level">
-                    <h4>RAID 6 - Doble Paridad</h4>
-                    <ul>
-                        <li>Como RAID 5 pero 2 paridades</li>
-                        <li>Mínimo 4 discos</li>
-                        <li>Sobrevive 2 fallos simultáneos</li>
-                        <li>Escritura aún más lenta</li>
-                    </ul>
-                </div>
-
-                <div class="raid-level">
-                    <h4>RAID 10 - Stripe of Mirrors</h4>
-                    <ul>
-                        <li>RAID 0 + RAID 1</li>
-                        <li>Mínimo 4 discos</li>
-                        <li>Rendimiento y redundancia</li>
-                        <li>50% capacidad útil</li>
-                    </ul>
-                </div>
+            <div class="callout info">
+                <strong>Las señales son notificaciones enviadas a un proceso para informar eventos</strong>
             </div>
 
-            <h4>RAID en la Práctica</h4>
+            <h3>Señales más comunes en Linux:</h3>
 
             <table>
                 <thead>
                     <tr>
+                        <th>Señal</th>
+                        <th>Número</th>
+                        <th>Acción por defecto</th>
                         <th>Uso</th>
-                        <th>RAID recomendado</th>
-                        <th>Por qué</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>Gaming PC</td>
-                        <td>RAID 0 o ninguno</td>
-                        <td>Máxima velocidad</td>
+                        <td><strong>SIGINT</strong></td>
+                        <td>2</td>
+                        <td>Terminar</td>
+                        <td>Ctrl+C (interrupción)</td>
                     </tr>
                     <tr>
-                        <td>Servidor web</td>
-                        <td>RAID 10</td>
-                        <td>Rendimiento + redundancia</td>
+                        <td><strong>SIGTERM</strong></td>
+                        <td>15</td>
+                        <td>Terminar</td>
+                        <td>Solicitud de terminación</td>
                     </tr>
                     <tr>
-                        <td>NAS hogar</td>
-                        <td>RAID 5</td>
-                        <td>Balance costo/capacidad</td>
+                        <td><strong>SIGKILL</strong></td>
+                        <td>9</td>
+                        <td>Terminar (forzado)</td>
+                        <td>Matar proceso inmediatamente</td>
                     </tr>
                     <tr>
-                        <td>Data center</td>
-                        <td>RAID 6 o 10</td>
-                        <td>Alta disponibilidad</td>
+                        <td><strong>SIGSTOP</strong></td>
+                        <td>19</td>
+                        <td>Detener</td>
+                        <td>Pausar proceso (Ctrl+Z)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>SIGCONT</strong></td>
+                        <td>18</td>
+                        <td>Continuar</td>
+                        <td>Reanudar proceso detenido</td>
+                    </tr>
+                    <tr>
+                        <td><strong>SIGHUP</strong></td>
+                        <td>1</td>
+                        <td>Terminar</td>
+                        <td>Terminal cerrado</td>
+                    </tr>
+                    <tr>
+                        <td><strong>SIGUSR1</strong></td>
+                        <td>10</td>
+                        <td>Terminar</td>
+                        <td>Definido por usuario</td>
+                    </tr>
+                    <tr>
+                        <td><strong>SIGUSR2</strong></td>
+                        <td>12</td>
+                        <td>Terminar</td>
+                        <td>Definido por usuario</td>
                     </tr>
                 </tbody>
             </table>
 
-            <div class="callout danger">
-                <strong>⚠️ Consideración importante:</strong> RAID <strong>NO es backup</strong>. Protege contra fallos de disco, no contra eliminación accidental, corrupción de datos, desastres, etc.
-            </div>
+            <h4>Enviar señales:</h4>
+            <pre><code># Enviar SIGTERM (terminación elegante)
+kill -15 1234
+kill 1234        # 15 por defecto
+
+# Enviar SIGKILL (terminación forzada)
+kill -9 1234
+
+# Enviar SIGSTOP (pausar)
+kill -STOP 1234
+
+# Enviar SIGCONT (continuar)
+kill -CONT 1234
+
+# Enviar SIGUSR1 a un proceso
+kill -USR1 1234</code></pre>
         </section>
 
-        <!-- HDD vs SSD -->
-        <section id="ssd">
-            <h2>HDD vs SSD</h2>
-
-            <table>
-                <thead>
-                    <tr>
-                        <th>Característica</th>
-                        <th>HDD</th>
-                        <th>SSD</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Latencia</strong></td>
-                        <td>5-15 ms</td>
-                        <td>0.1-0.2 ms</td>
-                    </tr>
-                    <tr>
-                        <td><strong>IOPS</strong></td>
-                        <td>100-200</td>
-                        <td>10k-100k</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Ruido</strong></td>
-                        <td>Audible</td>
-                        <td>Silencioso</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Resistencia</strong></td>
-                        <td>Sensible a golpes</td>
-                        <td>Más resistente</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Costo/GB</strong></td>
-                        <td>Bajo</td>
-                        <td>Mayor</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <div class="callout success">
-                <strong>Regla práctica:</strong> SSD para sistema y aplicaciones, HDD para almacenamiento masivo.
-            </div>
-        </section>
-
-        <!-- NVMe vs SATA -->
-        <section id="nvme">
-            <h2>NVMe vs SATA SSD</h2>
-            <h3>Diferencias clave</h3>
-
-            <table>
-                <thead>
-                    <tr>
-                        <th>Aspecto</th>
-                        <th>SATA SSD</th>
-                        <th>NVMe SSD</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Interfaz</strong></td>
-                        <td>SATA III (6 Gb/s)</td>
-                        <td>PCIe 3.0/4.0 (32+ Gb/s)</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Colas</strong></td>
-                        <td>1 cola, 32 comandos</td>
-                        <td>65k colas, 64k comandos</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Latencia</strong></td>
-                        <td>~50 µs</td>
-                        <td>~10 µs</td>
-                    </tr>
-                    <tr>
-                        <td><strong>IOPS</strong></td>
-                        <td>100k</td>
-                        <td>1M+</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Ancho banda</strong></td>
-                        <td>560 MB/s</td>
-                        <td>3500-7000 MB/s</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <h4>¿Por qué NVMe es más rápido?</h4>
-
-            <div class="comparison">
-                <div>
-                    <h4>Arquitectura</h4>
-                    <ul>
-                        <li>Comunicación directa con CPU vía PCIe</li>
-                        <li>Menos capas de protocolo</li>
-                        <li>Comandos paralelos (múltiples colas)</li>
-                        <li>Menor overhead</li>
-                    </ul>
-
-                    <h4>Ventajas Prácticas</h4>
-                    <ul>
-                        <li>Boot en segundos</li>
-                        <li>Apps abren instantáneamente</li>
-                        <li>Mejor para workloads pesados</li>
-                    </ul>
-                </div>
-                <div>
-                    <h4>Para Servidores</h4>
-                    <ul>
-                        <li>Más I/O por segundo</li>
-                        <li>Menor latencia = DB más rápidas</li>
-                        <li>Menor CPU utilizada para I/O</li>
-                    </ul>
-
-                    <h4>Consideraciones</h4>
-                    <ul>
-                        <li>Costo mayor que SATA</li>
-                        <li>Requiere slot M.2 o PCIe</li>
-                        <li>Compatible casi todas las motherboards modernas</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
-        <!-- Optimización -->
-        <section id="optimizacion">
-            <h2>Optimización de Rendimiento</h2>
-
-            <div class="comparison">
-                <div>
-                    <h4>Para HDD</h4>
-                    <ul>
-                        <li>Evitar desorden de archivos (defrag)</li>
-                        <li>Reducir movimientos del cabezal (SCAN/LOOK)</li>
-                        <li>Colocar archivos frecuentes juntos</li>
-                    </ul>
-                </div>
-                <div>
-                    <h4>Para SSD</h4>
-                    <ul>
-                        <li>Habilitar TRIM</li>
-                        <li><strong>Evitar desfragmentación</strong></li>
-                        <li>Dejar espacio libre (over-provisioning)</li>
-                        <li>No llenar completamente</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
-        <!-- Evaluación E3 -->
-        <section id="evaluacion-e3" class="evaluacion">
-            <h2>Evaluación E3: Examen - Memoria, E/S, Archivos</h2>
-            <div class="callout warning">
-                <strong>Fecha:</strong> 2026-03-25 | <strong>Porcentaje:</strong> 20%
-                <br><strong>Evaluación programada:</strong> Consultar plataforma virtual para instrucciones completas.
-            </div>
-        </section>
-
-        <!-- Actividad Práctica -->
-        <section id="practica">
-            <h2>Actividad Práctica (Opcional)</h2>
-
-            <section class="actividad">
-                <h3>Actividad: Exploración de Discos</h3>
-                <p><strong>Tipo:</strong> Opcional (práctica)</p>
-                <p><strong>Relacionado con:</strong> Análisis de dispositivos de almacenamiento</p>
-                <p><strong>Entregable:</strong> Ninguno (para practicar)</p>
-                <p><strong>Propósito:</strong> Conocer el tipo de disco y sus características</p>
-            </section>
-            <h3>En parejas (10 min)</h3>
+        <!-- Memoria Compartida -->
+        <section id="memoria">
+            <h2>Memoria Compartida</h2>
 
             <div class="callout info">
-                <h4>Linux</h4>
-                <pre><code>$ lsblk
-$ sudo hdparm -t /dev/sda</code></pre>
-
-                <h4>Windows (PowerShell)</h4>
-                <pre><code>> Get-Disk
-> Get-PhysicalDisk</code></pre>
+                <strong>La memoria compartida es un segmento de memoria accesible por múltiples procesos</strong>
             </div>
 
-            <h4>Pregunta:</h4>
-            <p>¿Qué tipo de disco usa tu equipo y cómo afecta el rendimiento?</p>
+            <h3>Características:</h3>
+            <ul>
+                <li><strong>Más rápido:</strong> Sin copia de datos entre procesos</li>
+                <li><strong>Sincronización:</strong> Requiere mecanismos adicionales (semáforos)</li>
+                <li><strong>Persistencia:</strong> Existe mientras alguien la tenga mapeada</li>
+                <li><strong>Tamaño:</strong> Definido al crearlo</li>
+            </ul>
+
+            <h4>Esquema de Memoria Compartida:</h4>
+            <div class="diagram-box">
+                <pre class="ascii-diagram">┌─────────────────────────────────────────────────┐
+│          MEMORIA COMPARTIDA                      │
+│  ┌────────────────────────────────────────┐    │
+│  │  Datos compartidos                    │    │
+│  │  - variables                          │    │
+│  │  - estructuras                        │    │
+│  │  - buffers                            │    │
+│  └────────────────────────────────────────┘    │
+└─────────────────────────────────────────────────┘
+       ▲                     ▲
+       │                     │
+    Proceso A             Proceso B
+   (lee/escribe)         (lee/escribe)
+
+SIN COPIA DE DATOS (acceso directo)</pre>
+            </div>
+
+            <h4>Uso típico:</h4>
+            <ul>
+                <li>Bases de datos de alto rendimiento</li>
+                <li>Caché compartido entre procesos</li>
+                <li>Comunicación de baja latencia</li>
+            </ul>
+
+            <div class="callout warning">
+                <strong>⚠️ Requiere sincronización:</strong>
+                <ul>
+                    <li>Usar semáforos o mutex para evitar race conditions</li>
+                    <li>Coordinar lectura/escritura</li>
+                    <li>Prevenir deadlocks</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Sockets -->
+        <section id="sockets">
+            <h2>Sockets</h2>
+
+            <div class="callout info">
+                <strong>Los sockets son puntos finales de comunicación bidireccional</strong>
+            </div>
+
+            <h3>Tipos de Sockets:</h3>
+
+            <div class="comparison">
+                <div>
+                    <h4>Unix Domain Sockets</h4>
+                    <ul>
+                        <li>Comunicación local (misma máquina)</li>
+                        <li>Archivos en el sistema de archivos</li>
+                        <li>Más rápido que TCP/IP</li>
+                        <li>Uso: X Window, syslog</li>
+                    </ul>
+                    <pre><code>/var/run/docker.sock
+/var/run/mysql/mysql.sock</code></pre>
+                </div>
+                <div>
+                    <h4>Network Sockets (TCP/IP)</h4>
+                    <ul>
+                        <li>Comunicación entre máquinas</li>
+                        <li>Dirección IP + puerto</li>
+                        <li>Cliente-Servidor</li>
+                        <li>Uso: Servicios web, bases de datos</li>
+                    </ul>
+                    <pre><code>192.168.1.100:3306
+localhost:8080</code></pre>
+                </div>
+            </div>
+
+            <h4>Arquitectura Cliente-Servidor:</h4>
+            <div class="diagram-box">
+                <pre class="ascii-diagram">┌────────────┐                    ┌────────────┐
+│  Cliente   │                    │ Servidor   │
+├────────────┤                    ├────────────┤
+│            │  connect()         │            │
+│   socket() │ ──────────────────> │  socket()  │
+│            │                    │  bind()    │
+│   send()   │ ──────────────────> │  listen()  │
+│            │                    │  accept()  │
+│   recv()   │ <────────────────── │            │
+│            │                    │            │
+└────────────┘                    └────────────┘
+
+ Puerto: 8080
+ IP: 127.0.0.1</pre>
+            </div>
+
+            <h4>Ejemplo simple con netcat (nc):</h4>
+            <pre><code># Servidor - Escucha en puerto 8080
+nc -l 8080
+
+# Cliente - Se conecta al servidor
+nc localhost 8080
+
+# En el cliente, escribe mensajes, aparecen en el servidor</code></pre>
+        </section>
+
+        <!-- Práctica Guiada -->
+        <section id="practica">
+            <h2>Práctica Guiada</h2>
+
+            <div class="actividad">
+                <h3>Actividad 1: Pipes anónimos en Bash</h3>
+                <p><strong>Tiempo:</strong> 10 minutos</p>
+                <ol>
+                    <li>Abre una terminal</li>
+                    <li>Lista los archivos .txt en tu directorio home: <code>find ~ -name "*.txt" 2>/dev/null | head -10</code></li>
+                    <li>Cuenta cuántos archivos .txt existen: <code>find ~ -name "*.txt" 2>/dev/null | wc -l</code></li>
+                    <li>Combina comandos con pipes: <code>ps aux | grep bash | wc -l</code></li>
+                    <li>Crea tu propio pipe: <code>echo "Hola" | cat</code></li>
+                </ol>
+            </div>
+
+            <div class="actividad">
+                <h3>Actividad 2: Crear un Pipe Nombrado</h3>
+                <p><strong>Tiempo:</strong> 10 minutos</p>
+                <ol>
+                    <li>Crea un FIFO: <code>mkfifo /tmp/mi_fifo</code></li>
+                    <li>Verifica que se creó: <code>ls -l /tmp/mi_fifo</code></li>
+                    <li>En otra terminal, inicia un lector: <code>cat /tmp/mi_fifo</code></li>
+                    <li>En la terminal original, escribe: <code>echo "Hola desde el pipe" > /tmp/mi_fifo</code></li>
+                    <li>Observa que el mensaje aparece en la terminal del lector</li>
+                    <li>Elimina el FIFO: <code>rm /tmp/mi_fifo</code></li>
+                </ol>
+            </div>
+
+            <div class="actividad">
+                <h3>Actividad 3: Enviar señales</h3>
+                <p><strong>Tiempo:</strong> 10 minutos</p>
+                <ol>
+                    <li>Inicia un proceso en segundo plano: <code>sleep 300 &</code></li>
+                    <li>Obtén el PID: <code>ps aux | grep sleep</code></li>
+                    <li>Envía SIGSTOP: <code>kill -STOP [PID]</code></li>
+                    <li>Verifica que está detenido: <code>ps -p [PID] -o pid,stat</code></li>
+                    <li>Envía SIGCONT: <code>kill -CONT [PID]</code></li>
+                    <li>Termina el proceso: <code>kill [PID]</code></li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- Entregable -->
+        <section id="entregable">
+            <h2>Entregable de la Clase</h2>
+
+            <div class="actividad">
+                <h3>Scripts Productor-Consumidor con Pipes</h3>
+                <p><strong>Descripción:</strong> Implementar un sistema Productor-Consumidor usando bash scripts y un pipe nombrado</p>
+                <p><strong>Requisitos:</strong></p>
+                <ul>
+                    <li><code>productor.sh</code>: Genera números y los escribe en el FIFO</li>
+                    <li><code>consumidor.sh</code>: Lee números del FIFO y calcula su suma</li>
+                    <li>Usar pipe nombrado (FIFO)</li>
+                    <li>Mostrar capturas de la ejecución</li>
+                </ul>
+
+                <h4>Estructura sugerida:</h4>
+
+                <p><strong>productor.sh:</strong></p>
+                <pre><code>#!/bin/bash
+# productor.sh
+
+FIFO="/tmp/numeros_pipe"
+
+# Crear FIFO
+[ -p "$FIFO" ] || mkfifo "$FIFO"
+
+echo "Productor: Generando números..."
+for i in {1..20}; do
+    echo "$i"
+    sleep 0.5
+done > "$FIFO"
+
+echo "Productor: Terminé"</code></pre>
+
+                <p><strong>consumidor.sh:</strong></p>
+                <pre><code>#!/bin/bash
+# consumidor.sh
+
+FIFO="/tmp/numeros_pipe"
+
+echo "Consumidor: Esperando números..."
+suma=0
+cantidad=0
+
+while read numero; do
+    echo "Consumidor: Recibí $numero"
+    suma=$((suma + numero))
+    cantidad=$((cantidad + 1))
+done < "$FIFO"
+
+echo "Consumidor: Terminé"
+echo "Total recibidos: $cantidad"
+echo "Suma total: $suma"</code></pre>
+
+                <h4>Instrucciones de ejecución:</h4>
+                <ol>
+                    <li>Guardar ambos scripts con permisos de ejecución: <code>chmod +x productor.sh consumidor.sh</code></li>
+                    <li>En una terminal, ejecutar: <code>./consumidor.sh</code></li>
+                    <li>En otra terminal, ejecutar: <code>./productor.sh</code></li>
+                    <li>Capturar la salida de ambas terminales</li>
+                    <li>Verificar que la suma es correcta (1+2+...+20 = 210)</li>
+                </ol>
+
+                <p><strong>Entregable:</strong></p>
+                <ul>
+                    <li>Código fuente de ambos scripts</li>
+                    <li>Capturas de pantalla de la ejecución</li>
+                    <li>Breve explicación del funcionamiento</li>
+                </ul>
+            </div>
         </section>
 
         <!-- Resumen -->
@@ -987,123 +881,55 @@ $ sudo hdparm -t /dev/sda</code></pre>
             <table>
                 <thead>
                     <tr>
-                        <th>Concepto</th>
-                        <th>Idea clave</th>
+                        <th>Mecanismo</th>
+                        <th>Características</th>
+                        <th>Uso típico</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td><strong>Disco</strong></td>
-                        <td>Pistas, sectores, cabezales</td>
+                        <td><strong>Pipe Anónimo</strong></td>
+                        <td>Unidireccional, procesos relacionados</td>
+                        <td>Shell (|)</td>
                     </tr>
                     <tr>
-                        <td><strong>Acceso</strong></td>
-                        <td>Seek + latencia + transferencia</td>
+                        <td><strong>Pipe Nombrado</strong></td>
+                        <td>Unidireccional, cualquier proceso</td>
+                        <td>Comunicación general</td>
                     </tr>
                     <tr>
-                        <td><strong>Planificación</strong></td>
-                        <td>FCFS, SSTF, SCAN, C-SCAN</td>
+                        <td><strong>Señales</strong></td>
+                        <td>Notificaciones asíncronas</td>
+                        <td>Control de procesos</td>
                     </tr>
                     <tr>
-                        <td><strong>RAID</strong></td>
-                        <td>Redundancia y rendimiento</td>
+                        <td><strong>Memoria Compartida</strong></td>
+                        <td>Alta velocidad, requiere sincronización</td>
+                        <td>Bases de datos</td>
                     </tr>
                     <tr>
-                        <td><strong>SSD</strong></td>
-                        <td>Menor latencia, mayor IOPS</td>
-                    </tr>
-                    <tr>
-                        <td><strong>NVMe</strong></td>
-                        <td>Comunicación directa PCIe</td>
+                        <td><strong>Sockets</strong></td>
+                        <td>Bidireccional, local o red</td>
+                        <td>Cliente-Servidor</td>
                     </tr>
                 </tbody>
             </table>
 
-            <div class="callout info">
-                <h4>Tarea</h4>
-                <ol>
-                    <li>Comparar SSD vs HDD (3 diferencias técnicas)</li>
-                    <li>Explicar por qué SCAN reduce el tiempo promedio</li>
-                    <li>Investigar qué RAID usa un data center moderno</li>
-                </ol>
-            </div>
-
             <h3>Próxima Clase</h3>
-            <p><strong>Clase 9: Sistemas de Archivos</strong></p>
+            <p><strong>Clase 09: Permisos en Linux</strong></p>
             <ul>
-                <li>Concepto de archivo y atributos</li>
-                <li>Operaciones sobre archivos</li>
-                <li>Estructura de directorios</li>
-                <li>FAT, NTFS, ext4</li>
+                <li>Permisos básicos (rwx)</li>
+                <li>chmod, chown</li>
+                <li>Permisos especiales (setuid, setgid, sticky bit)</li>
+                <li>ACL (Access Control Lists)</li>
             </ul>
-        </section>
-
-        <!-- Section: Laboratorio -->
-        <section id="laboratorio">
-            <h2>Laboratorio</h2>
-
-            <h3>Gestión de Memoria en AWS EC2</h3>
-            <p>En este laboratorio explorarás la memoria real de un servidor Linux en AWS EC2.</p>
-
-            <div class="callout info">
-                <p class="callout-title">Objetivos del Laboratorio</p>
-                <ul>
-                    <li>Analizar uso de memoria con comandos reales</li>
-                    <li>Identificar procesos que consumen memoria</li>
-                    <li>Observar swapping en condiciones reales</li>
-                </ul>
-            </div>
-
-            <p><strong>Próximamente:</strong> AWS Lab 03 - Gestión de Memoria</p>
-            <p><a href="../laboratorios-html/index.html">Ver índice de Laboratorios →</a></p>
-        </section>
-
-        <!-- Videos Recomendados -->
-        <section id="videos">
-            <h2>Videos Recomendados</h2>
-
-            <div class="video-resource">
-                <h3>Video 1: How Hard Disks Work</h3>
-                <p><strong>Concepto:</strong> Funcionamiento interno de discos duros</p>
-                <p><strong>Duración:</strong> 15 minutos</p>
-                <p><strong>Nivel:</strong> Básico</p>
-                <p><strong>Por qué verlo:</strong> Excelente explicación visual del funcionamiento de discos</p>
-                <p><strong>Canal:</strong> Learn Engineering</p>
-                <a href="https://www.youtube.com/watch?v=wNTNCK3JkKU" target="_blank">Ver en YouTube</a>
-            </div>
-
-            <div class="video-resource">
-                <h3>Video 2: Disk Scheduling Algorithms</h3>
-                <p><strong>Concepto:</strong> FCFS, SSTF, SCAN, CLOOK y otros algoritmos</p>
-                <p><strong>Duración:</strong> 14 minutos</p>
-                <p><strong>Nivel:</strong> Intermedio</p>
-                <p><strong>Por qué verlo:</strong> Complementa la explicación de planificación de disco</p>
-                <p><strong>Canal:</strong> Neso Academy</p>
-                <a href="https://www.youtube.com/watch?v=3DvF9s0K7tA" target="_blank">Ver en YouTube</a>
-            </div>
-
-            <div class="video-resource">
-                <h3>Video 3: RAID Technology Explained</h3>
-                <p><strong>Concepto:</strong> Niveles RAID 0, 1, 5, 6, 10</p>
-                <p><strong>Duración:</strong> 12 minutos</p>
-                <p><strong>Nivel:</strong> Intermedio</p>
-                <p><strong>Por qué verlo:</strong> Entender redundancia y rendimiento en almacenamiento</p>
-                <p><strong>Canal:</strong> PowerCert Animated</p>
-                <a href="https://www.youtube.com/watch?v=A9I8S3w_i9k" target="_blank">Ver en YouTube</a>
-            </div>
-
-            <div class="callout info">
-                <p class="callout-title">Tip de Estudio</p>
-                <p>Antes de ver cada video, lee el tema correspondiente en la clase. Esto te ayudará a identificar qué conceptos ya entiendes y cuáles necesitas reforzar.</p>
-            </div>
         </section>
     </div>
 
     <footer>
         <div class="container">
             <p><strong>IF0099 - Sistemas Operativos I</strong> • <a href="index.html">Índice de Clases</a></p>
-        <div class="container">
-            <p>IF0099 - Sistemas Operativos I | UNAULA - Ingeniería Informática - 2026-I</p>
+            <p>© 2026 UNAULA - Ingeniería Informática | IF0099 - Sistemas Operativos I</p>
             <p><a href="../index.html">← Volver al inicio</a></p>
         </div>
     </footer>

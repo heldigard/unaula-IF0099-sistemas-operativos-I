@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clase 04: Algoritmos de Planificación de CPU | IF0099 - Sistemas Operativos I</title>
+    <title>Clase 04: Estructura del Sistema Operativo | IF0099 - Sistemas Operativos I</title>
+    <!-- Prism.js CSS para syntax highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
     <style>
         :root {
             --primary: #2563eb;
@@ -389,15 +391,72 @@
                 grid-template-columns: 1fr;
             }
         }
+
+        /* Code blocks with syntax highlighting */
+        pre {
+            background: #1e1e1e !important;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            overflow-x: auto;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        pre code {
+            font-family: 'Fira Code', 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: #d4d4d4;
+        }
+
+        /* Inline code */
+        code:not(pre code) {
+            background: #e2e8f0;
+            color: #c026d3;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-family: 'Fira Code', 'Consolas', 'Monaco', monospace;
+            font-size: 0.9em;
+        }
+
+        .code-header {
+            background: #2d2d2d;
+            color: #9cdcfe;
+            padding: 0.5rem 1rem;
+            border-radius: 8px 8px 0 0;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+        }
+
+        .code-block {
+            border-radius: 8px;
+            overflow: hidden;
+            margin: 1.5rem 0;
+        }
+
+        .code-block pre {
+            margin: 0;
+            border-radius: 0;
+        }
+
+        .terminal-block pre {
+            background: #0c0c0c !important;
+            border: 1px solid #333;
+        }
+
+        .terminal-block .code-header {
+            background: #1a1a1a;
+            color: #22c55e;
+        }
     </style>
 </head>
 <body>
     <header>
         <div class="container">
-            <h1>Clase 04: Algoritmos de Planificación de CPU</h1>
-            <p class="subtitle">IF0099 - Sistemas Operativos I | Unidad 3 - Planificación</p>
-            <p class="subtitle">Algoritmos FCFS, SJF, Prioridad y Round Robin</p>
-            <p class="meta">Última actualización: 2026-02-01 | Duración: 90 minutos</p>
+            <h1>Clase 04: Estructura del Sistema Operativo</h1>
+            <p class="subtitle">IF0099 - Sistemas Operativos I | Unidad 1 - Sistemas Operativos</p>
+            <p class="subtitle">Kernel, Shell, System Calls y Modos de Operación</p>
+            <p class="meta">Última actualización: 2026-02-10 | Duración: 90 minutos | Incluye: Práctica comparativa Linux vs Windows</p>
         </div>
     </header>
 
@@ -406,17 +465,10 @@
             <h2>Contenido de la Clase</h2>
             <ul>
                 <li><a href="#objetivos">Objetivos de Aprendizaje</a></li>
-                <li><a href="#que-es">1. ¿Qué es la Planificación?</a></li>
-                <li><a href="#metricas">2. Métricas de Rendimiento</a></li>
-                <li><a href="#fcfs">3. FCFS - First Come First Served</a></li>
-                <li><a href="#sjf">4. SJF - Shortest Job First</a></li>
-                <li><a href="#prioridad">5. Planificación por Prioridad</a></li>
-                <li><a href="#rr">6. Round Robin</a></li>
-                <li><a href="#tiempo-real">7. Planificación en Tiempo Real</a></li>
-                <li><a href="#multiprocesador">8. Planificación en Multiprocesadores</a></li>
-                <li><a href="#evaluacion-e1">9. Evaluación E1 (15%)</a></li>
-                <li><a href="#laboratorio">10. Laboratorio</a></li>
-                <li><a href="#practica">11. Actividad Práctica (Opcional)</a></li>
+                <li><a href="#que-es">1. Componentes del SO</a></li>
+                <li><a href="#metricas">2. Práctica Comparativa</a></li>
+                <li><a href="#laboratorio">3. Laboratorio</a></li>
+                <li><a href="#practica">4. Actividad Práctica</a></li>
             </ul>
         </nav>
 
@@ -424,811 +476,394 @@
             <h2>Objetivos de Aprendizaje</h2>
             <p>Al finalizar esta clase, serás capaz de:</p>
             <ol>
-                <li><strong>Explicar</strong> el concepto de planificación de CPU</li>
-                <li><strong>Calcular</strong> métricas de rendimiento (turnaround, waiting, response)</li>
-                <li><strong>Comparar</strong> los algoritmos FCFS, SJF, Prioridad y Round Robin</li>
-                <li><strong>Aplicar</strong> cada algoritmo a problemas prácticos</li>
-                <li><strong>Describir</strong> algoritmos de tiempo real (RMS, EDF)</li>
-                <li><strong>Explicar</strong> planificación en multiprocesadores (SMP, afinidad)</li>
-                <li><strong>Evaluar</strong> algoritmos mediante simulación</li>
+                <li><strong>Identificar</strong> los componentes principales de un Sistema Operativo</li>
+                <li><strong>Explicar</strong> la diferencia entre Kernel y Shell</li>
+                <li><strong>Describir</strong> qué son las System Calls y cómo funcionan</li>
+                <li><strong>Comparar</strong> Modo Usuario vs Modo Kernel</li>
+                <li><strong>Analizar</strong> la arquitectura de capas del SO</li>
+                <li><strong>Comparar</strong> la estructura de Linux y Windows Server</li>
             </ol>
         </section>
 
         <section id="que-es">
-            <h2>1. ¿Qué es la Planificación de CPU?</h2>
+            <h2>1. Componentes del Sistema Operativo</h2>
+
+            <h3>1.1 Kernel - El Núcleo del Sistema</h3>
+            <p>El <strong>Kernel</strong> es el componente central del Sistema Operativo. Es el software que tiene control total sobre todo lo que sucede en el sistema.</p>
+
+            <div class="callout info">
+                <p class="callout-title">¿Por qué se llama "Kernel"?</p>
+                <p>La palabra viene del alemán "Kern" que significa "núcleo" o "semilla". Así como una semilla contiene toda la información para que una planta crezca, el Kernel contiene todo lo necesario para que el sistema funcione.</p>
+            </div>
+
+            <h4>Funciones del Kernel</h4>
+            <ul>
+                <li><strong>Gestión de procesos:</strong> Crear, schedule y terminar procesos</li>
+                <li><strong>Gestión de memoria:</strong> Asignar y liberar RAM</li>
+                <li><strong>Gestión de E/S:</strong> Controlar dispositivos</li>
+                <li><strong>Gestión de archivos:</strong> Organizar y acceder a datos</li>
+                <li><strong>Seguridad:</strong> Proteger recursos y procesos</li>
+            </ul>
+
+            <h3>1.2 Shell - La Interfaz de Comandos</h3>
+            <p>La <strong>Shell</strong> es un programa que permite interactuar con el Kernel. Es un intérprete de comandos que traduce lo que escribes en llamadas al sistema.</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Sistema</th>
+                        <th>Shell</th>
+                        <th>Características</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Linux</strong></td>
+                        <td>bash, zsh, fish</td>
+                        <td>Scripting, pipes, redirección</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Windows</strong></td>
+                        <td>PowerShell, cmd</td>
+                        <td>Objetos, .NET integrado</td>
+                    </tr>
+                    <tr>
+                        <td><strong>macOS</strong></td>
+                        <td>zsh (default), bash</td>
+                        <td>Unix-like, herramientas BSD</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>Analogía de la Shell</h4>
+            <div class="ascii-diagram">
+Usuario → Shell (traductor) → Kernel (ejecuta) → Hardware
+
+Sin Shell:
+Usuario ❌ No puede hablar con Kernel
+
+Con Shell:
+Usuario "abre archivo.txt"
+Shell traduce → open("archivo.txt")
+Kernel abre archivo → Hardware lee disco
+            </div>
+
+            <h3>1.3 System Calls - Llamadas al Sistema</h3>
+            <p>Las <strong>System Calls</strong> son la puerta de entrada al Kernel. Son funciones que permiten a los programas solicitar servicios que requieren privilegios especiales.</p>
+
+            <h4>Categorías de System Calls</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Categoría</th>
+                        <th>Linux</th>
+                        <th>Windows</th>
+                        <th>Propósito</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Control de procesos</strong></td>
+                        <td>fork(), exec(), exit()</td>
+                        <td>CreateProcess, ExitProcess</td>
+                        <td>Crear/terminar procesos</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Manipulación archivos</strong></td>
+                        <td>open(), read(), write()</td>
+                        <td>CreateFile, ReadFile</td>
+                        <td>Operaciones I/O</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Gestión memoria</strong></td>
+                        <td>mmap(), brk()</td>
+                        <td>VirtualAlloc</td>
+                        <td>Asignar memoria</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Comunicaciones</strong></td>
+                        <td>socket(), bind(), listen()</td>
+                        <td>WSAStartup, socket</td>
+                        <td>Comunicación en red</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>1.4 Modo Usuario vs Modo Kernel</h3>
+            <p>Los procesadores modernos tienen al menos dos modos de operación:</p>
 
             <div class="comparison">
                 <div>
-                    <h3>🏦 La analogía del banco</h3>
-                    <p>Imagina una ventanilla de banco con una sola persona atendiendo:</p>
+                    <h4>🔓 Modo Usuario</h4>
+                    <p>Donde corren las aplicaciones:</p>
                     <ul>
-                        <li>👥 Múltiples clientes esperando (procesos)</li>
-                        <li>💼 Cada uno con diferentes necesidades (tiempo de ejecución)</li>
-                        <li>⏰ Algunos tienen urgencia (prioridad)</li>
-                        <li>🎯 Queremos atender a todos eficientemente</li>
+                        <li>Acceso limitado a hardware</li>
+                        <li>No puede ejecutar instrucciones privilegiadas</li>
+                        <li>Acceso restringido a memoria</li>
+                        <li>Navegadores, editores, juegos</li>
                     </ul>
-                    <p><strong>¿Cómo decidimos el orden de atención?</strong></p>
-                    <p>Esto es exactamente lo que hace el scheduler del SO con la CPU.</p>
-
-                    <h3>📊 Representación</h3>
-                    <div class="ascii-diagram">
-        Cola de procesos LISTOS
-┌─────┐ ┌─────┐ ┌─────┐ ┌─────┐
-│ P1  │ │ P2  │ │ P3  │ │ P4  │ ──→ ? ──→ [CPU]
-└─────┘ └─────┘ └─────┘ └─────┘
-                                     │
-                    ¿Quién va primero?
-                    </div>
                 </div>
-
                 <div>
-                    <h3>📋 Tipos de Planificación</h3>
-                    <table>
-                        <tr>
-                            <th>Tipo</th>
-                            <th>Cuándo actúa</th>
-                            <th>Frecuencia</th>
-                        </tr>
-                        <tr>
-                            <td><strong>Largo plazo</strong></td>
-                            <td>Admitir procesos nuevos</td>
-                            <td>Minutos/horas</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Mediano plazo</strong></td>
-                            <td>Swap in/out de memoria</td>
-                            <td>Segundos/minutos</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Corto plazo</strong></td>
-                            <td>Elegir proceso para CPU</td>
-                            <td>Milisegundos</td>
-                        </tr>
-                    </table>
-
-                    <p><strong>Nosotros enfocamos en planificación de corto plazo</strong></p>
-
-                    <h3>⚡ Preemptive vs Non-Preemptive</h3>
-                    <table>
-                        <tr>
-                            <th>Característica</th>
-                            <th>Non-Preemptive</th>
-                            <th>Preemptive</th>
-                        </tr>
-                        <tr>
-                            <td><strong>Interrupción</strong></td>
-                            <td>El SO NO puede quitar la CPU</td>
-                            <td>El SO PUEDE interrumpir</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Cuándo termina</strong></td>
-                            <td>Proceso termina o se bloquea</td>
-                            <td>Timeout o prioridad</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Uso</strong></td>
-                            <td>Sistemas antiguos</td>
-                            <td>Sistemas modernos</td>
-                        </tr>
-                    </table>
+                    <h4>🔒 Modo Kernel</h4>
+                    <p>Donde corre el Sistema Operativo:</p>
+                    <ul>
+                        <li>Acceso completo al hardware</li>
+                        <li>Puede ejecutar cualquier instrucción</li>
+                        <li>Acceso a toda la memoria</li>
+                        <li>Kernel, drivers de dispositivo</li>
+                    </ul>
                 </div>
             </div>
-        </section>
 
-        <section id="metricas">
-            <h2>2. Métricas de Rendimiento</h2>
-
-            <div class="comparison">
-                <div>
-                    <h3>📊 Tabla de procesos ejemplo</h3>
-                    <table>
-                        <tr>
-                            <th>Proceso</th>
-                            <th>Llegada</th>
-                            <th>Ráfaga</th>
-                        </tr>
-                        <tr>
-                            <td>P1</td>
-                            <td>0</td>
-                            <td>5</td>
-                        </tr>
-                        <tr>
-                            <td>P2</td>
-                            <td>1</td>
-                            <td>3</td>
-                        </tr>
-                        <tr>
-                            <td>P3</td>
-                            <td>2</td>
-                            <td>8</td>
-                        </tr>
-                    </table>
-
-                    <h3>📏 Métricas a calcular</h3>
-                    <table>
-                        <tr>
-                            <th>Métrica</th>
-                            <th>Fórmula</th>
-                        </tr>
-                        <tr>
-                            <td><strong>Turnaround Time</strong></td>
-                            <td>Fin - Llegada</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Waiting Time</strong></td>
-                            <td>Turnaround - Ráfaga</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Response Time</strong></td>
-                            <td>Primera ejecución - Llegada</td>
-                        </tr>
-                    </table>
-                </div>
-
-                <div>
-                    <h3>💡 Interpretación de métricas</h3>
-
-                    <p><strong>Turnaround Time</strong> (Tiempo de retorno)</p>
-                    <div class="callout info">
-                        <p>Tiempo total desde que el proceso llega hasta que termina completamente</p>
-                        <div class="ascii-diagram">
-        Llegada                 Fin
-          │───────────────────────│
-                  Turnaround
-                        </div>
-                    </div>
-
-                    <p><strong>Waiting Time</strong> (Tiempo de espera)</p>
-                    <div class="callout warning">
-                        <p>Tiempo que el proceso pasa en cola esperando CPU</p>
-                        <div class="ascii-diagram">
-          Espera     Ejecuta    Espera
-                │────────│           │
-               Waiting
-                        </div>
-                    </div>
-
-                    <p><strong>Response Time</strong> (Tiempo de respuesta)</p>
-                    <div class="callout success">
-                        <p>Tiempo hasta la primera ejecución</p>
-                        <div class="ascii-diagram">
-        Llegada   Primera CPU
-          │──────────│
-              Response
-                        </div>
-                    </div>
-
-                    <p><strong>Objetivo:</strong> Minimizar TODAS las métricas (a veces hay trade-offs)</p>
-                </div>
-            </div>
-        </section>
-
-        <section id="fcfs">
-            <h2>3. <abbr title="First Come First Served - Primero en llegar, primero en ser atendido">FCFS</abbr> - First Come, First Served</h2>
-
-            <h3>"El primero que llega, primero se atiende"</h3>
-
-            <p><strong>Características:</strong></p>
-            <ul>
-                <li>Non-preemptive</li>
-                <li>Simple de implementar</li>
-                <li>Puede causar el <strong>efecto convoy</strong></li>
-            </ul>
-
-            <h3>Ejemplo con diagrama</h3>
+            <h4>Transición entre Modos</h4>
             <div class="ascii-diagram">
-Llegada:  P1(0), P2(1), P3(2)
-Ráfaga:   P1=5,  P2=3,  P3=8
-
-Tiempo:  0    5    8         16
-         │────│────│─────────│
-         │ P1 │ P2 │   P3    │
+┌─────────────────────────────────────────────────────┐
+│                    MODO USUARIO                      │
+│  (Navegador, Word, Spotify, etc.)                    │
+│                                                       │
+│  Usuario ejecuta: open("archivo.txt")                │
+│           ↓                                           │
+│  ─────────────────────────────────────                │
+│           │ System Call (TRAP)                        │
+│           ▼                                           │
+│  ─────────────────────────────────────                │
+│                                                       │
+│                    MODO KERNEL                        │
+│  (Kernel verifica permisos y ejecuta)                 │
+│           │                                           │
+│           ▼                                           │
+│  ─────────────────────────────────────                │
+│           │ Retorno al modo usuario                   │
+│           ▼                                           │
+│  Usuario continúa ejecución                           │
+└─────────────────────────────────────────────────────┘
             </div>
-
-            <h4>Cálculo de métricas</h4>
-            <table>
-                <tr>
-                    <th>Proceso</th>
-                    <th>Llegada</th>
-                    <th>Ráfaga</th>
-                    <th>Inicio</th>
-                    <th>Fin</th>
-                    <th>Turnaround</th>
-                    <th>Waiting</th>
-                </tr>
-                <tr>
-                    <td>P1</td>
-                    <td>0</td>
-                    <td>5</td>
-                    <td>0</td>
-                    <td>5</td>
-                    <td>5-0=<strong>5</strong></td>
-                    <td>5-5=<strong>0</strong></td>
-                </tr>
-                <tr>
-                    <td>P2</td>
-                    <td>1</td>
-                    <td>3</td>
-                    <td>5</td>
-                    <td>8</td>
-                    <td>8-1=<strong>7</strong></td>
-                    <td>7-3=<strong>4</strong></td>
-                </tr>
-                <tr>
-                    <td>P3</td>
-                    <td>2</td>
-                    <td>8</td>
-                    <td>8</td>
-                    <td>16</td>
-                    <td>16-2=<strong>14</strong></td>
-                    <td>14-8=<strong>6</strong></td>
-                </tr>
-            </table>
-
-            <p><strong>Promedios:</strong></p>
-            <ul>
-                <li>Turnaround promedio: (5+7+14)/3 = <strong>8.67</strong></li>
-                <li>Waiting promedio: (0+4+6)/3 = <strong>3.33</strong></li>
-            </ul>
-        </section>
-
-        <section id="sjf">
-            <h2>4. <abbr title="Shortest Job First - El trabajo más corto primero">SJF</abbr> - Shortest Job First</h2>
-
-            <h3>"El más corto primero"</h3>
-
-            <p><strong>Características:</strong></p>
-            <ul>
-                <li>Puede ser preemptive (SRTF) o non-preemptive</li>
-                <li><strong>Óptimo</strong> en términos de waiting time promedio</li>
-                <li>Problema: ¿Cómo saber el tiempo de ráfaga?</li>
-            </ul>
-
-            <div class="comparison">
-                <div>
-                    <h4>📊 Ejemplo SJF Non-preemptive</h4>
-                    <div class="ascii-diagram">
-Llegada:  P1(0), P2(1), P3(2)
-Ráfaga:   P1=5,  P2=3,  P3=8
-
-Tiempo:  0    5    8         16
-         │────│────│─────────│
-         │ P1 │ P2 │   P3    │  (P1 ya empezó)
-         │────│────│─────────│
-                    </div>
-                </div>
-
-                <div>
-                    <h4>⚡ Efecto Convoy en FCFS</h4>
-                    <div class="callout warning">
-                        <p>Cuando un proceso largo bloquea a los cortos</p>
-                        <div class="ascii-diagram">
-Procesos: P1(ráfaga=100), P2(ráfaga=1), P3(ráfaga=1)
-
-FCFS:
-│──────────────────────────────────────────│─│─│
-│                  P1 (100)                │P2│P3│
-0                                         100 101 102
-
-P2 espera 100 unidades para ejecutar solo 1
-P3 espera 101 unidades para ejecutar solo 1
-
-¡MUY INEFICIENTE!
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <h4>📊 Ejemplo con llegadas diferentes</h4>
-            <table>
-                <tr>
-                    <th>Proceso</th>
-                    <th>Llegada</th>
-                    <th>Ráfaga</th>
-                </tr>
-                <tr>
-                    <td>P1</td>
-                    <td>0</td>
-                    <td>7</td>
-                </tr>
-                <tr>
-                    <td>P2</td>
-                    <td>2</td>
-                    <td>4</td>
-                </tr>
-                <tr>
-                    <td>P3</td>
-                    <td>4</td>
-                    <td>1</td>
-                </tr>
-                <tr>
-                    <td>P4</td>
-                    <td>5</td>
-                    <td>4</td>
-                </tr>
-            </table>
-
-            <p><strong>Orden SJF:</strong> P1 → P3 → P2 → P4</p>
-        </section>
-
-        <section id="prioridad">
-            <h2>5. Planificación por Prioridad</h2>
-
-            <p>Cada proceso tiene un número de prioridad. <strong>Menor número = Mayor prioridad</strong>.</p>
-
-            <table>
-                <tr>
-                    <th>Proceso</th>
-                    <th>Llegada</th>
-                    <th>Ráfaga</th>
-                    <th>Prioridad</th>
-                </tr>
-                <tr>
-                    <td>P1</td>
-                    <td>0</td>
-                    <td>5</td>
-                    <td>3</td>
-                </tr>
-                <tr>
-                    <td>P2</td>
-                    <td>0</td>
-                    <td>3</td>
-                    <td>1 (alta)</td>
-                </tr>
-                <tr>
-                    <td>P3</td>
-                    <td>0</td>
-                    <td>8</td>
-                    <td>2</td>
-                </tr>
-            </table>
-
-            <p><strong>Orden de ejecución:</strong> P2 → P3 → P1</p>
 
             <div class="callout warning">
-                <h4>⚠️ Problema: Starvation (Inanición)</h4>
-                <p>Procesos de baja prioridad pueden no ejecutarse nunca si constantemente llegan procesos de alta prioridad.</p>
-                <div class="ascii-diagram">
-P1 (prioridad=5) ───────────────→ NUNCA EJECUTA
-                    ↑ ↑ ↑ ↑ ↑ ↑
-         P_alta P_alta P_alta P_alta P_alta
-         (prioridad=1)
-                </div>
-                <p><strong>Solución:</strong> <strong>Aging (Envejecimiento)</strong> - Aumentar gradualmente la prioridad de procesos que esperan mucho tiempo.</p>
-            </div>
-        </section>
-
-        <section id="rr">
-            <h2>6. <abbr title="Round Robin - Turnos rotativos con quantum de tiempo">Round Robin</abbr> (RR)</h2>
-
-            <h3>"Turnos rotativos" - El más usado</h3>
-
-            <figure>
-                <img src="../assets/infografias/clase-04-round-robin.png" alt="Diagrama circular del algoritmo Round Robin">
-                    <figcaption>Figura 1: Diagrama circular del algoritmo Round Robin</figcaption>
-                </figure>
-
-            <p><strong>Características:</strong></p>
-            <ul>
-                <li>Preemptive</li>
-                <li>Cada proceso recibe un <strong>quantum</strong> (tiempo máximo)</li>
-                <li>Después del quantum, va al final de la cola</li>
-                <li><strong>Justo:</strong> todos reciben CPU eventualmente</li>
-            </ul>
-
-            <h4>Ejemplo con Quantum = 4</h4>
-            <table>
-                <tr>
-                    <th>Proceso</th>
-                    <th>Llegada</th>
-                    <th>Ráfaga</th>
-                </tr>
-                <tr>
-                    <td>P1</td>
-                    <td>0</td>
-                    <td>10</td>
-                </tr>
-                <tr>
-                    <td>P2</td>
-                    <td>0</td>
-                    <td>4</td>
-                </tr>
-                <tr>
-                    <td>P3</td>
-                    <td>0</td>
-                    <td>5</td>
-                </tr>
-            </table>
-
-            <div class="gantt">
-                <div class="gantt-timeline">
-                    <div class="gantt-empty"></div>
-                    <div class="gantt-bar" style="width:200px">P1(0-4)</div>
-                    <div class="gantt-empty"></div>
-                    <div class="gantt-bar" style="width:200px">P2(4-8)</div>
-                    <div class="gantt-empty"></div>
-                    <div class="gantt-bar" style="width:200px">P3(8-12)</div>
-                    <div class="gantt-empty"></div>
-                    <div class="gantt-bar" style="width:200px">P1(12-16)</div>
-                    <div class="gantt-empty"></div>
-                    <div class="gantt-bar" style="width:200px">P3(16-17)</div>
-                    <div class="gantt-empty"></div>
-                    <div class="gantt-bar" style="width:200px">P1(17-19)</div>
-                </div>
-                <div class="gantt-id">t=0-</div>
+                <p class="callout-title">¿Por qué dos modos?</p>
+                <p>Si todos los programas corrieran en modo kernel, cualquier programa podría:</p>
+                <ul>
+                    <li>Leer tu contraseña de la memoria</li>
+                    <li>Formatear tu disco duro</li>
+                    <li>Interceptar tus pulsaciones de teclado</li>
+                    <li>Causar que todo el sistema crashee</li>
+                </ul>
+                <p>La separación de modos protege al sistema y a los usuarios.</p>
             </div>
 
-            <p><strong>Promedios:</strong> Turnaround: 14.67, Waiting: 8.33</p>
-
-            <h3>¿Qué quantum elegir?</h3>
-            <table>
-                <tr>
-                    <th>Quantum</th>
-                    <th>Efecto</th>
-                </tr>
-                <tr>
-                    <td><strong>Muy pequeño</strong></td>
-                    <td>Muchos context switches → overhead</td>
-                </tr>
-                <tr>
-                    <td><strong>Muy grande</strong></td>
-                    <td>Se comporta como FCFS</td>
-                </tr>
-                <tr>
-                    <td><strong>Típico</strong></td>
-                    <td>10-100 ms</td>
-                </tr>
-            </table>
-        </section>
-
-        <section id="comparacion">
-            <h2>Comparación de Algoritmos</h2>
+            <h3>1.5 Arquitectura en Capas</h3>
+            <p>Un Sistema Operativo está organizado en capas jerárquicas:</p>
 
             <figure>
-                <img src="../assets/infografias/clase-04-gantt-algoritmos.png" alt="Diagrama de Gantt comparativo de algoritmos">
-                <figcaption>Figura 2: Comparación visual de diagramas de Gantt para todos los algoritmos</figcaption>
+                <img src="../assets/infografias/so-capas-sistema.png" alt="Diagrama de capas del sistema informático">
+                <figcaption>Figura 1: Arquitectura de capas de un Sistema Operativo</figcaption>
             </figure>
 
             <table>
-                <tr>
-                    <th>Algoritmo</th>
-                    <th>Tipo</th>
-                    <th>Starvation</th>
-                    <th>Turnaround</th>
-                    <th>Respuesta</th>
-                </tr>
-                <tr>
-                    <td><strong>FCFS</strong></td>
-                    <td>Non-preemptive</td>
-                    <td>No</td>
-                    <td>Alto si hay convoy</td>
-                    <td>Variable</td>
-                </tr>
-                <tr>
-                    <td><strong>SJF</strong></td>
-                    <td>Ambos</td>
-                    <td>Sí (procesos largos)</td>
-                    <td>Óptimo</td>
-                    <td>Variable</td>
-                </tr>
-                <tr>
-                    <td><strong>Prioridad</strong></td>
-                    <td>Ambos</td>
-                    <td>Sí</td>
-                    <td>Variable</td>
-                    <td>Alta prioridad: buena</td>
-                </tr>
-                <tr>
-                    <td><strong>Round Robin</strong></td>
-                    <td>Preemptive</td>
-                    <td>No</td>
-                    <td>Medio</td>
-                    <td>Buena para todos</td>
-                </tr>
+                <thead>
+                    <tr>
+                        <th>Capa</th>
+                        <th>Descripción</th>
+                        <th>Ejemplos</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Aplicaciones</strong></td>
+                        <td>Programas de usuario</td>
+                        <td>Navegadores, editores, juegos</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Librerías</strong></td>
+                        <td>Funciones reutilizables</td>
+                        <td>libc, .NET Framework</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Shell</strong></td>
+                        <td>Intérprete de comandos</td>
+                        <td>bash, PowerShell</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Kernel</strong></td>
+                        <td>Núcleo del sistema</td>
+                        <td>Gestión procesos, memoria, E/S</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Hardware</strong></td>
+                        <td>Componentes físicos</td>
+                        <td>CPU, RAM, disco, red</td>
+                    </tr>
+                </tbody>
             </table>
+
+            <h3>1.6 Comparación: Linux vs Windows Server</h3>
 
             <figure>
-                <img src="../assets/diagramas-svg/planificacion-algoritmos.svg" alt="Diagrama SVG de algoritmos de planificación">
-                <figcaption>Figura 3: Comparación visual de algoritmos de planificación FCFS, SJF, Priority y Round Robin</figcaption>
+                <img src="../assets/infografias/so-componentes-arquitectura.png" alt="Componentes y arquitectura del SO">
+                <figcaption>Figura 2: Componentes principales del Sistema Operativo</figcaption>
             </figure>
-        </section>
 
-        <section id="tiempo-real">
-            <h2>7. Planificación en Tiempo Real</h2>
+            <h4>Linux (Ubuntu Server)</h4>
+            <pre><code class="language-bash"># Ver información del kernel
+estudiante@ubuntu-server:~$ uname -a
+Linux ubuntu-server 5.15.0-76-generic #83-Ubuntu SMP Thu Jun 15 19:16:32 UTC 2023 x86_64 x86_64 x86_64 GNU/Linux
 
-            <p><strong>Sistemas de tiempo real:</strong> Donde el <strong>tiempo de respuesta</strong> es crítico.</p>
+# Ver módulos del kernel cargados
+estudiante@ubuntu-server:~$ lsmod
+Module                  Size  Used by
+nft_compat            18944  5
+nf_nat                49152  2
+nft_compat,nft_masq
 
+# Ver system calls disponibles
+estudiante@ubuntu-server:~$ man syscalls
+
+# Ver procesos en ejecución
+estudiante@ubuntu-server:~$ ps aux
+USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+root           1  0.0  0.3 168500 12460 ?        Ss   10:00   0:01 /sbin/init
+root         456  0.0  0.5  90612 20760 ?        Ss   10:00   0:00 /usr/sbin/sshd
+estudiante   789  0.0  0.3  19204 11988 pts/0    Ss   10:05   0:00 -bash</code></pre>
+
+            <h4>Windows Server 2022</h4>
+            <pre><code class="language-bash"># Ver información del sistema
+PS C:\> Get-ComputerInfo
+
+OsName               : Microsoft Windows Server 2022 Datacenter
+OsVersion            : 10.0.20348
+OsHardwareAbstractionLayer : 10.0.20348
+WindowsVersion       : 2009
+
+# Ver procesos
+PS C:\> Get-Process
+
+Handles  NPM(K)    PM(K)      WS(K)     CPU(s)     Id  SI ProcessName
+-------  ------    -----      -----     ------     --  -- -----------
+    112       8     2048       5236       2.45    456   0 smss
+    256      12     3456      12345      15.67   789   1 svchost
+
+# Ver drivers (módulos del kernel)
+PS C:\> Get-Driver
+
+# Ver servicios del sistema
+PS C:\> Get-Service</code></pre>
+
+            <h4>Tabla Comparativa</h4>
             <table>
-                <tr>
-                    <th>Tipo</th>
-                    <th>Característica</th>
-                    <th>Ejemplo</th>
-                </tr>
-                <tr>
-                    <td><strong>Hard Real-Time</strong></td>
-                    <td>Cumplimiento estricto obligatorio</td>
-                    <td>Frenos de automóvil, control de reactores</td>
-                </tr>
-                <tr>
-                    <td><strong>Soft Real-Time</strong></td>
-                    <td>Cumplimiento deseable pero no crítico</td>
-                    <td>Streaming de video, juegos</td>
-                </tr>
+                <thead>
+                    <tr>
+                        <th>Concepto</th>
+                        <th>Linux</th>
+                        <th>Windows Server</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Kernel</strong></td>
+                        <td>Monolítico (Linux kernel)</td>
+                        <td>Híbrido (NT Kernel)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Shell</strong></td>
+                        <td>bash, sh, zsh</td>
+                        <td>PowerShell, cmd</td>
+                    </tr>
+                    <tr>
+                        <td><strong>System calls</strong></td>
+                        <td>fork(), exec(), open()</td>
+                        <td>CreateProcess, CreateFile</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Ver procesos</strong></td>
+                        <td>ps aux, top</td>
+                        <td>Get-Process, taskmgr</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Ver kernel</strong></td>
+                        <td>uname -a</td>
+                        <td>Get-ComputerInfo</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Drivers</strong></td>
+                        <td>lsmod</td>
+                        <td>Get-Driver</td>
+                    </tr>
+                </tbody>
             </table>
-
-            <h3>Algoritmo RMS (<abbr title="Rate Monotonic Scheduling">RMS</abbr>)</h3>
-            <ul>
-                <li>Prioridad basada en el <strong>periodo</strong> del proceso</li>
-                <li>Menor periodo = Mayor prioridad</li>
-                <li>Óptimo para procesos periódicos</li>
-            </ul>
-
-            <h3>Algoritmo EDF (<abbr title="Earliest Deadline First">EDF</abbr>)</h3>
-            <ul>
-                <li>Prioridad dinámica: proceso con <strong>deadline más cercano</strong> primero</li>
-                <li>Más flexible que RMS</li>
-                <td>Utilización del CPU hasta 100%</li>
-            </ul>
-        </section>
-
-        <section id="multiprocesador">
-            <h2>8. Planificación en Multiprocesadores</h2>
-
-            <h3>Multiprocesador Simétrico <strong>SMP</strong> (<abbr title="Symmetric Multiprocessing">SMP</abbr>)</h3>
-
-            <div class="callout info">
-                <h4>Cola única</h4>
-                <p>Una cola global alimenta múltiples CPUs. Ventaja: Balance de carga automático. Desventaja: Contención en la cola.</p>
-                <h4>Colas privadas</h4>
-                <p>Cada CPU tiene su propia cola. Ventaja: Menos contención. Desventaja: Desbalance de carga posible.</p>
-            </div>
-
-            <h3>Afinidad a Procesador</h3>
-            <div class="ascii-diagram">
-Proceso P1 ha estado ejecutando en CPU 0
-Su caché L1/L2 contiene datos de P1
-
-Opción A: Migrar P1 a CPU 1
-- Pérdida de caché (cache misses)
-- Penalidad de rendimiento
-
-Opción B: Mantener P1 en CPU 0
-- Aprovecha caché caliente
-- Mejor rendimiento
-
-Decisión: Afinidad blanda vs afinidad dura
-            </div>
-        </section>
-
-        <!-- Evaluación E1 -->
-        <section id="evaluacion-e1" class="evaluacion">
-            <h2>Evaluación E1: Taller - Estructura y Tipos de SO</h2>
-            <div class="callout warning">
-                <strong>Fecha:</strong> 2026-02-25 | <strong>Porcentaje:</strong> 15%
-                <br><strong>Evaluación programada:</strong> Consultar plataforma virtual para instrucciones completas.
-            </div>
-        </section>
-
-        <!-- Section 10: Laboratorio -->
-        <section id="laboratorio">
-            <h2>10. Laboratorio Práctico</h2>
-
-            <h3>AWS 01: Introducción a EC2 - Computación en la Nube</h3>
-            <p>En este laboratorio crearás tu primera instancia EC2 en Amazon Web Services y te conectarás a ella.</p>
-
-            <div class="callout warning">
-                <p class="callout-title">Requisitos Previos</p>
-                <ul>
-                    <li>Cuenta de AWS (requiere tarjeta de crédito)</li>
-                    <li>Conocimiento básico de Linux (Labs 00-02 completados)</li>
-                    <li>Compromiso de APAGAR instancias cuando no las uses</li>
-                </ul>
-            </div>
-
-            <div class="callout info">
-                <p class="callout-title">Objetivos del Laboratorio</p>
-                <ul>
-                    <li>Crear cuenta AWS con Free Tier</li>
-                    <li>Lanzar una instancia EC2 t2.micro gratuita</li>
-                    <li>Conectarse por SSH a la instancia</li>
-                    <li>Explorar procesos y memoria en un servidor real</li>
-                </ul>
-            </div>
-
-            <h4>¿Por qué EC2 en lugar de simuladores?</h4>
-            <table>
-                <tr>
-                    <th>Aspecto</th>
-                    <th>Simuladores</th>
-                    <th>EC2 Real</th>
-                </tr>
-                <tr>
-                    <td><strong>Recursos</strong></td>
-                    <td>Limitados</td>
-                    <td>Reales (CPU, RAM, disco)</td>
-                </tr>
-                <tr>
-                    <td><strong>Experiencia</strong></td>
-                    <td>Simulada</td>
-                    <td>Producción real</td>
-                </tr>
-                <tr>
-                    <td><strong>SSH</strong></td>
-                    <td>No disponible</td>
-                    <td>Conexión real por SSH</td>
-                </tr>
-                <tr>
-                    <td><strong>Costo</strong></td>
-                    <td>Gratis</td>
-                    <td>Free Tier (750 horas/mes)</td>
-                </tr>
-            </table>
-
-            <h4>Actividades del Laboratorio</h4>
-            <ol>
-                <li>Crear cuenta AWS y configurar Free Tier</li>
-                <li>Generar par de claves SSH para acceso</li>
-                <li>Lanzar instancia EC2 con Amazon Linux 2</li>
-                <li>Conectarse por SSH desde tu computadora</li>
-                <li>Explorar procesos reales: <code>ps aux</code>, <code>top</code>, <code>/proc</code></li>
-                <li>**APAGAR la instancia** al terminar</li>
-            </ol>
 
             <div class="callout success">
-                <p class="callout-title">¡Advertencia de Costo!<p>Las instancias EC2 cuestan dinero si las de</p>
-                jas encendidas. SIEMPRE verifica que tu instancia esté DETENIDA cuando no la uses. El Free Tier te da 750 horas/mes, pero solo si usas la instancia t2.micro o t3.micro.</p>
-            </div>
-
-            <p><strong>Acceso al laboratorio:</strong> <a href="../laboratorios-html/lab-aws-01-introduccion-ec2.html" target="_blank">Ver guía completa del AWS Lab 01 →</a></p>
-        </section>
-
-        <section id="practica">
-            <h2>11. Actividad Práctica (Opcional)</h2>
-
-            <section class="actividad">
-                <h3>Actividad: Ejercicios de Planificación</h3>
-                <p><strong>Tipo:</strong> Opcional (práctica)</p>
-                <p><strong>Relacionado con:</strong> Ejercicios de planificación de CPU</p>
-                <p><strong>Entregable:</strong> Ninguno (para practicar)</p>
-                <p><strong>Propósito:</strong> Practicar cálculos de algoritmos de planificación</p>
-            </section>
-
-            <h3>En parejas, calculen para Round Robin (Q=3):</h3>
-
-            <table>
-                <tr>
-                    <th>Proceso</th>
-                    <th>Llegada</th>
-                    <th>Ráfaga</th>
-                </tr>
-                <tr>
-                    <td>P1</td>
-                    <td>0</td>
-                    <td>8</td>
-                </tr>
-                <tr>
-                    <td>P2</td>
-                    <td>1</td>
-                    <td>4</td>
-                </tr>
-                <tr>
-                    <td>P3</td>
-                    <td>2</td>
-                    <td>9</td>
-                </tr>
-                <tr>
-                    <td>P4</td>
-                    <td>3</td>
-                    <td>5</td>
-                </tr>
-            </table>
-
-            <p><strong>Actividades:</strong></p>
-            <ol>
-                <li>Dibujen el diagrama de Gantt</li>
-                <li>Calculen Turnaround y Waiting para cada proceso</li>
-                <li>Calculen los promedios</li>
-            </ol>
-        </section>
-
-        <!-- Videos Recomendados -->
-        <section id="videos">
-            <h2>🎥 Videos Recomendados</h2>
-
-            <div class="video-resource">
-                <h3>Video 1: CPU Scheduling Algorithms</h3>
-                <p><strong>Concepto:</strong> Explicación visual de algoritmos de planificación</p>
-                <p><strong>Duración:</strong> 14 minutos</p>
-                <p><strong>Nivel:</strong> Intermedio</p>
-                <p><strong>Por qué verlo:</strong> Excelente comparación visual de FCFS, SJF, RR</p>
-                <p><strong>Canal:</strong> Neso Academy</p>
-                <a href="https://www.youtube.com/watch?v=vtW1RlY8Ck4" target="_blank">▶ Ver en YouTube</a>
-            </div>
-
-            <div class="video-resource">
-                <h3>Video 2: Round Robin Scheduling</h3>
-                <p><strong>Concepto:</strong> Algoritmo Round Robin explicado con ejemplos</p>
-                <p><strong>Duración:</strong> 11 minutos</p>
-                <p><strong>Nivel:</strong> Intermedio</p>
-                <p><strong>Por qué verlo:</strong> Entender cómo funciona el quantum en sistemas reales</p>
-                <p><strong>Canal:</strong> GeeksforGeeks</p>
-                <a href="https://www.youtube.com/watch?v=9zLtlgw-KfA" target="_blank">▶ Ver en YouTube</a>
-            </div>
-
-            <div class="video-resource">
-                <h3>Video 3: SJF vs Round Robin Comparison</h3>
-                <p><strong>Concepto:</strong> Comparación práctica entre SJF y Round Robin</p>
-                <p><strong>Duración:</strong> 8 minutos</p>
-                <p><strong>Nivel:</strong> Intermedio</p>
-                <p><strong>Por qué verlo:</strong> Análisis de ventajas y desventajas de cada algoritmo</p>
-                <p><strong>Canal:</strong> Tutorials Point</p>
-                <a href="https://www.youtube.com/watch?v=exqxAi7pGfw" target="_blank">▶ Ver en YouTube</a>
-            </div>
-
-            <div class="callout info">
-                <p class="callout-title">💡 Tip de Estudio</p>
-                <p>Después de ver estos videos, usa el simulador de scheduling en línea (busca "CPU scheduling simulator" en Google) para experimentar con diferentes algoritmos y escenarios.</p>
+                <p class="callout-title">Entregable de la Clase 04</p>
+                <p><strong>Fecha:</strong> [Próxima clase]</p>
+                <p><strong>Entregables:</strong></p>
+                <ul>
+                    <li><strong>Cuadro comparativo:</strong> Tabla comparando Linux vs Windows Server (mínimo 10 aspectos)</li>
+                    <li><strong>Diagrama propio:</strong> Diagrama de la arquitectura del SO hecho por ti (puede ser en papel, digital o herramienta como draw.io)</li>
+                    <li><strong>Capturas:</strong> Evidencia de ejecutar comandos en ambos sistemas</li>
+                </ul>
             </div>
         </section>
 
         <section id="resumen">
-            <h2>Resumen de la Clase</h2>
+            <h2>📚 Resumen de la Clase</h2>
 
-            <h3>Algoritmos de Planificación</h3>
+            <h3>Conceptos Clave</h3>
+            <ul>
+                <li><strong>Kernel:</strong> El núcleo del SO que gestiona hardware y recursos</li>
+                <li><strong>Shell:</strong> Interfaz de usuario para interactuar con el kernel</li>
+                <li><strong>System Calls:</strong> Puertas de entrada al kernel modo protegido</li>
+                <li><strong>Modo Kernel vs Usuario:</strong> Protección de memoria y operaciones críticas</li>
+                <li><strong>Arquitectura:</strong> Monolítico (Linux), Microkernel (Minix), Híbrido (Windows)</li>
+            </ul>
+
+            <h3>Comandos Prácticos</h3>
             <table>
-                <tr>
-                    <th>Algoritmo</th>
-                    <th>Idea principal</th>
-                    <th>Tipo</th>
-                </tr>
-                <tr>
-                    <td><strong>FCFS</strong></td>
-                    <td>Orden de llegada</td>
-                    <td>Non-preemptive</td>
-                </tr>
-                <tr>
-                    <td><strong>SJF</strong></td>
-                    <td>El más corto primero</td>
-                    <td>Ambos</td>
-                </tr>
-                <tr>
-                    <td><strong>Prioridad</strong></td>
-                    <td>Según importancia asignada</td>
-                    <td>Ambos</td>
-                </tr>
-                <tr>
-                    <td><strong>Round Robin</strong></td>
-                    <td>Turnos con quantum fijo</td>
-                    <td>Preemptive</td>
-                </tr>
-                <tr>
-                    <td><strong>RMS</strong></td>
-                    <td>Menor periodo = Mayor prioridad</td>
-                    <td>Tiempo real</td>
-                </tr>
-                <tr>
-                    <td><strong>EDF</strong></td>
-                    <td>Deadline más cercano primero</td>
-                    <td>Tiempo real dinámico</td>
-                </tr>
+                <thead>
+                    <tr>
+                        <th>Comando</th>
+                        <th>Propósito</th>
+                        <th>Ejemplo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>uname -a</code></td>
+                        <td>Ver info del kernel</td>
+                        <td>Kernel version, architecture</td>
+                    </tr>
+                    <tr>
+                        <td><code>lsmod</code></td>
+                        <td>Listar módulos cargados</td>
+                        <td>Drivers del kernel activos</td>
+                    </tr>
+                    <tr>
+                        <td><code>strace ls</code></td>
+                        <td>Rastrear system calls</td>
+                        <td>Ver qué llama un comando</td>
+                    </tr>
+                    <tr>
+                        <td><code>Get-ComputerInfo</code></td>
+                        <td>Info de sistema Windows</td>
+                        <td>Kernel version, OS</td>
+                    </tr>
+                </tbody>
             </table>
 
-            <h3>Fórmulas clave:</h3>
-            <ul>
-                <li><strong>Turnaround</strong> = Fin - Llegada</li>
-                <li><strong>Waiting</strong> = Turnaround - Ráfaga</li>
-                <li><strong>Response</strong> = Primera ejecución - Llegada</li>
-            </ul>
+            <h3>Para la Próxima Clase</h3>
+            <div class="callout info">
+                <p><strong>Clase 05:</strong> Procesos en Linux - Gestión y Monitoreo</p>
+                <p>Llevaremos la teoría de procesos a la práctica con <code>ps</code>, <code>top</code>, <code>htop</code>, <code>kill</code> y <code>systemctl</code>.</p>
+            </div>
         </section>
     </div>
 
     <footer>
         <div class="container">
             <p><strong>IF0099 - Sistemas Operativos I</strong> • <a href="index.html">Índice de Clases</a></p>
+        </div>
         <div class="container">
             <p><strong>IF0099 - Sistemas Operativos I</strong></p>
-            <p>Clase 04: Algoritmos de Planificación de CPU</p>
-            <p>Última actualización: 2026-02-01</p>
+            <p>Clase 04: Estructura del Sistema Operativo</p>
+            <p>Última actualización: 2026-02-10</p>
             <p><a href="#">Volver arriba</a></p>
         </div>
     </footer>
@@ -1253,6 +888,15 @@ Decisión: Afinidad blanda vs afinidad dura
                     target.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }
             });
+        });
+    </script>
+
+    <!-- Prism.js para syntax highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            Prism.highlightAll();
         });
     </script>
 </body>

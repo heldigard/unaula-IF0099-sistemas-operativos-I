@@ -3,1006 +3,604 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clase 16: Examen Final - IF0099 Sistemas Operativos I</title>
+    <title>Clase 16: Active Directory | IF0099 - Sistemas Operativos I</title>
     <style>
-        :root {
-            --primary: #2563eb;
-            --secondary: #1e40af;
-            --accent: #059669;
-            --bg-light: #f8fafc;
-            --bg-code: #1e293b;
-            --text-main: #1e293b;
-            --text-muted: #64748b;
-            --border: #e2e8f0;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            line-height: 1.7;
-            color: var(--text-main);
-            background: var(--bg-light);
-            font-size: 16px;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        /* Header */
-        header {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            color: white;
-            padding: 3rem 0;
-            margin-bottom: 2rem;
-        }
-
-        header h1 {
-            font-size: 2.2rem;
-            margin-bottom: 0.5rem;
-            font-weight: 700;
-        }
-
-        header .subtitle {
-            font-size: 1.1rem;
-            opacity: 0.9;
-        }
-
-        header .meta {
-            margin-top: 1rem;
-            font-size: 0.9rem;
-            opacity: 0.8;
-        }
-
-        /* Navigation */
-        nav {
-            background: white;
-            padding: 1.5rem 0;
-            margin-bottom: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-
-        nav h2 {
-            font-size: 1.1rem;
-            color: var(--text-muted);
-            margin-bottom: 1rem;
-            padding: 0 20px;
-        }
-
-        nav ul {
-            list-style: none;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 0.5rem;
-            padding: 0 20px;
-        }
-
-        nav a {
-            color: var(--primary);
-            text-decoration: none;
-            padding: 0.5rem;
-            display: block;
-            border-radius: 4px;
-            transition: background 0.2s;
-        }
-
-        nav a:hover {
-            background: var(--bg-light);
-        }
-
-        /* Sections */
-        section {
-            background: white;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-
-        section h2 {
-            color: var(--primary);
-            font-size: 1.8rem;
-            margin-bottom: 1.5rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 3px solid var(--accent);
-        }
-
-        section h3 {
-            color: var(--secondary);
-            font-size: 1.4rem;
-            margin: 2rem 0 1rem;
-        }
-
-        section h4 {
-            color: var(--text-main);
-            font-size: 1.1rem;
-            margin: 1.5rem 0 0.75rem;
-            font-weight: 600;
-        }
-
-        p {
-            margin-bottom: 1rem;
-        }
-
-        /* Figures */
-        figure {
-            margin: 2rem 0;
-            text-align: center;
-        }
-
-        figure img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-
-        figcaption {
-            margin-top: 0.75rem;
-            color: var(--text-muted);
-            font-style: italic;
-            font-size: 0.95rem;
-        }
-
-        /* Tables */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 1.5rem 0;
-            font-size: 0.95rem;
-        }
-
-        th, td {
-            padding: 0.75rem 1rem;
-            text-align: left;
-            border-bottom: 1px solid var(--border);
-        }
-
-        th {
-            background: var(--bg-light);
-            font-weight: 600;
-            color: var(--secondary);
-        }
-
-        tr:hover {
-            background: var(--bg-light);
-        }
-
-        /* Code blocks */
-        pre {
-            background: var(--bg-code);
-            color: #e2e8f0;
-            padding: 1.5rem;
-            border-radius: 8px;
-            overflow-x: auto;
-            margin: 1.5rem 0;
-            font-size: 0.9rem;
-            line-height: 1.5;
-        }
-
-        code {
-            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
-        }
-
-        p code, li code, td code {
-            background: var(--bg-light);
-            color: var(--primary);
-            padding: 0.2rem 0.4rem;
-            border-radius: 4px;
-            font-size: 0.9em;
-        }
-
-        pre code {
-            background: none;
-            padding: 0;
-            color: inherit;
-        }
-
-        /* Lists */
-        ul, ol {
-            margin-left: 1.5rem;
-            margin-bottom: 1rem;
-        }
-
-        li {
-            margin-bottom: 0.5rem;
-        }
-
-        /* Callout boxes */
-        .callout {
-            padding: 1.5rem;
-            border-radius: 8px;
-            margin: 1.5rem 0;
-            border-left: 4px solid;
-        }
-
-        .callout.info {
-            background: #eff6ff;
-            border-left-color: var(--primary);
-        }
-
-        .callout.warning {
-            background: #fef3c7;
-            border-left-color: #f59e0b;
-        }
-
-        .callout.success {
-            background: #d1fae5;
-            border-left-color: var(--accent);
-        }
-
-        .callout-title {
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-
-        /* Checkboxes for exercises */
-        .exercise {
-            background: var(--bg-light);
-            padding: 1.5rem;
-            border-radius: 8px;
-            margin: 1.5rem 0;
-        }
-
-        .exercise h4 {
-            margin-top: 0;
-        }
-
-        .checklist {
-            list-style: none;
-            padding-left: 0;
-        }
-
-        .checklist li {
-            padding: 0.5rem 0;
-            display: flex;
-            align-items: flex-start;
-            gap: 0.75rem;
-        }
-
-        .checklist li input[type="checkbox"] {
-            margin-top: 0.25rem;
-            width: 18px;
-            height: 18px;
-        }
-
-        /* Details */
-        details {
-            background: var(--bg-light);
-            padding: 1rem;
-            border-radius: 8px;
-            margin: 1rem 0;
-        }
-
-        summary {
-            cursor: pointer;
-            font-weight: 600;
-            color: var(--primary);
-        }
-
-        summary:hover {
-            text-decoration: underline;
-        }
-
-        details[open] summary {
-            margin-bottom: 1rem;
-        }
-
-        /* ASCII diagrams */
-        .ascii-diagram {
-            font-family: 'Consolas', 'Monaco', monospace;
-            font-size: 0.85rem;
-            line-height: 1.2;
-            background: var(--bg-light);
-            padding: 1rem;
-            border-radius: 4px;
-            overflow-x: auto;
-            white-space: pre;
-        }
-
-        /* Footer */
-        footer {
-            background: var(--text-main);
-            color: white;
-            padding: 2rem 0;
-            text-align: center;
-            margin-top: 3rem;
-        }
-
-        footer a {
-            color: var(--accent);
-            text-decoration: none;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            header h1 {
-                font-size: 1.6rem;
-            }
-
-            section {
-                padding: 1.5rem;
-            }
-
-            nav ul {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* Difficulty badges */
-        .difficulty {
-            display: inline-block;
-            padding: 0.25rem 0.75rem;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 600;
-        }
-
-        .difficulty.easy { background: #d1fae5; color: #065f46; }
-        .difficulty.medium { background: #fef3c7; color: #92400e; }
-        .difficulty.hard { background: #fee2e2; color: #991b1b; }
-
-        /* Scroll indicator */
-        .scroll-top {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            background: var(--primary);
-            color: white;
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            opacity: 0;
-            transition: opacity 0.3s;
-            text-decoration: none;
-            font-size: 1.5rem;
-        }
-
-        .scroll-top.visible {
-            opacity: 1;
-        }
-
-        .scroll-top:hover {
-            background: var(--secondary);
-        }
-
-        .actividad{background:var(--bg-light);border-left:5px solid var(--accent);padding:1.5rem;margin:1.5rem 0;border-radius:4px}
-        .actividad h3{color:var(--primary);margin-bottom:1rem}
-        .actividad p{margin-bottom:.75rem}
-        .actividad strong{color:var(--secondary)}
+        :root { --primary: #2563eb; --secondary: #1e40af; --accent: #059669; --bg-light: #f8fafc; --bg-code: #1e293b; --text-main: #1e293b; --text-muted: #64748b; --border: #e2e8f0; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.7; color: var(--text-main); background: var(--bg-light); font-size: 16px; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        header { background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); color: white; padding: 3rem 0; margin-bottom: 2rem; }
+        header h1 { font-size: 2.2rem; margin-bottom: 0.5rem; font-weight: 700; }
+        header .subtitle { font-size: 1.1rem; opacity: 0.9; }
+        header .meta { margin-top: 1rem; font-size: 0.9rem; opacity: 0.8; }
+        nav { background: white; padding: 1.5rem 0; margin-bottom: 2rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        nav h2 { font-size: 1.1rem; color: var(--text-muted); margin-bottom: 1rem; padding: 0 20px; }
+        nav ul { list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.5rem; padding: 0 20px; }
+        nav a { color: var(--primary); text-decoration: none; padding: 0.5rem; display: block; border-radius: 4px; transition: background 0.2s; }
+        nav a:hover { background: var(--bg-light); }
+        section { background: white; padding: 2rem; margin-bottom: 2rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        section h2 { color: var(--primary); font-size: 1.8rem; margin-bottom: 1.5rem; padding-bottom: 0.5rem; border-bottom: 3px solid var(--accent); }
+        section h3 { color: var(--secondary); font-size: 1.4rem; margin: 2rem 0 1rem; }
+        section h4 { color: var(--text-main); font-size: 1.1rem; margin: 1.5rem 0 0.75rem; font-weight: 600; }
+        p { margin-bottom: 1rem; }
+        table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.95rem; }
+        th, td { padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid var(--border); }
+        th { background: var(--bg-light); font-weight: 600; color: var(--secondary); }
+        tr:hover { background: var(--bg-light); }
+        pre { background: var(--bg-code); color: #e2e8f0; padding: 1.5rem; border-radius: 8px; overflow-x: auto; margin: 1.5rem 0; font-size: 0.9rem; line-height: 1.5; }
+        code { font-family: 'Consolas', 'Monaco', 'Courier New', monospace; }
+        p code, li code { background: var(--bg-light); color: var(--primary); padding: 0.2rem 0.4rem; border-radius: 4px; font-size: 0.9em; }
+        pre code { background: none; padding: 0; color: inherit; }
+        ul, ol { margin-left: 1.5rem; margin-bottom: 1rem; }
+        li { margin-bottom: 0.5rem; }
+        .callout { padding: 1.5rem; border-radius: 8px; margin: 1.5rem 0; border-left: 4px solid; }
+        .callout.info { background: #eff6ff; border-left-color: var(--primary); }
+        .callout.warning { background: #fef3c7; border-left-color: #f59e0b; }
+        .callout.success { background: #d1fae5; border-left-color: var(--accent); }
+        footer { background: var(--text-main); color: white; padding: 2rem 0; text-align: center; margin-top: 3rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        .two-columns { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 1.5rem 0; }
+        .column-card { background: var(--bg-light); padding: 1.5rem; border-radius: 8px; }
+        .column-card h4 { color: var(--secondary); margin-top: 0; }
+        .actividad { background: var(--bg-light); border-left: 5px solid var(--accent); padding: 1.5rem; margin: 1.5rem 0; border-radius: 4px; }
+        .actividad h3 { color: var(--primary); margin-bottom: 1rem; }
+        .checklist { list-style: none; padding-left: 0; }
+        .checklist li { padding: 0.5rem 0; display: flex; align-items: flex-start; gap: 0.75rem; }
+        .checklist li input[type="checkbox"] { margin-top: 0.25rem; width: 18px; height: 18px; }
+        .ascii-diagram { font-family: 'Consolas', monospace; font-size: 0.85rem; line-height: 1.2; background: var(--bg-light); padding: 1rem; border-radius: 4px; overflow-x: auto; white-space: pre; }
+        @media (max-width: 768px) { .two-columns { grid-template-columns: 1fr; } header h1 { font-size: 1.6rem; } section { padding: 1.5rem; } nav ul { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>Clase 16: Examen Final</h1>
-            <p class="subtitle">IF0099 - Sistemas Operativos I | Unidad 8</p>
-            <p class="meta">Última actualización: 2026-02-01 | Duración: 90-120 minutos</p>
+            <h1>Clase 16: Active Directory</h1>
+            <p class="subtitle">IF0099 - Sistemas Operativos I | Servicios de Directorio | Clase 16</p>
+            <p class="subtitle">UNAULA - Ingeniería Informática - 2026-I</p>
+            <p class="meta">Tiempo estimado: 90 minutos | Nivel: Avanzado</p>
         </header>
 
         <nav>
             <h2>Contenido de la Clase</h2>
             <ul>
-                <li><a href="#objetivos">Objetivos del Examen</a></li>
-                <li><a href="#formato">Formato del Examen</a></li>
-                <li><a href="#estructura">Estructura del Examen</a></li>
-                <li><a href="#guia">Guía de Preparación</a></li>
-                <li><a href="#temas">Temas a Repasar</a></li>
-                <li><a href="#faq">Preguntas Frecuentes</a></li>
+                <li><a href="#objetivos">Objetivos</a></li>
+                <li><a href="#teoria">Teoría: Active Directory</a></li>
+                <li><a href="#instalacion">Instalar AD DS</a></li>
+                <li><a href="#promocion">Promover a Controlador de Dominio</a></li>
+                <li><a href="#ous">Crear OUs y Usuarios</a></li>
+                <li><a href="#cliente">Unir Cliente al Dominio</a></li>
+                <li><a href="#actividad">Actividad Práctica</a></li>
             </ul>
         </nav>
 
-        <main class="content">
-            <!-- Evaluación EF - Examen Final -->
-            <section id="evaluacion-ef" class="evaluacion">
-                <h2>Examen Final: Evaluación Integral</h2>
-                <div class="callout warning">
-                    <strong>Fecha:</strong> 2026-05-27 | <strong>Porcentaje:</strong> 20%
-                    <br><strong>Evaluación programada:</strong> Consultar plataforma virtual para instrucciones completas.
-                </div>
-            </section>
-
-            <!-- Sección: Objetivo -->
-            <section class="section">
-                <div class="objective-box">
-                    <strong>🎯 Objetivo del Examen</strong>
-                    Evaluar la comprensión integral de los conceptos fundamentales de sistemas operativos y la capacidad de aplicarlos a problemas prácticos.
-                </div>
-            </section>
-
-            <!-- Sección: Formato del Examen -->
-            <section class="section">
-                <h2>📋 Formato del Examen</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Aspecto</th>
-                            <th>Detalle</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><strong>Duración</strong></td>
-                            <td>90-120 minutos</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Formato</strong></td>
-                            <td>Teórico + práctico</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Temas</strong></td>
-                            <td>Todo el curso (Unidades 1-8)</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Materiales</strong></td>
-                            <td>Calculadora básica permitida</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Consultas</strong></td>
-                            <td>Solo para aclarar enunciados</td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <div class="info-box">
-                    <strong>Indicaciones Generales:</strong>
+        <main>
+            <section id="objetivos">
+                <h2>Objetivos de Aprendizaje</h2>
+                <div class="callout success">
+                    <strong>Al finalizar esta clase, podrás:</strong>
                     <ul>
-                        <li><strong>Duración:</strong> 90 minutos</li>
-                        <li><strong>Formato:</strong> Teórico + práctico</li>
-                        <li><strong>Temas:</strong> Todo el curso</li>
-                        <li><strong>Reglas:</strong> Sin acceso a internet</li>
+                        <li>Comprender el concepto de servicios de directorio</li>
+                        <li>Instalar Active Directory Domain Services</li>
+                        <li>Promover un servidor a Controlador de Dominio</li>
+                        <li>Crear Organizational Units, usuarios y grupos</li>
+                        <li>Unir una máquina cliente al dominio</li>
+                        <li>Verificar autenticación de dominio</li>
                     </ul>
                 </div>
             </section>
 
-            <!-- Sección: Estructura del Examen -->
-            <section class="section">
-                <h2>Estructura del Examen</h2>
-                <p>El examen consta de 4 partes principales:</p>
-                <ol>
-                    <li><strong>Conceptos fundamentales</strong> (20%)</li>
-                    <li><strong>Procesos y planificación</strong> (20%)</li>
-                    <li><strong>Memoria y archivos</strong> (30%)</li>
-                    <li><strong>E/S, protección, distribuidos</strong> (30%)</li>
-                </ol>
+            <section id="teoria">
+                <h2>Teoría: Active Directory</h2>
 
-                <div class="tip-box">
-                    <strong>💡 Recomendaciones</strong>
-                    <ul>
-                        <li>Leer cada pregunta con calma</li>
-                        <li>Justificar respuestas con conceptos vistos</li>
-                        <li>Revisar cálculos de planificación</li>
-                    </ul>
-                </div>
-            </section>
+                <h3>¿Qué es Active Directory?</h3>
+                <p><strong>Active Directory (AD)</strong> es el servicio de directorio de Microsoft Windows para redes empresariales. Centraliza la administración de usuarios, computadoras, políticas y recursos.</p>
 
-            <!-- Sección: Guía de Preparación -->
-            <section class="section">
-                <h2>📚 Guía de Preparación para el Examen Final</h2>
-
-                <h3>Distribución de Puntos</h3>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Sección</th>
-                            <th>Tipo</th>
-                            <th>Puntos</th>
-                            <th>Tiempo sugerido</th>
-                            <th>Habilidades evaluadas</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><strong>Parte 1</strong></td>
-                            <td>Conceptos Teóricos</td>
-                            <td>30%</td>
-                            <td>30 min</td>
-                            <td>Comprensión, definiciones</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Parte 2</strong></td>
-                            <td>Análisis de Casos</td>
-                            <td>40%</td>
-                            <td>45 min</td>
-                            <td>Aplicación, análisis</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Parte 3</strong></td>
-                            <td>Ejercicios Prácticos</td>
-                            <td>30%</td>
-                            <td>45 min</td>
-                            <td>Cálculos, código</td>
-                        </tr>
-                        <tr>
-                            <td><strong>TOTAL</strong></td>
-                            <td></td>
-                            <td><strong>100%</strong></td>
-                            <td><strong>120 min</strong></td>
-                            <td></td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <h3>Distribución Temática Aproximada</h3>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Unidad</th>
-                            <th>Peso</th>
-                            <th>Temas clave</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><strong>1-2</strong></td>
-                            <td><span class="weight-badge weight-medium">20%</span></td>
-                            <td>Procesos, estados, PCB</td>
-                        </tr>
-                        <tr>
-                            <td><strong>3</strong></td>
-                            <td><span class="weight-badge weight-medium">20%</span></td>
-                            <td>Planificación FCFS, SJF, RR</td>
-                        </tr>
-                        <tr>
-                            <td><strong>4</strong></td>
-                            <td><span class="weight-badge weight-low">15%</span></td>
-                            <td>Sincronización, semáforos, deadlock</td>
-                        </tr>
-                        <tr>
-                            <td><strong>5-6</strong></td>
-                            <td><span class="weight-badge weight-high">25%</span></td>
-                            <td>Memoria virtual, paginación, archivos</td>
-                        </tr>
-                        <tr>
-                            <td><strong>7-8</strong></td>
-                            <td><span class="weight-badge weight-medium">20%</span></td>
-                            <td>E/S, protección, distribuidos</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </section>
-
-            <!-- Sección: Temas por Unidad -->
-            <section class="section">
-                <h2>📖 Temas Principales a Estudiar</h2>
-
-                <div class="unit-grid">
-                    <!-- Unidad 1-2 -->
-                    <div class="unit-card">
-                        <h4>Unidad 1-2: Introducción y Procesos <span class="weight-badge weight-medium">20%</span></h4>
-                        <div class="topic-card">
-                            <h4>Conceptos clave:</h4>
-                            <ul>
-                                <li>✅ Definición de Sistema Operativo</li>
-                                <li>✅ Funciones del SO (gestión de recursos)</li>
-                                <li>✅ Modos de operación (usuario vs kernel)</li>
-                                <li>✅ Estructura de un proceso (PCB)</li>
-                                <li>✅ Estados de proceso</li>
-                                <li>✅ Cambio de contexto</li>
-                            </ul>
-                            <div class="info-box">
-                                <strong>Pregunta tipo:</strong><br>
-                                Un proceso ejecuta <span class="inline-code">read()</span> para leer de disco. ¿Qué transición de estados ocurre?<br>
-                                <strong>Respuesta:</strong> Ejecución → Bloqueado (esperando I/O)
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Unidad 3 -->
-                    <div class="unit-card">
-                        <h4>Unidad 3: Planificación de CPU <span class="weight-badge weight-medium">20%</span></h4>
-                        <div class="topic-card">
-                            <h4>Algoritmos a dominar:</h4>
-                            <ul>
-                                <li>✅ FCFS (First-Come First-Served)</li>
-                                <li>✅ SJF (Shortest Job First)</li>
-                                <li>✅ SRTF (Shortest Remaining Time First)</li>
-                                <li>✅ Round Robin</li>
-                                <li>✅ Prioridades</li>
-                            </ul>
-                            <div class="info-box">
-                                <strong>Ejercicio tipo:</strong><br>
-                                Procesos: P1(24ms), P2(3ms), P3(3ms)<br>
-                                Calcular tiempo de espera promedio con FCFS vs SJF<br><br>
-                                <strong>Solución:</strong><br>
-                                FCFS: (0+24+27)/3 = 17ms<br>
-                                SJF: (0+3+6)/3 = 3ms
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Unidad 4 -->
-                    <div class="unit-card">
-                        <h4>Unidad 4: Sincronización <span class="weight-badge weight-low">15%</span></h4>
-                        <div class="topic-card">
-                            <h4>Conceptos clave:</h4>
-                            <ul>
-                                <li>✅ Race condition</li>
-                                <li>✅ Sección crítica</li>
-                                <li>✅ Semáforos (mutex, contador)</li>
-                                <li>✅ Problemas clásicos: Productor-Consumidor, Lectores-Escritores</li>
-                            </ul>
-                            <div class="info-box">
-                                <strong>Código tipo a analizar:</strong>
-                                <pre><code>sem_t mutex = 1;
-int counter = 0;
-
-// Thread 1
-sem_wait(&mutex);
-counter++;
-sem_post(&mutex);
-
-// Thread 2
-sem_wait(&mutex);
-counter--;
-sem_post(&mutex);</code></pre>
-                                <strong>Pregunta:</strong> ¿Hay race condition?<br>
-                                <strong>Respuesta:</strong> No, está protegido por mutex.
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Unidad 5 -->
-                    <div class="unit-card">
-                        <h4>Unidad 5: Gestión de Memoria <span class="weight-badge weight-high">20%</span></h4>
-                        <div class="topic-card">
-                            <h4>Conceptos clave:</h4>
-                            <ul>
-                                <li>✅ Jerarquía de memoria (registros → cache → RAM → disco)</li>
-                                <li>✅ Paginación: dirección virtual → dirección física</li>
-                                <li>✅ Tabla de páginas</li>
-                                <li>✅ TLB (Translation Lookaside Buffer)</li>
-                                <li>✅ Page fault</li>
-                                <li>✅ Algoritmos de reemplazo: FIFO, LRU, Óptimo</li>
-                            </ul>
-                            <div class="info-box">
-                                <strong>Ejercicio tipo:</strong><br>
-                                Sistema: páginas de 4KB, RAM de 16MB<br>
-                                Dirección virtual: 0x3004<br>
-                                ¿Qué página? ¿Qué offset?<br><br>
-                                <strong>Solución:</strong><br>
-                                Página = 0x3004 / 4096 = 3<br>
-                                Offset = 0x3004 % 4096 = 4
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Unidad 6-7 -->
-                    <div class="unit-card">
-                        <h4>Unidad 6-7: Sistemas de Archivos <span class="weight-badge weight-medium">15%</span></h4>
-                        <div class="topic-card">
-                            <h4>Conceptos clave:</h4>
-                            <ul>
-                                <li>✅ FAT vs ext4 vs NTFS</li>
-                                <li>✅ Inodos: estructura, punteros directos/indirectos</li>
-                                <li>✅ Hard links vs Soft links</li>
-                                <li>✅ Fragmentación interna vs externa</li>
-                                <li>✅ Journaling</li>
-                            </ul>
-                            <div class="info-box">
-                                <strong>Pregunta tipo:</strong><br>
-                                ¿Cuál es la capacidad máxima teórica de un inodo ext4 con:<br>
-                                - 12 punteros directos<br>
-                                - 1 indirecto simple<br>
-                                - Bloques de 4KB<br>
-                                - Punteros de 4 bytes (1024 por bloque)<br><br>
-                                <strong>Solución:</strong><br>
-                                Directos: 12 × 4KB = 48KB<br>
-                                Indirecto: 1024 × 4KB = 4MB<br>
-                                Total: ~4MB (sin contar doble/triple)
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Unidad 8 -->
-                    <div class="unit-card">
-                        <h4>Unidad 8: Protección y Seguridad <span class="weight-badge weight-low">10%</span></h4>
-                        <div class="topic-card">
-                            <h4>Conceptos clave:</h4>
-                            <ul>
-                                <li>✅ Autenticación vs Autorización</li>
-                                <li>✅ Control de acceso (ACL, matriz)</li>
-                                <li>✅ Cifrado simétrico vs asimétrico</li>
-                                <li>✅ Firewalls, IDS/IPS</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <!-- Sistemas Distribuidos -->
-                    <div class="unit-card">
-                        <h4>Sistemas Distribuidos <span class="weight-badge weight-low">5%</span></h4>
-                        <div class="topic-card">
-                            <h4>Conceptos clave:</h4>
-                            <ul>
-                                <li>✅ Teorema CAP</li>
-                                <li>✅ Replicación</li>
-                                <li>✅ Consenso (Raft, Paxos)</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Sección: Ejercicios de Práctica -->
-            <section class="section">
-                <h2>🎯 Ejercicios de Práctica (Opcional)</h2>
-
-                <h3>Ejercicio 1: Planificación Round Robin (Opcional)</h3>
-                <div class="info-box">
-                    <strong>Datos:</strong>
-                    <ul>
-                        <li>Quantum = 4ms</li>
-                        <li>Procesos: P1(8ms), P2(4ms), P3(9ms)</li>
-                        <li>Orden de llegada: P1, P2, P3</li>
-                    </ul>
-                    <br>
-                    <strong>Calcular:</strong>
-                    <ol>
-                        <li>Diagrama de Gantt</li>
-                        <li>Tiempo de espera de cada proceso</li>
-                        <li>Tiempo de espera promedio</li>
-                        <li>Tiempo de retorno promedio</li>
-                    </ol>
-                    <br>
-                    <strong>Solución esperada:</strong>
-                    <pre><code>Gantt: P1(0-4) P2(4-8) P3(8-12) P1(12-16) P3(16-20) P3(20-21)
-Espera: P1=8ms, P2=0ms, P3=7ms → Promedio=5ms</code></pre>
-                </div>
-
-                <h3>Ejercicio 2: Traducción de Direcciones (Opcional)</h3>
-                <div class="info-box">
-                    <strong>Sistema:</strong>
-                    <ul>
-                        <li>Páginas: 1KB (1024 bytes)</li>
-                        <li>Tabla de páginas:</li>
-                    </ul>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Página Virtual</th>
-                                <th>Marco Físico</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr><td>0</td><td>5</td></tr>
-                            <tr><td>1</td><td>2</td></tr>
-                            <tr><td>2</td><td>8</td></tr>
-                            <tr><td>3</td><td>1</td></tr>
-                        </tbody>
-                    </table>
-                    <br>
-                    <strong>Traducir:</strong>
-                    <ol>
-                        <li>Dirección virtual 0x0500 (1280 decimal)</li>
-                        <li>Dirección virtual 0x0A00 (2560 decimal)</li>
-                    </ol>
-                    <br>
-                    <strong>Solución:</strong>
-                    <ol>
-                        <li>1280 / 1024 = Página 1, Offset 256 → Marco 2, Offset 256 → Física: 2×1024+256 = 2304</li>
-                        <li>2560 / 1024 = Página 2, Offset 512 → Marco 8, Offset 512 → Física: 8×1024+512 = 8704</li>
-                    </ol>
-                </div>
-
-                <h3>Ejercicio 3: Semáforos (Opcional)</h3>
-                <div class="warning-box">
-                    <strong>Identificar el error en este código:</strong>
-                    <pre><code>sem_t s1 = 1, s2 = 1;
-
-// Thread A
-sem_wait(&s1);
-sem_wait(&s2);
-// Critical section
-sem_post(&s1);
-sem_post(&s2);
-
-// Thread B
-sem_wait(&s2);
-sem_wait(&s1);
-// Critical section
-sem_post(&s2);
-sem_post(&s1);</code></pre>
-                    <strong>Problema:</strong> Deadlock potencial (orden inverso de adquisición)
-                    <br><br>
-                    <strong>Solución:</strong> Ambos threads deben adquirir en el mismo orden.
-                </div>
-            </section>
-
-            <!-- Sección: Material de Estudio -->
-            <section class="section">
-                <h2>📖 Material de Estudio Recomendado</h2>
-
-                <h3>Recursos Principales</h3>
-                <ol>
-                    <li><strong>Slides de clase:</strong> Repasar todas las presentaciones</li>
-                    <li><strong>Libro:</strong> "Operating System Concepts" - Silberschatz (Cap. 1-13)</li>
-                    <li><strong>Videos:</strong>
+                <div class="two-columns">
+                    <div class="column-card">
+                        <h4>Funciones Principales</h4>
                         <ul>
-                            <li>MIT OpenCourseWare: 6.828</li>
-                            <li>Neso Academy: Operating Systems playlist</li>
+                            <li>Autenticación centralizada</li>
+                            <li>Authorization (permisos)</li>
+                            <li>Gestión de políticas (GPOs)</li>
+                            <li>Directorio de recursos (impresoras, compartidos)</li>
+                            <li>Administración centralizada</li>
+                        </ul>
+                    </div>
+
+                    <div class="column-card">
+                        <h4>Beneficios</h4>
+                        <ul>
+                            <li>Single Sign-On (SSO)</li>
+                            <li>Administración centralizada</li>
+                            <li>Políticas de grupo consistentes</li>
+                            <li>Seguridad granular</li>
+                            <li>Escalabilidad empresarial</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3>Conceptos Fundamentales</h3>
+
+                <h4>Dominio</h4>
+                <ul>
+                    <li>Unidad lógica de administración</li>
+                    <li>Agrupa usuarios, computadoras y recursos</li>
+                    <li>Tiene una base de datos AD replicada</li>
+                    <li>Ejemplo: <code>empresa.local</code></li>
+                </ul>
+
+                <h4>Controlador de Dominio (DC)</h4>
+                <ul>
+                    <li>Servidor con AD DS instalado</li>
+                    <li>Almacena y replica la base de datos AD</li>
+                    <li>Procesa autenticaciones</li>
+                    <li>Aplica GPOs</li>
+                </ul>
+
+                <h4>Organizational Unit (OU)</h4>
+                <ul>
+                    <li>Contenedor para organizar objetos</li>
+                    <li>Permite delegar administración</li>
+                    <li>Puede aplicar GPOs específicos</li>
+                    <li>Estructura jerárquica</li>
+                </ul>
+
+                <h4>Grupo</h4>
+                <ul>
+                    <li>Agrupa usuarios o computadoras</li>
+                    <li>Simplifica asignación de permisos</li>
+                    <li>Grupos de seguridad y distribución</li>
+                </ul>
+
+                <h4>Objeto</h4>
+                <ul>
+                    <li>Entidad en AD (usuario, computadora, impresora, etc.)</li>
+                    <li>Tiene atributos únicos</li>
+                    <li>Identificado por Distinguished Name (DN)</li>
+                </ul>
+
+                <h3>Arquitectura de Active Directory</h3>
+                <div class="ascii-diagram">
+<pre>
+┌─────────────────────────────────────────────────────────┐
+│              ARQUITECTURA DE ACTIVE DIRECTORY            │
+├─────────────────────────────────────────────────────────┤
+│                                                         │
+│  ┌───────────────────────────────────────────────────┐ │
+│  │              BOSQUE (FOREST)                       │ │
+│  │         empresa.local                             │ │
+│  │  ┌─────────────────────────────────────────────┐  │ │
+│  │  │           ÁRBOL (TREE)                       │  │ │
+│  │  │  ┌────────────────────────────────────────┐  │  │ │
+│  │  │  │        DOMINIO (DOMAIN)                │  │  │ │
+│  │  │  │      empresa.local                     │  │  │ │
+│  │  │  │  ┌──────────────────────────────────┐  │  │  │ │
+│  │  │  │  │      OUs (Organizational Units)   │  │  │  │ │
+│  │  │  │  │  ├── Usuarios                     │  │  │  │ │
+│  │  │  │  │  ├── Grupos                       │  │  │  │ │
+│  │  │  │  │  ├── Computadoras                  │  │  │  │ │
+│  │  │  │  │  └── Servidores                    │  │  │  │ │
+│  │  │  │  │                                     │  │  │  │ │
+│  │  │  │  │      OBJETOS (Objects)              │  │  │  │ │
+│  │  │  │  │  - Usuarios (juan, maria...)        │  │  │  │ │
+│  │  │  │  │  - Computadoras (PC01, PC02...)     │  │  │  │ │
+│  │  │  │  │  - Grupos (Admins, Ventas...)       │  │  │  │ │
+│  │  │  │  └───────────────────────────────────┘  │  │  │ │
+│  │  │  └─────────────────────────────────────────┘  │  │ │
+│  │  └─────────────────────────────────────────────┘  │ │
+│  │                                                    │ │
+│  │  CONTROLADORES DE DOMINIO (Domain Controllers)     │ │
+│  │  ├── DC1 (Primary)                                │ │
+│  │  └── DC2 (Backup/Additional)                      │ │
+│  └────────────────────────────────────────────────────┘ │
+└─────────────────────────────────────────────────────────┘
+</pre>
+                </div>
+
+                <h3>Protocolos AD</h3>
+
+                <h4>LDAP (Lightweight Directory Access Protocol)</h4>
+                <ul>
+                    <li>Protocolo para consultar y modificar AD</li>
+                    <li>Puerto 389 (LDAP), 636 (LDAPS)</li>
+                    <li>Estructura jerárquica</li>
+                    <li>Formato: <code>ldap://servidor:puerto/DN</code></li>
+                </ul>
+
+                <h4>Kerberos</h4>
+                <ul>
+                    <li>Protocolo de autenticación</li>
+                    <li>Puerto 88</li>
+                    <li>Autenticación mutua</li>
+                    <li>Tickets (TGT, Service Tickets)</li>
+                    <li>SSO (Single Sign-On)</li>
+                </ul>
+
+                <h4>DNS</h4>
+                <ul>
+                    <li>Requerido para AD</li>
+                    <li>Resuelve nombres de dominio</li>
+                    <li>SRV records para localizar DCs</li>
+                    <li>Integrado con AD DNS</li>
+                </ul>
+
+                <h3>Group Policy Objects (GPOs)</h3>
+                <ul>
+                    <li>Configuraciones centralizadas</li>
+                    <li>Se aplican a OUs, dominios o sitios</li>
+                    <li>Controlan configuraciones de usuarios y computadoras</li>
+                    <li>Ejemplos: scripts de inicio,壁纸, permisos, etc.</li>
+                </ul>
+            </section>
+
+            <section id="instalacion">
+                <h2>Instalar Active Directory Domain Services</h2>
+
+                <div class="callout warning">
+                    <strong>Requisitos previos:</strong>
+                    <ul>
+                        <li>VM con Windows Server 2022</li>
+                        <li>IP estática configurada</li>
+                        <li>Nombre de servidor adecuado</li>
+                        <li>Usuario con privilegios de Administrador</li>
+                    </ul>
+                </div>
+
+                <h3>Paso 1: Configurar IP estática</h3>
+                <pre><code># Ver configuración actual
+Get-NetIPAddress
+
+# Configurar IP estática (ajustar según tu red)
+New-NetIPAddress -IPAddress 192.168.1.10 `
+    -DefaultGateway 192.168.1.1 `
+    -PrefixLength 24 `
+    -InterfaceAlias "Ethernet"
+
+# Configurar DNS (apuntar a sí mismo)
+Set-DnsClientServerAddress -InterfaceAlias "Ethernet" `
+    -ServerAddresses 192.168.1.10</code></pre>
+
+                <h3>Paso 2: Cambiar nombre del servidor</h3>
+                <pre><code># Cambiar nombre del servidor
+Rename-Computer -NewName "DC01" -Restart
+
+# Después de reiniciar, continuar con instalación de AD</code></pre>
+
+                <h3>Paso 3: Instalar AD DS con PowerShell</h3>
+                <pre><code># Instalar AD DS y herramientas de administración
+Install-WindowsFeature -Name AD-Domain-Services `
+    -IncludeManagementTools `
+    -IncludeAllSubFeature
+
+# Verificar instalación
+Get-WindowsFeature -Name AD-Domain-Services</code></pre>
+
+                <div class="callout info">
+                    <strong>Nota:</strong> También puedes instalar con Server Manager:
+                    <ol>
+                        <li>Abrir Server Manager</li>
+                        <li>Manage → Add Roles and Features</li>
+                        <li>Seleccionar "Active Directory Domain Services"</li>
+                        <li>Instalar características requeridas</li>
+                    </ol>
+                </div>
+            </section>
+
+            <section id="promocion">
+                <h2>Promover a Controlador de Dominio</h2>
+
+                <h3>Opción 1: Usar PowerShell (Recomendado)</h3>
+                <pre><code># Importar módulo
+Import-Module ADDSDeployment
+
+# Promover servidor a Controlador de Dominio
+# Crear nuevo bosque
+Install-ADDSForest `
+    -DomainName "empresa.local" `
+    -DomainNetbiosName "EMPRESA" `
+    -ForestMode "WinThreshold" `
+    -DomainMode "WinThreshold" `
+    -InstallDns:$true `
+    -SafeModeAdministratorPassword (ConvertTo-SecureString "P@ssw0rd123!" -AsPlainText -Force) `
+    -Force:$true
+
+# El servidor se reiniciará automáticamente</code></pre>
+
+                <h3>Opción 2: Usar Configuration Wizard</h3>
+                <ol>
+                    <li>Abrir Server Manager</li>
+                    <li>Hacer clic en el ícono de notificación (flag)</li>
+                    <li>"Promote this server to a domain controller"</li>
+                    <li>Configurar:
+                        <ul>
+                            <li><strong>Deployment:</strong> Add a new forest</li>
+                            <li><strong>Domain name:</strong> empresa.local</li>
+                            <li><strong>Forest/Domain mode:</strong> Windows Server 2016 o superior</li>
+                            <li><strong>DNS options:</strong> Marcar "Install DNS"</li>
+                            <li><strong>Password:</strong> DSRM password (recuperación)</li>
                         </ul>
                     </li>
+                    <li>Hacer clic en "Install"</li>
+                    <li>El servidor se reiniciará</li>
                 </ol>
 
-                <h3>Práctica Adicional</h3>
-                <ul>
-                    <li><strong>Simulador de planificación:</strong> https://cpuschedulingvisualizer.com/</li>
-                    <li><strong>Simulador de paginación:</strong> https://www.cs.usfca.edu/~galles/visualization/PagingTable.html</li>
-                </ul>
+                <h3>Verificar instalación</h3>
+                <pre><code># Después de reiniciar, verificar
+Get-Service NTDS
+Get-Service DNS
+
+# Ver información del dominio
+Get-ADDomain
+
+# Ver controladores de dominio
+Get-ADDomainController</code></pre>
+
+                <div class="callout success">
+                    <strong>DC Promovido Exitosamente:</strong>
+                    <ul>
+                        <li>Servicio AD DS (NTDS) corriendo</li>
+                        <li>Servicio DNS instalado y configurado</li>
+                        <li>Cuenta de Administrador del dominio creada</li>
+                        <li>Base de datos AD creada</li>
+                    </ul>
+                </div>
             </section>
 
-            <!-- Sección: Checklist -->
-            <section class="section">
-                <h2>✅ Checklist de Preparación</h2>
+            <section id="ous">
+                <h2>Crear OUs, Usuarios y Grupos</h2>
 
-                <h3>2 semanas antes:</h3>
-                <ul class="checklist">
-                    <li>Revisar todos los slides de clase</li>
-                    <li>Identificar temas débiles</li>
-                    <li>Resolver ejercicios de cada unidad</li>
-                </ul>
+                <h3>Paso 1: Abrir Active Directory Users and Computers</h3>
+                <pre><code># Desde PowerShell
+dsa.msc
 
-                <h3>1 semana antes:</h3>
-                <ul class="checklist">
-                    <li>Rehacer todas las actividades prácticas</li>
-                    <li>Estudiar en grupo (discutir conceptos)</li>
-                    <li>Crear resumen de fórmulas y algoritmos</li>
-                </ul>
+# O desde Server Manager
+Tools → Active Directory Users and Computers</code></pre>
 
-                <h3>3 días antes:</h3>
-                <ul class="checklist">
-                    <li>Resolver exámenes de años anteriores (si disponibles)</li>
-                    <li>Repasar ejercicios que se equivocaron</li>
-                    <li>Descansar bien</li>
-                </ul>
+                <h3>Paso 2: Crear Organizational Units</h3>
+                <pre><code># Con PowerShell
+New-ADOrganizationalUnit -Name "Usuarios" -Path "DC=empresa,DC=local"
+New-ADOrganizationalUnit -Name "Grupos" -Path "DC=empresa,DC=local"
+New-ADOrganizationalUnit -Name "Computadoras" -Path "DC=empresa,DC=local"
+New-ADOrganizationalUnit -Name "Servidores" -Path "DC=empresa,DC=local"</code></pre>
 
-                <h3>Día del examen:</h3>
-                <ul class="checklist">
-                    <li>Llegar 15 min antes</li>
-                    <li>Leer todas las preguntas primero</li>
-                    <li>Administrar tiempo (40 min por sección)</li>
-                </ul>
+                <p><strong>O con GUI:</strong></p>
+                <ol>
+                    <li>Hacer clic derecho en <code>empresa.local</code></li>
+                    <li>New → Organizational Unit</li>
+                    <li>Ingresar nombre (ej: "Usuarios")</li>
+                    <li>Repetir para otras OUs</li>
+                </ol>
+
+                <h3>Paso 3: Crear Usuarios</h3>
+                <pre><code># Crear usuario
+New-ADUser -Name "Juan Pérez" `
+    -GivenName "Juan" `
+    -Surname "Pérez" `
+    -SamAccountName "j.perez" `
+    -UserPrincipalName "j.perez@empresa.local" `
+    -Path "OU=Usuarios,DC=empresa,DC=local" `
+    -AccountPassword (ConvertTo-SecureString "P@ssw0rd123!" -AsPlainText -Force) `
+    -Enabled $true
+
+# Crear más usuarios
+New-ADUser -Name "María García" `
+    -GivenName "María" `
+    -Surname "García" `
+    -SamAccountName "m.garcia" `
+    -UserPrincipalName "m.garcia@empresa.local" `
+    -Path "OU=Usuarios,DC=empresa,DC=local" `
+    -AccountPassword (ConvertTo-SecureString "P@ssw0rd123!" -AsPlainText -Force) `
+    -Enabled $true
+
+# Ver usuarios creados
+Get-ADUser -Filter * -SearchBase "OU=Usuarios,DC=empresa,DC=local"</code></pre>
+
+                <p><strong>O con GUI:</strong></p>
+                <ol>
+                    <li>Hacer clic derecho en OU "Usuarios"</li>
+                    <li>New → User</li>
+                    <li>Ingresar:
+                        <ul>
+                            <li>First name: Juan</li>
+                            <li>Last name: Pérez</li>
+                            <li>User logon name: j.perez</li>
+                        </ul>
+                    </li>
+                    <li>Next → Password → Next → Finish</li>
+                </ol>
+
+                <h3>Paso 4: Crear Grupos</h3>
+                <pre><code># Crear grupos
+New-ADGroup -Name "Ventas" `
+    -GroupScope Global `
+    -Path "OU=Grupos,DC=empresa,DC=local"
+
+New-ADGroup -Name "IT" `
+    -GroupScope Global `
+    -Path "OU=Grupos,DC=empresa,DC=local"
+
+# Ver grupos
+Get-ADGroup -Filter * -SearchBase "OU=Grupos,DC=empresa,DC=local"</code></pre>
+
+                <h3>Paso 5: Agregar usuarios a grupos</h3>
+                <pre><code># Agregar usuario a grupo
+Add-ADGroupMember -Identity "Ventas" -Members "j.perez"
+Add-ADGroupMember -Identity "IT" -Members "m.garcia"
+
+# Ver miembros de un grupo
+Get-ADGroupMember -Identity "Ventas"</code></pre>
             </section>
 
-            <!-- Sección: Consejos -->
-            <section class="section">
-                <h2>💡 Consejos para el Examen</h2>
-                <div class="success-box">
-                    <ol>
-                        <li><strong>Lee cuidadosamente:</strong> Muchos errores son por malinterpretar la pregunta</li>
-                        <li><strong>Administra el tiempo:</strong> No te quedes atascado en una pregunta</li>
-                        <li><strong>Muestra tu trabajo:</strong> En ejercicios de cálculo, los pasos parciales dan puntos</li>
-                        <li><strong>Verifica:</strong> Si terminas antes, revisa respuestas</li>
-                        <li><strong>Mantén la calma:</strong> Si no sabes una, sigue con la siguiente</li>
+            <section id="cliente">
+                <h2>Unir Cliente al Dominio</h2>
+
+                <div class="callout warning">
+                    <strong>Requisitos:</strong>
+                    <ul>
+                        <li>VM o computadora con Windows 10/11</li>
+                        <li>Conectividad de red con el DC</li>
+                        <li>DNS configurado para apuntar al DC</li>
+                    </ul>
+                </div>
+
+                <h3>Paso 1: Configurar DNS del cliente</h3>
+                <pre><code># En el cliente, configurar DNS
+# Windows Key + R → ncpa.cpl → Propiedades de red → IPv4 → DNS
+# Servidor DNS: 192.168.1.10 (IP del DC)
+
+# O con PowerShell
+Set-DnsClientServerAddress -InterfaceAlias "Ethernet" `
+    -ServerAddresses 192.168.1.10</code></pre>
+
+                <h3>Paso 2: Verificar conectividad</h3>
+                <pre><code># Hacer ping al DC
+ping 192.168.1.10
+
+# Verificar resolución de nombres
+ping dc01.empresa.local</code></pre>
+
+                <h3>Paso 3: Unir al dominio</h3>
+                <pre><code># Con PowerShell (como administrador)
+Add-Computer -DomainName "empresa.local" `
+    -Credential "empresa.local\administrator" `
+    -Restart
+
+# O con GUI
+# Windows Key + R → sysdm.cpl → Cambio → Dominio
+# Ingresar: empresa.local
+# Credenciales: Administrator del dominio
+# Reiniciar</code></pre>
+
+                <h3>Paso 4: Verificar unión al dominio</h3>
+                <pre><code># Después de reiniciar, verificar
+Get-ADComputer -Filter "Name -like 'PC01'"
+
+# O en System Properties
+# Windows Key + R → sysdm.cpl → Nombre del equipo
+# Debe mostrar: Dominio: empresa.local</code></pre>
+
+                <h3>Paso 5: Iniciar sesión con usuario de dominio</h3>
+                <ol>
+                    <li>En la pantalla de login, hacer clic en "Other user"</li>
+                    <li>Usuario: <code>EMPRESA\j.perez</code></li>
+                    <li>Contraseña: [la que configuraste]</li>
+                    <li>Deberías iniciar sesión exitosamente</li>
+                </ol>
+
+                <div class="callout success">
+                    <strong>Verificación exitosa:</strong>
+                    <ul>
+                        <li>Usuario de dominio puede iniciar sesión</li>
+                        <li>Comprobación con: <code>whoami</code> muestra <code>empresa.local\j.perez</code></li>
+                        <li>Comprobación con: <code>whoami /groups</code> muestra grupos</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section id="actividad">
+                <h2>Actividad Práctica</h2>
+
+                <div class="actividad">
+                    <h3>Actividad: Implementación de Active Directory</h3>
+
+                    <h4>Objetivo</h4>
+                    <p>Implementar un dominio Active Directory básico con usuarios, grupos y una máquina cliente.</p>
+
+                    <h4>Requisitos</h4>
+                    <ol class="checklist">
+                        <li><input type="checkbox"> Instalar AD DS en Windows Server</li>
+                        <li><input type="checkbox"> Promover servidor a Controlador de Dominio</li>
+                        <li><input type="checkbox"> Crear al menos 2 OUs (Usuarios, Grupos)</li>
+                        <li><input type="checkbox"> Crear al menos 2 usuarios</li>
+                        <li><input type="checkbox"> Crear al menos 1 grupo</li>
+                        <li><input type="checkbox"> Unir un cliente Windows al dominio</li>
+                        <li><input type="checkbox"> Verificar login de usuario de dominio</li>
                     </ol>
+
+                    <h4>Evidencias a Entregar</h4>
+                    <ul>
+                        <li>Captura de <code>Get-ADDomain</code> (información del dominio)</li>
+                        <li>Captura de las OUs creadas en ADUC</li>
+                        <li>Captura de los usuarios creados</li>
+                        <li>Captura de los grupos creados</li>
+                        <li>Captura de PC cliente en "Computers" del dominio</li>
+                        <li>Captura de <code>whoami</code> desde el cliente</li>
+                    </ul>
+
+                    <h4>Rubrica de Evaluación</h4>
+                    <table>
+                        <thead>
+                            <tr><th>Criterio</th><th>Puntos</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>AD DS instalado y DC funcionando</td><td>25</td></tr>
+                            <tr><td>OUs, usuarios y grupos creados</td><td>25</td></tr>
+                            <tr><td>Cliente unido al dominio</td><td>25</td></tr>
+                            <tr><td>Login con usuario de dominio</td><td>15</td></tr>
+                            <tr><td>Evidencias completas</td><td>10</td></tr>
+                            <tr><td><strong>Total</strong></td><td><strong>100</strong></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="callout info">
+                    <strong>Desafíos Adicionales:</strong>
+                    <ul>
+                        <li>Crear una GPO para configurar wallpaper de usuarios</li>
+                        <li>Crear una GPO para mapear unidad de red</li>
+                        <li>Instalar un segundo DC para redundancia</li>
+                        <li>Configurar Roaming Profiles</li>
+                    </ul>
                 </div>
             </section>
 
-            <!-- Sección: FAQ -->
-            <section class="section">
-                <h2>❓ Preguntas Frecuentes</h2>
+            <section>
+                <h2>Resumen</h2>
 
-                <div class="faq-item">
-                    <div class="faq-question">P: ¿Puedo traer material de consulta?</div>
-                    <div class="faq-answer">R: No, el examen es sin material. Pero puedes traer calculadora básica.</div>
+                <div class="two-columns">
+                    <div class="column-card">
+                        <h4>Conceptos Clave</h4>
+                        <ul>
+                            <li><strong>AD:</strong> Servicio de directorio de Microsoft</li>
+                            <li><strong>DC:</strong> Controlador de Dominio</li>
+                            <li><strong>OU:</strong> Organizational Unit</li>
+                            <li><strong>LDAP:</strong> Protocolo de consulta</li>
+                            <li><strong>Kerberos:</strong> Autenticación</li>
+                        </ul>
+                    </div>
+
+                    <div class="column-card">
+                        <h4>Comandos Esenciales</h4>
+                        <pre><code>Install-WindowsFeature AD-Domain-Services
+Install-ADDSForest
+New-ADOrganizationalUnit
+New-ADUser
+New-ADGroup
+Add-Computer</code></pre>
+                    </div>
                 </div>
 
-                <div class="faq-item">
-                    <div class="faq-question">P: ¿Habrá preguntas de programación?</div>
-                    <div class="faq-answer">R: Sí, leer/analizar código C (no escribir desde cero).</div>
-                </div>
-
-                <div class="faq-item">
-                    <div class="faq-question">P: ¿Qué pasa si no termino?</div>
-                    <div class="faq-answer">R: Intenta responder algo de cada sección. Puntos parciales cuentan.</div>
-                </div>
-
-                <div class="faq-item">
-                    <div class="faq-question">P: ¿Puedo hacer preguntas durante el examen?</div>
-                    <div class="faq-answer">R: Solo para aclarar enunciados ambiguos, no sobre contenido.</div>
-                </div>
-            </section>
-
-            <!-- Sección: Mensaje Final -->
-            <section class="section">
-                <div class="tip-box" style="text-align: center; font-size: 1.2em;">
-                    <strong>🎓 ¡Mucho Éxito!</strong><br><br>
-                    Recuerda: El examen evalúa comprensión, no memorización.<br>
-                    Enfócate en entender conceptos y saber aplicarlos.<br><br>
-                    <strong>¡Tú puedes!</strong>
+                <div class="callout success">
+                    <strong>¡Felicidades!</strong> Has completado todas las clases prácticas de Sistemas Operativos I.
                 </div>
             </section>
 
+            <section id="videos">
+                <h2>Videos Recomendados</h2>
+
+                <div class="callout info">
+                    <strong>Video 1: Active Directory Complete Tutorial</strong>
+                    <p>Duración: 60 minutos | Nivel: Avanzado</p>
+                    <p>Cubre instalación, OUs, usuarios, grupos, GPOs</p>
+                    <a href="https://www.youtube.com/watch?v=w_Z9_RBPG1E" target="_blank">Ver en YouTube</a>
+                </div>
+            </section>
         </main>
-    </div>
 
-    <button class="scroll-top" onclick="scrollToTop()">↑</button>
-
-    <script>
-        // Scroll to top button
-        const scrollTopBtn = document.querySelector('.scroll-top');
-
-        window.addEventListener('scroll', () => {
-            if (window.pageYOffset > 300) {
-                scrollTopBtn.classList.add('show');
-            } else {
-                scrollTopBtn.classList.remove('show');
-            }
-        });
-
-        function scrollToTop() {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-        }
-    </script>
-
-    <!-- Section: Laboratorio -->
-    <section id="laboratorio">
-        <h2>Laboratorio</h2>
-
-        <h3>Proyecto Final - Preparación</h3>
-        <p>Revisa los proyectos finales disponibles y prepárate para el examen.</p>
-
-        <div class="info-box">
-            <strong>Proyectos Finales</strong>
-            <ul>
-                <li><strong>PROY 01:</strong> Simulador de Planificador CPU</li>
-                <li><strong>PROY 02:</strong> Productor-Consumidor con Semáforos</li>
-                <li><strong>PROY 03:</strong> Sistema de Archivos Simple</li>
-            </ul>
-        </div>
-
-        <p><a href="../laboratorios-html/index.html">Ver índice de Laboratorios →</a></p>
-    </section>
-
-    <!-- Videos Recomendados -->
-    <section id="videos">
-        <h2>Videos Recomendados</h2>
-
-        <div class="video-resource">
-            <h3>Video 1: OS Exam Preparation Tips</h3>
-            <p><strong>Concepto:</strong> Estrategias para preparar el examen de SO</p>
-            <p><strong>Duración:</strong> 15 minutos</p>
-            <p><strong>Nivel:</strong> Repaso</p>
-            <p><strong>Por qué verlo:</strong> Consejos prácticos para el examen</p>
-            <p><strong>Canal:</strong> Tech With Tim</p>
-            <a href="https://www.youtube.com/watch?v=K1o1d5b6Y8g" target="_blank">Ver en YouTube</a>
-        </div>
-
-        <div class="video-resource">
-            <h3>Video 2: OS Problem Solving Techniques</h3>
-            <p><strong>Concepto:</strong> Técnicas para resolver problemas de planificación y deadlock</p>
-            <p><strong>Duración:</strong> 20 minutos</p>
-            <p><strong>Nivel:</strong> Repaso</p>
-            <p><strong>Por qué verlo:</strong> Practica para la parte práctica del examen</p>
-            <p><strong>Canal:</span></p>
-            <a href="https://www.youtube.com/watch?v=Ej3mT7j0O8M" target="_blank">Ver en YouTube</a>
-        </div>
-
-        <div class="callout info">
-            <p class="callout-title">Tip de Estudio</p>
-            <p>Antes del examen, repasa los videos de las clases específicas donde tengas dudas. ¡Mucho éxito!</p>
-        </div>
-    </section>
-
-    <footer>
-        <div class="container">
+        <footer>
             <p><strong>IF0099 - Sistemas Operativos I</strong> • <a href="index.html">Índice de Clases</a></p>
-        </div>
-    </footer>
+            <p>Clase 16: Active Directory - Directorio de Servicios</p>
+        </footer>
+    </div>
 </body>
 </html>

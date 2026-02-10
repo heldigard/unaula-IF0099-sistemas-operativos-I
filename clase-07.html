@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clase 07: Paginación y Memoria Virtual | IF0099 - Sistemas Operativos I</title>
+    <title>Clase 07: Hilos y Sincronización | IF0099 - Sistemas Operativos I</title>
     <style>
         :root {
             --primary: #2563eb;
@@ -71,7 +71,7 @@
         nav ul {
             list-style: none;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 0.5rem;
             padding: 0 20px;
         }
@@ -114,23 +114,6 @@
         }
         p {
             margin-bottom: 1rem;
-        }
-
-        figure {
-            margin: 2rem 0;
-            text-align: center;
-        }
-        figure img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        figcaption {
-            margin-top: 0.75rem;
-            color: var(--text-muted);
-            font-style: italic;
-            font-size: 0.95rem;
         }
 
         table {
@@ -205,16 +188,9 @@
             background: #d1fae5;
             border-left-color: var(--accent);
         }
-
-        .ascii-diagram {
-            font-family: 'Consolas', 'Monaco', monospace;
-            font-size: 0.85rem;
-            line-height: 1.2;
-            background: var(--bg-light);
-            padding: 1rem;
-            border-radius: 4px;
-            overflow-x: auto;
-            white-space: pre;
+        .callout.danger {
+            background: #fee2e2;
+            border-left-color: #ef4444;
         }
 
         .comparison {
@@ -229,36 +205,24 @@
             border-radius: 8px;
         }
 
-        .gantt {
-            display: flex;
-            align-items: center;
-            margin: 2rem 0;
-            font-family: 'Consolas', 'Monaco', monospace;
-            font-size: 0.8rem;
+        .diagram-box {
+            border: 2px solid var(--secondary);
+            padding: 1.5rem;
+            border-radius: 8px;
+            background: var(--bg-light);
+            margin: 1.5rem 0;
         }
-        .gantt-bar {
-            height: 30px;
-            background: var(--primary);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+
+        .ejercicio {
+            background: #fffbeb;
+            border-left: 5px solid #f59e0b;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
             border-radius: 4px;
-            margin: 0 2px;
         }
-        .gantt-id {
-            width: 80px;
-            text-align: right;
-            padding-right: 10px;
-        }
-        .gantt-timeline {
-            flex: 1;
-            display: flex;
-            height: 30px;
-        }
-        .gantt-empty {
-            flex: 1;
-            border-bottom: 1px solid var(--border);
+        .ejercicio h3 {
+            color: #b45309;
+            margin-bottom: 1rem;
         }
 
         footer {
@@ -298,24 +262,6 @@
             background: var(--secondary);
         }
 
-        .actividad {
-            background: var(--bg-light);
-            border-left: 5px solid var(--accent);
-            padding: 1.5rem;
-            margin: 1.5rem 0;
-            border-radius: 4px;
-        }
-        .actividad h3 {
-            color: var(--primary);
-            margin-bottom: 1rem;
-        }
-        .actividad p {
-            margin-bottom: 0.75rem;
-        }
-        .actividad strong {
-            color: var(--secondary);
-        }
-
         @media (max-width: 768px) {
             header h1 {
                 font-size: 1.6rem;
@@ -335,10 +281,10 @@
 <body>
     <header>
         <div class="container">
-            <h1>Clase 07: Paginación y Memoria Virtual</h1>
-            <p class="subtitle">IF0099 - Sistemas Operativos I | Unidad 5 - Gestión de Memoria</p>
-            <p class="subtitle">Páginas, Marcos, Tablas y Page Faults</p>
-            <p class="meta">Última actualización: 2026-02-01 | Duración: 90 minutos</p>
+            <h1>Clase 07: Hilos y Sincronización</h1>
+            <p class="subtitle">IF0099 - Sistemas Operativos I | Unidad 4 - Concurrencia</p>
+            <p class="subtitle">Threads, Mutex, Semáforos, Deadlock y Problemas Clásicos</p>
+            <p class="meta">Última actualización: 2026-02-10 | Duración: 90 minutos (teoría: 40 min + ejercicios: 50 min)</p>
         </div>
     </header>
 
@@ -347,736 +293,646 @@
             <h2>Contenido de la Clase</h2>
             <ul>
                 <li><a href="#objetivos">Objetivos de Aprendizaje</a></li>
-                <li><a href="#introduccion">Introducción y Conceptos</a></li>
-                <li><a href="#fragmentacion">Problema de Fragmentación Externa</a></li>
-                <li><a href="#idea-paginacion">Idea de la Paginación</a></li>
-                <li><a href="#traduccion">Traducción de Direcciones</a></li>
-                <li><a href="#diagrama-traduccion">Diagrama de Traducción</a></li>
-                <li><a href="#ejemplo-completo">Ejemplo Completo</a></li>
-                <li><a href="#ventajas">Ventajas de la Paginación</a></li>
-                <li><a href="#memoria-virtual">Memoria Virtual</a></li>
-                <li><a href="#demand-paging">Demand Paging</a></li>
-                <li><a href="#page-fault">Page Fault</a></li>
-                <li><a href="#algoritmos-reemplazo">Algoritmos de Reemplazo</a></li>
-                <li><a href="#thrashing">Thrashing</a></li>
-                <li><a href="#working-set">Working Set</a></li>
-                <li><a href="#tlb">TLB (Translation Lookaside Buffer)</a></li>
-                <li><a href="#ejercicios">Ejercicios</a></li>
-                <li><a href="#ventajas-desventajas">Ventajas y Desventajas</a></li>
-                <li><a href="#ejemplo-real">Ejemplo Real: Linux vs Windows</a></li>
-                <li><a href="#comparacion-algoritmos">Comparación de Algoritmos</a></li>
-                <li><a href="#overhead">Cálculo de Overhead</a></li>
-                <li><a href="#ejercicio-tlb">Ejercicio TLB Miss Rate</a></li>
-                <li><a href="#actividad">Actividad Práctica</a></li>
-                <li><a href="#laboratorio">Laboratorio</a></li>
+                <li><a href="#proceso-thread">Proceso vs Thread</a></li>
+                <li><a href="#sincronizacion">Sincronización</a></li>
+                <li><a href="#mutex">Mutex</a></li>
+                <li><a href="#semaforos">Semáforos</a></li>
+                <li><a href="#monitores">Monitores</a></li>
+                <li><a href="#deadlock">Deadlock</a></li>
+                <li><a href="#condiciones">Condiciones de Deadlock</a></li>
+                <li><a href="#prevencion">Prevención y Evitación</a></li>
+                <li><a href="#ejercicios">Ejercicios Conceptuales</a></li>
+                <li><a href="#entregable">Entregable</a></li>
                 <li><a href="#resumen">Resumen</a></li>
-                <li><a href="#evaluacion">Evaluación</a></li>
             </ul>
         </nav>
 
+        <!-- Objetivos -->
         <section id="objetivos">
             <h2>Objetivos de Aprendizaje</h2>
             <p>Al finalizar esta clase, serás capaz de:</p>
             <ol>
-                <li><strong>Explicar</strong> el mecanismo de paginación</li>
-                <li><strong>Traducir</strong> direcciones usando tablas de páginas</li>
-                <li><strong>Describir</strong> el funcionamiento de la memoria virtual</li>
-                <li><strong>Analizar</strong> algoritmos de reemplazo de páginas</li>
+                <li><strong>Diferenciar</strong> entre procesos y threads (hilos)</li>
+                <li><strong>Entender</strong> los mecanismos de sincronización</li>
+                <li><strong>Explicar</strong> el problema de deadlock</li>
+                <li><strong>Resolver</strong> problemas clásicos de sincronización</li>
+                <li><strong>Analizar</strong> situaciones de bloqueo mutuo</li>
             </ol>
         </section>
 
-        <section id="introduccion">
-            <h2>Introducción y Conceptos</h2>
-            <figure>
-                <img src="../assets/infografias/clase-07-tabla-paginas.png" alt="Paginación de Memoria">
-                <figcaption>Diagrama de paginación: páginas lógicas asignadas a marcos físicos</figcaption>
-            </figure>
+        <!-- Proceso vs Thread -->
+        <section id="proceso-thread">
+            <h2>Proceso vs Thread (Hilo)</h2>
 
-            <figure>
-                <img src="../assets/diagramas-svg/paginacion.svg" alt="Diagrama SVG de paginación y memoria virtual">
-                <figcaption>Figura X: Mecanismo de paginación, TLB y manejo de page faults en memoria virtual</figcaption>
-            </figure>
-
-            <p><strong>Conceptos fundamentales que veremos:</strong></p>
-            <ul>
-                <li><strong>Páginas</strong>: Bloques de memoria lógica del proceso</li>
-                <li><strong>Marcos</strong>: Bloques de memoria física en RAM</li>
-                <li><strong>Tablas de páginas</strong>: Mapa páginas → marcos</li>
-                <li><strong>Page Fault</strong>: Cuando una página no está en RAM</li>
-                <li><strong>Memoria virtual</strong>: Procesos más grandes que la RAM disponible</li>
-            </ul>
-        </section>
-
-        <section id="fragmentacion">
-            <h2>Problema de la Fragmentación Externa</h2>
-            <p><strong>Recordatorio de la clase anterior:</strong></p>
-            <div class="ascii-diagram">
-Con asignación contigua:
-┌─────┐
-│  A  │
-├─────┤
-│HUECO│ 50KB
-├─────┤
-│  B  │
-├─────┤
-│HUECO│ 30KB     Total libre: 120KB
-├─────┤          Proceso nuevo: 100KB
-│  C  │          ¿Puede cargarse? NO
-├─────┤
-│HUECO│ 40KB
-└─────┘
+            <div class="callout info">
+                <strong>Un hilo (thread) es la unidad básica de ejecución dentro de un proceso</strong>
             </div>
-            <p><strong>Solución: <em>Paginación</em></strong></p>
-            <p>¡No necesitamos memoria contigua!</p>
-        </section>
 
-        <section id="idea-paginacion">
-            <h2>Idea de la Paginación</h2>
-            <h3>Dividir memoria en bloques de tamaño fijo</h3>
-            <div class="ascii-diagram">
-MEMORIA LÓGICA (Proceso)          MEMORIA FÍSICA
-      PÁGINAS                         MARCOS
-┌─────────────┐                 ┌─────────────┐ Marco 0
-│   Página 0  │                 │   Página 2  │
-├─────────────┤                 ├─────────────┤ Marco 1
-│   Página 1  │                 │   Página 0  │
-├─────────────┤                 ├─────────────┤ Marco 2
-│   Página 2  │                 │    (libre)  │
-├─────────────┤                 ├─────────────┤ Marco 3
-│   Página 3  │                 │   Página 3  │
-└─────────────┘                 ├─────────────┤ Marco 4
-                                │   Página 1  │
-                                └─────────────┘
-            </div>
-            <p><strong>Página</strong> = Bloque de memoria lógica</p>
-            <p><strong>Marco</strong> = Bloque de memoria física</p>
-            <p><strong>Tamaño típico:</strong> 4KB (4096 bytes)</p>
-        </section>
+            <h3>Comparación Proceso vs Thread</h3>
 
-        <section id="traduccion">
-            <h2>Traducción de Direcciones</h2>
-            <h3>Dirección lógica = Número de página + Desplazamiento</h3>
-            <div class="ascii-diagram">
-Dirección lógica: 5000 (en bytes)
-Tamaño de página: 4096 bytes
-
-Número de página = 5000 / 4096 = 1
-Desplazamiento   = 5000 % 4096 = 904
-
-         TABLA DE PÁGINAS
-        ┌───────┬────────┐
-        │Página │ Marco  │
-        ├───────┼────────┤
-        │   0   │   1    │
-        │   1   │   4    │ ← Página 1 está en Marco 4
-        │   2   │   0    │
-        │   3   │   3    │
-        └───────┴────────┘
-
-Dirección física = Marco 4 × 4096 + 904 = 16384 + 904 = 17288
-            </div>
-        </section>
-
-        <section id="diagrama-traduccion">
-            <h2>Diagrama de Traducción</h2>
-            <div class="ascii-diagram">
-        DIRECCIÓN LÓGICA
-    ┌────────────┬──────────────┐
-    │ # Página   │ Desplazamiento│
-    │    (p)     │     (d)       │
-    └─────┬──────┴───────┬───────┘
-          │              │
-          ▼              │
-    ┌───────────┐        │
-    │  TABLA    │        │
-    │    DE     │        │
-    │  PÁGINAS  │        │
-    └─────┬─────┘        │
-          │              │
-          ▼              ▼
-    ┌────────────┬──────────────┐
-    │ # Marco    │ Desplazamiento│
-    │    (f)     │     (d)       │
-    └────────────┴──────────────┘
-        DIRECCIÓN FÍSICA
-            </div>
-        </section>
-
-        <section id="ejemplo-completo">
-            <h2>Ejemplo Completo</h2>
-            <div class="ascii-diagram">
-Memoria física: 64 KB (16 marcos de 4 KB)
-Proceso: 16 KB (4 páginas de 4 KB)
-
-Tabla de páginas del proceso:
-┌───────┬────────┬────────┐
-│Página │ Marco  │ Válido │
-├───────┼────────┼────────┤
-│   0   │   5    │   1    │
-│   1   │   9    │   1    │
-│   2   │   2    │   1    │
-│   3   │  12    │   1    │
-└───────┴────────┴────────┘
-
-Traducir dirección lógica: 8500
-
-Página = 8500 / 4096 = 2
-Desplazamiento = 8500 % 4096 = 308
-
-Marco de página 2 = 2
-Dirección física = 2 × 4096 + 308 = 8500 ✓
-            </div>
-        </section>
-
-        <section id="ventajas">
-            <h2>Ventajas de la Paginación</h2>
-            <div class="comparison">
-                <div>
-                    <h3>✅ Elimina fragmentación externa</h3>
-                    <div class="ascii-diagram">
-ANTES (contigua):               DESPUÉS (paginación):
-┌─────┐                         ┌─────┐ Marco 0: P1.pág0
-│  A  │                         ├─────┤ Marco 1: P2.pág0
-├─────┤                         ├─────┤ Marco 2: P1.pág1
-│HUECO│ No podemos usar         ├─────┤ Marco 3: P3.pág0
-├─────┤                         ├─────┤ Marco 4: P2.pág1
-│  B  │                         ├─────┤ Marco 5: P1.pág2
-├─────┤                         └─────┘
-│HUECO│ estos espacios
-├─────┤ para P4
-│  C  │
-└─────┘
-                    </div>
-                </div>
-                <div>
-                    <h3>⚠️ Fragmentación interna</h3>
-                    <p>Con paginación, P4 puede usar marcos no contiguos</p>
-                    <p>Aún puede haber <strong>fragmentación interna</strong> si un proceso no usa toda su última página</p>
-                </div>
-            </div>
-        </section>
-
-        <section id="memoria-virtual">
-            <h2>Memoria Virtual</h2>
-            <h3>Más memoria de la que físicamente existe</h3>
-            <div class="ascii-diagram">
-    MEMORIA VIRTUAL                    MEMORIA FÍSICA
-    (por proceso)                         (real)
-┌─────────────────┐                 ┌─────────────────┐
-│                 │                 │                 │
-│   4 GB          │                 │   8 GB          │
-│   de espacio    │ ──parcialmente──│   compartida    │
-│   de direcciones│     cargada     │   entre todos   │
-│                 │                 │   los procesos  │
-└─────────────────┘                 └─────────────────┘
-
-Cada proceso CREE que tiene 4GB
-Solo las páginas en uso están en RAM
-El resto está en DISCO (swap)
-            </div>
-        </section>
-
-        <section id="demand-paging">
-            <h2>Demand Paging (Paginación por Demanda)</h2>
-            <p><strong>Solo cargar páginas cuando se necesitan</strong></p>
-            <div class="ascii-diagram">
-1. Proceso intenta acceder a dirección
-2. Buscar en tabla de páginas
-3. Si válido=1 → página en RAM → acceder
-4. Si válido=0 → PAGE FAULT:
-   a. Buscar página en disco
-   b. Cargar en marco libre
-   c. Actualizar tabla de páginas
-   d. Reintentar acceso
-
-┌───────┬────────┬────────┐
-│Página │ Marco  │ Válido │
-├───────┼────────┼────────┤
-│   0   │   5    │   1    │ ← En RAM
-│   1   │   -    │   0    │ ← En disco (page fault si se accede)
-│   2   │   2    │   1    │ ← En RAM
-│   3   │   -    │   0    │ ← En disco
-└───────┴────────┴────────┘
-            </div>
-        </section>
-
-        <section id="page-fault">
-            <h2><abbr title="Page Fault - Fallo de página cuando la página no está en memoria">Page Fault</abbr> (Fallo de Página)</h2>
-            <div class="ascii-diagram">
-┌─────────────────────────────────────────────────────────────┐
-│  1. CPU genera dirección lógica                             │
-│                    ↓                                        │
-│  2. <abbr title="Memory Management Unit - Unidad de Gestión de Memoria">MMU</abbr> consulta tabla de páginas                           │
-│                    ↓                                        │
-│  3. Bit válido = 0 → TRAP (page fault)                      │
-│                    ↓                                        │
-│  4. SO busca página en disco (swap)                         │
-│                    ↓                                        │
-│  5. SO elige un marco (puede requerir reemplazo)            │
-│                    ↓                                        │
-│  6. SO carga página del disco al marco                      │
-│                    ↓                                        │
-│  7. SO actualiza tabla de páginas (válido=1)                │
-│                    ↓                                        │
-│  8. Se reinicia la instrucción                              │
-└─────────────────────────────────────────────────────────────┘
-            </div>
-        </section>
-
-        <section id="algoritmos-reemplazo">
-            <h2>Algoritmos de Reemplazo de Páginas</h2>
-            <p><strong>Cuando no hay marcos libres, ¿cuál página sacar?</strong></p>
             <table>
-                <tr>
-                    <th>Algoritmo</th>
-                    <th>Descripción</th>
-                    <th>Optimalidad</th>
-                </tr>
-                <tr>
-                    <td><strong>FIFO</strong> (<abbr title="First In First Out">FIFO</abbr>)</td>
-                    <td>Primera en entrar, primera en salir</td>
-                    <td>Simple pero malo</td>
-                </tr>
-                <tr>
-                    <td><strong>Óptimo</strong></td>
-                    <td>Sacar la que se usará más tarde</td>
-                    <td>Imposible de implementar</td>
-                </tr>
-                <tr>
-                    <td><strong>LRU</strong> (<abbr title="Least Recently Used">LRU</abbr>)</td>
-                    <td>Least Recently Used (menos usada recientemente)</td>
-                    <td>Bueno pero costoso</td>
-                </tr>
-                <tr>
-                    <td><strong>Clock</strong></td>
-                    <td>Aproximación a LRU con bit de referencia</td>
-                    <td>Práctico</td>
-                </tr>
+                <thead>
+                    <tr>
+                        <th>Característica</th>
+                        <th>Proceso</th>
+                        <th>Thread</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Espacio de direcciones</strong></td>
+                        <td>Independiente y aislado</td>
+                        <td>Compartido entre threads</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Recursos</strong></td>
+                        <td>Propios (archivos, memoria)</td>
+                        <td>Compartidos del proceso</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Comunicación</strong></td>
+                        <td>IPC complejo (pipes, shared memory)</td>
+                        <td>Directa (memoria compartida)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Contexto</strong></td>
+                        <td>Pesado ( PCB completo)</td>
+                        <td>Ligero (registros, stack)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Cambio de contexto</strong></td>
+                        <td>Lento (miles de ciclos)</td>
+                        <td>Rápido (cientos de ciclos)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Creación</strong></td>
+                        <td>Lenta y costosa</td>
+                        <td>Rápida y económica</td>
+                    </tr>
+                </tbody>
             </table>
-        </section>
 
-        <section id="thrashing">
-            <h2><abbr title="Thrashing - Estado excesivo de page faults que degrada el rendimiento">Thrashing</abbr></h2>
-            <p><strong>Cuando el sistema pasa más tiempo haciendo page faults que ejecutando</strong></p>
-            <div class="ascii-diagram">
-     Utilización
-     de CPU
-        │
-    100%│          ┌────────────────
-        │         /
-        │        /
-        │       /
-        │      /
-        │     /
-        │    /         THRASHING
-        │   / ──────────────────────
-        │  /           ▼
-      0 │─┴─────────────────────────────
-        └──────────────────────────────→
-                Grado de multiprogramación
-                   (# de procesos)
+            <h4>Ejemplo de múltiples threads en un proceso:</h4>
+            <div class="diagram-box">
+                <pre class="ascii-diagram">┌─────────────────────────────────────────────────────┐
+│                   PROCESO (ej. Chrome)               │
+│  Espacio de memoria: código, datos, heap compartido │
+├─────────────┬─────────────┬─────────────┬─────────────┤
+│  Thread 1   │  Thread 2   │  Thread 3   │  Thread 4   │
+│  (Pestaña)  │  (Pestaña)  │  (Renderer) │  (Network)  │
+├─────────────┼─────────────┼─────────────┼─────────────┤
+│ Stack       │ Stack       │ Stack       │ Stack       │
+│ independiente│ independiente│ independiente│ independiente│
+├─────────────┴─────────────┴─────────────┴─────────────┤
+│   Código, datos, archivos, sockets (compartidos)     │
+└─────────────────────────────────────────────────────┘</pre>
             </div>
-            <p><strong>Causa:</strong> Demasiados procesos compitiendo por pocos marcos</p>
-        </section>
 
-        <section id="working-set">
-            <h2><abbr title="Working Set - Conjunto de páginas activamente usadas por un proceso">Working Set</abbr> (Conjunto de Trabajo)</h2>
-            <p><strong>Páginas activamente usadas por un proceso</strong></p>
-            <div class="ascii-diagram">
-Si un proceso usa las páginas: 1, 2, 1, 3, 2, 1, 4, 1, 2, 3
-
-En una ventana de tiempo Δ=4:
-Posición 10: páginas usadas en posiciones 7-10 = {4, 1, 2, 3}
-Working Set = {1, 2, 3, 4}  (4 páginas)
-
-El SO debe asegurar que el proceso tenga al menos
-4 marcos para evitar thrashing.
-            </div>
-        </section>
-
-        <section id="tlb">
-            <h2>TLB (<abbr title="Translation Lookaside Buffer">TLB</abbr>) - Translation Lookaside Buffer</h2>
-            <p><strong>Caché de traducciones de páginas</strong></p>
-            <div class="ascii-diagram">
-Sin TLB:
-CPU → Tabla de páginas (RAM) → Memoria física (RAM)
-      ↑ Lento (2 accesos a RAM)
-
-Con TLB:
-CPU → TLB (caché) → Si hit: Memoria física (1 acceso)
-         ↓
-    Si miss: Tabla de páginas → actualizar TLB
-            </div>
-            <p><strong>TLB típico:</strong> 64-1024 entradas, tiempo de acceso ~1 ns</p>
-        </section>
-
-        <section id="ejercicios">
-            <h2>📝 Ejercicio: Traducción de Direcciones</h2>
-            <h3>Datos:</h3>
+            <h4>Ventajas de usar threads:</h4>
             <ul>
-                <li>Memoria física: 32 KB (8 marcos de 4 KB)</li>
-                <li>Proceso con 3 páginas</li>
-                <li>Tabla de páginas: P0→M5, P1→M2, P2→M7</li>
+                <li><strong>Responsividad:</strong> UI permanece activa mientras se procesa en background</li>
+                <li><strong>Economía:</strong> Menos recursos que crear procesos</li>
+                <li><strong>Compartición:</strong> Fácil acceso a recursos compartidos</li>
+                <li><strong>Paralelismo:</strong> Aprovechar múltiples CPUs</li>
             </ul>
-            <p><strong>Traducir las siguientes direcciones lógicas:</strong></p>
-            <ol>
-                <li>2048</li>
-                <li>5000</li>
-                <li>10240</li>
-            </ol>
-            <h3>Solución:</h3>
-            <div class="ascii-diagram">
-Tamaño de página = 4096 bytes
+        </section>
 
-1) Dirección 2048:
-   Página = 2048 / 4096 = 0
-   Desplazamiento = 2048 % 4096 = 2048
-   Marco = 5 (desde tabla)
-   Dir. Física = 5 × 4096 + 2048 = 22528 ✓
+        <!-- Sincronización -->
+        <section id="sincronizacion">
+            <h2>Sincronización de Threads</h2>
 
-2) Dirección 5000:
-   Página = 5000 / 4096 = 1
-   Desplazamiento = 5000 % 4096 = 904
-   Marco = 2 (desde tabla)
-   Dir. Física = 2 × 4096 + 904 = 9096 ✓
+            <div class="callout warning">
+                <strong>El problema:</strong> Cuando múltiples threads acceden a datos compartidos simultáneamente
+            </div>
 
-3) Dirección 10240:
-   Página = 10240 / 4096 = 2
-   Desplazamiento = 10240 % 4096 = 2048
-   Marco = 7 (desde tabla)
-   Dir. Física = 7 × 4096 + 2048 = 30720 ✓
+            <h3>Condición de Carrera (Race Condition)</h3>
+
+            <pre class="ascii-diagram">Tiempo    Thread A              Memoria          Thread B
+────────────────────────────────────────────────────────────────
+  t1      lee saldo (1000)      [saldo=1000]
+  t2                            [saldo=1000]     lee saldo (1000)
+  t3      suma 100 (local=1100)
+  t4                                             resta 50 (local=950)
+  t5      escribe 1100          [saldo=1100]
+  t6                            [saldo=950]      escribe 950
+────────────────────────────────────────────────────────────────
+                                 RESULTADO: $950 (¡incorrecto!)</pre>
+
+            <div class="callout danger">
+                <strong>Una condición de carrera ocurre cuando el resultado depende del orden de ejecución</strong>
             </div>
         </section>
 
-        <section id="ventajas-desventajas">
-            <h2>🎯 Ventajas y Desventajas de la Paginación</h2>
-            <div class="comparison">
-                <div>
-                    <h3>✅ Ventajas</h3>
-                    <table>
-                        <tr>
-                            <th>Ventaja</th>
-                            <th>Explicación</th>
-                        </tr>
-                        <tr>
-                            <td><strong>No fragmentación externa</strong></td>
-                            <td>Cualquier marco puede alojar cualquier página</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Multiprogramación eficiente</strong></td>
-                            <td>Procesos comparten memoria fácilmente</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Protección simple</strong></td>
-                            <td>Bits de control en tabla de páginas</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Memoria virtual</strong></td>
-                            <td>Procesos más grandes que RAM</td>
-                        </tr>
-                    </table>
-                </div>
-                <div>
-                    <h3>❌ Desventajas</h3>
-                    <table>
-                        <tr>
-                            <th>Desventaja</th>
-                            <th>Explicación</th>
-                        </tr>
-                        <tr>
-                            <td><strong>Fragmentación interna</strong></td>
-                            <td>Última página puede no usar todo el marco</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Sobrecarga de tabla</strong></td>
-                            <td>Tablas grandes consumen memoria</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Tiempo de acceso</strong></td>
-                            <td>Doble acceso: tabla + dato</td>
-                        </tr>
-                    </table>
-                </div>
+        <!-- Mutex -->
+        <section id="mutex">
+            <h2>Mutex (Mutual Exclusion)</h2>
+
+            <div class="callout info">
+                <strong>Mutex es un lock que permite solo un thread a la vez en una sección crítica</strong>
+            </div>
+
+            <h3>Características del Mutex:</h3>
+            <ul>
+                <li><strong>Propiedad:</strong> El thread que lo adquiere es el único que puede liberarlo</li>
+                <li><strong>Exclusión:</strong> Solo un thread puede tener el mutex a la vez</li>
+                <li><strong>Bloqueo:</strong> Si el mutex está ocupado, el thread espera</li>
+                <li><strong>Sección crítica:</strong> Código que accede a recursos compartidos</li>
+            </ul>
+
+            <h4>Operaciones básicas:</h4>
+            <pre class="ascii-diagram">┌─────────────────────────────────────────────────┐
+│  Thread 1                │  Thread 2          │
+├─────────────────────────────────────────────────┤
+│  lock(mutex)             │                    │
+│  // Sección crítica      │  lock(mutex)       │
+│  modificar_compartido()  │  // Espera...      │
+│  unlock(mutex)           │  // Espera...      │
+│                          │  // Se libera...   │
+│                          │  // Sección crítica│
+│                          │  modificar_compartido()│
+│                          │  unlock(mutex)     │
+└─────────────────────────────────────────────────┘</pre>
+
+            <h4>Ejemplo conceptual (sin código):</h4>
+            <div class="diagram-box">
+                <p><strong>Escenario:</strong> Dos cajeros acceden a la misma cuenta bancaria</p>
+                <ul>
+                    <li><strong>Sin mutex:</strong> Ambos leen al mismo tiempo → resultado inconsistente</li>
+                    <li><strong>Con mutex:</strong> Uno accede primero, termina, luego el otro → resultado correcto</li>
+                </ul>
             </div>
         </section>
 
-        <section id="ejemplo-real">
-            <h2>💡 Ejemplo Real: Linux vs Windows</h2>
-            <h3>Gestión de Memoria Virtual</h3>
+        <!-- Semáforos -->
+        <section id="semaforos">
+            <h2>Semáforos</h2>
+
+            <div class="callout info">
+                <strong>Un semáforo es un contador entero que controla el acceso a recursos</strong>
+            </div>
+
+            <h3>Tipos de Semáforos:</h3>
+
             <div class="comparison">
                 <div>
-                    <h4>Linux</h4>
-                    <pre><code># Ver uso de memoria virtual
-$ free -h
-              total   usado   libre   compartido   búfer/caché   disponible
-Memoria:      8.0Gi   4.2Gi   1.1Gi   256Mi        2.7Gi         3.8Gi
-Swap:         2.0Gi   128Mi   1.9Gi
-
-# Ver page faults
-$ vmstat 1 5
-procs -----------memoria---------- ---swap-- -----io---- -sistema- ------cpu-----
-r  b   swpd   free   buff  cache   si   so    bi    bo   in   cs us sy id wa st
-1  0 131072 1048576  ...   ...     0    4     50   100  200  500 10  5 80  5  0</code></pre>
-                </div>
-                <div>
-                    <h4>Windows (Task Manager)</h4>
+                    <h4>Semáforo Binario (0 o 1)</h4>
                     <ul>
-                        <li>Memoria confirmada vs física</li>
-                        <li>Caché en espera vs modificada</li>
-                        <li>Page file: <code>C:\pagefile.sys</code></li>
+                        <li>Similar a un mutex</li>
+                        <li>Un solo recurso disponible</li>
+                        <li>Usado para exclusión mutua</li>
+                        <li>S = 1: recurso libre</li>
+                        <li>S = 0: recurso ocupado</li>
                     </ul>
+
+                    <pre><code>wait(S):  // Adquirir
+  while S == 0;  // Espera si está ocupado
+  S = 0;
+
+signal(S):  // Liberar
+  S = 1;</code></pre>
+                </div>
+                <div>
+                    <h4>Semáforo Contador (0 a N)</h4>
+                    <ul>
+                        <li>N recursos idénticos</li>
+                        <li>Hasta N threads pueden acceder</li>
+                        <li>Usado para pool de recursos</li>
+                        <li>S = N: N recursos libres</li>
+                        <li>S = 0: todos ocupados</li>
+                    </ul>
+
+                    <pre><code>wait(S):  // Adquirir
+  while S == 0;  // Espera si no hay recursos
+  S = S - 1;
+
+signal(S):  // Liberar
+  S = S + 1;</code></pre>
                 </div>
             </div>
+
+            <h4>Ejemplo de uso - Pool de conexiones:</h4>
+            <div class="diagram-box">
+                <p><strong>Semáforo con valor inicial = 5</strong> (5 conexiones disponibles)</p>
+                <ul>
+                    <li>Thread A hace wait(): semáforo = 4</li>
+                    <li>Thread B hace wait(): semáforo = 3</li>
+                    <li>Thread C hace wait(): semáforo = 2</li>
+                    <li>Thread A termina y hace signal(): semáforo = 3</li>
+                    <li>Thread D hace wait(): semáforo = 2</li>
+                </ul>
+            </div>
         </section>
 
-        <section id="comparacion-algoritmos">
-            <h2>🔍 Comparación de Algoritmos de Reemplazo</h2>
+        <!-- Monitores -->
+        <section id="monitores">
+            <h2>Monitores</h2>
+
+            <div class="callout info">
+                <strong>Un monitor es una estructura de alto nivel que encapsula datos y métodos de sincronización</strong>
+            </div>
+
+            <h3>Características de los Monitores:</h3>
+            <ul>
+                <li><strong>Encapsulamiento:</strong> Datos y métodos sincronizados en una unidad</li>
+                <li><strong>Exclusión automática:</strong> Solo un thread puede estar activo en el monitor</li>
+                <li><strong>Colas de espera:</strong> Threads esperan en variables de condición</li>
+                <li><strong>Menor error humano:</strong> El compilador/runtime maneja la sincronización</li>
+            </ul>
+
+            <h4>Esquema de un Monitor:</h4>
+            <pre class="ascii-diagram">┌──────────────────────────────────────────────┐
+│              MONITOR                          │
+│  Datos compartidos (privados)               │
+├──────────────────────────────────────────────┤
+│  ┌────────────────────────────────────────┐ │
+│  │  Cola de entrada                       │ │
+│  │  Threads esperan para entrar           │ │
+│  └────────────────────────────────────────┘ │
+├──────────────────────────────────────────────┤
+│  procedimiento_sincronizado1() {            │
+│    // Solo un thread ejecuta a la vez       │
+│  }                                          │
+│  procedimiento_sincronizado2() {            │
+│    // Exclusión mutua garantizada           │
+│  }                                          │
+├──────────────────────────────────────────────┤
+│  Variables de condición:                    │
+│    - no_lleno.wait() / signal()             │
+│    - no_vacio.wait() / signal()             │
+└──────────────────────────────────────────────┘</pre>
+
+            <h4>Operaciones sobre variables de condición:</h4>
             <table>
-                <tr>
-                    <th>Algoritmo</th>
-                    <th>Complejidad</th>
-                    <th>Eficiencia</th>
-                    <th>Uso Real</th>
-                </tr>
-                <tr>
-                    <td><strong>Óptimo</strong></td>
-                    <td>O(n²)</td>
-                    <td>5/5</td>
-                    <td>Solo teórico</td>
-                </tr>
-                <tr>
-                    <td><strong>FIFO</strong></td>
-                    <td>O(1)</td>
-                    <td>2/5</td>
-                    <td>Sistemas simples</td>
-                </tr>
-                <tr>
-                    <td><strong>LRU</strong></td>
-                    <td>O(n)</td>
-                    <td>4/5</td>
-                    <td>Variantes tipo LRU/Clock</td>
-                </tr>
-                <tr>
-                    <td><strong>Clock</strong></td>
-                    <td>O(n)</td>
-                    <td>4/5</td>
-                    <td>Sistemas modernos</td>
-                </tr>
-                <tr>
-                    <td><strong>LFU</strong></td>
-                    <td>O(n log n)</td>
-                    <td>3/5</td>
-                    <td>Cachés especializadas</td>
-                </tr>
+                <thead>
+                    <tr>
+                        <th>Operación</th>
+                        <th>Descripción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>wait()</strong></td>
+                        <td>Suspende el thread hasta que se haga signal()</td>
+                    </tr>
+                    <tr>
+                        <td><strong>signal()</strong></td>
+                        <td>Despierta un thread en espera (si hay)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>broadcast()</strong></td>
+                        <td>Despierta TODOS los threads en espera</td>
+                    </tr>
+                </tbody>
             </table>
-            <div class="callout info">
-                <p><strong>Observación:</strong> LRU es el más usado en producción por su balance eficiencia/complejidad.</p>
+        </section>
+
+        <!-- Deadlock -->
+        <section id="deadlock">
+            <h2>Deadlock (Bloqueo Mutuo)</h2>
+
+            <div class="callout danger">
+                <strong>Deadlock: Situación donde dos o más threads se esperan mutuamente de forma indefinida</strong>
+            </div>
+
+            <h3>Ejemplo clásico de Deadlock:</h3>
+
+            <pre class="ascii-diagram">┌─────────────────────────────────────────────────┐
+│  Thread A                                    │
+├─────────────────────────────────────────────────┤
+│  1. Adquiere Recurso 1 (Lock1)                │
+│  2. Intenta adquirir Recurso 2 (Lock2)        │
+│     ¡Lock2 está con Thread B! ESPERA...        │
+│  3. (esperando indefinidamente)               │
+└─────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────┐
+│  Thread B                                    │
+├─────────────────────────────────────────────────┤
+│  1. Adquiere Recurso 2 (Lock2)                │
+│  2. Intenta adquirir Recurso 1 (Lock1)        │
+│     ¡Lock1 está con Thread A! ESPERA...        │
+│  3. (esperando indefinidamente)               │
+└─────────────────────────────────────────────────┘
+
+RESULTADO: ¡Nadie avanza! Deadlock circular.</pre>
+
+            <h4>Ejemplo real:</h4>
+            <div class="diagram-box">
+                <p><strong>Escenario del puente:</strong></p>
+                <ul>
+                    <li>Coche A entra al puente de norte a sur</li>
+                    <li>Coche B entra al puente de sur a norte</li>
+                    <li>Ambos se encuentran en el medio</li>
+                    <li>Ninguno puede avanzar sin que el otro retroceda</li>
+                    <li>Si nadie retrocede → Deadlock</li>
+                </ul>
             </div>
         </section>
 
-        <section id="overhead">
-            <h2>📊 Cálculo de Overhead de Paginación</h2>
-            <h3>Ejemplo Real: Sistema de 32 bits</h3>
-            <p><strong>Datos:</strong></p>
+        <!-- Condiciones de Deadlock -->
+        <section id="condiciones">
+            <h2>Condiciones Necesarias para Deadlock</h2>
+
+            <div class="callout warning">
+                <strong>Coffman: 4 condiciones que DEBEN ocurrir simultáneamente para deadlock</strong>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Condición</th>
+                        <th>Descripción</th>
+                        <th>Ejemplo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Exclusión Mutua</strong></td>
+                        <td>Recurso solo puede usar un thread a la vez</td>
+                        <td>Una impresora, un lock</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Retener y Esperar</strong></td>
+                        <td>Thread mantiene recursos mientras espera otros</td>
+                        <td>Tiene Lock1, espera Lock2</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Sin Apropiación</strong></td>
+                        <td>Los recursos no pueden ser quitados por la fuerza</td>
+                        <td>No se puede quitar Lock1 a Thread A</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Espera Circular</strong></td>
+                        <td>Cadena circular de threads esperándose mutuamente</td>
+                        <td>A espera B, B espera A</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="callout success">
+                <strong>Para prevenir deadlock, basta romper UNA de estas condiciones</strong>
+            </div>
+
+            <h4>Estrategias de prevención:</h4>
             <ul>
-                <li>Espacio de direcciones: 4 GB (2³² bytes)</li>
-                <li>Tamaño de página: 4 KB (2¹² bytes)</li>
-                <li>Número de páginas: 4GB / 4KB = 1M páginas</li>
-                <li>Entrada de tabla: 4 bytes (32 bits)</li>
+                <li><strong>Romper exclusión mutua:</strong> Usar recursos compartidos cuando sea posible</li>
+                <li><strong>Romper retener y esperar:</strong> Adquirir todos los recursos de una vez</li>
+                <li><strong>Permitir apropiación:</strong> El SO puede quitar recursos (difícil de implementar)</li>
+                <li><strong>Romper espera circular:</strong> Jerarquía de recursos (adquirir en orden)</li>
             </ul>
-            <p><strong>Overhead:</strong></p>
-            <div class="ascii-diagram">
-Tamaño de tabla = 1M páginas × 4 bytes = 4 MB por proceso
-
-Con 100 procesos:
-Memoria solo para tablas = 100 × 4 MB = 400 MB 😱
-            </div>
-            <p><strong>Solución:</strong> Tablas de páginas multinivel (usadas por Intel x86)</p>
         </section>
 
-        <section id="ejercicio-tlb">
-            <h2>🔧 Ejercicio Guiado: TLB Miss Rate</h2>
-            <h3>Escenario</h3>
+        <!-- Prevención y Evitación -->
+        <section id="prevencion">
+            <h2>Prevención y Evitación de Deadlock</h2>
+
+            <h3>Prevención de Deadlock</h3>
+            <p>Romper una de las 4 condiciones:</p>
+
+            <div class="comparison">
+                <div>
+                    <h4>Estrategia: Adquisición Ordenada</h4>
+                    <p><strong>Regla:</strong> Siempre adquirir locks en el mismo orden</p>
+                    <pre><code>// Todos los threads adquieren:
+Lock1 → Lock2 → Lock3
+
+// Si Thread A tiene Lock1 y quiere Lock2
+// Y Thread B tiene Lock2 y quiere Lock3
+// NO hay deadlock porque B no quiere Lock1</code></pre>
+                    <p><strong>Ventaja:</strong> Simple de implementar</p>
+                    <p><strong>Desventaja:</strong> Requiere disciplina</p>
+                </div>
+                <div>
+                    <h4>Estrategia: Adquisición Atómica</h4>
+                    <p><strong>Regla:</strong> Adquirir todos los recursos juntos</p>
+                    <pre><code>// Adquirir Lock1 Y Lock2 juntos
+lock(Lock1, Lock2) {
+  // O adquiere ambos, o ninguno
+}
+
+// Si falla, liberar y reintentar</code></pre>
+                    <p><strong>Ventaja:</strong> Garantiza sin deadlock</p>
+                    <p><strong>Desventaja:</strong> Menor paralelismo</p>
+                </div>
+            </div>
+
+            <h3>Detección y Recuperación</h3>
             <ul>
-                <li>TLB: 64 entradas</li>
-                <li>Tiempo acceso TLB: 2 ns</li>
-                <li>Tiempo acceso RAM: 100 ns</li>
-                <li>Hit rate TLB: 95%</li>
+                <li><strong>Detección:</strong> El SO detecta ciclos en el grafo de recursos</li>
+                <li><strong>Recuperación:</strong> Terminar uno de los threads involucrados</li>
+                <li><strong>Costo:</strong> Sobrecarga del sistema</li>
             </ul>
-            <h3>Cálculo del EMAT (Effective Memory Access Time)</h3>
-            <div class="ascii-diagram">
-Caso TLB hit (95%):
-  Tiempo = 2 ns (TLB) + 100 ns (RAM) = 102 ns
-
-Caso TLB miss (5%):
-  Tiempo = 2 ns (TLB) + 100 ns (Tabla) + 100 ns (RAM) = 202 ns
-
-EMAT = 0.95 × 102 + 0.05 × 202
-     = 96.9 + 10.1
-     = 107 ns
-            </div>
-            <p><strong>Sin TLB:</strong> 200 ns<br>
-            <strong>Con TLB:</strong> 107 ns<br>
-            <strong>Mejora:</strong> 46.5% más rápido 🚀</p>
         </section>
 
-        <section id="actividad">
-            <h2>Actividad Práctica (Opcional - 10 min)</h2>
-            <p><strong>En parejas:</strong></p>
-            <p><strong>Dado:</strong></p>
-            <ul>
-                <li>3 marcos disponibles</li>
-                <li>Secuencia de páginas: 7, 0, 1, 2, 0, 3, 0, 4, 2, 3, 0, 3</li>
-            </ul>
-            <p><strong>Calcular page faults usando:</strong></p>
-            <ol>
-                <li>FIFO</li>
-                <li>LRU</li>
-            </ol>
-            <p><strong>Comparar resultados y discutir.</strong></p>
+        <!-- Ejercicios -->
+        <section id="ejercicios">
+            <h2>Ejercicios Conceptuales</h2>
+
+            <div class="ejercicio">
+                <h3>Ejercicio 1: Productor-Consumidor</h3>
+                <p><strong>Problema:</strong> Un productor coloca items en un buffer finito. Un consumidor los retira. Si el buffer está lleno, el productor espera. Si está vacío, el consumidor espera.</p>
+                <p><strong>Preguntas:</strong></p>
+                <ol>
+                    <li>¿Qué mecanismo de sincronización usarías?</li>
+                    <li>¿Cuántas variables de condición necesitas?</li>
+                    <li>¿Qué pasa si hay múltiples productores y consumidores?</li>
+                </ol>
+                <p><strong>Discusión:</strong></p>
+                <ul>
+                    <li>Mecanismo: Semáforos o Monitores</li>
+                    <li>Variables: 2 (buffer_no_lleno, buffer_no_vacio)</li>
+                    <li>Múltiples: Mismo mecanismo funciona con N threads</li>
+                </ul>
+            </div>
+
+            <div class="ejercicio">
+                <h3>Ejercicio 2: Filósofos Comensales</h3>
+                <p><strong>Problema:</strong> 5 filósofos alrededor de una mesa. Cada uno tiene un palillo a izquierda y derecha. Para comer, necesita AMBOS palillos.</p>
+                <p><strong>Preguntas:</strong></p>
+                <ol>
+                    <li>¿En qué situación ocurre deadlock?</li>
+                    <li>¿Cómo se puede prevenir?</li>
+                    <li>¿Todos los filósofos comen eventualmente?</li>
+                </ol>
+                <p><strong>Discusión:</strong></p>
+                <ul>
+                    <li>Deadlock: Todos toman el palillo izquierdo simultáneamente</li>
+                    <li>Prevención: Un filósofo toma primero palillos ordenados</li>
+                    <li>Inanición: Posible si algunos filósofos comen siempre</li>
+                </ul>
+            </div>
+
+            <div class="ejercicio">
+                <h3>Ejercicio 3: Lectores-Escritores</h3>
+                <p><strong>Problema:</strong> Una base de datos permite múltiples lecturas simultáneas, pero solo una escritura a la vez. Lectores y escritores no pueden acceder simultáneamente.</p>
+                <p><strong>Preguntas:</strong></p>
+                <ol>
+                    <li>¿Cómo priorizas lectores vs escritores?</li>
+                    <li>¿Puede ocurrir inanición de escritores?</li>
+                    <li>¿Puede ocurrir inanición de lectores?</li>
+                </ol>
+                <p><strong>Discusión:</strong></p>
+                <ul>
+                    <li>Prioridad lectores: Escritores pueden sufrir inanición</li>
+                    <li>Prioridad escritores: Lectores esperan más</li>
+                    <li>Balance: Mecanismos de equidad (FIFO)</li>
+                </ul>
+            </div>
+
+            <div class="ejercicio">
+                <h3>Ejercicio 4: Problema de la Barbería</h3>
+                <p><strong>Problema:</strong> Una barbería con 1 barbero, N sillas de espera. Si no hay clientes, el barbero duerme. Si llega un cliente y el barbero duerme, lo despierta. Si la sala está llena, el cliente se va.</p>
+                <p><strong>Preguntas:</strong></p>
+                <ol>
+                    <li>¿Cuántos semáforos necesitas?</li>
+                    <li>¿Qué variables de condición requieres?</li>
+                    <li>¿Cómo manejas cuando la sala está llena?</li>
+                </ol>
+                <p><strong>Discusión:</strong></p>
+                <ul>
+                    <li>Semáforo para sillas (contador)</li>
+                    <li>Variable condición: clientes_esperando, barbero_listo</li>
+                    <li>Sala llena: El cliente se va sin esperar</li>
+                </ul>
+            </div>
+
+            <div class="ejercicio">
+                <h3>Ejercicio 5: Cena de los Sabios</h3>
+                <p><strong>Problema:</strong> Variante de filósofos donde solo 4 personas pueden comer simultáneamente (en lugar de 5).</p>
+                <p><strong>Preguntas:</strong></p>
+                <ol>
+                    <li>¿Por qué esto previene deadlock?</li>
+                    <li>¿Qué condición de Coffman se rompe?</li>
+                    <li>¿Es una solución justa?</li>
+                </ol>
+                <p><strong>Discusión:</strong></p>
+                <ul>
+                    <li>Previene porque al menos 1 persona puede comer siempre</li>
+                    <li>Rompe: Espera circular (no todos pueden estar esperando)</li>
+                    <li>Injusto: Uno siempre come menos (posible inanición)</li>
+                </ul>
+            </div>
         </section>
 
-        <!-- Videos Recomendados -->
-        <section id="videos">
-            <h2>🎥 Videos Recomendados</h2>
+        <!-- Entregable -->
+        <section id="entregable">
+            <h2>Entregable de la Clase</h2>
 
-            <div class="video-resource">
-                <h3>Video 1: Paging and Virtual Memory</h3>
-                <p><strong>Concepto:</strong> Paginación y memoria virtual explicados</p>
-                <p><strong>Duración:</strong> 18 minutos</p>
-                <p><strong>Nivel:</strong> Intermedio</p>
-                <p><strong>Por qué verlo:</strong> Excelente explicación de traducción de direcciones</p>
-                <p><strong>Canal:</strong> Neso Academy</p>
-                <a href="https://www.youtube.com/watch?v=kCc1AfrhW7g" target="_blank">▶ Ver en YouTube</a>
-            </div>
+            <div class="ejercicio">
+                <h3>Respuestas a 5 Ejercicios Conceptuales</h3>
+                <p><strong>Descripción:</strong> Responde los 5 ejercicios planteados arriba con tus propias palabras</p>
+                <p><strong>Requisitos:</strong></p>
+                <ul>
+                    <li>Responde cada ejercicio en 1-2 párrafos</li>
+                    <li>Incluye diagramas si ayuda a explicar (dibujados a mano o ASCII)</li>
+                    <li>Explica claramente el mecanismo de sincronización que usarías</li>
+                    <li>Identifica posibles casos de deadlock en cada problema</li>
+                    <li>Explica cómo los prevenirías</li>
+                </ul>
 
-            <div class="video-resource">
-                <h3>Video 2: Page Replacement Algorithms</h3>
-                <p><strong>Concepto:</strong> Algoritmos de reemplazo de página (FIFO, LRU, Optimal)</p>
-                <p><strong>Duración:</strong> 13 minutos</p>
-                <p><strong>Nivel:</strong> Intermedio</p>
-                <p><strong>Por qué verlo:</strong> Comparación visual de diferentes algoritmos</p>
-                <p><strong>Canal:</strong> GeeksforGeeks</p>
-                <a href="https://www.youtube.com/watch?v=WRK3ITqrTqM" target="_blank">▶ Ver en YouTube</a>
-            </div>
-
-            <div class="video-resource">
-                <h3>Video 3: TLB (Translation Lookaside Buffer)</h3>
-                <p><strong>Concepto:</strong> TLB: Caché de traducción de direcciones</p>
-                <p><strong>Duración:</strong> 10 minutos</p>
-                <p><strong>Nivel:</strong> Avanzado</p>
-                <p><strong>Por qué verlo:</strong> Entender cómo el TLB acelera las traducciones</p>
-                <p><strong>Canal:</strong> Ben Eater</p>
-                <a href="https://www.youtube.com/watch?v=Yq2S6_R18Vqk" target="_blank">▶ Ver en YouTube</a>
-            </div>
-
-            <div class="callout info">
-                <p class="callout-title">💡 Tip de Estudio</p>
-                <p>La memoria virtual es abstracta pero tiene implicaciones muy reales. Usa <code>vmstat 1</code> y <code>free -h</code> para ver el uso de memoria virtual en tu sistema Linux.</p>
+                <h4>Formato de entrega:</h4>
+                <ul>
+                    <li>Documento PDF o texto plano</li>
+                    <li>Incluye nombre y fecha</li>
+                    <li>Número y título de cada ejercicio</li>
+                    <li>Explicaciones claras y concisas</li>
+                </ul>
             </div>
         </section>
 
+        <!-- Resumen -->
         <section id="resumen">
             <h2>Resumen de la Clase</h2>
+
             <table>
-                <tr>
-                    <th>Concepto</th>
-                    <th>Descripción</th>
-                </tr>
-                <tr>
-                    <td><strong>Página</strong></td>
-                    <td>Bloque de memoria lógica (ej: 4KB)</td>
-                </tr>
-                <tr>
-                    <td><strong>Marco</strong></td>
-                    <td>Bloque de memoria física</td>
-                </tr>
-                <tr>
-                    <td><strong>Page Fault</strong></td>
-                    <td>Acceso a página no cargada</td>
-                </tr>
-                <tr>
-                    <td><strong>Demand Paging</strong></td>
-                    <td>Cargar páginas solo cuando se necesitan</td>
-                </tr>
-                <tr>
-                    <td><strong>TLB</strong></td>
-                    <td>Caché de traducciones</td>
-                </tr>
-                <tr>
-                    <td><strong>Thrashing</strong></td>
-                    <td>Exceso de page faults</td>
-                </tr>
+                <thead>
+                    <tr>
+                        <th>Concepto</th>
+                        <th>Descripción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Thread</strong></td>
+                        <td>Unidad de ejecución dentro de un proceso</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Race Condition</strong></td>
+                        <td>Resultado depende del orden de ejecución</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Mutex</strong></td>
+                        <td>Lock para exclusión mutua (solo un thread)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Semáforo</strong></td>
+                        <td>Contador para controlar acceso (N threads)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Monitor</strong></td>
+                        <td>Estructura de alto nivel con sincronización automática</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Deadlock</strong></td>
+                        <td>Bloqueo circular entre threads</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Condiciones de Coffman</strong></td>
+                        <td>4 condiciones necesarias para deadlock</td>
+                    </tr>
+                </tbody>
             </table>
-        </section>
 
-        <section id="evaluacion">
-            <h2>Evaluación (20% - Eval 3)</h2>
-            <h3>Proyecto: Simulador de Paginación - Semana 10</h3>
-            <ol>
-                <li>Implementar simulador en Python/C</li>
-                <li>Soportar FIFO y LRU</li>
-                <li>Mostrar estadísticas de page faults</li>
-                <li><strong>Sustentación oral</strong> (10 min por pareja)</li>
-            </ol>
-            <p><strong>Trabajo en parejas</strong></p>
+            <h3>Próxima Clase</h3>
+            <p><strong>Clase 08: Comunicación entre Procesos (IPC)</strong></p>
+            <ul>
+                <li>Pipes anónimos y nombrados</li>
+                <li>Señales</li>
+                <li>Memoria compartida</li>
+                <li>Sockets</li>
+                <li>Ejercicio Productor-Consumidor con bash scripts</li>
+            </ul>
         </section>
+    </div>
 
-        <footer>
+    <footer>
         <div class="container">
             <p><strong>IF0099 - Sistemas Operativos I</strong> • <a href="index.html">Índice de Clases</a></p>
-            <div class="container">
-                <p>© 2026 UNAULA - Ingeniería Informática | IF0099 - Sistemas Operativos I</p>
-                <p><a href="#top">Volver arriba</a> | <a href="../clases-html/_progress.md">Ver progreso del curso</a></p>
-            </div>
-        </footer>
+            <p>© 2026 UNAULA - Ingeniería Informática | IF0099 - Sistemas Operativos I</p>
+            <p><a href="../index.html">← Volver al inicio</a></p>
+        </div>
+    </footer>
 
-        <a href="#" class="scroll-top" id="scroll-top">↑</a>
-    </div>
+    <a href="#" class="scroll-top" id="scrollTop">↑</a>
 
     <script>
         // Scroll to top button
-        const scrollTop = document.getElementById('scroll-top');
+        const scrollTopBtn = document.getElementById('scrollTop');
         window.addEventListener('scroll', () => {
-            scrollTop.classList.toggle('visible', window.scrollY > 300);
+            if (window.pageYOffset > 300) {
+                scrollTopBtn.classList.add('visible');
+            } else {
+                scrollTopBtn.classList.remove('visible');
+            }
         });
-        scrollTop.addEventListener('click', (e) => {
+        scrollTopBtn.addEventListener('click', (e) => {
             e.preventDefault();
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
 
-        // Smooth scrolling for anchor links
+        // Smooth scroll for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                const targetId = this.getAttribute('href');
-                if (targetId === '#') return;
-                const target = document.querySelector(targetId);
-                if (target) {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href !== '#' && href.length > 1) {
                     e.preventDefault();
-                    target.scrollIntoView({ behavior: 'smooth' });
+                    const target = document.querySelector(href);
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
                 }
             });
         });
     </script>
-
-    <!-- Section: Laboratorio -->
-    <section id="laboratorio">
-        <h2>Laboratorio</h2>
-
-        <h3>Paginación y Memoria Virtual</h3>
-        <p>Explora tablas de páginas, TLB y memoria virtual en Linux real.</p>
-
-        <div class="callout info">
-            <strong>Objetivos del Laboratorio</strong>
-            <ul>
-                <li>Analizar tablas de páginas</li>
-                <li>Observar TLB misses</li>
-                <li>Experimentar con page faults</li>
-            </ul>
-        </div>
-
-        <p><a href="../laboratorios-html/index.html">Ver índice de Laboratorios →</a></p>
-    </section>
-
 </body>
 </html>

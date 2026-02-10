@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clase 09: Sistemas de Archivos | IF0099 - Sistemas Operativos I</title>
+    <title>Clase 09: Permisos y Seguridad en Linux | IF0099 - Sistemas Operativos I</title>
     <style>
         :root {
             --primary: #2563eb;
@@ -116,23 +116,6 @@
             margin-bottom: 1rem;
         }
 
-        figure {
-            margin: 2rem 0;
-            text-align: center;
-        }
-        figure img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        figcaption {
-            margin-top: 0.75rem;
-            color: var(--text-muted);
-            font-style: italic;
-            font-size: 0.95rem;
-        }
-
         table {
             width: 100%;
             border-collapse: collapse;
@@ -210,93 +193,16 @@
             border-left-color: #ef4444;
         }
 
-        .ascii-diagram {
-            font-family: 'Consolas', 'Monaco', monospace;
-            font-size: 0.85rem;
-            line-height: 1.2;
-            background: var(--bg-light);
-            padding: 1rem;
-            border-radius: 4px;
-            overflow-x: auto;
-            white-space: pre;
-        }
-
         .comparison {
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 1rem;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
             margin: 2rem 0;
         }
         .comparison > div {
             background: var(--bg-light);
             padding: 1.5rem;
             border-radius: 8px;
-        }
-        .comparison .check {
-            font-size: 1.5rem;
-            color: var(--accent);
-        }
-        .comparison .cross {
-            font-size: 1.5rem;
-            color: #ef4444;
-        }
-
-        .fs-comparison {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1rem;
-            margin: 2rem 0;
-        }
-        .fs-card {
-            background: var(--bg-light);
-            padding: 1.5rem;
-            border-radius: 8px;
-            border-top: 4px solid;
-        }
-        .fs-card.fat32 {
-            border-color: #ef4444;
-        }
-        .fs-card.ntfs {
-            border-color: #3b82f6;
-        }
-        .fs-card.ext4 {
-            border-color: #f59e0b;
-        }
-        .fs-card h4 {
-            margin: 0 0 0.5rem 0;
-            color: var(--secondary);
-        }
-        .fs-card ul {
-            margin: 0;
-            padding-left: 1rem;
-            list-style: none;
-        }
-        .fs-card li {
-            margin-bottom: 0.25rem;
-            font-size: 0.9em;
-        }
-        .fs-card li::before {
-            content: "• ";
-            color: var(--primary);
-        }
-
-        .inode-structure {
-            background: var(--bg-light);
-            padding: 1.5rem;
-            border-radius: 8px;
-            margin: 1.5rem 0;
-            font-family: 'Consolas', 'Monaco', monospace;
-            font-size: 0.85rem;
-        }
-        .inode-structure .field {
-            margin: 0.5rem 0;
-            padding: 0.25rem;
-            background: white;
-            border-radius: 4px;
-        }
-        .inode-structure .label {
-            color: var(--primary);
-            font-weight: 600;
         }
 
         footer {
@@ -367,19 +273,16 @@
             .comparison {
                 grid-template-columns: 1fr;
             }
-            .fs-comparison {
-                grid-template-columns: 1fr;
-            }
         }
     </style>
 </head>
 <body>
     <header>
         <div class="container">
-            <h1>Clase 09: Sistemas de Archivos</h1>
-            <p class="subtitle">IF0099 - Sistemas Operativos I | Unidad 6 - Archivos</p>
-            <p class="subtitle">Organización, Directorios y Sistemas de Archivos Modernos</p>
-            <p class="meta">Última actualización: 2026-02-01 | Duración: 90 minutos</p>
+            <h1>Clase 09: Permisos y Seguridad en Linux</h1>
+            <p class="subtitle">IF0099 - Sistemas Operativos I | Unidad 5 - Archivos y Permisos</p>
+            <p class="subtitle">Permisos rwx, SUID, SGID, Sticky Bit, ACLs y Gestión de Usuarios</p>
+            <p class="meta">Última actualización: 2026-02-10 | Duración: 90 minutos</p>
         </div>
     </header>
 
@@ -388,623 +291,462 @@
             <h2>Contenido de la Clase</h2>
             <ul>
                 <li><a href="#objetivos">Objetivos de Aprendizaje</a></li>
-                <li><a href="#archivo">¿Qué es un Archivo?</a></li>
-                <li><a href="#atributos">Atributos de un Archivo</a></li>
-                <li><a href="#operaciones">Operaciones sobre Archivos</a></li>
-                <li><a href="#directorios">Estructura de Directorios</a></li>
-                <li><a href="#sistemas-fs">Sistemas de Archivos Comunes</a></li>
-                <li><a href="#fat32">FAT32</a></li>
-                <li><a href="#ntfs">NTFS</a></li>
-                <li><a href="#ext4">ext4</a></li>
-                <li><a href="#journaling">Journaling</a></li>
-                <li><a href="#inodos">Inodos</a></li>
-                <li><a href="#fragmentacion">Fragmentación</a></li>
-                <li><a href="#montaje">Montaje de Sistemas</a></li>
-                <li><a href="#practica">Actividad Práctica</a></li>
-                <li><a href="#laboratorio">Laboratorio</a></li>
+                <li><a href="#intro">1. Introducción a Permisos</a></li>
+                <li><a href="#permisos-basicos">2. Permisos Básicos (rwx)</a></li>
+                <li><a href="#chmod">3. Comando chmod</a></li>
+                <li><a href="#chown">4. Comando chown</a></li>
+                <li><a href="#permisos-especiales">5. Permisos Especiales</a></li>
+                <li><a href="#usuarios-grupos">6. Usuarios y Grupos</a></li>
+                <li><a href="#acls">7. ACLs (Listas de Control de Acceso)</a></li>
+                <li><a href="#practica">8. Actividad Práctica</a></li>
+                <li><a href="#entregable">9. Entregable</a></li>
                 <li><a href="#resumen">Resumen</a></li>
             </ul>
         </nav>
 
-        <!-- Objetivos -->
         <section id="objetivos">
-            <h2>Objetivos de la Clase</h2>
-            <p>Al finalizar esta clase, el estudiante será capaz de:</p>
+            <h2>Objetivos de Aprendizaje</h2>
+            <p>Al finalizar esta clase, serás capaz de:</p>
             <ol>
-                <li><strong>Definir</strong> qué es un archivo y sus atributos</li>
-                <li><strong>Describir</strong> las operaciones sobre archivos</li>
-                <li><strong>Explicar</strong> diferentes estructuras de directorios</li>
-                <li><strong>Comparar</strong> sistemas de archivos: FAT32, NTFS, ext4</li>
+                <li><strong>Explicar</strong> el modelo de permisos UGO (User, Group, Others)</li>
+                <li><strong>Aplicar</strong> permisos básicos con chmod</li>
+                <li><strong>Gestionar</strong> propietarios y grupos con chown</li>
+                <li><strong>Configurar</strong> permisos especiales (SUID, SGID, Sticky Bit)</li>
+                <li><strong>Implementar</strong> ACLs para control de acceso granular</li>
+                <li><strong>Diseñar</strong> esquemas de permisos para empresas</li>
             </ol>
-
-            <div class="callout info">
-                <strong>En esta clase exploraremos:</strong>
-                <ul>
-                    <li>Cómo los SO organizan archivos en disco</li>
-                    <li>Estructuras de directorios: de árbol, jerárquicas, grafos</li>
-                    <li>Sistemas de archivos modernos: FAT32, NTFS, ext4</li>
-                    <li>Journaling y protección de datos</li>
-                    <li>Inodos y bloques en Linux</li>
-                </ul>
-            </div>
         </section>
 
-        <!-- ¿Qué es un Archivo -->
-        <section id="archivo">
-            <h2>¿Qué es un Archivo?</h2>
-
-            <figure>
-                <img src="../assets/infografias/clase-09-sistemas-archivos.png" alt="Comparación de Sistemas de Archivos">
-                <figcaption>Sistemas de archivos: FAT32, NTFS y ext4</figcaption>
-            </figure>
-
-            <figure>
-                <img src="../assets/diagramas-svg/sistema-archivos.svg" alt="Diagrama SVG de sistemas de archivos">
-                <figcaption>Figura X: Estructura de sistemas de archivos, inodos y punteros en ext4</figcaption>
-            </figure>
+        <section id="intro">
+            <h2>1. Introducción a Permisos en Linux</h2>
 
             <div class="callout info">
-                <h4>Definición</h4>
-                <p>Un <strong>archivo</strong> es una colección de información relacionada, identificada por un nombre, almacenada en memoria secundaria.</p>
+                <strong>Concepto fundamental:</strong> Linux es un sistema multiusuario diseñado para la seguridad. Cada archivo y directorio tiene permisos que controlan quién puede leer, escribir o ejecutar.
             </div>
 
-            <h4>Desde el punto de vista del usuario</h4>
-            <pre class="ascii-diagram">┌──────────────────────────────────────────┐
-│  informe.docx                            │
-│  ├── Nombre: informe.docx                │
-│  ├── Tipo: Documento Word                │
-│  ├── Tamaño: 2.5 MB                      │
-│  ├── Ubicación: C:\Documentos\           │
-│  └── Modificado: 2026-02-15 14:30        │
-└──────────────────────────────────────────┘</pre>
+            <h3>¿Por qué son importantes los permisos?</h3>
+            <ul>
+                <li><strong>Seguridad:</strong> Protegen información confidencial</li>
+                <li><strong>Integridad:</strong> Evitan modificaciones no autorizadas</li>
+                <li><strong>Privacidad:</strong> Cada usuario tiene su espacio privado</li>
+                <li><strong>Control:</strong> El administrador decide quién accede a qué</li>
+            </ul>
 
-            <h4>Desde el punto de vista del SO</h4>
-            <pre class="ascii-diagram">┌──────────────────────────────────────────┐
-│  Secuencia de bloques en disco           │
-│  Bloques: 100, 101, 250, 251, 252, ...   │
-└──────────────────────────────────────────┘</pre>
+            <h3>Modelo de Seguridad UGO</h3>
+            <p>Linux utiliza el modelo <strong>UGO</strong> (User, Group, Others):</p>
+            <ul>
+                <li><strong>User (u):</strong> El propietario del archivo</li>
+                <li><strong>Group (g):</strong> El grupo del archivo</li>
+                <li><strong>Others (o):</strong> Todos los demás usuarios</li>
+            </ul>
         </section>
 
-        <!-- Atributos de un Archivo -->
-        <section id="atributos">
-            <h2>Atributos de un Archivo</h2>
+        <section id="permisos-basicos">
+            <h2>2. Permisos Básicos (rwx)</h2>
 
-            <div class="callout info">
-                <h4>METADATOS DEL ARCHIVO</h4>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Atributo</th>
-                            <th>Descripción</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><strong>Nombre</strong></td>
-                            <td>Identificador legible para humanos</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Identificador</strong></td>
-                            <td>Número único en el sistema de archivos</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Tipo</strong></td>
-                            <td>.txt, .exe, .jpg, etc.</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Ubicación</strong></td>
-                            <td>Puntero a bloques en disco</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Tamaño</strong></td>
-                            <td>bytes / bloques</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Protección</strong></td>
-                            <td>Permisos (rwx)</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Hora/Fecha</strong></td>
-                            <td>Creación, modificación, acceso</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Propietario</strong></td>
-                            <td>UID/GID (Linux) o SID (Windows)</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </section>
+            <h3>Tipos de Permisos</h3>
+            <pre><code>r - Read    (lectura)    - Puede leer el contenido
+w - Write   (escritura)  - Puede modificar el contenido
+x - eXecute (ejecución)  - Puede ejecutar como programa</code></pre>
 
-        <!-- Operaciones sobre Archivos -->
-        <section id="operaciones">
-            <h2>Operaciones sobre Archivos</h2>
-            <h3>Operaciones básicas del SO</h3>
+            <h3>Estructura de Permisos</h3>
+            <pre><code>-rwxr-xr--  1 juan developers 1024 Feb 15 10:30 archivo.txt
+│  │  │     │     │       │        │       │
+│  │  │     │     │       │        │       └─ Nombre del archivo
+│  │  │     │     │       │        └─ Tamaño y fecha
+│  │  │     │     │       └─ Grupo propietario
+│  │  │     │     └─ Usuario propietario
+│  │  │     └─ Número de hard links
+│  │  └─ Permisos Others (r--)
+│  └─ Permisos Group (r-x)
+└─ Permisos User (rwx)</code></pre>
 
+            <h3>Notación Octal</h3>
             <table>
                 <thead>
                     <tr>
-                        <th>Operación</th>
-                        <th>Descripción</th>
-                        <th>System Call (Linux)</th>
+                        <th>Permiso</th>
+                        <th>Valor</th>
+                        <th>Binario</th>
+                        <th>Significado</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td><strong>Crear</strong></td>
-                        <td>Asignar espacio, crear entrada en directorio</td>
-                        <td><code>creat()</code>, <code>open()</code></td>
-                    </tr>
-                    <tr>
-                        <td><strong>Abrir</strong></td>
-                        <td>Cargar metadatos en memoria</td>
-                        <td><code>open()</code></td>
-                    </tr>
-                    <tr>
-                        <td><strong>Leer</strong></td>
-                        <td>Copiar datos a buffer del proceso</td>
-                        <td><code>read()</code></td>
-                    </tr>
-                    <tr>
-                        <td><strong>Escribir</strong></td>
-                        <td>Copiar datos del buffer al disco</td>
-                        <td><code>write()</code></td>
-                    </tr>
-                    <tr>
-                        <td><strong>Posicionar</strong></td>
-                        <td>Mover puntero de lectura/escritura</td>
-                        <td><code>lseek()</code></td>
-                    </tr>
-                    <tr>
-                        <td><strong>Cerrar</strong></td>
-                        <td>Liberar estructuras en memoria</td>
-                        <td><code>close()</code></td>
-                    </tr>
-                    <tr>
-                        <td><strong>Eliminar</strong></td>
-                        <td>Liberar bloques, eliminar entrada</td>
-                        <td><code>unlink()</code></td>
-                    </tr>
+                    <tr><td>---</td><td>0</td><td>000</td><td>Sin permisos</td></tr>
+                    <tr><td>--x</td><td>1</td><td>001</td><td>Solo ejecución</td></tr>
+                    <tr><td>-w-</td><td>2</td><td>010</td><td>Solo escritura</td></tr>
+                    <tr><td>-wx</td><td>3</td><td>011</td><td>Escritura y ejecución</td></tr>
+                    <tr><td>r--</td><td>4</td><td>100</td><td>Solo lectura</td></tr>
+                    <tr><td>r-x</td><td>5</td><td>101</td><td>Lectura y ejecución</td></tr>
+                    <tr><td>rw-</td><td>6</td><td>110</td><td>Lectura y escritura</td></tr>
+                    <tr><td>rwx</td><td>7</td><td>111</td><td> Todos los permisos</td></tr>
                 </tbody>
             </table>
-
-            <h4>Ejemplo en C</h4>
-            <pre><code>#include &lt;fcntl.h&gt;
-#include &lt;unistd.h&gt;
-
-int main() {
-    // Crear y abrir archivo
-    int fd = open("datos.txt", O_CREAT | O_WRONLY, 0644);
-
-    // Escribir
-    char *texto = "Hola Mundo\n";
-    write(fd, texto, 11);
-
-    // Posicionar al inicio
-    lseek(fd, 0, SEEK_SET);
-
-    // Cerrar
-    close(fd);
-
-    return 0;
-}</code></pre>
-        </section>
-
-        <!-- Estructura de Directorios -->
-        <section id="directorios">
-            <h2>Estructura de Directorios</h2>
-
-            <div class="callout info">
-                <h4>Directorio: archivo especial que contiene lista de archivos</h4>
-                <pre class="ascii-diagram">DIRECTORIO = Lista de entradas
-┌─────────────────────────────────────────┐
-│  Entrada 1: nombre → metadatos/inode    │
-│  Entrada 2: nombre → metadatos/inode    │
-│  Entrada 3: nombre → metadatos/inode    │
-│  ...                                    │
-└─────────────────────────────────────────┘</pre>
-            </div>
-
-            <h4>Tipos de estructuras de directorios:</h4>
-            <ol>
-                <li>Nivel único</li>
-                <li>Dos niveles</li>
-                <li>Árbol</li>
-                <li>Grafo acíclico</li>
-                <li>Grafo general</li>
-            </ol>
-
-            <h4>Directorio de Un Nivel</h4>
-            <pre class="ascii-diagram">┌──────────────────────────────────────────────────────┐
-│                   DIRECTORIO ÚNICO                   │
-├──────────────────────────────────────────────────────┤
-│  cat.exe │ bo.txt │ a.txt │ test.txt │ data.txt │...│
-└──────────────────────────────────────────────────────┘
-
-✅ Simple
-❌ Todos los archivos deben tener nombres únicos
-❌ No hay organización
-❌ No hay privacidad entre usuarios</pre>
-
-            <p><small>Usado en: Primeros sistemas operativos (CP/M)</small></p>
-
-            <h4>Directorio de Dos Niveles</h4>
-            <pre class="ascii-diagram">                    DIRECTORIO MAESTRO
-                ┌─────────┬─────────┬─────────┐
-                │ Usuario1│ Usuario2│ Usuario3│
-                └────┬────┴────┬────┴────┬────┘
-                     │         │         │
-         ┌───────────┘         │         └───────────┐
-         ▼                     ▼                     ▼
-    ┌─────────┐          ┌─────────┐          ┌─────────┐
-    │cat.exe  │          │a.txt    │          │data.txt │
-    │bo.txt   │          │b.txt    │          │prog.exe │
-    └─────────┘          └─────────┘          └─────────┘
-     Usuario1              Usuario2              Usuario3</pre>
-
-            <p><span class="check">✅</span> Cada usuario tiene su espacio<br>
-            <span class="check">✅</span> Pueden repetirse nombres entre usuarios<br>
-            <span class="cross">❌</span> No permite subdirectorios</p>
-
-            <h4>Directorio de Árbol (Jerárquico)</h4>
-            <pre class="ascii-diagram">                         / (raíz)
-                          │
-          ┌───────────────┼───────────────┐
-          ▼               ▼               ▼
-        /home           /etc           /var
-          │               │               │
-    ┌─────┼─────┐         │         ┌─────┴─────┐
-    ▼     ▼     ▼         ▼         ▼           ▼
-  juan  maria  pedro   passwd     log         cache
-    │     │                        │
-    ▼     └──┐                     ▼
-  docs   Desktop                 syslog
-    │       │
-    ▼       ▼
-tesis.pdf foto.jpg</pre>
 
             <div class="callout success">
-                <strong>Rutas:</strong><br>
-                Absoluta: <code>/home/juan/docs/tesis.pdf</code><br>
-                Relativa: <code>docs/tesis.pdf</code> (desde <code>/home/juan</code>)
+                <strong>Cálculo rápido:</strong>
+                r = 4, w = 2, x = 1 → Suma los valores que quieras activar
+                <br>ej: rwx = 4+2+1 = 7, r-x = 4+1 = 5
             </div>
         </section>
 
-        <!-- Sistemas de Archivos Comunes -->
-        <section id="sistemas-fs">
-            <h2>Sistemas de Archivos Comunes</h2>
+        <section id="chmod">
+            <h2>3. Comando chmod (Change Mode)</h2>
 
+            <p>El comando <code>chmod</code> modifica los permisos de archivos y directorios.</p>
+
+            <h3>Sintaxis Simbólica</h3>
+            <pre><code># Agregar permiso
+chmod +x script.sh           # Hacer ejecutable
+
+# Quitar permiso
+chmod -w archivo.txt         # Quitar escritura
+
+# Específico por categoría
+chmod u+x script.sh          # Usuario: ejecutar
+chmod g+r archivo.txt        # Grupo: leer
+chmod o-w archivo.txt        # Otros: no escribir
+
+# Múltiples cambios
+chmod u+x,g+r,o-w archivo.txt</code></pre>
+
+            <h3>Sintaxis Octal</h3>
+            <pre><code># Formato: chmod [usuario][grupo][otros] archivo
+chmod 644 archivo.txt        # rw-r--r--
+chmod 755 script.sh          # rwxr-xr-x
+chmod 700 privado.txt        # rwx------
+chmod 777 publico.txt        # rwxrwxrwx (NO RECOMENDADO)</code></pre>
+
+            <h3>Permisos Comunes</h3>
             <table>
                 <thead>
                     <tr>
-                        <th>Sistema</th>
-                        <th>SO</th>
-                        <th>Tamaño máx. archivo</th>
-                        <th>Tamaño máx. partición</th>
+                        <th>Octal</th>
+                        <th>Permiso</th>
+                        <th>Uso típico</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td><strong>FAT32</strong></td>
-                        <td>Windows/Linux</td>
-                        <td>4 GB</td>
-                        <td>2 TB</td>
-                    </tr>
-                    <tr>
-                        <td><strong>NTFS</strong></td>
-                        <td>Windows</td>
-                        <td>16 EB</td>
-                        <td>256 TB</td>
-                    </tr>
-                    <tr>
-                        <td><strong>ext4</strong></td>
-                        <td>Linux</td>
-                        <td>16 TB</td>
-                        <td>1 EB</td>
-                    </tr>
-                    <tr>
-                        <td><strong>APFS</strong></td>
-                        <td>macOS</td>
-                        <td>8 EB</td>
-                        <td>8 EB</td>
-                    </tr>
+                    <tr><td>644</td><td>rw-r--r--</td><td>Archivos de texto</td></tr>
+                    <tr><td>755</td><td>rwxr-xr-x</td><td>Scripts y programas</td></tr>
+                    <tr><td>600</td><td>rw-------</td><td>Archivos confidenciales</td></tr>
+                    <tr><td>700</td><td>rwx------</td><td>Directorios privados</td></tr>
                 </tbody>
             </table>
-        </section>
-
-        <!-- FAT32 -->
-        <section id="fat32">
-            <h2><abbr title="File Allocation Table - Tabla de asignación de archivos">FAT32</abbr> (File Allocation Table)</h2>
-
-            <pre class="ascii-diagram">           FAT (Tabla de Asignación)        Área de Datos
-        ┌───┬───┬───┬───┬───┬───┬───┐    ┌───────────────┐
-Entrada:│ 0 │ 1 │ 2 │ 3 │ 4 │ 5 │ 6 │    │   Bloque 2    │
-        ├───┼───┼───┼───┼───┼───┤    │   (inicio)    │
-Valor:  │ - │ - │ 3 │ 5 │EOF│ 4 │ - │    ├───────────────┤
-        └───┴───┴───┴───┴───┴───┘    │   Bloque 3    │
-              │   │   │   │               ├───────────────┤
-              │   └───│───│──────────┐    │   Bloque 4    │
-              │       │   │          │    ├───────────────┤
-              └───────│───│────────┐ │    │   Bloque 5    │
-                      │   │        │ │    └───────────────┘
-                      │   │        │ │
-Archivo: Inicio=2 → 2→3→5→4→EOF    ▼ ▼
-                                  Orden: 2→3→5→4</pre>
-
-            <div class="callout info">
-                <strong>Funcionamiento:</strong> La FAT es una tabla central que indica el siguiente bloque de cada archivo. Cada entrada corresponde a un bloque de datos. El valor EOF marca fin de archivo.
-            </div>
 
             <div class="callout warning">
-                <span class="cross">❌</span> Límite 4GB por archivo<br>
-                <span class="cross">❌</span> Sin permisos, sin journaling<br>
-                <span class="check">✅</span> Simple, compatible con todo
+                <strong>Advertencia:</strong> Nunca uses 777 en servidores de producción. Da permisos totales a todos los usuarios.
             </div>
         </section>
 
-        <!-- NTFS -->
-        <section id="ntfs">
-            <h2><abbr title="New Technology File System - Sistema de archivos nuevo technology">NTFS</abbr> (New Technology File System)</h2>
+        <section id="chown">
+            <h2>4. Comando chown (Change Owner)</h2>
 
-            <pre class="ascii-diagram">                NTFS ESTRUCTURA
-┌────────────────────────────────────────────────────────┐
-│  MFT (Master File Table)                               │
-│  ┌──────────────────────────────────────────────────┐  │
-│  │ Registro 0: $MFT (tabla misma)                   │  │
-│  │ Registro 1: $MFTMirr (copia de seguridad)        │  │
-│  │ Registro 2: $LogFile (journaling)                │  │
-│  │ Registro 3: $Volume (info del volumen)           │  │
-│  │ ...                                              │  │
-│  │ Registro N: archivo del usuario                  │  │
-│  └──────────────────────────────────────────────────┘  │
-│                                                        │
-│  Cada registro MFT: 1KB                                │
-│  Contiene: Atributos, permisos ACL, timestamps, datos  │
-└────────────────────────────────────────────────────────┘</pre>
+            <p>El comando <code>chown</code> cambia el propietario y grupo de un archivo.</p>
 
-            <div class="callout info">
-                <strong>Funcionamiento:</strong> NTFS organiza todo en la Master File Table (MFT), una base de datos de registros de 1KB. El journaling ($LogFile) garantiza consistencia tras fallos.
+            <h3>Cambiar Propietario</h3>
+            <pre><code># Cambiar solo el usuario
+sudo chown nuevo_usuario archivo.txt
+
+# Cambiar usuario y grupo
+sudo chown usuario:grupo archivo.txt
+
+# Cambiar solo el grupo
+sudo chown :grupo archivo.txt
+
+# Recursivo (directorios)
+sudo chown -R usuario:grupo /directorio/</code></pre>
+
+            <h3>Ejemplos Prácticos</h3>
+            <pre><code># Servidor web: archivos pertenecen a www-data
+sudo chown -R www-data:www-data /var/www/html
+
+# Proyecto compartido: grupo developers
+sudo chown -R juan:developers /proyecto/compartido
+
+# Directorio personal: usuario y su grupo
+sudo chown -R $USER:$USER ~/documentos</code></pre>
+        </section>
+
+        <section id="permisos-especiales">
+            <h2>5. Permisos Especiales</h2>
+
+            <h3>SUID (Set User ID)</h3>
+            <p>El archivo se ejecuta con los privilegios del propietario, no del usuario que lo ejecuta.</p>
+            <pre><code># Ejemplo: /usr/bin/passwd
+$ ls -l /usr/bin/passwd
+-rwsr-xr-x  1 root root 73465 Feb 15 10:30 /usr/bin/passwd
+ │             │
+ │             └─ Dueño = root
+ └─ s = SUID activo</code></pre>
+
+            <p>Cualquier usuario puede cambiar su contraseña porque passwd se ejecuta temporalmente como root.</p>
+
+            <pre><code># Activar SUID
+chmod u+s archivo
+chmod 4755 archivo            # 4 = SUID</code></pre>
+
+            <div class="callout warning">
+                <strong>Peligro:</strong> SUID puede ser un vector de escalada de privilegios. Solo usar cuando sea absolutamente necesario.
             </div>
+
+            <h3>SGID (Set Group ID)</h3>
+            <p>Los archivos nuevos heredan el grupo del directorio padre.</p>
+            <pre><code># Crear directorio colaborativo
+mkdir /proyecto/compartido
+sudo chown -R :developers /proyecto/compartido
+sudo chmod g+s /proyecto/compartido
+
+# Verificar
+ls -ld /proyecto/compartido
+drwxrwsr-x  2 juan developers 4096 Feb 15 10:30 /proyecto/compartido
+ │                │
+ │                └─ s = SGID activo</code></pre>
+
+            <pre><code># Activar SGID
+chmod g+s directorio
+chmod 2755 directorio           # 2 = SGID</code></pre>
+
+            <h3>Sticky Bit</h3>
+            <p>Solo el propietario puede borrar sus archivos (útil en directorios compartidos).</p>
+            <pre><code># Ejemplo: /tmp
+$ ls -ld /tmp
+drwxrwxrwt  10 root root 4096 Feb 15 10:30 /tmp
+ │                │
+ │                └─ t = Sticky bit activo</code></pre>
+
+            <pre><code># Activar sticky bit
+chmod +t directorio
+chmod 1755 directorio           # 1 = Sticky bit</code></pre>
 
             <div class="callout success">
-                <span class="check">✅</span> Journaling (recuperación de errores)<br>
-                <span class="check">✅</span> Permisos ACL granulares<br>
-                <span class="check">✅</span> Compresión y cifrado (EFS)
+                <strong>Uso típico:</strong> Directorios compartidos donde múltiples usuarios pueden crear archivos, pero solo pueden borrar los suyos propios (como /tmp).
             </div>
         </section>
 
-        <!-- ext4 -->
-        <section id="ext4">
-            <h2><abbr title="Fourth Extended Filesystem - Cuarto sistema de archivos extendido">ext4</abbr> (Fourth Extended Filesystem)</h2>
+        <section id="usuarios-grupos">
+            <h2>6. Usuarios y Grupos en Linux</h2>
 
-            <pre class="ascii-diagram">                EXT4 ESTRUCTURA
-┌─────────────────────────────────────────────────────────┐
-│  Superbloque │ Tabla de inodos │ Bloques de datos      │
-├──────────────┴─────────────────┴────────────────────────┤
-│                                                         │
-│  INODO (128 bytes):                                     │
-│  ┌───────────────────────────────────────────────┐     │
-│  │ Modo (permisos) │ UID │ GID │ Tamaño │ Tiempo │     │
-│  │ Punteros a bloques (12 directos + indirectos) │     │
-│  └───────────────────────────────────────────────┘     │
-│                                                         │
-│  El nombre NO está en el inodo (está en directorio)     │
-└─────────────────────────────────────────────────────────┘</pre>
+            <h3>Archivos de Configuración</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Archivo</th>
+                        <th>Contenido</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>/etc/passwd</td><td>Información de usuarios</td></tr>
+                    <tr><td>/etc/shadow</td><td>Contraseñas encriptadas</td></tr>
+                    <tr><td>/etc/group</td><td>Información de grupos</td></tr>
+                    <tr><td>/etc/gshadow</td><td>Contraseñas de grupos</td></tr>
+                </tbody>
+            </table>
+
+            <h3>Gestión de Usuarios</h3>
+            <pre><code># Crear usuario
+sudo useradd -m -s /bin/bash nuevo_usuario
+
+# Establecer contraseña
+sudo passwd nuevo_usuario
+
+# Ver información de usuario
+id nuevo_usuario
+groups nuevo_usuario
+
+# Eliminar usuario
+sudo userdel usuario
+sudo userdel -r usuario       # Eliminar también home</code></pre>
+
+            <h3>Gestión de Grupos</h3>
+            <pre><code># Crear grupo
+sudo groupadd desarrolladores
+
+# Agregar usuario a grupo
+sudo usermod -aG desarrolladores usuario
+
+# Ver miembros de un grupo
+getent group desarrolladores
+
+# Eliminar grupo
+sudo groupdel desarrolladores</code></pre>
+
+            <h3>Estructura de /etc/passwd</h3>
+            <pre><code>juan:x:1000:1000:Juan Perez:/home/juan:/bin/bash
+│  │ │   │    │            │           │
+│  │ │   │    │            │           └─ Shell predeterminado
+│  │ │   │    │            └─ Directorio home
+│  │ │   │    └─ Comentario (nombre completo)
+│  │ │   └─ GID (grupo primario)
+│  │ └─ UID (ID de usuario)
+│  └─ x = contraseña en /etc/shadow
+└─ Nombre de usuario</code></pre>
+        </section>
+
+        <section id="acls">
+            <h2>7. ACLs (Access Control Lists)</h2>
 
             <div class="callout info">
-                <strong>Funcionamiento:</strong> ext4 usa inodos para almacenar metadatos y punteros a bloques de datos. Los extents permiten asignar bloques contiguos, mejorando rendimiento.
+                <strong>¿Qué son las ACLs?</strong> Permiten permisos más granulares que el modelo UGO tradicional. Puedes dar permisos a múltiples usuarios y grupos específicos.
             </div>
+
+            <h3>Instalar ACL</h3>
+            <pre><code># Debian/Ubuntu
+sudo apt install acl
+
+# RHEL/CentOS
+sudo yum install acl</code></pre>
+
+            <h3>Ver ACL</h3>
+            <pre><code># Ver ACL de un archivo
+getfacl archivo.txt
+
+# Salida ejemplo:
+# file: archivo.txt
+# owner: juan
+# group: developers
+user::rw-
+user:maria:rw-
+group::r--
+mask::rw-
+other::r--</code></pre>
+
+            <h3>Modificar ACL</h3>
+            <pre><code># Dar permisos a usuario específico
+setfacl -m u:maria:rw archivo.txt
+
+# Dar permisos a grupo específico
+setfacl -m g:equiporh:rx documento.txt
+
+# Eliminar permiso de usuario
+setfacl -x u:maria archivo.txt
+
+# Eliminar todas las ACLs
+setfacl -b archivo.txt</code></pre>
+
+            <h3>ACLs por Defecto para Directorios</h3>
+            <pre><code># Establecer ACLs predeterminadas (nuevos archivos heredan)
+setfacl -d -m u:maria:rw /directorio/compartido
+
+# Ver ACLs predeterminadas
+getfacl -d /directorio/compartido</code></pre>
 
             <div class="callout success">
-                <span class="check">✅</span> Journaling<br>
-                <span class="check">✅</span> Extents (bloques contiguos)<br>
-                <span class="check">✅</span> Asignación retardada
+                <strong>Ventaja de ACLs:</strong> No necesitas crear nuevos grupos para cada combinación de permisos. Puedes dar permisos específicos a usuarios individuales sin afectar al modelo UGO.
             </div>
         </section>
 
-        <!-- Journaling -->
-        <section id="journaling">
-            <h2><abbr title="Journaling - Registro de transacciones para recuperación del sistema">Journaling</abbr>: Protección contra Fallos</h2>
+        <section id="practica">
+            <h2>8. Actividad Práctica</h2>
 
-            <div class="comparison">
-                <div>
-                    <h4>SIN JOURNALING</h4>
-                    <ol>
-                        <li>Escribir datos</li>
-                        <li>Actualizar FAT</li>
-                        <li>Actualizar directorio</li>
-                    </ol>
-                    <div class="callout danger">
-                        Si falla en paso 2:<br>
-                        <strong>¡Inconsistencia!</strong>
-                    </div>
-                </div>
-                <div>
-                    <h4>CON JOURNALING</h4>
-                    <ol>
-                        <li>Escribir en log</li>
-                        <li>Escribir datos</li>
-                        <li>Actualizar FAT</li>
-                        <li>Actualizar directorio</li>
-                        <li>Marcar completo</li>
-                    </ol>
-                    <div class="callout success">
-                        Si falla en cualquier paso:<br>
-                        <strong>El log permite recuperar</strong>
-                    </div>
-                </div>
+            <div class="actividad">
+                <h3>Ejercicio 1: Permisos Básicos</h3>
+                <p><strong>Objetivo:</strong> Practicar con chmod y chown</p>
+                <pre><code># 1. Crear archivo de prueba
+touch prueba.txt
+
+# 2. Ver permisos iniciales
+ls -l prueba.txt
+
+# 3. Cambiar a 644 (rw-r--r--)
+chmod 644 prueba.txt
+ls -l prueba.txt
+
+# 4. Quitar permiso de lectura a otros
+chmod o-r prueba.txt
+ls -l prueba.txt
+
+# 5. Hacer ejecutable
+chmod +x prueba.txt
+ls -l prueba.txt</code></pre>
             </div>
 
-            <h4>Tipos de journaling:</h4>
-            <ul>
-                <li><strong>Metadata only:</strong> Solo cambios de estructura (ext4 default)</li>
-                <li><strong>Full:</strong> Datos y metadata (más lento, más seguro)</li>
-            </ul>
+            <div class="actividad">
+                <h3>Ejercicio 2: Permisos Especiales</h3>
+                <p><strong>Objetivo:</strong> Configurar directorio compartido con SGID</p>
+                <pre><code># 1. Crear directorio compartido
+mkdir -p ~/proyecto/compartido
+
+# 2. Crear grupo de desarrolladores
+sudo groupadd desarrolladores
+
+# 3. Agregarte al grupo
+sudo usermod -aG desarrolladores $USER
+
+# 4. Configurar directorio
+sudo chown -R :desarrolladores ~/proyecto/compartido
+sudo chmod g+s ~/proyecto/compartido
+
+# 5. Verificar (inicia nueva sesión para que surta efecto)
+newgrp desarrolladores
+ls -ld ~/proyecto/compartido</code></pre>
+            </div>
+
+            <div class="actividad">
+                <h3>Ejercicio 3: ACLs</h3>
+                <p><strong>Objetivo:</strong> Dar acceso específico a otro usuario</p>
+                <pre><code># 1. Crear archivo confidencial
+echo "Datos importantes" > confidencial.txt
+
+# 2. Ver ACL actual
+getfacl confidencial.txt
+
+# 3. Dar permiso de lectura a usuario compañero
+sudo setfacl -m u:compañero:r confidencial.txt
+
+# 4. Verificar ACL
+getfacl confidencial.txt</code></pre>
+            </div>
+
+            <p><strong>Tiempo estimado:</strong> 45 minutos</p>
         </section>
 
-        <!-- Inodos -->
-        <section id="inodos">
-            <h2>Profundizando en <abbr title="Inodo - Índice de nodo o estructura de datos de archivo">Inodos</abbr> (ext4)</h2>
-            <h3>Estructura detallada de un inodo</h3>
+        <section id="entregable">
+            <h2>9. Entregable</h2>
 
-            <div class="inode-structure">
-                <div class="field"><strong>INODO #12345</strong> (128 bytes)</div>
-                <div class="field">Modo: -rw-r--r-- (0644)</div>
-                <div class="field">UID: 1000 (juan) &nbsp;&nbsp; GID: 1000 (juan)</div>
-                <div class="field">Tamaño: 15360 bytes (4 bloques)</div>
-                <div class="field">Links: 1</div>
-                <div class="field"><strong>PUNTEROS A BLOQUES:</strong></div>
-                <div class="field">[0-11] Directos: 1024, 1025, 1026, 1027</div>
-                <div class="field">[12] Indirecto simple: 2048</div>
-                <div class="field">[13] Indirecto doble: 0 (sin usar)</div>
-                <div class="field">[14] Indirecto triple: 0 (sin usar)</div>
+            <div class="callout info">
+                <h3>Esquema de Permisos para Empresa Ficticia</h3>
+                <p><strong>Empresa:</strong> TechSolutions S.A.S.</p>
+                <p><strong>Departamentos:</strong> Desarrollo, Gerencia, Contabilidad</p>
             </div>
 
-            <h4>Ventajas del sistema de inodos:</h4>
+            <h3>Requisitos:</h3>
             <ol>
-                <li><strong>Nombre separado del inodo:</strong> Múltiples nombres (hard links)</li>
-                <li><strong>Punteros indirectos:</strong> Archivos gigantes sin desperdiciar espacio</li>
-                <li><strong>Metadata rica:</strong> Timestamps precisos, permisos Unix</li>
+                <li><strong>Directorio /proyectos/compartido:</strong>
+                    <ul>
+                        <li>Equipo de desarrollo: lectura y escritura</li>
+                        <li>Gerencia: solo lectura</li>
+                        <li>Resto de usuarios: sin acceso</li>
+                    </ul>
+                </li>
+                <li><strong>Directorio /proyectos/confidencial:</strong>
+                    <ul>
+                        <li>Solo gerencia: acceso completo</li>
+                        <li>Resto de usuarios: sin acceso</li>
+                    </ul>
+                </li>
+                <li><strong>Script de configuración:</strong>
+                    <ul>
+                        <li>Automatizar la creación de estructura</li>
+                        <li>Configurar permisos apropiados</li>
+                        <li>Crear usuarios y grupos necesarios</li>
+                    </ul>
+                </li>
             </ol>
 
-            <h4>Hard Links vs Soft Links</h4>
-
-            <div class="comparison">
-                <div>
-                    <h4>HARD LINK</h4>
-                    <pre><code>$ ln /home/juan/original.txt /home/maria/copia.txt</code></pre>
-                    <p><span class="check">✅</span> Mismo archivo, dos nombres</p>
-                    <p><span class="check">✅</span> Si se borra original.txt, copia.txt sigue funcionando</p>
-                    <p><span class="cross">❌</span> Solo en la misma partición</p>
-                </div>
-                <div>
-                    <h4>SOFT LINK (simbólico)</h4>
-                    <pre><code>$ ln -s /home/juan/original.txt /home/maria/enlace.txt</code></pre>
-                    <p><span class="check">✅</span> Puede cruzar particiones</p>
-                    <p><span class="check">✅</span> Puede apuntar a directorios</p>
-                    <p><span class="cross">❌</span> Si se borra original.txt, enlace.txt queda "roto"</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Fragmentación -->
-        <section id="fragmentacion">
-            <h2>Fragmentación en Diferentes Sistemas</h2>
-
-            <div class="callout info">
-                <h4>FAT32 después de 6 meses de uso</h4>
-                <p>Archivo A: [1][5][9][15][22][31][44]...</p>
-                <p class="warning">Bloques muy dispersos → Tiempo de lectura: LENTO</p>
-            </div>
-
-            <div class="callout success">
-                <h4>ext4 con Extents</h4>
-                <p>Archivo A: [1-7][50-60][100-115]</p>
-                <p>Rangos contiguos → Tiempo de lectura: RÁPIDO</p>
-            </div>
-
-            <div class="callout success">
-                <h4>NTFS con Desfragmentación automática</h4>
-                <p>Archivo A: [10-25][26-40]</p>
-                <p>Mantiene contiguidad → Tiempo de lectura: RÁPIDO</p>
-            </div>
-
-            <h4>Conclusión:</h4>
+            <h3>Formato de Entrega:</h3>
             <ul>
-                <li><strong>FAT32:</strong> Requiere desfragmentación manual frecuente</li>
-                <li><strong>NTFS:</strong> Desfragmentación automática en segundo plano</li>
-                <li><strong>ext4:</strong> Alocación retardada previene fragmentación</li>
+                <li>Diagrama de la estructura de directorios</li>
+                <li>Tabla de permisos (quién puede acceder a qué)</li>
+                <li>Script bash funcional con comentarios</li>
+                <li>Documentación explicando cada permiso</li>
             </ul>
-        </section>
 
-        <!-- Montaje -->
-        <section id="montaje">
-            <h2><abbr title="Montaje - Montaje de sistemas de archivos en el árbol de directorios">Montaje</abbr> de Sistemas de Archivos</h2>
-            <h3>Linux: Un árbol único con múltiples dispositivos</h3>
-
-            <pre class="ascii-diagram">                    / (raíz - /dev/sda1 ext4)
-                     │
-       ┌─────────────┼─────────────┐
-       ▼             ▼             ▼
-     /home         /mnt          /boot
-    (sda2)         │            (sda3)
-      │            │
-      ▼            ▼
-   ext4      /mnt/usb ← montaje de USB (FAT32)
-           /mnt/cd  ← montaje de CD (ISO9660)
-
-Comando: mount /dev/sdb1 /mnt/usb</pre>
-
-            <div class="callout info">
-                <strong>Comando para ver sistemas montados:</strong> <code>df -Th</code>
+            <div class="callout warning">
+                <strong>Fecha de entrega:</strong> Consultar plataforma virtual
             </div>
         </section>
 
-        <!-- Actividad Práctica -->
-        <section id="practica">
-            <h2>Actividad Práctica (Opcional)</h2>
-            <h3>En parejas (10 min)</h3>
-
-            <div class="callout info">
-                <h4>Terminal Linux (o WSL):</h4>
-                <pre><code># Ver sistemas de archivos montados
-df -Th
-
-# Ver inodo de un archivo
-ls -li archivo.txt
-
-# Crear enlace simbólico
-ln -s /ruta/original enlace
-
-# Ver contenido de directorio (detallado)
-ls -la /</code></pre>
-            </div>
-
-            <h4>Responder:</h4>
-            <p>¿Cuántos sistemas de archivos hay montados? ¿Qué tipos son?</p>
-        </section>
-
-        <!-- Videos Recomendados -->
-        <section id="videos">
-            <h2>🎥 Videos Recomendados</h2>
-
-            <div class="video-resource">
-                <h3>Video 1: File Systems in Operating Systems</h3>
-                <p><strong>Concepto:</strong> Sistemas de archivos: estructura y organización</p>
-                <p><strong>Duración:</strong> 15 minutos</p>
-                <p><strong>Nivel:</strong> Intermedio</p>
-                <p><strong>Por qué verlo:</strong> Excelente explicación de jerarquía y tipos de archivos</p>
-                <p><strong>Canal:</strong> Neso Academy</p>
-                <a href="https://www.youtube.com/watch?v=Jk64UynQ6qA" target="_blank">▶ Ver en YouTube</a>
-            </div>
-
-            <div class="video-resource">
-                <h3>Video 2: Inodes Explained</h3>
-                <p><strong>Concepto:</strong> Estructura de inodos en Linux/Unix</p>
-                <p><strong>Duración:</strong> 12 minutos</p>
-                <p><strong>Nivel:</strong> Intermedio</p>
-                <p><strong>Por qué verlo:</strong> Entender cómo Linux organiza archivos internamente</p>
-                <p><strong>Canal:</strong> LiveOverflow</p>
-                <a href="https://www.youtube.com/watch?v=H526jxt6zHc" target="_blank">▶ Ver en YouTube</a>
-            </div>
-
-            <div class="video-resource">
-                <h3>Video 3: FAT32 vs NTFS vs ext4 Comparison</h3>
-                <p><strong>Concepto:</strong> Comparación de sistemas de archivos populares</p>
-                <p><strong>Duración:</strong> 10 minutos</p>
-                <p><strong>Nivel:</strong> Intermedio</p>
-                <p><strong>Por qué verlo:</strong> Entender ventajas y desventajas de cada FS</p>
-                <p><strong>Canal:</strong> Hardware Explained</p>
-                <a href="https://www.youtube.com/watch?v=MVk2N63ht2rI" target="_blank">▶ Ver en YouTube</a>
-            </div>
-
-            <div class="callout info">
-                <p class="callout-title">💡 Tip de Estudio</p>
-                <p>Practica explorando el sistema de archivos de Linux con <code>ls -lai</code> (ver inodos), <code>df -h</code> (espacio en disco) y <code>mount</code> (sistemas montados). Comprender la estructura de directorios es fundamental para la administración de sistemas.</p>
-            </div>
-        </section>
-
-        <!-- Resumen -->
         <section id="resumen">
             <h2>Resumen de la Clase</h2>
 
@@ -1016,80 +758,44 @@ ls -la /</code></pre>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td><strong>Archivo</strong></td>
-                        <td>Unidad lógica de almacenamiento con nombre</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Directorio</strong></td>
-                        <td>Archivo especial que contiene lista de archivos</td>
-                    </tr>
-                    <tr>
-                        <td><strong>FAT32</strong></td>
-                        <td>Simple, compatible, límite 4GB</td>
-                    </tr>
-                    <tr>
-                        <td><strong>NTFS</strong></td>
-                        <td>Windows moderno, journaling, ACL</td>
-                    </tr>
-                    <tr>
-                        <td><strong>ext4</strong></td>
-                        <td>Linux, journaling, extents</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Journaling</strong></td>
-                        <td>Log de operaciones para recuperación</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Montaje</strong></td>
-                        <td>Conectar sistema de archivos al árbol</td>
-                    </tr>
+                    <tr><td><strong>UGO</strong></td><td>User, Group, Others - modelo de permisos</td></tr>
+                    <tr><td><strong>rwx</strong></td><td>Read, Write, eXecute - tipos de permisos</td></tr>
+                    <tr><td><strong>chmod</strong></td><td>Cambiar permisos de archivos</td></tr>
+                    <tr><td><strong>chown</strong></td><td>Cambiar propietario y grupo</td></tr>
+                    <tr><td><strong>SUID</strong></td><td>Ejecutar como propietario (4)</td></tr>
+                    <tr><td><strong>SGID</strong></td><td>Heredar grupo del directorio (2)</td></tr>
+                    <tr><td><strong>Sticky bit</strong></td><td>Solo dueño puede borrar (1)</td></tr>
+                    <tr><td><strong>ACL</strong></td><td>Permisos granulares avanzados</td></tr>
+                    <tr><td><strong>setfacl/getfacl</strong></td><td>Gestionar ACLs</td></tr>
                 </tbody>
             </table>
 
+            <div class="callout success">
+                <strong>Concepto fundamental:</strong> Los permisos en Linux son la base de la seguridad del sistema. El modelo UGO es simple pero efectivo para la mayoría de casos, mientras que las ACLs proporcionan flexibilidad cuando se necesita control granular.
+            </div>
+
             <h3>Próxima Clase</h3>
-            <p><strong>Clase 10: Gestión de E/S</strong></p>
+            <p><strong>Clase 10: Permisos en Windows Server</strong></p>
             <ul>
-                <li>Dispositivos de E/S</li>
-                <li>Controladores (drivers)</li>
-                <li>DMA (Direct Memory Access)</li>
-                <li>Buffering y caching</li>
+                <li>NTFS vs FAT32</li>
+                <li>Permisos NTFS y ACLs</li>
+                <li>Carpetas compartidas SMB</li>
+                <li>Gestión con PowerShell</li>
             </ul>
         </section>
     </div>
 
-    <!-- Section: Laboratorio -->
-    <section id="laboratorio">
-        <h2>Laboratorio</h2>
-
-        <h3>Trabajo con Sistemas de Archivos</h3>
-        <p>Crea, modifica y gestiona archivos y directorios en Linux real.</p>
-
-        <div class="callout info">
-            <strong>Objetivos del Laboratorio</strong>
-            <ul>
-                <li>Crear y organizar estructuras de directorios</li>
-                <li>Configurar permisos y atributos especiales</li>
-                <li>Montar y desmontar sistemas de archivos</li>
-            </ul>
-        </div>
-
-        <p><a href="../laboratorios-html/index.html">Ver índice de Laboratorios →</a></p>
-    </section>
-
     <footer>
         <div class="container">
             <p><strong>IF0099 - Sistemas Operativos I</strong> • <a href="index.html">Índice de Clases</a></p>
-        <div class="container">
             <p>IF0099 - Sistemas Operativos I | UNAULA - Ingeniería Informática - 2026-I</p>
-            <p><a href="../index.html">← Volver al inicio</a></p>
+            <p>Clase 09: Permisos y Seguridad en Linux</p>
         </div>
     </footer>
 
-    <a href="#" class="scroll-top" id="scrollTop">↑</a>
+    <a href="#" class="scroll-top" id="scrollTop" aria-label="Scroll to top">↑</a>
 
     <script>
-        // Scroll to top button
         const scrollTopBtn = document.getElementById('scrollTop');
         window.addEventListener('scroll', () => {
             if (window.pageYOffset > 300) {
@@ -1101,20 +807,6 @@ ls -la /</code></pre>
         scrollTopBtn.addEventListener('click', (e) => {
             e.preventDefault();
             window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-
-        // Smooth scroll for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                const href = this.getAttribute('href');
-                if (href !== '#' && href.length > 1) {
-                    e.preventDefault();
-                    const target = document.querySelector(href);
-                    if (target) {
-                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    }
-                }
-            });
         });
     </script>
 </body>

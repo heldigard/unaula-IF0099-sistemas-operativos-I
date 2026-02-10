@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clase 06: Gestión de Memoria | IF0099 - Sistemas Operativos I</title>
+    <title>Clase 06: Procesos en Windows | IF0099 - Sistemas Operativos I</title>
+    <!-- Prism.js CSS para syntax highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
     <style>
         :root {
             --primary: #2563eb;
@@ -116,23 +118,6 @@
             margin-bottom: 1rem;
         }
 
-        figure {
-            margin: 2rem 0;
-            text-align: center;
-        }
-        figure img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        figcaption {
-            margin-top: 0.75rem;
-            color: var(--text-muted);
-            font-style: italic;
-            font-size: 0.95rem;
-        }
-
         table {
             width: 100%;
             border-collapse: collapse;
@@ -210,17 +195,6 @@
             border-left-color: #ef4444;
         }
 
-        .ascii-diagram {
-            font-family: 'Consolas', 'Monaco', monospace;
-            font-size: 0.85rem;
-            line-height: 1.2;
-            background: var(--bg-light);
-            padding: 1rem;
-            border-radius: 4px;
-            overflow-x: auto;
-            white-space: pre;
-        }
-
         .comparison {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -233,101 +207,22 @@
             border-radius: 8px;
         }
 
-        .memory-block {
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-            margin: 1.5rem 0;
-            font-family: 'Consolas', 'Monaco', monospace;
-            font-size: 0.85rem;
-        }
-        .memory-row {
-            display: flex;
-            align-items: center;
-        }
-        .memory-label {
-            min-width: 100px;
-            padding: 4px 8px;
-            background: var(--secondary);
-            color: white;
-            text-align: right;
-        }
-        .memory-cell {
-            flex: 1;
-            min-height: 30px;
-            padding: 4px 8px;
+        .actividad {
             background: var(--bg-light);
-            border: 1px solid var(--border);
-        }
-        .memory-cell.so {
-            background: #dc2626;
-            color: white;
-        }
-        .memory-cell.process {
-            background: #2563eb;
-            color: white;
-        }
-        .memory-cell.free {
-            background: #d1fae5;
-        }
-        .memory-cell.hole {
-            background: #fef3c7;
-        }
-        .memory-size {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-        }
-
-        .hierarchy-pyramid {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin: 2rem 0;
-            font-family: 'Consolas', 'Monaco', monospace;
-            font-size: 0.85rem;
-        }
-        .pyramid-level {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            padding: 0.75rem 2rem;
-            margin: 2px 0;
-            text-align: center;
-            transition: transform 0.2s;
-        }
-        .pyramid-level:hover {
-            transform: scale(1.02);
-        }
-        .pyramid-level.wide {
-            width: 100%;
-        }
-        .pyramid-level.medium {
-            width: 80%;
-        }
-        .pyramid-level.narrow {
-            width: 60%;
-        }
-
-        .timeline {
-            display: flex;
-            align-items: center;
+            border-left: 5px solid var(--accent);
+            padding: 1.5rem;
             margin: 1.5rem 0;
-            gap: 1rem;
-            overflow-x: auto;
-            padding: 1rem 0;
+            border-radius: 4px;
         }
-        .timeline-item {
-            min-width: 120px;
-            text-align: center;
+        .actividad h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
         }
-        .timeline-box {
-            padding: 1rem;
-            background: var(--bg-light);
-            border-radius: 8px;
-            border: 2px solid var(--primary);
+        .actividad p {
+            margin-bottom: 0.75rem;
         }
-        .timeline-arrow {
-            font-size: 1.5rem;
-            color: var(--text-muted);
+        .actividad strong {
+            color: var(--secondary);
         }
 
         footer {
@@ -367,41 +262,6 @@
             background: var(--secondary);
         }
 
-        .actividad {
-            background: var(--bg-light);
-            border-left: 5px solid var(--accent);
-            padding: 1.5rem;
-            margin: 1.5rem 0;
-            border-radius: 4px;
-        }
-        .actividad h3 {
-            color: var(--primary);
-            margin-bottom: 1rem;
-        }
-        .actividad p {
-            margin-bottom: 0.75rem;
-        }
-        .actividad strong {
-            color: var(--secondary);
-        }
-        .evaluacion {
-            background: #fef3c7;
-            border-left: 5px solid #f59e0b;
-            padding: 1.5rem;
-            margin: 1.5rem 0;
-            border-radius: 8px;
-        }
-        .evaluacion h3 {
-            color: #b45309;
-            margin-bottom: 1rem;
-        }
-        .evaluacion .porcentaje {
-            font-size: 2rem;
-            font-weight: 700;
-            color: #d97706;
-            margin: 0.5rem 0;
-        }
-
         @media (max-width: 768px) {
             header h1 {
                 font-size: 1.6rem;
@@ -416,15 +276,72 @@
                 grid-template-columns: 1fr;
             }
         }
+
+        /* Code blocks with syntax highlighting */
+        pre {
+            background: #1e1e1e !important;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            overflow-x: auto;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        pre code {
+            font-family: 'Fira Code', 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: #d4d4d4;
+        }
+
+        /* Inline code */
+        code:not(pre code) {
+            background: #e2e8f0;
+            color: #c026d3;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-family: 'Fira Code', 'Consolas', 'Monaco', monospace;
+            font-size: 0.9em;
+        }
+
+        .code-header {
+            background: #2d2d2d;
+            color: #9cdcfe;
+            padding: 0.5rem 1rem;
+            border-radius: 8px 8px 0 0;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+        }
+
+        .code-block {
+            border-radius: 8px;
+            overflow: hidden;
+            margin: 1.5rem 0;
+        }
+
+        .code-block pre {
+            margin: 0;
+            border-radius: 0;
+        }
+
+        .terminal-block pre {
+            background: #0c0c0c !important;
+            border: 1px solid #333;
+        }
+
+        .terminal-block .code-header {
+            background: #1a1a1a;
+            color: #22c55e;
+        }
     </style>
 </head>
 <body>
     <header>
         <div class="container">
-            <h1>Clase 06: Gestión de Memoria</h1>
-            <p class="subtitle">IF0099 - Sistemas Operativos I | Unidad 5 - Memoria</p>
-            <p class="subtitle">Conceptos, Partición y Fragmentación</p>
-            <p class="meta">Última actualización: 2026-02-01 | Duración: 90 minutos</p>
+            <h1>Clase 06: Procesos en Windows - Gestión y Servicios</h1>
+            <p class="subtitle">IF0099 - Sistemas Operativos I | Unidad 3 - Procesos</p>
+            <p class="subtitle">Task Manager, Process Explorer y PowerShell</p>
+            <p class="meta">Última actualización: 2026-02-10 | Duración: 90 minutos (teoría: 30 min + práctica: 60 min)</p>
         </div>
     </header>
 
@@ -433,821 +350,574 @@
             <h2>Contenido de la Clase</h2>
             <ul>
                 <li><a href="#objetivos">Objetivos de Aprendizaje</a></li>
-                <li><a href="#importancia">¿Por qué es importante?</a></li>
-                <li><a href="#jerarquia">Jerarquía de Memoria</a></li>
-                <li><a href="#direcciones">Direcciones Lógicas vs Físicas</a></li>
-                <li><a href="#binding">Binding de Direcciones</a></li>
-                <li><a href="#carga-dinamica">Carga Dinámica y Overlays</a></li>
-                <li><a href="#asignacion">Asignación Contigua</a></li>
-                <li><a href="#particion">Partición Fija y Variable</a></li>
-                <li><a href="#fragmentacion">Fragmentación</a></li>
-                <li><a href="#estrategias">Estrategias de Asignación</a></li>
-                <li><a href="#compactacion">Compactación</a></li>
-                <li><a href="#swapping">Swapping</a></li>
-                <li><a href="#proteccion">Protección de Memoria</a></li>
-                <li><a href="#evaluacion-e2">Evaluación E2 (15%)</a></li>
-                <li><a href="#practica">Ejemplos Prácticos (Opcional)</a></li>
+                <li><a href="#task-manager">Task Manager</a></li>
+                <li><a href="#process-explorer">Process Explorer</a></li>
+                <li><a href="#powershell">PowerShell para Procesos</a></li>
+                <li><a href="#powershell-servicios">PowerShell para Servicios</a></li>
+                <li><a href="#sc-exe">sc.exe - Crear Servicios</a></li>
+                <li><a href="#practica">Práctica Guiada</a></li>
+                <li><a href="#entregable">Entregable</a></li>
                 <li><a href="#resumen">Resumen</a></li>
             </ul>
         </nav>
 
         <!-- Objetivos -->
         <section id="objetivos">
-            <h2>Objetivos de la Clase</h2>
-            <p>Al finalizar esta clase, el estudiante será capaz de:</p>
+            <h2>Objetivos de Aprendizaje</h2>
+            <p>Al finalizar esta clase, serás capaz de:</p>
             <ol>
-                <li><strong>Explicar</strong> la jerarquía de memoria</li>
-                <li><strong>Diferenciar</strong> direcciones lógicas y físicas</li>
-                <li><strong>Describir</strong> técnicas de partición de memoria</li>
-                <li><strong>Identificar</strong> fragmentación interna y externa</li>
+                <li><strong>Usar</strong> Task Manager para monitorear procesos</li>
+                <li><strong>Utilizar</strong> Process Explorer para análisis avanzado</li>
+                <li><strong>Gestionar</strong> procesos con PowerShell</li>
+                <li><strong>Administrar</strong> servicios con PowerShell</li>
+                <li><strong>Crear</strong> servicios simples con sc.exe</li>
             </ol>
         </section>
 
-        <!-- Importancia -->
-        <section id="importancia">
-            <h2>¿Por qué es importante la gestión de memoria?</h2>
+        <!-- Task Manager -->
+        <section id="task-manager">
+            <h2>Task Manager (Administrador de Tareas)</h2>
 
-            <div class="callout danger">
-                <h4>EL PROBLEMA</h4>
-                <ul>
-                    <li>Múltiples procesos quieren usar la memoria</li>
-                    <li>La memoria es un recurso LIMITADO y CARO</li>
-                    <li>Cada proceso cree que tiene toda la memoria</li>
-                    <li>Debemos proteger procesos entre sí</li>
-                </ul>
+            <div class="callout info">
+                <strong>Task Manager es la herramienta básica para monitorear procesos en Windows</strong>
             </div>
 
-            <h4>El SO debe:</h4>
+            <h4>Cómo abrir Task Manager:</h4>
             <ul>
-                <li>✓ Asignar memoria a procesos</li>
-                <li>✓ Liberar memoria cuando terminan</li>
-                <li>✓ Proteger la memoria de cada proceso</li>
-                <li>✓ Optimizar el uso de memoria disponible</li>
+                <li><strong>Ctrl + Shift + Esc</strong> - Atajo directo</li>
+                <li><strong>Ctrl + Alt + Del</strong> → Task Manager</li>
+                <li>Clic derecho en barra de tareas → Task Manager</li>
+                <li><code>taskmgr</code> en Ejecutar (Win + R)</li>
             </ul>
-        </section>
 
-        <!-- Jerarquía de Memoria -->
-        <section id="jerarquia">
-            <h2>Jerarquía de Memoria</h2>
-
-            <figure>
-                <img src="../assets/infografias/clase-06-jerarquia-memoria.png" alt="Pirámide de jerarquía de memoria">
-                <figcaption>Jerarquía de memoria: compromiso entre velocidad, costo y capacidad</figcaption>
-            </figure>
-
-            <div class="callout info">
-                <strong>¿Qué muestra esta pirámide?</strong>
-                <ul>
-                    <li><strong>Arriba:</strong> Memoria más rápida, más cara y de menor capacidad (registros, caché)</li>
-                    <li><strong>Abajo:</strong> Memoria más lenta, más barata y de mayor capacidad (SSD, HDD)</li>
-                    <li><strong>Compromiso:</strong> No podemos tener memoria rápida Y barata Y grande; debe haber equilibrio</li>
-                </ul>
-            </div>
-
-            <h4>Representación detallada:</h4>
-            <div class="hierarchy-pyramid">
-                <div class="pyramid-level narrow">Registros (~1 ns, ~KB)</div>
-                <div class="pyramid-level narrow">Caché L1 (~2 ns, ~64KB)</div>
-                <div class="pyramid-level medium">Caché L2/L3 (~10 ns, ~MB)</div>
-                <div class="pyramid-level wide">RAM Principal (~100 ns, ~GB)</div>
-                <div class="pyramid-level wide">SSD (~100 µs, ~TB)</div>
-                <div class="pyramid-level wide">HDD (~10 ms, ~TB)</div>
-            </div>
+            <h3>Pestañas principales de Task Manager</h3>
 
             <table>
                 <thead>
                     <tr>
-                        <th>Nivel</th>
-                        <th>Tiempo acceso</th>
-                        <th>Capacidad típica</th>
-                        <th>Costo</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Registros</td>
-                        <td>~1 ns</td>
-                        <td>~KB</td>
-                        <td>Muy alto</td>
-                    </tr>
-                    <tr>
-                        <td>Caché L1</td>
-                        <td>~2 ns</td>
-                        <td>~64 KB</td>
-                        <td>Alto</td>
-                    </tr>
-                    <tr>
-                        <td>Caché L2/L3</td>
-                        <td>~10 ns</td>
-                        <td>~MB</td>
-                        <td>Alto</td>
-                    </tr>
-                    <tr>
-                        <td>RAM</td>
-                        <td>~100 ns</td>
-                        <td>~GB</td>
-                        <td>Medio</td>
-                    </tr>
-                    <tr>
-                        <td>SSD</td>
-                        <td>~100 µs</td>
-                        <td>~TB</td>
-                        <td>Bajo</td>
-                    </tr>
-                    <tr>
-                        <td>HDD</td>
-                        <td>~10 ms</td>
-                        <td>~TB</td>
-                        <td>Muy bajo</td>
-                    </tr>
-                </tbody>
-            </table>
-        </section>
-
-        <!-- Direcciones Lógicas vs Físicas -->
-        <section id="direcciones">
-            <h2>Direcciones Lógicas vs Físicas</h2>
-            <h3>Traducción de Direcciones con MMU</h3>
-
-            <figure>
-                <img src="../assets/infografias/clase-06-traduccion-direcciones.png" alt="Diagrama de traducción de direcciones lógicas a físicas">
-                <figcaption>La MMU traduce direcciones lógicas a físicas en tiempo real</figcaption>
-            </figure>
-
-            <div class="callout info">
-                <strong>¿Qué es la MMU?</strong>
-                <ul>
-                    <li><strong>Memory Management Unit:</strong> Hardware especializado dentro del CPU</li>
-                    <li><strong>Función:</strong> Traduce direcciones "que ve el programa" a direcciones "reales en la RAM"</li>
-                    <li><strong>Beneficio:</strong> Cada proceso cree que tiene toda la memoria para sí solo (aislamiento)</li>
-                </ul>
-            </div>
-
-            <h4>Dos perspectivas de la memoria:</h4>
-
-            <div class="comparison">
-                <div>
-                    <h4>PROCESO</h4>
-                    <p style="font-size:0.9em;color:var(--text-muted)">Ve direcciones lógicas</p>
-                    <pre class="ascii-diagram">┌─────────────┐
-│   Código    │ 0x0000
-├─────────────┤
-│   Datos     │ 0x1000
-├─────────────┤
-│   Heap      │ 0x2000
-├─────────────┤
-│   Stack     │ 0x3000
-└─────────────┘</pre>
-                </div>
-                <div>
-                    <h4>MEMORIA FÍSICA</h4>
-                    <p style="font-size:0.9em;color:var(--text-muted)">Direcciones reales</p>
-                    <pre class="ascii-diagram">┌─────────────┐ 0x0000
-│     SO      │
-├─────────────┤ 0x1000
-│  Proceso A  │
-├─────────────┤ 0x3000
-│  Proceso B  │
-├─────────────┤ 0x5000
-│    Libre    │
-└─────────────┘</pre>
-                </div>
-            </div>
-
-            <div class="callout warning">
-                <strong>MMU</strong> (Memory Management Unit): Traduce direcciones lógicas a físicas
-            </div>
-
-            <h4>Fórmula de traducción (reubicación):</h4>
-            <pre><code>Dirección Física = Dirección Lógica + Registro Base</code></pre>
-
-            <div class="memory-block">
-                <div class="memory-row">
-                    <div class="memory-label">CPU</div>
-                    <div class="memory-cell">Dir. Lógica: 0x0500</div>
-                </div>
-                <div class="memory-row">
-                    <div class="memory-label">MMU</div>
-                    <div class="memory-cell">+ Registro Base: 0x4000</div>
-                </div>
-                <div class="memory-row">
-                    <div class="memory-label">Resultado</div>
-                    <div class="memory-cell" style="background:var(--accent);color:white">Dir. Física: 0x4500 ✓</div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Binding de Direcciones -->
-        <section id="binding">
-            <h2>Binding de Direcciones</h2>
-            <h3>¿Cuándo se asignan las direcciones de memoria?</h3>
-
-            <table>
-                <thead>
-                    <tr>
-                        <th>Etapa</th>
-                        <th>Momento</th>
+                        <th>Pestaña</th>
                         <th>Descripción</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td><strong>Compile time</strong></td>
-                        <td>Compilación</td>
-                        <td>Direcciones absolutas fijas. Si cambia ubicación, recompilar. (MS-DOS .COM)</td>
+                        <td><strong>Processes</strong></td>
+                        <td>Lista de procesos en ejecución con PID, CPU, memoria</td>
                     </tr>
                     <tr>
-                        <td><strong>Load time</strong></td>
-                        <td>Carga</td>
-                        <td>Direcciones relativas, traducidas al cargar. Si cambia, recargar.</td>
+                        <td><strong>Performance</strong></td>
+                        <td>Gráficos de CPU, memoria, disco, red</td>
                     </tr>
                     <tr>
-                        <td><strong>Execution time</strong></td>
-                        <td>Ejecución</td>
-                        <td>Direcciones lógicas traducidas en tiempo real por MMU. (Sistemas modernos)</td>
+                        <td><strong>App history</strong></td>
+                        <td>Historial de uso de recursos por aplicación</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Startup</strong></td>
+                        <td>Programas que se inician con Windows</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Users</strong></td>
+                        <td>Usuarios conectados y sus procesos</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Details</strong></td>
+                        <td>Vista detallada con PID y más columnas</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Services</strong></td>
+                        <td>Servicios del sistema con estado</td>
                     </tr>
                 </tbody>
             </table>
 
-            <h4>Ciclo de vida de las direcciones:</h4>
-            <div class="timeline">
-                <div class="timeline-item">
-                    <div class="timeline-box">
-                        <strong>CÓDIGO<br>FUENTE</strong><br>
-                        <small>prog.c</small>
-                    </div>
-                </div>
-                <div class="timeline-arrow">→</div>
-                <div class="timeline-item">
-                    <div class="timeline-box">
-                        <strong>COMPILACIÓN</strong><br>
-                        <small>prog.o<br>(relativo)</small>
-                    </div>
-                </div>
-                <div class="timeline-arrow">→</div>
-                <div class="timeline-item">
-                    <div class="timeline-box">
-                        <strong>CARGA</strong><br>
-                        <small>En memoria<br>(físicas)</small>
-                    </div>
-                </div>
-                <div class="timeline-arrow">→</div>
-                <div class="timeline-item">
-                    <div class="timeline-box">
-                        <strong>EJECUCIÓN</strong><br>
-                        <small>CPU accede<br>(MMU traduce)</small>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Carga Dinámica y Overlays -->
-        <section id="carga-dinamica">
-            <h2>Carga Dinámica</h2>
-            <h3>Cargar rutinas solo cuando se necesitan</h3>
-
-            <div class="callout info">
-                <strong>Idea:</strong> Mantener solo el código frecuentemente usado en memoria; cargar funciones raras desde disco solo cuando se llaman.
-            </div>
-
-            <pre class="ascii-diagram">PROCESO GRANDE (1MB de código total)
-┌──────────────────────────────────────┐
-│  Funciones frecuentes (cargadas)     │ ◄── Siempre en memoria
-├──────────────────────────────────────┤
-│  Función rara_1()                    │
-│  ┌──────────────────────────────┐    │
-│  │  Código en disco             │    │ ◄── Solo se carga
-│  │  (no ocupa RAM)              │    │     si se llama
-│  └──────────────────────────────┘    │
-├──────────────────────────────────────┤
-│  Función rara_2()                    │
-│  ┌──────────────────────────────┐    │
-│  │  Código en disco             │    │
-│  │  (no ocupa RAM)              │    │
-│  └──────────────────────────────┘    │
-└──────────────────────────────────────┘
-
-Beneficio: Menor uso de memoria, más procesos residentes</pre>
-
-            <h4>Implementación:</h4>
+            <h4>Operaciones comunes:</h4>
             <ul>
-                <li><strong>Stub (parche):</strong> Pequeño código en lugar de la función real</li>
-                <li>Stub carga la función desde disco y la ejecuta</li>
-                <li>Windows DLLs, Linux shared libraries usan concepto similar</li>
+                <li><strong>End Task:</strong> Terminar proceso seleccionado</li>
+                <li><strong>End Process Tree:</strong> Terminar proceso y sus hijos</li>
+                <li><strong>Set Priority:</strong> Cambiar prioridad (Realtime, High, Normal, Low)</li>
+                <li><strong>Analyze Wait Chain:</strong> Ver procesos que están esperando</li>
+                <li><strong>Create Dump File:</strong> Crear volcado de memoria del proceso</li>
             </ul>
 
-            <h3>Overlays</h3>
-            <p>Técnica histórica para programas > memoria disponible</p>
-
-            <pre class="ascii-diagram">Memoria disponible: 64KB
-Programa: 150KB (no cabe completo)
-
-Solución: Dividir en overlays que se alternan
-
-Overlay 0 (residente):      Overlay 1:          Overlay 2:
-┌──────────────────┐       ┌──────────┐        ┌──────────┐
-│ Código base      │       │ Fase 1   │        │ Fase 3   │
-│ + Driver E/S     │       │ Análisis │        │ Reporte  │
-├──────────────────┤       └──────────┘        └──────────┘
-│                  │            ▲                    ▲
-│  Espacio para    │────────────┴────────────────────┘
-│  overlay         │
-│  (64KB - base)   │  Solo un overlay cargado a la vez
-└──────────────────┘
-
-Flujo: Base carga → Fase 1 → (reemplaza) → Fase 3</pre>
-
             <div class="callout warning">
-                <strong>Nota:</strong> Hoy en día rara vez se usa (memoria virtual lo reemplaza)
-            </div>
-        </section>
-
-        <!-- Asignación Contigua -->
-        <section id="asignacion">
-            <h2>Asignación Contigua</h2>
-            <h3>Cada proceso ocupa un bloque continuo de memoria</h3>
-
-            <div class="memory-block">
-                <div class="memory-row">
-                    <div class="memory-label">0 MB</div>
-                    <div class="memory-cell so">Sistema Operativo</div>
-                </div>
-                <div class="memory-row">
-                    <div class="memory-label">100 MB</div>
-                    <div class="memory-cell process">Proceso A (200KB)</div>
-                </div>
-                <div class="memory-row">
-                    <div class="memory-label">300 MB</div>
-                    <div class="memory-cell process">Proceso B (150KB)</div>
-                </div>
-                <div class="memory-row">
-                    <div class="memory-label">450 MB</div>
-                    <div class="memory-cell free">LIBRE (550KB)</div>
-                </div>
-                <div class="memory-row">
-                    <div class="memory-label">1 MB</div>
-                    <div class="memory-cell">Fin de memoria</div>
-                </div>
-            </div>
-
-            <div class="callout info">
-                <strong>Idea clave:</strong> El proceso ocupa un bloque seguido, lo que <strong>simplifica</strong> la traducción de direcciones, pero <strong>dificulta</strong> la entrada de procesos grandes cuando hay huecos dispersos.
-            </div>
-        </section>
-
-        <!-- Partición Fija y Variable -->
-        <section id="particion">
-            <h2>Partición Fija</h2>
-            <h3>Memoria dividida en particiones de tamaño fijo</h3>
-
-            <div class="comparison">
-                <div>
-                    <h4>PARTICIONES FIJAS</h4>
-                    <div class="memory-block">
-                        <div class="memory-row">
-                            <div class="memory-label">256KB</div>
-                            <div class="memory-cell process">Proceso A (200KB)</div>
-                        </div>
-                        <div class="memory-row">
-                            <div class="memory-cell" style="background:#fef3c7">░░░ 56KB libre</div>
-                        </div>
-                        <div class="memory-row">
-                            <div class="memory-label">256KB</div>
-                            <div class="memory-cell process">Proceso B (256KB)</div>
-                        </div>
-                        <div class="memory-row">
-                            <div class="memory-label">256KB</div>
-                            <div class="memory-cell free">LIBRE</div>
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <h4>ASIGNACIÓN</h4>
-                    <div class="memory-block">
-                        <div class="memory-row">
-                            <div class="memory-cell process">Proceso A</div>
-                        </div>
-                        <div class="memory-row">
-                            <div class="memory-cell" style="background:#fef3c7">█████░░░░ 56KB</div>
-                        </div>
-                        <div class="memory-row">
-                            <div class="memory-cell">Fragmentación interna</div>
-                        </div>
-                        <div class="memory-row">
-                            <div class="memory-cell process">Proceso B</div>
-                        </div>
-                        <div class="memory-row">
-                            <div class="memory-cell">███████████</div>
-                        </div>
-                        <div class="memory-row">
-                            <div class="memory-cell free">LIBRE</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="callout danger">
-                <strong>Problema:</strong> Fragmentación interna (espacio desperdiciado dentro de particiones)
-            </div>
-
-            <h3>Partición Variable (Dinámica)</h3>
-            <p>Particiones del tamaño exacto que necesita cada proceso</p>
-
-            <div class="comparison">
-                <div>
-                    <h4>INICIAL</h4>
-                    <div class="memory-block">
-                        <div class="memory-row">
-                            <div class="memory-label">SO</div>
-                            <div class="memory-cell so">Sistema Operativo</div>
-                        </div>
-                        <div class="memory-row">
-                            <div class="memory-label">A</div>
-                            <div class="memory-cell process">Proceso A (200KB)</div>
-                        </div>
-                        <div class="memory-row">
-                            <div class="memory-label">B</div>
-                            <div class="memory-cell process">Proceso B (150KB)</div>
-                        </div>
-                        <div class="memory-row">
-                            <div class="memory-label">C</div>
-                            <div class="memory-cell process">Proceso C (300KB)</div>
-                        </div>
-                        <div class="memory-row">
-                            <div class="memory-label">Libre</div>
-                            <div class="memory-cell free">LIBRE</div>
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <h4>DESPUÉS DE LIBERAR B</h4>
-                    <div class="memory-block">
-                        <div class="memory-row">
-                            <div class="memory-label">SO</div>
-                            <div class="memory-cell so">Sistema Operativo</div>
-                        </div>
-                        <div class="memory-row">
-                            <div class="memory-label">A</div>
-                            <div class="memory-cell process">Proceso A (200KB)</div>
-                        </div>
-                        <div class="memory-row">
-                            <div class="memory-label">Hueco</div>
-                            <div class="memory-cell hole">HUECO (150KB)</div>
-                        </div>
-                        <div class="memory-row">
-                            <div class="memory-label">C</div>
-                            <div class="memory-cell process">Proceso C (300KB)</div>
-                        </div>
-                        <div class="memory-row">
-                            <div class="memory-label">Libre</div>
-                            <div class="memory-cell free">LIBRE</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="callout warning">
-                <strong>Problema:</strong> Fragmentación externa (huecos entre procesos)
-            </div>
-        </section>
-
-        <!-- Fragmentación -->
-        <section id="fragmentacion">
-            <h2><abbr title="Fragmentación - División de memoria en espacios discontinuos no utilizables">Fragmentación</abbr></h2>
-            <h3>Dos tipos de desperdicio de memoria</h3>
-
-            <figure>
-                <img src="../assets/infografias/clase-06-fragmentacion.png" alt="Comparación fragmentación interna vs externa">
-                <figcaption>Fragmentación interna vs externa: dos caras del mismo problema</figcaption>
-            </figure>
-
-            <div class="callout info">
-                <strong>¿Por qué ocurre la fragmentación?</strong>
+                <strong>⚠️ Precaución:</strong>
                 <ul>
-                    <li><strong>Interna:</strong> Se asigna más memoria de la solicitada (particiones fijas)</li>
-                    <li><strong>Externa:</strong> Procesos cargados y descargados dejan "huecos" entre ellos</li>
-                    <li><strong>Consecuencia:</strong> Memoria disponible pero inutilizable para procesos grandes</li>
+                    <li>No termines procesos del sistema (System, csrss.exe, wininit.exe)</li>
+                    <li>Terminar procesos críticos puede causar inestabilidad</li>
+                    <li>Usa "End Task" solo cuando sea necesario</li>
                 </ul>
             </div>
-
-            <table>
-                <thead>
-                    <tr>
-                        <th>Tipo</th>
-                        <th>Causa</th>
-                        <th>Dónde ocurre</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Interna</strong></td>
-                        <td>Proceso no usa toda su partición</td>
-                        <td>Partición fija</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Externa</strong></td>
-                        <td>Huecos entre procesos</td>
-                        <td>Partición variable</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <h4>Ejemplo de Fragmentación Externa:</h4>
-            <div class="memory-block">
-                <div class="memory-row">
-                    <div class="memory-cell process">A (usado)</div>
-                </div>
-                <div class="memory-row">
-                    <div class="memory-cell hole">HUECO 50KB libre</div>
-                </div>
-                <div class="memory-row">
-                    <div class="memory-cell process">B (usado)</div>
-                </div>
-                <div class="memory-row">
-                    <div class="memory-cell hole">HUECO 30KB libre</div>
-                </div>
-                <div class="memory-row">
-                    <div class="memory-cell process">C (usado)</div>
-                </div>
-                <div class="memory-row">
-                    <div class="memory-cell hole">HUECO 40KB libre</div>
-                </div>
-            </div>
-
-            <div class="callout danger">
-                <strong>Total libre:</strong> 120KB<br>
-                <strong>PERO</strong> NO podemos cargar un proceso de 100KB<br>
-                <small>(huecos no son contiguos)</small>
-            </div>
         </section>
 
-        <!-- Estrategias de Asignación -->
-        <section id="estrategias">
-            <h2>Estrategias de Asignación</h2>
-            <h3>¿Qué hueco elegir para un nuevo proceso?</h3>
+        <!-- Process Explorer -->
+        <section id="process-explorer">
+            <h2>Process Explorer - Herramienta Avanzada</h2>
 
             <div class="callout info">
-                <strong>Escenario:</strong> Proceso nuevo: 80KB<br>
-                Huecos disponibles: 100KB, 200KB, 90KB, 150KB
+                <strong>Process Explorer es una herramienta de Sysinternals que ofrece más detalles que Task Manager</strong>
             </div>
 
-            <table>
-                <thead>
-                    <tr>
-                        <th>Estrategia</th>
-                        <th>Descripción</th>
-                        <th>Elige</th>
-                        <th>Comentario</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>First Fit</strong></td>
-                        <td>Primer hueco suficiente</td>
-                        <td>100KB</td>
-                        <td>Rápido, buenos resultados generales</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Best Fit</strong></td>
-                        <td>Hueco más pequeño suficiente</td>
-                        <td>90KB</td>
-                        <td>Deja huecos pequeños (inútiles)</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Worst Fit</strong></td>
-                        <td>Hueco más grande</td>
-                        <td>200KB</td>
-                        <td>Deja huecos grandes (útiles)</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <h4>¿Cuál es mejor?</h4>
-            <ul>
-                <li><strong>First Fit:</strong> Rápido, buenos resultados generales</li>
-                <li><strong>Best Fit:</strong> Puede crear muchos huecos pequeños inutilizables</li>
-                <li><strong>Worst Fit:</strong> Produce pocos huecos grandes, más útiles</li>
-            </ul>
-        </section>
-
-        <!-- Compactación -->
-        <section id="compactacion">
-            <h2>Compactación</h2>
-            <h3>Solución a la fragmentación externa</h3>
+            <h3>Características de Process Explorer:</h3>
 
             <div class="comparison">
                 <div>
-                    <h4>ANTES</h4>
-                    <div class="memory-block">
-                        <div class="memory-row">
-                            <div class="memory-cell process">A</div>
-                        </div>
-                        <div class="memory-row">
-                            <div class="memory-cell hole">HUECO</div>
-                        </div>
-                        <div class="memory-row">
-                            <div class="memory-cell process">B</div>
-                        </div>
-                        <div class="memory-row">
-                            <div class="memory-cell hole">HUECO</div>
-                        </div>
-                        <div class="memory-row">
-                            <div class="memory-cell process">C</div>
-                        </div>
-                        <div class="memory-row">
-                            <div class="memory-cell hole">HUECO</div>
-                        </div>
-                    </div>
+                    <h4>Ventajas sobre Task Manager</h4>
+                    <ul>
+                        <li>Árbol de procesos padre-hijo</li>
+                        <li>Manejadores (handles) abiertos</li>
+                        <li>DLLs cargadas por proceso</li>
+                        <li>Información de threads</li>
+                        <li>Propiedades detalladas</li>
+                        <li>Búsqueda en línea de procesos</li>
+                        <li>Verificar firma de archivos</li>
+                    </ul>
                 </div>
                 <div>
-                    <h4>DESPUÉS (compactación)</h4>
-                    <div class="memory-block">
-                        <div class="memory-row">
-                            <div class="memory-cell process">A</div>
-                        </div>
-                        <div class="memory-row">
-                            <div class="memory-cell process">B</div>
-                        </div>
-                        <div class="memory-row">
-                            <div class="memory-cell process">C</div>
-                        </div>
-                        <div class="memory-row">
-                            <div class="memory-cell free">LIBRE (120KB contiguo)</div>
-                        </div>
-                    </div>
+                    <h4>Funciones útiles</h4>
+                    <ul>
+                        <li><strong>Find Handle:</strong> Buscar qué archivo/DLL tiene abierto</li>
+                        <li><strong>Suspend/Resume:</strong> Pausar/reanudar proceso</li>
+                        <li><strong>Restart:</strong> Reiniciar proceso (como Explorer)</li>
+                        <li><strong>Run as:</strong> Ejecutar como otro usuario</li>
+                        <li><strong>Properties:</strong> Ver propiedades detalladas</li>
+                    </ul>
                 </div>
             </div>
 
-            <div class="callout warning">
-                <strong>Problema:</strong> Costoso (hay que mover procesos en memoria, reubicar direcciones)
-            </div>
-
-            <h4>Requisitos para compactación:</h4>
+            <h4>Descargar Process Explorer:</h4>
             <ul>
-                <li>Relocación dinámica (direcciones lógicas vs físicas)</li>
-                <li>Tiempo de CPU para mover datos</li>
-                <li>Posible pausa en la ejecución de procesos</li>
+                <li>Sitio: <a href="https://learn.microsoft.com/en-us/sysinternals/downloads/process-explorer" target="_blank">Microsoft Docs - Process Explorer</a></li>
+                <li>Portátil: No requiere instalación</li>
+                <li>Integración: Puede reemplazar Task Manager</li>
             </ul>
-        </section>
-
-        <!-- Swapping -->
-        <section id="swapping">
-            <h2><abbr title="Swapping - Intercambio de procesos entre RAM y disco">Swapping</abbr></h2>
-            <h3>Mover procesos entre RAM y disco</h3>
-
-            <div class="comparison">
-                <div>
-                    <h4>MEMORIA RAM</h4>
-                    <div class="memory-block">
-                        <div class="memory-row">
-                            <div class="memory-cell so">SO</div>
-                        </div>
-                        <div class="memory-row">
-                            <div class="memory-cell process">Proceso A</div>
-                        </div>
-                        <div class="memory-row">
-                            <div class="memory-cell process">Proceso B → swap out</div>
-                        </div>
-                        <div class="memory-row">
-                            <div class="memory-cell process">Proceso C</div>
-                        </div>
-                        <div class="memory-row">
-                            <div class="memory-cell free">[espacio]</div>
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <h4>DISCO (Swap)</h4>
-                    <div class="memory-block">
-                        <div class="memory-row">
-                            <div class="memory-cell hole">...</div>
-                        </div>
-                        <div class="memory-row">
-                            <div class="memory-cell process">Proceso D (swapped out)</div>
-                        </div>
-                        <div class="memory-row">
-                            <div class="memory-cell hole">...</div>
-                        </div>
-                        <div class="memory-row">
-                            <div class="memory-cell process">Proceso E (swapped out)</div>
-                        </div>
-                        <div class="memory-row">
-                            <div class="memory-cell hole">...</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="callout info">
-                <strong>Swap out:</strong> Mover proceso de RAM a disco<br>
-                <strong>Swap in:</strong> Mover proceso de disco a RAM<br>
-                <strong>Beneficio:</strong> Permite ejecutar más procesos de los que caben en RAM
-            </div>
-
-            <h4>Consideraciones:</h4>
-            <ul>
-                <li>El tiempo de acceso a disco es ~100,000 veces más lento que RAM</li>
-                <li>Se necesita espacio en disco dedicado (partición swap)</li>
-                <li>Si hay demasiado swapping, el sistema se vuelve lento (thrashing)</li>
-            </ul>
-        </section>
-
-        <!-- Protección de Memoria -->
-        <section id="proteccion">
-            <h2>Protección de Memoria</h2>
-            <h3>Evitar que un proceso acceda a memoria de otro</h3>
-
-            <div class="callout info">
-                <strong>Registros de Protección:</strong>
-                <ul>
-                    <li><strong>Base:</strong> Dirección inicial del proceso</li>
-                    <li><strong>Límite:</strong> Tamaño máximo del proceso</li>
-                </ul>
-            </div>
-
-            <h4>Mecanismo de verificación:</h4>
-            <div class="memory-block">
-                <div class="memory-row">
-                    <div class="memory-label">Registros</div>
-                    <div class="memory-cell">Base = 0x4000, Límite = 0x2000</div>
-                </div>
-                <div class="memory-row">
-                    <div class="memory-label">Caso 1</div>
-                    <div class="memory-cell">Dir. lógica: 0x0500</div>
-                </div>
-                <div class="memory-row">
-                    <div class="memory-label">Verificación</div>
-                    <div class="memory-cell" style="background:var(--accent);color:white">¿0x0500 < 0x2000? → SÍ ✓</div>
-                </div>
-                <div class="memory-row">
-                    <div class="memory-label">Resultado</div>
-                    <div class="memory-cell">Dir. física = 0x4000 + 0x0500 = 0x4500 ✓</div>
-                </div>
-            </div>
-
-            <div class="memory-block">
-                <div class="memory-row">
-                    <div class="memory-label">Caso 2</div>
-                    <div class="memory-cell">Dir. lógica: 0x3000</div>
-                </div>
-                <div class="memory-row">
-                    <div class="memory-label">Verificación</div>
-                    <div class="memory-cell" style="background:#ef4444;color:white">¿0x3000 < 0x2000? → NO ✗</div>
-                </div>
-                <div class="memory-row">
-                    <div class="memory-label">Resultado</div>
-                    <div class="memory-cell" style="background:#ef4444;color:white">TRAP: Segmentation Fault!</div>
-                </div>
-            </div>
-
-            <div class="callout danger">
-                <strong>Segmentation Fault:</strong> Error cuando un proceso intenta acceder a memoria fuera de su límite
-            </div>
-        </section>
-
-        <!-- Evaluación E2 -->
-        <section id="evaluacion-e2" class="evaluacion">
-            <h2>Evaluación E2: Informe - Gestión de Procesos</h2>
-            <div class="callout warning">
-                <strong>Fecha:</strong> 2026-03-11 | <strong>Porcentaje:</strong> 15%
-                <br><strong>Evaluación programada:</strong> Consultar plataforma virtual para instrucciones completas.
-            </div>
-        </section>
-
-        <!-- Ejemplos Prácticos -->
-        <section id="practica">
-            <h2>Ejemplos Prácticos (Opcional)</h2>
-
-            <section class="actividad">
-                <h3>Actividad: Exploración de Comandos de Memoria</h3>
-                <p><strong>Tipo:</strong> Opcional (práctica)</p>
-                <p><strong>Relacionado con:</strong> Comandos de gestión de memoria en Linux</p>
-                <p><strong>Entregable:</strong> Ninguno (para practicar)</p>
-                <p><strong>Propósito:</strong> Familiarizarse con herramientas de monitoreo de memoria</p>
-            </section>
-
-            <h4>Ver uso de memoria del sistema:</h4>
-            <pre><code>$ free -h
-              total        used        free      shared  buff/cache   available
-Mem:           16Gi       5.2Gi       3.8Gi       512Mi       7.0Gi       10Gi
-Swap:          2.0Gi       0.0Gi       2.0Gi</code></pre>
-
-            <h4>Ver mapa de memoria de un proceso:</h4>
-            <pre><code>$ cat /proc/self/maps
-00400000-00452000 r-xp  /bin/cat     (código)
-00651000-00652000 r--p  /bin/cat     (datos)
-00652000-00653000 rw-p  /bin/cat     (datos)
-7f8a...          r-xp  /lib/libc.so  (biblioteca)
-7ffc...          rw-p  [stack]       (pila)</code></pre>
-
-            <h4>Ver estadísticas de memoria:</h4>
-            <pre><code>$ vmstat 1
-procs -----------memory---------- ---swap--
- r  b   swpd   free   buff  cache   si   so
- 1  0      0 3887264 234567 7340928   0    0</code></pre>
 
             <div class="callout success">
-                <strong>Lectura rápida:</strong> <code>free</code> y <code>cache</code> muestran memoria disponible; <code>si/so</code> indica swapping.
+                <strong>Tip:</strong> Para reemplazar Task Manager con Process Explorer:
+                <pre><code class="language-powershell">Options → Replace Task Manager</code></pre>
+            </div>
+        </section>
+
+        <!-- PowerShell para Procesos -->
+        <section id="powershell">
+            <h2>PowerShell para Gestión de Procesos</h2>
+
+            <div class="callout info">
+                <strong>PowerShell proporciona cmdlets potentes para gestionar procesos</strong>
+            </div>
+
+            <h3>Cmdlets principales de procesos:</h3>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Cmdlet</th>
+                        <th>Descripción</th>
+                        <th>Ejemplo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Get-Process</strong></td>
+                        <td>Listar procesos</td>
+                        <td><code>Get-Process</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Stop-Process</strong></td>
+                        <td>Terminar proceso</td>
+                        <td><code>Stop-Process -Id 1234</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Start-Process</strong></td>
+                        <td>Iniciar proceso</td>
+                        <td><code>Start-Process notepad.exe</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Wait-Process</strong></td>
+                        <td>Esperar a que termine</td>
+                        <td><code>Wait-Process -Id 1234</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Debug-Process</strong></td>
+                        <td>Adjuntar depurador</td>
+                        <td><code>Debug-Process -Id 1234</code></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>Ver procesos con Get-Process:</h4>
+            <pre><code class="language-powershell"># Listar todos los procesos
+Get-Process
+
+# Ver proceso específico por ID
+Get-Process -Id 1234
+
+# Ver proceso por nombre
+Get-Process -Name notepad
+
+# Filtrar por nombre con comodín
+Get-Process -Name "*fire*"
+
+# Ordenar por uso de CPU
+Get-Process | Sort-Object CPU -Descending | Select-Object -First 10
+
+# Ordenar por uso de memoria
+Get-Process | Sort-Object WorkingSet -Descending | Select-Object -First 10</code></pre>
+
+            <h4>Terminar procesos con Stop-Process:</h4>
+            <pre><code class="language-powershell"># Terminar por ID
+Stop-Process -Id 1234
+
+# Terminar por nombre
+Stop-Process -Name notepad
+
+# Forzar terminación
+Stop-Process -Id 1234 -Force
+
+# Terminar múltiples procesos
+Get-Process -Name "*temp*" | Stop-Process</code></pre>
+
+            <h4>Propiedades útiles de Process:</h4>
+            <pre><code class="language-powershell"># Ver propiedades de un proceso
+Get-Process -Name notepad | Format-List *
+
+# Propiedades comunes
+Get-Process | Select-Object Id, Name, CPU, WorkingSet, Path
+
+# Formatear salida como tabla
+Get-Process | Format-Table Name, Id, CPU, WorkingSet -AutoSize</code></pre>
+        </section>
+
+        <!-- PowerShell para Servicios -->
+        <section id="powershell-servicios">
+            <h2>PowerShell para Gestión de Servicios</h2>
+
+            <div class="callout info">
+                <strong>PowerShell permite administrar servicios de forma eficiente</strong>
+            </div>
+
+            <h3>Cmdlets principales de servicios:</h3>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Cmdlet</th>
+                        <th>Descripción</th>
+                        <th>Ejemplo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Get-Service</strong></td>
+                        <td>Listar servicios</td>
+                        <td><code>Get-Service</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Start-Service</strong></td>
+                        <td>Iniciar servicio</td>
+                        <td><code>Start-Service Spooler</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Stop-Service</strong></td>
+                        <td>Detener servicio</td>
+                        <td><code>Stop-Service Spooler</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Restart-Service</strong></td>
+                        <td>Reiniciar servicio</td>
+                        <td><code>Restart-Service Spooler</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Suspend-Service</strong></td>
+                        <td>Pausar servicio</td>
+                        <td><code>Suspend-Service Winmgmt</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Resume-Service</strong></td>
+                        <td>Reanudar servicio</td>
+                        <td><code>Resume-Service Winmgmt</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Set-Service</strong></td>
+                        <td>Configurar servicio</td>
+                        <td><code>Set-Service Spooler -StartupType Automatic</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>New-Service</strong></td>
+                        <td>Crear servicio</td>
+                        <td><code>New-Service -Name "MiServicio" ...</code></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>Ejemplos de gestión de servicios:</h4>
+            <pre><code class="language-powershell"># Listar todos los servicios
+Get-Service
+
+# Ver servicio específico
+Get-Service -Name Spooler
+
+# Ver servicios ejecutándose
+Get-Service | Where-Object Status -eq "Running"
+
+# Ver servicios detenidos
+Get-Service | Where-Object Status -eq "Stopped"
+
+# Iniciar un servicio
+Start-Service -Name Spooler
+
+# Detener un servicio
+Stop-Service -Name Spooler
+
+# Reiniciar un servicio
+Restart-Service -Name Spooler
+
+# Ver propiedades de servicio
+Get-Service Spooler | Format-List *</code></pre>
+
+            <h4>Tipos de inicio (StartupType):</h4>
+            <pre><code class="language-powershell"># Automatic - Inicio automático
+Set-Service -Name Spooler -StartupType Automatic
+
+# Manual - Inicio manual
+Set-Service -Name Spooler -StartupType Manual
+
+# Disabled - Deshabilitado
+Set-Service -Name Spooler -StartupType Disabled
+
+# AutomaticDelayedStart - Automático con retraso
+Set-Service -Name Spooler -StartupType AutomaticDelayedStart</code></pre>
+        </section>
+
+        <!-- sc.exe -->
+        <section id="sc-exe">
+            <h2>sc.exe - Crear y Gestionar Servicios</h2>
+
+            <div class="callout info">
+                <strong>sc.exe es una herramienta de línea de comandos para gestionar servicios</strong>
+            </div>
+
+            <h4>Diferencia entre sc.exe y cmdlet de PowerShell:</h4>
+            <ul>
+                <li><strong>sc.exe:</strong> Herramienta nativa de Windows, más compatible con scripts antiguos</li>
+                <li><strong>PowerShell:</strong> Más moderno, orientado a objetos, mejor para scripts nuevos</li>
+            </ul>
+
+            <h3>Comandos sc.exe principales:</h3>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Comando</th>
+                        <th>Descripción</th>
+                        <th>Ejemplo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>sc query</strong></td>
+                        <td>Consultar estado de servicio</td>
+                        <td><code>sc query Spooler</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>sc start</strong></td>
+                        <td>Iniciar servicio</td>
+                        <td><code>sc start Spooler</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>sc stop</strong></td>
+                        <td>Detener servicio</td>
+                        <td><code>sc stop Spooler</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>sc create</strong></td>
+                        <td>Crear nuevo servicio</td>
+                        <td><code>sc create MiServicio ...</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>sc delete</strong></td>
+                        <td>Eliminar servicio</td>
+                        <td><code>sc delete MiServicio</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>sc config</strong></td>
+                        <td>Configurar servicio</td>
+                        <td><code>sc config Spooler start=auto</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>sc qc</strong></td>
+                        <td>Query configuration</td>
+                        <td><code>sc qc Spooler</code></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>Crear un servicio simple con sc.exe:</h4>
+            <pre><code class="language-powershell"># Sintaxis básica
+sc create [nombre] binPath= "[ruta-ejecutable]" [opciones]
+
+# Ejemplo: Crear servicio para una aplicación
+sc create MiServicio binPath= "C:\MiApp\app.exe" start= auto
+
+# Ejemplo: Servicio con descripción
+sc create MiServicio ^
+    binPath= "C:\MiApp\app.exe" ^
+    start= auto ^
+    DisplayName= "Mi Servicio Personalizado" ^
+    depend= Tcpip
+
+# Configurar tipo de inicio
+sc config MiServicio start= demand
+
+# Iniciar el servicio
+sc start MiServicio
+
+# Verificar estado
+sc query MiServicio
+
+# Eliminar servicio (debe estar detenido)
+sc stop MiServicio
+sc delete MiServicio</code></pre>
+
+            <div class="callout warning">
+                <strong>⚠️ Nota importante sobre sc.exe:</strong>
+                <ul>
+                    <li>En sc.exe, el espacio después del signo igual es OBLIGATORIO: <code>binPath= "..."</code></li>
+                    <li>Servicios necesitan ejecutable con formato de servicio válido</li>
+                    <li>No todos los executables pueden funcionar como servicio</li>
+                    <li>Para aplicaciones normales, usar NSSM (Non-Sucking Service Manager)</li>
+                </ul>
+            </div>
+
+            <h4>Tipos de inicio con sc.exe:</h4>
+            <pre><code class="language-powershell">start= boot     - Controladores de inicio
+start= system   - Controladores de sistema
+start= auto     - Automático
+start= demand   - Manual
+start= disabled - Deshabilitado</code></pre>
+        </section>
+
+        <!-- Práctica Guiada -->
+        <section id="practica">
+            <h2>Práctica Guiada</h2>
+
+            <div class="actividad">
+                <h3>Actividad 1: Explorar Task Manager</h3>
+                <p><strong>Tiempo:</strong> 10 minutos</p>
+                <ol>
+                    <li>Abre Task Manager (Ctrl + Shift + Esc)</li>
+                    <li>Ve a la pestaña "Processes"</li>
+                    <li>Identifica el proceso con mayor uso de CPU</li>
+                    <li>Identifica el proceso con mayor uso de memoria</li>
+                    <li>Ve a la pestaña "Performance" y observa los gráficos</li>
+                    <li>Ve a "Details" y agrega la columna "PID"</li>
+                </ol>
+            </div>
+
+            <div class="actividad">
+                <h3>Actividad 2: PowerShell - Listar y filtrar procesos</h3>
+                <p><strong>Tiempo:</strong> 15 minutos</p>
+                <ol>
+                    <li>Abre PowerShell como administrador</li>
+                    <li>Lista todos los procesos: <code>Get-Process</code></li>
+                    <li>Busca un proceso específico: <code>Get-Process -Name explorer</code></li>
+                    <li>Ordena por CPU: <code>Get-Process | Sort-Object CPU -Descending | Select-Object -First 10</code></li>
+                    <li>Ordena por memoria: <code>Get-Process | Sort-Object WorkingSet -Descending | Select-Object -First 10</code></li>
+                    <li>Ver propiedades de un proceso: <code>Get-Process -Id [PID] | Format-List *</code></li>
+                </ol>
+            </div>
+
+            <div class="actividad">
+                <h3>Actividad 3: PowerShell - Gestión de servicios</h3>
+                <p><strong>Tiempo:</strong> 15 minutos</p>
+                <ol>
+                    <li>Ver todos los servicios: <code>Get-Service</code></li>
+                    <li>Ver servicios ejecutándose: <code>Get-Service | Where-Object Status -eq "Running"</code></li>
+                    <li>Ver detalles del servicio Spooler: <code>Get-Service Spooler | Format-List *</code></li>
+                    <li>Ver el tipo de inicio: <code>Get-Service Spooler | Select-Object StartType</code></li>
+                    <li>Ver si Print Spooler está habilitado: <code>Get-Service Spooler | Select-Object Status, StartType</code></li>
+                </ol>
+            </div>
+
+            <div class="actividad">
+                <h3>Actividad 4: sc.exe - Crear un servicio simple</h3>
+                <p><strong>Tiempo:</strong> 15 minutos</p>
+                <ol>
+                    <li>Abre CMD o PowerShell como administrador</li>
+                    <li>Verifica un servicio existente: <code>sc query Spooler</code></li>
+                    <li>Ver configuración: <code>sc qc Spooler</code></li>
+                    <li>Intenta crear un servicio de prueba: <code>sc create Prueba binPath= "C:\Windows\System32\calc.exe" start= demand</code></li>
+                    <li>Intenta iniciarlo: <code>sc start Prueba</code></li>
+                    <li>Observa el resultado (es normal que falle)</li>
+                    <li>Elimina el servicio: <code>sc delete Prueba</code></li>
+                </ol>
+                <p><strong>Nota:</strong> Calc.exe no está diseñado como servicio, por lo que fallará. El propósito es practicar los comandos.</p>
+            </div>
+        </section>
+
+        <!-- Entregable -->
+        <section id="entregable">
+            <h2>Entregable de la Clase</h2>
+
+            <div class="actividad">
+                <h3>Script: gestion_procesos.ps1</h3>
+                <p><strong>Descripción:</strong> Script en PowerShell que muestra información de procesos y servicios</p>
+                <p><strong>Requisitos:</strong></p>
+                <ul>
+                    <li>Mostrar top 5 procesos por CPU</li>
+                    <li>Mostrar top 5 procesos por memoria</li>
+                    <li>Mostrar fecha y hora del reporte</li>
+                    <li>Mostrar servicios que están ejecutándose</li>
+                    <li>Guardar reporte en archivo con timestamp</li>
+                </ul>
+
+                <h4>Estructura sugerida:</h4>
+                <pre><code class="language-powershell"># gestion_procesos.ps1
+# Script de gestión de procesos y servicios en Windows
+
+# Fecha y hora
+$fecha = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+$archivo = "reporte_$(Get-Date -Format 'yyyyMMdd_HHmmss').txt"
+
+# Crear reporte
+$contenido = @"
+=== REPORTE DE PROCESOS Y SERVICIOS ===
+Fecha: $fecha
+========================================
+
+=== TOP 5 PROCESOS POR CPU ===
+"@
+
+$procesosCPU = Get-Process | Sort-Object CPU -Descending | Select-Object -First 5
+foreach ($proc in $procesosCPU) {
+    $contenido += "$($proc.Name.PadRight(20)) CPU: $($proc.CPU.ToString('F2'))`n"
+}
+
+$contenido += "`n=== TOP 5 PROCESOS POR MEMORIA ===`n"
+$procesosMem = Get-Process | Sort-Object WorkingSet -Descending | Select-Object -First 5
+foreach ($proc in $procesosMem) {
+    $memMB = [math]::Round($proc.WorkingSet / 1MB, 2)
+    $contenido += "$($proc.Name.PadRight(20)) Memoria: ${memMB} MB`n"
+}
+
+$contenido += "`n=== SERVICIOS EJECUTÁNDOSE ===`n"
+$servicios = Get-Service | Where-Object Status -eq "Running"
+foreach ($serv in $servicios) {
+    $contenido += "$($serv.Name.PadRight(30)) Estado: $($serv.Status)`n"
+}
+
+# Mostrar y guardar
+Write-Host $contenido
+$contenido | Out-File -FilePath $archivo -Encoding UTF8
+Write-Host "`nReporte guardado en: $archivo"</code></pre>
+
+                <p><strong>Instrucciones de entrega:</strong></p>
+                <ol>
+                    <li>Guardar el script como <code>gestion_procesos.ps1</code></li>
+                    <li>Ejecutar el script: <code>powershell -ExecutionPolicy Bypass -File gestion_procesos.ps1</code></li>
+                    <li>Capturar la salida del script</li>
+                    <li>Entregar: script + captura de ejecución</li>
+                </ol>
             </div>
         </section>
 
@@ -1258,129 +928,65 @@ procs -----------memory---------- ---swap--
             <table>
                 <thead>
                     <tr>
-                        <th>Concepto</th>
-                        <th>Descripción</th>
+                        <th>Herramienta</th>
+                        <th>Uso principal</th>
+                        <th>Comando/Acceso</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td><strong>Dir. Lógica</strong></td>
-                        <td>Dirección generada por CPU</td>
+                        <td><strong>Task Manager</strong></td>
+                        <td>Monitoreo básico de procesos</td>
+                        <td>Ctrl + Shift + Esc</td>
                     </tr>
                     <tr>
-                        <td><strong>Dir. Física</strong></td>
-                        <td>Dirección real en RAM</td>
+                        <td><strong>Process Explorer</strong></td>
+                        <td>Análisis avanzado de procesos</td>
+                        <td>Descargar de Sysinternals</td>
                     </tr>
                     <tr>
-                        <td><strong>MMU</strong></td>
-                        <td>Traduce direcciones lógicas a físicas</td>
+                        <td><strong>Get-Process</strong></td>
+                        <td>Listar procesos en PowerShell</td>
+                        <td><code>Get-Process</code></td>
                     </tr>
                     <tr>
-                        <td><strong>Frag. Interna</strong></td>
-                        <td>Espacio desperdiciado dentro de partición</td>
+                        <td><strong>Stop-Process</strong></td>
+                        <td>Terminar proceso</td>
+                        <td><code>Stop-Process -Id 1234</code></td>
                     </tr>
                     <tr>
-                        <td><strong>Frag. Externa</strong></td>
-                        <td>Huecos entre procesos</td>
+                        <td><strong>Get-Service</strong></td>
+                        <td>Listar servicios</td>
+                        <td><code>Get-Service</code></td>
                     </tr>
                     <tr>
-                        <td><strong>Swapping</strong></td>
-                        <td>Mover procesos a/desde disco</td>
+                        <td><strong>Start/Stop-Service</strong></td>
+                        <td>Gestionar servicios</td>
+                        <td><code>Start-Service Spooler</code></td>
                     </tr>
                     <tr>
-                        <td><strong>Compactación</strong></td>
-                        <td>Mover procesos para unificar huecos</td>
+                        <td><strong>sc.exe</strong></td>
+                        <td>Crear servicios nativos</td>
+                        <td><code>sc create ...</code></td>
                     </tr>
                 </tbody>
             </table>
 
-            <div class="callout info">
-                <h4>Tarea para próxima clase</h4>
-                <p><strong>Investigación en parejas:</strong></p>
-                <ol>
-                    <li>Investigar qué es la <strong>paginación</strong> de memoria</li>
-                    <li>¿Cómo resuelve el problema de fragmentación externa?</li>
-                    <li>¿Qué es una <strong>tabla de páginas</strong>?</li>
-                </ol>
-                <p><strong>Entrega:</strong> Resumen de 1 página</p>
-                <p><strong>Sustentación:</strong> Inicio de próxima clase</p>
-            </div>
-
             <h3>Próxima Clase</h3>
-            <p><strong>Clase 7: Paginación y Segmentación</strong></p>
+            <p><strong>Clase 07: Hilos y Sincronización</strong></p>
             <ul>
-                <li>Paginación: páginas y marcos</li>
-                <li>Tabla de páginas</li>
-                <li>Segmentación</li>
-                <li>Memoria virtual</li>
+                <li>Diferencia entre procesos y threads</li>
+                <li>Mutex, semáforos y monitores</li>
+                <li>Problemas de sincronización</li>
+                <li>Ejercicios conceptuales</li>
             </ul>
-        </section>
-
-        <!-- Section: Laboratorio -->
-        <section id="laboratorio">
-            <h2>Laboratorio</h2>
-
-            <h3>Proyecto: Productor-Consumidor con Semáforos</h3>
-            <p>Implementa el problema clásico de sincronización Productor-Consumidor usando semáforos POSIX en C.</p>
-
-            <div class="callout info">
-                <p class="callout-title">Objetivos del Laboratorio</p>
-                <ul>
-                    <li>Implementar buffer circular con semáforos</li>
-                    <li>Manejar condiciones de carrera</li>
-                    <li>Sincronizar hilos productores y consumidores</li>
-                </ul>
-            </div>
-
-            <p><strong>Recursos:</strong> <a href="../laboratorios-html/index.html">Ver índice de Laboratorios →</a></p>
-        </section>
-
-        <!-- Videos Recomendados -->
-        <section id="videos">
-            <h2>Videos Recomendados</h2>
-
-            <div class="video-resource">
-                <h3>Video 1: Memory Management in Operating Systems</h3>
-                <p><strong>Concepto:</strong> Introducción a la gestión de memoria</p>
-                <p><strong>Duración:</strong> 15 minutos</p>
-                <p><strong>Nivel:</strong> Básico</p>
-                <p><strong>Por qué verlo:</strong> Excelente introducción a conceptos de memoria</p>
-                <p><strong>Canal:</strong> Neso Academy</p>
-                <a href="https://www.youtube.com/watch?v=p7y4k5eI6s0" target="_blank">Ver en YouTube</a>
-            </div>
-
-            <div class="video-resource">
-                <h3>Video 2: Memory Hierarchy Explained</h3>
-                <p><strong>Concepto:</strong> Jerarquía de memoria desde registros hasta almacenamiento</p>
-                <p><strong>Duración:</strong> 12 minutos</p>
-                <p><strong>Nivel:</strong> Básico</p>
-                <p><strong>Por qué verlo:</strong> Entender por qué existe la jerarquía de memoria</p>
-                <p><strong>Canal:</strong> CodeVault</p>
-                <a href="https://www.youtube.com/watch?v=VnT7p2eJz_w" target="_blank">Ver en YouTube</a>
-            </div>
-
-            <div class="video-resource">
-                <h3>Video 3: Contiguous Memory Allocation</h3>
-                <p><strong>Concepto:</strong> Asignación contigua de memoria</p>
-                <p><strong>Duración:</strong> 10 minutos</p>
-                <p><strong>Nivel:</strong> Intermedio</p>
-                <p><strong>Por qué verlo:</strong> Complementa la explicación de particiones y fragmentación</p>
-                <p><strong>Canal:</strong> Gate Smashers</p>
-                <a href="https://www.youtube.com/watch?v=HwEDr5eK5Hg" target="_blank">Ver en YouTube</a>
-            </div>
-
-            <div class="callout info">
-                <p class="callout-title">Tip de Estudio</p>
-                <p>Antes de ver cada video, lee el tema correspondiente en la clase. Esto te ayudará a identificar qué conceptos ya entiendes y cuáles necesitas reforzar.</p>
-            </div>
         </section>
     </div>
 
     <footer>
         <div class="container">
             <p><strong>IF0099 - Sistemas Operativos I</strong> • <a href="index.html">Índice de Clases</a></p>
-        <div class="container">
-            <p>IF0099 - Sistemas Operativos I | UNAULA - Ingeniería Informática - 2026-I</p>
+            <p>© 2026 UNAULA - Ingeniería Informática | IF0099 - Sistemas Operativos I</p>
             <p><a href="../index.html">← Volver al inicio</a></p>
         </div>
     </footer>
@@ -1414,6 +1020,15 @@ procs -----------memory---------- ---swap--
                     }
                 }
             });
+        });
+    </script>
+
+    <!-- Prism.js para syntax highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-powershell.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            Prism.highlightAll();
         });
     </script>
 </body>

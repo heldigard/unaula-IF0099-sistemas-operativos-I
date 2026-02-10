@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clase 11: Implementación de Sistemas de Archivos - IF0099</title>
+    <title>Clase 11: Almacenamiento LVM | IF0099 - Sistemas Operativos I</title>
     <style>
         :root {
             --primary: #2563eb;
@@ -21,7 +21,6 @@
             padding: 0;
             box-sizing: border-box;
         }
-
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
             line-height: 1.7;
@@ -29,62 +28,53 @@
             background: var(--bg-light);
             font-size: 16px;
         }
-
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px;
         }
 
-        /* Header */
         header {
             background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
             color: white;
             padding: 3rem 0;
             margin-bottom: 2rem;
         }
-
         header h1 {
             font-size: 2.2rem;
             margin-bottom: 0.5rem;
             font-weight: 700;
         }
-
         header .subtitle {
             font-size: 1.1rem;
             opacity: 0.9;
         }
-
         header .meta {
             margin-top: 1rem;
             font-size: 0.9rem;
             opacity: 0.8;
         }
 
-        /* Navigation */
         nav {
             background: white;
             padding: 1.5rem 0;
             margin-bottom: 2rem;
             border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
         }
-
         nav h2 {
             font-size: 1.1rem;
             color: var(--text-muted);
             margin-bottom: 1rem;
             padding: 0 20px;
         }
-
         nav ul {
             list-style: none;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 0.5rem;
             padding: 0 20px;
         }
-
         nav a {
             color: var(--primary);
             text-decoration: none;
@@ -93,20 +83,17 @@
             border-radius: 4px;
             transition: background 0.2s;
         }
-
         nav a:hover {
             background: var(--bg-light);
         }
 
-        /* Sections */
         section {
             background: white;
             padding: 2rem;
             margin-bottom: 2rem;
             border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
         }
-
         section h2 {
             color: var(--primary);
             font-size: 1.8rem;
@@ -114,37 +101,31 @@
             padding-bottom: 0.5rem;
             border-bottom: 3px solid var(--accent);
         }
-
         section h3 {
             color: var(--secondary);
             font-size: 1.4rem;
             margin: 2rem 0 1rem;
         }
-
         section h4 {
             color: var(--text-main);
             font-size: 1.1rem;
             margin: 1.5rem 0 0.75rem;
             font-weight: 600;
         }
-
         p {
             margin-bottom: 1rem;
         }
 
-        /* Figures */
         figure {
             margin: 2rem 0;
             text-align: center;
         }
-
         figure img {
             max-width: 100%;
             height: auto;
             border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
-
         figcaption {
             margin-top: 0.75rem;
             color: var(--text-muted);
@@ -152,31 +133,26 @@
             font-size: 0.95rem;
         }
 
-        /* Tables */
         table {
             width: 100%;
             border-collapse: collapse;
             margin: 1.5rem 0;
             font-size: 0.95rem;
         }
-
         th, td {
             padding: 0.75rem 1rem;
             text-align: left;
             border-bottom: 1px solid var(--border);
         }
-
         th {
             background: var(--bg-light);
             font-weight: 600;
             color: var(--secondary);
         }
-
         tr:hover {
             background: var(--bg-light);
         }
 
-        /* Code blocks */
         pre {
             background: var(--bg-code);
             color: #e2e8f0;
@@ -187,11 +163,9 @@
             font-size: 0.9rem;
             line-height: 1.5;
         }
-
         code {
             font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
         }
-
         p code, li code, td code {
             background: var(--bg-light);
             color: var(--primary);
@@ -199,116 +173,55 @@
             border-radius: 4px;
             font-size: 0.9em;
         }
-
         pre code {
             background: none;
             padding: 0;
             color: inherit;
         }
 
-        /* Lists */
         ul, ol {
             margin-left: 1.5rem;
             margin-bottom: 1rem;
         }
-
         li {
             margin-bottom: 0.5rem;
         }
 
-        /* Callout boxes */
         .callout {
             padding: 1.5rem;
             border-radius: 8px;
             margin: 1.5rem 0;
             border-left: 4px solid;
         }
-
         .callout.info {
             background: #eff6ff;
             border-left-color: var(--primary);
         }
-
         .callout.warning {
             background: #fef3c7;
             border-left-color: #f59e0b;
         }
-
         .callout.success {
             background: #d1fae5;
             border-left-color: var(--accent);
         }
-
-        .callout-title {
-            font-weight: 600;
-            margin-bottom: 0.5rem;
+        .callout.danger {
+            background: #fee2e2;
+            border-left-color: #ef4444;
         }
 
-        /* Checkboxes for exercises */
-        .exercise {
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        .comparison > div {
             background: var(--bg-light);
             padding: 1.5rem;
             border-radius: 8px;
-            margin: 1.5rem 0;
         }
 
-        .exercise h4 {
-            margin-top: 0;
-        }
-
-        .checklist {
-            list-style: none;
-            padding-left: 0;
-        }
-
-        .checklist li {
-            padding: 0.5rem 0;
-            display: flex;
-            align-items: flex-start;
-            gap: 0.75rem;
-        }
-
-        .checklist li input[type="checkbox"] {
-            margin-top: 0.25rem;
-            width: 18px;
-            height: 18px;
-        }
-
-        /* Details */
-        details {
-            background: var(--bg-light);
-            padding: 1rem;
-            border-radius: 8px;
-            margin: 1rem 0;
-        }
-
-        summary {
-            cursor: pointer;
-            font-weight: 600;
-            color: var(--primary);
-        }
-
-        summary:hover {
-            text-decoration: underline;
-        }
-
-        details[open] summary {
-            margin-bottom: 1rem;
-        }
-
-        /* ASCII diagrams */
-        .ascii-diagram {
-            font-family: 'Consolas', 'Monaco', monospace;
-            font-size: 0.85rem;
-            line-height: 1.2;
-            background: var(--bg-light);
-            padding: 1rem;
-            border-radius: 4px;
-            overflow-x: auto;
-            white-space: pre;
-        }
-
-        /* Footer */
         footer {
             background: var(--text-main);
             color: white;
@@ -316,41 +229,11 @@
             text-align: center;
             margin-top: 3rem;
         }
-
         footer a {
             color: var(--accent);
             text-decoration: none;
         }
 
-        /* Responsive */
-        @media (max-width: 768px) {
-            header h1 {
-                font-size: 1.6rem;
-            }
-
-            section {
-                padding: 1.5rem;
-            }
-
-            nav ul {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* Difficulty badges */
-        .difficulty {
-            display: inline-block;
-            padding: 0.25rem 0.75rem;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 600;
-        }
-
-        .difficulty.easy { background: #d1fae5; color: #065f46; }
-        .difficulty.medium { background: #fef3c7; color: #92400e; }
-        .difficulty.hard { background: #fee2e2; color: #991b1b; }
-
-        /* Scroll indicator */
         .scroll-top {
             position: fixed;
             bottom: 2rem;
@@ -369,780 +252,934 @@
             text-decoration: none;
             font-size: 1.5rem;
         }
-
         .scroll-top.visible {
             opacity: 1;
         }
-
         .scroll-top:hover {
             background: var(--secondary);
         }
 
-        .actividad{background:var(--bg-light);border-left:5px solid var(--accent);padding:1.5rem;margin:1.5rem 0;border-radius:4px}
-        .actividad h3{color:var(--primary);margin-bottom:1rem}
-        .actividad p{margin-bottom:.75rem}
-        .actividad strong{color:var(--secondary)}
+        .actividad {
+            background: var(--bg-light);
+            border-left: 5px solid var(--accent);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+        .actividad h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        .actividad p {
+            margin-bottom: 0.75rem;
+        }
+        .actividad strong {
+            color: var(--secondary);
+        }
+
+        .diagram-box {
+            background: var(--bg-light);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            text-align: center;
+        }
+        .diagram-box pre {
+            background: none;
+            color: var(--text-main);
+            padding: 0;
+            margin: 0;
+            font-size: 0.85rem;
+            line-height: 1.4;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.6rem;
+            }
+            section {
+                padding: 1.5rem;
+            }
+            nav ul {
+                grid-template-columns: 1fr;
+            }
+            .comparison {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 <body>
+    <header>
+        <div class="container">
+            <h1>Clase 11: Almacenamiento LVM</h1>
+            <p class="subtitle">IF0099 - Sistemas Operativos I | Unidad 6 - Almacenamiento</p>
+            <p class="subtitle">MBR vs GPT, ext4, LVM y RAID</p>
+            <p class="meta">Última actualización: 2026-02-10 | Duración: 90 minutos</p>
+        </div>
+    </header>
+
     <div class="container">
-        <header>
-            <h1>Implementación de Sistemas de Archivos</h1>
-            <p class="subtitle">IF0099 - Sistemas Operativos I | Unidad 6 | Clase 11</p>
-            <p class="subtitle">UNAULA - Ingeniería Informática - 2026-I</p>
-        </header>
-
-        <article class="main-content">
-            <nav class="index">
-                <h2>Contenido de la Clase</h2>
-                <ul>
-                    <a href="#objetivos">Objetivos de la Clase</a>
-                    <a href="#agenda">Agenda</a>
-                    <a href="#estructura-interna">1. Estructura Interna del FS</a>
-                    <a href="#inodos">2. ¿Qué es un Inodo?</a>
-                    <a href="#directorios">Directorios como Tablas</a>
-                    <a href="#asignacion">3. Asignación de Espacio</a>
-                    <a href="#ext4">4. Ejemplo ext4</a>
-                    <a href="#detalles-inodos">5. Detalles Avanzados de Inodos</a>
-                    <a href="#punteros-directos">Punteros Directos</a>
-                    <a href="#indirecto-simple">Indirecto Simple</a>
-                    <a href="#indirecto-doble">Indirecto Doble</a>
-                    <a href="#indirecto-triple">Indirecto Triple</a>
-                    <a href="#ver-inodos">Ver Inodos en Linux</a>
-                    <a href="#hard-soft">Hard Links vs Symbolic Links</a>
-                    <a href="#evaluacion-e4">Evaluación E4 (15%)</a>
-                    <a href="#actividad">Actividad Práctica (Opcional)</a>
-                    <a href="#resumen">Resumen</a>
-                </ul>
-            </nav>
-
-            <figure>
-                <img src="../assets/infografias/clase-11-inodos.png" alt="Estructura Interna del Filesystem - Inodos y Bloques">
-                <figcaption>Estructura interna de un filesystem Unix: separación entre metadatos (inodos) y datos (bloques)</figcaption>
-            </figure>
-
-            <section id="objetivos">
-                <h2>Objetivos de la Clase</h2>
-                <div class="objectives">
-                    <div class="objective-card" data-number="1">
-                        <strong>Explicar</strong> la estructura interna de un sistema de archivos
-                    </div>
-                    <div class="objective-card" data-number="2">
-                        <strong>Describir</strong> el rol de inodos, directorios y bloques
-                    </div>
-                    <div class="objective-card" data-number="3">
-                        <strong>Analizar</strong> la asignación de espacio (contigua, enlazada, indexada)
-                    </div>
-                    <div class="objective-card" data-number="4">
-                        <strong>Relacionar</strong> el diseño con el rendimiento
-                    </div>
-                </div>
-                <p><strong>Duración:</strong> 90 minutos</p>
-            </section>
-
-            <section id="agenda">
-                <h2>Agenda</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Tema</th>
-                            <th>Tiempo</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr><td>1. Estructuras de un FS</td><td>20 min</td></tr>
-                        <tr><td>2. Inodos y metadatos</td><td>20 min</td></tr>
-                        <tr><td>3. Asignación de espacio</td><td>25 min</td></tr>
-                        <tr><td>4. Caso ext4</td><td>15 min</td></tr>
-                        <tr><td>5. Actividad práctica</td><td>10 min</td></tr>
-                    </tbody>
-                </table>
-            </section>
-
-            <section id="estructura-interna">
-                <h2>1. Estructura Interna del Filesystem</h2>
-
-                <div class="diagram-box">
-<pre>
-┌──────────────────────────────────────┐
-│         SUPERBLOQUE                   │
-├──────────────────────────────────────┤
-│    Bitmaps (bloques / inodos libres)  │
-├──────────────────────────────────────┤
-│         Tabla de Inodos               │
-├──────────────────────────────────────┤
-│         Bloques de Datos              │
-└──────────────────────────────────────┘
-</pre>
-                </div>
-
-                <div class="comparison-table">
-                    <div class="comparison-card">
-                        <h4>📋 <abbr title="Superbloque (Superblock) - Estructura que contiene información global del sistema de archivos">Superblock</abbr></h4>
-                        <ul>
-                            <li>Tamaño total del FS</li>
-                            <li>Tipo de filesystem</li>
-                            <li>Estado (clean/dirty)</li>
-                            <li>Contadores de bloques libres</li>
-                        </ul>
-                    </div>
-                    <div class="comparison-card">
-                        <h4>🗺️ <abbr title="Bitmaps - Mapas de bits que registran qué bloques e inodos están libres u ocupados">Bitmaps</abbr></h4>
-                        <ul>
-                            <li>Bitmap de bloques libres</li>
-                            <li>Bitmap de inodos libres</li>
-                            <li>1 bit = 1 bloque/inodo</li>
-                            <li>Bit 1 = ocupado, 0 = libre</li>
-                        </ul>
-                    </div>
-                    <div class="comparison-card">
-                        <h4>📁 Inodos</h4>
-                        <ul>
-                            <li>Metadatos de archivos</li>
-                            <li>Permisos y propietario</li>
-                            <li>Tamaños y timestamps</li>
-                            <li>Punteros a bloques de datos</li>
-                        </ul>
-                    </div>
-                    <div class="comparison-card">
-                        <h4>💾 Bloques de Datos</h4>
-                        <ul>
-                            <li>Contenido real de archivos</li>
-                            <li>Tamaño típico: 4KB</li>
-                            <li>No guardan nombres</li>
-                            <li>Se acceden vía inodos</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="info-box">
-                    <strong>Idea clave:</strong> El filesystem separa <strong>metadatos</strong> (inodos) de <strong>datos</strong> (bloques). Los directorios solo apuntan a inodos, no a datos directamente.
-                </div>
-            </section>
-
-            <section id="inodos">
-                <h2>2. ¿Qué es un Inodo?</h2>
-
-                <div class="inode-structure">
-<pre>
-┌─────────────────────────────────┐
-│         INODO #12345            │
-├─────────────────────────────────┤
-│ Tipo: Archivo regular           │
-│ Permisos: -rw-r--r-- (644)      │
-│ Propietario: UID 1000           │
-│ Grupo: GID 1000                 │
-│ Tamaño: 4,096 bytes             │
-│ Fecha creación: 2026-01-31      │
-│ Fecha modificación: 2026-01-31  │
-│ Último acceso: 2026-01-31       │
-│ Links: 1                        │
-│ Bloques usados: 8               │
-│ ┌─────────────────────────────┐ │
-│ │  PUNTEROS A BLOQUES:        │ │
-│ │  • Directos (12): → Bloques │ │
-│ │  • Indirecto simple: → Tabla│ │
-│ │  • Indirecto doble: → Tabla │ │
-│ │  • Indirecto triple: → Tabla│ │
-│ └─────────────────────────────┘ │
-└─────────────────────────────────┘
-</pre>
-                </div>
-
-                <div class="key-rule">
-                    <strong>Regla clave:</strong> El nombre del archivo está en el directorio, <strong>no en el inodo</strong>. El inodo contiene todos los metadatos <strong>excepto</strong> el nombre.
-                </div>
-
-                <h3>Campos del Inodo</h3>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Campo</th>
-                            <th>Descripción</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr><td><code>mode</code></td><td>Tipo de archivo y permisos (rwx)</td></tr>
-                        <tr><td><code>uid</code></td><td>ID del usuario propietario</td></tr>
-                        <tr><td><code>gid</code></td><td>ID del grupo propietario</td></tr>
-                        <tr><td><code>size</code></td><td>Tamaño en bytes</td></tr>
-                        <tr><td><code>atime</code></td><td>Tiempo de último acceso</td></tr>
-                        <tr><td><code>mtime</code></td><td>Tiempo de última modificación</td></tr>
-                        <tr><td><code>ctime</code></td><td>Tiempo de cambio de metadatos</td></tr>
-                        <tr><td><code>links</code></td><td>Contador de hard links</td></tr>
-                        <tr><td><code>blocks</code></td><td>Número de bloques usados</td></tr>
-                        <tr><td><code>block[15]</code></td><td>Punteros a bloques de datos</td></tr>
-                    </tbody>
-                </table>
-            </section>
-
-            <section id="directorios">
-                <h2>Directorios como Tablas</h2>
-
-                <div class="diagram-box">
-<table>
-    <tr><td><strong>Nombre</strong></td><td><strong>Inodo</strong></td></tr>
-    <tr><td>documento.txt</td><td>1052</td></tr>
-    <tr><td>foto.jpg</td><td>2048</td></tr>
-    <tr><td>proyecto/</td><td>3021</td></tr>
-</table>
-                </div>
-
-                <div class="info-box">
-                    <strong>Concepto importante:</strong> Un directorio es simplemente un archivo especial que contiene una tabla de mapeo <strong>nombre → inodo</strong>.
-                </div>
-
-                <p>Cuando ejecutas <code>cat archivo.txt</code>:</p>
-                <ol>
-                    <li>El kernel busca "archivo.txt" en el directorio actual</li>
-                    <li>Encuentra el número de inodo (ej: 12345)</li>
-                    <li>Carga el inodo 12345 desde la tabla de inodos</li>
-                    <li>Lee los punteros a bloques del inodo</li>
-                    <li>Carga los bloques de datos y muestra el contenido</li>
-                </ol>
-            </section>
-
-            <section id="asignacion">
-                <h2>3. Asignación de Espacio en Disco</h2>
-
-                <div class="comparison-table">
-                    <div class="comparison-card">
-                        <h4>📦 <abbr title="Asignación Contigua - Asignación de bloques consecutivos en disco">Contigua</abbr></h4>
-                        <ul>
-                            <li><strong>Idea:</strong> Bloques consecutivos</li>
-                            <li><strong>Ventaja:</strong> Acceso secuencial rápido</li>
-                            <li><strong>Desventaja:</strong> Fragmentación externa</li>
-                            <li><strong>Difícil de:</strong> Expandir archivos</li>
-                        </ul>
-                        <div class="diagram-box" style="font-size: 0.8em;">
-[████████][████████][████████]
-Bloque 100 → 101 → 102
-                        </div>
-                    </div>
-
-                    <div class="comparison-card">
-                        <h4>🔗 <abbr title="Asignación Enlazada - Cada bloque contiene un puntero al siguiente bloque">Enlazada</abbr></h4>
-                        <ul>
-                            <li><strong>Idea:</strong> Cada bloque apunta al siguiente</li>
-                            <li><strong>Ventaja:</strong> Fácil crecer</li>
-                            <li><strong>Desventaja:</strong> Acceso secuencial lento</li>
-                            <li><strong>No hay:</strong> Acceso directo</li>
-                        </ul>
-                        <div class="diagram-box" style="font-size: 0.8em;">
-[→102]  [→205]  [→410]
-100      207      512
-                        </div>
-                    </div>
-
-                    <div class="comparison-card">
-                        <h4>📑 <abbr title="Asignación Indexada - Usa bloques índice con punteros a los bloques de datos">Indexada</abbr></h4>
-                        <ul>
-                            <li><strong>Idea:</strong> Bloque índice con punteros</li>
-                            <li><strong>Ventaja:</strong> Acceso directo</li>
-                            <li><strong>Ventaja:</strong> Fácil crecer</li>
-                            <li><strong>Desventaja:</strong> Usa bloques extra</li>
-                        </ul>
-                        <div class="diagram-box" style="font-size: 0.8em;">
-Inodo → [Índice]
-         [100,207,512,620]
-        ↑    ↑   ↑   ↑
-       Datos...
-                        </div>
-                    </div>
-                </div>
-
-                <div class="success-box">
-                    <strong>Unix/Linux usa asignación indexada con múltiples niveles:</strong> punteros directos, indirecto simple, doble y triple.
-                </div>
-            </section>
-
-            <section id="ext4">
-                <h2>4. Ejemplo: ext4 (Linux)</h2>
-
-                <p>El filesystem ext4 es el estándar en muchas distribuciones Linux. Combina varias técnicas optimizadas:</p>
-
-                <div class="comparison-table">
-                    <div class="comparison-card">
-                        <h4>📝 Journaling</h4>
-                        <ul>
-                            <li>Transacciones de metadatos</li>
-                            <li>Recuperación rápida tras crash</li>
-                            <li>Journal circular en disco</li>
-                            <li>Garantiza consistencia</li>
-                        </ul>
-                    </div>
-
-                    <div class="comparison-card">
-                        <h4>📊 <abbr title="Extents - Bloques contiguos tratados como una unidad para reducir fragmentación">Extents</abbr></h4>
-                        <ul>
-                            <li>Reemplaza bitmap clásico</li>
-                            <li>Un extent = bloque contiguo</li>
-                            <li>Reduce fragmentación</li>
-                            <li>Hasta 128KB por extent</li>
-                        </ul>
-                    </div>
-
-                    <div class="comparison-card">
-                        <h4>⚙️ Características</h4>
-                        <ul>
-                            <li>Bloques típicos: 4KB</li>
-                            <li>Max tamaño: 16TB</li>
-                            <li>Max archivo: 16TB</li>
-                            <li>Subsegundos en timestamps</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="highlight-box">
-                    <h3>🎯 Ventaja Principal de ext4</h3>
-                    <p>Rápido y confiable para servidores. El journaling protege contra corrupción, los extents reducen fragmentación, y las técnicas de asignación indexada permiten archivos gigantes con acceso rápido.</p>
-                </div>
-            </section>
-
-            <section id="detalles-inodos">
-                <h2>5. Detalles Avanzados de Inodos</h2>
-
-                <p>Un <strong>inodo</strong> (index node) es una estructura de datos que contiene metadatos sobre un archivo, <strong>excepto su nombre y datos reales</strong>.</p>
-
-                <h3>Estructura de Punteros del Inodo</h3>
-                <p>Cada inodo tiene 15 punteros:</p>
-                <ul>
-                    <li><strong>12 punteros directos</strong> → apuntan directamente a bloques de datos</li>
-                    <li><strong>1 puntero indirecto simple</strong> → apunta a un bloque con punteros</li>
-                    <li><strong>1 puntero indirecto doble</strong> → dos niveles de indirección</li>
-                    <li><strong>1 puntero indirecto triple</strong> → tres niveles de indirección</li>
-                </ul>
-
-                <p>Con bloques de 4KB:</p>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Tipo de Puntero</th>
-                            <th>Cantidad</th>
-                            <th>Capacidad</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr><td>Directos</td><td>12 bloques</td><td>48 KB</td></tr>
-                        <tr><td>Indirecto simple</td><td>1×1024 bloques</td><td>4 MB</td></tr>
-                        <tr><td>Indirecto doble</td><td>1024² bloques</td><td>4 GB</td></tr>
-                        <tr><td>Indirecto triple</td><td>1024³ bloques</td><td>4 TB</td></tr>
-                        <tr><td><strong>Total</strong></td><td>-</td><td><strong>≈4 TB</strong></td></tr>
-                    </tbody>
-                </table>
-            </section>
-
-            <section id="punteros-directos">
-                <h3>5.1 Punteros Directos (12)</h3>
-
-                <p>Apuntan directamente a bloques de datos. Sin indirección.</p>
-
-                <div class="pointer-diagram">
-<pre>
-Inodo #12345
-  │
-  ├─→ Bloque 1001  [4KB de datos]
-  ├─→ Bloque 1002  [4KB de datos]
-  ├─→ Bloque 1003  [4KB de datos]
-  ├─→ Bloque 1004  [4KB de datos]
-  ├─→ Bloque 1005  [4KB de datos]
-  ├─→ Bloque 1006  [4KB de datos]
-  ├─→ Bloque 1007  [4KB de datos]
-  ├─→ Bloque 1008  [4KB de datos]
-  ├─→ Bloque 1009  [4KB de datos]
-  ├─→ Bloque 1010  [4KB de datos]
-  ├─→ Bloque 1011  [4KB de datos]
-  └─→ Bloque 1012  [4KB de datos]
-
-Capacidad: 12 × 4KB = 48 KB
-</pre>
-                </div>
-
-                <div class="capacity-box">
-                    ⚡ Uso: Archivos pequeños (&lt;48 KB) se acceden directamente, muy rápido. Un solo acceso a disco para leer el inodo, y accesos directos a los bloques.
-                </div>
-            </section>
-
-            <section id="indirecto-simple">
-                <h3>5.2 Puntero Indirecto Simple</h3>
-
-                <p>Apunta a un bloque que contiene punteros a bloques de datos.</p>
-
-                <div class="pointer-diagram">
-<pre>
-Inodo #12345
-  │
-  └─→ Bloque 5000 [Bloque Indirecto - 1024 punteros]
-       ├─→ Bloque 2001  [4KB de datos]
-       ├─→ Bloque 2002  [4KB de datos]
-       ├─→ Bloque 2003  [4KB de datos]
-       ├─→ ...
-       └─→ Bloque 3024  [4KB de datos]
-
-Capacidad adicional: 1024 × 4KB = 4 MB
-Total acumulado: 48 KB + 4 MB = 4.048 MB
-</pre>
-                </div>
-
-                <div class="info-box">
-                    <strong>Nota:</strong> Para leer un byte en esta región se necesitan 2 accesos a disco: 1) leer el bloque indirecto, 2) leer el bloque de datos.
-                </div>
-            </section>
-
-            <section id="indirecto-doble">
-                <h3>5.3 Puntero Indirecto Doble</h3>
-
-                <p>Apunta a un bloque con punteros a bloques de punteros que apuntan a datos.</p>
-
-                <div class="pointer-diagram">
-<pre>
-Inodo #12345
-  │
-  └─→ Bloque 6000 [Bloque Indirecto Doble]
-       ├─→ Bloque 6001 [Indirecto 1: 1024 punteros]
-       │    ├─→ Bloque datos
-       │    ├─→ Bloque datos
-       │    ├─→ ...
-       │    └─→ Bloque datos (1024 bloques)
-       │
-       ├─→ Bloque 6002 [Indirecto 2: 1024 punteros]
-       │    └─→ ...
-       │
-       └─→ Bloque 7000 [Indirecto 1024: 1024 punteros]
-
-Capacidad: 1024 × 1024 × 4KB = 4 GB
-Total acumulado: 48 KB + 4 MB + 4 GB ≈ 4.04 GB
-</pre>
-                </div>
-
-                <div class="warning-box">
-                    <strong>Costo de acceso:</strong> 3 accesos a disco para leer un byte (indirecto doble → indirecto simple → bloque de datos).
-                </div>
-            </section>
-
-            <section id="indirecto-triple">
-                <h3>5.4 Puntero Indirecto Triple</h3>
-
-                <p>Para archivos MUY grandes (&gt;4 GB).</p>
-
-                <div class="pointer-diagram">
-<pre>
-Inodo
-  │
-  └─→ [Indirecto Triple]
-       ├─→ [Indirecto Doble 1]
-       │    └─→ [Indirecto Simple 1]
-       │         └─→ [Bloques de datos: 1024]
-       │
-       ├─→ [Indirecto Doble 2]
-       │    └─→ ...
-       │
-       └─→ [Indirecto Doble 1024]
-            └─→ ...
-
-Capacidad: 1024³ × 4KB = 4 TB
-</pre>
-                </div>
-
-                <div class="capacity-box">
-                    📊 Total máximo teórico: 48 KB + 4 MB + 4 GB + 4 TB ≈ <strong>4 TB por archivo</strong>
-                </div>
-            </section>
-
-            <section id="ver-inodos">
-                <h2>🔍 Ver Inodos en Linux</h2>
-
-                <h3>Listar Inodos</h3>
-                <pre><code># Ver número de inodo de archivos
-ls -i
-
-# Salida ejemplo:
-# 12345 documento.txt
-# 67890 foto.jpg
-# 30201 proyecto/</code></pre>
-
-                <h3>Ver Detalles de Inodo</h3>
-                <pre><code>stat documento.txt</code></pre>
-
-                <p><strong>Salida de ejemplo:</strong></p>
-                <pre><code>  File: documento.txt
-  Size: 4096          Blocks: 8          IO Block: 4096   regular file
-Device: 802h/2050d    Inode: 12345       Links: 1
-Access: (0644/-rw-r--r--)  Uid: ( 1000/ usuario)   Gid: ( 1000/ usuario)
-Access: 2026-01-31 10:00:00.000000000 -0500
-Modify: 2026-01-31 10:00:00.000000000 -0500
-Change: 2026-01-31 10:00:00.000000000 -0500
- Birth: -</code></pre>
-
-                <h3>Exploración Avanzada con debugfs</h3>
-                <div class="warning-box">
-                    <strong>Requiere permisos root</strong>
-                </div>
-                <pre><code># Entrar en modo debug del filesystem
-sudo debugfs /dev/sda1
-
-# Comandos útiles:
-debugfs&gt; stat &lt;12345&gt;          # Ver inodo 12345 en detalle
-debugfs&gt; ls -l                 # Listar con inodos
-debugfs&gt; blocks &lt;12345&gt;        # Ver bloques usados por inodo
-debugfs&gt; imap documento.txt    # Encontrar inodo de archivo
-debugfs&gt; quit                  # Salir</code></pre>
-            </section>
-
-            <section id="hard-soft">
-                <h2>🔗 Hard Links vs Symbolic Links</h2>
-
-                <div class="comparison-table">
-                    <div class="comparison-card">
-                        <h4>🔗 <abbr title="Hard Link - Enlace duro que apunta al mismo inodo con múltiples nombres">Hard Link</abbr></h4>
-                        <p>Mismo inodo, contador de links incrementado.</p>
-                        <pre><code>ln archivo.txt hardlink.txt</code></pre>
-                        <div class="diagram-box" style="font-size: 0.8em;">
-Directorio:
-  "archivo.txt"  → Inodo 12345
-  "hardlink.txt" → Inodo 12345
-
-Inodo 12345:
-  Links: 2  ← Contador aumenta
-                        </div>
-                        <p><strong>Eliminación:</strong> Solo se borra cuando Links = 0</p>
-                    </div>
-
-                    <div class="comparison-card">
-                        <h4>🔀 <abbr title="Symbolic Link (Symlink) - Enlace simbólico que apunta a la ruta de otro archivo como texto">Symbolic Link</abbr> (Soft Link)</h4>
-                        <p>Nuevo inodo que contiene la ruta como texto.</p>
-                        <pre><code>ln -s archivo.txt symlink.txt</code></pre>
-                        <div class="diagram-box" style="font-size: 0.8em;">
-Directorio:
-  "archivo.txt" → Inodo 12345
-  "symlink.txt" → Inodo 67890
-
-Inodo 67890 (symlink):
-  Datos: "archivo.txt"
-                        </div>
-                        <p><strong>Riesgo:</strong> Si se borra el original, el symlink queda "roto"</p>
-                    </div>
-                </div>
-
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Aspecto</th>
-                            <th>Hard Link</th>
-                            <th>Symbolic Link</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr><td>Inodo</td><td>Mismo inodo</td><td>Nuevo inodo</td></tr>
-                        <tr><td>Contador de links</td><td>Incrementa</td><td>No afecta</td></tr>
-                        <tr><td>Funciona entre filesystems</td><td>No</td><td>Sí</td></tr>
-                        <tr><td>Apunta a directorios</td><td>No (generalmente)</td><td>Sí</td></tr>
-                        <tr><td>Si borran el original</td><td>Sigue accesible</td><td>Link roto</td></tr>
-                    </tbody>
-                </table>
-            </section>
-
-            <!-- Evaluación E4 -->
-            <section id="evaluacion-e4" class="evaluacion">
-                <h2>Evaluación E4: Reporte - Seguridad de SO</h2>
-                <div class="callout warning">
-                    <strong>Fecha:</strong> 2026-04-22 | <strong>Porcentaje:</strong> 15%
-                    <br><strong>Evaluación programada:</strong> Consultar plataforma virtual para instrucciones completas.
-                </div>
-            </section>
-
-            <section id="actividad">
-                <h2>💻 Actividad Práctica (Opcional): Explorando Inodos</h2>
-
-                <section class="actividad">
-                    <h3>Actividad: Exploración de Inodos y Links</h3>
-                    <p><strong>Tipo:</strong> Opcional (práctica)</p>
-                    <p><strong>Relacionado con:</strong> Comandos de sistemas de archivos en Linux</p>
-                    <p><strong>Entregable:</strong> Ninguno (para practicar)</p>
-                    <p><strong>Propósito:</strong> Practicar con inodos, hard links y symbolic links</p>
-                </section>
-
-                <h3>Ejercicio 1: Observar Inodos</h3>
-                <pre><code># 1. Crear archivo de prueba
-echo "Hola mundo" > test.txt
-
-# 2. Ver su inodo
-ls -i test.txt
-# Anota el número: __________
-
-# 3. Ver detalles completos
-stat test.txt
-
-# 4. Crear hard link
-ln test.txt test_hardlink.txt
-
-# 5. Verificar que tienen el mismo inodo
-ls -i test*.txt
-
-# 6. Ver contador de links
-stat test.txt | grep Links
-# Debe mostrar: Links: 2</code></pre>
-
-                <h3>Ejercicio 2: Hard Link vs Soft Link</h3>
-                <pre><code># 1. Crear archivo original
-echo "Contenido original" > original.txt
-
-# 2. Crear hard link y soft link
-ln original.txt hard.txt
-ln -s original.txt soft.txt
-
-# 3. Ver inodos (¿cuáles son iguales?)
-ls -i original.txt hard.txt soft.txt
-
-# 4. Eliminar el original
-rm original.txt
-
-# 5. Intentar leer ambos links
-cat hard.txt      # ¿Funciona?
-cat soft.txt      # ¿Funciona?
-
-# 6. Explica: ¿Por qué uno funciona y otro no?</code></pre>
-
-                <h3>Ejercicio 3: Límite de Inodos</h3>
-                <pre><code># Ver total de inodos en el filesystem
-df -i
-
-# Salida ejemplo:
-# Filesystem      Inodes  IUsed   IFree IUse% Mounted on
-# /dev/sda1      6000000 500000 5500000    9% /</code></pre>
-
-                <div class="warning-box">
-                    <strong>Pregunta:</strong> ¿Qué pasa si IUse% llega a 100%, aunque haya espacio en disco?
-                </div>
-
-                <div class="success-box">
-                    <strong>Respuesta:</strong> No se pueden crear más archivos, aunque haya espacio libre. Cada archivo necesita un inodo. Es posible quedarse sin inodos antes de quedarse sin espacio en disco.
-                </div>
-
-                <p><strong>Tiempo estimado:</strong> 30 minutos</p>
-            </section>
-
-            <section id="resumen">
-                <h2>Resumen de la Clase</h2>
-
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Concepto</th>
-                            <th>Idea Clave</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr><td><strong><abbr title="Superbloque (Superblock) - Estructura que contiene información global del sistema de archivos">Superblock</abbr></strong></td><td>Información global del FS (tamaño, estado, conteos)</td></tr>
-                        <tr><td><strong><abbr title="Bitmaps - Mapas de bits que registran qué bloques e inodos están libres u ocupados">Bitmaps</abbr></strong></td><td>Registra qué bloques e inodos están libres/ocupados</td></tr>
-                        <tr><td><strong>Inodo</strong></td><td>Metadatos y punteros a bloques (sin nombre)</td></tr>
-                        <tr><td><strong>Directorio</strong></td><td>Tabla nombre → inodo</td></tr>
-                        <tr><td><strong><abbr title="Asignación Contigua - Asignación de bloques consecutivos en disco">Asignación contigua</abbr></strong></td><td>Rápida pero causa fragmentación</td></tr>
-                        <tr><td><strong><abbr title="Asignación Enlazada - Cada bloque contiene un puntero al siguiente bloque">Asignación enlazada</abbr></strong></td><td>Fácil crecer pero acceso lento</td></tr>
-                        <tr><td><strong><abbr title="Asignación Indexada - Usa bloques índice con punteros a los bloques de datos">Asignación indexada</abbr></strong></td><td>Acceso directo con bloques índice</td></tr>
-                        <tr><td><strong>ext4</strong></td><td>Journaling + extents + asignación indexada</td></tr>
-                        <tr><td><strong>Punteros directos</strong></td><td>12 bloques (~48 KB) - acceso muy rápido</td></tr>
-                        <tr><td><strong>Indirecto simple</strong></td><td>1024 bloques (~4 MB) - 2 niveles</td></tr>
-                        <tr><td><strong>Indirecto doble</strong></td><td>1024² bloques (~4 GB) - 3 niveles</td></tr>
-                        <tr><td><strong>Indirecto triple</strong></td><td>1024³ bloques (~4 TB) - 4 niveles</td></tr>
-                        <tr><td><strong><abbr title="Hard Link - Enlace duro que apunta al mismo inodo con múltiples nombres">Hard link</abbr></strong></td><td>Mismo inodo, contador de links</td></tr>
-                        <tr><td><strong><abbr title="Symbolic Link (Symlink) - Enlace simbólico que apunta a la ruta de otro archivo como texto">Symbolic link</abbr></strong></td><td>Nuevo inodo, contiene ruta como texto</td></tr>
-                    </tbody>
-                </table>
-
-                <div class="highlight-box">
-                    <h3>🎯 Concepto Fundamental</h3>
-                    <p>En Unix/Linux, <strong>todo es un archivo</strong>, y cada archivo tiene un inodo que contiene sus metadatos. Los nombres solo existen en los directorios, que mapean nombres a números de inodo. Esta separación permite hard links, renombrados rápidos y una estructura flexible.</p>
-                </div>
-            </section>
-
-            <div class="info-box">
-                <h3>📚 Próxima Clase</h3>
-                <p><strong>Clase 12: Protección y Seguridad</strong></p>
-                <ul>
-                    <li>Diferencia entre protección y seguridad</li>
-                    <li>Dominios de protección y matriz de acceso</li>
-                    <li>Control de acceso en Linux (UGO, SUID, SGID)</li>
-                    <li>Control de acceso en Windows (ACL)</li>
-                    <li>Amenazas comunes y mecanismos de defensa</li>
-                </ul>
-                <p><strong>¡Nos vemos!</strong></p>
+        <nav>
+            <h2>Contenido de la Clase</h2>
+            <ul>
+                <li><a href="#objetivos">Objetivos de Aprendizaje</a></li>
+                <li><a href="#intro">1. Introducción al Almacenamiento</a></li>
+                <li><a href="#mbr-gpt">2. MBR vs GPT</a></li>
+                <li><a href="#ext4">3. Sistema de Archivos ext4</a></li>
+                <li><a href="#lvm">4. Logical Volume Manager (LVM)</a></li>
+                <li><a href="#raid">5. RAID Básico</a></li>
+                <li><a href="#fstab">6. Archivo /etc/fstab</a></li>
+                <li><a href="#practica">7. Actividad Práctica</a></li>
+                <li><a href="#entregable">Entregable</a></li>
+                <li><a href="#resumen">Resumen</a></li>
+            </ul>
+        </nav>
+
+        <section id="objetivos">
+            <h2>Objetivos de Aprendizaje</h2>
+            <p>Al finalizar esta clase, serás capaz de:</p>
+            <ol>
+                <li><strong>Diferenciar</strong> entre MBR y GPT</li>
+                <li><strong>Describir</strong> las características del sistema de archivos ext4</li>
+                <li><strong>Entender</strong> la arquitectura de LVM (PV → VG → LV)</li>
+                <li><strong>Crear</strong> volúmenes lógicos con LVM</li>
+                <li><strong>Configurar</strong> montajes permanentes en /etc/fstab</li>
+                <li><strong>Explicar</strong> los niveles básicos de RAID</li>
+            </ol>
+        </section>
+
+        <section id="intro">
+            <h2>1. Introducción al Almacenamiento en Linux</h2>
+
+            <div class="callout info">
+                <strong>Pregunta fundamental:</strong> ¿Cómo gestiona Linux el almacenamiento físico para proporcionar flexibilidad y escalabilidad?
             </div>
 
-            <!-- Section: Laboratorio -->
-            <section id="laboratorio">
-                <h2>Laboratorio</h2>
+            <h3>El Desafío del Almacenamiento Tradicional</h3>
 
-                <h3>Sistemas de Archivos en AWS EC2</h3>
-                <p>Trabaja con sistemas de archivos reales, particiones y montajes en un servidor EC2.</p>
+            <p>En el almacenamiento tradicional, las particiones son estáticas:</p>
 
-                <div class="info-box">
-                    <strong>Objetivos del Laboratorio</strong>
+            <ul>
+                <li>Una vez creadas, es difícil redimensionarlas</li>
+                <li>El espacio no utilizado en una partición no puede usarse en otra</li>
+                <li>Limitado a 4 particiones primarias (MBR)</li>
+                <li>Difícil agregar nuevo almacenamiento sin interrumpir el servicio</li>
+            </ul>
+
+            <h3>La Solución: LVM</h3>
+
+            <p><strong>LVM (Logical Volume Manager)</strong> abstrae el almacenamiento físico para proporcionar:</p>
+
+            <ul>
+                <li><strong>Flexibilidad:</strong> Redimensionar volúmenes en tiempo de ejecución</li>
+                <li><strong>Agilidad:</strong> Agregar nuevos discos sin detener el sistema</li>
+                <li><strong>Snapshots:</strong> Crear instantáneas de volúmenes para backups</li>
+                <li><strong>Striping:</strong> Distribuir datos across múltiples discos para mejor rendimiento</li>
+            </ul>
+        </section>
+
+        <section id="mbr-gpt">
+            <h2>2. MBR vs GPT</h2>
+
+            <h3>MBR (Master Boot Record)</h3>
+
+            <p>El esquema de particionado tradicional:</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Característica</th>
+                        <th>MBR</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Tamaño máximo disco</strong></td>
+                        <td>2 TB</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Máximo de particiones</strong></td>
+                        <td>4 primarias o 3 primarias + 1 extendida (con lógicas)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Ubicación</strong></td>
+                        <td>Primer sector del disco (512 bytes)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Compatibilidad</strong></td>
+                        <td>Universal (BIOS y UEFI con CSM)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Bootloader</strong></td>
+                        <td>Almacena código de arranque</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="diagram-box">
+<pre>+-------------------+
+|  MBR (512 bytes)  |
+| - Código de arranque (446 bytes) |
+| - Tabla de particiones (64 bytes) |
+| - Firma (2 bytes) |
++-------------------+
+|  Partición 1      |
++-------------------+
+|  Partición 2      |
++-------------------+
+|  ...              |
++-------------------+</pre>
+            </div>
+
+            <h3>GPT (GUID Partition Table)</h3>
+
+            <p>El esquema moderno de particionado:</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Característica</th>
+                        <th>GPT</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Tamaño máximo disco</strong></td>
+                        <td>18 EB (prácticamente ilimitado)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Máximo de particiones</strong></td>
+                        <td>128 (por defecto, expandible)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Ubicación</strong></td>
+                        <td>Múltiples copias en el disco (redundancia)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Compatibilidad</strong></td>
+                        <td>UEFI (requiere), BIOS con bootloader híbrido</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Backup</strong></td>
+                        <td>Copia de seguridad al final del disco</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="comparison">
+                <div>
+                    <h4>MBR</h4>
                     <ul>
-                        <li>Crear y formatear particiones</li>
-                        <li>Montar sistemas de archivos</li>
-                        <li>Configurar mounting automático</li>
+                        <li>Discos ≤ 2TB</li>
+                        <li>Máximo 4 particiones primarias</li>
+                        <li>Compatible con BIOS</li>
+                        <li>Universalmente soportado</li>
                     </ul>
                 </div>
-
-                <p><strong>Próximamente:</strong> AWS Lab 04 - Sistemas de Archivos</p>
-                <p><a href="../laboratorios-html/index.html">Ver índice de Laboratorios →</a></p>
-            </section>
-
-            <!-- Videos Recomendados -->
-            <section id="videos">
-                <h2>Videos Recomendados</h2>
-
-                <div class="video-resource">
-                    <h3>Video 1: File System Implementation</h3>
-                    <p><strong>Concepto:</strong> Cómo se implementan los sistemas de archivos</p>
-                    <p><strong>Duración:</strong> 15 minutos</p>
-                    <p><strong>Nivel:</strong> Intermedio</p>
-                    <p><strong>Por qué verlo:</strong> Complementa la implementación con inodos</p>
-                    <p><strong>Canal:</strong> Neso Academy</p>
-                    <a href="https://www.youtube.com/watch?v=4hH8G7E-4dY" target="_blank">Ver en YouTube</a>
+                <div>
+                    <h4>GPT</h4>
+                    <ul>
+                        <li>Discos > 2TB</li>
+                        <li>Hasta 128 particiones</li>
+                        <li>Requiere UEFI</li>
+                        <li>Tabla con redundancia</li>
+                    </ul>
                 </div>
+            </div>
 
-                <div class="video-resource">
-                    <h3>Video 2: Inodes and File Allocation</h3>
-                    <p><strong>Concepto:</strong> Estructura interna de inodos y asignación de bloques</p>
-                    <p><strong>Duración:</strong> 13 minutos</p>
-                    <p><strong>Nivel:</strong> Intermedio</p>
-                    <p><strong>Por qué verlo:</strong> Profundiza en punteros directos e indirectos</p>
-                    <p><strong>Canal:</strong> GeeksforGeeks</p>
-                    <a href="https://www.youtube.com/watch?v=ll5yzhdXjBw" target="_blank">Ver en YouTube</a>
+            <div class="callout warning">
+                <strong>Recomendación actual:</strong> Usar GPT con UEFI para sistemas nuevos. MBR solo para compatibilidad con hardware antiguo o sistemas que requieran BIOS.
+            </div>
+        </section>
+
+        <section id="ext4">
+            <h2>3. Sistema de Archivos ext4</h2>
+
+            <p><strong>ext4</strong> (Fourth Extended Filesystem) es el sistema de archivos por defecto en la mayoría de distribuciones Linux.</p>
+
+            <h3>Características Principales</h3>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Característica</th>
+                        <th>Descripción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Tamaño máximo archivo</strong></td>
+                        <td>16 TB</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Tamaño máximo volumen</strong></td>
+                        <td>1 EB</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Máximo de archivos</strong></td>
+                        <td>~4 mil millones (límite de 32-bit)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Journaling</strong></td>
+                        <td>Sí, previene corrupción por fallos</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Extents</strong></td>
+                        <td>Asignación más eficiente de bloques</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Delayed allocation</strong></td>
+                        <td>Mejora rendimiento y fragmentación</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Fast fsck</strong></td>
+                        <td>Verificación de disco más rápida</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Estructura de ext4</h3>
+
+            <div class="diagram-box">
+<pre>+-------------------+
+|  Superbloque      |  Información del sistema de archivos
++-------------------+
+|  Descriptores de Grupo |  Describen grupos de bloques
++-------------------+
+|  Tabla de Inodos |  Metadatos de archivos
++-------------------+
+|  Mapa de Bits     |  Bloques libres/inodos libres
++-------------------+
+|  Bloques de Datos |  Contenido real de archivos
++-------------------+</pre>
+            </div>
+
+            <h3>Journaling</h3>
+
+            <p>ext4 usa un <strong>journal</strong> (diario) para registrar transacciones antes de aplicarlas:</p>
+
+            <ol>
+                <li>Se escribe la transacción en el journal</li>
+                <li>Se aplica la transacción al sistema de archivos</li>
+                <li>Se marca la transacción como completada</li>
+            </ol>
+
+            <div class="callout success">
+                <strong>Ventaja del journaling:</strong> Si ocurre un fallo de energía o crash, el sistema puede recuperar el estado consistente usando el journal.
+            </div>
+        </section>
+
+        <section id="lvm">
+            <h2>4. Logical Volume Manager (LVM)</h2>
+
+            <h3>Arquitectura de LVM</h3>
+
+            <p>LVM usa tres capas de abstracción:</p>
+
+            <div class="diagram-box">
+<pre>+---------------------------------------------------------------+
+|  Volúmenes Lógicos (LV)                                        |
+|  /dev/vg00/root    /dev/vg00/home    /dev/vg01/data           |
++---------------------------------------------------------------+
+|  Grupo de Volúmenes (VG)                                       |
+|  vg00 (combina sda1, sdb1)         vg01 (combina sdc1)        |
++---------------------------------------------------------------+
+|  Volúmenes Físicos (PV)                                        |
+|  /dev/sda1         /dev/sdb1         /dev/sdc1                |
++---------------------------------------------------------------+
+|  Discos Físicos                                                |
+|  /dev/sda          /dev/sdb          /dev/sdc                 |
++---------------------------------------------------------------+</pre>
+            </div>
+
+            <h4>Componentes LVM</h4>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Componente</th>
+                        <th>Descripción</th>
+                        <th>Comandos</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>PV (Physical Volume)</strong></td>
+                        <td>Partición o disco físico usado por LVM</td>
+                        <td><code>pvcreate, pvdisplay, pvs</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>VG (Volume Group)</strong></td>
+                        <td>Pool de almacenamiento que combina PVs</td>
+                        <td><code>vgcreate, vgdisplay, vgs</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>LV (Logical Volume)</strong></td>
+                        <td>Volumen lógico que se puede formatear y montar</td>
+                        <td><code>lvcreate, lvdisplay, lvs</code></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Flujo de Trabajo Completo LVM</h3>
+
+            <h4>1. Crear Volúmenes Físicos (PV)</h4>
+
+            <pre><code># Particionar disco nuevo (opcional - puedes usar el disco directamente)
+fdisk /dev/sdb
+# o
+parted /dev/sdb
+
+# Crear partición tipo LVM (código 8e para fdisk)
+# Luego crear el volumen físico
+pvcreate /dev/sdb1
+
+# Ver información del PV
+pvdisplay /dev/sdb1
+pvs</code></pre>
+
+            <h4>2. Crear Grupo de Volúmenes (VG)</h4>
+
+            <pre><code># Crear VG usando el PV
+vgcreate vg_datos /dev/sdb1
+
+# Agregar más PVs al VG (opcional)
+vgextend vg_datos /dev/sdc1
+
+# Ver información del VG
+vgdisplay vg_datos
+vgs</code></pre>
+
+            <h4>3. Crear Volúmenes Lógicos (LV)</h4>
+
+            <pre><code># Crear LV de 10GB
+lvcreate -L 10G -n lv_documentos vg_datos
+
+# Crear LV usando todo el espacio disponible
+lvcreate -l 100%FREE -n lv_backup vg_datos
+
+# Ver información del LV
+lvdisplay /dev/vg_datos/lv_documentos
+lvs</code></pre>
+
+            <h4>4. Formatear y Montar</h4>
+
+            <pre><code># Formatear con ext4
+mkfs.ext4 /dev/vg_datos/lv_documentos
+
+# Crear punto de montaje
+mkdir /datos/documentos
+
+# Montar temporalmente
+mount /dev/vg_datos/lv_documentos /datos/documentos
+
+# Verificar
+df -h /datos/documentos</code></pre>
+
+            <h3>Redimensionamiento en VIVO</h3>
+
+            <div class="callout info">
+                <strong>Ventaja clave de LVM:</strong> Puedes redimensionar volúmenes sin reiniciar el servicio.
+            </div>
+
+            <h4>Expandir un LV</h4>
+
+            <pre><code># 1. Extender el LV (agregar 5GB)
+lvextend -L +5G /dev/vg_datos/lv_documentos
+
+# 2. Redimensionar el sistema de archivos
+resize2fs /dev/vg_datos/lv_documentos
+
+# En un solo paso:
+lvextend -L +5G -r /dev/vg_datos/lv_documentos</code></pre>
+
+            <h4>Reducir un LV</h4>
+
+            <div class="callout warning">
+                <strong>Precaución:</strong> Reducir es más peligroso. Primero reduce el sistema de archivos, luego el LV.
+            </div>
+
+            <pre><code># 1. Desmontar
+umount /datos/documentos
+
+# 2. Verificar sistema de archivos
+e2fsck -f /dev/vg_datos/lv_documentos
+
+# 3. Reducir sistema de archivos a 8GB
+resize2fs /dev/vg_datos/lv_documentos 8G
+
+# 4. Reducir LV a 8GB
+lvreduce -L 8G /dev/vg_datos/lv_documentos
+
+# 5. Remontar
+mount /dev/vg_datos/lv_documentos /datos/documentos</code></pre>
+
+            <h3>Snapshots de LVM</h3>
+
+            <p>Los snapshots permiten capturar el estado de un LV en un momento dado:</p>
+
+            <pre><code># Crear snapshot de 2GB
+lvcreate -L 2G -s -n lv_snap /dev/vg_datos/lv_documentos
+
+# Montar el snapshot
+mount /dev/vg_datos/lv_snap /mnt/snapshot
+
+# Eliminar snapshot cuando ya no se necesite
+lvremove /dev/vg_datos/lv_snap</code></pre>
+        </section>
+
+        <section id="raid">
+            <h2>5. RAID Básico</h2>
+
+            <p><strong>RAID (Redundant Array of Independent Disks)</strong> combina múltiples discos para mejorar rendimiento, redundancia o ambos.</p>
+
+            <h3>Niveles RAID Comunes</h3>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nivel</th>
+                        <th>Mínimo Discos</th>
+                        <th>Descripción</th>
+                        <th>Ventajas</th>
+                        <th>Desventajas</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>RAID 0</strong></td>
+                        <td>2</td>
+                        <td>Striping (distribuye datos)</td>
+                        <td>Máximo rendimiento</td>
+                        <td>Sin redundancia</td>
+                    </tr>
+                    <tr>
+                        <td><strong>RAID 1</strong></td>
+                        <td>2</td>
+                        <td>Mirroring (espejo)</td>
+                        <td>Redundancia completa</td>
+                        <td>50% de capacidad</td>
+                    </tr>
+                    <tr>
+                        <td><strong>RAID 5</strong></td>
+                        <td>3</td>
+                        <td>Striping + paridad distribuida</td>
+                        <td>Rendimiento + redundancia</td>
+                        <td>Escritura lenta en rebuild</td>
+                    </tr>
+                    <tr>
+                        <td><strong>RAID 10</strong></td>
+                        <td>4</td>
+                        <td>RAID 1 + RAID 0</td>
+                        <td>Rendimiento + redundancia</td>
+                        <td>50% de capacidad</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>Comparación Visual</h4>
+
+            <div class="comparison">
+                <div>
+                    <h4>RAID 0 (Striping)</h4>
+                    <pre>Dato 1 → Disco 1, Bloque 1
+Dato 1 → Disco 2, Bloque 1
+Dato 2 → Disco 1, Bloque 2
+Dato 2 → Disco 2, Bloque 2
+
+Capacidad: 100% (sumada)
+Rendimiento: 2x en lectura/escritura
+Redundancia: Ninguna</pre>
                 </div>
+                <div>
+                    <h4>RAID 1 (Mirroring)</h4>
+                    <pre>Dato 1 → Disco 1, Bloque 1
+Dato 1 → Disco 2, Bloque 1 (copia)
+Dato 2 → Disco 1, Bloque 2
+Dato 2 → Disco 2, Bloque 2 (copia)
 
-                <div class="video-resource">
-                    <h3>Video 3: Hard Links vs Soft Links</h3>
-                    <p><strong>Concepto:</strong> Diferencia entre enlaces duros y simbólicos</p>
-                    <p><strong>Duración:</strong> 8 minutos</p>
-                    <p><strong>Nivel:</strong> Básico</p>
-                    <p><strong>Por qué verlo:</strong> Entender enlaces en Linux</p>
-                    <p><strong>Canal:</strong> Tony Teaches Tech</p>
-                    <a href="https://www.youtube.com/watch?v=M7Va0e1o8lI" target="_blank">Ver en YouTube</a>
+Capacidad: 50% (un disco)
+Rendimiento: 2x lectura, 1x escritura
+Redundancia: Completa</pre>
                 </div>
+            </div>
 
-                <div class="callout info">
-                    <p class="callout-title">Tip de Estudio</p>
-                    <p>Antes de ver cada video, lee el tema correspondiente en la clase. Esto te ayudará a identificar qué conceptos ya entiendes y cuáles necesitas reforzar.</p>
-                </div>
-            </section>
-        </article>
+            <div class="callout warning">
+                <strong>Importante:</strong> RAID NO es backup. Protege contra fallo de disco, no contra borrado accidental, corrupción de datos o desastres.
+            </div>
+        </section>
 
-        <footer>
-        <div class="container">
-            <p><strong>IF0099 - Sistemas Operativos I</strong> • <a href="index.html">Índice de Clases</a></p>
-            <p><strong>IF0099 - Sistemas Operativos I</strong> | UNAULA - Ingeniería Informática - 2026-I</p>
-            <p>Clase 11: Implementación de Sistemas de Archivos</p>
-        </footer>
+        <section id="fstab">
+            <h2>6. Archivo /etc/fstab</h2>
+
+            <p><strong>fstab</strong> (file system table) define cómo y dónde se montan los sistemas de archivos automáticamente durante el arranque.</p>
+
+            <h3>Formato de /etc/fstab</h3>
+
+            <pre><code># &lt;file system&gt; &lt;mount point&gt;   &lt;type&gt;  &lt;options&gt;       &lt;dump&gt;  &lt;pass&gt;
+UUID=xxxx-xxxx    /               ext4    errors=remount-ro 0       1
+UUID=yyyy-yyyy    /home           ext4    defaults          0       2
+/dev/sdb1         /data           ext4    defaults          0       2
+/swapfile         none            swap    sw                0       0</code></pre>
+
+            <h4>Campos Explicados</h4>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Campo</th>
+                        <th>Descripción</th>
+                        <th>Ejemplo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>file system</strong></td>
+                        <td>Dispositivo a montar</td>
+                        <td><code>/dev/sda1</code>, <code>UUID=xxx</code>, <code>/dev/vg00/root</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>mount point</strong></td>
+                        <td>Directorio donde se monta</td>
+                        <td><code>/</code>, <code>/home</code>, <code>/data</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>type</strong></td>
+                        <td>Tipo de sistema de archivos</td>
+                        <td><code>ext4</code>, <code>xfs</code>, <code>btrfs</code>, <code>swap</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>options</strong></td>
+                        <td>Opciones de montaje</td>
+                        <td><code>defaults</code>, <code>ro</code>, <code>noauto</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>dump</strong></td>
+                        <td>Backup con dump (0=no)</td>
+                        <td><code>0</code>, <code>1</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>pass</strong></td>
+                        <td>Orden de fsck (0=omitir)</td>
+                        <td><code>0</code>, <code>1</code> (root), <code>2</code> (otros)</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Opciones Comunes</h3>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Opción</th>
+                        <th>Descripción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>defaults</code></td>
+                        <td>rw, suid, dev, exec, auto, nouser, async</td>
+                    </tr>
+                    <tr>
+                        <td><code>ro</code></td>
+                        <td>Solo lectura (read-only)</td>
+                    </tr>
+                    <tr>
+                        <td><code>rw</code></td>
+                        <td>Lectura-escritura (default)</td>
+                    </tr>
+                    <tr>
+                        <td><code>auto</code></td>
+                        <td>Montar automáticamente en arranque</td>
+                    </tr>
+                    <tr>
+                        <td><code>noauto</code></td>
+                        <td>No montar automáticamente</td>
+                    </tr>
+                    <tr>
+                        <td><code>user</code></td>
+                        <td>Permitir montar por usuario normal</td>
+                    </tr>
+                    <tr>
+                        <td><code>nosuid</code></td>
+                        <td>Ignorar bits SUID/SGID</td>
+                    </tr>
+                    <tr>
+                        <td><code>nofail</code></td>
+                        <td>No fallar arranque si error</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Cómo Obtener el UUID</h3>
+
+            <pre><code># Método 1: blkid
+sudo blkid /dev/sda1
+
+# Método 2: lsblk
+lsblk -f
+
+# Método 3: udevadm
+udevadm info --query=all --name=/dev/sda1 | grep UUID</code></pre>
+
+            <h3>Ejemplo Completo: Agregar LVM a fstab</h3>
+
+            <pre><code># 1. Crear punto de montaje
+sudo mkdir -p /datos/documentos
+
+# 2. Obtener UUID (o usar ruta /dev/vg_datos/lv_documentos)
+sudo blkid /dev/vg_datos/lv_documentos
+
+# 3. Editar fstab
+sudo nano /etc/fstab
+
+# Agregar línea:
+UUID=xxxx-xxxx  /datos/documentos  ext4  defaults  0  2
+
+# 4. Verificar sintaxis
+sudo mount -a
+
+# 5. Verificar que está montado
+df -h /datos/documentos</code></pre>
+
+            <div class="callout warning">
+                <strong>Siempre verificar con mount -a:</strong> Antes de reiniciar, ejecuta <code>mount -a</code> para detectar errores en fstab sin dejar el sistema inarrancable.
+            </div>
+        </section>
+
+        <section id="practica">
+            <h2>7. Actividad Práctica</h2>
+
+            <div class="actividad">
+                <h3>Ejercicio 1: Agregar Disco a Máquina Virtual</h3>
+                <p><strong>Objetivo:</strong> Agregar un nuevo disco a tu VM y configurarlo con LVM</p>
+
+                <h4>Paso 1: Agregar disco en VirtualBox/VMware</h4>
+                <ul>
+                    <li>Apagar la VM</li>
+                    <li>En configuración de VM, agregar nuevo disco duro (10GB)</li>
+                    <li>Iniciar la VM</li>
+                </ul>
+
+                <h4>Paso 2: Verificar que el disco es visible</h4>
+                <pre><code># Listar discos
+lsblk
+
+# Ver información detallada
+sudo fdisk -l</code></pre>
+
+                <h4>Paso 3: Particionar con fdisk</h4>
+                <pre><code># Iniciar fdisk en el nuevo disco (ej: /dev/sdb)
+sudo fdisk /dev/sdb
+
+# Comandos en fdisk:
+# n - nueva partición
+# p - primaria
+# 1 - número de partición
+# ENTER - usar primer sector por defecto
+# ENTER - usar último sector por defecto (todo el disco)
+# t - cambiar tipo
+# 8e - tipo Linux LVM
+# p - imprimir tabla
+# w - escribir y salir</code></pre>
+
+                <h4>Paso 4: Crear volumen físico LVM</h4>
+                <pre><code># Crear PV
+sudo pvcreate /dev/sdb1
+
+# Verificar
+sudo pvdisplay</code></pre>
+
+                <h4>Paso 5: Crear grupo de volúmenes</h4>
+                <pre><code># Crear VG
+sudo vgcreate vg_practica /dev/sdb1
+
+# Verificar
+sudo vgdisplay vg_practica</code></pre>
+
+                <h4>Paso 6: Crear volumen lógico</h4>
+                <pre><code># Crear LV de 5GB
+sudo lvcreate -L 5G -n lv_datos vg_practica
+
+# Verificar
+sudo lvdisplay</code></pre>
+
+                <h4>Paso 7: Formatear y montar</h4>
+                <pre><code># Formatear
+sudo mkfs.ext4 /dev/vg_practica/lv_datos
+
+# Crear punto de montaje
+sudo mkdir /datos
+
+# Montar temporalmente
+sudo mount /dev/vg_practica/lv_datos /datos
+
+# Verificar
+df -h /datos</code></pre>
+
+                <h4>Paso 8: Montaje permanente en fstab</h4>
+                <pre><code># Obtener UUID
+sudo blkid /dev/vg_practica/lv_datos
+
+# Editar fstab
+sudo nano /etc/fstab
+
+# Agregar línea:
+UUID=tu-uuid-aqui  /datos  ext4  defaults  0  2
+
+# Guardar y verificar
+sudo mount -a
+df -h /datos
+
+# Crear archivo de prueba
+echo "Prueba LVM" | sudo tee /datos/prueba.txt
+cat /datos/prueba.txt</code></pre>
+            </div>
+
+            <div class="actividad">
+                <h3>Ejercicio 2: Script de Automatización</h3>
+                <p><strong>Objetivo:</strong> Crear un script que automatice el proceso de configuración de LVM</p>
+
+                <pre><code>#!/bin/bash
+# script_lvm.sh - Automatiza configuración de LVM
+
+set -e  # Detener si hay error
+
+DISCO=$1
+VG_NAME="vg_datos"
+LV_NAME="lv_datos"
+MOUNT_POINT="/datos"
+
+# Verificar argumentos
+if [ -z "$DISCO" ]; then
+    echo "Uso: $0 &lt;disco&gt; (ej: /dev/sdb)"
+    exit 1
+fi
+
+echo "Configurando LVM en $DISCO..."
+
+# Crear partición LVM (automático con parted)
+echo "Creando partición LVM..."
+sudo parted -s $DISCO mklabel gpt
+sudo parted -s $DISCO mkpart primary 0% 100%
+sudo parted -s $DISCO set 1 lvm on
+
+PARTICION="${DISCO}1"
+
+# Crear volumen físico
+echo "Creando volumen físico..."
+sudo pvcreate $PARTICION
+
+# Crear grupo de volúmenes
+echo "Creando grupo de volúmenes..."
+sudo vgcreate $VG_NAME $PARTICION
+
+# Crear volumen lógico (todo el espacio)
+echo "Creando volumen lógico..."
+sudo lvcreate -l 100%FREE -n $LV_NAME $VG_NAME
+
+# Formatear
+echo "Formateando con ext4..."
+sudo mkfs.ext4 /dev/${VG_NAME}/${LV_NAME}
+
+# Crear punto de montaje
+echo "Creando punto de montaje..."
+sudo mkdir -p $MOUNT_POINT
+
+# Montar
+echo "Montando volumen..."
+sudo mount /dev/${VG_NAME}/${LV_NAME} $MOUNT_POINT
+
+# Agregar a fstab
+UUID=$(sudo blkid -s UUID -o value /dev/${VG_NAME}/${LV_NAME})
+if ! grep -q "$UUID" /etc/fstab; then
+    echo "Agregando a fstab..."
+    echo "UUID=$UUID $MOUNT_POINT ext4 defaults 0 2" | sudo tee -a /etc/fstab
+fi
+
+echo "¡Configuración completada!"
+echo "Volumen montado en: $MOUNT_POINT"
+df -h $MOUNT_POINT</code></pre>
+
+                <p><strong>Uso del script:</strong></p>
+                <pre><code># Dar permisos
+chmod +x script_lvm.sh
+
+# Ejecutar (con el nuevo disco como argumento)
+sudo ./script_lvm.sh /dev/sdb</code></pre>
+            </div>
+
+            <p><strong>Tiempo estimado:</strong> 60 minutos</p>
+        </section>
+
+        <section id="entregable">
+            <h2>Entregable de la Clase</h2>
+
+            <h3>Requisitos:</h3>
+
+            <ol>
+                <li><strong>Disco adicional agregado</strong> a la máquina virtual</li>
+                <li><strong>Volumen LVM configurado</strong> con al menos 5GB</li>
+                <li><strong>Montaje permanente</strong> en /etc/fstab</li>
+                <li><strong>Script de automatización</strong> que realice todo el proceso</li>
+                <li><strong>Capturas de pantalla</strong> demostrando:
+                    <ul>
+                        <li>Salida de <code>lsblk</code> mostrando el nuevo disco</li>
+                        <li>Salida de <code>vgdisplay</code> y <code>lvdisplay</code></li>
+                        <li>Salida de <code>df -h</code> mostrando el volumen montado</li>
+                        <li>Contenido de /etc/fstab</li>
+                    </ul>
+                </li>
+            </ol>
+
+            <div class="callout success">
+                <strong>Formato de entrega:</strong> Script en bash (.sh) + reporte en PDF con capturas y explicación del proceso.
+            </div>
+        </section>
+
+        <section id="resumen">
+            <h2>Resumen de la Clase</h2>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Concepto</th>
+                        <th>Idea Clave</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td><strong>MBR</strong></td><td>Particionado tradicional, max 2TB, 4 particiones</td></tr>
+                    <tr><td><strong>GPT</strong></td><td>Particionado moderno, hasta 18EB, 128 particiones</td></tr>
+                    <tr><td><strong>ext4</strong></td><td>Sistema de archivos con journaling</td></tr>
+                    <tr><td><strong>PV (Physical Volume)</strong></td><td>Partición o disco usado por LVM</td></tr>
+                    <tr><td><strong>VG (Volume Group)</strong></td><td>Pool de almacenamiento que combina PVs</td></tr>
+                    <tr><td><strong>LV (Logical Volume)</strong></td><td>Volumen lógico formateable y montable</td></tr>
+                    <tr><td><strong>RAID 0</strong></td><td>Striping, máximo rendimiento, sin redundancia</td></tr>
+                    <tr><td><strong>RAID 1</strong></td><td>Mirroring, redundancia completa, 50% capacidad</td></tr>
+                    <tr><td><strong>RAID 5</strong></td><td>Striping + paridad, buen balance</td></tr>
+                    <tr><td><strong>/etc/fstab</strong></td><td>Configura montajes automáticos</td></tr>
+                </tbody>
+            </table>
+
+            <div class="callout success">
+                <strong>Concepto fundamental:</strong> LVM abstrae el almacenamiento físico para proporcionar flexibilidad, permitiendo redimensionar volúmenes, agregar discos en caliente y crear snapshots sin interrumpir el servicio.
+            </div>
+        </section>
     </div>
 
-    <button class="scroll-top" id="scrollTop" aria-label="Scroll to top">↑</button>
+    <footer>
+        <div class="container">
+            <p><strong>IF0099 - Sistemas Operativos I</strong> • <a href="index.html">Índice de Clases</a></p>
+        <p>IF0099 - Sistemas Operativos I | UNAULA - Ingeniería Informática - 2026-I</p>
+        <p>Clase 11: Almacenamiento LVM</p>
+    </footer>
+
+    <a href="#" class="scroll-top" id="scrollTop" aria-label="Scroll to top">↑</a>
 
     <script>
         const scrollTopBtn = document.getElementById('scrollTop');
-
         window.addEventListener('scroll', () => {
             if (window.pageYOffset > 300) {
                 scrollTopBtn.classList.add('visible');
@@ -1150,12 +1187,9 @@ df -i
                 scrollTopBtn.classList.remove('visible');
             }
         });
-
-        scrollTopBtn.addEventListener('click', () => {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
+        scrollTopBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         });
     </script>
 </body>

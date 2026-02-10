@@ -3,1268 +3,466 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clase 15: Repaso Integral - IF0099</title>
+    <title>Clase 15: Servidor FTP | IF0099 - Sistemas Operativos I</title>
     <style>
-        :root {
-            --primary: #2563eb;
-            --secondary: #1e40af;
-            --accent: #059669;
-            --bg-light: #f8fafc;
-            --bg-code: #1e293b;
-            --text-main: #1e293b;
-            --text-muted: #64748b;
-            --border: #e2e8f0;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            line-height: 1.7;
-            color: var(--text-main);
-            background: var(--bg-light);
-            font-size: 16px;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        /* Header */
-        header {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            color: white;
-            padding: 3rem 0;
-            margin-bottom: 2rem;
-        }
-
-        header h1 {
-            font-size: 2.2rem;
-            margin-bottom: 0.5rem;
-            font-weight: 700;
-        }
-
-        header .subtitle {
-            font-size: 1.1rem;
-            opacity: 0.9;
-        }
-
-        header .meta {
-            margin-top: 1rem;
-            font-size: 0.9rem;
-            opacity: 0.8;
-        }
-
-        /* Navigation */
-        nav {
-            background: white;
-            padding: 1.5rem 0;
-            margin-bottom: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-
-        nav h2 {
-            font-size: 1.1rem;
-            color: var(--text-muted);
-            margin-bottom: 1rem;
-            padding: 0 20px;
-        }
-
-        nav ul {
-            list-style: none;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 0.5rem;
-            padding: 0 20px;
-        }
-
-        nav a {
-            color: var(--primary);
-            text-decoration: none;
-            padding: 0.5rem;
-            display: block;
-            border-radius: 4px;
-            transition: background 0.2s;
-        }
-
-        nav a:hover {
-            background: var(--bg-light);
-        }
-
-        /* Sections */
-        section {
-            background: white;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-
-        section h2 {
-            color: var(--primary);
-            font-size: 1.8rem;
-            margin-bottom: 1.5rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 3px solid var(--accent);
-        }
-
-        section h3 {
-            color: var(--secondary);
-            font-size: 1.4rem;
-            margin: 2rem 0 1rem;
-        }
-
-        section h4 {
-            color: var(--text-main);
-            font-size: 1.1rem;
-            margin: 1.5rem 0 0.75rem;
-            font-weight: 600;
-        }
-
-        p {
-            margin-bottom: 1rem;
-        }
-
-        /* Figures */
-        figure {
-            margin: 2rem 0;
-            text-align: center;
-        }
-
-        figure img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-
-        figcaption {
-            margin-top: 0.75rem;
-            color: var(--text-muted);
-            font-style: italic;
-            font-size: 0.95rem;
-        }
-
-        /* Tables */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 1.5rem 0;
-            font-size: 0.95rem;
-        }
-
-        th, td {
-            padding: 0.75rem 1rem;
-            text-align: left;
-            border-bottom: 1px solid var(--border);
-        }
-
-        th {
-            background: var(--bg-light);
-            font-weight: 600;
-            color: var(--secondary);
-        }
-
-        tr:hover {
-            background: var(--bg-light);
-        }
-
-        /* Code blocks */
-        pre {
-            background: var(--bg-code);
-            color: #e2e8f0;
-            padding: 1.5rem;
-            border-radius: 8px;
-            overflow-x: auto;
-            margin: 1.5rem 0;
-            font-size: 0.9rem;
-            line-height: 1.5;
-        }
-
-        code {
-            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
-        }
-
-        p code, li code, td code {
-            background: var(--bg-light);
-            color: var(--primary);
-            padding: 0.2rem 0.4rem;
-            border-radius: 4px;
-            font-size: 0.9em;
-        }
-
-        pre code {
-            background: none;
-            padding: 0;
-            color: inherit;
-        }
-
-        /* Lists */
-        ul, ol {
-            margin-left: 1.5rem;
-            margin-bottom: 1rem;
-        }
-
-        li {
-            margin-bottom: 0.5rem;
-        }
-
-        /* Callout boxes */
-        .callout {
-            padding: 1.5rem;
-            border-radius: 8px;
-            margin: 1.5rem 0;
-            border-left: 4px solid;
-        }
-
-        .callout.info {
-            background: #eff6ff;
-            border-left-color: var(--primary);
-        }
-
-        .callout.warning {
-            background: #fef3c7;
-            border-left-color: #f59e0b;
-        }
-
-        .callout.success {
-            background: #d1fae5;
-            border-left-color: var(--accent);
-        }
-
-        .callout-title {
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-
-        /* Checkboxes for exercises */
-        .exercise {
-            background: var(--bg-light);
-            padding: 1.5rem;
-            border-radius: 8px;
-            margin: 1.5rem 0;
-        }
-
-        .exercise h4 {
-            margin-top: 0;
-        }
-
-        .checklist {
-            list-style: none;
-            padding-left: 0;
-        }
-
-        .checklist li {
-            padding: 0.5rem 0;
-            display: flex;
-            align-items: flex-start;
-            gap: 0.75rem;
-        }
-
-        .checklist li input[type="checkbox"] {
-            margin-top: 0.25rem;
-            width: 18px;
-            height: 18px;
-        }
-
-        /* Details */
-        details {
-            background: var(--bg-light);
-            padding: 1rem;
-            border-radius: 8px;
-            margin: 1rem 0;
-        }
-
-        summary {
-            cursor: pointer;
-            font-weight: 600;
-            color: var(--primary);
-        }
-
-        summary:hover {
-            text-decoration: underline;
-        }
-
-        details[open] summary {
-            margin-bottom: 1rem;
-        }
-
-        /* ASCII diagrams */
-        .ascii-diagram {
-            font-family: 'Consolas', 'Monaco', monospace;
-            font-size: 0.85rem;
-            line-height: 1.2;
-            background: var(--bg-light);
-            padding: 1rem;
-            border-radius: 4px;
-            overflow-x: auto;
-            white-space: pre;
-        }
-
-        /* Footer */
-        footer {
-            background: var(--text-main);
-            color: white;
-            padding: 2rem 0;
-            text-align: center;
-            margin-top: 3rem;
-        }
-
-        footer a {
-            color: var(--accent);
-            text-decoration: none;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            header h1 {
-                font-size: 1.6rem;
-            }
-
-            section {
-                padding: 1.5rem;
-            }
-
-            nav ul {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* Difficulty badges */
-        .difficulty {
-            display: inline-block;
-            padding: 0.25rem 0.75rem;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 600;
-        }
-
-        .difficulty.easy { background: #d1fae5; color: #065f46; }
-        .difficulty.medium { background: #fef3c7; color: #92400e; }
-        .difficulty.hard { background: #fee2e2; color: #991b1b; }
-
-        /* Scroll indicator */
-        .scroll-top {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            background: var(--primary);
-            color: white;
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            opacity: 0;
-            transition: opacity 0.3s;
-            text-decoration: none;
-            font-size: 1.5rem;
-        }
-
-        .scroll-top.visible {
-            opacity: 1;
-        }
-
-        .scroll-top:hover {
-            background: var(--secondary);
-        }
-
-        .actividad{background:var(--bg-light);border-left:5px solid var(--accent);padding:1.5rem;margin:1.5rem 0;border-radius:4px}
-        .actividad h3{color:var(--primary);margin-bottom:1rem}
-        .actividad p{margin-bottom:.75rem}
-        .actividad strong{color:var(--secondary)}
+        :root { --primary: #2563eb; --secondary: #1e40af; --accent: #059669; --bg-light: #f8fafc; --bg-code: #1e293b; --text-main: #1e293b; --text-muted: #64748b; --border: #e2e8f0; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.7; color: var(--text-main); background: var(--bg-light); font-size: 16px; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        header { background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); color: white; padding: 3rem 0; margin-bottom: 2rem; }
+        header h1 { font-size: 2.2rem; margin-bottom: 0.5rem; font-weight: 700; }
+        header .subtitle { font-size: 1.1rem; opacity: 0.9; }
+        header .meta { margin-top: 1rem; font-size: 0.9rem; opacity: 0.8; }
+        nav { background: white; padding: 1.5rem 0; margin-bottom: 2rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        nav h2 { font-size: 1.1rem; color: var(--text-muted); margin-bottom: 1rem; padding: 0 20px; }
+        nav ul { list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.5rem; padding: 0 20px; }
+        nav a { color: var(--primary); text-decoration: none; padding: 0.5rem; display: block; border-radius: 4px; transition: background 0.2s; }
+        nav a:hover { background: var(--bg-light); }
+        section { background: white; padding: 2rem; margin-bottom: 2rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        section h2 { color: var(--primary); font-size: 1.8rem; margin-bottom: 1.5rem; padding-bottom: 0.5rem; border-bottom: 3px solid var(--accent); }
+        section h3 { color: var(--secondary); font-size: 1.4rem; margin: 2rem 0 1rem; }
+        section h4 { color: var(--text-main); font-size: 1.1rem; margin: 1.5rem 0 0.75rem; font-weight: 600; }
+        p { margin-bottom: 1rem; }
+        table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.95rem; }
+        th, td { padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid var(--border); }
+        th { background: var(--bg-light); font-weight: 600; color: var(--secondary); }
+        tr:hover { background: var(--bg-light); }
+        pre { background: var(--bg-code); color: #e2e8f0; padding: 1.5rem; border-radius: 8px; overflow-x: auto; margin: 1.5rem 0; font-size: 0.9rem; line-height: 1.5; }
+        code { font-family: 'Consolas', 'Monaco', 'Courier New', monospace; }
+        p code, li code { background: var(--bg-light); color: var(--primary); padding: 0.2rem 0.4rem; border-radius: 4px; font-size: 0.9em; }
+        pre code { background: none; padding: 0; color: inherit; }
+        ul, ol { margin-left: 1.5rem; margin-bottom: 1rem; }
+        li { margin-bottom: 0.5rem; }
+        .callout { padding: 1.5rem; border-radius: 8px; margin: 1.5rem 0; border-left: 4px solid; }
+        .callout.info { background: #eff6ff; border-left-color: var(--primary); }
+        .callout.warning { background: #fef3c7; border-left-color: #f59e0b; }
+        .callout.success { background: #d1fae5; border-left-color: var(--accent); }
+        footer { background: var(--text-main); color: white; padding: 2rem 0; text-align: center; margin-top: 3rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        .two-columns { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 1.5rem 0; }
+        .column-card { background: var(--bg-light); padding: 1.5rem; border-radius: 8px; }
+        .column-card h4 { color: var(--secondary); margin-top: 0; }
+        .actividad { background: var(--bg-light); border-left: 5px solid var(--accent); padding: 1.5rem; margin: 1.5rem 0; border-radius: 4px; }
+        .actividad h3 { color: var(--primary); margin-bottom: 1rem; }
+        .checklist { list-style: none; padding-left: 0; }
+        .checklist li { padding: 0.5rem 0; display: flex; align-items: flex-start; gap: 0.75rem; }
+        .checklist li input[type="checkbox"] { margin-top: 0.25rem; width: 18px; height: 18px; }
+        .ascii-diagram { font-family: 'Consolas', monospace; font-size: 0.85rem; line-height: 1.2; background: var(--bg-light); padding: 1rem; border-radius: 4px; overflow-x: auto; white-space: pre; }
+        @media (max-width: 768px) { .two-columns { grid-template-columns: 1fr; } header h1 { font-size: 1.6rem; } section { padding: 1.5rem; } nav ul { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>Clase 15: Repaso Integral</h1>
-            <p class="subtitle">IF0099 - Sistemas Operativos I | Unidad 8 | Clase 15</p>
+            <h1>Clase 15: Servidor FTP</h1>
+            <p class="subtitle">IF0099 - Sistemas Operativos I | Servicios de Red | Clase 15</p>
             <p class="subtitle">UNAULA - Ingeniería Informática - 2026-I</p>
+            <p class="meta">Tiempo estimado: 90 minutos | Nivel: Intermedio</p>
         </header>
 
-        <article class="main-content">
-            <nav class="index">
-                <h2>Contenido de la Clase</h2>
-                <ul>
-                    <a href="#objetivos">Objetivos de la Clase</a>
-                    <a href="#mapa-conceptual">Mapa Conceptual del Curso</a>
-                    <a href="#unidad-1-2">Unidades 1-2: Procesos y Planificación</a>
-                    <a href="#unidad-3-4">Unidades 3-4: Sincronización</a>
-                    <a href="#unidad-5-6">Unidades 5-6: Memoria y Archivos</a>
-                    <a href="#unidad-7-8">Unidades 7-8: E/S y Protección</a>
-                    <a href="#ejercicio-1">Ejercicio 1: Planificación FCFS</a>
-                    <a href="#ejercicio-2">Ejercicio 2: Memoria Virtual</a>
-                    <a href="#ejercicio-3">Ejercicio 3: Inodos y Archivos</a>
-                    <a href="#mandamientos">Los 10 Mandamientos de SO</a>
-                </ul>
-            </nav>
+        <nav>
+            <h2>Contenido de la Clase</h2>
+            <ul>
+                <li><a href="#objetivos">Objetivos</a></li>
+                <li><a href="#teoria">Teoría: FTP y Protocolos de Transferencia</a></li>
+                <li><a href="#instalacion">Instalación de vsftpd</a></li>
+                <li><a href="#configuracion">Configuración Básica</a></li>
+                <li><a href="#usuario">Configurar Usuario FTP</a></li>
+                <li><a href="#testing">Probar Transferencia</a></li>
+                <li><a href="#actividad">Actividad Práctica</a></li>
+            </ul>
+        </nav>
 
-            <div class="highlight-box">
-                <h3>Objetivo</h3>
-                <p>Integrar y sintetizar todo el conocimiento adquirido para el examen final</p>
-            </div>
-
+        <main>
             <section id="objetivos">
-                <h2>Objetivos y Estructura</h2>
+                <h2>Objetivos de Aprendizaje</h2>
+                <div class="callout success">
+                    <strong>Al finalizar esta clase, podrás:</strong>
+                    <ul>
+                        <li>Comprender el protocolo FTP y sus variantes (FTPS, SFTP)</li>
+                        <li>Instalar y configurar vsftpd en Linux</li>
+                        <li>Diferenciar entre modo activo y pasivo</li>
+                        <li>Configurar usuarios FTP con permisos</li>
+                        <li>Transferir archivos entre cliente y servidor</li>
+                    </ul>
+                </div>
+            </section>
 
-                <div class="objectives">
-                    <div class="objective-card" data-number="1">
-                        <strong>Consolidar</strong> conceptos fundamentales del curso
+            <section id="teoria">
+                <h2>Teoría: FTP y Protocolos de Transferencia</h2>
+
+                <h3>¿Qué es FTP?</h3>
+                <p><strong>FTP (File Transfer Protocol)</strong> es un protocolo de red estándar para transferir archivos entre un cliente y un servidor a través de una red TCP.</p>
+
+                <div class="two-columns">
+                    <div class="column-card">
+                        <h4>Características de FTP</h4>
+                        <ul>
+                            <li>Protocolo de capa de aplicación</li>
+                            <li>Arquitectura cliente-servidor</li>
+                            <li>Usa 2 puertos: 20 (datos) y 21 (control)</li>
+                            <li>Autenticación con usuario/contraseña</li>
+                            <li>Soporta transferencia binaria y ASCII</li>
+                            <li>Permite listar, subir, bajar archivos</li>
+                        </ul>
                     </div>
-                    <div class="objective-card" data-number="2">
-                        <strong>Identificar</strong> temas débiles y fortalezas
-                    </div>
-                    <div class="objective-card" data-number="3">
-                        <strong>Resolver</strong> ejercicios tipo examen
-                    </div>
-                    <div class="objective-card" data-number="4">
-                        <strong>Conectar</strong> conceptos de diferentes unidades
-                    </div>
-                    <div class="objective-card" data-number="5">
-                        <strong>Aplicar</strong> conocimientos teóricos a problemas prácticos
+
+                    <div class="column-card">
+                        <h4>Modos de Conexión</h4>
+                        <p><strong>Modo Activo:</strong></p>
+                        <ul>
+                            <li>Cliente abre puerto aleatorio</li>
+                            <li>Servidor se conecta desde puerto 20</li>
+                            <li>Problemas con firewalls/NAT</li>
+                        </ul>
+                        <p><strong>Modo Pasivo:</strong></p>
+                        <ul>
+                            <li>Servidor abre puerto aleatorio</li>
+                            <li>Cliente se conecta a ese puerto</li>
+                            <li>Más compatible con firewalls</li>
+                        </ul>
                     </div>
                 </div>
 
-                <h3>Agenda</h3>
+                <h3>FTP vs FTPS vs SFTP</h3>
                 <table>
                     <thead>
-                        <tr>
-                            <th>Sección</th>
-                            <th>Tiempo</th>
-                        </tr>
+                        <tr><th>Protocolo</th><th>Cifrado</th><th>Puerto</th><th>Descripción</th></tr>
                     </thead>
                     <tbody>
-                        <tr><td>Repaso unidades 1-8</td><td>35 min</td></tr>
-                        <tr><td>Ejercicios integradores</td><td>30 min</td></tr>
-                        <tr><td>Quiz y estrategias</td><td>15 min</td></tr>
-                        <tr><td>Actividad práctica</td><td>10 min</td></tr>
+                        <tr><td>FTP</td><td>No</td><td>20/21</td><td>Protocolo original, texto plano</td></tr>
+                        <tr><td>FTPS</td><td>SSL/TLS</td><td>990/989</td><td>FTP sobre SSL/TLS (implícito)</td></tr>
+                        <tr><td>FTPES</td><td>SSL/TLS</td><td>20/21</td><td>FTP con TLS explícito</td></tr>
+                        <tr><td>SFTP</td><td>SSH</td><td>22</td><td>FTP sobre SSH (diferente protocolo)</td></tr>
+                    </tbody>
+                </table>
+
+                <div class="callout warning">
+                    <strong>Advertencia de Seguridad:</strong>
+                    <p>FTP tradicional transmite credenciales y datos en texto plano. Para producción, usar SFTP o FTPS.</p>
+                </div>
+
+                <h3>Arquitectura FTP</h3>
+                <div class="ascii-diagram">
+<pre>
+MODO ACTIVO                    MODO PASIVO
+┌────────────┐                ┌────────────┐
+│   CLIENTE  │                │   CLIENTE  │
+│  (Puerto   │                │  (Puerto   │
+│  aleatorio)│                │  aleatorio)│
+└──────┬─────┘                └──────┬─────┘
+       │                              ↓
+       │                        ┌──────────┐
+       │  PORT comando          │ SERVIDOR │
+       ├────────────────────→   │ (Puerto  │
+       │                        │ aleatorio)│
+       │  Conexión datos        └─────┬────┘
+       │  ←─────────────────────────┤
+       │  (desde puerto 20)             │
+       ↓                              ↓
+┌────────────┐                ┌────────────┐
+│  SERVIDOR  │                │  SERVIDOR  │
+│ (Puerto 21)│                │ (Puerto 21)│
+└────────────┘                └────────────┘
+Control (21)                  Control (21)
+</pre>
+                </div>
+
+                <h3>Servidores FTP Comunes</h3>
+                <table>
+                    <thead>
+                        <tr><th>Servidor</th><th>Sistema</th><th>Características</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>vsftpd</td><td>Linux</td><td>Muy seguro, ligero, popular</td></tr>
+                        <tr><td>ProFTPD</td><td>Linux/Unix</td><td>Configuración similar a Apache</td></tr>
+                        <tr><td>FileZilla Server</td><td>Windows</td><td>GUI, fácil de configurar</td></tr>
+                        <tr><td>IIS FTP</td><td>Windows</td><td>Integrado con IIS/AD</td></tr>
                     </tbody>
                 </table>
             </section>
 
-            <section id="mapa-conceptual">
-                <h2>🗺️ Mapa Conceptual del Curso</h2>
+            <section id="instalacion">
+                <h2>Instalación de vsftpd</h2>
 
-                <div class="concept-map">
-<pre>
-┌─────────────────────────────────────────────────────────┐
-│                  SISTEMA OPERATIVO                      │
-├─────────────────────────────────────────────────────────┤
-│  ┌────────────┐  ┌────────────┐  ┌────────────┐      │
-│  │ Unidad 1-2 │  │ Unidad 3-4 │  │ Unidad 5-6 │      │
-│  │ PROCESOS   │→ │PLANIFICACIÓN│→│  MEMORIA   │      │
-│  │ & HILOS    │  │& SINCRONIA. │  │& ARCHIVOS  │      │
-│  └────────────┘  └────────────┘  └────────────┘      │
-│         ↓               ↓               ↓             │
-│  ┌────────────┐  ┌────────────┐  ┌────────────┐      │
-│  │ Unidad 7   │  │ Unidad 8   │  │ Integración│      │
-│  │  E/S       │→ │ PROTECCIÓN │→ │& REPASO    │      │
-│  │  & DISCOS  │  │& SEGURIDAD │  │            │      │
-│  └────────────┘  └────────────┘  └────────────┘      │
-└─────────────────────────────────────────────────────────┘
-</pre>
+                <div class="callout warning">
+                    <strong>Requisitos previos:</strong>
+                    <ul>
+                        <li>VM con Ubuntu Server 22.04/24.04</li>
+                        <li>Usuario con privilegios sudo</li>
+                        <li>Conexión a Internet</li>
+                    </ul>
+                </div>
+
+                <h3>Paso 1: Actualizar e instalar</h3>
+                <pre><code># Actualizar sistema
+sudo apt update
+sudo apt upgrade -y
+
+# Instalar vsftpd
+sudo apt install vsftpd -y
+
+# Verificar instalación
+vsftpd -version</code></pre>
+
+                <h3>Paso 2: Verificar el servicio</h3>
+                <pre><code># Verificar estado
+sudo systemctl status vsftpd
+
+# Habilitar inicio automático
+sudo systemctl enable vsftpd
+
+# Verificar puertos en escucha
+sudo ss -tlnp | grep vsftpd</code></pre>
+
+                <div class="callout success">
+                    <strong>Ubicación de archivos:</strong>
+                    <ul>
+                        <li><code>/etc/vsftpd.conf</code> - Configuración principal</li>
+                        <li><code>/etc/vsftpd.userlist</code> - Lista de usuarios permitidos</li>
+                        <li><code>/home/usuario/ftp</code> - Directorio FTP por defecto</li>
+                        <li><code>/var/log/vsftpd.log</code> - Logs</li>
+                    </ul>
                 </div>
             </section>
 
-            <section id="unidad-1-2">
-                <h2>📚 Unidad 1-2: Procesos y Planificación</h2>
+            <section id="configuracion">
+                <h2>Configuración Básica</h2>
+
+                <h3>Paso 1: Configurar vsftpd</h3>
+                <pre><code># Hacer backup del archivo original
+sudo cp /etc/vsftpd.conf /etc/vsftpd.conf.backup
+
+# Editar configuración
+sudo nano /etc/vsftpd.conf</code></pre>
+
+                <p>Configuración recomendada:</p>
+                <pre><code># Habilitar y configurar
+anonymous_enable=NO
+local_enable=YES
+write_enable=YES
+dirmessage_enable=YES
+xferlog_enable=YES
+connect_from_port_20=YES
+xferlog_std_format=YES
+listen=NO
+listen_ipv6=YES
+pam_service_name=vsftpd
+userlist_enable=YES
+tcp_wrappers=YES
+
+# Configurar directorio chroot
+chroot_local_user=YES
+allow_writeable_chroot=YES
+
+# Configurar modo pasivo
+pasv_enable=YES
+pasv_min_port=10000
+pasv_max_port=10100
+
+# Limitar usuarios
+userlist_file=/etc/vsftpd.userlist
+userlist_deny=NO</code></pre>
+
+                <h3>Paso 2: Configurar firewall</h3>
+                <pre><code># Permitir puerto 21 (control)
+sudo ufw allow 21/tcp
+
+# Permitir rango pasivo
+sudo ufw allow 10000:10100/tcp
+
+# Verificar firewall
+sudo ufw status</code></pre>
+
+                <h3>Paso 3: Reiniciar servicio</h3>
+                <pre><code># Reiniciar vsftpd
+sudo systemctl restart vsftpd
+
+# Verificar estado
+sudo systemctl status vsftpd</code></pre>
+            </section>
+
+            <section id="usuario">
+                <h2>Configurar Usuario FTP</h2>
+
+                <h3>Paso 1: Crear usuario FTP</h3>
+                <pre><code># Crear usuario
+sudo adduser ftpuser
+
+# (Responder prompts para contraseña y datos)</code></pre>
+
+                <h3>Paso 2: Crear directorio FTP</h3>
+                <pre><code># Crear directorio con permisos
+sudo mkdir -p /home/ftpuser/ftp/files
+sudo chown nobody:nogroup /home/ftpuser/ftp
+sudo chmod a-w /home/ftpuser/ftp
+sudo chown -R ftpuser:ftpuser /home/ftpuser/ftp/files
+
+# Crear archivo de prueba
+echo "Archivo de prueba FTP" | sudo tee /home/ftpuser/ftp/files/prueba.txt</code></pre>
+
+                <h3>Paso 3: Agregar usuario a lista permitida</h3>
+                <pre><code># Agregar usuario a lista
+echo "ftpuser" | sudo tee -a /etc/vsftpd.userlist
+
+# Verificar lista
+cat /etc/vsftpd.userlist</code></pre>
+
+                <h3>Paso 4: Reiniciar servicio</h3>
+                <pre><code>sudo systemctl restart vsftpd</code></pre>
+            </section>
+
+            <section id="testing">
+                <h2>Probar Transferencia</h2>
+
+                <h3>Opción 1: Probar con cliente FTP (desde otra VM o host)</h3>
+                <pre><code># Conectarse al servidor
+ftp IP_DEL_SERVIDOR
+
+# Usuario: ftpuser
+# Contraseña: [la que configuraste]
+
+# Comandos FTP básicos:
+pwd                     # Ver directorio actual
+ls                      # Listar archivos
+get prueba.txt          # Descargar archivo
+put archivo.txt         # Subir archivo
+bye                     # Salir</code></pre>
+
+                <h3>Opción 2: Probar con cliente SFTP (más seguro)</h3>
+                <pre><code># Conectarse con SFTP
+sftp ftpuser@IP_DEL_SERVIDOR
+
+# Comandos SFTP:
+lpwd                    # Directorio local
+pwd                     # Directorio remoto
+ls                      # Listar remoto
+lls                     # Listar local
+get prueba.txt          # Descargar
+put archivo.txt         # Subir
+bye                     # Salir</code></pre>
+
+                <h3>Opción 3: Probar desde Windows (FileZilla o WinSCP)</h3>
+
+                <p><strong>Con FileZilla:</strong></p>
+                <ol>
+                    <li>Abrir FileZilla</li>
+                    <li>Host: <code>IP_DEL_SERVIDOR</code></li>
+                    <li>Usuario: <code>ftpuser</code></li>
+                    <li>Contraseña: [la que configuraste]</li>
+                    <li>Puerto: <code>21</code></li>
+                    <li>Hacer clic en "Quickconnect"</li>
+                </ol>
+
+                <h3>Verificar transferencia</h3>
+                <pre><code># En el servidor, verificar archivos
+ls -la /home/ftpuser/ftp/files/
+
+# Ver logs de transferencia
+sudo tail -f /var/log/vsftpd.log</code></pre>
+
+                <div class="callout success">
+                    <strong>Comandos FTP útiles:</strong>
+                    <ul>
+                        <li><code>bin</code> - Modo binario (para archivos que no son texto)</li>
+                        <li><code>ascii</code> - Modo ASCII (para archivos de texto)</li>
+                        <li><code>mget *</code> - Descargar múltiples archivos</li>
+                        <li><code>mput *.txt</code> - Subir múltiples archivos</li>
+                        <li><code>mdelete *.tmp</code> - Borrar múltiples archivos</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section id="actividad">
+                <h2>Actividad Práctica</h2>
+
+                <div class="actividad">
+                    <h3>Actividad: Configuración Completa de FTP</h3>
+
+                    <h4>Objetivo</h4>
+                    <p>Configurar un servidor FTP y realizar transferencias de archivos exitosas.</p>
+
+                    <h4>Requisitos</h4>
+                    <ol class="checklist">
+                        <li><input type="checkbox"> Instalar vsftpd en Ubuntu Server</li>
+                        <li><input type="checkbox"> Configurar archivo vsftpd.conf correctamente</li>
+                        <li><input type="checkbox"> Crear usuario FTP con directorio dedicado</li>
+                        <li><input type="checkbox"> Configurar modo pasivo y firewall</li>
+                        <li><input type="checkbox"> Subir un archivo al servidor</li>
+                        <li><input type="checkbox"> Descargar un archivo del servidor</li>
+                    </ol>
+
+                    <h4>Evidencias a Entregar</h4>
+                    <ul>
+                        <li>Captura de <code>sudo systemctl status vsftpd</code> (activo)</li>
+                        <li>Captura del archivo de configuración vsftpd.conf</li>
+                        <li>Captura de conexión FTP exitosa</li>
+                        <li>Captura de archivo subido en el servidor</li>
+                        <li>Captura de archivo descargado en el cliente</li>
+                    </ul>
+
+                    <h4>Rubrica de Evaluación</h4>
+                    <table>
+                        <thead>
+                            <tr><th>Criterio</th><th>Puntos</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>vsftpd instalado y configurado</td><td>25</td></tr>
+                            <tr><td>Usuario FTP funcionando</td><td>25</td></tr>
+                            <tr><td>Subida de archivo exitosa</td><td>25</td></tr>
+                            <tr><td>Descarga de archivo exitosa</td><td>15</td></tr>
+                            <tr><td>Evidencias completas</td><td>10</td></tr>
+                            <tr><td><strong>Total</strong></td><td><strong>100</strong></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section>
+                <h2>Resumen</h2>
 
                 <div class="two-columns">
                     <div class="column-card">
                         <h4>Conceptos Clave</h4>
                         <ul>
-                            <li><strong>Proceso:</strong> Programa en ejecución (PCB + código + datos)</li>
-                            <li><strong>Estados:</strong> Nuevo → Listo → Ejecución → Espera → Terminado</li>
-                            <li><strong>Context Switch:</strong> Guardar/restaurar registros y estado</li>
-                            <li><strong>Métricas:</strong>
-                                <ul>
-                                    <li>Turnaround = Fin - Llegada</li>
-                                    <li>Waiting = Turnaround - CPU</li>
-                                    <li>Throughput = Procesos/tiempo</li>
-                                </ul>
-                            </li>
+                            <li><strong>FTP:</strong> Protocolo de transferencia de archivos</li>
+                            <li><strong>Modo Activo vs Pasivo:</strong> Quien inicia conexión de datos</li>
+                            <li><strong>vsftpd:</strong> Servidor FTP seguro y ligero</li>
+                            <li><strong>SFTP:</strong> FTP sobre SSH (más seguro)</li>
                         </ul>
                     </div>
 
                     <div class="column-card">
-                        <h4>Algoritmos de Planificación</h4>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Algoritmo</th>
-                                    <th>Tipo</th>
-                                    <th>Ventaja</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr><td>FCFS</td><td>No-apropiativo</td><td>Simple</td></tr>
-                                <tr><td>SJF</td><td>No-apropiativo</td><td>Óptimo TT</td></tr>
-                                <tr><td>RR</td><td>Apropiativo</td><td>Equitativo</td></tr>
-                                <tr><td>Prioridad</td><td>Ambos</td><td>Flexible</td></tr>
-                            </tbody>
-                        </table>
+                        <h4>Comandos Esenciales</h4>
+                        <pre><code>sudo apt install vsftpd
+sudo systemctl restart vsftpd
+sudo adduser ftpuser
+ftp IP_SERVIDOR
+sftp usuario@IP_SERVIDOR</code></pre>
                     </div>
                 </div>
 
-                <div class="column-card">
-                    <h4>Fórmulas Esenciales</h4>
-                    <pre><code>Turnaround = Fin - Llegada
-Waiting = Turnaround - Ráfaga
-Response = Primera_exec - Llegada</code></pre>
-
-                    <h4>Estados del Proceso</h4>
-                    <div class="concept-map" style="font-size: 0.9em;">
-<pre>    Nuevo
-     ↓
-  Listo ⇄ Ejecución
-     ↑      ↓
-Espera ─────┘</pre>
-                    </div>
+                <div class="callout success">
+                    <strong>Próxima clase:</strong> Active Directory - Directorio de servicios de Windows
                 </div>
             </section>
 
-            <section id="unidad-3-4">
-                <h2>🔒 Unidad 3-4: Sincronización</h2>
-
-                <div class="two-columns">
-                    <div class="column-card">
-                        <h4>Sección Crítica - Requisitos</h4>
-                        <ol>
-                            <li><strong>Exclusión mutua:</strong> Solo 1 proceso en SC</li>
-                            <li><strong>Progreso:</strong> Si nadie en SC, alguien puede entrar</li>
-                            <li><strong>Espera limitada:</strong> No inanición</li>
-                        </ol>
-
-                        <h4>Mecanismos</h4>
-                        <pre><code class="language-c">// MUTEX
-pthread_mutex_lock(&mutex);
-// SC
-pthread_mutex_unlock(&mutex);
-
-// SEMÁFORO
-sem_wait(&sem);    // P()
-// SC
-sem_post(&sem);    // V()</code></pre>
-                    </div>
-
-                    <div class="column-card">
-                        <h4>Deadlock - 4 Condiciones Necesarias</h4>
-                        <ol>
-                            <li><strong>Exclusión mutua</strong></li>
-                            <li><strong>Hold and wait</strong></li>
-                            <li><strong>No apropiación</strong></li>
-                            <li><strong>Espera circular</strong></li>
-                        </ol>
-
-                        <div class="warning-box">
-                            ⚠️ <strong>Romper UNA = Prevenir deadlock</strong>
-                        </div>
-
-                        <div class="concept-map" style="font-size: 0.8em;">
-<pre>P1: tiene R1, espera R2
-     ↓
-P2: tiene R2, espera R1
-     ↑──────────┘</pre>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section id="unidad-5-6">
-                <h2>💾 Unidad 5-6: Memoria y Archivos</h2>
-
-                <div class="two-columns">
-                    <div class="column-card">
-                        <h4>Gestión de Memoria</h4>
-
-                        <strong>Jerarquía:</strong>
-                        <pre><code>Registro < Cache < RAM < SSD < HDD
-Velocidad: ↓        Capacidad: ↓</code></pre>
-
-                        <strong>Paginación:</strong>
-                        <ul>
-                            <li>Tamaño fijo (potencia de 2)</li>
-                            <li>Elimina fragmentación externa</li>
-                            <li>Crea fragmentación interna</li>
-                        </ul>
-
-                        <strong>Traducción:</strong>
-                        <pre><code>Página = Dir_Lógica / Tamaño_Página
-Offset = Dir_Lógica % Tamaño_Página
-Dir_Física = (Marco × Tamaño) + Offset</code></pre>
-                    </div>
-
-                    <div class="column-card">
-                        <h4>Sistemas de Archivos</h4>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Sistema</th>
-                                    <th>Max Archivo</th>
-                                    <th>Journaling</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr><td>FAT32</td><td>4GB</td><td>❌</td></tr>
-                                <tr><td>NTFS</td><td>16EB</td><td>✅</td></tr>
-                                <tr><td>ext4</td><td>16TB</td><td>✅</td></tr>
-                            </tbody>
-                        </table>
-
-                        <p><strong>Inodo:</strong> Metadatos + punteros (12 directos, 3 indirectos)</p>
-                    </div>
-                </div>
-
-                <div class="column-card">
-                    <h4>Estructura Inodo ext4</h4>
-                    <div class="concept-map" style="font-size: 0.85em;">
-<pre>
-┌────────────────────────────┐
-│ INODO (128 bytes)           │
-├────────────────────────────┤
-│ Permisos: rwxr-xr-x         │
-│ UID/GID                     │
-│ Tamaño: 4096 bytes          │
-│ Timestamps                  │
-├────────────────────────────┤
-│ Bloques:                    │
-│  - Directos: 12             │
-│  - Indirecto simple: 1      │
-│  - Indirecto doble: 1       │
-│  - Indirecto triple: 1      │
-└────────────────────────────┘
-</pre>
-                    </div>
-                    <p><strong>Acceso bloque 14:</strong> 3 lecturas (inodo → indirecto → dato)</p>
-                </div>
-            </section>
-
-            <section id="unidad-7-8">
-                <h2>🖥️ Unidad 7-8: E/S y Protección</h2>
-
-                <div class="two-columns">
-                    <div class="column-card">
-                        <h4>E/S y DMA</h4>
-                        <ul>
-                            <li><strong>Sin DMA:</strong> CPU copia byte por byte (100% ocupada)</li>
-                            <li><strong>Con DMA:</strong> CPU inicia transferencia → libre</li>
-                        </ul>
-
-                        <h4>DMA</h4>
-                        <div class="concept-map" style="font-size: 0.85em;">
-<pre>Sin DMA:    Con DMA:
-CPU→RAM×1000  CPU→Iniciar→Libre
-             DMA→RAM×1000→Interrumpir</pre>
-                        </div>
-                    </div>
-
-                    <div class="column-card">
-                        <h4>Niveles de Protección</h4>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Nivel</th>
-                                    <th>Ejemplo</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr><td>Físico</td><td>Guardias, cerraduras</td></tr>
-                                <tr><td>Usuario</td><td>Login/password</td></tr>
-                                <tr><td>Proceso</td><td>Espacios de direcciones</td></tr>
-                                <tr><td>Archivo</td><td>Permisos rwx</td></tr>
-                                <tr><td>Red</td><td>Firewall, TLS</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <div class="column-card">
-                    <h4>Sistemas Distribuidos</h4>
-                    <ul>
-                        <li><strong>SO de red:</strong> NFS, montaje remoto</li>
-                        <li><strong>SO distribuido:</strong> Transparencia total</li>
-                    </ul>
-
-                    <h4>Teorema CAP (2 de 3):</h4>
-                    <ul>
-                        <li><strong>C</strong>onsistencia</li>
-                        <li><strong>A</strong>vailability</li>
-                        <li><strong>P</strong>artition tolerance</li>
-                    </ul>
-
-                    <p><strong>Ejemplo:</strong> Google File System, HDFS</p>
-
-                    <h4>Permisos Unix</h4>
-                    <pre><code class="language-bash">-rw-r--r-- 1 juan users 1024 archivo
-│││ │││ │││
-│││ │││ └└└─ Otros: r--
-│││ └└└───── Grupo: r--
-└└└───────── Dueño: rw-
-
-chmod 755 = rwxr-xr-x</code></pre>
-                </div>
-            </section>
-
-            <section id="ejercicio-1">
-                <h2>🧠 Ejercicio 1: Planificación FCFS (Opcional)</h2>
-
-                <div class="two-columns">
-                    <div class="column-card">
-                        <h4>Enunciado</h4>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Proceso</th>
-                                    <th>Llegada</th>
-                                    <th>Ráfaga</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr><td>P1</td><td>0</td><td>8</td></tr>
-                                <tr><td>P2</td><td>1</td><td>4</td></tr>
-                                <tr><td>P3</td><td>2</td><td>9</td></tr>
-                                <tr><td>P4</td><td>3</td><td>5</td></tr>
-                            </tbody>
-                        </table>
-
-                        <p><strong>Calcular Turnaround promedio con FCFS</strong></p>
-                    </div>
-
-                    <div class="column-card">
-                        <h4>Solución</h4>
-
-                        <strong>Gantt:</strong>
-                        <div class="concept-map" style="font-size: 0.8em;">
-<pre>
-| P1 | P1 | P1 | P1 | P2 | P2 | P3 | P3 | P3 | P4 | P4 |
-0   2   4   6   8  10  12  15  18  21  24  26</pre>
-                        </div>
-
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Proc</th>
-                                    <th>Fin</th>
-                                    <th>TT</th>
-                                    <th>Espera</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr><td>P1</td><td>8</td><td>8</td><td>0</td></tr>
-                                <tr><td>P2</td><td>12</td><td>11</td><td>7</td></tr>
-                                <tr><td>P3</td><td>21</td><td>19</td><td>10</td></tr>
-                                <tr><td>P4</td><td>26</td><td>23</td><td>18</td></tr>
-                            </tbody>
-                        </table>
-
-                        <p><strong>TT promedio = 15.25</strong></p>
-                    </div>
-                </div>
-
-                <div class="info-box">
-                    <h4>Preguntas para Practicar</h4>
-                    <ul>
-                        <li><strong>¿Y con SJF no-apropiativo?</strong> Orden: P1(0), P2(4), P4(5), P3(9)</li>
-                        <li><strong>¿Y con Round Robin (q=2)?</strong> Secuencia: P1,P2,P3,P4,P1,P2,P3,P4,P1,P3,P3...</li>
-                        <li><strong>¿Cuál es mejor?</strong> RR → Mejor tiempo de espera, SJF → Mejor turnaround, FCFS → Más simple</li>
-                    </ul>
-                </div>
-            </section>
-
-            <section id="ejercicio-2">
-                <h2>🧠 Ejercicio 2: Memoria Virtual (Opcional)</h2>
-
-                <div class="two-columns">
-                    <div class="column-card">
-                        <h4>Enunciado</h4>
-                        <ul>
-                            <li>Tamaño página: <strong>4KB</strong> (4096 bytes)</li>
-                            <li>Dirección lógica: <strong>0x00012A3F</strong></li>
-                        </ul>
-
-                        <h4>Preguntas:</h4>
-                        <ol>
-                            <li>¿Bits para offset?</li>
-                            <li>¿Número de página?</li>
-                            <li>¿Desplazamiento?</li>
-                            <li>Si página → marco 5, ¿dirección física?</li>
-                        </ol>
-                    </div>
-
-                    <div class="column-card">
-                        <h4>Solución Paso a Paso</h4>
-
-                        <strong>1. Bits offset:</strong>
-                        <pre><code>4KB = 2^12 → 12 bits</code></pre>
-
-                        <strong>2. Dividir dirección:</strong>
-                        <pre><code>0x00012A3F = 0001 0010 1010 0011 1111
-Página: 0001 0010 = 0x12 = 18
-Offset: 1010 0011 1111 = 0xA3F = 2623</code></pre>
-
-                        <strong>3. Dirección física:</strong>
-                        <pre><code>Dir_Física = (5 × 4096) + 2623
-           = 20480 + 2623
-           = 23103
-           = 0x5A3F</code></pre>
-                    </div>
-                </div>
-
-                <div class="column-card">
-                    <h4>Fórmulas de Traducción</h4>
-                    <pre><code># Dividir dirección
-Número_página = Dir_Lógica / Tamaño_Página
-Offset = Dir_Lógica % Tamaño_Página
-
-# Reconstruir
-Dir_Física = (Marco × Tamaño_Página) + Offset</code></pre>
-
-                    <h4>Ejemplo Adicional</h4>
-                    <p>Si Dir_lógica = 0x00305B7C:</p>
-                    <pre><code>Página = 0x00305B7C / 4096 = 0x305 (773)
-Offset = 0x00305B7C % 4096 = 0x7C (124)
-
-Si Marco = 10:
-Dir_Física = (10 × 4096) + 124 = 41084 = 0xA0BC</code></pre>
-
-                    <div class="insight-box">
-                        <strong>Key insight:</strong> Los bits inferiores (offset) NO cambian en la traducción
-                    </div>
-                </div>
-            </section>
-
-            <section id="ejercicio-3">
-                <h2>🧠 Ejercicio 3: Inodos y Archivos (Opcional)</h2>
-
-                <div class="two-columns">
-                    <div class="column-card">
-                        <h4>Enunciado</h4>
-                        <p>Archivo de <strong>15 bloques</strong>, inodo con:</p>
-                        <ul>
-                            <li>12 bloques directos</li>
-                            <li>1 indirecto simple (256 punteros)</li>
-                            <li>1 indirecto doble</li>
-                        </ul>
-
-                        <h4>Preguntas:</h4>
-                        <ol>
-                            <li>¿Cuántos bloques directos se usan?</li>
-                            <li>¿Cuántos bloques indirectos se necesitan?</li>
-                            <li>¿Lecturas de disco para bloque 14?</li>
-                        </ol>
-                    </div>
-
-                    <div class="column-card">
-                        <h4>Solución</h4>
-
-                        <strong>Distribución:</strong>
-                        <pre><code>Bloques 0-11: Directos (12 bloques)
-Bloque 12-14: Indirecto simple (3 bloques)</code></pre>
-
-                        <strong>Respuestas:</strong>
-                        <ol>
-                            <li><strong>12 directos</strong> usados</li>
-                            <li><strong>3 indirectos</strong> simples</li>
-                            <li><strong>3 lecturas</strong> para bloque 14:
-                                <ul>
-                                    <li>Leer inodo (1)</li>
-                                    <li>Leer bloque indirecto (1)</li>
-                                    <li>Leer dato (1)</li>
-                                </ul>
-                            </li>
-                        </ol>
-                    </div>
-                </div>
-
-                <div class="column-card">
-                    <h4>Estructura de Acceso</h4>
-                    <pre><code>Acceso bloque 5 (directo):
-  INODO → Dato (2 lecturas)
-
-Acceso bloque 14 (indirecto):
-  INODO → Indirecto → Dato (3 lecturas)
-
-Acceso bloque 1000 (indirecto doble):
-  INODO → Indirecto1 → Indirecto2 → Dato
-  (4 lecturas)</code></pre>
-
-                    <h4>Máxima Capacidad</h4>
-                    <pre><code>Directos: 12 bloques
-Indirecto simple: 256 bloques
-Indirecto doble: 256² = 65,536 bloques
-Indirecto triple: 256³ = 16,777,216 bloques
-
-Total: ~16.8M bloques × 4KB ≈ 64 GB</code></pre>
-                </div>
-            </section>
-
-            <section id="mandamientos">
-                <h2>📖 Los 10 Mandamientos de SO</h2>
-
-                <div class="mandaments">
-                    <ol>
-                        <li><strong>Proceso = Programa en ejecución</strong> (código + datos + estado)</li>
-                        <li><strong>Context switch es costoso</strong> (guardar/restaurar registros)</li>
-                        <li><strong>Deadlock necesita 4 condiciones</strong> (romper 1 = prevenir)</li>
-                        <li><strong>Paginación elimina fragmentación externa</strong> (pero crea interna)</li>
-                        <li><strong>Cache L1 es 100× más rápido que RAM</strong></li>
-                        <li><strong>Inodo ≠ Archivo</strong> (inodo = metadatos, archivo = datos)</li>
-                        <li><strong>DMA libera CPU</strong> durante transferencias I/O</li>
-                        <li><strong>Journaling previene corrupción</strong> tras crash</li>
-                        <li><strong>Syscalls cambian a modo kernel</strong> (overhead)</li>
-                        <li><strong>Multiprogramación ≠ Multiprocesamiento</strong> (tiempo vs espacio)</li>
-                    </ol>
-                </div>
-            </section>
-
-            <section>
-                <h2>⚠️ Errores Comunes en Exámenes</h2>
-
-                <div class="two-columns">
-                    <div class="column-card">
-                        <h4>Top 5 Errores</h4>
-                        <ol>
-                            <li><strong>Confundir paginación con segmentación</strong>
-                                <ul>
-                                    <li>Paginación: tamaño <strong>FIJO</strong></li>
-                                    <li>Segmentación: tamaño <strong>VARIABLE</strong></li>
-                                </ul>
-                            </li>
-                            <li><strong>Calcular mal Turnaround Time</strong>
-                                <ul>
-                                    <li>❌ TT = Ráfaga</li>
-                                    <li>✅ TT = Fin - Llegada</li>
-                                </ul>
-                            </li>
-                            <li><strong>Olvidar context switch en RR</strong>
-                                <ul>
-                                    <li>Cada cambio tiene overhead</li>
-                                </ul>
-                            </li>
-                            <li><strong>No diferenciar inodo de archivo</strong>
-                                <ul>
-                                    <li>Inodo: metadatos (permisos, fechas)</li>
-                                    <li>Archivo: datos reales</li>
-                                </ul>
-                            </li>
-                            <li><strong>Confundir prevención con detección de deadlock</strong>
-                                <ul>
-                                    <li>Prevención: eliminar condiciones</li>
-                                    <li>Detección: grafo de asignación</li>
-                                </ul>
-                            </li>
-                        </ol>
-                    </div>
-
-                    <div class="column-card">
-                        <h4>Consejos de Oro</h4>
-                        <ul>
-                            <li><strong>Leer TODO</strong> antes de responder</li>
-                            <li><strong>Mostrar trabajo</strong> en cálculos (puntos parciales)</li>
-                            <li><strong>Usar unidades</strong> (ms, segundos, etc.)</li>
-                            <li><strong>Verificar</strong> respuestas con lógica</li>
-                            <li><strong>Administrar tiempo:</strong> 90 min / examen</li>
-                        </ul>
-
-                        <h4>Fórmulas para Memorizar</h4>
-                        <pre><code>TT = Fin - Llegada
-Waiting = TT - CPU
-Dir_Física = (Marco × PageSize) + Offset
-Page_Faults = # de veces que página no está en memoria</code></pre>
-                    </div>
-                </div>
-            </section>
-
-            <section>
-                <h2>🧪 Quiz Rápido</h2>
-
-                <div class="quiz-section">
-                    <div class="quiz-question">
-                        <h4>Pregunta 1</h4>
-                        <p><strong>Un proceso en "Espera" puede pasar directamente a "Ejecución"?</strong></p>
-                        <div class="quiz-options">
-                            <p>A) Sí, siempre</p>
-                            <p>B) No, debe pasar por "Listo" <span class="correct">✅</span></p>
-                            <p>C) Depende del scheduler</p>
-                            <p>D) Solo si tiene prioridad alta</p>
-                        </div>
-                    </div>
-
-                    <div class="quiz-question">
-                        <h4>Pregunta 2</h4>
-                        <p><strong>¿Cuántos punteros tiene un bloque indirecto simple (4KB, punteros 4B)?</strong></p>
-                        <div class="quiz-options">
-                            <p>A) 256</p>
-                            <p>B) 512</p>
-                            <p>C) 1024 <span class="correct">✅</span></p>
-                            <p>D) 2048</p>
-                        </div>
-                    </div>
-
-                    <div class="quiz-question">
-                        <h4>Pregunta 3</h4>
-                        <p><strong>RR con q=1, 3 procesos (P1=5, P2=3, P3=4). ¿Context switches?</strong></p>
-                        <div class="quiz-options">
-                            <p>A) 10</p>
-                            <p>B) 11 <span class="correct">✅</span></p>
-                            <p>C) 12</p>
-                            <p>D) 13</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section>
-                <h2>🎓 Estrategias de Estudio</h2>
-
-                <div class="two-columns">
-                    <div class="column-card">
-                        <h4>Técnicas Efectivas</h4>
-                        <ol>
-                            <li><strong>Método Feynman:</strong> Explica en voz alta</li>
-                            <li><strong>Mapas mentales:</strong> Conecta temas</li>
-                            <li><strong>Flashcards:</strong> 50+ preguntas clave</li>
-                            <li><strong>Resolución:</strong> 10+ ejercicios/tema</li>
-                            <li><strong>Grupos:</strong> 3-4 personas, 2 horas</li>
-                        </ol>
-
-                        <h4>Distribución 7 Días</h4>
-                        <pre><code>Día 1-2: Procesos + Planificación (30%)
-Día 3-4: Memoria + Archivos (35%)
-Día 5-6: E/S + Protección (25%)
-Día 7: Repaso general (10%)</code></pre>
-                    </div>
-
-                    <div class="column-card">
-                        <h4>Recursos Recomendados</h4>
-
-                        <strong>Libros:</strong>
-                        <ul>
-                            <li>Silberschatz: Cap 3, 5, 9, 13</li>
-                        </ul>
-
-                        <strong>Videos:</strong>
-                        <ul>
-                            <li>Neso Academy: OS Playlist</li>
-                            <li>Gate Smashers: Scheduling</li>
-                        </ul>
-
-                        <strong>Práctica:</strong>
-                        <ul>
-                            <li>GeeksforGeeks: 100+ ejercicios</li>
-                            <li>TutorialsPoint: Tests</li>
-                        </ul>
-
-                        <h4>Checklist Pre-Examen</h4>
-
-                        <strong>48h antes:</strong>
-                        <ul>
-                            <li>[ ] Repasé presentaciones</li>
-                            <li>[ ] Resolví 5+ ejercicios/tema</li>
-                            <li>[ ] Creé resumen 2 páginas</li>
-                            <li>[ ] Identifiqué 3 temas débiles</li>
-                        </ul>
-
-                        <strong>24h antes:</strong>
-                        <ul>
-                            <li>[ ] Dormí 8 horas</li>
-                            <li>[ ] Revisé errores comunes</li>
-                            <li>[ ] Preparé materiales</li>
-                        </ul>
-                    </div>
-                </div>
-            </section>
-
-            <section>
-                <h2>📝 Formato del Examen Final</h2>
-
-                <div class="two-columns">
-                    <div class="column-card">
-                        <h4>Estructura</h4>
-                        <ul>
-                            <li><strong>Duración:</strong> 90 minutos</li>
-                            <li><strong>10 selección múltiple</strong> (30%)</li>
-                            <li><strong>3 ejercicios prácticos</strong> (50%)</li>
-                            <li><strong>2 preguntas análisis</strong> (20%)</li>
-                        </ul>
-
-                        <h4>Temas con Mayor Peso</h4>
-                        <ol>
-                            <li>Planificación CPU (25%)</li>
-                            <li>Memoria Virtual (25%)</li>
-                            <li>Archivos (20%)</li>
-                            <li>Sincronización (15%)</li>
-                            <li>E/S y Protección (15%)</li>
-                        </ol>
-
-                        <h4>Materiales Permitidos</h4>
-                        <ul>
-                            <li>✅ Calculadora básica</li>
-                            <li>✅ 1 hoja resumen (2 caras)</li>
-                            <li>❌ Celular/Laptop</li>
-                        </ul>
-                    </div>
-
-                    <div class="column-card">
-                        <h4>Preguntas Frecuentes</h4>
-
-                        <p><strong>P:</strong> ¿Memorizar todas las syscalls?</p>
-                        <p><strong>R:</strong> No, solo las principales (fork, exec, wait, read, write, open, close)</p>
-
-                        <p><strong>P:</strong> ¿Cálculos complejos?</p>
-                        <p><strong>R:</strong> No, matemáticas básicas (sumas, divisiones, potencias de 2)</p>
-
-                        <p><strong>P:</strong> ¿Historia de SO?</p>
-                        <p><strong>R:</strong> Mínimas, enfoque técnico</p>
-
-                        <p><strong>P:</strong> ¿Preguntas de código?</p>
-                        <p><strong>R:</strong> Sí, pseudocódigo C para sincronización</p>
-                    </div>
-                </div>
-            </section>
-
-            <section>
-                <h2>✅ Cierre y Acción Inmediata</h2>
-
-                <h3>Resumen de Hoy</h3>
-                <ul class="success-list">
-                    <li>✅ Repasamos 8 unidades temáticas</li>
-                    <li>✅ Resolvimos 3 ejercicios integradores</li>
-                    <li>✅ Identificamos errores comunes</li>
-                    <li>✅ Definimos estrategia de estudio</li>
-                </ul>
-
-                <div class="highlight-box">
-                    <h3>Acción Inmediata (Hoy)</h3>
-                    <ol>
-                        <li><strong>Crear</strong> resumen personal de 2 páginas</li>
-                        <li><strong>Identificar</strong> 3 temas débiles</li>
-                        <li><strong>Formar</strong> grupo de estudio (3-4 personas)</li>
-                        <li><strong>Programar</strong> sesiones de repaso</li>
-                    </ol>
-                </div>
-
-                <div class="highlight-box">
-                    <h3>🚀 ¡Están Preparados!</h3>
-
-                    <h4>Recuerda</h4>
-                    <blockquote>
-                        <p>"El éxito es la suma de pequeños esfuerzos repetidos día tras día"</p>
-                    </blockquote>
-
-                    <p><strong>Han visto:</strong></p>
-                    <ul>
-                        <li>15 clases de contenido</li>
-                        <li>8 unidades temáticas</li>
-                        <li>50+ conceptos fundamentales</li>
-                        <li>100+ ejemplos prácticos</li>
-                    </ul>
-
-                    <p><strong>¡Mucho éxito en su examen final!</strong> 💪</p>
-                </div>
-            </section>
-
-            <section>
-                <h2>Referencias</h2>
-
-                <div class="info-box">
-                    <h3>Para Profundizar</h3>
-                    <ul>
-                        <li><strong>Silberschatz, A.</strong> (2018). <em>Operating System Concepts</em>, 10th Ed.</li>
-                        <li><strong>Tanenbaum, A.</strong> (2015). <em>Modern Operating Systems</em>, 4th Ed.</li>
-                        <li><strong>OSDev.org</strong> - Wiki de desarrollo de SO</li>
-                        <li><strong>Linux Kernel</strong> - Código fuente</li>
-                    </ul>
-                </div>
-            </section>
-
-            <!-- Section: Laboratorio -->
-            <section id="laboratorio">
-                <h2>Laboratorio</h2>
-
-                <h3>Proyecto Final Integrador</h3>
-                <p>Aplica todos los conceptos del curso en un proyecto integrador.</p>
-
-                <div class="info-box">
-                    <strong>Proyectos Disponibles</strong>
-                    <ul>
-                        <li><strong>PROY 01:</strong> Simulador de Planificador CPU</li>
-                        <li><strong>PROY 02:</strong> Productor-Consumidor con Semáforos</li>
-                        <li><strong>PROY 03:</strong> Sistema de Archivos Simple</li>
-                    </ul>
-                </div>
-
-                <p><a href="../laboratorios-html/index.html">Ver índice de Laboratorios →</a></p>
-            </section>
-
-            <!-- Videos Recomendados -->
             <section id="videos">
                 <h2>Videos Recomendados</h2>
 
-                <div class="video-resource">
-                    <h3>Video 1: Operating Systems Complete Course</h3>
-                    <p><strong>Concepto:</strong> Repaso completo de todos los conceptos del curso</p>
-                    <p><strong>Duración:</strong> 2 horas</p>
-                    <p><strong>Nivel:</strong> Todos</p>
-                    <p><strong>Por qué verlo:</strong> Excelente para repasar antes del examen</p>
-                    <p><strong>Canal:</strong> Neso Academy</p>
-                    <a href="https://www.youtube.com/watch?v=co2NCNLOyTo" target="_blank">Ver en YouTube</a>
-                </div>
-
-                <div class="video-resource">
-                    <h3>Video 2: Top 50 OS Interview Questions</h3>
-                    <p><strong>Concepto:</strong> Preguntas frecuentes en entrevistas sobre SO</p>
-                    <p><strong>Duración:</strong> 45 minutos</p>
-                    <p><strong>Nivel:</strong> Repaso</p>
-                    <p><strong>Por qué verlo:</strong> Prepara para evaluaciones</p>
-                    <p><strong>Canal:</span></p>
-                    <a href="https://www.youtube.com/watch?v=8d6yH1k7Wc8" target="_blank">Ver en YouTube</a>
-                </div>
-
                 <div class="callout info">
-                    <p class="callout-title">Tip de Estudio</p>
-                    <p>Usa estos videos como complemento al material de clase. Haz pausas y toma notas de los puntos clave.</p>
+                    <strong>Video 1: FTP Server Complete Tutorial</strong>
+                    <p>Duración: 30 minutos | Nivel: Intermedio</p>
+                    <p>Cubre instalación, configuración y modos activo/pasivo</p>
+                    <a href="https://www.youtube.com/watch?v=7rVXY0t7UY0" target="_blank">Ver en YouTube</a>
                 </div>
             </section>
-        </article>
+        </main>
 
         <footer>
-        <div class="container">
             <p><strong>IF0099 - Sistemas Operativos I</strong> • <a href="index.html">Índice de Clases</a></p>
-            <p><strong>IF0099 - Sistemas Operativos I</strong> | UNAULA - Ingeniería Informática - 2026-I</p>
-            <p>Clase 15: Repaso Integral - Conectando Todos los Conceptos del Curso</p>
+            <p>Clase 15: Servidor FTP - Configuración y Administración</p>
         </footer>
     </div>
-
-    <button class="scroll-top" id="scrollTop" aria-label="Scroll to top">↑</button>
-
-    <script>
-        const scrollTopBtn = document.getElementById('scrollTop');
-
-        window.addEventListener('scroll', () => {
-            if (window.pageYOffset > 300) {
-                scrollTopBtn.classList.add('visible');
-            } else {
-                scrollTopBtn.classList.remove('visible');
-            }
-        });
-
-        scrollTopBtn.addEventListener('click', () => {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-        });
-    </script>
 </body>
 </html>
