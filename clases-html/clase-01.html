@@ -1,0 +1,1151 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clase 01: ¿Qué es un Sistema Operativo? | IF0099 - Sistemas Operativos I</title>
+
+    <!-- Prism.js CSS para syntax highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #1e40af;
+            --accent: #059669;
+            --bg-light: #f8fafc;
+            --bg-code: #1e293b;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.7;
+            color: var(--text-main);
+            background: var(--bg-light);
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 3rem 0;
+            margin-bottom: 2rem;
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        header .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        header .meta {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Navigation */
+        nav {
+            background: white;
+            padding: 1.5rem 0;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        nav h2 {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            padding: 0 20px;
+        }
+
+        nav ul {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 0.5rem;
+            padding: 0 20px;
+        }
+
+        nav a {
+            color: var(--primary);
+            text-decoration: none;
+            padding: 0.5rem;
+            display: block;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+
+        nav a:hover {
+            background: var(--bg-light);
+        }
+
+        /* Sections */
+        section {
+            background: white;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        section h2 {
+            color: var(--primary);
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid var(--accent);
+        }
+
+        section h3 {
+            color: var(--secondary);
+            font-size: 1.4rem;
+            margin: 2rem 0 1rem;
+        }
+
+        section h4 {
+            color: var(--text-main);
+            font-size: 1.1rem;
+            margin: 1.5rem 0 0.75rem;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 1rem;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.95rem;
+        }
+
+        th, td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            background: var(--bg-light);
+            font-weight: 600;
+            color: var(--secondary);
+        }
+
+        tr:hover {
+            background: var(--bg-light);
+        }
+
+        /* Code blocks */
+        pre {
+            background: var(--bg-code);
+            color: #e2e8f0;
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+        }
+
+        p code, li code, td code {
+            background: var(--bg-light);
+            color: var(--primary);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+        }
+
+        /* Lists */
+        ul, ol {
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Callout boxes */
+        .callout {
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            border-left: 4px solid;
+        }
+
+        .callout.info {
+            background: #eff6ff;
+            border-left-color: var(--primary);
+        }
+
+        .callout.warning {
+            background: #fef3c7;
+            border-left-color: #f59e0b;
+        }
+
+        .callout.success {
+            background: #d1fae5;
+            border-left-color: var(--accent);
+        }
+
+        .callout-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Details */
+        details {
+            background: var(--bg-light);
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+
+        summary {
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        summary:hover {
+            text-decoration: underline;
+        }
+
+        details[open] summary {
+            margin-bottom: 1rem;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--text-main);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        footer a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.6rem;
+            }
+
+            section {
+                padding: 1.5rem;
+            }
+
+            nav ul {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Difficulty badges */
+        .difficulty {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .difficulty.easy { background: #d1fae5; color: #065f46; }
+        .difficulty.medium { background: #fef3c7; color: #92400e; }
+        .difficulty.hard { background: #fee2e2; color: #991b1b; }
+
+        /* Actividad box */
+        .actividad {
+            background: var(--bg-light);
+            border-left: 5px solid var(--accent);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+
+        .actividad h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .actividad p {
+            margin-bottom: 0.75rem;
+        }
+
+        .actividad strong {
+            color: var(--secondary);
+        }
+
+        /* Rubrica table */
+        .rubrica th {
+            background: var(--primary);
+            color: white;
+        }
+
+        .rubrica tr:hover {
+            background: transparent;
+        }
+
+        /* Checklist */
+        .checklist {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .checklist li {
+            padding: 0.5rem 0;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+        }
+
+        .checklist li input[type="checkbox"] {
+            margin-top: 0.25rem;
+            width: 18px;
+            height: 18px;
+        }
+
+        /* Code blocks with syntax highlighting */
+        pre {
+            background: #1e1e1e !important;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            overflow-x: auto;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        pre code {
+            font-family: 'Fira Code', 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: #d4d4d4;
+        }
+
+        /* Inline code */
+        code:not(pre code) {
+            background: #e2e8f0;
+            color: #c026d3;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-family: 'Fira Code', 'Consolas', 'Monaco', monospace;
+            font-size: 0.9em;
+        }
+
+        /* Code block header with filename/language */
+        .code-header {
+            background: #2d2d2d;
+            color: #9cdcfe;
+            padding: 0.5rem 1rem;
+            border-radius: 8px 8px 0 0;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .code-header::before {
+            content: "●●●";
+            color: #ff5f56;
+            letter-spacing: 2px;
+        }
+
+        .code-block {
+            border-radius: 8px;
+            overflow: hidden;
+            margin: 1.5rem 0;
+        }
+
+        .code-block pre {
+            margin: 0;
+            border-radius: 0;
+        }
+
+        /* Terminal specific styling */
+        .terminal-block pre {
+            background: #0c0c0c !important;
+            border: 1px solid #333;
+        }
+
+        .terminal-block .code-header {
+            background: #1a1a1a;
+            color: #22c55e;
+        }
+
+        .terminal-block .code-header::before {
+            content: "$";
+            color: #22c55e;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Clase 01: ¿Qué es un Sistema Operativo?</h1>
+            <p class="subtitle">IF0099 - Sistemas Operativos I | Unidad 1 - Introducción</p>
+            <p class="meta">Tiempo estimado: 90 minutos | Teoría: 45 min + Práctica: 45 min</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Navigation -->
+        <nav>
+            <h2>Contenido de la Clase</h2>
+            <ul>
+                <li><a href="#objetivos">Objetivos de Aprendizaje</a></li>
+                <li><a href="#que-es-so">1. ¿Qué es un Sistema Operativo?</a></li>
+                <li><a href="#funciones">2. Funciones Principales</a></li>
+                <li><a href="#tipos-so">3. Tipos de SO</a></li>
+                <li><a href="#virtualbox-ubuntu">4. VirtualBox y Ubuntu Server (PRÁCTICA)</a></li>
+                <li><a href="#actividad">5. Actividad Práctica</a></li>
+            </ul>
+        </nav>
+
+        <!-- Objetivos -->
+        <section id="objetivos">
+            <h2>Objetivos de Aprendizaje</h2>
+            <p>Al finalizar esta clase, serás capaz de:</p>
+            <ul>
+                <li><strong>Definir</strong> qué es un Sistema Operativo y su función básica</li>
+                <li><strong>Identificar</strong> las cuatro funciones principales de un SO</li>
+                <li><strong>Comparar</strong> los tres tipos de arquitecturas de SO más comunes</li>
+                <li><strong>Instalar</strong> VirtualBox en tu computadora</li>
+                <li><strong>Crear</strong> una máquina virtual con Ubuntu Server 22.04 LTS</li>
+                <li><strong>Acceder</strong> a Ubuntu Server mediante línea de comandos</li>
+            </ul>
+        </section>
+
+        <!-- Sección 1: ¿Qué es un SO? -->
+        <section id="que-es-so">
+            <h2>1. ¿Qué es un Sistema Operativo?</h2>
+
+            <h3>Definición Simple</h3>
+            <p>Un <strong>Sistema Operativo (SO)</strong> es el software que gestiona el hardware de tu computadora y provee servicios para los programas. Sin él, tu computadora sería un conjunto de componentes inútiles.</p>
+
+            <div class="callout info">
+                <p class="callout-title">Definición Clave</p>
+                <p><strong>Sistema Operativo = Software que gestiona hardware + provee servicios a programas</strong></p>
+            </div>
+
+            <h3>¿Por qué es necesario?</h3>
+            <p>Imagina que tu computadora es una fábrica:</p>
+            <ul>
+                <li><strong>Hardware</strong> = Máquinas, edificios, herramientas</li>
+                <li><strong>Programas</strong> = Trabajadores que producen cosas</li>
+                <li><strong>Sistema Operativo</strong> = El gerente que organiza todo</li>
+            </ul>
+
+            <p>Sin el gerente (SO), los trabajadores (programas) pelearían por las máquinas (hardware), causando caos y colapsos.</p>
+
+            <h3>Ejemplos de Sistemas Operativos</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Plataforma</th>
+                        <th>Sistemas Operativos</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>Computadoras de escritorio</td><td>Windows, macOS, Linux</td></tr>
+                    <tr><td>Servidores</td><td>Linux (Ubuntu Server, Debian, RHEL)</td></tr>
+                    <tr><td>Celulares</td><td>Android, iOS</td></tr>
+                    <tr><td>Tablets</td><td>iPadOS, Android, Windows</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Sección 2: Funciones Principales -->
+        <section id="funciones">
+            <h2>2. Funciones Principales del Sistema Operativo</h2>
+
+            <p>El SO realiza cuatro funciones fundamentales:</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Función</th>
+                        <th>Descripción</th>
+                        <th>Ejemplo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Gestión de Procesos</strong></td>
+                        <td>Administra qué programas se ejecutan y cuándo</td>
+                        <td>Permite que Chrome, Word y Spotify corran al mismo tiempo</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Gestión de Memoria</strong></td>
+                        <td>Controla el uso de la RAM</td>
+                        <td>Asigna memoria a programas y la libera cuando terminan</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Gestión de Archivos</strong></td>
+                        <td>Organiza cómo se guardan y recuperan los datos</td>
+                        <td>Carpetas, archivos, permisos de lectura/escritura</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Gestión de Entrada/Salida</strong></td>
+                        <td>Controla dispositivos como teclado, mouse, disco</td>
+                        <td>Lee lo que escribes, guarda archivos, muestra en pantalla</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="callout success">
+                <p class="callout-title">Analogía Simple</p>
+                <p><strong>Procesos</strong> = Clientes en un restaurante | <strong>Memoria</strong> = Mesas disponibles | <strong>Archivos</strong> = Pedidos en cocina | <strong>E/S</strong> = Camareros tomando pedidos</p>
+            </div>
+        </section>
+
+        <!-- Sección 3: Tipos de SO -->
+        <section id="tipos-so">
+            <h2>3. Tipos de Arquitectura de Sistema Operativo</h2>
+
+            <p>Los SO se organizan internamente de diferentes maneras. Entender estas arquitecturas es fundamental para comprender cómo funciona cada sistema operativo.</p>
+
+            <h3>3.1 Arquitectura Monolítica</h3>
+
+            <p>En una arquitectura <strong>monolítica</strong>, TODO el código del sistema operativo está en un solo bloque grande en el kernel. Todos los servicios (gestión de procesos, memoria, archivos, drivers) corren en el mismo espacio de memoria.</p>
+
+            <div style="background: #f0f9ff; border-left: 4px solid #2563eb; padding: 20px; margin: 20px 0; border-radius: 8px;">
+                <h4 style="margin-top: 0; color: #1e40af;">📊 Estructura Visual del Kernel Monolítico</h4>
+                <div style="background: white; padding: 20px; border-radius: 8px; text-align: center; font-family: monospace;">
+                    <div style="background: #2563eb; color: white; padding: 10px; margin-bottom: 5px; border-radius: 4px;">Espacio de Usuario (Aplicaciones)</div>
+                    <div style="color: #666; font-size: 20px;">↓ System Calls ↓</div>
+                    <div style="background: #1e293b; color: white; padding: 40px; margin: 10px 0; border-radius: 4px;">
+                        <strong>KERNEL MONOLÍTICO</strong><br><br>
+                        ┌─────────────────────────┐<br>
+                        │ Gestión de Procesos    │<br>
+                        │ Gestión de Memoria     │<br>
+                        │ Gestión de Archivos    │<br>
+                        │ Gestión de Red         │<br>
+                        │ Device Drivers        │<br>
+                        │ ─────────────────────  │<br>
+                        │ Todo en MISMO espacio   │<br>
+                        │ de memoria             │<br>
+                        └─────────────────────────┘<br>
+                    </div>
+                    <div style="color: #666; font-size: 20px;">↓ Acceso Directo ↓</div>
+                    <div style="background: #64748b; color: white; padding: 10px; margin-top: 5px; border-radius: 4px;">Hardware</div>
+                </div>
+            </div>
+
+            <h4>Características del Kernel Monolítico:</h4>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Aspecto</th>
+                        <th>Descripción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Estructura</strong></td>
+                        <td>Todos los servicios del SO están en un único bloque de código</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Comunicación</strong></td>
+                        <td>Las funciones se llaman directamente (sin pasar mensajes)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Espacio de memoria</strong></td>
+                        <td>Todo corre en modo kernel (espacio privilegiado)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Tamaño del kernel</strong></td>
+                        <td>Muy grande (millones de líneas de código)</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>Ventajas:</h4>
+            <ul style="list-style-type: check; color: #059669;">
+                <li><strong>Rendimiento superior:</strong> Al no haber capas intermedias, las llamadas son muy rápidas</li>
+                <li><strong>Simplicidad de diseño:</strong> Fácil de entender conceptualmente</li>
+                <li><strong>Eficiencia:</strong> Menor sobrecarga (overhead) en comunicación</li>
+            </ul>
+
+            <h4>Desventajas:</h4>
+            <ul style="list-style-type: cross; color: #dc2626;">
+                <li><strong>Si falla algo, falla todo:</strong> Un error en un driver puede crashear todo el sistema</li>
+                <li><strong>Difícil de mantener:</strong> Cambiar algo requiere recompilar todo el kernel</li>
+                <li><strong>Menor seguridad:</strong> Todo corre con los mismos privilegios</li>
+                <li><strong>Tamaño grande:</strong> El kernel es enorme</li>
+            </ul>
+
+            <div class="callout success">
+                <p class="callout-title">💡 Ejemplo del Mundo Real: Linux</p>
+                <p><strong>Linux</strong> usa un kernel monolítico. Por eso es tan rápido y eficiente en servidores. Linux tiene más de 30 millones de líneas de código, pero todo está integrado en el kernel.</p>
+                <p><strong>Dato curioso:</strong> Android también usa Linux (kernel monolítico) modificado para móviles.</p>
+            </div>
+
+            <hr style="margin: 40px 0; border: none; border-top: 2px solid #e2e8f0;">
+
+            <h3>3.2 Arquitectura Microkernel</h3>
+
+            <p>En una arquitectura <strong>microkernel</strong>, SOLO lo mínimo indispensable está en el kernel. El resto de los servicios corren como procesos normales en espacio de usuario.</p>
+
+            <div style="background: #f0fdf4; border-left: 4px solid #059669; padding: 20px; margin: 20px 0; border-radius: 8px;">
+                <h4 style="margin-top: 0; color: #047857;">📊 Estructura Visual del Microkernel</h4>
+                <div style="background: white; padding: 20px; border-radius: 8px; text-align: center; font-family: monospace;">
+                    <div style="background: #2563eb; color: white; padding: 10px; margin-bottom: 5px; border-radius: 4px;">Espacio de Usuario (Servicios)</div>
+                    <div style="display: flex; justify-content: center; gap: 10px; margin: 10px 0;">
+                        <div style="background: #e0f2fe; padding: 15px; border-radius: 4px; border: 2px solid #0284c7;">
+                            <strong>Servidor<br>de Archivos</strong>
+                        </div>
+                        <div style="background: #fef3c7; padding: 15px; border-radius: 4px; border: 2px solid #f59e0b;">
+                            <strong>Servidor<br>de Red</strong>
+                        </div>
+                        <div style="background: #fce7f3; padding: 15px; border-radius: 4px; border: 2px solid #db2777;">
+                            <strong>Device<br>Drivers</strong>
+                        </div>
+                    </div>
+                    <div style="color: #666; font-size: 16px;">↓ Mensajes (IPC) ↓</div>
+                    <div style="background: #059669; color: white; padding: 20px; margin: 10px 0; border-radius: 4px;">
+                        <strong>MICROKERNEL</strong><br><br>
+                        ┌──────────────────┐<br>
+                        │ Solo MÍNIMO:    │<br>
+                        │ - IPC           │<br>
+                        │ - Scheduler     │<br>
+                        │ - Memoria básica │<br>
+                        └──────────────────┘<br>
+                    </div>
+                    <div style="color: #666; font-size: 20px;">↓ Acceso ↓</div>
+                    <div style="background: #64748b; color: white; padding: 10px; margin-top: 5px; border-radius: 4px;">Hardware</div>
+                </div>
+            </div>
+
+            <h4>Características del Microkernel:</h4>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Aspecto</th>
+                        <th>Descripción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Estructura</strong></td>
+                        <td>Solo funciones críticas en el kernel (IPC, scheduling, memoria básica)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Comunicación</strong></td>
+                        <td>Se hace mediante paso de mensajes (message passing)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Servicios</strong></td>
+                        <td>Corren como procesos separados en espacio de usuario</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Tamaño del kernel</strong></td>
+                        <td>Muy pequeño (solo miles de líneas de código)</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>Ventajas:</h4>
+            <ul style="list-style-type: check; color: #059669;">
+                <li><strong>Mayor estabilidad:</strong> Si un driver falla, solo se reinicia ese servicio</li>
+                <li><strong>Mayor seguridad:</strong> Cada servicio tiene sus propios privilegios</li>
+                <li><strong>Fácil de extender:</strong> Agregar servicios sin recompilar el kernel</li>
+                <li><strong>Más modular:</strong> Cada componente es independiente</li>
+            </ul>
+
+            <h4>Desventajas:</h4>
+            <ul style="list-style-type: cross; color: #dc2626;">
+                <li><strong>Más lento:</strong> La comunicación por mensajes tiene overhead</li>
+                <li><strong>Más complejo:</strong> Diseño más difícil de implementar</li>
+                <li><strong>Mayor uso de memoria:</strong> Cada servicio consume su propia memoria</li>
+            </ul>
+
+            <div class="callout success">
+                <p class="callout-title">💡 Ejemplo del Mundo Real: MINIX 3</p>
+                <p><strong>MINIX 3</strong> es un microkernel usado para enseñar SO. También se usa en Intel ME (Management Engine) por su seguridad y estabilidad.</p>
+                <p><strong>QNX</strong> es otro microkernel usado en sistemas críticos como automóviles y equipos médicos.</p>
+            </div>
+
+            <hr style="margin: 40px 0; border: none; border-top: 2px solid #e2e8f0;">
+
+            <h3>3.3 Arquitectura Híbrida</h3>
+
+            <p>La arquitectura <strong>híbrida</strong> combina lo mejor de ambos mundos: mantiene algunos servicios en el kernel (por rendimiento) y otros fuera (por seguridad).</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Característica</th>
+                        <th>Descripción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Enfoque</strong></td>
+                        <td>Algunos servicios en kernel, otros en espacio de usuario</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Flexibilidad</strong></td>
+                        <td>Puede decidir qué va en cada espacio según necesidades</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Rendimiento</strong></td>
+                        <td>Mejor que microkernel, peor que monolítico puro</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>Ejemplos Híbridos:</h4>
+            <ul>
+                <li><strong>Windows NT:</strong> Drivers en kernel, servicios en usuario</li>
+                <li><strong>macOS (XNU):</strong> Parte monolítica (BSD) + parte microkernel (Mach)</li>
+                <li><strong>Linux con módulos:</strong> Monolítico pero permite cargar/descargar componentes</li>
+            </ul>
+
+            <hr style="margin: 40px 0; border: none; border-top: 2px solid #e2e8f0;">
+
+            <h3>3.4 Comparativa Rápida</h3>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Aspecto</th>
+                        <th>Monolítico</th>
+                        <th>Microkernel</th>
+                        <th>Híbrido</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Rendimiento</strong></td>
+                        <td>⭐⭐⭐⭐⭐ (El mejor)</td>
+                        <td>⭐⭐ (El peor)</td>
+                        <td>⭐⭐⭐⭐ (Muy bueno)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Estabilidad</strong></td>
+                        <td>⭐⭐ (Un error crashea todo)</td>
+                        <td>⭐⭐⭐⭐⭐ (Muy estable)</td>
+                        <td>⭐⭐⭐⭐ (Bueno)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Seguridad</strong></td>
+                        <td>⭐⭐ (Todo privilegiado)</td>
+                        <td>⭐⭐⭐⭐⭐ (Muy seguro)</td>
+                        <td>⭐⭐⭐ (Aceptable)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Tamaño Kernel</strong></td>
+                        <td>Grande (MB)</td>
+                        <td>Pequeño (KB)</td>
+                        <td>Mediano</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Ejemplos</strong></td>
+                        <td>Linux, MS-DOS</td>
+                        <td>MINIX, QNX</td>
+                        <td>Windows, macOS</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="callout info">
+                <p class="callout-title">📚 Recursos Adicionales</p>
+                <p>Para profundizar más en estas arquitecturas:</p>
+                <ul>
+                    <li><a href="https://www.geeksforgeeks.org/operating-systems/difference-between-microkernel-and-monolithic-kernel/" target="_blank">GeeksforGeeks - Microkernel vs Monolithic Kernel</a></li>
+                    <li><a href="https://learningdaily.dev/os-design-monolithic-vs-microkernel-architecture-78981dd41c49" target="_blank">OS Design: Monolithic vs. Microkernel (2024)</a></li>
+                    <li><a href="https://leimao.github.io/blog/Microkernel-VS-Monolithic-Kernel-OS/" target="_blank">Lei Mao - Technical Comparison</a></li>
+                </ul>
+            </div>
+
+            <div class="callout warning">
+                <p class="callout-title">🎯 ¿Qué usaremos en el curso?</p>
+                <p><strong>Ubuntu Server</strong> (Linux) que tiene arquitectura <strong>monolítica</strong>. Es rápido, eficiente y el estándar en servidores modernos. Aunque tiene sus desventajas, para servidores el rendimiento es prioritario.</p>
+            </div>
+        </section>
+
+        <!-- Sección 4: VirtualBox y Ubuntu Server -->
+        <section id="virtualbox-ubuntu">
+            <h2>4. VirtualBox y Ubuntu Server 22.04 LTS</h2>
+            <p><strong>TIEMPO ESTIMADO: 45 minutos</strong></p>
+
+            <h3>4.1 ¿Qué es VirtualBox?</h3>
+            <p><strong>VirtualBox</strong> es un programa que te permite ejecutar sistemas operativos completos DENTRO de tu computadora como si fueran aplicaciones normales.</p>
+
+            <div class="callout info">
+                <p class="callout-title">¿Por qué usamos VirtualBox?</p>
+                <ul>
+                    <li><strong>Es GRATIS</strong> - No cuesta nada</li>
+                    <li><strong>Es seguro</strong> - Si algo sale mal, tu computadora real no se afecta</li>
+                    <li><strong>Permite experimentar</strong> - Puedes borrar y crear VMs sin riesgo</li>
+                    <li><strong>Funciona en cualquier sistema</strong> - Windows, macOS, Linux</li>
+                </ul>
+            </div>
+
+            <h3>4.2 ¿Qué es Ubuntu Server?</h3>
+            <p><strong>Ubuntu Server</strong> es una versión de Linux sin interfaz gráfica. Todo se hace mediante comandos de texto. Es la versión usada en servidores reales de internet.</p>
+
+            <div class="callout warning">
+                <p class="callout-title">Importante: Sin Interfaz Gráfica</p>
+                <p>Ubuntu Server NO tiene ventanas, ni mouse, ni iconos. Todo es texto negro con comandos. Esto es intencional: los servidores no necesitan interfaz gráfica.</p>
+            </div>
+
+            <h3>4.3 Instalación Paso a Paso</h3>
+
+            <h4>Paso 1: Descargar VirtualBox</h4>
+            <ol>
+                <li>Entra a: <a href="https://www.virtualbox.org/wiki/Downloads" target="_blank">https://www.virtualbox.org/wiki/Downloads</a></li>
+                <li>Descarga la versión para tu sistema operativo (Windows hosts)</li>
+                <li>Ejecuta el instalador</li>
+                <li>Haz clic en "Next" en todos los pasos (opciones por defecto)</li>
+                <li>Haz clic en "Install" y espera a que termine</li>
+                <li>Reinicia tu computadora cuando te lo pida</li>
+            </ol>
+
+            <h4>Paso 2: Descargar Ubuntu Server 22.04 LTS</h4>
+            <ol>
+                <li>Entra a: <a href="https://ubuntu.com/download/server" target="_blank">https://ubuntu.com/download/server</a></li>
+                <li>Haz clic en "Download" (archivo ISO de aproximadamente 3 GB)</li>
+                <li>Guarda el archivo en una carpeta donde puedas encontrarlo fácilmente</li>
+            </ol>
+
+            <div class="callout info">
+                <p class="callout-title">¿Qué es un archivo ISO?</p>
+                <p>Un archivo ISO es una imagen exacta de un disco de instalación. VirtualBox usará este archivo como si fuera un DVD de instalación.</p>
+            </div>
+
+            <h4>Paso 3: Crear la Máquina Virtual</h4>
+            <ol>
+                <li>Abre VirtualBox</li>
+                <li>Haz clic en el botón azul "Nueva" (New)</li>
+                <li><strong>Nombre:</strong> Escribe "Ubuntu-Server-SO01"</li>
+                <li><strong>Carpeta:</strong> Elige una ubicación con suficiente espacio (mínimo 20 GB libres)</li>
+                <li><strong>Tipo:</strong> Linux</li>
+                <li><strong>Versión:</strong> Ubuntu (64-bit)</li>
+                <li>Haz clic en "Siguiente"</li>
+                <li><strong>Memoria RAM:</strong> 2048 MB (2 GB) - Si tienes 8 GB o menos en tu PC, usa 1024 MB</li>
+                <li>Haz clic en "Siguiente"</li>
+                <li><strong>Disco Duro:</strong> Selecciona "Crear ahora un disco duro virtual"</li>
+                <li>Haz clic en "Crear"</li>
+                <li><strong>Tipo de archivo:</strong> VDI (VirtualBox Disk Image)</li>
+                <li>Haz clic en "Siguiente"</li>
+                <li><strong>Almacenamiento:</strong> Dinámicamente asignado</li>
+                <li>Haz clic en "Siguiente"</li>
+                <li><strong>Tamaño:</strong> 20.00 GB</li>
+                <li>Haz clic en "Crear"</li>
+            </ol>
+
+            <div class="callout warning">
+                <p class="callout-title">Advertencia de Espacio</p>
+                <p>Asegúrate de tener al menos 25 GB libres en tu disco duro. La máquina virtual ocupará espacio a medida que la uses.</p>
+            </div>
+
+            <h4>Paso 4: Configurar la Máquina Virtual</h4>
+            <ol>
+                <li>En VirtualBox, selecciona tu VM "Ubuntu-Server-SO01"</li>
+                <li>Haz clic en "Configuración" (Settings)</li>
+                <li><strong>Sistema → Procesador:</strong> Asigna 2 CPU si tu computadora tiene 4 o más</li>
+                <li><strong>Almacenamiento:</strong> Haz clic en el icono de disco vacío</li>
+                <li>Haz clic en el icono de disco pequeño a la derecha</li>
+                <li>Selecciona "Elegir un archivo de disco óptico"</li>
+                <li>Navega a donde descargaste el ISO de Ubuntu Server</li>
+                <li>Selecciona el archivo ISO y haz clic en "Abrir"</li>
+                <li>Haz clic en "Aceptar" para cerrar la configuración</li>
+            </ol>
+
+            <h4>Paso 5: Instalar Ubuntu Server</h4>
+            <ol>
+                <li>Haz doble clic en tu VM "Ubuntu-Server-SO01"</li>
+                <li>La VM arrancará y verás una pantalla de instalación de Ubuntu</li>
+                <li>Selecciona el idioma (recomendado: English)</li>
+                <li>Selecciona "Update to the new installer" si aparece</li>
+                <li>Configuración del teclado: selecciona el correcto para tu idioma</li>
+                <li><strong>Network connections:</strong> Deja la que aparece por defecto</li>
+                <li><strong>Configure proxy:</strong> Deja en blanco y haz clic en "Done"</li>
+                <li><strong>Configure Ubuntu archive mirror:</strong> Deja el de defecto y haz clic en "Done"</li>
+                <li><strong>Guided storage configuration:</strong> Selecciona "Use an entire disk"</li>
+                <li>Haz clic en "Done" y luego confirma "Continue"</li>
+                <li><strong>Storage configuration:</strong> Haz clic en "Done" y confirma "Continue"</li>
+                <li><strong>Profile setup:</strong>
+                    <ul>
+                        <li><strong>Your name:</strong> Estudiante SO</li>
+                        <li><strong>Your server's name:</strong> ubuntu-server-so01</li>
+                        <li><strong>Choose a username:</strong> estudiante</li>
+                        <li><strong>Choose a password:</strong> [Elige una contraseña segura que recuerdes]</li>
+                    </ul>
+                </li>
+                <li>Haz clic en "Done"</li>
+                <li><strong>SSH Setup:</strong> Selecciona "Install OpenSSH server"</li>
+                <li>Haz clic en "Done"</li>
+                <li><strong>Featured Server Snaps:</strong> NO selecciones nada (déjalo vacío)</li>
+                <li>Haz clic en "Done"</li>
+                <li>Espera a que termine la instalación</li>
+                <li>Cuando diga "Installation complete", selecciona "Reboot now"</li>
+            </ol>
+
+            <div class="callout success">
+                <p class="callout-title">¡Instalación Completada!</p>
+                <p>Cuando la VM reinicie y veas una pantalla de login negra pidiendo usuario y contraseña, ¡felicidades! Ubuntu Server está instalado y funcionando.</p>
+            </div>
+
+            <h3>4.4 Primer Acceso a Ubuntu Server</h3>
+
+            <h4>Iniciar Sesión</h4>
+            <div class="code-block terminal-block">
+                <div class="code-header">Terminal - Ubuntu Server Login</div>
+                <pre><code class="language-bash">ubuntu-server-so01 login: estudiante
+Password: [tu contraseña]
+
+Welcome to Ubuntu 22.04.3 LTS (GNU/Linux 5.15.0-76-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+estudiante@ubuntu-server-so01:~$</code></pre>
+            </div>
+
+            <h4>Comandos Básicos</h4>
+            <div class="code-block terminal-block">
+                <div class="code-header">Terminal - Comandos Básicos</div>
+                <pre><code class="language-bash"># Actualizar el sistema
+sudo apt update
+sudo apt upgrade -y
+
+# Ver versión de Ubuntu
+lsb_release -a
+
+# Ver memoria disponible
+free -h
+
+# Ver espacio en disco
+df -h
+
+# Ver fecha y hora
+date
+
+# Ver nombre de usuario
+whoami</code></pre>
+            </div>
+
+            <div class="callout info">
+                <p class="callout-title">¿Qué significa sudo?</p>
+                <p><code>sudo</code> significa "superuser do" - te da permisos de administrador. Cuando lo usas, el sistema te pedirá tu contraseña.</p>
+            </div>
+
+            <h3>4.5 Crear un Snapshot (Punto de Restauración)</h3>
+            <p>Antes de continuar, crea un snapshot para poder volver a este estado si algo sale mal:</p>
+            <ol>
+                <li>En la VM, ejecuta: <code>sudo poweroff</code></li>
+                <li>En VirtualBox, haz clic derecho en tu VM</li>
+                <li>Selecciona "Snapshots" → "Tomar snapshot" (Take snapshot)</li>
+                <li><strong>Nombre:</strong> Ubuntu Server - Instalación limpia</li>
+                <li><strong>Descripción:</strong> Ubuntu Server 22.04 LTS recién instalado y actualizado</li>
+                <li>Haz clic en "Aceptar"</li>
+            </ol>
+
+            <div class="callout success">
+                <p class="callout-title">¡Snapshot Creado!</p>
+                <p>Ahora puedes experimentar sin miedo. Si algo sale mal, solo restaura este snapshot y vuelves al estado inicial.</p>
+            </div>
+        </section>
+
+        <!-- Sección 5: Actividad Práctica -->
+        <section id="actividad">
+            <h2>5. Actividad Práctica</h2>
+
+            <div class="info-box" style="margin-bottom: 1.5rem;">
+                <h3>📋 Laboratorio Complementario</h3>
+                <p>Para una guía paso a paso detallada de la instalación de VirtualBox y Ubuntu Server, consulta el <strong><a href="../laboratorios-html/lab-00-introduccion-simuladores.html" target="_blank">Laboratorio 0: VirtualBox + Ubuntu Server</a></strong>.</p>
+            </div>
+
+            <section class="actividad">
+                <h3>Actividad 01: Instalación de Ubuntu Server en VirtualBox</h3>
+                <p><strong>Tipo:</strong> Práctica obligatoria</p>
+                <p><strong>Tiempo estimado:</strong> 45 minutos</p>
+                <p><strong>Entregable:</strong> Evidencias de instalación + VM funcionando</p>
+                <p><strong>Fecha de entrega:</strong> Próxima clase</p>
+            </section>
+
+            <h3>Objetivo</h3>
+            <p>Instalar VirtualBox y crear una máquina virtual con Ubuntu Server 22.04 LTS completamente funcional.</p>
+
+            <h3>Requisitos</h3>
+            <ul class="checklist">
+                <li><input type="checkbox"> VirtualBox instalado en tu computadora</li>
+                <li><input type="checkbox"> ISO de Ubuntu Server 22.04 LTS descargado</li>
+                <li><input type="checkbox"> Mínimo 20 GB de espacio libre en disco</li>
+                <li><input type="checkbox"> Mínimo 4 GB de RAM (8 GB recomendado)</li>
+            </ul>
+
+            <h3>Instrucciones</h3>
+            <ol>
+                <li>Sigue los pasos de la sección 4.3 para crear tu máquina virtual</li>
+                <li>Instala Ubuntu Server con las configuraciones indicadas</li>
+                <li>Inicia sesión y ejecuta los comandos básicos</li>
+                <li>Crea un snapshot llamado "Instalación limpia"</li>
+                <li>Toma capturas de pantalla de cada paso importante</li>
+            </ol>
+
+            <h3>Entregables</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Entregable</th>
+                        <th>Descripción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Capturas de pantalla</strong></td>
+                        <td>Las capturas deben mostrar: VM creada en VirtualBox, proceso de instalación, pantalla de login, comandos ejecutados</td>
+                    </tr>
+                    <tr>
+                        <td><strong>VM funcionando</strong></td>
+                        <td>Video o capturas mostrando que la VM inicia correctamente y puedes ejecutar comandos</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Archivo de evidencias</strong></td>
+                        <td>Documento PDF con todas las capturas organizadas y explicadas</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Rúbrica de Evaluación</h3>
+            <table class="rubrica">
+                <thead>
+                    <tr>
+                        <th>Criterio</th>
+                        <th>Excelente (100%)</th>
+                        <th>Bueno (75%)</th>
+                        <th>Suficiente (50%)</th>
+                        <th>Insuficiente (0%)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>VM creada correctamente</strong></td>
+                        <td>VM con nombre correcto, RAM adecuada, disco de 20GB</td>
+                        <td>VM creada pero con configuración mínima</td>
+                        <td>VM creada pero falta configuración importante</td>
+                        <td>VM no creada o no funciona</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Ubuntu Server instalado</strong></td>
+                        <td>Instalación completa, sin errores, usuario creado</td>
+                        <td>Instalación completa con errores menores</td>
+                        <td>Instalación incompleta</td>
+                        <td>No hay instalación</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Comandos básicos ejecutados</strong></td>
+                        <td>Todos los comandos de la sección ejecutados correctamente</td>
+                        <td>Comandos básicos ejecutados</td>
+                        <td>Solo algunos comandos ejecutados</td>
+                        <td>No hay evidencia de comandos</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Evidencias presentadas</strong></td>
+                        <td>Documento bien organizado con todas las capturas</td>
+                        <td>Documento con capturas pero sin organización</td>
+                        <td>Capturas incompletas</td>
+                        <td>No hay evidencias</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Snapshot creado</strong></td>
+                        <td>Snapshot con nombre y descripción correctos</td>
+                        <td>Snapshot creado pero sin descripción</td>
+                        <td>Snapshot creado incorrectamente</td>
+                        <td>No hay snapshot</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="callout warning">
+                <p class="callout-title">Consejos para un Excelente</p>
+                <ul>
+                    <li>Organiza tus capturas en orden cronológico</li>
+                    <li>Añade breves explicaciones a cada captura</li>
+                    <li>Verifica que la VM funcione antes de entregar</li>
+                    <li>Incluye captura del snapshot creado</li>
+                </ul>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p><strong>IF0099 - Sistemas Operativos I</strong> • Clase 01: ¿Qué es un Sistema Operativo?</p>
+            <p>Última actualización: 2026-02-10 • Tiempo estimado: 90 minutos (teoría: 45 min + práctica: 45 min)</p>
+            <p><a href="#" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); return false;">Volver arriba ↑</a></p>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+
+    <!-- Prism.js para syntax highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+    <script>
+        // Inicializar Prism.js después de cargar la página
+        document.addEventListener('DOMContentLoaded', function() {
+            Prism.highlightAll();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clase 08: Comunicación entre Procesos (IPC) | IF0099 - Sistemas Operativos I</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #1e40af;
+            --accent: #059669;
+            --bg-light: #f8fafc;
+            --bg-code: #1e293b;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.7;
+            color: var(--text-main);
+            background: var(--bg-light);
+            font-size: 16px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 3rem 0;
+            margin-bottom: 2rem;
+        }
+        header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+        header .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        header .meta {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        nav {
+            background: white;
+            padding: 1.5rem 0;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        nav h2 {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            padding: 0 20px;
+        }
+        nav ul {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 0.5rem;
+            padding: 0 20px;
+        }
+        nav a {
+            color: var(--primary);
+            text-decoration: none;
+            padding: 0.5rem;
+            display: block;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+        nav a:hover {
+            background: var(--bg-light);
+        }
+
+        section {
+            background: white;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        section h2 {
+            color: var(--primary);
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid var(--accent);
+        }
+        section h3 {
+            color: var(--secondary);
+            font-size: 1.4rem;
+            margin: 2rem 0 1rem;
+        }
+        section h4 {
+            color: var(--text-main);
+            font-size: 1.1rem;
+            margin: 1.5rem 0 0.75rem;
+            font-weight: 600;
+        }
+        p {
+            margin-bottom: 1rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.95rem;
+        }
+        th, td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+        th {
+            background: var(--bg-light);
+            font-weight: 600;
+            color: var(--secondary);
+        }
+        tr:hover {
+            background: var(--bg-light);
+        }
+
+        pre {
+            background: var(--bg-code);
+            color: #e2e8f0;
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        code {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+        }
+        p code, li code, td code {
+            background: var(--bg-light);
+            color: var(--primary);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+        pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+        }
+
+        ul, ol {
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        .callout {
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            border-left: 4px solid;
+        }
+        .callout.info {
+            background: #eff6ff;
+            border-left-color: var(--primary);
+        }
+        .callout.warning {
+            background: #fef3c7;
+            border-left-color: #f59e0b;
+        }
+        .callout.success {
+            background: #d1fae5;
+            border-left-color: var(--accent);
+        }
+        .callout.danger {
+            background: #fee2e2;
+            border-left-color: #ef4444;
+        }
+
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        .comparison > div {
+            background: var(--bg-light);
+            padding: 1.5rem;
+            border-radius: 8px;
+        }
+
+        .diagram-box {
+            border: 2px solid var(--secondary);
+            padding: 1.5rem;
+            border-radius: 8px;
+            background: var(--bg-light);
+            margin: 1.5rem 0;
+        }
+
+        .actividad {
+            background: var(--bg-light);
+            border-left: 5px solid var(--accent);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+        .actividad h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        .actividad p {
+            margin-bottom: 0.75rem;
+        }
+        .actividad strong {
+            color: var(--secondary);
+        }
+
+        footer {
+            background: var(--text-main);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            margin-top: 3rem;
+        }
+        footer a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .scroll-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--primary);
+            color: white;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.3s;
+            text-decoration: none;
+            font-size: 1.5rem;
+        }
+        .scroll-top.visible {
+            opacity: 1;
+        }
+        .scroll-top:hover {
+            background: var(--secondary);
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.6rem;
+            }
+            section {
+                padding: 1.5rem;
+            }
+            nav ul {
+                grid-template-columns: 1fr;
+            }
+            .comparison {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Clase 08: Comunicación entre Procesos (IPC)</h1>
+            <p class="subtitle">IF0099 - Sistemas Operativos I | Unidad 5 - IPC</p>
+            <p class="subtitle">Pipes, Señales, Memoria Compartida y Sockets</p>
+            <p class="meta">Última actualización: 2026-02-10 | Duración: 90 minutos (teoría: 30 min + práctica: 60 min)</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <nav>
+            <h2>Contenido de la Clase</h2>
+            <ul>
+                <li><a href="#objetivos">Objetivos de Aprendizaje</a></li>
+                <li><a href="#introduccion">Introducción al IPC</a></li>
+                <li><a href="#pipes">Pipes (Tuberías)</a></li>
+                <li><a href="#pipes-anonimos">Pipes Anónimos</a></li>
+                <li><a href="#pipes-nombrados">Pipes Nombrados (FIFO)</a></li>
+                <li><a href="#senales">Señales</a></li>
+                <li><a href="#memoria">Memoria Compartida</a></li>
+                <li><a href="#sockets">Sockets</a></li>
+                <li><a href="#practica">Práctica Guiada</a></li>
+                <li><a href="#entregable">Entregable</a></li>
+                <li><a href="#resumen">Resumen</a></li>
+            </ul>
+        </nav>
+
+        <!-- Objetivos -->
+        <section id="objetivos">
+            <h2>Objetivos de Aprendizaje</h2>
+            <p>Al finalizar esta clase, serás capaz de:</p>
+            <ol>
+                <li><strong>Entender</strong> los mecanismos de IPC (Inter-Process Communication)</li>
+                <li><strong>Usar</strong> pipes anónimos para comunicación unidireccional</li>
+                <li><strong>Utilizar</strong> pipes nombrados (FIFO) para comunicación entre procesos</li>
+                <li><strong>Implementar</strong> Productor-Consumidor con bash scripts</li>
+                <li><strong>Comprender</strong> señales, memoria compartida y sockets</li>
+            </ol>
+        </section>
+
+        <!-- Introducción -->
+        <section id="introduccion">
+            <h2>Introducción al IPC</h2>
+
+            <div class="callout info">
+                <strong>IPC (Inter-Process Communication): Mecanismos que permiten a los procesos intercambiar datos y sincronizarse</strong>
+            </div>
+
+            <h3>¿Por qué necesitamos IPC?</h3>
+            <ul>
+                <li>Los procesos tienen espacios de memoria aislados</li>
+                <li>Necesitan coordinarse para tareas complejas</li>
+                <li>Compartir datos entre aplicaciones</li>
+                <li>Sincronizar acciones concurrentes</li>
+            </ul>
+
+            <h3>Mecanismos IPC principales:</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Mecanismo</th>
+                        <th>Descripción</th>
+                        <th>Uso típico</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Pipes</strong></td>
+                        <td>Comunicación unidireccional (stream)</td>
+                        <td>Productor-Consumidor</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Señales</strong></td>
+                        <td>Notificaciones de eventos</td>
+                        <td>Control de procesos</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Memoria Compartida</strong></td>
+                        <td>Segmento de memoria accesible por múltiples procesos</td>
+                        <td>Alto rendimiento</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Sockets</strong></td>
+                        <td>Comunicación de red y local</td>
+                        <td>Cliente-Servidor</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Pipes -->
+        <section id="pipes">
+            <h2>Pipes (Tuberías)</h2>
+
+            <div class="callout info">
+                <strong>Un pipe es un canal de comunicación unidireccional entre dos procesos</strong>
+            </div>
+
+            <h3>Características de los Pipes:</h3>
+            <ul>
+                <li><strong>Unidireccional:</strong> Los datos fluyen en una sola dirección</li>
+                <li><strong>Stream:</strong> Flujo de bytes (no mensajes estructurados)</li>
+                <li><strong>FIFO:</strong> First In, First Out (el primero que entra, sale primero)</li>
+                <li><strong>Buffer:</strong> Capacidad limitada (típicamente 64KB en Linux)</li>
+            </ul>
+
+            <h4>Esquema de un Pipe:</h4>
+            <div class="diagram-box">
+                <pre class="ascii-diagram">┌──────────┐      write       ┌──────────┐
+│Productor │ ──────────────────> │Consumidor│
+│ (escritor)│    (pipe)          │ (lector) │
+└──────────┘                     └──────────┘
+
+     │                                 │
+     ├──> pipe[1] (escritura)          │
+     │                                 │
+     │                                 ├──> pipe[0] (lectura)
+     │                                 │
+   stdout                              stdin</pre>
+            </div>
+
+            <h4>Tipos de Pipes:</h4>
+            <div class="comparison">
+                <div>
+                    <h4>Pipe Anónimo</h4>
+                    <ul>
+                        <li>Solo entre procesos relacionados (padre-hijo)</li>
+                        <li>No tiene nombre en el sistema de archivos</li>
+                        <li>Desaparece cuando los procesos terminan</li>
+                        <li>Uso: shell (|) y fork()</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Pipe Nombrado (FIFO)</h4>
+                    <ul>
+                        <li>Entre cualquier proceso</li>
+                        <li>Tiene nombre en el sistema de archivos</li>
+                        <li>Persiste hasta ser eliminado</li>
+                        <li>Uso: comunicación general entre procesos</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pipes Anónimos -->
+        <section id="pipes-anonimos">
+            <h2>Pipes Anónimos</h2>
+
+            <div class="callout info">
+                <strong>Los pipes anónimos son creados por el shell y solo existen mientras los procesos estén activos</strong>
+            </div>
+
+            <h3>Uso en Bash (Shell)</h3>
+
+            <h4>El operador pipe (|):</h4>
+            <pre><code># Ejemplo 1: Listar archivos largos
+ls -l | grep ".txt"
+
+# Ejemplo 2: Contar procesos
+ps aux | grep chrome | wc -l
+
+# Ejemplo 3: Monitorear logs
+tail -f /var/log/syslog | grep "ERROR"</code></pre>
+
+            <h4>Cómo funciona:</h4>
+            <ul>
+                <li>El shell crea un pipe anónimo</li>
+                <li>Redirige stdout del comando 1 al pipe</li>
+                <li>Redirige stdin del comando 2 desde el pipe</li>
+                <li>Ambos comandos se ejecutan en paralelo</li>
+            </ul>
+
+            <h4>Ejemplo detallado:</h4>
+            <pre class="ascii-diagram">Comando: ls -l | grep ".txt"
+
+┌─────────────────────────────────────────────────┐
+│ Shell crea pipe anónimo                        │
+│                                                 │
+│  ls -l          pipe           grep ".txt"      │
+│  [hijo1]    ───────>    [hijo2]                │
+│  stdout                   stdin                 │
+│                                                 │
+│  1. fork() → crea proceso hijo (ls -l)        │
+│  2. fork() → crea proceso hijo (grep)         │
+│  3. pipe() → crea canal de comunicación        │
+└─────────────────────────────────────────────────┘</pre>
+
+            <h4>Ejemplo práctico - Análisis de procesos:</h4>
+            <pre><code># Encontrar los 5 procesos que más CPU consumen
+ps aux | sort -rk 3 | head -6
+
+# Explicación:
+# ps aux      - Lista todos los procesos
+# sort -rk 3  - Ordena por columna 3 (CPU) descendente
+# head -6      - Muestra las primeras 6 líneas (encabezado + 5)</code></pre>
+        </section>
+
+        <!-- Pipes Nombrados -->
+        <section id="pipes-nombrados">
+            <h2>Pipes Nombrados (FIFO)</h2>
+
+            <div class="callout info">
+                <strong>Los pipes nombrados (FIFO) tienen entrada en el sistema de archivos y permiten comunicación entre procesos no relacionados</strong>
+            </div>
+
+            <h3>Crear y usar un FIFO:</h3>
+
+            <h4>Comandos básicos:</h4>
+            <pre><code># 1. Crear el FIFO
+mkfifo /tmp/mi_pipe
+
+# 2. Verificar que se creó
+ls -l /tmp/mi_pipe
+# prw-r--r-- 1 user user 0 feb 10 10:00 /tmp/mi_pipe
+# (la 'p' indica pipe)
+
+# 3. Escribir en el FIFO (bloquea hasta que alguien lea)
+echo "Hola mundo" > /tmp/mi_pipe
+
+# 4. Leer del FIFO (otra terminal)
+cat /tmp/mi_pipe
+
+# 5. Eliminar el FIFO
+rm /tmp/mi_pipe</code></pre>
+
+            <h4>Script Productor (escritor):</h4>
+            <pre><code>#!/bin/bash
+# productor.sh
+FIFO="/tmp/mi_pipe"
+
+# Crear el FIFO si no existe
+[ -p "$FIFO" ] || mkfifo "$FIFO"
+
+echo "Productor: Escribiendo en $FIFO"
+for i in {1..10}; do
+    echo "Mensaje $i"
+    sleep 1
+done > "$FIFO"
+
+echo "Productor: Terminé de escribir"</code></pre>
+
+            <h4>Script Consumidor (lector):</h4>
+            <pre><code>#!/bin/bash
+# consumidor.sh
+FIFO="/tmp/mi_pipe"
+
+echo "Consumidor: Leyendo de $FIFO"
+while read linea; do
+    echo "Consumidor: Recibí - $linea"
+done < "$FIFO"
+
+echo "Consumidor: No hay más datos"</code></pre>
+
+            <h4>Ejecución:</h4>
+            <pre><code># Terminal 1 - Iniciar el consumidor primero
+./consumidor.sh
+
+# Terminal 2 - Ejecutar el productor
+./productor.sh</code></pre>
+
+            <div class="callout warning">
+                <strong>⚠️ Comportamiento de bloqueo:</strong>
+                <ul>
+                    <li>Si el FIFO está vacío, el lector se bloquea</li>
+                    <li>Si el FIFO está lleno, el escritor se bloquea</li>
+                    <li>Al menos un lector debe estar presente antes de escribir</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Señales -->
+        <section id="senales">
+            <h2>Señales</h2>
+
+            <div class="callout info">
+                <strong>Las señales son notificaciones enviadas a un proceso para informar eventos</strong>
+            </div>
+
+            <h3>Señales más comunes en Linux:</h3>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Señal</th>
+                        <th>Número</th>
+                        <th>Acción por defecto</th>
+                        <th>Uso</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>SIGINT</strong></td>
+                        <td>2</td>
+                        <td>Terminar</td>
+                        <td>Ctrl+C (interrupción)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>SIGTERM</strong></td>
+                        <td>15</td>
+                        <td>Terminar</td>
+                        <td>Solicitud de terminación</td>
+                    </tr>
+                    <tr>
+                        <td><strong>SIGKILL</strong></td>
+                        <td>9</td>
+                        <td>Terminar (forzado)</td>
+                        <td>Matar proceso inmediatamente</td>
+                    </tr>
+                    <tr>
+                        <td><strong>SIGSTOP</strong></td>
+                        <td>19</td>
+                        <td>Detener</td>
+                        <td>Pausar proceso (Ctrl+Z)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>SIGCONT</strong></td>
+                        <td>18</td>
+                        <td>Continuar</td>
+                        <td>Reanudar proceso detenido</td>
+                    </tr>
+                    <tr>
+                        <td><strong>SIGHUP</strong></td>
+                        <td>1</td>
+                        <td>Terminar</td>
+                        <td>Terminal cerrado</td>
+                    </tr>
+                    <tr>
+                        <td><strong>SIGUSR1</strong></td>
+                        <td>10</td>
+                        <td>Terminar</td>
+                        <td>Definido por usuario</td>
+                    </tr>
+                    <tr>
+                        <td><strong>SIGUSR2</strong></td>
+                        <td>12</td>
+                        <td>Terminar</td>
+                        <td>Definido por usuario</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>Enviar señales:</h4>
+            <pre><code># Enviar SIGTERM (terminación elegante)
+kill -15 1234
+kill 1234        # 15 por defecto
+
+# Enviar SIGKILL (terminación forzada)
+kill -9 1234
+
+# Enviar SIGSTOP (pausar)
+kill -STOP 1234
+
+# Enviar SIGCONT (continuar)
+kill -CONT 1234
+
+# Enviar SIGUSR1 a un proceso
+kill -USR1 1234</code></pre>
+        </section>
+
+        <!-- Memoria Compartida -->
+        <section id="memoria">
+            <h2>Memoria Compartida</h2>
+
+            <div class="callout info">
+                <strong>La memoria compartida es un segmento de memoria accesible por múltiples procesos</strong>
+            </div>
+
+            <h3>Características:</h3>
+            <ul>
+                <li><strong>Más rápido:</strong> Sin copia de datos entre procesos</li>
+                <li><strong>Sincronización:</strong> Requiere mecanismos adicionales (semáforos)</li>
+                <li><strong>Persistencia:</strong> Existe mientras alguien la tenga mapeada</li>
+                <li><strong>Tamaño:</strong> Definido al crearlo</li>
+            </ul>
+
+            <h4>Esquema de Memoria Compartida:</h4>
+            <div class="diagram-box">
+                <pre class="ascii-diagram">┌─────────────────────────────────────────────────┐
+│          MEMORIA COMPARTIDA                      │
+│  ┌────────────────────────────────────────┐    │
+│  │  Datos compartidos                    │    │
+│  │  - variables                          │    │
+│  │  - estructuras                        │    │
+│  │  - buffers                            │    │
+│  └────────────────────────────────────────┘    │
+└─────────────────────────────────────────────────┘
+       ▲                     ▲
+       │                     │
+    Proceso A             Proceso B
+   (lee/escribe)         (lee/escribe)
+
+SIN COPIA DE DATOS (acceso directo)</pre>
+            </div>
+
+            <h4>Uso típico:</h4>
+            <ul>
+                <li>Bases de datos de alto rendimiento</li>
+                <li>Caché compartido entre procesos</li>
+                <li>Comunicación de baja latencia</li>
+            </ul>
+
+            <div class="callout warning">
+                <strong>⚠️ Requiere sincronización:</strong>
+                <ul>
+                    <li>Usar semáforos o mutex para evitar race conditions</li>
+                    <li>Coordinar lectura/escritura</li>
+                    <li>Prevenir deadlocks</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Sockets -->
+        <section id="sockets">
+            <h2>Sockets</h2>
+
+            <div class="callout info">
+                <strong>Los sockets son puntos finales de comunicación bidireccional</strong>
+            </div>
+
+            <h3>Tipos de Sockets:</h3>
+
+            <div class="comparison">
+                <div>
+                    <h4>Unix Domain Sockets</h4>
+                    <ul>
+                        <li>Comunicación local (misma máquina)</li>
+                        <li>Archivos en el sistema de archivos</li>
+                        <li>Más rápido que TCP/IP</li>
+                        <li>Uso: X Window, syslog</li>
+                    </ul>
+                    <pre><code>/var/run/docker.sock
+/var/run/mysql/mysql.sock</code></pre>
+                </div>
+                <div>
+                    <h4>Network Sockets (TCP/IP)</h4>
+                    <ul>
+                        <li>Comunicación entre máquinas</li>
+                        <li>Dirección IP + puerto</li>
+                        <li>Cliente-Servidor</li>
+                        <li>Uso: Servicios web, bases de datos</li>
+                    </ul>
+                    <pre><code>192.168.1.100:3306
+localhost:8080</code></pre>
+                </div>
+            </div>
+
+            <h4>Arquitectura Cliente-Servidor:</h4>
+            <div class="diagram-box">
+                <pre class="ascii-diagram">┌────────────┐                    ┌────────────┐
+│  Cliente   │                    │ Servidor   │
+├────────────┤                    ├────────────┤
+│            │  connect()         │            │
+│   socket() │ ──────────────────> │  socket()  │
+│            │                    │  bind()    │
+│   send()   │ ──────────────────> │  listen()  │
+│            │                    │  accept()  │
+│   recv()   │ <────────────────── │            │
+│            │                    │            │
+└────────────┘                    └────────────┘
+
+ Puerto: 8080
+ IP: 127.0.0.1</pre>
+            </div>
+
+            <h4>Ejemplo simple con netcat (nc):</h4>
+            <pre><code># Servidor - Escucha en puerto 8080
+nc -l 8080
+
+# Cliente - Se conecta al servidor
+nc localhost 8080
+
+# En el cliente, escribe mensajes, aparecen en el servidor</code></pre>
+        </section>
+
+        <!-- Práctica Guiada -->
+        <section id="practica">
+            <h2>Práctica Guiada</h2>
+
+            <div class="actividad">
+                <h3>Actividad 1: Pipes anónimos en Bash</h3>
+                <p><strong>Tiempo:</strong> 10 minutos</p>
+                <ol>
+                    <li>Abre una terminal</li>
+                    <li>Lista los archivos .txt en tu directorio home: <code>find ~ -name "*.txt" 2>/dev/null | head -10</code></li>
+                    <li>Cuenta cuántos archivos .txt existen: <code>find ~ -name "*.txt" 2>/dev/null | wc -l</code></li>
+                    <li>Combina comandos con pipes: <code>ps aux | grep bash | wc -l</code></li>
+                    <li>Crea tu propio pipe: <code>echo "Hola" | cat</code></li>
+                </ol>
+            </div>
+
+            <div class="actividad">
+                <h3>Actividad 2: Crear un Pipe Nombrado</h3>
+                <p><strong>Tiempo:</strong> 10 minutos</p>
+                <ol>
+                    <li>Crea un FIFO: <code>mkfifo /tmp/mi_fifo</code></li>
+                    <li>Verifica que se creó: <code>ls -l /tmp/mi_fifo</code></li>
+                    <li>En otra terminal, inicia un lector: <code>cat /tmp/mi_fifo</code></li>
+                    <li>En la terminal original, escribe: <code>echo "Hola desde el pipe" > /tmp/mi_fifo</code></li>
+                    <li>Observa que el mensaje aparece en la terminal del lector</li>
+                    <li>Elimina el FIFO: <code>rm /tmp/mi_fifo</code></li>
+                </ol>
+            </div>
+
+            <div class="actividad">
+                <h3>Actividad 3: Enviar señales</h3>
+                <p><strong>Tiempo:</strong> 10 minutos</p>
+                <ol>
+                    <li>Inicia un proceso en segundo plano: <code>sleep 300 &</code></li>
+                    <li>Obtén el PID: <code>ps aux | grep sleep</code></li>
+                    <li>Envía SIGSTOP: <code>kill -STOP [PID]</code></li>
+                    <li>Verifica que está detenido: <code>ps -p [PID] -o pid,stat</code></li>
+                    <li>Envía SIGCONT: <code>kill -CONT [PID]</code></li>
+                    <li>Termina el proceso: <code>kill [PID]</code></li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- Entregable -->
+        <section id="entregable">
+            <h2>Entregable de la Clase</h2>
+
+            <div class="actividad">
+                <h3>Scripts Productor-Consumidor con Pipes</h3>
+                <p><strong>Descripción:</strong> Implementar un sistema Productor-Consumidor usando bash scripts y un pipe nombrado</p>
+                <p><strong>Requisitos:</strong></p>
+                <ul>
+                    <li><code>productor.sh</code>: Genera números y los escribe en el FIFO</li>
+                    <li><code>consumidor.sh</code>: Lee números del FIFO y calcula su suma</li>
+                    <li>Usar pipe nombrado (FIFO)</li>
+                    <li>Mostrar capturas de la ejecución</li>
+                </ul>
+
+                <h4>Estructura sugerida:</h4>
+
+                <p><strong>productor.sh:</strong></p>
+                <pre><code>#!/bin/bash
+# productor.sh
+
+FIFO="/tmp/numeros_pipe"
+
+# Crear FIFO
+[ -p "$FIFO" ] || mkfifo "$FIFO"
+
+echo "Productor: Generando números..."
+for i in {1..20}; do
+    echo "$i"
+    sleep 0.5
+done > "$FIFO"
+
+echo "Productor: Terminé"</code></pre>
+
+                <p><strong>consumidor.sh:</strong></p>
+                <pre><code>#!/bin/bash
+# consumidor.sh
+
+FIFO="/tmp/numeros_pipe"
+
+echo "Consumidor: Esperando números..."
+suma=0
+cantidad=0
+
+while read numero; do
+    echo "Consumidor: Recibí $numero"
+    suma=$((suma + numero))
+    cantidad=$((cantidad + 1))
+done < "$FIFO"
+
+echo "Consumidor: Terminé"
+echo "Total recibidos: $cantidad"
+echo "Suma total: $suma"</code></pre>
+
+                <h4>Instrucciones de ejecución:</h4>
+                <ol>
+                    <li>Guardar ambos scripts con permisos de ejecución: <code>chmod +x productor.sh consumidor.sh</code></li>
+                    <li>En una terminal, ejecutar: <code>./consumidor.sh</code></li>
+                    <li>En otra terminal, ejecutar: <code>./productor.sh</code></li>
+                    <li>Capturar la salida de ambas terminales</li>
+                    <li>Verificar que la suma es correcta (1+2+...+20 = 210)</li>
+                </ol>
+
+                <p><strong>Entregable:</strong></p>
+                <ul>
+                    <li>Código fuente de ambos scripts</li>
+                    <li>Capturas de pantalla de la ejecución</li>
+                    <li>Breve explicación del funcionamiento</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Resumen -->
+        <section id="resumen">
+            <h2>Resumen de la Clase</h2>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Mecanismo</th>
+                        <th>Características</th>
+                        <th>Uso típico</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Pipe Anónimo</strong></td>
+                        <td>Unidireccional, procesos relacionados</td>
+                        <td>Shell (|)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Pipe Nombrado</strong></td>
+                        <td>Unidireccional, cualquier proceso</td>
+                        <td>Comunicación general</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Señales</strong></td>
+                        <td>Notificaciones asíncronas</td>
+                        <td>Control de procesos</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Memoria Compartida</strong></td>
+                        <td>Alta velocidad, requiere sincronización</td>
+                        <td>Bases de datos</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Sockets</strong></td>
+                        <td>Bidireccional, local o red</td>
+                        <td>Cliente-Servidor</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Próxima Clase</h3>
+            <p><strong>Clase 09: Permisos en Linux</strong></p>
+            <ul>
+                <li>Permisos básicos (rwx)</li>
+                <li>chmod, chown</li>
+                <li>Permisos especiales (setuid, setgid, sticky bit)</li>
+                <li>ACL (Access Control Lists)</li>
+            </ul>
+        </section>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p><strong>IF0099 - Sistemas Operativos I</strong> • <a href="index.html">Índice de Clases</a></p>
+            <p>© 2026 UNAULA - Ingeniería Informática | IF0099 - Sistemas Operativos I</p>
+            <p><a href="../index.html">← Volver al inicio</a></p>
+        </div>
+    </footer>
+
+    <a href="#" class="scroll-top" id="scrollTop">↑</a>
+
+    <script>
+        // Scroll to top button
+        const scrollTopBtn = document.getElementById('scrollTop');
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                scrollTopBtn.classList.add('visible');
+            } else {
+                scrollTopBtn.classList.remove('visible');
+            }
+        });
+        scrollTopBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href !== '#' && href.length > 1) {
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

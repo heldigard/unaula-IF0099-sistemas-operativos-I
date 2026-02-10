@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clase 15: Servidor FTP | IF0099 - Sistemas Operativos I</title>
+    <style>
+        :root { --primary: #2563eb; --secondary: #1e40af; --accent: #059669; --bg-light: #f8fafc; --bg-code: #1e293b; --text-main: #1e293b; --text-muted: #64748b; --border: #e2e8f0; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.7; color: var(--text-main); background: var(--bg-light); font-size: 16px; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        header { background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); color: white; padding: 3rem 0; margin-bottom: 2rem; }
+        header h1 { font-size: 2.2rem; margin-bottom: 0.5rem; font-weight: 700; }
+        header .subtitle { font-size: 1.1rem; opacity: 0.9; }
+        header .meta { margin-top: 1rem; font-size: 0.9rem; opacity: 0.8; }
+        nav { background: white; padding: 1.5rem 0; margin-bottom: 2rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        nav h2 { font-size: 1.1rem; color: var(--text-muted); margin-bottom: 1rem; padding: 0 20px; }
+        nav ul { list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.5rem; padding: 0 20px; }
+        nav a { color: var(--primary); text-decoration: none; padding: 0.5rem; display: block; border-radius: 4px; transition: background 0.2s; }
+        nav a:hover { background: var(--bg-light); }
+        section { background: white; padding: 2rem; margin-bottom: 2rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        section h2 { color: var(--primary); font-size: 1.8rem; margin-bottom: 1.5rem; padding-bottom: 0.5rem; border-bottom: 3px solid var(--accent); }
+        section h3 { color: var(--secondary); font-size: 1.4rem; margin: 2rem 0 1rem; }
+        section h4 { color: var(--text-main); font-size: 1.1rem; margin: 1.5rem 0 0.75rem; font-weight: 600; }
+        p { margin-bottom: 1rem; }
+        table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.95rem; }
+        th, td { padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid var(--border); }
+        th { background: var(--bg-light); font-weight: 600; color: var(--secondary); }
+        tr:hover { background: var(--bg-light); }
+        pre { background: var(--bg-code); color: #e2e8f0; padding: 1.5rem; border-radius: 8px; overflow-x: auto; margin: 1.5rem 0; font-size: 0.9rem; line-height: 1.5; }
+        code { font-family: 'Consolas', 'Monaco', 'Courier New', monospace; }
+        p code, li code { background: var(--bg-light); color: var(--primary); padding: 0.2rem 0.4rem; border-radius: 4px; font-size: 0.9em; }
+        pre code { background: none; padding: 0; color: inherit; }
+        ul, ol { margin-left: 1.5rem; margin-bottom: 1rem; }
+        li { margin-bottom: 0.5rem; }
+        .callout { padding: 1.5rem; border-radius: 8px; margin: 1.5rem 0; border-left: 4px solid; }
+        .callout.info { background: #eff6ff; border-left-color: var(--primary); }
+        .callout.warning { background: #fef3c7; border-left-color: #f59e0b; }
+        .callout.success { background: #d1fae5; border-left-color: var(--accent); }
+        footer { background: var(--text-main); color: white; padding: 2rem 0; text-align: center; margin-top: 3rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        .two-columns { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 1.5rem 0; }
+        .column-card { background: var(--bg-light); padding: 1.5rem; border-radius: 8px; }
+        .column-card h4 { color: var(--secondary); margin-top: 0; }
+        .actividad { background: var(--bg-light); border-left: 5px solid var(--accent); padding: 1.5rem; margin: 1.5rem 0; border-radius: 4px; }
+        .actividad h3 { color: var(--primary); margin-bottom: 1rem; }
+        .checklist { list-style: none; padding-left: 0; }
+        .checklist li { padding: 0.5rem 0; display: flex; align-items: flex-start; gap: 0.75rem; }
+        .checklist li input[type="checkbox"] { margin-top: 0.25rem; width: 18px; height: 18px; }
+        .ascii-diagram { font-family: 'Consolas', monospace; font-size: 0.85rem; line-height: 1.2; background: var(--bg-light); padding: 1rem; border-radius: 4px; overflow-x: auto; white-space: pre; }
+        @media (max-width: 768px) { .two-columns { grid-template-columns: 1fr; } header h1 { font-size: 1.6rem; } section { padding: 1.5rem; } nav ul { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Clase 15: Servidor FTP</h1>
+            <p class="subtitle">IF0099 - Sistemas Operativos I | Servicios de Red | Clase 15</p>
+            <p class="subtitle">UNAULA - Ingeniería Informática - 2026-I</p>
+            <p class="meta">Tiempo estimado: 90 minutos | Nivel: Intermedio</p>
+        </header>
+
+        <nav>
+            <h2>Contenido de la Clase</h2>
+            <ul>
+                <li><a href="#objetivos">Objetivos</a></li>
+                <li><a href="#teoria">Teoría: FTP y Protocolos de Transferencia</a></li>
+                <li><a href="#instalacion">Instalación de vsftpd</a></li>
+                <li><a href="#configuracion">Configuración Básica</a></li>
+                <li><a href="#usuario">Configurar Usuario FTP</a></li>
+                <li><a href="#testing">Probar Transferencia</a></li>
+                <li><a href="#actividad">Actividad Práctica</a></li>
+            </ul>
+        </nav>
+
+        <main>
+            <section id="objetivos">
+                <h2>Objetivos de Aprendizaje</h2>
+                <div class="callout success">
+                    <strong>Al finalizar esta clase, podrás:</strong>
+                    <ul>
+                        <li>Comprender el protocolo FTP y sus variantes (FTPS, SFTP)</li>
+                        <li>Instalar y configurar vsftpd en Linux</li>
+                        <li>Diferenciar entre modo activo y pasivo</li>
+                        <li>Configurar usuarios FTP con permisos</li>
+                        <li>Transferir archivos entre cliente y servidor</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section id="teoria">
+                <h2>Teoría: FTP y Protocolos de Transferencia</h2>
+
+                <h3>¿Qué es FTP?</h3>
+                <p><strong>FTP (File Transfer Protocol)</strong> es un protocolo de red estándar para transferir archivos entre un cliente y un servidor a través de una red TCP.</p>
+
+                <div class="two-columns">
+                    <div class="column-card">
+                        <h4>Características de FTP</h4>
+                        <ul>
+                            <li>Protocolo de capa de aplicación</li>
+                            <li>Arquitectura cliente-servidor</li>
+                            <li>Usa 2 puertos: 20 (datos) y 21 (control)</li>
+                            <li>Autenticación con usuario/contraseña</li>
+                            <li>Soporta transferencia binaria y ASCII</li>
+                            <li>Permite listar, subir, bajar archivos</li>
+                        </ul>
+                    </div>
+
+                    <div class="column-card">
+                        <h4>Modos de Conexión</h4>
+                        <p><strong>Modo Activo:</strong></p>
+                        <ul>
+                            <li>Cliente abre puerto aleatorio</li>
+                            <li>Servidor se conecta desde puerto 20</li>
+                            <li>Problemas con firewalls/NAT</li>
+                        </ul>
+                        <p><strong>Modo Pasivo:</strong></p>
+                        <ul>
+                            <li>Servidor abre puerto aleatorio</li>
+                            <li>Cliente se conecta a ese puerto</li>
+                            <li>Más compatible con firewalls</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3>FTP vs FTPS vs SFTP</h3>
+                <table>
+                    <thead>
+                        <tr><th>Protocolo</th><th>Cifrado</th><th>Puerto</th><th>Descripción</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>FTP</td><td>No</td><td>20/21</td><td>Protocolo original, texto plano</td></tr>
+                        <tr><td>FTPS</td><td>SSL/TLS</td><td>990/989</td><td>FTP sobre SSL/TLS (implícito)</td></tr>
+                        <tr><td>FTPES</td><td>SSL/TLS</td><td>20/21</td><td>FTP con TLS explícito</td></tr>
+                        <tr><td>SFTP</td><td>SSH</td><td>22</td><td>FTP sobre SSH (diferente protocolo)</td></tr>
+                    </tbody>
+                </table>
+
+                <div class="callout warning">
+                    <strong>Advertencia de Seguridad:</strong>
+                    <p>FTP tradicional transmite credenciales y datos en texto plano. Para producción, usar SFTP o FTPS.</p>
+                </div>
+
+                <h3>Arquitectura FTP</h3>
+                <div class="ascii-diagram">
+<pre>
+MODO ACTIVO                    MODO PASIVO
+┌────────────┐                ┌────────────┐
+│   CLIENTE  │                │   CLIENTE  │
+│  (Puerto   │                │  (Puerto   │
+│  aleatorio)│                │  aleatorio)│
+└──────┬─────┘                └──────┬─────┘
+       │                              ↓
+       │                        ┌──────────┐
+       │  PORT comando          │ SERVIDOR │
+       ├────────────────────→   │ (Puerto  │
+       │                        │ aleatorio)│
+       │  Conexión datos        └─────┬────┘
+       │  ←─────────────────────────┤
+       │  (desde puerto 20)             │
+       ↓                              ↓
+┌────────────┐                ┌────────────┐
+│  SERVIDOR  │                │  SERVIDOR  │
+│ (Puerto 21)│                │ (Puerto 21)│
+└────────────┘                └────────────┘
+Control (21)                  Control (21)
+</pre>
+                </div>
+
+                <h3>Servidores FTP Comunes</h3>
+                <table>
+                    <thead>
+                        <tr><th>Servidor</th><th>Sistema</th><th>Características</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>vsftpd</td><td>Linux</td><td>Muy seguro, ligero, popular</td></tr>
+                        <tr><td>ProFTPD</td><td>Linux/Unix</td><td>Configuración similar a Apache</td></tr>
+                        <tr><td>FileZilla Server</td><td>Windows</td><td>GUI, fácil de configurar</td></tr>
+                        <tr><td>IIS FTP</td><td>Windows</td><td>Integrado con IIS/AD</td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section id="instalacion">
+                <h2>Instalación de vsftpd</h2>
+
+                <div class="callout warning">
+                    <strong>Requisitos previos:</strong>
+                    <ul>
+                        <li>VM con Ubuntu Server 22.04/24.04</li>
+                        <li>Usuario con privilegios sudo</li>
+                        <li>Conexión a Internet</li>
+                    </ul>
+                </div>
+
+                <h3>Paso 1: Actualizar e instalar</h3>
+                <pre><code># Actualizar sistema
+sudo apt update
+sudo apt upgrade -y
+
+# Instalar vsftpd
+sudo apt install vsftpd -y
+
+# Verificar instalación
+vsftpd -version</code></pre>
+
+                <h3>Paso 2: Verificar el servicio</h3>
+                <pre><code># Verificar estado
+sudo systemctl status vsftpd
+
+# Habilitar inicio automático
+sudo systemctl enable vsftpd
+
+# Verificar puertos en escucha
+sudo ss -tlnp | grep vsftpd</code></pre>
+
+                <div class="callout success">
+                    <strong>Ubicación de archivos:</strong>
+                    <ul>
+                        <li><code>/etc/vsftpd.conf</code> - Configuración principal</li>
+                        <li><code>/etc/vsftpd.userlist</code> - Lista de usuarios permitidos</li>
+                        <li><code>/home/usuario/ftp</code> - Directorio FTP por defecto</li>
+                        <li><code>/var/log/vsftpd.log</code> - Logs</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section id="configuracion">
+                <h2>Configuración Básica</h2>
+
+                <h3>Paso 1: Configurar vsftpd</h3>
+                <pre><code># Hacer backup del archivo original
+sudo cp /etc/vsftpd.conf /etc/vsftpd.conf.backup
+
+# Editar configuración
+sudo nano /etc/vsftpd.conf</code></pre>
+
+                <p>Configuración recomendada:</p>
+                <pre><code># Habilitar y configurar
+anonymous_enable=NO
+local_enable=YES
+write_enable=YES
+dirmessage_enable=YES
+xferlog_enable=YES
+connect_from_port_20=YES
+xferlog_std_format=YES
+listen=NO
+listen_ipv6=YES
+pam_service_name=vsftpd
+userlist_enable=YES
+tcp_wrappers=YES
+
+# Configurar directorio chroot
+chroot_local_user=YES
+allow_writeable_chroot=YES
+
+# Configurar modo pasivo
+pasv_enable=YES
+pasv_min_port=10000
+pasv_max_port=10100
+
+# Limitar usuarios
+userlist_file=/etc/vsftpd.userlist
+userlist_deny=NO</code></pre>
+
+                <h3>Paso 2: Configurar firewall</h3>
+                <pre><code># Permitir puerto 21 (control)
+sudo ufw allow 21/tcp
+
+# Permitir rango pasivo
+sudo ufw allow 10000:10100/tcp
+
+# Verificar firewall
+sudo ufw status</code></pre>
+
+                <h3>Paso 3: Reiniciar servicio</h3>
+                <pre><code># Reiniciar vsftpd
+sudo systemctl restart vsftpd
+
+# Verificar estado
+sudo systemctl status vsftpd</code></pre>
+            </section>
+
+            <section id="usuario">
+                <h2>Configurar Usuario FTP</h2>
+
+                <h3>Paso 1: Crear usuario FTP</h3>
+                <pre><code># Crear usuario
+sudo adduser ftpuser
+
+# (Responder prompts para contraseña y datos)</code></pre>
+
+                <h3>Paso 2: Crear directorio FTP</h3>
+                <pre><code># Crear directorio con permisos
+sudo mkdir -p /home/ftpuser/ftp/files
+sudo chown nobody:nogroup /home/ftpuser/ftp
+sudo chmod a-w /home/ftpuser/ftp
+sudo chown -R ftpuser:ftpuser /home/ftpuser/ftp/files
+
+# Crear archivo de prueba
+echo "Archivo de prueba FTP" | sudo tee /home/ftpuser/ftp/files/prueba.txt</code></pre>
+
+                <h3>Paso 3: Agregar usuario a lista permitida</h3>
+                <pre><code># Agregar usuario a lista
+echo "ftpuser" | sudo tee -a /etc/vsftpd.userlist
+
+# Verificar lista
+cat /etc/vsftpd.userlist</code></pre>
+
+                <h3>Paso 4: Reiniciar servicio</h3>
+                <pre><code>sudo systemctl restart vsftpd</code></pre>
+            </section>
+
+            <section id="testing">
+                <h2>Probar Transferencia</h2>
+
+                <h3>Opción 1: Probar con cliente FTP (desde otra VM o host)</h3>
+                <pre><code># Conectarse al servidor
+ftp IP_DEL_SERVIDOR
+
+# Usuario: ftpuser
+# Contraseña: [la que configuraste]
+
+# Comandos FTP básicos:
+pwd                     # Ver directorio actual
+ls                      # Listar archivos
+get prueba.txt          # Descargar archivo
+put archivo.txt         # Subir archivo
+bye                     # Salir</code></pre>
+
+                <h3>Opción 2: Probar con cliente SFTP (más seguro)</h3>
+                <pre><code># Conectarse con SFTP
+sftp ftpuser@IP_DEL_SERVIDOR
+
+# Comandos SFTP:
+lpwd                    # Directorio local
+pwd                     # Directorio remoto
+ls                      # Listar remoto
+lls                     # Listar local
+get prueba.txt          # Descargar
+put archivo.txt         # Subir
+bye                     # Salir</code></pre>
+
+                <h3>Opción 3: Probar desde Windows (FileZilla o WinSCP)</h3>
+
+                <p><strong>Con FileZilla:</strong></p>
+                <ol>
+                    <li>Abrir FileZilla</li>
+                    <li>Host: <code>IP_DEL_SERVIDOR</code></li>
+                    <li>Usuario: <code>ftpuser</code></li>
+                    <li>Contraseña: [la que configuraste]</li>
+                    <li>Puerto: <code>21</code></li>
+                    <li>Hacer clic en "Quickconnect"</li>
+                </ol>
+
+                <h3>Verificar transferencia</h3>
+                <pre><code># En el servidor, verificar archivos
+ls -la /home/ftpuser/ftp/files/
+
+# Ver logs de transferencia
+sudo tail -f /var/log/vsftpd.log</code></pre>
+
+                <div class="callout success">
+                    <strong>Comandos FTP útiles:</strong>
+                    <ul>
+                        <li><code>bin</code> - Modo binario (para archivos que no son texto)</li>
+                        <li><code>ascii</code> - Modo ASCII (para archivos de texto)</li>
+                        <li><code>mget *</code> - Descargar múltiples archivos</li>
+                        <li><code>mput *.txt</code> - Subir múltiples archivos</li>
+                        <li><code>mdelete *.tmp</code> - Borrar múltiples archivos</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section id="actividad">
+                <h2>Actividad Práctica</h2>
+
+                <div class="actividad">
+                    <h3>Actividad: Configuración Completa de FTP</h3>
+
+                    <h4>Objetivo</h4>
+                    <p>Configurar un servidor FTP y realizar transferencias de archivos exitosas.</p>
+
+                    <h4>Requisitos</h4>
+                    <ol class="checklist">
+                        <li><input type="checkbox"> Instalar vsftpd en Ubuntu Server</li>
+                        <li><input type="checkbox"> Configurar archivo vsftpd.conf correctamente</li>
+                        <li><input type="checkbox"> Crear usuario FTP con directorio dedicado</li>
+                        <li><input type="checkbox"> Configurar modo pasivo y firewall</li>
+                        <li><input type="checkbox"> Subir un archivo al servidor</li>
+                        <li><input type="checkbox"> Descargar un archivo del servidor</li>
+                    </ol>
+
+                    <h4>Evidencias a Entregar</h4>
+                    <ul>
+                        <li>Captura de <code>sudo systemctl status vsftpd</code> (activo)</li>
+                        <li>Captura del archivo de configuración vsftpd.conf</li>
+                        <li>Captura de conexión FTP exitosa</li>
+                        <li>Captura de archivo subido en el servidor</li>
+                        <li>Captura de archivo descargado en el cliente</li>
+                    </ul>
+
+                    <h4>Rubrica de Evaluación</h4>
+                    <table>
+                        <thead>
+                            <tr><th>Criterio</th><th>Puntos</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>vsftpd instalado y configurado</td><td>25</td></tr>
+                            <tr><td>Usuario FTP funcionando</td><td>25</td></tr>
+                            <tr><td>Subida de archivo exitosa</td><td>25</td></tr>
+                            <tr><td>Descarga de archivo exitosa</td><td>15</td></tr>
+                            <tr><td>Evidencias completas</td><td>10</td></tr>
+                            <tr><td><strong>Total</strong></td><td><strong>100</strong></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section>
+                <h2>Resumen</h2>
+
+                <div class="two-columns">
+                    <div class="column-card">
+                        <h4>Conceptos Clave</h4>
+                        <ul>
+                            <li><strong>FTP:</strong> Protocolo de transferencia de archivos</li>
+                            <li><strong>Modo Activo vs Pasivo:</strong> Quien inicia conexión de datos</li>
+                            <li><strong>vsftpd:</strong> Servidor FTP seguro y ligero</li>
+                            <li><strong>SFTP:</strong> FTP sobre SSH (más seguro)</li>
+                        </ul>
+                    </div>
+
+                    <div class="column-card">
+                        <h4>Comandos Esenciales</h4>
+                        <pre><code>sudo apt install vsftpd
+sudo systemctl restart vsftpd
+sudo adduser ftpuser
+ftp IP_SERVIDOR
+sftp usuario@IP_SERVIDOR</code></pre>
+                    </div>
+                </div>
+
+                <div class="callout success">
+                    <strong>Próxima clase:</strong> Active Directory - Directorio de servicios de Windows
+                </div>
+            </section>
+
+            <section id="videos">
+                <h2>Videos Recomendados</h2>
+
+                <div class="callout info">
+                    <strong>Video 1: FTP Server Complete Tutorial</strong>
+                    <p>Duración: 30 minutos | Nivel: Intermedio</p>
+                    <p>Cubre instalación, configuración y modos activo/pasivo</p>
+                    <a href="https://www.youtube.com/watch?v=7rVXY0t7UY0" target="_blank">Ver en YouTube</a>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p><strong>IF0099 - Sistemas Operativos I</strong> • <a href="index.html">Índice de Clases</a></p>
+            <p>Clase 15: Servidor FTP - Configuración y Administración</p>
+        </footer>
+    </div>
+</body>
+</html>

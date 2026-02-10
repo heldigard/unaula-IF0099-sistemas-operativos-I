@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clase 12: Memoria Virtual | IF0099 - Sistemas Operativos I</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #1e40af;
+            --accent: #059669;
+            --bg-light: #f8fafc;
+            --bg-code: #1e293b;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.7;
+            color: var(--text-main);
+            background: var(--bg-light);
+            font-size: 16px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 3rem 0;
+            margin-bottom: 2rem;
+        }
+        header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+        header .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        header .meta {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        nav {
+            background: white;
+            padding: 1.5rem 0;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        nav h2 {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            padding: 0 20px;
+        }
+        nav ul {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 0.5rem;
+            padding: 0 20px;
+        }
+        nav a {
+            color: var(--primary);
+            text-decoration: none;
+            padding: 0.5rem;
+            display: block;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+        nav a:hover {
+            background: var(--bg-light);
+        }
+
+        section {
+            background: white;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        section h2 {
+            color: var(--primary);
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid var(--accent);
+        }
+        section h3 {
+            color: var(--secondary);
+            font-size: 1.4rem;
+            margin: 2rem 0 1rem;
+        }
+        section h4 {
+            color: var(--text-main);
+            font-size: 1.1rem;
+            margin: 1.5rem 0 0.75rem;
+            font-weight: 600;
+        }
+        p {
+            margin-bottom: 1rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.95rem;
+        }
+        th, td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+        th {
+            background: var(--bg-light);
+            font-weight: 600;
+            color: var(--secondary);
+        }
+        tr:hover {
+            background: var(--bg-light);
+        }
+
+        pre {
+            background: var(--bg-code);
+            color: #e2e8f0;
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        code {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+        }
+        p code, li code, td code {
+            background: var(--bg-light);
+            color: var(--primary);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+        pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+        }
+
+        ul, ol {
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        .callout {
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            border-left: 4px solid;
+        }
+        .callout.info {
+            background: #eff6ff;
+            border-left-color: var(--primary);
+        }
+        .callout.warning {
+            background: #fef3c7;
+            border-left-color: #f59e0b;
+        }
+        .callout.success {
+            background: #d1fae5;
+            border-left-color: var(--accent);
+        }
+        .callout.danger {
+            background: #fee2e2;
+            border-left-color: #ef4444;
+        }
+
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        .comparison > div {
+            background: var(--bg-light);
+            padding: 1.5rem;
+            border-radius: 8px;
+        }
+
+        footer {
+            background: var(--text-main);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            margin-top: 3rem;
+        }
+        footer a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .scroll-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--primary);
+            color: white;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.3s;
+            text-decoration: none;
+            font-size: 1.5rem;
+        }
+        .scroll-top.visible {
+            opacity: 1;
+        }
+        .scroll-top:hover {
+            background: var(--secondary);
+        }
+
+        .actividad {
+            background: var(--bg-light);
+            border-left: 5px solid var(--accent);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+        .actividad h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        .actividad p {
+            margin-bottom: 0.75rem;
+        }
+        .actividad strong {
+            color: var(--secondary);
+        }
+
+        .diagram-box {
+            background: var(--bg-light);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            text-align: center;
+        }
+        .diagram-box pre {
+            background: none;
+            color: var(--text-main);
+            padding: 0;
+            margin: 0;
+            font-size: 0.85rem;
+            line-height: 1.4;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.6rem;
+            }
+            section {
+                padding: 1.5rem;
+            }
+            nav ul {
+                grid-template-columns: 1fr;
+            }
+            .comparison {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Clase 12: Memoria Virtual</h1>
+            <p class="subtitle">IF0099 - Sistemas Operativos I | Unidad 7 - Gestión de Memoria</p>
+            <p class="subtitle">Paging, Swapping, Thrashing y Monitoreo</p>
+            <p class="meta">Última actualización: 2026-02-10 | Duración: 90 minutos</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <nav>
+            <h2>Contenido de la Clase</h2>
+            <ul>
+                <li><a href="#objetivos">Objetivos de Aprendizaje</a></li>
+                <li><a href="#intro">1. Introducción a la Memoria Virtual</a></li>
+                <li><a href="#memoria-fisica-virtual">2. Memoria Física vs Virtual</a></li>
+                <li><a href="#paging">3. Paginación (Paging)</a></li>
+                <li><a href="#swapping">4. Swapping</a></li>
+                <li><a href="#thrashing">5. Thrashing</a></li>
+                <li><a href="#monitoreo">6. Monitoreo de Memoria</a></li>
+                <li><a href="#linux-windows">7. Comparación Linux vs Windows</a></li>
+                <li><a href="#practica">8. Actividad Práctica</a></li>
+                <li><a href="#entregable">Entregable</a></li>
+                <li><a href="#resumen">Resumen</a></li>
+            </ul>
+        </nav>
+
+        <section id="objetivos">
+            <h2>Objetivos de Aprendizaje</h2>
+            <p>Al finalizar esta clase, serás capaz de:</p>
+            <ol>
+                <li><strong>Explicar</strong> la diferencia entre memoria física y virtual</li>
+                <li><strong>Describir</strong> cómo funciona la paginación (paging)</li>
+                <li><strong>Entender</strong> el proceso de swapping</li>
+                <li><strong>Reconocer</strong> el fenómeno de thrashing y cómo evitarlo</li>
+                <li><strong>Monitorear</strong> el uso de memoria y swap</li>
+                <li><strong>Comparar</strong> la gestión de memoria entre Linux y Windows</li>
+            </ol>
+        </section>
+
+        <section id="intro">
+            <h2>1. Introducción a la Memoria Virtual</h2>
+
+            <div class="callout info">
+                <strong>Pregunta fundamental:</strong> ¿Cómo ejecutar programas que requieren más memoria de la disponible físicamente?
+            </div>
+
+            <h3>El Problema de la Memoria Limitada</h3>
+
+            <p>La memoria física (RAM) es un recurso limitado y costoso:</p>
+
+            <ul>
+                <li>Los programas modernos requieren cada vez más memoria</li>
+                <li>Múltiples programas ejecutándose simultáneamente</li>
+                <li>La RAM física es finita y costosa</li>
+                <li>Sin memoria virtual, estaríamos limitados por la RAM instalada</li>
+            </ul>
+
+            <h3>La Solución: Memoria Virtual</h3>
+
+            <p><strong>Memoria Virtual</strong> es una técnica que crea una ilusión de memoria ilimitada:</p>
+
+            <ul>
+                <li><strong>Abstracción:</strong> Cada proceso cree que tiene toda la memoria para sí</li>
+                <li><strong>Espacio de direcciones virtual:</strong> Independiente de la memoria física</li>
+                <li><strong>Uso de disco:</strong> Parte del disco se usa como extensión de la RAM</li>
+                <li><strong>Gestión automática:</strong> El SO mueve datos entre RAM y disco transparentemente</li>
+            </ul>
+        </section>
+
+        <section id="memoria-fisica-virtual">
+            <h2>2. Memoria Física vs Virtual</h2>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Aspecto</th>
+                        <th>Memoria Física</th>
+                        <th>Memoria Virtual</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>También llamada</strong></td>
+                        <td>RAM, memoria real</td>
+                        <td>Memoria lógica, espacio de direcciones</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Ubicación</strong></td>
+                        <td>Hardware (chips de RAM)</td>
+                        <td>Abstracción del SO (RAM + disco)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Tamaño</strong></td>
+                        <td>Físico (ej: 8GB, 16GB)</td>
+                        <td>Lógico (ej: 2TB por proceso en x86-64)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Velocidad</strong></td>
+                        <td>Muy rápida (nanosegundos)</td>
+                        <td>Variable (RAM rápida, disco lento)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Costo</strong></td>
+                        <td>Alto por GB</td>
+                        <td>Bajo (usa espacio en disco)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Visibilidad</strong></td>
+                        <td>Hardware, gestionada por MMU</td>
+                        <td>Visible para procesos</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Relación entre Ambos Tipos de Memoria</h3>
+
+            <div class="diagram-box">
+<pre>+---------------------------------------------------------------+
+|  ESPACIO DE DIRECCIONES VIRTUAL (Proceso)                      |
+|  0x0000000000000000 ─────────────────────────────→ 0xFFFFFFFFFFFFFFFF |
+|     ↓                                        ↓                    |
+|  ┌────────────────────────────────────────────────────────────┐   |
+|  │  Páginas Virtuales                                        │   |
+|  │  ┌─────┐ ┌─────┐ ┌─────┐ ┌─────┐ ┌─────┐ ┌─────┐         │   |
+|  │  │ P0  │ │ P1  │ │ P2  │ │ P3  │ │ P4  │ │ P5  │ ...      │   |
+|  │  └──┬──┘ └──┬──┘ └──┬──┘ └──┬──┘ └──┬──┘ └──┬──┘         │   |
++─────┼───────┼───────┼───────┼───────┼───────┼────────────────────+
+       │       │       │       │       │       │
+       ▼       ▼       ▼       ▼       ▼       ▼
++---------------------------------------------------------------+
+|  TABLA DE PÁGINAS (Page Table)                                |
+|  Mapea páginas virtuales → marcos de página físicos          |
++---------------------------------------------------------------+
+       │       │       │       │       │       │
+       ▼       ▼       ▼       ▼       ▼       ▼
++---------------------------------------------------------------+
+|  MEMORIA FÍSICA (RAM)                                         |
+|  ┌────────────────────────────────────────────────────────────┐  |
+|  │ Marcos de Página (Page Frames)                            │  |
+|  │ ┌─────┐ ┌─────┐ ┌─────┐ ┌─────┐                         │  |
+|  │ │ F0  │ │ F1  │ │ F2  │ │ F3  │ ...                      │  |
+|  │ └─────┘ └─────┘ └─────┘ └─────┘                         │  |
++---------------------------------------------------------------+
+        │       │       │       │
+        ▼       ▼       ▼       ▼
++---------------------------------------------------------------+
+|  DISCO (Swap/Backing Store)                                   |
+|  Páginas que no caben en RAM                                  |
++---------------------------------------------------------------+</pre>
+            </div>
+        </section>
+
+        <section id="paging">
+            <h2>3. Paginación (Paging)</h2>
+
+            <p><strong>Paging</strong> es el mecanismo fundamental de la memoria virtual. Divide la memoria en unidades fijas llamadas <strong>páginas</strong>.</p>
+
+            <h3>Conceptos Clave</h3>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Concepto</th>
+                        <th>Descripción</th>
+                        <th>Tamaño Típico</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Página Virtual</strong></td>
+                        <td>Unidad de memoria virtual</td>
+                        <td>4 KB (también 2 MB, 1 GB para huge pages)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Marco de Página</strong></td>
+                        <td>Unidad de memoria física</td>
+                        <td>4 KB (igual que la página)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Tabla de Páginas</strong></td>
+                        <td>Mapeo virtual → físico</td>
+                        <td>1 entrada por página</td>
+                    </tr>
+                    <tr>
+                        <td><strong>MMU</strong></td>
+                        <td>Memory Management Unit (hardware)</td>
+                        <td>Traduce direcciones en tiempo real</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Proceso de Traducción de Direcciones</h3>
+
+            <div class="diagram-box">
+<pre>Dirección Virtual (48 bits en x86-64)
+├──────────────┬──────────────────────────────────┐
+│  Número de Página │       Desplazamiento        │
+│    (36 bits)  │         (12 bits)             │
+└──────────────┴──────────────────────────────────┘
+       │                              │
+       ▼                              ▼
++----------------+           +------------------+
+│ Tabla de       │           │  Desplazamiento  │
+│ Páginas        │           │  se mantiene     │
+│ (en RAM/TLB)   │           │  igual           │
+└────────┬───────┘           └──────────────────┘
+         │
+         ▼
++------------------+
+│  Número de       │
+│  Marco de Página │
+└────────┬─────────┘
+         │
+         ▼
+┌─────────────────────────────────────────┐
+│    Dirección Física                     │
+├───────────────────┬─────────────────────┤
+│ Marco de Página   │   Desplazamiento   │
+└───────────────────┴─────────────────────┘
+         │                    │
+         └────────┬───────────┘
+                  ▼
+           Datos en RAM</pre>
+            </div>
+
+            <h3>Page Fault</h3>
+
+            <p>Un <strong>page fault</strong> ocurre cuando el proceso accede a una página que no está en RAM:</p>
+
+            <ol>
+                <li>El proceso accede a una dirección virtual</li>
+                <li>La MMU busca la página en la tabla de páginas</li>
+                <li>La página está marcada como "no presente" (en disco)</li>
+                <li>Se genera una excepción de page fault</li>
+                <li>El SO maneja el fault:
+                    <ul>
+                        <li>Encuentra un marco de página libre en RAM</li>
+                        <li>Si no hay libre, selecciona una víctima para expulsar</li>
+                        <li>Carga la página desde disco a RAM</li>
+                        <li>Actualiza la tabla de páginas</li>
+                        <li>Reinicia la instrucción que falló</li>
+                    </ul>
+                </li>
+            </ol>
+
+            <div class="callout warning">
+                <strong>Costo de un page fault:</strong> Un page fault típico toma ~10-100 µs si la página está en RAM, pero ~10-20 ms si requiere acceso a disco. ¡Eso es 100-1000 veces más lento!
+            </div>
+        </section>
+
+        <section id="swapping">
+            <h2>4. Swapping</h2>
+
+            <p><strong>Swapping</strong> es el proceso de mover páginas completas entre RAM y disco.</p>
+
+            <h3>¿Cuándo Ocurre Swapping?</h3>
+
+            <ul>
+                <li><strong>Memoria insuficiente:</strong> Cuando la RAM está casi llena</li>
+                <li><strong>Page fault:</strong> Cuando se accede a una página en disco</li>
+                <li><strong>Algoritmo de reemplazo:</strong> Cuando el SO necesita liberar marcos</li>
+            </ul>
+
+            <h3>Algoritmos de Reemplazo de Páginas</h3>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Algoritmo</th>
+                        <th>Descripción</th>
+                        <th>Uso Real</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>FIFO</strong></td>
+                        <td>First In, First Out - Reemplaza la página más antigua</td>
+                        <td>Raramente usado (muy simple)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Óptimo</strong></td>
+                        <td>Reemplaza la página que se usará más tarde</td>
+                        <td>Teórico, imposible de implementar</td>
+                    </tr>
+                    <tr>
+                        <td><strong>LRU</strong></td>
+                        <td>Least Recently Used - Reemplaza la menos usada recientemente</td>
+                        <td>Común, aproximado en hardware</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Clock</strong></td>
+                        <td>Approximación de LRU con bit de referencia</td>
+                        <td>Muy usado en Linux</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Swap Space en Linux</h3>
+
+            <p>En Linux, el swap puede ser de dos tipos:</p>
+
+            <div class="comparison">
+                <div>
+                    <h4>Partición de Swap</h4>
+                    <ul>
+                        <li>Partición dedicada en disco</li>
+                        <li>Más eficiente</li>
+                        <li>Se crea durante instalación</li>
+                        <li>Tipo 82 en fdisk</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Archivo de Swap</h4>
+                    <ul>
+                        <li>Archivo normal en filesystem</li>
+                        <li>Fácil de agregar/redimensionar</li>
+                        <li>Ligero overhead de filesystem</li>
+                        <li>Usa <code>dd</code> y <code>mkswap</code></li>
+                    </ul>
+                </div>
+            </div>
+
+            <h4>Crear y Activar Swap en Linux</h4>
+
+            <pre><code># Crear archivo de swap de 2GB
+sudo fallocate -l 2G /swapfile
+sudo chmod 600 /swapfile
+sudo mkswap /swapfile
+sudo swapon /swapfile
+
+# Verificar
+free -h
+swapon --show
+
+# Hacer permanente (agregar a /etc/fstab)
+'/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab</code></pre>
+
+            <h3>Swapping en Windows</h3>
+
+            <p>Windows usa <strong>pagefile.sys</strong> para el swap:</p>
+
+            <ul>
+                <li>Ubicación: C:\pagefile.sys (oculto)</li>
+                <li>Gestión: Panel de control → Sistema → Configuración avanzada</li>
+                <li>Administración automática por defecto</li>
+                <li>Se puede desactivar (no recomendado)</li>
+            </ul>
+        </section>
+
+        <section id="thrashing">
+            <h2>5. Thrashing</h2>
+
+            <p><strong>Thrashing</strong> es un estado degenerativo donde el SO gasta más tiempo paginando que ejecutando procesos.</p>
+
+            <h3>Causas del Thrashing</h3>
+
+            <ul>
+                <li><strong>Sobrecarga de memoria:</strong> Demasiados procesos para la RAM disponible</li>
+                <li><strong>Falta de localidad:</strong> Los procesos no exhiben buena localidad de referencia</li>
+                <li><strong>Ciclo vicioso:</strong> Page faults → Swap → Más page faults</li>
+            </ul>
+
+            <h3>Ciclo de Thrashing</h3>
+
+            <div class="diagram-box">
+<pre>+---------------------------------------------------------------+
+|  CPU UTILIZACIÓN ↓                                              |
+|    │                                                            |
+|    ▼                                                            |
+|  Procesos esperan page fault                                   |
+|    │                                                            |
+|    ▼                                                            |
+|  Cola de procesos ready aumenta                                |
+|    │                                                            |
+|    ▼                                                            |
+|  SO carga más procesos para mantener CPU ocupada                |
+|    │                                                            |
+|    ▼                                                            |
+|  Menos marcos por proceso                                       |
+|    │                                                            |
+|    ▼                                                            |
+|  Más page faults                                                |
+|    │                                                            |
+|    └─────────────────────────────────────┐                      |
+|                                          ▼                      |
+|                              (CICLO SE REPITE)                  |
++---------------------------------------------------------------+</pre>
+            </div>
+
+            <h3>Detectar Thrashing</h3>
+
+            <div class="callout warning">
+                <strong>Señales de thrashing:</strong>
+                <ul>
+                    <li>Uso de CPU bajo pero alto uso de disco</li>
+                    <li>Tasa de page faults muy alta</li>
+                    <li>Responsividad del sistema muy pobre</li>
+                    <li>Swap casi al máximo</li>
+                </ul>
+            </div>
+
+            <h3>Soluciones al Thrashing</h3>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Solución</th>
+                        <th>Descripción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Reducir multiprogramación</strong></td>
+                        <td>Ejecutar menos procesos simultáneamente</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Aumentar RAM</strong></td>
+                        <td>Solución hardware más directa</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Algoritmo de working set</strong></td>
+                        <td>Mantener en RAM las páginas en uso reciente</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Priority paging</strong></td>
+                        <td>Dar prioridad a páginas del kernel</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="monitoreo">
+            <h2>6. Monitoreo de Memoria</h2>
+
+            <h3>Monitoreo en Linux</h3>
+
+            <h4>Comando: free</h4>
+
+            <pre><code># Mostrar uso de memoria en formato humano
+free -h
+
+# Salida ejemplo:
+#               total        used        free      shared  buff/cache   available
+# Mem:           7.7G        2.1G        3.2G        150M        2.4G        5.2G
+# Swap:          2.0G          0B        2.0G
+
+# Mostrar con actualización continua
+free -h -s 2
+
+# Ver en bytes (no human-readable)
+free -b</code></pre>
+
+            <h4>Comando: vmstat</h4>
+
+            <pre><code># Estadísticas de memoria virtual
+vmstat 2 5
+
+# Salida ejemplo:
+# procs -----------memory---------- ---swap-- -----io---- -system-- ------cpu-----
+#  r  b   swpd   free   buff  cache   si   so    bi    bo   in   cs us sy id wa st
+#  1  0      0 3200000 200000 2400000    0    0     5    10   50   30  5  2 92  1  0
+#  0  1      0 3100000 210000 2500000    0    0   100     0  600 1200 10  5 85  0  0
+
+# Campos clave:
+# si - Swap in (KB/s desde disco)
+# so - Swap out (KB/s a disco)
+# wa - CPU time waiting for I/O</code></pre>
+
+            <h4>Comando: top / htop</h4>
+
+            <pre><code># Ver uso de memoria por proceso
+top
+
+# Presiona 'M' para ordenar por uso de memoria
+# Presiona 'P' para ordenar por CPU
+
+# htop es más visual
+htop</code></pre>
+
+            <h4>/proc/meminfo</h4>
+
+            <pre><code># Información detallada de memoria
+cat /proc/meminfo
+
+# Campos útiles:
+# MemTotal, MemFree, MemAvailable
+# SwapTotal, SwapFree
+# Dirty (páginas modificadas en RAM)
+# Cached (páginas cached)</code></pre>
+
+            <h3>Monitoreo en Windows</h3>
+
+            <h4>Administrador de Tareas</h4>
+
+            <ul>
+                <li>Ver memoria por proceso</li>
+                <li>Ver uso total de RAM</li>
+                <li>Ver commit charge (uso de página)</li>
+            </ul>
+
+            <h4>Monitor de Rendimiento (perfmon)</h4>
+
+            <pre><code># Contadores clave:
+Memory\Available MBytes
+Memory\Pages/sec
+Memory\Page Faults/sec
+Memory\Pool Paged Bytes
+Paging File\% Usage</code></pre>
+
+            <h4>PowerShell</h4>
+
+            <pre><code># Ver uso de memoria
+Get-Process | Sort-Object WorkingSet -Descending | Select-Object -First 10
+
+# Ver estadísticas de memoria
+Get-WmiObject Win32_OperatingSystem | Select-Object TotalVisibleMemorySize, FreePhysicalMemory
+
+# Ver pagefile
+Get-WmiObject Win32_PageFileUsage</code></pre>
+        </section>
+
+        <section id="linux-windows">
+            <h2>7. Comparación: Gestión de Memoria Linux vs Windows</h2>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Aspecto</th>
+                        <th>Linux</th>
+                        <th>Windows</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Tamaño de página</strong></td>
+                        <td>4 KB (también huge pages de 2 MB, 1 GB)</td>
+                        <td>4 KB (x86/x64), también large pages</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Espacio de swap</strong></td>
+                        <td>Partición o archivo, múltiples swap</td>
+                        <td>pagefile.sys, uno o más por volumen</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Configuración</strong></td>
+                        <td>/proc/sys, swapon, sysctl</td>
+                        <td>Registro, Panel de control</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Caché de archivos</strong></td>
+                        <td>Páginas cache (free + buff/cache)</td>
+                        <td>System Cache, Standby List</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Overcommit</strong></td>
+                        <td>Sí, configurable (/proc/sys/vm/overcommit_memory)</td>
+                        <td>No tan explícito, pero permite commit mayor que RAM</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Herramientas</strong></td>
+                        <td>free, vmstat, top, /proc</td>
+                        <td>Task Manager, perfmon, PowerShell</td>
+                    </tr>
+                    <tr>
+                        <td><strong>OOM Killer</strong></td>
+                        <td>Sí, mata procesos si no hay memoria</td>
+                        <td>Similar, pero menos agresivo</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Políticas de Caché</h3>
+
+            <div class="comparison">
+                <div>
+                    <h4>Linux</h4>
+                    <ul>
+                        <li>Usa RAM libre para caché</li>
+                        <li>Buff/cache: archivos cacheados</li>
+                        <li>Recupera fácilmente si un proceso necesita memoria</li>
+                        <li>vm.swappiness controla agresividad de swap (0-100)</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Windows</h4>
+                    <ul>
+                        <li>SuperFetch, ReadyBoost</li>
+                        <li>Standby List: páginas no usadas recientemente</li>
+                        <li>Modified List: páginas modificadas para escribir</li>
+                        <li>Prioriza caché de aplicaciones sobre archivos</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="practica">
+            <h2>8. Actividad Práctica</h2>
+
+            <div class="actividad">
+                <h3>Ejercicio 1: Monitoreo de Memoria en Linux</h3>
+
+                <h4>Parte 1: Uso Básico</h4>
+                <pre><code># Ver uso actual de memoria
+free -h
+
+# Ver detalles de memoria
+cat /proc/meminfo | head -20</code></pre>
+
+                <h4>Parte 2: Monitoreo Continuo</h4>
+                <pre><code># Monitorear cada 2 segundos
+vmstat 2 10
+
+# Ver page faults
+ps -o pid,comm,minflt,majflt -p $$</code></pre>
+
+                <h4>Parte 3: Ver procesos por uso de memoria</h4>
+                <pre><code># Top 10 procesos por memoria
+ps aux --sort=-%mem | head -10
+
+# Con formato personalizado
+ps -eo pid,ppid,cmd,%mem,%cpu --sort=-%mem | head -10</code></pre>
+            </div>
+
+            <div class="actividad">
+                <h3>Ejercicio 2: Script de Alerta de Memoria</h3>
+                <p><strong>Objetivo:</strong> Crear un script que alerte cuando el uso de memoria supere un umbral</p>
+
+                <pre><code>#!/bin/bash
+# memory_alert.sh - Alerta cuando el uso de memoria es alto
+
+UMBRAL=80  # Porcentaje
+EMAIL="usuario@example.com"
+
+while true; do
+    # Obtener porcentaje de memoria usada
+    MEM_USADA=$(free | grep Mem | awk '{printf("%.0f"), $3/$2 * 100.0}')
+    MEM_TOTAL=$(free -h | grep Mem | awk '{print $2}')
+    MEM_USADA_GB=$(free -h | grep Mem | awk '{print $3}')
+
+    echo "[$(date)] Memoria usada: $MEM_USADA% ($MEM_USADA_GB de $MEM_TOTAL)"
+
+    if [ $MEM_USADA -gt $UMBRAL ]; then
+        echo "¡ALERTA! Uso de memoria alto: $MEM_USADA%"
+        echo "Memoria usada: $MEM_USADA_GB de $MEM_TOTAL" |
+            mail -s "Alerta de memoria: $MEM_USADA%" $EMAIL
+    fi
+
+    sleep 300  # Verificar cada 5 minutos
+done</code></pre>
+
+                <p><strong>Uso del script:</strong></p>
+                <pre><code># Dar permisos
+chmod +x memory_alert.sh
+
+# Ejecutar en background
+nohup ./memory_alert.sh &</code></pre>
+            </div>
+
+            <div class="actividad">
+                <h3>Ejercicio 3: Comparación Linux vs Windows</h3>
+                <p><strong>Objetivo:</strong> Crear un informe comparativo de gestión de memoria</p>
+
+                <h4>En Linux:</h4>
+                <pre><code># Recopilar datos
+free -h > memoria_linux.txt
+vmstat 1 10 >> memoria_linux.txt
+cat /proc/meminfo >> memoria_linux.txt</code></pre>
+
+                <h4>En Windows (PowerShell):</h4>
+                <pre><code># Recopilar datos
+Get-WmiObject Win32_OperatingSystem |
+    Select-Object TotalVisibleMemorySize, FreePhysicalMemory |
+    Out-File memoria_windows.txt
+
+Get-Process | Sort-Object WorkingSet -Descending |
+    Select-Object -First 10 |
+    Out-File -Append memoria_windows.txt</code></pre>
+
+                <h4>Análisis a Incluir:</h4>
+                <ul>
+                    <li>Comparación de uso de RAM vs swap/pagefile</li>
+                    <li>Diferencias en políticas de caché</li>
+                    <li>Herramientas disponibles en cada sistema</li>
+                    <li>Ventajas y desventajas de cada enfoque</li>
+                </ul>
+            </div>
+
+            <p><strong>Tiempo estimado:</strong> 60 minutos</p>
+        </section>
+
+        <section id="entregable">
+            <h2>Entregable de la Clase</h2>
+
+            <h3>Requisitos:</h3>
+
+            <ol>
+                <li><strong>Script de monitoreo</strong> de memoria en Linux
+                    <ul>
+                        <li>Alerta cuando umbral es superado</li>
+                        <li>Registra eventos en log</li>
+                        <li>Envía notificación (opcional)</li>
+                    </ul>
+                </li>
+                <li><strong>Informe comparativo</strong> Linux vs Windows
+                    <ul>
+                        <li>Capturas de pantalla de herramientas</li>
+                        <li>Análisis de diferencias en gestión de memoria</li>
+                        <li>Tabla comparativa de políticas y algoritmos</li>
+                    </ul>
+                </li>
+                <li><strong>Análisis de thrashing:</strong>
+                    <ul>
+                        <li>Descripción del fenómeno</li>
+                        <li>Cómo detectarlo</li>
+                        <li>Estrategias para prevenirlo</li>
+                    </ul>
+                </li>
+            </ol>
+
+            <div class="callout success">
+                <strong>Formato de entrega:</strong> Script en bash (.sh) + informe en PDF con capturas y análisis comparativo.
+            </div>
+        </section>
+
+        <section id="resumen">
+            <h2>Resumen de la Clase</h2>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Concepto</th>
+                        <th>Idea Clave</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td><strong>Memoria Virtual</strong></td><td>Abstracción que crea ilusión de memoria ilimitada</td></tr>
+                    <tr><td><strong>Memoria Física</strong></td><td>RAM real, limitada y rápida</td></tr>
+                    <tr><td><strong>Paging</strong></td><td>División en páginas de tamaño fijo (4 KB)</td></tr>
+                    <tr><td><strong>Page Fault</strong></td><td>Fallo cuando página no está en RAM</td></tr>
+                    <tr><td><strong>Swapping</strong></td><td>Mover páginas entre RAM y disco</td></tr>
+                    <tr><td><strong>Thrashing</strong></td><td>Sistema gastando más tiempo paginando que ejecutando</td></tr>
+                    <tr><td><strong>LRU</strong></td><td>Algoritmo: reemplazar página menos recientemente usada</td></tr>
+                    <tr><td><strong>free</strong></td><td>Comando Linux para ver uso de memoria</td></tr>
+                    <tr><td><strong>vmstat</strong></td><td>Comando Linux para estadísticas de memoria virtual</td></tr>
+                    <tr><td><strong>pagefile.sys</strong></td><td>Archivo de swap en Windows</td></tr>
+                </tbody>
+            </table>
+
+            <div class="callout success">
+                <strong>Concepto fundamental:</strong> La memoria virtual permite ejecutar programas más grandes que la RAM disponible, usando el disco como extensión. El precio es el rendimiento: acceder a disco es 100-1000 veces más lento que acceder a RAM.
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p><strong>IF0099 - Sistemas Operativos I</strong> • <a href="index.html">Índice de Clases</a></p>
+        <p>IF0099 - Sistemas Operativos I | UNAULA - Ingeniería Informática - 2026-I</p>
+        <p>Clase 12: Memoria Virtual</p>
+    </footer>
+
+    <a href="#" class="scroll-top" id="scrollTop" aria-label="Scroll to top">↑</a>
+
+    <script>
+        const scrollTopBtn = document.getElementById('scrollTop');
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                scrollTopBtn.classList.add('visible');
+            } else {
+                scrollTopBtn.classList.remove('visible');
+            }
+        });
+        scrollTopBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    </script>
+</body>
+</html>

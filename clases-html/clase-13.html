@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clase 13: Servidor Web Apache | IF0099 - Sistemas Operativos I</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #1e40af;
+            --accent: #059669;
+            --bg-light: #f8fafc;
+            --bg-code: #1e293b;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.7; color: var(--text-main); background: var(--bg-light); font-size: 16px; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        header { background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); color: white; padding: 3rem 0; margin-bottom: 2rem; }
+        header h1 { font-size: 2.2rem; margin-bottom: 0.5rem; font-weight: 700; }
+        header .subtitle { font-size: 1.1rem; opacity: 0.9; }
+        header .meta { margin-top: 1rem; font-size: 0.9rem; opacity: 0.8; }
+        nav { background: white; padding: 1.5rem 0; margin-bottom: 2rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        nav h2 { font-size: 1.1rem; color: var(--text-muted); margin-bottom: 1rem; padding: 0 20px; }
+        nav ul { list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.5rem; padding: 0 20px; }
+        nav a { color: var(--primary); text-decoration: none; padding: 0.5rem; display: block; border-radius: 4px; transition: background 0.2s; }
+        nav a:hover { background: var(--bg-light); }
+        section { background: white; padding: 2rem; margin-bottom: 2rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        section h2 { color: var(--primary); font-size: 1.8rem; margin-bottom: 1.5rem; padding-bottom: 0.5rem; border-bottom: 3px solid var(--accent); }
+        section h3 { color: var(--secondary); font-size: 1.4rem; margin: 2rem 0 1rem; }
+        section h4 { color: var(--text-main); font-size: 1.1rem; margin: 1.5rem 0 0.75rem; font-weight: 600; }
+        p { margin-bottom: 1rem; }
+        table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.95rem; }
+        th, td { padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid var(--border); }
+        th { background: var(--bg-light); font-weight: 600; color: var(--secondary); }
+        tr:hover { background: var(--bg-light); }
+        pre { background: var(--bg-code); color: #e2e8f0; padding: 1.5rem; border-radius: 8px; overflow-x: auto; margin: 1.5rem 0; font-size: 0.9rem; line-height: 1.5; }
+        code { font-family: 'Consolas', 'Monaco', 'Courier New', monospace; }
+        p code, li code { background: var(--bg-light); color: var(--primary); padding: 0.2rem 0.4rem; border-radius: 4px; font-size: 0.9em; }
+        pre code { background: none; padding: 0; color: inherit; }
+        ul, ol { margin-left: 1.5rem; margin-bottom: 1rem; }
+        li { margin-bottom: 0.5rem; }
+        .callout { padding: 1.5rem; border-radius: 8px; margin: 1.5rem 0; border-left: 4px solid; }
+        .callout.info { background: #eff6ff; border-left-color: var(--primary); }
+        .callout.warning { background: #fef3c7; border-left-color: #f59e0b; }
+        .callout.success { background: #d1fae5; border-left-color: var(--accent); }
+        .callout-title { font-weight: 600; margin-bottom: 0.5rem; }
+        .exercise { background: var(--bg-light); padding: 1.5rem; border-radius: 8px; margin: 1.5rem 0; }
+        .checklist { list-style: none; padding-left: 0; }
+        .checklist li { padding: 0.5rem 0; display: flex; align-items: flex-start; gap: 0.75rem; }
+        .checklist li input[type="checkbox"] { margin-top: 0.25rem; width: 18px; height: 18px; }
+        footer { background: var(--text-main); color: white; padding: 2rem 0; text-align: center; margin-top: 3rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        .two-columns { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 1.5rem 0; }
+        .column-card { background: var(--bg-light); padding: 1.5rem; border-radius: 8px; }
+        .column-card h4 { color: var(--secondary); margin-top: 0; }
+        .actividad { background: var(--bg-light); border-left: 5px solid var(--accent); padding: 1.5rem; margin: 1.5rem 0; border-radius: 4px; }
+        .actividad h3 { color: var(--primary); margin-bottom: 1rem; }
+        @media (max-width: 768px) {
+            .two-columns { grid-template-columns: 1fr; }
+            header h1 { font-size: 1.6rem; }
+            section { padding: 1.5rem; }
+            nav ul { grid-template-columns: 1fr; }
+        }
+        .ascii-diagram { font-family: 'Consolas', monospace; font-size: 0.85rem; line-height: 1.2; background: var(--bg-light); padding: 1rem; border-radius: 4px; overflow-x: auto; white-space: pre; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Clase 13: Servidor Web Apache</h1>
+            <p class="subtitle">IF0099 - Sistemas Operativos I | Servicios de Red | Clase 13</p>
+            <p class="subtitle">UNAULA - Ingeniería Informática - 2026-I</p>
+            <p class="meta">Tiempo estimado: 90 minutos | Nivel: Intermedio</p>
+        </header>
+
+        <nav>
+            <h2>Contenido de la Clase</h2>
+            <ul>
+                <li><a href="#objetivos">Objetivos</a></li>
+                <li><a href="#teoria">Teoría: HTTP y Web Servers</a></li>
+                <li><a href="#instalacion">Instalación de Apache</a></li>
+                <li><a href="#configuracion">Configuración Básica</a></li>
+                <li><a href="#virtual-hosts">Virtual Hosts</a></li>
+                <li><a href="#https">HTTPS y SSL</a></li>
+                <li><a href="#actividad">Actividad Práctica</a></li>
+            </ul>
+        </nav>
+
+        <main>
+            <section id="objetivos">
+                <h2>Objetivos de Aprendizaje</h2>
+                <div class="callout success">
+                    <strong>Al finalizar esta clase, podrás:</strong>
+                    <ul>
+                        <li>Comprender el funcionamiento del protocolo HTTP/HTTPS</li>
+                        <li>Instalar y configurar Apache2 en Linux</li>
+                        <li>Configurar Virtual Hosts para múltiples sitios</li>
+                        <li>Implementar HTTPS con certificado self-signed</li>
+                        <li>Administrar servicios web en Linux</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section id="teoria">
+                <h2>Teoría: HTTP y Servidores Web</h2>
+
+                <h3>¿Qué es un Servidor Web?</h3>
+                <p>Un servidor web es software que procesa solicitudes HTTP de clientes (navegadores) y entrega contenido (HTML, CSS, imágenes, etc.).</p>
+
+                <div class="two-columns">
+                    <div class="column-card">
+                        <h4>Protocolo HTTP</h4>
+                        <p><strong>HTTP (HyperText Transfer Protocol)</strong></p>
+                        <ul>
+                            <li>Protocolo de capa de aplicación</li>
+                            <li>Cliente-servidor (request-response)</li>
+                            <li>Puerto 80 (HTTP) / 443 (HTTPS)</li>
+                            <li>Sin estado (stateless)</li>
+                        </ul>
+                        <p><strong>Métodos comunes:</strong></p>
+                        <ul>
+                            <li><code>GET</code> - Obtener recurso</li>
+                            <li><code>POST</code> - Enviar datos</li>
+                            <li><code>PUT</code> - Actualizar recurso</li>
+                            <li><code>DELETE</code> - Eliminar recurso</li>
+                        </ul>
+                    </div>
+
+                    <div class="column-card">
+                        <h4>HTTP vs HTTPS</h4>
+                        <table>
+                            <thead>
+                                <tr><th>Característica</th><th>HTTP</th><th>HTTPS</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>Cifrado</td><td>No</td><td>Sí (TLS/SSL)</td></tr>
+                                <tr><td>Puerto</td><td>80</td><td>443</td></tr>
+                                <tr><td>Seguridad</td><td>Bajo</td><td>Alto</td></tr>
+                                <tr><td>Certificado</td><td>No requiere</td><td>Requiere</td></tr>
+                            </tbody>
+                        </table>
+                        <div class="callout warning">
+                            <strong>Importante:</strong> HTTPS es obligatorio para cualquier sitio que maneje datos sensibles.
+                        </div>
+                    </div>
+                </div>
+
+                <h3>Apache HTTP Server</h3>
+                <div class="ascii-diagram">
+<pre>
+┌─────────────────────────────────────────────────────┐
+│              ARQUITECTURA DE APACHE                   │
+├─────────────────────────────────────────────────────┤
+│  ┌───────────┐  ┌───────────┐  ┌───────────┐       │
+│  │   MPM     │  │   MPM     │  │   MPM     │       │
+│  │  (Event)  │  │  (Worker) │  │  (Prefork)│       │
+│  └───────────┘  └───────────┘  └───────────┘       │
+│         ↓             ↓              ↓               │
+│  ┌─────────────────────────────────────────────┐   │
+│  │           CORE (Núcleo de Apache)           │   │
+│  └─────────────────────────────────────────────┘   │
+│         ↓                                          │
+│  ┌─────────────────────────────────────────────┐   │
+│  │              MÓDULOS                         │   │
+│  │  - mod_ssl (HTTPS)                          │   │
+│  │  - mod_php (PHP)                            │   │
+│  │  - mod_rewrite (URL rewriting)              │   │
+│  │  - mod_auth (Autenticación)                 │   │
+│  └─────────────────────────────────────────────┘   │
+└─────────────────────────────────────────────────────┘
+</pre>
+                </div>
+
+                <p><strong>Características principales:</strong></p>
+                <ul>
+                    <li>Open Source (Apache License)</li>
+                    <li>Multiplataforma (Linux, Windows, macOS)</li>
+                    <li>Modular y extensible</li>
+                    <li>~40% de los servidores web (2024)</li>
+                    <li>Virtual Hosting (múltiples sitios en 1 servidor)</li>
+                </ul>
+
+                <h3>Virtual Hosts</h3>
+                <p><strong>Virtual Hosting</strong> permite alojar múltiples sitios web en un solo servidor usando:</p>
+                <ul>
+                    <li><strong>IP-based:</strong> Diferentes direcciones IP</li>
+                    <li><strong>Name-based:</strong> Diferentes nombres de dominio (mismo IP) ← Más común</li>
+                </ul>
+
+                <div class="callout info">
+                    <strong>Ejemplo:</strong> Un servidor con IP 192.168.1.10 puede servir:
+                    <ul>
+                        <li><code>www.sitio1.com</code> → /var/www/sitio1</li>
+                        <li><code>www.sitio2.com</code> → /var/www/sitio2</li>
+                        <li><code>www.sitio3.com</code> → /var/www/sitio3</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section id="instalacion">
+                <h2>Instalación de Apache2</h2>
+
+                <div class="callout warning">
+                    <strong>Requisitos previos:</strong>
+                    <ul>
+                        <li>VM con Ubuntu Server 22.04/24.04</li>
+                        <li>Usuario con privilegios sudo</li>
+                        <li>Conexión a Internet</li>
+                    </ul>
+                </div>
+
+                <h3>Paso 1: Actualizar el sistema</h3>
+                <pre><code>sudo apt update
+sudo apt upgrade -y</code></pre>
+
+                <h3>Paso 2: Instalar Apache2</h3>
+                <pre><code># Instalar Apache
+sudo apt install apache2 -y
+
+# Verificar versión
+apache2 -v</code></pre>
+
+                <h3>Paso 3: Verificar el servicio</h3>
+                <pre><code># Verificar estado
+sudo systemctl status apache2
+
+# Habilitar inicio automático
+sudo systemctl enable apache2
+
+# Verificar que está escuchando
+sudo ss -tlnp | grep :80</code></pre>
+
+                <h3>Paso 4: Probar desde el navegador</h3>
+                <p>Abre el navegador y accede a:</p>
+                <ul>
+                    <li><code>http://localhost</code> (desde la VM)</li>
+                    <li><code>http://IP_DE_TU_VM</code> (desde el host)</li>
+                </ul>
+
+                <p>Deberías ver la página "Apache2 Ubuntu Default Page"</p>
+
+                <div class="callout success">
+                    <strong>Ubicación de archivos importantes:</strong>
+                    <ul>
+                        <li><code>/var/www/html</code> - Document root por defecto</li>
+                        <li><code>/etc/apache2/</code> - Configuración</li>
+                        <li><code>/etc/apache2/apache2.conf</code> - Configuración principal</li>
+                        <li><code>/etc/apache2/sites-available/</code> - Virtual hosts disponibles</li>
+                        <li><code>/etc/apache2/sites-enabled/</code> - Virtual hosts activos</li>
+                        <li><code>/var/log/apache2/</code> - Logs (access.log, error.log)</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section id="virtual-hosts">
+                <h2>Virtual Hosts</h2>
+
+                <p>Vamos a configurar dos sitios web en el mismo servidor:</p>
+                <ul>
+                    <li><code>site1.local</code> → Sitio de prueba 1</li>
+                    <li><code>site2.local</code> → Sitio de prueba 2</li>
+                </ul>
+
+                <h3>Paso 1: Crear directorios para cada sitio</h3>
+                <pre><code># Crear directorios
+sudo mkdir -p /var/www/site1.local
+sudo mkdir -p /var/www/site2.local
+
+# Crear páginas de prueba
+echo "&lt;h1&gt;Bienvenido a Site 1&lt;/h1&gt;" | sudo tee /var/www/site1.local/index.html
+echo "&lt;h1&gt;Bienvenido a Site 2&lt;/h1&gt;" | sudo tee /var/www/site2.local/index.html
+
+# Establecer permisos
+sudo chown -R www-data:www-data /var/www/site1.local
+sudo chown -R www-data:www-data /var/www/site2.local
+sudo chmod -R 755 /var/www/site1.local
+sudo chmod -R 755 /var/www/site2.local</code></pre>
+
+                <h3>Paso 2: Crear archivos de Virtual Host</h3>
+
+                <p><strong>Para site1.local:</strong></p>
+                <pre><code>sudo nano /etc/apache2/sites-available/site1.local.conf</code></pre>
+
+                <p>Contenido:</p>
+                <pre><code>&lt;VirtualHost *:80&gt;
+    ServerName site1.local
+    ServerAlias www.site1.local
+    DocumentRoot /var/www/site1.local
+
+    ErrorLog ${APACHE_LOG_DIR}/site1.local_error.log
+    CustomLog ${APACHE_LOG_DIR}/site1.local_access.log combined
+&lt;/VirtualHost&gt;</code></pre>
+
+                <p><strong>Para site2.local:</strong></p>
+                <pre><code>sudo nano /etc/apache2/sites-available/site2.local.conf</code></pre>
+
+                <p>Contenido:</p>
+                <pre><code>&lt;VirtualHost *:80&gt;
+    ServerName site2.local
+    ServerAlias www.site2.local
+    DocumentRoot /var/www/site2.local
+
+    ErrorLog ${APACHE_LOG_DIR}/site2.local_error.log
+    CustomLog ${APACHE_LOG_DIR}/site2.local_access.log combined
+&lt;/VirtualHost&gt;</code></pre>
+
+                <h3>Paso 3: Habilitar los Virtual Hosts</h3>
+                <pre><code># Habilitar sitios
+sudo a2ensite site1.local.conf
+sudo a2ensite site2.local.conf
+
+# Deshabilitar sitio por defecto (opcional)
+sudo a2dissite 000-default.conf
+
+# Verificar configuración
+sudo apache2ctl configtest
+
+# Recargar Apache
+sudo systemctl reload apache2</code></pre>
+
+                <h3>Paso 4: Configurar resolución de nombres</h3>
+
+                <p><strong>En Windows (host):</strong> Editar <code>C:\Windows\System32\drivers\etc\hosts</code></p>
+                <pre><code>192.168.1.10  site1.local
+192.168.1.10  site2.local</code></pre>
+
+                <p><strong>En Linux (VM):</strong> Editar <code>/etc/hosts</code></p>
+                <pre><code>127.0.0.1  site1.local
+127.0.0.1  site2.local</code></pre>
+            </section>
+
+            <section id="https">
+                <h2>Configurar HTTPS con Certificado Self-Signed</h2>
+
+                <div class="callout warning">
+                    <strong>Nota:</strong> Los certificados self-signed generarán advertencias en el navegador. Son útiles solo para desarrollo/testing.
+                </div>
+
+                <h3>Paso 1: Habilitar módulo SSL</h3>
+                <pre><code>sudo a2enmod ssl
+sudo systemctl restart apache2</code></pre>
+
+                <h3>Paso 2: Generar certificado self-signed</h3>
+                <pre><code>sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+    -keyout /etc/ssl/private/apache-selfsigned.key \
+    -out /etc/ssl/certs/apache-selfsigned.crt</code></pre>
+
+                <p>Se te pedirá información:</p>
+                <ul>
+                    <li><strong>Country:</strong> CO</li>
+                    <li><strong>State:</strong> Antioquia</li>
+                    <li><strong>Locality:</strong> Medellin</li>
+                    <li><strong>Organization:</strong> UNAULA</li>
+                    <li><strong>Common Name:</strong> site1.local</li>
+                </ul>
+
+                <h3>Paso 3: Configurar Virtual Host HTTPS</h3>
+                <p>Editar <code>/etc/apache2/sites-available/site1.local.conf</code>:</p>
+                <pre><code>&lt;VirtualHost *:80&gt;
+    ServerName site1.local
+    Redirect permanent / https://site1.local/
+&lt;/VirtualHost&gt;
+
+&lt;VirtualHost *:443&gt;
+    ServerName site1.local
+    DocumentRoot /var/www/site1.local
+
+    SSLEngine on
+    SSLCertificateFile /etc/ssl/certs/apache-selfsigned.crt
+    SSLCertificateKeyFile /etc/ssl/private/apache-selfsigned.key
+
+    ErrorLog ${APACHE_LOG_DIR}/site1.local_error.log
+    CustomLog ${APACHE_LOG_DIR}/site1.local_access.log combined
+&lt;/VirtualHost&gt;</code></pre>
+
+                <h3>Paso 4: Recargar y probar</h3>
+                <pre><code># Verificar configuración
+sudo apache2ctl configtest
+
+# Recargar Apache
+sudo systemctl reload apache2
+
+# Probar HTTPS
+curl -k https://site1.local</code></pre>
+            </section>
+
+            <section id="actividad">
+                <h2>Actividad Práctica</h2>
+
+                <div class="actividad">
+                    <h3>Actividad: Configuración Completa de Apache</h3>
+
+                    <h4>Objetivo</h4>
+                    <p>Configurar un servidor Apache con múltiples sitios web y HTTPS.</p>
+
+                    <h4>Requisitos</h4>
+                    <ol class="checklist">
+                        <li><input type="checkbox"> Instalar Apache2 en Ubuntu Server</li>
+                        <li><input type="checkbox"> Verificar que el servicio esté funcionando</li>
+                        <li><input type="checkbox"> Crear dos Virtual Hosts (sitio1.local y sitio2.local)</li>
+                        <li><input type="checkbox"> Configurar contenido diferente para cada sitio</li>
+                        <li><input type="checkbox"> Configurar HTTPS con certificado self-signed para sitio1.local</li>
+                        <li><input type="checkbox"> Verificar acceso desde el host</li>
+                    </ol>
+
+                    <h4>Evidencias a Entregar</h4>
+                    <ul>
+                        <li>Captura de pantalla de <code>curl http://sitio1.local</code></li>
+                        <li>Captura de pantalla de <code>curl http://sitio2.local</code></li>
+                        <li>Captura de pantalla de <code>curl -k https://sitio1.local</code></li>
+                        <li>Captura del archivo de configuración del Virtual Host</li>
+                        <li>Captura de <code>sudo apache2ctl -S</code></li>
+                    </ul>
+
+                    <h4>Rubrica de Evaluación</h4>
+                    <table>
+                        <thead>
+                            <tr><th>Criterio</th><th>Puntos</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Apache instalado y funcionando</td><td>20</td></tr>
+                            <tr><td>Virtual Hosts configurados correctamente</td><td>30</td></tr>
+                            <tr><td>HTTPS funcionando con certificado</td><td>30</td></tr>
+                            <tr><td>Evidencias completas</td><td>20</td></tr>
+                            <tr><td><strong>Total</strong></td><td><strong>100</strong></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section>
+                <h2>Resumen</h2>
+
+                <div class="two-columns">
+                    <div class="column-card">
+                        <h4>Conceptos Clave</h4>
+                        <ul>
+                            <li><strong>HTTP/HTTPS:</strong> Protocolos de transferencia</li>
+                            <li><strong>Apache:</strong> Servidor web modular</li>
+                            <li><strong>Virtual Hosts:</strong> Múltiples sitios en un servidor</li>
+                            <li><strong>SSL/TLS:</strong> Cifrado para comunicación segura</li>
+                        </ul>
+                    </div>
+
+                    <div class="column-card">
+                        <h4>Comandos Esenciales</h4>
+                        <pre><code>sudo systemctl status apache2
+sudo a2ensite sitio.conf
+sudo a2dissite sitio.conf
+sudo apache2ctl configtest
+sudo systemctl reload apache2</code></pre>
+                    </div>
+                </div>
+
+                <div class="callout success">
+                    <strong>Próxima clase:</strong> IIS (Internet Information Services) - Servidor web de Windows Server
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p><strong>IF0099 - Sistemas Operativos I</strong> • <a href="index.html">Índice de Clases</a></p>
+            <p>UNAULA - Ingeniería Informática - 2026-I</p>
+            <p>Clase 13: Servidor Web Apache</p>
+        </footer>
+    </div>
+</body>
+</html>
