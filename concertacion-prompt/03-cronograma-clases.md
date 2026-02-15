@@ -26,13 +26,13 @@
 | 7 | 18/03/2026 | Clase 11: Discos y E/S | Clase 12: Sistemas de Archivos | Unidad 2 | Almacenamiento | - |
 | 8 | 25/03/2026 | **E3: EXAMEN PARCIAL (20%)** | **E3: EXAMEN PARCIAL (20%)** | Unidades 1-2 | Examen | **E3 (20%)** |
 | - | 01/04/2026 | **SEMANA SANTA** | **SEMANA SANTA** | - | Miércoles Santo | - |
-| - | 08/04/2026 | **SEMANA SANTA** | **SEMANA SANTA** | - | Receso institucional* | - |
-| 9 | 15/04/2026 | Clase 13: Implementación de FS | Clase 14: Gestión de E/S | Unidad 2 | Sistemas de Archivos | - |
-| 10 | 22/04/2026 | Clase 15: Seguridad | **E4: REPORTE (15%)** | Unidad 2 | Seguridad | **E4 (15%)** |
-| 11 | 29/04/2026 | Clase 16: Protección | Clase 17: Sistemas Distribuidos | Unidad 2 | Protección | - |
-| 12 | 06/05/2026 | Clase 18: Programas de Aplicación | **E5: INFORME (15%)** | Unidad 2 | Interfaces | **E5 (15%)** |
-| 13 | 13/05/2026 | Clase 19: Repaso Unidad 1 | Clase 20: Repaso Unidad 2 | Integración | Repaso | - |
-| 14 | 20/05/2026 | Clase 21: Laboratorio Final | Clase 22: Consultas | Preparación | Preparación Final | - |
+| 9 | 08/04/2026 | Clase 13: Implementación de FS | Clase 14: Gestión de E/S | Unidad 2 | Sistemas de Archivos | - |
+| 10 | 15/04/2026 | Clase 15: Seguridad | Clase 16: Protección | Unidad 2 | Seguridad | - |
+| 11 | 22/04/2026 | Clase 17: Sistemas Distribuidos | **E4: REPORTE (15%)** | Unidad 2 | Protección | **E4 (15%)** |
+| 12 | 29/04/2026 | Clase 18: Programas de Aplicación | Repaso Unidad 1 | Unidad 2 | Interfaces | - |
+| 13 | 06/05/2026 | Repaso Unidad 2 | **E5: INFORME (15%)** | Integración | Repaso | **E5 (15%)** |
+| 14 | 13/05/2026 | Clase 21: Laboratorio Final | Consultas | Preparación | Preparación Final | - |
+| 15 | 20/05/2026 | **Sesión de Refuerzo** | **Simulacro Examen Final** | Integración | Repaso Final | - |
 | - | 27/05/2026 | **E6: EXAMEN FINAL (20%)** | **E6: EXAMEN FINAL (20%)** | Todo el curso | Examen Final | **E6 (20%)** |
 
 ---
@@ -129,9 +129,9 @@
 | E1 | 7 | 3 | ✅ SÍ |
 | E2 | 10 | 6 | ✅ SÍ |
 | E3 | 12 | 9 | ✅ SÍ |
-| E4 | 16 | 13 | ✅ SÍ |
-| E5 | 20 | 16 | ✅ SÍ |
-| E6 | 24 | 19 | ✅ SÍ |
+| E4 | 17 | 13 | ✅ SÍ |
+| E5 | 21 | 16 | ✅ SÍ |
+| E6 | 25 | 19 | ✅ SÍ |
 
 ---
 
@@ -154,8 +154,9 @@
 ## Notas Importantes del Calendario
 
 1. **Semana Santa 2026:** Del 29 de marzo al 5 de abril (litúrgico). El **miércoles 1 de abril** es Miércoles Santo (sin clase).
-2. ***Receso 8 de abril:** Verificar con Coordinación si es receso institucional o debería ser clase regular (litúrgicamente ya pasó Pascua).
-3. **Evaluaciones en miércoles:** Todas las evaluaciones coinciden con el día de clase
-4. **E3 y E6:** Ocupan toda la sesión (tanto Bloque 1 como Bloque 2)
-5. **E1, E2, E4, E5:** Se realizan durante el Bloque 2 (última hora de clase)
-6. **Duración total:** 16 semanas efectivas de clase (excluyendo recesos)
+2. **Clase del 8 de abril:** Se recuperó como sesión regular (Sesión 9) ya que litúrgicamente Pascua terminó el 5 de abril.
+3. **Sesión 15 (20 de mayo):** Nueva sesión de refuerzo y simulacro de examen final para mejor preparación.
+4. **Evaluaciones en miércoles:** Todas las evaluaciones coinciden con el día de clase
+5. **E3 y E6:** Ocupan toda la sesión (tanto Bloque 1 como Bloque 2)
+6. **E1, E2, E4, E5:** Se realizan durante el Bloque 2 (última hora de clase)
+7. **Duración total:** 15 sesiones efectivas de clase + 1 día de examen (excluyendo solo Miércoles Santo)

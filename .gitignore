@@ -18,6 +18,7 @@ mcp.local.json
 # Archivos de sistemas operativos
 .DS_Store
 Thumbs.db
+desktop.ini
 
 # Archivos de compilación
 *.class
@@ -65,3 +66,4 @@ temp*
 .temp-html/
 .temp-preview/
 .playwright-mcp/
+docs/

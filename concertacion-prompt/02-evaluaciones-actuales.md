@@ -113,8 +113,8 @@
 - Amenazas comunes (buffer overflow, rootkits, ransomware)
 
 **Formato de evaluación teórico-práctico:**
-- **Teoría (50%):** Comparación de mecanismos de protección, modelos de control de acceso, análisis de amenazas
-- **Práctica (50%):** Auditoría de permisos en Linux, análisis de usuarios/grupos, configuración de seguridad básica
+- **Teoría (40%):** Comparación de mecanismos de protección, modelos de control de acceso, análisis de amenazas
+- **Práctica (60%):** Auditoría de permisos en Linux, análisis de usuarios/grupos, configuración de seguridad básica
 
 **Entregables:**
 - Reporte técnico en PDF
@@ -178,7 +178,8 @@
   - Sección C: Problemas de cálculo (25 pts) - paginación, planificación
   - Sección D: Análisis de escenarios prácticos (25 pts)
 - **Modalidad:** Individual, presencial
-- **Duración:** 3 horas
+- **Duración:** 2.5 horas (150 min)
+- **Distribución:** 60% Teoría / 40% Práctica (según Regla 5 para exámenes)
 
 ---
 
