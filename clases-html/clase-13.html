@@ -53,6 +53,17 @@
         .checklist li input[type="checkbox"] { margin-top: 0.25rem; width: 18px; height: 18px; }
         footer { background: var(--text-main); color: white; padding: 2rem 0; text-align: center; margin-top: 3rem; }
         footer a { color: var(--accent); text-decoration: none; }
+        /* Navigation between classes */
+        .class-nav { display: flex; justify-content: space-between; align-items: stretch; gap: 1rem; margin: 2rem 0; }
+        .class-nav-link { flex: 1; display: flex; align-items: center; gap: 0.75rem; padding: 1.25rem 1.5rem; background: white; border: 2px solid var(--border); border-radius: 12px; text-decoration: none; color: var(--text-main); transition: all 0.3s ease; }
+        .class-nav-link:hover { border-color: var(--primary); box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15); transform: translateY(-2px); }
+        .class-nav-link.prev { border-left: 4px solid var(--primary); }
+        .class-nav-link.next { border-right: 4px solid var(--accent); text-align: right; margin-left: auto; }
+        .class-nav-link .nav-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); margin-bottom: 0.25rem; }
+        .class-nav-link .nav-title { font-size: 1rem; font-weight: 600; color: var(--primary); }
+        .class-nav-link.next .nav-title { color: var(--accent); }
+        .class-nav-icon { font-size: 1.5rem; line-height: 1; }
+        .class-nav-placeholder { flex: 1; display: flex; align-items: center; justify-content: center; padding: 1.25rem; background: var(--bg-light); border: 2px dashed var(--border); border-radius: 12px; color: var(--text-muted); font-size: 0.9rem; }
         .two-columns { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 1.5rem 0; }
         .column-card { background: var(--bg-light); padding: 1.5rem; border-radius: 8px; }
         .column-card h4 { color: var(--secondary); margin-top: 0; }
@@ -73,8 +84,22 @@
             <h1>Clase 13: Servidor Web Apache</h1>
             <p class="subtitle">IF0099 - Sistemas Operativos I | Servicios de Red | Clase 13</p>
             <p class="subtitle">UNAULA - Ingeniería Informática - 2026-I</p>
-            <p class="meta">Tiempo estimado: 90 minutos | Nivel: Intermedio</p>
+            <p class="meta">Fecha: 15 de Abril 2026 | Teoría: 6:00-8:00 AM | Plan Practico v2.0</p>
         </header>
+
+        
+        <!-- Quick Navigation Bar -->
+        <div class="quick-nav" style="background: white; padding: 1rem; margin-bottom: 2rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <a href="index.html" style="color: var(--primary); text-decoration: none; font-weight: 500;">Inicio</a>
+                <span style="color: var(--text-muted);">|</span>
+                <span style="color: var(--text-main); font-weight: 600;">Servidor Web Apache</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <a href="cronograma.html" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: #10b981; color: white; text-decoration: none; border-radius: 6px; font-weight: 500;">Cronograma</a>
+                <a href="rubricas.html" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: #3b82f6; color: white; text-decoration: none; border-radius: 6px; font-weight: 500;">Rubricas</a>
+            </div>
+        </div>
 
         <nav>
             <h2>Contenido de la Clase</h2>
@@ -480,11 +505,41 @@ sudo systemctl reload apache2</code></pre>
             </section>
         </main>
 
-        <footer>
-            <p><strong>IF0099 - Sistemas Operativos I</strong> • <a href="index.html">Índice de Clases</a></p>
-            <p>UNAULA - Ingeniería Informática - 2026-I</p>
-            <p>Clase 13: Servidor Web Apache</p>
-        </footer>
+        <!-- Navigation between classes -->
+        <nav class="class-nav" aria-label="Navegación entre clases">
+            <a href="clase-12.html" class="class-nav-link prev">
+                <span class="class-nav-icon">←</span>
+                <div>
+                    <div class="nav-label">Clase Anterior</div>
+                    <div class="nav-title">← Memoria Virtual</div>
+                </div>
+            </a>
+            <a href="clase-14.html" class="class-nav-link next">
+                <div>
+                    <div class="nav-label">Siguiente Clase</div>
+                    <div class="nav-title">Servidor Web IIS →</div>
+                </div>
+                <span class="class-nav-icon">→</span>
+            </a>
+        </nav>
+
+        
+    
+    
+    <footer>
+        <div class="container">
+            <p><strong>IF0099 - Sistemas Operativos I</strong> - Servidor Web Apache</p>
+            <p>Fecha: 15 de Abril 2026 | Plan Practico v2.0</p>
+            <p style="margin-top: 10px;">
+                <a href="index.html" style="color: #10b981;">Inicio</a> |
+                <a href="cronograma.html" style="color: #10b981;">Cronograma</a> |
+                <a href="rubricas.html" style="color: #3b82f6;">Rubricas</a>
+            </p>
+        </div>
+    </footer>
+
+
+
     </div>
 </body>
 </html>

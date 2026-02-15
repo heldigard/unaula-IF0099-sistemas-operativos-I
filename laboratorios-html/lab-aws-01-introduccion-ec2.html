@@ -263,6 +263,81 @@
             border-top: 1px solid var(--border);
         }
 
+        .lab-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: stretch;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .lab-nav-link {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1.25rem 1.5rem;
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            text-decoration: none;
+            color: var(--text-main);
+            transition: all 0.3s ease;
+        }
+
+        .lab-nav-link:hover {
+            border-color: var(--aws-orange);
+            box-shadow: 0 4px 12px rgba(255, 153, 0, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .lab-nav-link.prev {
+            border-left: 4px solid var(--aws-orange);
+            max-width: 400px;
+        }
+
+        .lab-nav-link.next {
+            border-right: 4px solid var(--accent);
+            text-align: right;
+            margin-left: auto;
+        }
+
+        .lab-nav-link .nav-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            margin-bottom: 0.25rem;
+        }
+
+        .lab-nav-link .nav-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--aws-orange);
+        }
+
+        .lab-nav-link.next .nav-title {
+            color: var(--accent);
+        }
+
+        .lab-nav-icon {
+            font-size: 1.5rem;
+            line-height: 1;
+        }
+
+        .lab-nav-placeholder {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.25rem;
+            background: var(--bg-light);
+            border: 2px dashed var(--border);
+            border-radius: 12px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
         .nav-btn {
             background: var(--aws-dark);
             color: white;
@@ -294,7 +369,21 @@
         </div>
     </header>
 
-    <div class="container">
+    
+        <!-- Quick Navigation Bar -->
+        <div class="quick-nav" style="background: white; padding: 1rem; margin-bottom: 2rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <a href="../clases-html/index.html" style="color: var(--primary); text-decoration: none; font-weight: 500;">Inicio</a>
+                <span style="color: var(--text-muted);">|</span>
+                <span style="color: var(--text-main); font-weight: 600;">Lab AWS 1: Introduccion a EC2</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <a href="../clases-html/cronograma.html" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: #10b981; color: white; text-decoration: none; border-radius: 6px; font-weight: 500;">Cronograma</a>
+                <a href="../clases-html/rubricas.html" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: #3b82f6; color: white; text-decoration: none; border-radius: 6px; font-weight: 500;">Rubricas</a>
+            </div>
+        </div>
+
+        <div class="container">
         <div class="critical-warning">
             <h3>⚠️ CRÍTICO: EVITAR COSTOS INESPERADOS</h3>
             <p><strong>REGLA #1:</strong> APAGA SIEMPRE tus instancias EC2 cuando no las uses.</p>
@@ -769,10 +858,23 @@
             </ul>
         </section>
 
-        <div class="nav-buttons">
-            <a href="lab-02-permisos-usuarios.html" class="nav-btn">← Anterior</a>
-            <a href="#" class="nav-btn">Siguiente: Proyectos en EC2 →</a>
-        </div>
+        <!-- Enhanced navigation between labs -->
+        <nav class="lab-nav" aria-label="Navegación entre laboratorios">
+            <a href="lab-02-permisos-usuarios.html" class="lab-nav-link prev">
+                <span class="lab-nav-icon">←</span>
+                <div>
+                    <div class="nav-label">Laboratorio Anterior</div>
+                    <div class="nav-title">Permisos y Usuarios</div>
+                </div>
+            </a>
+            <a href="index.html" class="lab-nav-link next">
+                <div>
+                    <div class="nav-label">Volver al Índice</div>
+                    <div class="nav-title">Índice de Laboratorios</div>
+                </div>
+                <span class="lab-nav-icon">→</span>
+            </a>
+        </nav>
 
         <div class="footer">
             <p>IF0099 - Sistemas Operativos I | 2026-I | Ing. Eldigardo Camacho</p>
