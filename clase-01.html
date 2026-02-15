@@ -693,451 +693,114 @@
 
             <p>Los SO se organizan internamente de diferentes maneras. Entender estas arquitecturas es fundamental para comprender cómo funciona cada sistema operativo.</p>
 
-            <h3>3.1 Arquitectura Monolítica</h3>
+            <h3>3.1 Tipos de Arquitectura</h3>
 
-            <p>En una arquitectura <strong>monolítica</strong>, TODO el código del sistema operativo está en un solo bloque grande en el kernel. Todos los servicios (gestión de procesos, memoria, archivos, drivers) corren en el mismo espacio de memoria.</p>
-
-            <div style="background: #f0f9ff; border-left: 4px solid #2563eb; padding: 20px; margin: 20px 0; border-radius: 8px;">
-                <h4 style="margin-top: 0; color: #1e40af;">📊 Estructura Visual del Kernel Monolítico</h4>
-                <div style="background: white; padding: 20px; border-radius: 8px; text-align: center; font-family: monospace;">
-                    <div style="background: #2563eb; color: white; padding: 10px; margin-bottom: 5px; border-radius: 4px;">Espacio de Usuario (Aplicaciones)</div>
-                    <div style="color: #666; font-size: 20px;">↓ System Calls ↓</div>
-                    <div style="background: #1e293b; color: white; padding: 40px; margin: 10px 0; border-radius: 4px;">
-                        <strong>KERNEL MONOLÍTICO</strong><br><br>
-                        ┌─────────────────────────┐<br>
-                        │ Gestión de Procesos    │<br>
-                        │ Gestión de Memoria     │<br>
-                        │ Gestión de Archivos    │<br>
-                        │ Gestión de Red         │<br>
-                        │ Device Drivers        │<br>
-                        │ ─────────────────────  │<br>
-                        │ Todo en MISMO espacio   │<br>
-                        │ de memoria             │<br>
-                        └─────────────────────────┘<br>
-                    </div>
-                    <div style="color: #666; font-size: 20px;">↓ Acceso Directo ↓</div>
-                    <div style="background: #64748b; color: white; padding: 10px; margin-top: 5px; border-radius: 4px;">Hardware</div>
-                </div>
-            </div>
-
-            <h4>Características del Kernel Monolítico:</h4>
+            <p>Los sistemas operativos se organizan internamente de diferentes maneras:</p>
 
             <table>
                 <thead>
                     <tr>
-                        <th>Aspecto</th>
-                        <th>Descripción</th>
+                        <th>Tipo</th>
+                        <th>Características</th>
+                        <th>Ventajas</th>
+                        <th>Ejemplos</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td><strong>Estructura</strong></td>
-                        <td>Todos los servicios del SO están en un único bloque de código</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Comunicación</strong></td>
-                        <td>Las funciones se llaman directamente (sin pasar mensajes)</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Espacio de memoria</strong></td>
-                        <td>Todo corre en modo kernel (espacio privilegiado)</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Tamaño del kernel</strong></td>
-                        <td>Muy grande (millones de líneas de código)</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <h4>Ventajas:</h4>
-            <ul style="list-style-type: check; color: #059669;">
-                <li><strong>Rendimiento superior:</strong> Al no haber capas intermedias, las llamadas son muy rápidas</li>
-                <li><strong>Simplicidad de diseño:</strong> Fácil de entender conceptualmente</li>
-                <li><strong>Eficiencia:</strong> Menor sobrecarga (overhead) en comunicación</li>
-            </ul>
-
-            <h4>Desventajas:</h4>
-            <ul style="list-style-type: cross; color: #dc2626;">
-                <li><strong>Si falla algo, falla todo:</strong> Un error en un driver puede crashear todo el sistema</li>
-                <li><strong>Difícil de mantener:</strong> Cambiar algo requiere recompilar todo el kernel</li>
-                <li><strong>Menor seguridad:</strong> Todo corre con los mismos privilegios</li>
-                <li><strong>Tamaño grande:</strong> El kernel es enorme</li>
-            </ul>
-
-            <div class="callout success">
-                <p class="callout-title">💡 Ejemplo del Mundo Real: Linux</p>
-                <p><strong>Linux</strong> usa un kernel monolítico. Por eso es tan rápido y eficiente en servidores. Linux tiene más de 30 millones de líneas de código, pero todo está integrado en el kernel.</p>
-                <p><strong>Dato curioso:</strong> Android también usa Linux (kernel monolítico) modificado para móviles.</p>
-            </div>
-
-            <hr style="margin: 40px 0; border: none; border-top: 2px solid #e2e8f0;">
-
-            <h3>3.2 Arquitectura Microkernel</h3>
-
-            <p>En una arquitectura <strong>microkernel</strong>, SOLO lo mínimo indispensable está en el kernel. El resto de los servicios corren como procesos normales en espacio de usuario.</p>
-
-            <div style="background: #f0fdf4; border-left: 4px solid #059669; padding: 20px; margin: 20px 0; border-radius: 8px;">
-                <h4 style="margin-top: 0; color: #047857;">📊 Estructura Visual del Microkernel</h4>
-                <div style="background: white; padding: 20px; border-radius: 8px; text-align: center; font-family: monospace;">
-                    <div style="background: #2563eb; color: white; padding: 10px; margin-bottom: 5px; border-radius: 4px;">Espacio de Usuario (Servicios)</div>
-                    <div style="display: flex; justify-content: center; gap: 10px; margin: 10px 0;">
-                        <div style="background: #e0f2fe; padding: 15px; border-radius: 4px; border: 2px solid #0284c7;">
-                            <strong>Servidor<br>de Archivos</strong>
-                        </div>
-                        <div style="background: #fef3c7; padding: 15px; border-radius: 4px; border: 2px solid #f59e0b;">
-                            <strong>Servidor<br>de Red</strong>
-                        </div>
-                        <div style="background: #fce7f3; padding: 15px; border-radius: 4px; border: 2px solid #db2777;">
-                            <strong>Device<br>Drivers</strong>
-                        </div>
-                    </div>
-                    <div style="color: #666; font-size: 16px;">↓ Mensajes (IPC) ↓</div>
-                    <div style="background: #059669; color: white; padding: 20px; margin: 10px 0; border-radius: 4px;">
-                        <strong>MICROKERNEL</strong><br><br>
-                        ┌──────────────────┐<br>
-                        │ Solo MÍNIMO:    │<br>
-                        │ - IPC           │<br>
-                        │ - Scheduler     │<br>
-                        │ - Memoria básica │<br>
-                        └──────────────────┘<br>
-                    </div>
-                    <div style="color: #666; font-size: 20px;">↓ Acceso ↓</div>
-                    <div style="background: #64748b; color: white; padding: 10px; margin-top: 5px; border-radius: 4px;">Hardware</div>
-                </div>
-            </div>
-
-            <h4>Características del Microkernel:</h4>
-
-            <table>
-                <thead>
-                    <tr>
-                        <th>Aspecto</th>
-                        <th>Descripción</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Estructura</strong></td>
-                        <td>Solo funciones críticas en el kernel (IPC, scheduling, memoria básica)</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Comunicación</strong></td>
-                        <td>Se hace mediante paso de mensajes (message passing)</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Servicios</strong></td>
-                        <td>Corren como procesos separados en espacio de usuario</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Tamaño del kernel</strong></td>
-                        <td>Muy pequeño (solo miles de líneas de código)</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <h4>Ventajas:</h4>
-            <ul style="list-style-type: check; color: #059669;">
-                <li><strong>Mayor estabilidad:</strong> Si un driver falla, solo se reinicia ese servicio</li>
-                <li><strong>Mayor seguridad:</strong> Cada servicio tiene sus propios privilegios</li>
-                <li><strong>Fácil de extender:</strong> Agregar servicios sin recompilar el kernel</li>
-                <li><strong>Más modular:</strong> Cada componente es independiente</li>
-            </ul>
-
-            <h4>Desventajas:</h4>
-            <ul style="list-style-type: cross; color: #dc2626;">
-                <li><strong>Más lento:</strong> La comunicación por mensajes tiene overhead</li>
-                <li><strong>Más complejo:</strong> Diseño más difícil de implementar</li>
-                <li><strong>Mayor uso de memoria:</strong> Cada servicio consume su propia memoria</li>
-            </ul>
-
-            <div class="callout success">
-                <p class="callout-title">💡 Ejemplo del Mundo Real: MINIX 3</p>
-                <p><strong>MINIX 3</strong> es un microkernel usado para enseñar SO. También se usa en Intel ME (Management Engine) por su seguridad y estabilidad.</p>
-                <p><strong>QNX</strong> es otro microkernel usado en sistemas críticos como automóviles y equipos médicos.</p>
-            </div>
-
-            <hr style="margin: 40px 0; border: none; border-top: 2px solid #e2e8f0;">
-
-            <h3>3.3 Arquitectura Híbrida</h3>
-
-            <p>La arquitectura <strong>híbrida</strong> combina lo mejor de ambos mundos: mantiene algunos servicios en el kernel (por rendimiento) y otros fuera (por seguridad).</p>
-
-            <table>
-                <thead>
-                    <tr>
-                        <th>Característica</th>
-                        <th>Descripción</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Enfoque</strong></td>
-                        <td>Algunos servicios en kernel, otros en espacio de usuario</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Flexibilidad</strong></td>
-                        <td>Puede decidir qué va en cada espacio según necesidades</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Rendimiento</strong></td>
-                        <td>Mejor que microkernel, peor que monolítico puro</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <h4>Ejemplos Híbridos:</h4>
-            <ul>
-                <li><strong>Windows NT:</strong> Drivers en kernel, servicios en usuario</li>
-                <li><strong>macOS (XNU):</strong> Parte monolítica (BSD) + parte microkernel (Mach)</li>
-                <li><strong>Linux con módulos:</strong> Monolítico pero permite cargar/descargar componentes</li>
-            </ul>
-
-            <hr style="margin: 40px 0; border: none; border-top: 2px solid #e2e8f0;">
-
-            <h3>3.4 Comparativa Rápida</h3>
-
-            <table>
-                <thead>
-                    <tr>
-                        <th>Aspecto</th>
-                        <th>Monolítico</th>
-                        <th>Microkernel</th>
-                        <th>Híbrido</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Rendimiento</strong></td>
-                        <td>⭐⭐⭐⭐⭐ (El mejor)</td>
-                        <td>⭐⭐ (El peor)</td>
-                        <td>⭐⭐⭐⭐ (Muy bueno)</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Estabilidad</strong></td>
-                        <td>⭐⭐ (Un error crashea todo)</td>
-                        <td>⭐⭐⭐⭐⭐ (Muy estable)</td>
-                        <td>⭐⭐⭐⭐ (Bueno)</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Seguridad</strong></td>
-                        <td>⭐⭐ (Todo privilegiado)</td>
-                        <td>⭐⭐⭐⭐⭐ (Muy seguro)</td>
-                        <td>⭐⭐⭐ (Aceptable)</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Tamaño Kernel</strong></td>
-                        <td>Grande (MB)</td>
-                        <td>Pequeño (KB)</td>
-                        <td>Mediano</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Ejemplos</strong></td>
+                        <td><strong>Monolítico</strong></td>
+                        <td>Todo el SO en un solo bloque en el kernel. Servicios corren en modo kernel.</td>
+                        <td>Rápido, eficiente, menos overhead</td>
                         <td>Linux, MS-DOS</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Microkernel</strong></td>
+                        <td>Solo lo mínimo en kernel. Servicios corren en espacio de usuario.</td>
+                        <td>Más estable, seguro, modular</td>
                         <td>MINIX, QNX</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Híbrido</strong></td>
+                        <td>Combina ambos enfoques según necesidades.</td>
+                        <td>Balance entre rendimiento y estabilidad</td>
                         <td>Windows, macOS</td>
                     </tr>
                 </tbody>
             </table>
 
             <div class="callout info">
-                <p class="callout-title">📚 Recursos Adicionales</p>
-                <p>Para profundizar más en estas arquitecturas:</p>
-                <ul>
-                    <li><a href="https://www.geeksforgeeks.org/operating-systems/difference-between-microkernel-and-monolithic-kernel/" target="_blank">GeeksforGeeks - Microkernel vs Monolithic Kernel</a></li>
-                    <li><a href="https://learningdaily.dev/os-design-monolithic-vs-microkernel-architecture-78981dd41c49" target="_blank">OS Design: Monolithic vs. Microkernel (2024)</a></li>
-                    <li><a href="https://leimao.github.io/blog/Microkernel-VS-Monolithic-Kernel-OS/" target="_blank">Lei Mao - Technical Comparison</a></li>
-                </ul>
+                <p class="callout-title">📚 Profundización</p>
+                <p>Estas arquitecturas se estudiarán en detalle en la <strong>Clase 04: Estructura del Sistema Operativo</strong>, donde analizaremos Kernel, Shell, System Calls y Modos de Operación.</p>
             </div>
 
             <div class="callout warning">
                 <p class="callout-title">🎯 ¿Qué usaremos en el curso?</p>
-                <p><strong>Ubuntu Server</strong> (Linux) que tiene arquitectura <strong>monolítica</strong>. Es rápido, eficiente y el estándar en servidores modernos. Aunque tiene sus desventajas, para servidores el rendimiento es prioritario.</p>
+                <p><strong>Ubuntu Server</strong> (Linux) que tiene arquitectura <strong>monolítica</strong>. Es rápido, eficiente y el estándar en servidores modernos.</p>
             </div>
         </section>
 
-        <!-- Sección 4: VirtualBox y Ubuntu Server -->
-        <section id="virtualbox-ubuntu">
-            <h2>4. VirtualBox y Ubuntu Server 22.04 LTS</h2>
+        <!-- Sección 4: Laboratorio Práctico -->
+        <section id="laboratorio">
+            <h2>4. Laboratorio Práctico: Tu Primer Servidor Linux</h2>
             <p><strong>TIEMPO ESTIMADO: 45 minutos</strong></p>
 
-            <h3>4.1 ¿Qué es VirtualBox?</h3>
-            <p><strong>VirtualBox</strong> es un programa que te permite ejecutar sistemas operativos completos DENTRO de tu computadora como si fueran aplicaciones normales.</p>
-
             <div class="callout info">
-                <p class="callout-title">¿Por qué usamos VirtualBox?</p>
-                <ul>
-                    <li><strong>Es GRATIS</strong> - No cuesta nada</li>
-                    <li><strong>Es seguro</strong> - Si algo sale mal, tu computadora real no se afecta</li>
-                    <li><strong>Permite experimentar</strong> - Puedes borrar y crear VMs sin riesgo</li>
-                    <li><strong>Funciona en cualquier sistema</strong> - Windows, macOS, Linux</li>
-                </ul>
+                <p class="callout-title">📖 Guía Detallada en Lab 00</p>
+                <p>La instalación completa de VirtualBox y Ubuntu Server está en el <a href="../laboratorios-html/lab-00-introduccion-simuladores.html"><strong>Laboratorio 0: Introducción a Simuladores</strong></a>.</p>
+                <p>En clase realizaremos una instalación guiada rápida.</p>
             </div>
 
-            <h3>4.2 ¿Qué es Ubuntu Server?</h3>
-            <p><strong>Ubuntu Server</strong> es una versión de Linux sin interfaz gráfica. Todo se hace mediante comandos de texto. Es la versión usada en servidores reales de internet.</p>
+            <h3>4.1 ¿Qué necesitas?</h3>
+            <ul>
+                <li><strong>VirtualBox</strong> instalado (descargar antes de clase)</li>
+                <li><strong>ISO de Ubuntu Server 22.04 LTS</strong> (~3 GB)</li>
+                <li><strong>25 GB de espacio libre</strong> en disco</li>
+                <li><strong>4 GB de RAM</strong> mínimo (8 GB recomendado)</li>
+            </ul>
 
-            <div class="callout warning">
-                <p class="callout-title">Importante: Sin Interfaz Gráfica</p>
-                <p>Ubuntu Server NO tiene ventanas, ni mouse, ni iconos. Todo es texto negro con comandos. Esto es intencional: los servidores no necesitan interfaz gráfica.</p>
-            </div>
-
-            <h3>4.3 Instalación Paso a Paso</h3>
-
-            <h4>Paso 1: Descargar VirtualBox</h4>
-            <ol>
-                <li>Entra a: <a href="https://www.virtualbox.org/wiki/Downloads" target="_blank">https://www.virtualbox.org/wiki/Downloads</a></li>
-                <li>Descarga la versión para tu sistema operativo (Windows hosts)</li>
-                <li>Ejecuta el instalador</li>
-                <li>Haz clic en "Next" en todos los pasos (opciones por defecto)</li>
-                <li>Haz clic en "Install" y espera a que termine</li>
-                <li>Reinicia tu computadora cuando te lo pida</li>
-            </ol>
-
-            <h4>Paso 2: Descargar Ubuntu Server 22.04 LTS</h4>
-            <ol>
-                <li>Entra a: <a href="https://ubuntu.com/download/server" target="_blank">https://ubuntu.com/download/server</a></li>
-                <li>Haz clic en "Download" (archivo ISO de aproximadamente 3 GB)</li>
-                <li>Guarda el archivo en una carpeta donde puedas encontrarlo fácilmente</li>
-            </ol>
-
-            <div class="callout info">
-                <p class="callout-title">¿Qué es un archivo ISO?</p>
-                <p>Un archivo ISO es una imagen exacta de un disco de instalación. VirtualBox usará este archivo como si fuera un DVD de instalación.</p>
-            </div>
-
-            <h4>Paso 3: Crear la Máquina Virtual</h4>
-            <ol>
-                <li>Abre VirtualBox</li>
-                <li>Haz clic en el botón azul "Nueva" (New)</li>
-                <li><strong>Nombre:</strong> Escribe "Ubuntu-Server-SO01"</li>
-                <li><strong>Carpeta:</strong> Elige una ubicación con suficiente espacio (mínimo 20 GB libres)</li>
-                <li><strong>Tipo:</strong> Linux</li>
-                <li><strong>Versión:</strong> Ubuntu (64-bit)</li>
-                <li>Haz clic en "Siguiente"</li>
-                <li><strong>Memoria RAM:</strong> 2048 MB (2 GB) - Si tienes 8 GB o menos en tu PC, usa 1024 MB</li>
-                <li>Haz clic en "Siguiente"</li>
-                <li><strong>Disco Duro:</strong> Selecciona "Crear ahora un disco duro virtual"</li>
-                <li>Haz clic en "Crear"</li>
-                <li><strong>Tipo de archivo:</strong> VDI (VirtualBox Disk Image)</li>
-                <li>Haz clic en "Siguiente"</li>
-                <li><strong>Almacenamiento:</strong> Dinámicamente asignado</li>
-                <li>Haz clic en "Siguiente"</li>
-                <li><strong>Tamaño:</strong> 20.00 GB</li>
-                <li>Haz clic en "Crear"</li>
-            </ol>
-
-            <div class="callout warning">
-                <p class="callout-title">Advertencia de Espacio</p>
-                <p>Asegúrate de tener al menos 25 GB libres en tu disco duro. La máquina virtual ocupará espacio a medida que la uses.</p>
-            </div>
-
-            <h4>Paso 4: Configurar la Máquina Virtual</h4>
-            <ol>
-                <li>En VirtualBox, selecciona tu VM "Ubuntu-Server-SO01"</li>
-                <li>Haz clic en "Configuración" (Settings)</li>
-                <li><strong>Sistema → Procesador:</strong> Asigna 2 CPU si tu computadora tiene 4 o más</li>
-                <li><strong>Almacenamiento:</strong> Haz clic en el icono de disco vacío</li>
-                <li>Haz clic en el icono de disco pequeño a la derecha</li>
-                <li>Selecciona "Elegir un archivo de disco óptico"</li>
-                <li>Navega a donde descargaste el ISO de Ubuntu Server</li>
-                <li>Selecciona el archivo ISO y haz clic en "Abrir"</li>
-                <li>Haz clic en "Aceptar" para cerrar la configuración</li>
-            </ol>
-
-            <h4>Paso 5: Instalar Ubuntu Server</h4>
-            <ol>
-                <li>Haz doble clic en tu VM "Ubuntu-Server-SO01"</li>
-                <li>La VM arrancará y verás una pantalla de instalación de Ubuntu</li>
-                <li>Selecciona el idioma (recomendado: English)</li>
-                <li>Selecciona "Update to the new installer" si aparece</li>
-                <li>Configuración del teclado: selecciona el correcto para tu idioma</li>
-                <li><strong>Network connections:</strong> Deja la que aparece por defecto</li>
-                <li><strong>Configure proxy:</strong> Deja en blanco y haz clic en "Done"</li>
-                <li><strong>Configure Ubuntu archive mirror:</strong> Deja el de defecto y haz clic en "Done"</li>
-                <li><strong>Guided storage configuration:</strong> Selecciona "Use an entire disk"</li>
-                <li>Haz clic en "Done" y luego confirma "Continue"</li>
-                <li><strong>Storage configuration:</strong> Haz clic en "Done" y confirma "Continue"</li>
-                <li><strong>Profile setup:</strong>
-                    <ul>
-                        <li><strong>Your name:</strong> Estudiante SO</li>
-                        <li><strong>Your server's name:</strong> ubuntu-server-so01</li>
-                        <li><strong>Choose a username:</strong> estudiante</li>
-                        <li><strong>Choose a password:</strong> [Elige una contraseña segura que recuerdes]</li>
-                    </ul>
-                </li>
-                <li>Haz clic en "Done"</li>
-                <li><strong>SSH Setup:</strong> Selecciona "Install OpenSSH server"</li>
-                <li>Haz clic en "Done"</li>
-                <li><strong>Featured Server Snaps:</strong> NO selecciones nada (déjalo vacío)</li>
-                <li>Haz clic en "Done"</li>
-                <li>Espera a que termine la instalación</li>
-                <li>Cuando diga "Installation complete", selecciona "Reboot now"</li>
-            </ol>
-
-            <div class="callout success">
-                <p class="callout-title">¡Instalación Completada!</p>
-                <p>Cuando la VM reinicie y veas una pantalla de login negra pidiendo usuario y contraseña, ¡felicidades! Ubuntu Server está instalado y funcionando.</p>
-            </div>
-
-            <h3>4.4 Primer Acceso a Ubuntu Server</h3>
-
-            <h4>Iniciar Sesión</h4>
+            <h3>4.2 Resumen Rápido de Instalación</h3>
             <div class="code-block terminal-block">
-                <div class="code-header">Terminal - Ubuntu Server Login</div>
-                <pre><code class="language-bash">ubuntu-server-so01 login: estudiante
-Password: [tu contraseña]
+                <div class="code-header">Configuración Rápida de VM</div>
+                <pre><code class="language-bash"># 1. Crear VM en VirtualBox
+Nombre: Ubuntu-Server-SO01
+Tipo: Linux / Ubuntu (64-bit)
+RAM: 2048 MB
+Disco: 20 GB (VDI, dinámico)
 
-Welcome to Ubuntu 22.04.3 LTS (GNU/Linux 5.15.0-76-generic x86_64)
+# 2. Configurar
+CPU: 2 núcleos
+Red: Adaptador Puente
+ISO: Montar ISO de Ubuntu Server
 
- * Documentation:  https://help.ubuntu.com
- * Management:     https://landscape.canonical.com
- * Support:        https://ubuntu.com/advantage
-
-estudiante@ubuntu-server-so01:~$</code></pre>
+# 3. Instalar Ubuntu Server
+Usuario: estudiante
+Hostname: ubuntu-server-so01
+Seleccionar: Install OpenSSH server</code></pre>
             </div>
 
-            <h4>Comandos Básicos</h4>
+            <h3>4.3 Primeros Comandos</h3>
+            <p>Una vez instalado, practica estos comandos básicos:</p>
+            
             <div class="code-block terminal-block">
-                <div class="code-header">Terminal - Comandos Básicos</div>
+                <div class="code-header">Comandos Esenciales</div>
                 <pre><code class="language-bash"># Actualizar el sistema
-sudo apt update
-sudo apt upgrade -y
+sudo apt update && sudo apt upgrade -y
 
-# Ver versión de Ubuntu
+# Ver información del sistema
+uname -a
 lsb_release -a
 
-# Ver memoria disponible
+# Ver recursos
 free -h
-
-# Ver espacio en disco
 df -h
 
-# Ver fecha y hora
-date
-
-# Ver nombre de usuario
-whoami</code></pre>
+# Crear snapshot en VirtualBox (IMPORTANTE)
+# VM → Snapshots → Take Snapshot → "Instalación Limpia"</code></pre>
             </div>
 
-            <div class="callout info">
-                <p class="callout-title">¿Qué significa sudo?</p>
-                <p><code>sudo</code> significa "superuser do" - te da permisos de administrador. Cuando lo usas, el sistema te pedirá tu contraseña.</p>
-            </div>
-
-            <h3>4.5 Crear un Snapshot (Punto de Restauración)</h3>
-            <p>Antes de continuar, crea un snapshot para poder volver a este estado si algo sale mal:</p>
-            <ol>
-                <li>En la VM, ejecuta: <code>sudo poweroff</code></li>
-                <li>En VirtualBox, haz clic derecho en tu VM</li>
-                <li>Selecciona "Snapshots" → "Tomar snapshot" (Take snapshot)</li>
-                <li><strong>Nombre:</strong> Ubuntu Server - Instalación limpia</li>
-                <li><strong>Descripción:</strong> Ubuntu Server 22.04 LTS recién instalado y actualizado</li>
-                <li>Haz clic en "Aceptar"</li>
-            </ol>
-
-            <div class="callout success">
-                <p class="callout-title">¡Snapshot Creado!</p>
-                <p>Ahora puedes experimentar sin miedo. Si algo sale mal, solo restaura este snapshot y vuelves al estado inicial.</p>
+            <div class="callout warning">
+                <p class="callout-title">⚠️ Importante: Crear Snapshot</p>
+                <p>Siempre crea un snapshot después de la instalación. Esto te permite volver al estado inicial si algo sale mal.</p>
             </div>
         </section>
 

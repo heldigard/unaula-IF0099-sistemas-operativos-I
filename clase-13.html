@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clase 13: Servidor Web Apache | IF0099 - Sistemas Operativos I</title>
+    <title>Clase 13: Implementación de Sistemas de Archivos | IF0099 - Sistemas Operativos I</title>
     <style>
         :root {
             --primary: #2563eb;
@@ -30,15 +30,9 @@
         section { background: white; padding: 2rem; margin-bottom: 2rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
         section h2 { color: var(--primary); font-size: 1.8rem; margin-bottom: 1.5rem; padding-bottom: 0.5rem; border-bottom: 3px solid var(--accent); }
         section h3 { color: var(--secondary); font-size: 1.4rem; margin: 2rem 0 1rem; }
-        section h4 { color: var(--text-main); font-size: 1.1rem; margin: 1.5rem 0 0.75rem; font-weight: 600; }
         p { margin-bottom: 1rem; }
-        table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.95rem; }
-        th, td { padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid var(--border); }
-        th { background: var(--bg-light); font-weight: 600; color: var(--secondary); }
-        tr:hover { background: var(--bg-light); }
         pre { background: var(--bg-code); color: #e2e8f0; padding: 1.5rem; border-radius: 8px; overflow-x: auto; margin: 1.5rem 0; font-size: 0.9rem; line-height: 1.5; }
-        code { font-family: 'Consolas', 'Monaco', 'Courier New', monospace; }
-        p code, li code { background: var(--bg-light); color: var(--primary); padding: 0.2rem 0.4rem; border-radius: 4px; font-size: 0.9em; }
+        code { font-family: 'Consolas', 'Monaco', 'Courier New', monospace; background: var(--bg-light); color: var(--primary); padding: 0.2rem 0.4rem; border-radius: 4px; font-size: 0.9em; }
         pre code { background: none; padding: 0; color: inherit; }
         ul, ol { margin-left: 1.5rem; margin-bottom: 1rem; }
         li { margin-bottom: 0.5rem; }
@@ -46,14 +40,11 @@
         .callout.info { background: #eff6ff; border-left-color: var(--primary); }
         .callout.warning { background: #fef3c7; border-left-color: #f59e0b; }
         .callout.success { background: #d1fae5; border-left-color: var(--accent); }
-        .callout-title { font-weight: 600; margin-bottom: 0.5rem; }
-        .exercise { background: var(--bg-light); padding: 1.5rem; border-radius: 8px; margin: 1.5rem 0; }
-        .checklist { list-style: none; padding-left: 0; }
-        .checklist li { padding: 0.5rem 0; display: flex; align-items: flex-start; gap: 0.75rem; }
-        .checklist li input[type="checkbox"] { margin-top: 0.25rem; width: 18px; height: 18px; }
-        footer { background: var(--text-main); color: white; padding: 2rem 0; text-align: center; margin-top: 3rem; }
-        footer a { color: var(--accent); text-decoration: none; }
-        /* Navigation between classes */
+        table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.95rem; }
+        th, td { padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid var(--border); }
+        th { background: var(--bg-light); font-weight: 600; color: var(--secondary); }
+        .actividad { background: var(--bg-light); border-left: 5px solid var(--accent); padding: 1.5rem; margin: 1.5rem 0; border-radius: 4px; }
+        .actividad h3 { color: var(--primary); margin-bottom: 1rem; }
         .class-nav { display: flex; justify-content: space-between; align-items: stretch; gap: 1rem; margin: 2rem 0; }
         .class-nav-link { flex: 1; display: flex; align-items: center; gap: 0.75rem; padding: 1.25rem 1.5rem; background: white; border: 2px solid var(--border); border-radius: 12px; text-decoration: none; color: var(--text-main); transition: all 0.3s ease; }
         .class-nav-link:hover { border-color: var(--primary); box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15); transform: translateY(-2px); }
@@ -63,447 +54,367 @@
         .class-nav-link .nav-title { font-size: 1rem; font-weight: 600; color: var(--primary); }
         .class-nav-link.next .nav-title { color: var(--accent); }
         .class-nav-icon { font-size: 1.5rem; line-height: 1; }
-        .class-nav-placeholder { flex: 1; display: flex; align-items: center; justify-content: center; padding: 1.25rem; background: var(--bg-light); border: 2px dashed var(--border); border-radius: 12px; color: var(--text-muted); font-size: 0.9rem; }
-        .two-columns { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 1.5rem 0; }
-        .column-card { background: var(--bg-light); padding: 1.5rem; border-radius: 8px; }
-        .column-card h4 { color: var(--secondary); margin-top: 0; }
-        .actividad { background: var(--bg-light); border-left: 5px solid var(--accent); padding: 1.5rem; margin: 1.5rem 0; border-radius: 4px; }
-        .actividad h3 { color: var(--primary); margin-bottom: 1rem; }
-        @media (max-width: 768px) {
-            .two-columns { grid-template-columns: 1fr; }
-            header h1 { font-size: 1.6rem; }
-            section { padding: 1.5rem; }
-            nav ul { grid-template-columns: 1fr; }
-        }
-        .ascii-diagram { font-family: 'Consolas', monospace; font-size: 0.85rem; line-height: 1.2; background: var(--bg-light); padding: 1rem; border-radius: 4px; overflow-x: auto; white-space: pre; }
+        footer { background: var(--text-main); color: white; padding: 2rem 0; text-align: center; margin-top: 3rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        @media (max-width: 768px) { header h1 { font-size: 1.6rem; } section { padding: 1.5rem; } nav ul { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>Clase 13: Servidor Web Apache</h1>
-            <p class="subtitle">IF0099 - Sistemas Operativos I | Servicios de Red | Clase 13</p>
-            <p class="subtitle">UNAULA - Ingeniería Informática - 2026-I</p>
+    <header>
+        <div class="container">
+            <h1>Clase 13: Implementación de Sistemas de Archivos</h1>
+            <p class="subtitle">IF0099 - Sistemas Operativos I | Unidad 7 - Sistemas de Archivos</p>
+            <p class="subtitle">Estructura interna FS, journaling, montaje, RAID básico</p>
             <p class="meta">Fecha: 15 de Abril 2026 | Teoría: 6:00-8:00 AM | Plan Practico v2.0</p>
-        </header>
-
-        
-        <!-- Quick Navigation Bar -->
-        <div class="quick-nav" style="background: white; padding: 1rem; margin-bottom: 2rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
-            <div style="display: flex; align-items: center; gap: 1rem;">
-                <a href="index.html" style="color: var(--primary); text-decoration: none; font-weight: 500;">Inicio</a>
-                <span style="color: var(--text-muted);">|</span>
-                <span style="color: var(--text-main); font-weight: 600;">Servidor Web Apache</span>
-            </div>
-            <div style="display: flex; align-items: center; gap: 0.5rem;">
-                <a href="cronograma.html" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: #10b981; color: white; text-decoration: none; border-radius: 6px; font-weight: 500;">Cronograma</a>
-                <a href="rubricas.html" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: #3b82f6; color: white; text-decoration: none; border-radius: 6px; font-weight: 500;">Rubricas</a>
-            </div>
         </div>
+    </header>
 
+    <div class="container">
         <nav>
             <h2>Contenido de la Clase</h2>
             <ul>
-                <li><a href="#objetivos">Objetivos</a></li>
-                <li><a href="#teoria">Teoría: HTTP y Web Servers</a></li>
-                <li><a href="#instalacion">Instalación de Apache</a></li>
-                <li><a href="#configuracion">Configuración Básica</a></li>
-                <li><a href="#virtual-hosts">Virtual Hosts</a></li>
-                <li><a href="#https">HTTPS y SSL</a></li>
-                <li><a href="#actividad">Actividad Práctica</a></li>
+                <li><a href="#objetivos">Objetivos de Aprendizaje</a></li>
+                <li><a href="#estructura">Estructura Interna FS</a></li>
+                <li><a href="#journaling">Journaling</a></li>
+                <li><a href="#montaje">Montaje y Desmontaje</a></li>
+                <li><a href="#raid">RAID Básico</a></li>
+                <li><a href="#practica">Práctica en Linux</a></li>
+                <li><a href="#entregable">Entregable</a></li>
             </ul>
         </nav>
 
-        <main>
-            <section id="objetivos">
-                <h2>Objetivos de Aprendizaje</h2>
-                <div class="callout success">
-                    <strong>Al finalizar esta clase, podrás:</strong>
-                    <ul>
-                        <li>Comprender el funcionamiento del protocolo HTTP/HTTPS</li>
-                        <li>Instalar y configurar Apache2 en Linux</li>
-                        <li>Configurar Virtual Hosts para múltiples sitios</li>
-                        <li>Implementar HTTPS con certificado self-signed</li>
-                        <li>Administrar servicios web en Linux</li>
-                    </ul>
-                </div>
-            </section>
+        <section id="objetivos">
+            <h2>Objetivos de Aprendizaje</h2>
+            <p>Al finalizar esta clase, serás capaz de:</p>
+            <ol>
+                <li><strong>Comprender</strong> la estructura interna de un sistema de archivos</li>
+                <li><strong>Explicar</strong> el mecanismo de journaling y recuperación</li>
+                <li><strong>Gestionar</strong> el montaje y desmontaje de sistemas de archivos</li>
+                <li><strong>Diferenciar</strong> los niveles de RAID básicos</li>
+                <li><strong>Implementar</strong> configuraciones de almacenamiento</li>
+            </ol>
+        </section>
 
-            <section id="teoria">
-                <h2>Teoría: HTTP y Servidores Web</h2>
+        <section id="estructura">
+            <h2>1. Estructura Interna de un Sistema de Archivos</h2>
+            
+            <h3>Layout General</h3>
+            <pre>
+Disco particionado con sistema de archivos:
 
-                <h3>¿Qué es un Servidor Web?</h3>
-                <p>Un servidor web es software que procesa solicitudes HTTP de clientes (navegadores) y entrega contenido (HTML, CSS, imágenes, etc.).</p>
-
-                <div class="two-columns">
-                    <div class="column-card">
-                        <h4>Protocolo HTTP</h4>
-                        <p><strong>HTTP (HyperText Transfer Protocol)</strong></p>
-                        <ul>
-                            <li>Protocolo de capa de aplicación</li>
-                            <li>Cliente-servidor (request-response)</li>
-                            <li>Puerto 80 (HTTP) / 443 (HTTPS)</li>
-                            <li>Sin estado (stateless)</li>
-                        </ul>
-                        <p><strong>Métodos comunes:</strong></p>
-                        <ul>
-                            <li><code>GET</code> - Obtener recurso</li>
-                            <li><code>POST</code> - Enviar datos</li>
-                            <li><code>PUT</code> - Actualizar recurso</li>
-                            <li><code>DELETE</code> - Eliminar recurso</li>
-                        </ul>
-                    </div>
-
-                    <div class="column-card">
-                        <h4>HTTP vs HTTPS</h4>
-                        <table>
-                            <thead>
-                                <tr><th>Característica</th><th>HTTP</th><th>HTTPS</th></tr>
-                            </thead>
-                            <tbody>
-                                <tr><td>Cifrado</td><td>No</td><td>Sí (TLS/SSL)</td></tr>
-                                <tr><td>Puerto</td><td>80</td><td>443</td></tr>
-                                <tr><td>Seguridad</td><td>Bajo</td><td>Alto</td></tr>
-                                <tr><td>Certificado</td><td>No requiere</td><td>Requiere</td></tr>
-                            </tbody>
-                        </table>
-                        <div class="callout warning">
-                            <strong>Importante:</strong> HTTPS es obligatorio para cualquier sitio que maneje datos sensibles.
-                        </div>
-                    </div>
-                </div>
-
-                <h3>Apache HTTP Server</h3>
-                <div class="ascii-diagram">
-<pre>
-┌─────────────────────────────────────────────────────┐
-│              ARQUITECTURA DE APACHE                   │
-├─────────────────────────────────────────────────────┤
-│  ┌───────────┐  ┌───────────┐  ┌───────────┐       │
-│  │   MPM     │  │   MPM     │  │   MPM     │       │
-│  │  (Event)  │  │  (Worker) │  │  (Prefork)│       │
-│  └───────────┘  └───────────┘  └───────────┘       │
-│         ↓             ↓              ↓               │
-│  ┌─────────────────────────────────────────────┐   │
-│  │           CORE (Núcleo de Apache)           │   │
-│  └─────────────────────────────────────────────┘   │
-│         ↓                                          │
-│  ┌─────────────────────────────────────────────┐   │
-│  │              MÓDULOS                         │   │
-│  │  - mod_ssl (HTTPS)                          │   │
-│  │  - mod_php (PHP)                            │   │
-│  │  - mod_rewrite (URL rewriting)              │   │
-│  │  - mod_auth (Autenticación)                 │   │
-│  └─────────────────────────────────────────────┘   │
-└─────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────┐
+│  Sector 0: Boot Block (reservado para arranque)            │
+├─────────────────────────────────────────────────────────────┤
+│  Superblock: Metadatos del sistema de archivos             │
+│  - Tamaño del FS, bloques libres, inodos libres            │
+│  - Tamaño de bloque, versión, UUID                         │
+├─────────────────────────────────────────────────────────────┤
+│  Group Descriptor Table: Información de grupos de bloques  │
+├─────────────────────────────────────────────────────────────┤
+│  Block Bitmap: Mapa de bits de bloques libres/ocupados     │
+├─────────────────────────────────────────────────────────────┤
+│  Inode Bitmap: Mapa de bits de inodos libres/ocupados      │
+├─────────────────────────────────────────────────────────────┤
+│  Inode Table: Tabla de inodos                              │
+├─────────────────────────────────────────────────────────────┤
+│  Data Blocks: Bloques de datos de archivos y directorios   │
+└─────────────────────────────────────────────────────────────┘
 </pre>
-                </div>
 
-                <p><strong>Características principales:</strong></p>
+            <h3>Superblock</h3>
+            <table>
+                <tr><th>Campo</th><th>Descripción</th></tr>
+                <tr><td>s_inodes_count</td><td>Número total de inodos</td></tr>
+                <tr><td>s_blocks_count</td><td>Número total de bloques</td></tr>
+                <tr><td>s_free_blocks_count</td><td>Bloques libres</td></tr>
+                <tr><td>s_free_inodes_count</td><td>Inodos libres</td></tr>
+                <tr><td>s_first_data_block</td><td>Primer bloque de datos</td></tr>
+                <tr><td>s_block_size</td><td>Tamaño de bloque</td></tr>
+                <tr><td>s_magic</td><td>Firma mágica (0xEF53 para EXT4)</td></tr>
+                <tr><td>s_state</td><td>Estado: limpio o dañado</td></tr>
+                <tr><td>s_last_mounted</td><td>Último punto de montaje</td></tr>
+            </table>
+
+            <div class="callout warning">
+                <strong>Backup del Superblock:</strong> EXT4 mantiene copias de respaldo del superblock dispersas en el disco para recuperación.
+            </div>
+        </section>
+
+        <section id="journaling">
+            <h2>2. Journaling</h2>
+            
+            <div class="callout info">
+                <strong>¿Qué es el Journaling?</strong>
+                <p>Técnica que registra cambios pendientes antes de aplicarlos, permitiendo recuperación consistente tras fallos.</p>
+            </div>
+
+            <h3>Problema: Inconsistencia tras Fallo</h3>
+            <pre>
+Sin journaling - Operación de escritura:
+1. Asignar bloque de datos
+2. Escribir datos en bloque
+3. Actualizar inodo con nuevo bloque
+4. Actualizar bitmap de bloques
+
+Falla entre paso 2 y 3 → Bloque perdido (inodo no apunta a él)
+Falla entre paso 3 y 4 → Bloque asignado dos veces
+</pre>
+
+            <h3>El Journaling Resuelve Esto</h3>
+            <pre>
+Con journaling:
+1. Escribir operación completa en journal (commit record)
+2. Aplicar cambios al sistema de archivos
+3. Marcar operación como completada en journal
+
+Tras fallo:
+- Si hay commit sin completion → Reaplicar (redo)
+- Si no hay commit → Ignorar (no se aplicó nada)
+</pre>
+
+            <h3>Tipos de Journaling</h3>
+            <table>
+                <tr><th>Tipo</th><th>Registro</th><th>Seguridad</th><th>Rendimiento</th></tr>
+                <tr><td>Writeback</td><td>Solo metadatos</td><td>Baja</td><td>Máximo</td></tr>
+                <tr><td>Ordered</td><td>Metadatos + datos primero</td><td>Media</td><td>Bueno</td></tr>
+                <tr><td>Data</td><td>Metadatos + datos</td><td>Alta</td><td>Bajo</td></tr>
+            </table>
+
+            <h3>Proceso de Recuperación (fsck)</h3>
+            <ol>
+                <li>Verificar superblock y alternativas si está dañado</li>
+                <li>Verificar consistencia de group descriptors</li>
+                <li>Verificar bitmaps vs inodos reales</li>
+                <li>Verificar contadores de bloques en inodos</li>
+                <li>Reconstruir árbol de directorios</li>
+                <li>Verificar inodos huérfanos (lost+found)</li>
+            </ol>
+        </section>
+
+        <section id="montaje">
+            <h2>3. Montaje y Desmontaje de Sistemas de Archivos</h2>
+            
+            <h3>Concepto de Montaje</h3>
+            <p>El montaje conecta un sistema de archivos a la jerarquía de directorios del sistema operativo:</p>
+            <pre>
+Antes de montar:
+┌─────────────────────┐
+│ Directorio /mnt/usb │ ← Vacío
+└─────────────────────┘
+
+Montaje: mount /dev/sdb1 /mnt/usb
+
+Después de montar:
+┌─────────────────────┐
+│ Directorio /mnt/usb │ ← Contenido de /dev/sdb1
+│   ├── archivo1.txt  │
+│   ├── carpeta/      │
+│   └── ...           │
+└─────────────────────┘
+</pre>
+
+            <h3>Archivo /etc/fstab</h3>
+            <p>Configuración de montajes persistentes:</p>
+            <pre>
+# /etc/fstab - File System Table
+# <device>        <mount>    <type>  <options>       <dump>  <pass>
+UUID=abc123       /          ext4    defaults        0       1
+UUID=def456       /home      ext4    defaults        0       2
+/dev/sdb1         /mnt/data  ext4    rw,noatime      0       2
+/dev/sr0          /media/cdrom  iso9660  ro,noauto   0       0
+tmpfs             /tmp       tmpfs   defaults        0       0
+</pre>
+
+            <h3>Opciones Comunes de Montaje</h3>
+            <table>
+                <tr><th>Opción</th><th>Descripción</th></tr>
+                <tr><td>ro / rw</td><td>Solo lectura / Lectura-escritura</td></tr>
+                <tr><td>noatime</td><td>No actualizar tiempo de acceso (rendimiento)</td></tr>
+                <tr><td>sync / async</td><td>Síncrono / Asíncrono</td></tr>
+                <tr><td>auto / noauto</td><td>Montar en boot / No montar automáticamente</td></tr>
+                <tr><td>user / nouser</td><td>Permitir montaje a usuarios</td></tr>
+                <tr><td>exec / noexec</td><td>Permitir / Prohibir ejecución</td></tr>
+            </table>
+
+            <div class="callout success">
+                <strong>Comandos útiles:</strong>
                 <ul>
-                    <li>Open Source (Apache License)</li>
-                    <li>Multiplataforma (Linux, Windows, macOS)</li>
-                    <li>Modular y extensible</li>
-                    <li>~40% de los servidores web (2024)</li>
-                    <li>Virtual Hosting (múltiples sitios en 1 servidor)</li>
+                    <li><code>mount -a</code> - Montar todo desde fstab</li>
+                    <li><code>mount | grep /dev/sda</code> - Ver opciones de montaje</li>
+                    <li><code>umount /mnt/punto</code> - Desmontar</li>
+                    <li><code>fuser -m /mnt/punto</code> - Ver procesos usando el punto</li>
                 </ul>
+            </div>
+        </section>
 
-                <h3>Virtual Hosts</h3>
-                <p><strong>Virtual Hosting</strong> permite alojar múltiples sitios web en un solo servidor usando:</p>
+        <section id="raid">
+            <h2>4. RAID Básico</h2>
+            
+            <p>RAID (Redundant Array of Independent Disks) combina múltiples discos para mejorar rendimiento o redundancia:</p>
+
+            <h3>Niveles de RAID Básicos</h3>
+            
+            <h4>RAID 0 - Striping</h4>
+            <pre>
+Datos divididos entre discos:
+┌─────────────────┬─────────────────┐
+│   Disco 0       │   Disco 1       │
+│   [Bloque 0]    │   [Bloque 1]    │
+│   [Bloque 2]    │   [Bloque 3]    │
+│   [Bloque 4]    │   [Bloque 5]    │
+└─────────────────┴─────────────────┘
+Ventaja: Velocidad ×N
+Desventaja: Si falla un disco, se pierde todo
+</pre>
+
+            <h4>RAID 1 - Mirroring</h4>
+            <pre>
+Datos duplicados en ambos discos:
+┌─────────────────┬─────────────────┐
+│   Disco 0       │   Disco 1       │
+│   [Bloque 0]    │   [Bloque 0]    │
+│   [Bloque 1]    │   [Bloque 1]    │
+│   [Bloque 2]    │   [Bloque 2]    │
+└─────────────────┴─────────────────┘
+Ventaja: Tolerancia a fallos (un disco)
+Desventaja: Capacidad = ½ del total
+</pre>
+
+            <h4>RAID 5 - Striping con Paridad</h4>
+            <pre>
+Datos y paridad distribuidos:
+┌─────────────────┬─────────────────┬─────────────────┐
+│   Disco 0       │   Disco 1       │   Disco 2       │
+│   [Datos A]     │   [Datos B]     │   [Paridad AB]  │
+│   [Datos C]     │   [Paridad CD]  │   [Datos D]     │
+│   [Paridad EF]  │   [Datos E]     │   [Datos F]     │
+└─────────────────┴─────────────────┴─────────────────┘
+Ventaja: Balance rendimiento/redundancia
+Capacidad: (N-1) × tamaño menor disco
+</pre>
+
+            <h3>Comparación de Niveles RAID</h3>
+            <table>
+                <tr><th>RAID</th><th>Mín. Discos</th><th>Capacidad</th><th>Tolerancia</th><th>Uso típico</th></tr>
+                <tr><td>0</td><td>2</td><td>100%</td><td>Ninguna</td><td>Datos temporales</td></tr>
+                <tr><td>1</td><td>2</td><td>50%</td><td>1 disco</td><td>Sistemas críticos</td></tr>
+                <tr><td>5</td><td>3</td><td>(n-1)/n</td><td>1 disco</td><td>Servidores de archivos</td></tr>
+                <tr><td>6</td><td>4</td><td>(n-2)/n</td><td>2 discos</td><td>Almacenamiento masivo</td></tr>
+                <tr><td>10</td><td>4</td><td>50%</td><td>1 por mirror</td><td>Bases de datos</td></tr>
+            </table>
+
+            <div class="callout warning">
+                <strong>RAID no es backup:</strong> RAID protege contra fallo de disco, no contra:
                 <ul>
-                    <li><strong>IP-based:</strong> Diferentes direcciones IP</li>
-                    <li><strong>Name-based:</strong> Diferentes nombres de dominio (mismo IP) ← Más común</li>
+                    <li>Borrado accidental de archivos</li>
+                    <li>Corrupción por malware</li>
+                    <li>Desastres físicos</li>
                 </ul>
+            </div>
+        </section>
 
-                <div class="callout info">
-                    <strong>Ejemplo:</strong> Un servidor con IP 192.168.1.10 puede servir:
-                    <ul>
-                        <li><code>www.sitio1.com</code> → /var/www/sitio1</li>
-                        <li><code>www.sitio2.com</code> → /var/www/sitio2</li>
-                        <li><code>www.sitio3.com</code> → /var/www/sitio3</li>
-                    </ul>
-                </div>
-            </section>
+        <section id="practica">
+            <h2>5. Práctica en Linux</h2>
+            
+            <h3>Comandos para gestión avanzada:</h3>
+            <pre>
+# Ver información del superblock
+sudo dumpe2fs /dev/sda1 | head -50
 
-            <section id="instalacion">
-                <h2>Instalación de Apache2</h2>
+# Verificar sistema de archivos
+sudo e2fsck -n /dev/sda1    # Solo verificar (no modificar)
+sudo e2fsck -f /dev/sda1    # Forzar verificación
 
-                <div class="callout warning">
-                    <strong>Requisitos previos:</strong>
-                    <ul>
-                        <li>VM con Ubuntu Server 22.04/24.04</li>
-                        <li>Usuario con privilegios sudo</li>
-                        <li>Conexión a Internet</li>
-                    </ul>
-                </div>
+# Cambiar opciones de montaje
+sudo tune2fs -o ^acl /dev/sda1  # Desactivar ACLs
 
-                <h3>Paso 1: Actualizar el sistema</h3>
-                <pre><code>sudo apt update
-sudo apt upgrade -y</code></pre>
+# Ver journal de un FS ext4
+sudo debugfs -R 'stat <12>' /dev/sda1
 
-                <h3>Paso 2: Instalar Apache2</h3>
-                <pre><code># Instalar Apache
-sudo apt install apache2 -y
+# Crear sistema de archivos
+sudo mkfs.ext4 -L "MiDisco" /dev/sdb1
 
-# Verificar versión
-apache2 -v</code></pre>
+# Ver particiones y UUIDs
+sudo blkid
+lsblk -f
 
-                <h3>Paso 3: Verificar el servicio</h3>
-                <pre><code># Verificar estado
-sudo systemctl status apache2
+# Montar por UUID
+sudo mount UUID="abc123" /mnt/punto
 
-# Habilitar inicio automático
-sudo systemctl enable apache2
+# Crear RAID (con mdadm)
+# RAID 1:
+sudo mdadm --create /dev/md0 --level=1 --raid-devices=2 /dev/sdb1 /dev/sdc1
 
-# Verificar que está escuchando
-sudo ss -tlnp | grep :80</code></pre>
+# Ver estado RAID
+cat /proc/mdstat
 
-                <h3>Paso 4: Probar desde el navegador</h3>
-                <p>Abre el navegador y accede a:</p>
-                <ul>
-                    <li><code>http://localhost</code> (desde la VM)</li>
-                    <li><code>http://IP_DE_TU_VM</code> (desde el host)</li>
-                </ul>
+# Guardar configuración RAID
+sudo mdadm --detail --scan >> /etc/mdadm/mdadm.conf
+</pre>
 
-                <p>Deberías ver la página "Apache2 Ubuntu Default Page"</p>
+            <h3>Ejercicio práctico:</h3>
+            <div class="actividad">
+                <h3>Ejercicio: Análisis de Sistema de Archivos</h3>
+                <ol>
+                    <li>Ver información del superblock con <code>dumpe2fs</code></li>
+                    <li>Examinar el archivo <code>/etc/fstab</code></li>
+                    <li>Listar puntos de montaje actuales con <code>mount</code></li>
+                    <li>Crear un punto de montaje temporal y montar/desmontar</li>
+                    <li>Diseñar un esquema RAID para un caso de uso específico</li>
+                </ol>
+            </div>
+        </section>
 
-                <div class="callout success">
-                    <strong>Ubicación de archivos importantes:</strong>
-                    <ul>
-                        <li><code>/var/www/html</code> - Document root por defecto</li>
-                        <li><code>/etc/apache2/</code> - Configuración</li>
-                        <li><code>/etc/apache2/apache2.conf</code> - Configuración principal</li>
-                        <li><code>/etc/apache2/sites-available/</code> - Virtual hosts disponibles</li>
-                        <li><code>/etc/apache2/sites-enabled/</code> - Virtual hosts activos</li>
-                        <li><code>/var/log/apache2/</code> - Logs (access.log, error.log)</li>
-                    </ul>
-                </div>
-            </section>
+        <section id="entregable">
+            <h2>6. Entregable de la Clase</h2>
+            
+            <div class="actividad">
+                <h3>Implementación de Almacenamiento</h3>
+                <p><strong>Descripción:</strong> Documento técnico sobre implementación de sistemas de archivos</p>
+                
+                <h4>Requisitos:</h4>
+                <ol>
+                    <li>Captura de <code>dumpe2fs</code> explicando 5 campos importantes</li>
+                    <li>Diagrama de la estructura de un sistema de archivos</li>
+                    <li>Explicación del proceso de journaling con diagrama</li>
+                    <li>Tabla de <code>/etc/fstab</code> explicando cada columna</li>
+                    <li>Comparativa RAID: escoger nivel para un escenario real y justificar</li>
+                </ol>
 
-            <section id="virtual-hosts">
-                <h2>Virtual Hosts</h2>
+                <h4>Rúbrica:</h4>
+                <table>
+                    <tr><th>Criterio</th><th>Puntaje</th></tr>
+                    <tr><td>Análisis de superblock</td><td>20%</td></tr>
+                    <tr><td>Diagrama estructura FS</td><td>20%</td></tr>
+                    <tr><td>Explicación journaling</td><td>20%</td></tr>
+                    <tr><td>Análisis fstab</td><td>20%</td></tr>
+                    <tr><td>Justificación RAID</td><td>20%</td></tr>
+                </table>
+            </div>
+        </section>
 
-                <p>Vamos a configurar dos sitios web en el mismo servidor:</p>
-                <ul>
-                    <li><code>site1.local</code> → Sitio de prueba 1</li>
-                    <li><code>site2.local</code> → Sitio de prueba 2</li>
-                </ul>
+        <section id="resumen">
+            <h2>Resumen</h2>
+            <table>
+                <tr><th>Concepto</th><th>Descripción</th></tr>
+                <tr><td>Superblock</td><td>Metadatos principales del FS</td></tr>
+                <tr><td>Journaling</td><td>Registro de cambios para recuperación</td></tr>
+                <tr><td>Montaje</td><td>Conectar FS a jerarquía de directorios</td></tr>
+                <tr><td>fstab</td><td>Configuración de montajes persistentes</td></tr>
+                <tr><td>RAID 0</td><td>Striping - velocidad sin redundancia</td></tr>
+                <tr><td>RAID 1</td><td>Mirroring - redundancia completa</td></tr>
+                <tr><td>RAID 5</td><td>Striping con paridad distribuida</td></tr>
+            </table>
 
-                <h3>Paso 1: Crear directorios para cada sitio</h3>
-                <pre><code># Crear directorios
-sudo mkdir -p /var/www/site1.local
-sudo mkdir -p /var/www/site2.local
-
-# Crear páginas de prueba
-echo "&lt;h1&gt;Bienvenido a Site 1&lt;/h1&gt;" | sudo tee /var/www/site1.local/index.html
-echo "&lt;h1&gt;Bienvenido a Site 2&lt;/h1&gt;" | sudo tee /var/www/site2.local/index.html
-
-# Establecer permisos
-sudo chown -R www-data:www-data /var/www/site1.local
-sudo chown -R www-data:www-data /var/www/site2.local
-sudo chmod -R 755 /var/www/site1.local
-sudo chmod -R 755 /var/www/site2.local</code></pre>
-
-                <h3>Paso 2: Crear archivos de Virtual Host</h3>
-
-                <p><strong>Para site1.local:</strong></p>
-                <pre><code>sudo nano /etc/apache2/sites-available/site1.local.conf</code></pre>
-
-                <p>Contenido:</p>
-                <pre><code>&lt;VirtualHost *:80&gt;
-    ServerName site1.local
-    ServerAlias www.site1.local
-    DocumentRoot /var/www/site1.local
-
-    ErrorLog ${APACHE_LOG_DIR}/site1.local_error.log
-    CustomLog ${APACHE_LOG_DIR}/site1.local_access.log combined
-&lt;/VirtualHost&gt;</code></pre>
-
-                <p><strong>Para site2.local:</strong></p>
-                <pre><code>sudo nano /etc/apache2/sites-available/site2.local.conf</code></pre>
-
-                <p>Contenido:</p>
-                <pre><code>&lt;VirtualHost *:80&gt;
-    ServerName site2.local
-    ServerAlias www.site2.local
-    DocumentRoot /var/www/site2.local
-
-    ErrorLog ${APACHE_LOG_DIR}/site2.local_error.log
-    CustomLog ${APACHE_LOG_DIR}/site2.local_access.log combined
-&lt;/VirtualHost&gt;</code></pre>
-
-                <h3>Paso 3: Habilitar los Virtual Hosts</h3>
-                <pre><code># Habilitar sitios
-sudo a2ensite site1.local.conf
-sudo a2ensite site2.local.conf
-
-# Deshabilitar sitio por defecto (opcional)
-sudo a2dissite 000-default.conf
-
-# Verificar configuración
-sudo apache2ctl configtest
-
-# Recargar Apache
-sudo systemctl reload apache2</code></pre>
-
-                <h3>Paso 4: Configurar resolución de nombres</h3>
-
-                <p><strong>En Windows (host):</strong> Editar <code>C:\Windows\System32\drivers\etc\hosts</code></p>
-                <pre><code>192.168.1.10  site1.local
-192.168.1.10  site2.local</code></pre>
-
-                <p><strong>En Linux (VM):</strong> Editar <code>/etc/hosts</code></p>
-                <pre><code>127.0.0.1  site1.local
-127.0.0.1  site2.local</code></pre>
-            </section>
-
-            <section id="https">
-                <h2>Configurar HTTPS con Certificado Self-Signed</h2>
-
-                <div class="callout warning">
-                    <strong>Nota:</strong> Los certificados self-signed generarán advertencias en el navegador. Son útiles solo para desarrollo/testing.
-                </div>
-
-                <h3>Paso 1: Habilitar módulo SSL</h3>
-                <pre><code>sudo a2enmod ssl
-sudo systemctl restart apache2</code></pre>
-
-                <h3>Paso 2: Generar certificado self-signed</h3>
-                <pre><code>sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
-    -keyout /etc/ssl/private/apache-selfsigned.key \
-    -out /etc/ssl/certs/apache-selfsigned.crt</code></pre>
-
-                <p>Se te pedirá información:</p>
-                <ul>
-                    <li><strong>Country:</strong> CO</li>
-                    <li><strong>State:</strong> Antioquia</li>
-                    <li><strong>Locality:</strong> Medellin</li>
-                    <li><strong>Organization:</strong> UNAULA</li>
-                    <li><strong>Common Name:</strong> site1.local</li>
-                </ul>
-
-                <h3>Paso 3: Configurar Virtual Host HTTPS</h3>
-                <p>Editar <code>/etc/apache2/sites-available/site1.local.conf</code>:</p>
-                <pre><code>&lt;VirtualHost *:80&gt;
-    ServerName site1.local
-    Redirect permanent / https://site1.local/
-&lt;/VirtualHost&gt;
-
-&lt;VirtualHost *:443&gt;
-    ServerName site1.local
-    DocumentRoot /var/www/site1.local
-
-    SSLEngine on
-    SSLCertificateFile /etc/ssl/certs/apache-selfsigned.crt
-    SSLCertificateKeyFile /etc/ssl/private/apache-selfsigned.key
-
-    ErrorLog ${APACHE_LOG_DIR}/site1.local_error.log
-    CustomLog ${APACHE_LOG_DIR}/site1.local_access.log combined
-&lt;/VirtualHost&gt;</code></pre>
-
-                <h3>Paso 4: Recargar y probar</h3>
-                <pre><code># Verificar configuración
-sudo apache2ctl configtest
-
-# Recargar Apache
-sudo systemctl reload apache2
-
-# Probar HTTPS
-curl -k https://site1.local</code></pre>
-            </section>
-
-            <section id="actividad">
-                <h2>Actividad Práctica</h2>
-
-                <div class="actividad">
-                    <h3>Actividad: Configuración Completa de Apache</h3>
-
-                    <h4>Objetivo</h4>
-                    <p>Configurar un servidor Apache con múltiples sitios web y HTTPS.</p>
-
-                    <h4>Requisitos</h4>
-                    <ol class="checklist">
-                        <li><input type="checkbox"> Instalar Apache2 en Ubuntu Server</li>
-                        <li><input type="checkbox"> Verificar que el servicio esté funcionando</li>
-                        <li><input type="checkbox"> Crear dos Virtual Hosts (sitio1.local y sitio2.local)</li>
-                        <li><input type="checkbox"> Configurar contenido diferente para cada sitio</li>
-                        <li><input type="checkbox"> Configurar HTTPS con certificado self-signed para sitio1.local</li>
-                        <li><input type="checkbox"> Verificar acceso desde el host</li>
-                    </ol>
-
-                    <h4>Evidencias a Entregar</h4>
-                    <ul>
-                        <li>Captura de pantalla de <code>curl http://sitio1.local</code></li>
-                        <li>Captura de pantalla de <code>curl http://sitio2.local</code></li>
-                        <li>Captura de pantalla de <code>curl -k https://sitio1.local</code></li>
-                        <li>Captura del archivo de configuración del Virtual Host</li>
-                        <li>Captura de <code>sudo apache2ctl -S</code></li>
-                    </ul>
-
-                    <h4>Rubrica de Evaluación</h4>
-                    <table>
-                        <thead>
-                            <tr><th>Criterio</th><th>Puntos</th></tr>
-                        </thead>
-                        <tbody>
-                            <tr><td>Apache instalado y funcionando</td><td>20</td></tr>
-                            <tr><td>Virtual Hosts configurados correctamente</td><td>30</td></tr>
-                            <tr><td>HTTPS funcionando con certificado</td><td>30</td></tr>
-                            <tr><td>Evidencias completas</td><td>20</td></tr>
-                            <tr><td><strong>Total</strong></td><td><strong>100</strong></td></tr>
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-
-            <section>
-                <h2>Resumen</h2>
-
-                <div class="two-columns">
-                    <div class="column-card">
-                        <h4>Conceptos Clave</h4>
-                        <ul>
-                            <li><strong>HTTP/HTTPS:</strong> Protocolos de transferencia</li>
-                            <li><strong>Apache:</strong> Servidor web modular</li>
-                            <li><strong>Virtual Hosts:</strong> Múltiples sitios en un servidor</li>
-                            <li><strong>SSL/TLS:</strong> Cifrado para comunicación segura</li>
-                        </ul>
-                    </div>
-
-                    <div class="column-card">
-                        <h4>Comandos Esenciales</h4>
-                        <pre><code>sudo systemctl status apache2
-sudo a2ensite sitio.conf
-sudo a2dissite sitio.conf
-sudo apache2ctl configtest
-sudo systemctl reload apache2</code></pre>
-                    </div>
-                </div>
-
-                <div class="callout success">
-                    <strong>Próxima clase:</strong> IIS (Internet Information Services) - Servidor web de Windows Server
-                </div>
-            </section>
-
-            <!-- Videos Recomendados -->
-            <section id="videos">
-                <h2>Videos Recomendados</h2>
-
-                <div class="callout info">
-                    <h3>📹 Video 1: Apache Web Server - Instalación y Configuración</h3>
-                    <p>Duración: ~30 minutos | Nivel: Principiante | Idioma: Español</p>
-                    <p>Guía completa de instalación y configuración del servidor web Apache en Linux.</p>
-                    <p><a href="https://www.youtube.com/watch?v=SOlqJQASBHk" target="_blank">📺 Ver en YouTube</a></p>
-                </div>
-
-                <div class="callout info">
-                    <h3>📹 Video 2: Servidor Web Apache en Linux - Instalación y Configuración Completa</h3>
-                    <p>Duración: ~35 minutos | Nivel: Intermedio | Idioma: Español</p>
-                    <p>Instalación paso a paso de Apache con configuración de virtual hosts y seguridad básica.</p>
-                    <p><a href="https://www.youtube.com/watch?v=yVmAoPsc_Kw" target="_blank">📺 Ver en YouTube</a></p>
-                </div>
-            </section>
-        </main>
+            <h3>Próxima Clase</h3>
+            <p><strong>Clase 14: Seguridad en Sistemas Operativos</strong></p>
+            <ul>
+                <li>Autenticación y autorización</li>
+                <li>Control de acceso</li>
+                <li>Seguridad en Linux</li>
+                <li>SELinux y AppArmor</li>
+            </ul>
+        </section>
 
         <!-- Navigation between classes -->
         <nav class="class-nav" aria-label="Navegación entre clases">
@@ -511,35 +422,29 @@ sudo systemctl reload apache2</code></pre>
                 <span class="class-nav-icon">←</span>
                 <div>
                     <div class="nav-label">Clase Anterior</div>
-                    <div class="nav-title">← Memoria Virtual</div>
+                    <div class="nav-title">← Sistemas de Archivos</div>
                 </div>
             </a>
             <a href="clase-14.html" class="class-nav-link next">
                 <div>
                     <div class="nav-label">Siguiente Clase</div>
-                    <div class="nav-title">Servidor Web IIS →</div>
+                    <div class="nav-title">Seguridad en Sistemas Operativos →</div>
                 </div>
                 <span class="class-nav-icon">→</span>
             </a>
         </nav>
+    </div>
 
-        
-    
-    
     <footer>
         <div class="container">
-            <p><strong>IF0099 - Sistemas Operativos I</strong> - Servidor Web Apache</p>
+            <p><strong>IF0099 - Sistemas Operativos I</strong> - Implementación de Sistemas de Archivos</p>
             <p>Fecha: 15 de Abril 2026 | Plan Practico v2.0</p>
             <p style="margin-top: 10px;">
-                <a href="index.html" style="color: #10b981;">Inicio</a> |
-                <a href="cronograma.html" style="color: #10b981;">Cronograma</a> |
-                <a href="rubricas.html" style="color: #3b82f6;">Rubricas</a>
+                <a href="index.html">Inicio</a> |
+                <a href="cronograma.html">Cronograma</a> |
+                <a href="rubricas.html">Rubricas</a>
             </p>
         </div>
     </footer>
-
-
-
-    </div>
 </body>
 </html>
