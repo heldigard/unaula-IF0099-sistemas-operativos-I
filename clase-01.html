@@ -264,6 +264,143 @@
             text-decoration: none;
         }
 
+        /* Navigation between classes */
+        .class-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: stretch;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .class-nav-link {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1.25rem 1.5rem;
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            text-decoration: none;
+            color: var(--text-main);
+            transition: all 0.3s ease;
+        }
+
+        .class-nav-link:hover {
+            border-color: var(--primary);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .class-nav-link.prev {
+            border-left: 4px solid var(--primary);
+        }
+
+        .class-nav-link.next {
+            border-right: 4px solid var(--accent);
+            text-align: right;
+            margin-left: auto;
+        }
+
+        .class-nav-link .nav-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            margin-bottom: 0.25rem;
+        }
+
+        .class-nav-link .nav-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .class-nav-link.next .nav-title {
+            color: var(--accent);
+        }
+
+        .class-nav-icon {
+            font-size: 1.5rem;
+            line-height: 1;
+        }
+
+        .class-nav-placeholder {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.25rem;
+            background: var(--bg-light);
+            border: 2px dashed var(--border);
+            border-radius: 12px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* Quick navigation bar */
+        .quick-nav {
+            background: white;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .quick-nav-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .quick-nav-right {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .breadcrumb-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .breadcrumb-link:hover {
+            text-decoration: underline;
+        }
+
+        .separator {
+            color: var(--text-muted);
+        }
+
+        .current-page {
+            color: var(--text-main);
+            font-weight: 600;
+        }
+
+        .home-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 500;
+            transition: background 0.2s;
+        }
+
+        .home-link:hover {
+            background: var(--secondary);
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             header h1 {
@@ -422,11 +559,24 @@
         <div class="container">
             <h1>Clase 01: ¿Qué es un Sistema Operativo?</h1>
             <p class="subtitle">IF0099 - Sistemas Operativos I | Unidad 1 - Introducción</p>
-            <p class="meta">Tiempo estimado: 90 minutos | Teoría: 45 min + Práctica: 45 min</p>
+            <p class="meta">📅 04 de Febrero 2026 | Tiempo estimado: 90 minutos | Teoría: 45 min + Práctica: 45 min</p>
         </div>
     </header>
 
     <div class="container">
+        <!-- Quick Navigation Bar -->
+        <div class="quick-nav">
+            <div class="quick-nav-left">
+                <a href="index.html" class="breadcrumb-link">Inicio</a>
+                <span class="separator">›</span>
+                <span class="current-page">Clase 01</span>
+            </div>
+            <div class="quick-nav-right">
+                <a href="cronograma.html" class="home-link" style="background: #10b981;">📅 Cronograma</a>
+                <a href="rubricas.html" class="home-link" style="background: #3b82f6;">📋 Rúbricas</a>
+            </div>
+        </div>
+
         <!-- Navigation -->
         <nav>
             <h2>Contenido de la Clase</h2>
@@ -1141,12 +1291,31 @@ whoami</code></pre>
                 <p><a href="https://www.youtube.com/watch?v=hSEnJZ0rJCQ" target="_blank">📺 Ver en YouTube</a></p>
             </div>
         </section>
+
+        <!-- Navigation between classes -->
+        <nav class="class-nav" aria-label="Navegación entre clases">
+            <div class="class-nav-placeholder">
+                <span>Esta es la primera clase</span>
+            </div>
+            <a href="clase-02.html" class="class-nav-link next">
+                <div>
+                    <div class="nav-label">Siguiente Clase</div>
+                    <div class="nav-title">Linux Terminal - Comandos Esenciales →</div>
+                </div>
+                <span class="class-nav-icon">→</span>
+            </a>
+        </nav>
     </div>
 
     <footer>
         <div class="container">
             <p><strong>IF0099 - Sistemas Operativos I</strong> • Clase 01: ¿Qué es un Sistema Operativo?</p>
-            <p>Última actualización: 2026-02-10 • Tiempo estimado: 90 minutos (teoría: 45 min + práctica: 45 min)</p>
+            <p>📅 04 de Febrero 2026 • Tiempo estimado: 90 minutos (teoría: 45 min + práctica: 45 min)</p>
+            <p style="margin-top: 10px;">
+                <a href="index.html" style="color: #10b981;">Inicio</a> |
+                <a href="cronograma.html" style="color: #10b981;">Cronograma</a> |
+                <a href="rubricas.html" style="color: #3b82f6;">Rúbricas</a>
+            </p>
             <p><a href="#" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); return false;">Volver arriba ↑</a></p>
         </div>
     </footer>

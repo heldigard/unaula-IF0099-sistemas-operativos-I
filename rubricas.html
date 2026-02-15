@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rúbricas de Evaluación | IF0099 - Sistemas Operativos I</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #1e3a5f 0%, #2d5a87 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: white;
+            border-radius: 15px;
+            padding: 30px 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            color: #1e3a5f;
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .nav-links a {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #1e3a5f;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: background 0.3s;
+        }
+
+        .nav-links a:hover {
+            background: #2d5a87;
+        }
+
+        .section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .section h2 {
+            color: #1e3a5f;
+            font-size: 1.4em;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #1e3a5f;
+        }
+
+        .eval-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(135deg, #1e3a5f 0%, #2d5a87 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .eval-header h3 {
+            font-size: 1.3em;
+        }
+
+        .eval-header .badge-pct {
+            background: #10b981;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 1.1em;
+        }
+
+        .eval-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .eval-info-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #10b981;
+        }
+
+        .eval-info-item strong {
+            color: #1e3a5f;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .rubrica-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            font-size: 0.9em;
+        }
+
+        .rubrica-table th {
+            background: #1e3a5f;
+            color: white;
+            padding: 12px 8px;
+            text-align: left;
+        }
+
+        .rubrica-table td {
+            padding: 10px 8px;
+            border-bottom: 1px solid #e0e0e0;
+            vertical-align: top;
+        }
+
+        .rubrica-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .rubrica-table .criterio {
+            font-weight: 600;
+            color: #1e3a5f;
+            width: 15%;
+        }
+
+        .rubrica-table .peso {
+            text-align: center;
+            font-weight: 600;
+            color: #10b981;
+            width: 8%;
+        }
+
+        .level-excelente { color: #059669; }
+        .level-bueno { color: #2563eb; }
+        .level-satisfactorio { color: #d97706; }
+        .level-insuficiente { color: #dc2626; }
+
+        .toc {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .toc h3 {
+            color: #1e3a5f;
+            margin-bottom: 15px;
+        }
+
+        .toc-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 10px;
+            list-style: none;
+        }
+
+        .toc-list a {
+            color: #1e3a5f;
+            text-decoration: none;
+            padding: 8px 15px;
+            background: white;
+            border-radius: 6px;
+            display: block;
+            transition: all 0.3s;
+        }
+
+        .toc-list a:hover {
+            background: #1e3a5f;
+            color: white;
+        }
+
+        .politicas-box {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-left: 4px solid #f59e0b;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 30px;
+        }
+
+        .politicas-box h3 {
+            color: #92400e;
+            margin-bottom: 15px;
+        }
+
+        .politicas-box ul {
+            margin-left: 20px;
+            color: #78350f;
+        }
+
+        .politicas-box li {
+            margin-bottom: 8px;
+        }
+
+        .escala-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        .escala-table th, .escala-table td {
+            padding: 12px;
+            border: 1px solid #e0e0e0;
+            text-align: center;
+        }
+
+        .escala-table th {
+            background: #1e3a5f;
+            color: white;
+        }
+
+        .escala-table .excelente { background: #dcfce7; }
+        .escala-table .muy-bueno { background: #dbeafe; }
+        .escala-table .bueno { background: #fef3c7; }
+        .escala-table .suficiente { background: #fee2e2; }
+
+        .entregables-box {
+            background: #f0f9ff;
+            border: 1px solid #bae6fd;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+
+        .entregables-box h4 {
+            color: #0369a1;
+            margin-bottom: 10px;
+        }
+
+        .entregables-box ul {
+            margin-left: 20px;
+        }
+
+        footer {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            color: #555;
+        }
+
+        @media (max-width: 768px) {
+            .rubrica-table {
+                font-size: 0.8em;
+            }
+            .rubrica-table th, .rubrica-table td {
+                padding: 6px 4px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Rúbricas de Evaluación</h1>
+            <p class="subtitle">IF0099 - Sistemas Operativos I | Plan Práctico v2.0 | 2026-I</p>
+
+            <div class="nav-links">
+                <a href="index.html">Inicio</a>
+                <a href="cronograma.html">Cronograma</a>
+            </div>
+        </header>
+
+        <!-- Tabla de Contenidos -->
+        <section class="section">
+            <div class="toc">
+                <h3>Índice de Evaluaciones</h3>
+                <ul class="toc-list">
+                    <li><a href="#eval1">E1 - Taller (15%) | 25 Feb</a></li>
+                    <li><a href="#eval2">E2 - Informe (15%) | 11 Mar</a></li>
+                    <li><a href="#eval3">E3 - Examen Parcial (20%) | 25 Mar</a></li>
+                    <li><a href="#eval4">E4 - Reporte (15%) | 22 Abr</a></li>
+                    <li><a href="#eval5">E5 - Informe Integrador (15%) | 06 May</a></li>
+                    <li><a href="#eval6">E6 - Examen Final (20%) | 27 May</a></li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- EVALUACIÓN 1 -->
+        <section class="section" id="eval1">
+            <div class="eval-header">
+                <h3>E1 - Taller: Estructura y Tipos de SO</h3>
+                <span class="badge-pct">15%</span>
+            </div>
+
+            <div class="eval-info">
+                <div class="eval-info-item">
+                    <strong>Fecha de Entrega</strong>
+                    25 de febrero de 2026
+                </div>
+                <div class="eval-info-item">
+                    <strong>Formato</strong>
+                    PDF + PowerPoint + Scripts
+                </div>
+                <div class="eval-info-item">
+                    <strong>Grupos</strong>
+                    Parejas (2 estudiantes)
+                </div>
+                <div class="eval-info-item">
+                    <strong>Sustentación</strong>
+                    5-10 minutos (obligatoria)
+                </div>
+            </div>
+
+            <div class="entregables-box">
+                <h4>Entregables Requeridos</h4>
+                <ul>
+                    <li>Documento PDF (máx. 10 páginas) con análisis comparativo</li>
+                    <li>Presentación PowerPoint (5-10 diapositivas)</li>
+                    <li>Scripts de exploración del kernel</li>
+                    <li>Capturas de comandos ejecutados</li>
+                    <li>Referencias bibliográficas (mínimo 5)</li>
+                </ul>
+            </div>
+
+            <table class="rubrica-table">
+                <thead>
+                    <tr>
+                        <th>Criterio</th>
+                        <th class="level-excelente">Excelente (4)</th>
+                        <th class="level-bueno">Bueno (3)</th>
+                        <th class="level-satisfactorio">Satisfactorio (2)</th>
+                        <th class="level-insuficiente">Insuficiente (1)</th>
+                        <th>Peso</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="criterio">Identificación de Componentes</td>
+                        <td>Identifica correctamente TODOS los componentes usando comandos reales (uname, lsmod, /proc)</td>
+                        <td>Identifica la mayoría de componentes con comandos adecuados</td>
+                        <td>Identifica algunos componentes básicos</td>
+                        <td>No identifica correctamente los componentes</td>
+                        <td class="peso">25%</td>
+                    </tr>
+                    <tr>
+                        <td class="criterio">Clasificación de SO</td>
+                        <td>Clasifica correctamente SO por tipo, uso y estructura con ejemplos actuales</td>
+                        <td>Clasifica correctamente la mayoría de tipos</td>
+                        <td>Clasificación básica con algunos errores</td>
+                        <td>No clasifica correctamente</td>
+                        <td class="peso">25%</td>
+                    </tr>
+                    <tr>
+                        <td class="criterio">Análisis Comparativo</td>
+                        <td>Comparación profunda de al menos 3 SO con tabla comparativa completa</td>
+                        <td>Comparación adecuada de 2-3 SO</td>
+                        <td>Comparación superficial de 1-2 SO</td>
+                        <td>No hay comparación o es muy básica</td>
+                        <td class="peso">20%</td>
+                    </tr>
+                    <tr>
+                        <td class="criterio">Exploración Práctica</td>
+                        <td>Usa comandos avanzados para explorar kernel, procesos, memoria</td>
+                        <td>Usa adecuadamente comandos básicos</td>
+                        <td>Uso básico de algunos comandos</td>
+                        <td>No usa comandos del sistema</td>
+                        <td class="peso">15%</td>
+                    </tr>
+                    <tr>
+                        <td class="criterio">Presentación y Formato</td>
+                        <td>Presentación profesional, bien estructurada, con capturas de evidencias</td>
+                        <td>Presentación adecuada con menores errores de formato</td>
+                        <td>Formato básico con errores de presentación</td>
+                        <td>Formato inadecuado, sin estructura clara</td>
+                        <td class="peso">10%</td>
+                    </tr>
+                    <tr>
+                        <td class="criterio">Sustentación Oral</td>
+                        <td>Explicación clara, respuestas acertadas, dominio del tema</td>
+                        <td>Buena explicación con respuestas adecuadas</td>
+                        <td>Explicación básica con dudas</td>
+                        <td>No sustenta o sustentación deficiente</td>
+                        <td class="peso">5%</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- EVALUACIÓN 2 -->
+        <section class="section" id="eval2">
+            <div class="eval-header">
+                <h3>E2 - Informe: Gestión de Procesos</h3>
+                <span class="badge-pct">15%</span>
+            </div>
+
+            <div class="eval-info">
+                <div class="eval-info-item">
+                    <strong>Fecha de Entrega</strong>
+                    11 de marzo de 2026
+                </div>
+                <div class="eval-info-item">
+                    <strong>Formato</strong>
+                    Scripts + Informe + Video
+                </div>
+                <div class="eval-info-item">
+                    <strong>Grupos</strong>
+                    Parejas (2 estudiantes)
+                </div>
+                <div class="eval-info-item">
+                    <strong>Sustentación</strong>
+                    Demostración en vivo (10-15 min)
+                </div>
+            </div>
+
+            <div class="entregables-box">
+                <h4>Entregables Requeridos</h4>
+                <ul>
+                    <li>Script bash <code>monitor_procesos.sh</code> funcional</li>
+                    <li>Script PowerShell <code>gestionar_servicios.ps1</code> funcional</li>
+                    <li>Informe técnico PDF con análisis</li>
+                    <li>Video demostración (5-10 minutos)</li>
+                    <li>Capturas de ejecución de todos los comandos</li>
+                    <li>README.md con instrucciones de uso</li>
+                </ul>
+            </div>
+
+            <table class="rubrica-table">
+                <thead>
+                    <tr>
+                        <th>Criterio</th>
+                        <th class="level-excelente">Excelente (4)</th>
+                        <th class="level-bueno">Bueno (3)</th>
+                        <th class="level-satisfactorio">Satisfactorio (2)</th>
+                        <th class="level-insuficiente">Insuficiente (1)</th>
+                        <th>Peso</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="criterio">Script Linux</td>
+                        <td>Script bash funcional con TODAS las funciones, bien comentado, maneja errores</td>
+                        <td>Script funcional con menores problemas</td>
+                        <td>Script básico con funcionalidad limitada</td>
+                        <td>Script no funcional o ausente</td>
+                        <td class="peso">25%</td>
+                    </tr>
+                    <tr>
+                        <td class="criterio">Script Windows</td>
+                        <td>Script PowerShell funcional, maneja servicios correctamente, bien estructurado</td>
+                        <td>Script funcional con menores problemas</td>
+                        <td>Script básico con funcionalidad limitada</td>
+                        <td>Script no funcional o ausente</td>
+                        <td class="peso">25%</td>
+                    </tr>
+                    <tr>
+                        <td class="criterio">Gestión de Procesos</td>
+                        <td>Demuestra dominio de ps, top, kill, nice, renice con ejemplos avanzados</td>
+                        <td>Uso adecuado de comandos básicos</td>
+                        <td>Uso básico de algunos comandos</td>
+                        <td>No sabe usar los comandos</td>
+                        <td class="peso">20%</td>
+                    </tr>
+                    <tr>
+                        <td class="criterio">Capturas y Evidencias</td>
+                        <td>Capturas completas y claras de TODAS las ejecuciones</td>
+                        <td>Evidencias adecuadas de la mayoría</td>
+                        <td>Evidencias parciales</td>
+                        <td>Sin evidencias</td>
+                        <td class="peso">15%</td>
+                    </tr>
+                    <tr>
+                        <td class="criterio">Video Demostración</td>
+                        <td>Video claro (5-10 min) explicando cada parte de los scripts</td>
+                        <td>Video adecuado con explicación básica</td>
+                        <td>Video básico</td>
+                        <td>Sin video</td>
+                        <td class="peso">10%</td>
+                    </tr>
+                    <tr>
+                        <td class="criterio">Sustentación</td>
+                        <td>Demostración fluida, explica decisiones de diseño, responde preguntas</td>
+                        <td>Buena demostración con explicación adecuada</td>
+                        <td>Demostración básica</td>
+                        <td>No demuestra o demostración fallida</td>
+                        <td class="peso">5%</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- EVALUACIÓN 3 -->
+        <section class="section" id="eval3">
+            <div class="eval-header" style="background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);">
+                <h3>E3 - Examen Parcial</h3>
+                <span class="badge-pct" style="background: #3b82f6;">20%</span>
+            </div>
+
+            <div class="eval-info">
+                <div class="eval-info-item">
+                    <strong>Fecha</strong>
+                    25 de marzo de 2026
+                </div>
+                <div class="eval-info-item">
+                    <strong>Duración</strong>
+                    2.5 horas (150 min)
+                </div>
+                <div class="eval-info-item">
+                    <strong>Modalidad</strong>
+                    Individual, presencial
+                </div>
+                <div class="eval-info-item">
+                    <strong>Contenido</strong>
+                    Unidades 1 y 2 completas
+                </div>
+            </div>
+
+            <div class="entregables-box">
+                <h4>Estructura del Examen</h4>
+                <ul>
+                    <li><strong>Sección A:</strong> Selección múltiple (20 pts - 20%)</li>
+                    <li><strong>Sección B:</strong> Verdadero/Falso con justificación (15 pts - 15%)</li>
+                    <li><strong>Sección C:</strong> Preguntas abiertas (25 pts - 25%)</li>
+                    <li><strong>Sección D:</strong> Problemas de planificación CPU (20 pts - 20%)</li>
+                    <li><strong>Sección E:</strong> Análisis de escenarios prácticos (20 pts - 20%)</li>
+                </ul>
+            </div>
+
+            <h4 style="margin-top:20px; color:#1e3a5f;">Sección Teórica (50%)</h4>
+            <table class="rubrica-table">
+                <thead>
+                    <tr>
+                        <th>Criterio</th>
+                        <th class="level-excelente">Excelente</th>
+                        <th class="level-bueno">Bueno</th>
+                        <th class="level-satisfactorio">Satisfactorio</th>
+                        <th class="level-insuficiente">Insuficiente</th>
+                        <th>Peso</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="criterio">Conceptos de Procesos</td>
+                        <td>Explica PCB, estados, transiciones con ejemplos claros</td>
+                        <td>Explica adecuadamente la mayoría</td>
+                        <td>Explicación básica</td>
+                        <td>No comprende conceptos básicos</td>
+                        <td class="peso">30%</td>
+                    </tr>
+                    <tr>
+                        <td class="criterio">Planificación de CPU</td>
+                        <td>Resuelve problemas con diagramas de Gantt completos y análisis</td>
+                        <td>Resuelve correctamente con explicaciones básicas</td>
+                        <td>Resuelve parcialmente o con errores</td>
+                        <td>No resuelve los problemas</td>
+                        <td class="peso">40%</td>
+                    </tr>
+                    <tr>
+                        <td class="criterio">Sincronización</td>
+                        <td>Explica sección crítica, semáforos, mutex correctamente</td>
+                        <td>Explicación adecuada de conceptos</td>
+                        <td>Explicación básica con errores</td>
+                        <td>Conceptos erróneos</td>
+                        <td class="peso">30%</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4 style="margin-top:20px; color:#1e3a5f;">Sección Práctica (50%)</h4>
+            <table class="rubrica-table">
+                <thead>
+                    <tr>
+                        <th>Criterio</th>
+                        <th class="level-excelente">Excelente</th>
+                        <th class="level-bueno">Bueno</th>
+                        <th class="level-satisfactorio">Satisfactorio</th>
+                        <th class="level-insuficiente">Insuficiente</th>
+                        <th>Peso</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="criterio">Comandos Linux</td>
+                        <td>Identifica correctamente ps, top, kill, nice, renice, systemctl</td>
+                        <td>Identifica adecuadamente la mayoría</td>
+                        <td>Identifica algunos básicos</td>
+                        <td>No conoce los comandos</td>
+                        <td class="peso">40%</td>
+                    </tr>
+                    <tr>
+                        <td class="criterio">Comandos Windows</td>
+                        <td>Identifica Get-Process, Get-Service, Stop-Process correctamente</td>
+                        <td>Identifica adecuadamente la mayoría</td>
+                        <td>Identifica algunos básicos</td>
+                        <td>No conoce los comandos</td>
+                        <td class="peso">30%</td>
+                    </tr>
+                    <tr>
+                        <td class="criterio">Análisis de Salidas</td>
+                        <td>Interpreta correctamente salidas y predice comportamientos</td>
+                        <td>Interpreta adecuadamente la mayoría</td>
+                        <td>Interpreta parcialmente</td>
+                        <td>No interpreta las salidas</td>
+                        <td class="peso">30%</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- EVALUACIÓN 4 -->
+        <section class="section" id="eval4">
+            <div class="eval-header">
+                <h3>E4 - Reporte: Seguridad en SO</h3>
+                <span class="badge-pct">15%</span>
+            </div>
+
+            <div class="eval-info">
+                <div class="eval-info-item">
+                    <strong>Fecha de Entrega</strong>
+                    22 de abril de 2026
+                </div>
+                <div class="eval-info-item">
+                    <strong>Formato</strong>
+                    Reporte + Scripts + Capturas
+                </div>
+                <div class="eval-info-item">
+                    <strong>Grupos</strong>
+                    Parejas (2 estudiantes)
+                </div>
+                <div class="eval-info-item">
+                    <strong>Sustentación</strong>
+                    10 minutos (obligatoria)
+                </div>
+            </div>
+
+            <div class="entregables-box">
+                <h4>Entregables Requeridos</h4>
+                <ul>
+                    <li>Reporte técnico PDF con análisis de seguridad</li>
+                    <li>Matriz de riesgos (mínimo 8 riesgos identificados)</li>
+                    <li>Recomendaciones de hardening (5 Linux + 5 Windows)</li>
+                    <li>Capturas de auditoría realizada</li>
+                    <li>Scripts de configuración utilizados</li>
+                </ul>
+            </div>
+
+            <table class="rubrica-table">
+                <thead>
+                    <tr>
+                        <th>Criterio</th>
+                        <th class="level-excelente">Excelente (4)</th>
+                        <th class="level-bueno">Bueno (3)</th>
+                        <th class="level-satisfactorio">Satisfactorio (2)</th>
+                        <th class="level-insuficiente">Insuficiente (1)</th>
+                        <th>Peso</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="criterio">Permisos Linux</td>
+                        <td>Configura chmod, chown, umask correctamente con ejemplos avanzados</td>
+                        <td>Usa adecuadamente comandos de permisos</td>
+                        <td>Uso básico de permisos</td>
+                        <td>No sabe usar permisos</td>
+                        <td class="peso">25%</td>
+                    </tr>
+                    <tr>
+                        <td class="criterio">Permisos Windows</td>
+                        <td>Usa icacls, Get-Acl, net user correctamente</td>
+                        <td>Usa adecuadamente comandos de permisos</td>
+                        <td>Uso básico de permisos</td>
+                        <td>No sabe usar permisos</td>
+                        <td class="peso">20%</td>
+                    </tr>
+                    <tr>
+                        <td class="criterio">Análisis de Seguridad</td>
+                        <td>Identifica SUID, SGID, puertos abiertos, servicios vulnerables</td>
+                        <td>Identifica adecuadamente elementos principales</td>
+                        <td>Identifica algunos elementos básicos</td>
+                        <td>No realiza análisis</td>
+                        <td class="peso">20%</td>
+                    </tr>
+                    <tr>
+                        <td class="criterio">Usuarios y Grupos</td>
+                        <td>Crea usuarios, grupos, asigna permisos correctamente</td>
+                        <td>Gestiona adecuadamente usuarios y grupos</td>
+                        <td>Gestión básica</td>
+                        <td>No gestiona usuarios/grupos</td>
+                        <td class="peso">15%</td>
+                    </tr>
+                    <tr>
+                        <td class="criterio">Reporte Técnico</td>
+                        <td>Análisis profundo con recomendaciones de hardening detalladas</td>
+                        <td>Análisis adecuado con recomendaciones básicas</td>
+                        <td>Análisis superficial</td>
+                        <td>Sin análisis o incorrecto</td>
+                        <td class="peso">10%</td>
+                    </tr>
+                    <tr>
+                        <td class="criterio">Sustentación</td>
+                        <td>Presentación clara, respuestas profundas, defensa del trabajo</td>
+                        <td>Buena presentación y respuestas</td>
+                        <td>Presentación básica</td>
+                        <td>Sustentación deficiente</td>
+                        <td class="peso">10%</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- EVALUACIÓN 5 -->
+        <section class="section" id="eval5">
+            <div class="eval-header">
+                <h3>E5 - Informe: Proyecto Integrador</h3>
+                <span class="badge-pct">15%</span>
+            </div>
+
+            <div class="eval-info">
+                <div class="eval-info-item">
+                    <strong>Fecha de Entrega</strong>
+                    6 de mayo de 2026
+                </div>
+                <div class="eval-info-item">
+                    <strong>Formato</strong>
+                    Scripts + Informe + Video
+                </div>
+                <div class="eval-info-item">
+                    <strong>Grupos</strong>
+                    Parejas (2 estudiantes)
+                </div>
+                <div class="eval-info-item">
+                    <strong>Sustentación</strong>
+                    Demostración en vivo (10-15 min)
+                </div>
+            </div>
+
+            <div class="entregables-box">
+                <h4>Entregables Requeridos</h4>
+                <ul>
+                    <li>Scripts bash: <code>monitor_sistema.sh</code>, <code>ipc_demo.sh</code>, <code>gestion_archivos.sh</code></li>
+                    <li>Scripts PowerShell: <code>gestion_servidores.ps1</code>, <code>configurar_tareas.ps1</code></li>
+                    <li>Informe técnico con arquitectura de la solución</li>
+                    <li>Video demostración (8-12 minutos)</li>
+                    <li>Capturas de reportes HTML generados</li>
+                </ul>
+            </div>
+
+            <table class="rubrica-table">
+                <thead>
+                    <tr>
+                        <th>Criterio</th>
+                        <th class="level-excelente">Excelente (4)</th>
+                        <th class="level-bueno">Bueno (3)</th>
+                        <th class="level-satisfactorio">Satisfactorio (2)</th>
+                        <th class="level-insuficiente">Insuficiente (1)</th>
+                        <th>Peso</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="criterio">Scripts Linux</td>
+                        <td>Todos los scripts funcionan perfectamente, bien comentados, manejan errores</td>
+                        <td>Scripts funcionan con menores ajustes</td>
+                        <td>Scripts funcionan parcialmente</td>
+                        <td>Scripts no ejecutan</td>
+                        <td class="peso">30%</td>
+                    </tr>
+                    <tr>
+                        <td class="criterio">Scripts Windows</td>
+                        <td>Todos los scripts funcionan perfectamente, bien comentados, manejan errores</td>
+                        <td>Scripts funcionan con menores ajustes</td>
+                        <td>Scripts funcionan parcialmente</td>
+                        <td>Scripts no ejecutan</td>
+                        <td class="peso">25%</td>
+                    </tr>
+                    <tr>
+                        <td class="criterio">Integración de Conceptos</td>
+                        <td>Integra procesos, memoria, archivos, servicios mostrando relaciones claras</td>
+                        <td>Integra la mayoría de conceptos</td>
+                        <td>Integración básica</td>
+                        <td>No hay integración</td>
+                        <td class="peso">15%</td>
+                    </tr>
+                    <tr>
+                        <td class="criterio">Informe Técnico</td>
+                        <td>Documentación completa con diagramas, análisis comparativo, tablas</td>
+                        <td>Informe bien estructurado</td>
+                        <td>Informe básico</td>
+                        <td>Sin informe</td>
+                        <td class="peso">15%</td>
+                    </tr>
+                    <tr>
+                        <td class="criterio">Video Demostración</td>
+                        <td>Video claro (8-12 min) explicando todos los componentes</td>
+                        <td>Video adecuado con explicación básica</td>
+                        <td>Video básico</td>
+                        <td>Sin video</td>
+                        <td class="peso">10%</td>
+                    </tr>
+                    <tr>
+                        <td class="criterio">Sustentación</td>
+                        <td>Demostración en vivo fluida, responde preguntas técnicamente</td>
+                        <td>Buena demostración con respuestas adecuadas</td>
+                        <td>Demostración básica</td>
+                        <td>No demuestra o falla</td>
+                        <td class="peso">5%</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- EVALUACIÓN 6 -->
+        <section class="section" id="eval6">
+            <div class="eval-header" style="background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);">
+                <h3>E6 - Examen Final</h3>
+                <span class="badge-pct" style="background: #3b82f6;">20%</span>
+            </div>
+
+            <div class="eval-info">
+                <div class="eval-info-item">
+                    <strong>Fecha</strong>
+                    27 de mayo de 2026
+                </div>
+                <div class="eval-info-item">
+                    <strong>Duración</strong>
+                    3 horas (180 min)
+                </div>
+                <div class="eval-info-item">
+                    <strong>Modalidad</strong>
+                    Individual, presencial
+                </div>
+                <div class="eval-info-item">
+                    <strong>Contenido</strong>
+                    TODO el curso (Unidades 1-2)
+                </div>
+            </div>
+
+            <div class="entregables-box">
+                <h4>Estructura del Examen</h4>
+                <ul>
+                    <li><strong>Sección A:</strong> Conceptos fundamentales (25 pts - 25%)</li>
+                    <li><strong>Sección B:</strong> Desarrollo teórico (25 pts - 25%)</li>
+                    <li><strong>Sección C:</strong> Problemas de cálculo (25 pts - 25%)</li>
+                    <li><strong>Sección D:</strong> Análisis de escenarios prácticos (25 pts - 25%)</li>
+                </ul>
+            </div>
+
+            <h4 style="margin-top:20px; color:#1e3a5f;">Sección Teórica (40%)</h4>
+            <table class="rubrica-table">
+                <thead>
+                    <tr>
+                        <th>Criterio</th>
+                        <th class="level-excelente">Excelente</th>
+                        <th class="level-bueno">Bueno</th>
+                        <th class="level-satisfactorio">Satisfactorio</th>
+                        <th class="level-insuficiente">Insuficiente</th>
+                        <th>Peso</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="criterio">Conceptos Fundamentales</td>
+                        <td>Dominio de todas las funciones y componentes del SO</td>
+                        <td>Explicación adecuada de la mayoría</td>
+                        <td>Explicación básica</td>
+                        <td>Conceptos erróneos</td>
+                        <td class="peso">30%</td>
+                    </tr>
+                    <tr>
+                        <td class="criterio">Gestión de Recursos</td>
+                        <td>Explica procesos, memoria, archivos, E/S con profundidad</td>
+                        <td>Explicación adecuada de conceptos</td>
+                        <td>Explicación básica</td>
+                        <td>No comprende los conceptos</td>
+                        <td class="peso">40%</td>
+                    </tr>
+                    <tr>
+                        <td class="criterio">Síntesis del Curso</td>
+                        <td>Integra todos los temas en respuestas coherentes</td>
+                        <td>Integra la mayoría de temas</td>
+                        <td>Integración básica</td>
+                        <td>No hay integración</td>
+                        <td class="peso">30%</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4 style="margin-top:20px; color:#1e3a5f;">Sección Práctica (60%)</h4>
+            <table class="rubrica-table">
+                <thead>
+                    <tr>
+                        <th>Criterio</th>
+                        <th class="level-excelente">Excelente</th>
+                        <th class="level-bueno">Bueno</th>
+                        <th class="level-satisfactorio">Satisfactorio</th>
+                        <th class="level-insuficiente">Insuficiente</th>
+                        <th>Peso</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="criterio">Comandos Linux</td>
+                        <td>Identifica ps, top, df, chmod, systemctl, free correctamente</td>
+                        <td>Identifica adecuadamente la mayoría</td>
+                        <td>Identifica algunos básicos</td>
+                        <td>No conoce los comandos</td>
+                        <td class="peso">30%</td>
+                    </tr>
+                    <tr>
+                        <td class="criterio">Comandos Windows</td>
+                        <td>Identifica Get-Process, Get-Service, Get-Acl, icacls correctamente</td>
+                        <td>Identifica adecuadamente la mayoría</td>
+                        <td>Identifica algunos básicos</td>
+                        <td>No conoce los comandos</td>
+                        <td class="peso">30%</td>
+                    </tr>
+                    <tr>
+                        <td class="criterio">Análisis de Escenarios</td>
+                        <td>Resuelve escenarios prácticos con soluciones optimizadas</td>
+                        <td>Resuelve adecuadamente escenarios</td>
+                        <td>Resolución parcial</td>
+                        <td>No resuelve los escenarios</td>
+                        <td class="peso">20%</td>
+                    </tr>
+                    <tr>
+                        <td class="criterio">Problemas de Cálculo</td>
+                        <td>Resuelve paginación, planificación, archivos con procedimiento completo</td>
+                        <td>Resuelve correctamente con explicaciones básicas</td>
+                        <td>Resuelve parcialmente</td>
+                        <td>No resuelve los problemas</td>
+                        <td class="peso">20%</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Políticas y Escala -->
+        <section class="section">
+            <h2>Políticas de Evaluación</h2>
+
+            <div class="politicas-box">
+                <h3>Políticas Generales</h3>
+                <ul>
+                    <li><strong>Sustentación obligatoria:</strong> Sin sustentación, la nota máxima es 3.0/5.0</li>
+                    <li><strong>Grupos:</strong> Máximo 2 estudiantes (parejas), excepto exámenes individuales</li>
+                    <li><strong>Entregas tardías:</strong> Día 1: -0.5 pts | Día 2-3: -1.0 pts | Más de 3 días: No se acepta</li>
+                    <li><strong>Plagio:</strong> Calificación de 0.0 sin oportunidad de recuperación</li>
+                    <li><strong>IA como herramienta:</strong> Se permite uso de IA como apoyo, pero debe ser citada</li>
+                    <li><strong>Nomenclatura:</strong> <code>IF0099-EvalX-Apellido1-Apellido2.pdf</code></li>
+                </ul>
+            </div>
+
+            <h3 style="margin-top:30px; color:#1e3a5f;">Escala de Calificación UNAULA</h3>
+            <table class="escala-table">
+                <thead>
+                    <tr>
+                        <th>Puntaje</th>
+                        <th>Calificación</th>
+                        <th>Porcentaje</th>
+                        <th>Descripción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="excelente">
+                        <td>4.6 - 5.0</td>
+                        <td>Excelente</td>
+                        <td>92-100%</td>
+                        <td>Supera las expectativas</td>
+                    </tr>
+                    <tr class="muy-bueno">
+                        <td>4.0 - 4.5</td>
+                        <td>Muy Bueno</td>
+                        <td>80-91%</td>
+                        <td>Cumple con alta calidad</td>
+                    </tr>
+                    <tr class="bueno">
+                        <td>3.5 - 3.9</td>
+                        <td>Bueno</td>
+                        <td>70-79%</td>
+                        <td>Cumple satisfactoriamente</td>
+                    </tr>
+                    <tr class="suficiente">
+                        <td>3.0 - 3.4</td>
+                        <td>Suficiente</td>
+                        <td>60-69%</td>
+                        <td>Cumple mínimamente</td>
+                    </tr>
+                    <tr>
+                        <td>2.0 - 2.9</td>
+                        <td>Insuficiente</td>
+                        <td>40-59%</td>
+                        <td>No cumple adecuadamente</td>
+                    </tr>
+                    <tr>
+                        <td>0.0 - 1.9</td>
+                        <td>Deficiente</td>
+                        <td>0-39%</td>
+                        <td>No demuestra aprendizaje</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <footer>
+            <p><strong>IF0099 - Sistemas Operativos I</strong></p>
+            <p>UNAULA - Ingeniería Informática - 2026-I</p>
+            <p style="margin-top: 10px; color: #999;">
+                <a href="index.html">Inicio</a> |
+                <a href="cronograma.html">Cronograma</a> |
+                <a href="rubricas.html">Rúbricas</a>
+            </p>
+            <p style="margin-top: 10px; color: #999; font-size: 0.85em;">Plan Práctico v2.0 | Sin programación C | 70% Práctica / 30% Teoría</p>
+        </footer>
+    </div>
+</body>
+</html>
