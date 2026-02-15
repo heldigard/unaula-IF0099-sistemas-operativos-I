@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clase 09: Permisos y Seguridad en Linux | IF0099 - Sistemas Operativos I</title>
+    <title>Clase 09: Paginación | IF0099 - Sistemas Operativos I</title>
     <style>
         :root {
             --primary: #2563eb;
@@ -15,381 +15,72 @@
             --text-muted: #64748b;
             --border: #e2e8f0;
         }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            line-height: 1.7;
-            color: var(--text-main);
-            background: var(--bg-light);
-            font-size: 16px;
-        }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        header {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            color: white;
-            padding: 3rem 0;
-            margin-bottom: 2rem;
-        }
-        header h1 {
-            font-size: 2.2rem;
-            margin-bottom: 0.5rem;
-            font-weight: 700;
-        }
-        header .subtitle {
-            font-size: 1.1rem;
-            opacity: 0.9;
-        }
-        header .meta {
-            margin-top: 1rem;
-            font-size: 0.9rem;
-            opacity: 0.8;
-        }
-
-        nav {
-            background: white;
-            padding: 1.5rem 0;
-            margin-bottom: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-        }
-        nav h2 {
-            font-size: 1.1rem;
-            color: var(--text-muted);
-            margin-bottom: 1rem;
-            padding: 0 20px;
-        }
-        nav ul {
-            list-style: none;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 0.5rem;
-            padding: 0 20px;
-        }
-        nav a {
-            color: var(--primary);
-            text-decoration: none;
-            padding: 0.5rem;
-            display: block;
-            border-radius: 4px;
-            transition: background 0.2s;
-        }
-        nav a:hover {
-            background: var(--bg-light);
-        }
-
-        section {
-            background: white;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-        }
-        section h2 {
-            color: var(--primary);
-            font-size: 1.8rem;
-            margin-bottom: 1.5rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 3px solid var(--accent);
-        }
-        section h3 {
-            color: var(--secondary);
-            font-size: 1.4rem;
-            margin: 2rem 0 1rem;
-        }
-        section h4 {
-            color: var(--text-main);
-            font-size: 1.1rem;
-            margin: 1.5rem 0 0.75rem;
-            font-weight: 600;
-        }
-        p {
-            margin-bottom: 1rem;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 1.5rem 0;
-            font-size: 0.95rem;
-        }
-        th, td {
-            padding: 0.75rem 1rem;
-            text-align: left;
-            border-bottom: 1px solid var(--border);
-        }
-        th {
-            background: var(--bg-light);
-            font-weight: 600;
-            color: var(--secondary);
-        }
-        tr:hover {
-            background: var(--bg-light);
-        }
-
-        pre {
-            background: var(--bg-code);
-            color: #e2e8f0;
-            padding: 1.5rem;
-            border-radius: 8px;
-            overflow-x: auto;
-            margin: 1.5rem 0;
-            font-size: 0.9rem;
-            line-height: 1.5;
-        }
-        code {
-            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
-        }
-        p code, li code, td code {
-            background: var(--bg-light);
-            color: var(--primary);
-            padding: 0.2rem 0.4rem;
-            border-radius: 4px;
-            font-size: 0.9em;
-        }
-        pre code {
-            background: none;
-            padding: 0;
-            color: inherit;
-        }
-
-        ul, ol {
-            margin-left: 1.5rem;
-            margin-bottom: 1rem;
-        }
-        li {
-            margin-bottom: 0.5rem;
-        }
-
-        .callout {
-            padding: 1.5rem;
-            border-radius: 8px;
-            margin: 1.5rem 0;
-            border-left: 4px solid;
-        }
-        .callout.info {
-            background: #eff6ff;
-            border-left-color: var(--primary);
-        }
-        .callout.warning {
-            background: #fef3c7;
-            border-left-color: #f59e0b;
-        }
-        .callout.success {
-            background: #d1fae5;
-            border-left-color: var(--accent);
-        }
-        .callout.danger {
-            background: #fee2e2;
-            border-left-color: #ef4444;
-        }
-
-        .comparison {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-            margin: 2rem 0;
-        }
-        .comparison > div {
-            background: var(--bg-light);
-            padding: 1.5rem;
-            border-radius: 8px;
-        }
-
-        footer {
-            background: var(--text-main);
-            color: white;
-            padding: 2rem 0;
-            text-align: center;
-            margin-top: 3rem;
-        }
-        footer a {
-            color: var(--accent);
-            text-decoration: none;
-        }
-
-        /* Navigation between classes */
-        .class-nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: stretch;
-            gap: 1rem;
-            margin: 2rem 0;
-        }
-
-        .class-nav-link {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            padding: 1.25rem 1.5rem;
-            background: white;
-            border: 2px solid var(--border);
-            border-radius: 12px;
-            text-decoration: none;
-            color: var(--text-main);
-            transition: all 0.3s ease;
-        }
-
-        .class-nav-link:hover {
-            border-color: var(--primary);
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
-            transform: translateY(-2px);
-        }
-
-        .class-nav-link.prev {
-            border-left: 4px solid var(--primary);
-        }
-
-        .class-nav-link.next {
-            border-right: 4px solid var(--accent);
-            text-align: right;
-            margin-left: auto;
-        }
-
-        .class-nav-link .nav-label {
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: var(--text-muted);
-            margin-bottom: 0.25rem;
-        }
-
-        .class-nav-link .nav-title {
-            font-size: 1rem;
-            font-weight: 600;
-            color: var(--primary);
-        }
-
-        .class-nav-link.next .nav-title {
-            color: var(--accent);
-        }
-
-        .class-nav-icon {
-            font-size: 1.5rem;
-            line-height: 1;
-        }
-
-        .class-nav-placeholder {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 1.25rem;
-            background: var(--bg-light);
-            border: 2px dashed var(--border);
-            border-radius: 12px;
-            color: var(--text-muted);
-            font-size: 0.9rem;
-        }
-
-        .scroll-top {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            background: var(--primary);
-            color: white;
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            opacity: 0;
-            transition: opacity 0.3s;
-            text-decoration: none;
-            font-size: 1.5rem;
-        }
-        .scroll-top.visible {
-            opacity: 1;
-        }
-        .scroll-top:hover {
-            background: var(--secondary);
-        }
-
-        .actividad {
-            background: var(--bg-light);
-            border-left: 5px solid var(--accent);
-            padding: 1.5rem;
-            margin: 1.5rem 0;
-            border-radius: 4px;
-        }
-        .actividad h3 {
-            color: var(--primary);
-            margin-bottom: 1rem;
-        }
-        .actividad p {
-            margin-bottom: 0.75rem;
-        }
-        .actividad strong {
-            color: var(--secondary);
-        }
-
-        @media (max-width: 768px) {
-            header h1 {
-                font-size: 1.6rem;
-            }
-            section {
-                padding: 1.5rem;
-            }
-            nav ul {
-                grid-template-columns: 1fr;
-            }
-            .comparison {
-                grid-template-columns: 1fr;
-            }
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.7; color: var(--text-main); background: var(--bg-light); font-size: 16px; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        header { background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); color: white; padding: 3rem 0; margin-bottom: 2rem; }
+        header h1 { font-size: 2.2rem; margin-bottom: 0.5rem; font-weight: 700; }
+        header .subtitle { font-size: 1.1rem; opacity: 0.9; }
+        header .meta { margin-top: 1rem; font-size: 0.9rem; opacity: 0.8; }
+        nav { background: white; padding: 1.5rem 0; margin-bottom: 2rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        nav h2 { font-size: 1.1rem; color: var(--text-muted); margin-bottom: 1rem; padding: 0 20px; }
+        nav ul { list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.5rem; padding: 0 20px; }
+        nav a { color: var(--primary); text-decoration: none; padding: 0.5rem; display: block; border-radius: 4px; transition: background 0.2s; }
+        nav a:hover { background: var(--bg-light); }
+        section { background: white; padding: 2rem; margin-bottom: 2rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        section h2 { color: var(--primary); font-size: 1.8rem; margin-bottom: 1.5rem; padding-bottom: 0.5rem; border-bottom: 3px solid var(--accent); }
+        section h3 { color: var(--secondary); font-size: 1.4rem; margin: 2rem 0 1rem; }
+        p { margin-bottom: 1rem; }
+        pre { background: var(--bg-code); color: #e2e8f0; padding: 1.5rem; border-radius: 8px; overflow-x: auto; margin: 1.5rem 0; font-size: 0.9rem; line-height: 1.5; }
+        code { font-family: 'Consolas', 'Monaco', 'Courier New', monospace; background: var(--bg-light); color: var(--primary); padding: 0.2rem 0.4rem; border-radius: 4px; font-size: 0.9em; }
+        pre code { background: none; padding: 0; color: inherit; }
+        ul, ol { margin-left: 1.5rem; margin-bottom: 1rem; }
+        li { margin-bottom: 0.5rem; }
+        .callout { padding: 1.5rem; border-radius: 8px; margin: 1.5rem 0; border-left: 4px solid; }
+        .callout.info { background: #eff6ff; border-left-color: var(--primary); }
+        .callout.warning { background: #fef3c7; border-left-color: #f59e0b; }
+        .callout.success { background: #d1fae5; border-left-color: var(--accent); }
+        table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.95rem; }
+        th, td { padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid var(--border); }
+        th { background: var(--bg-light); font-weight: 600; color: var(--secondary); }
+        .actividad { background: var(--bg-light); border-left: 5px solid var(--accent); padding: 1.5rem; margin: 1.5rem 0; border-radius: 4px; }
+        .actividad h3 { color: var(--primary); margin-bottom: 1rem; }
+        .class-nav { display: flex; justify-content: space-between; align-items: stretch; gap: 1rem; margin: 2rem 0; }
+        .class-nav-link { flex: 1; display: flex; align-items: center; gap: 0.75rem; padding: 1.25rem 1.5rem; background: white; border: 2px solid var(--border); border-radius: 12px; text-decoration: none; color: var(--text-main); transition: all 0.3s ease; }
+        .class-nav-link:hover { border-color: var(--primary); box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15); transform: translateY(-2px); }
+        .class-nav-link.prev { border-left: 4px solid var(--primary); }
+        .class-nav-link.next { border-right: 4px solid var(--accent); text-align: right; margin-left: auto; }
+        .class-nav-link .nav-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); margin-bottom: 0.25rem; }
+        .class-nav-link .nav-title { font-size: 1rem; font-weight: 600; color: var(--primary); }
+        .class-nav-link.next .nav-title { color: var(--accent); }
+        .class-nav-icon { font-size: 1.5rem; line-height: 1; }
+        footer { background: var(--text-main); color: white; padding: 2rem 0; text-align: center; margin-top: 3rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        @media (max-width: 768px) { header h1 { font-size: 1.6rem; } section { padding: 1.5rem; } nav ul { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
     <header>
         <div class="container">
-            <h1>Clase 09: Permisos y Seguridad en Linux</h1>
-            <p class="subtitle">IF0099 - Sistemas Operativos I | Unidad 5 - Archivos y Permisos</p>
-            <p class="subtitle">Permisos rwx, SUID, SGID, Sticky Bit, ACLs y Gestión de Usuarios</p>
-            <p class="meta">Fecha: 04 de Marzo 2026 | Práctica: 8:00-9:00 AM | Plan Practico v2.0</p>
+            <h1>Clase 09: Paginación</h1>
+            <p class="subtitle">IF0099 - Sistemas Operativos I | Unidad 6 - Memoria</p>
+            <p class="subtitle">Paginación de memoria, tablas de páginas, TLB, segmentación</p>
+            <p class="meta">Fecha: 04 de Marzo 2026 | Teoría: 6:00-8:00 AM | Plan Practico v2.0</p>
         </div>
     </header>
 
     <div class="container">
-
-        <!-- Quick Navigation Bar -->
-        <div class="quick-nav" style="background: white; padding: 1rem; margin-bottom: 2rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
-            <div style="display: flex; align-items: center; gap: 1rem;">
-                <a href="index.html" style="color: var(--primary); text-decoration: none; font-weight: 500;">Inicio</a>
-                <span style="color: var(--text-muted);">|</span>
-                <span style="color: var(--text-main); font-weight: 600;">Permisos y Seguridad en Linux</span>
-            </div>
-            <div style="display: flex; align-items: center; gap: 0.5rem;">
-                <a href="cronograma.html" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: #10b981; color: white; text-decoration: none; border-radius: 6px; font-weight: 500;">Cronograma</a>
-                <a href="rubricas.html" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: #3b82f6; color: white; text-decoration: none; border-radius: 6px; font-weight: 500;">Rubricas</a>
-            </div>
-        </div>
-
         <nav>
             <h2>Contenido de la Clase</h2>
             <ul>
                 <li><a href="#objetivos">Objetivos de Aprendizaje</a></li>
-                <li><a href="#intro">1. Introducción a Permisos</a></li>
-                <li><a href="#permisos-basicos">2. Permisos Básicos (rwx)</a></li>
-                <li><a href="#chmod">3. Comando chmod</a></li>
-                <li><a href="#chown">4. Comando chown</a></li>
-                <li><a href="#permisos-especiales">5. Permisos Especiales</a></li>
-                <li><a href="#usuarios-grupos">6. Usuarios y Grupos</a></li>
-                <li><a href="#acls">7. ACLs (Listas de Control de Acceso)</a></li>
-                <li><a href="#practica">8. Actividad Práctica</a></li>
-                <li><a href="#entregable">9. Entregable</a></li>
-                <li><a href="#resumen">Resumen</a></li>
+                <li><a href="#introduccion">Introducción a Paginación</a></li>
+                <li><a href="#paginacion">Paginación de Memoria</a></li>
+                <li><a href="#tablas">Tablas de Páginas</a></li>
+                <li><a href="#tlb">TLB y Traducción</a></li>
+                <li><a href="#segmentacion">Segmentación</a></li>
+                <li><a href="#practica">Práctica en Linux</a></li>
+                <li><a href="#entregable">Entregable</a></li>
             </ul>
         </nav>
 
@@ -397,506 +88,256 @@
             <h2>Objetivos de Aprendizaje</h2>
             <p>Al finalizar esta clase, serás capaz de:</p>
             <ol>
-                <li><strong>Explicar</strong> el modelo de permisos UGO (User, Group, Others)</li>
-                <li><strong>Aplicar</strong> permisos básicos con chmod</li>
-                <li><strong>Gestionar</strong> propietarios y grupos con chown</li>
-                <li><strong>Configurar</strong> permisos especiales (SUID, SGID, Sticky Bit)</li>
-                <li><strong>Implementar</strong> ACLs para control de acceso granular</li>
-                <li><strong>Diseñar</strong> esquemas de permisos para empresas</li>
+                <li><strong>Comprender</strong> el concepto de paginación de memoria</li>
+                <li><strong>Explicar</strong> el funcionamiento de las tablas de páginas</li>
+                <li><strong>Diferenciar</strong> entre paginación y segmentación</li>
+                <li><strong>Analizar</strong> el rol del TLB en la traducción de direcciones</li>
+                <li><strong>Configurar</strong> parámetros de memoria en Linux</li>
             </ol>
         </section>
 
-        <section id="intro">
-            <h2>1. Introducción a Permisos en Linux</h2>
-
+        <section id="introduccion">
+            <h2>1. Introducción a la Paginación</h2>
+            
             <div class="callout info">
-                <strong>Concepto fundamental:</strong> Linux es un sistema multiusuario diseñado para la seguridad. Cada archivo y directorio tiene permisos que controlan quién puede leer, escribir o ejecutar.
+                <strong>¿Qué es la paginación?</strong>
+                <p>Técnica de gestión de memoria que divide el espacio físico y lógico en bloques de tamaño fijo llamados marcos y páginas respectivamente.</p>
             </div>
 
-            <h3>¿Por qué son importantes los permisos?</h3>
+            <h3>Ventajas sobre la asignación contigua:</h3>
             <ul>
-                <li><strong>Seguridad:</strong> Protegen información confidencial</li>
-                <li><strong>Integridad:</strong> Evitan modificaciones no autorizadas</li>
-                <li><strong>Privacidad:</strong> Cada usuario tiene su espacio privado</li>
-                <li><strong>Control:</strong> El administrador decide quién accede a qué</li>
-            </ul>
-
-            <h3>Modelo de Seguridad UGO</h3>
-            <p>Linux utiliza el modelo <strong>UGO</strong> (User, Group, Others):</p>
-            <ul>
-                <li><strong>User (u):</strong> El propietario del archivo</li>
-                <li><strong>Group (g):</strong> El grupo del archivo</li>
-                <li><strong>Others (o):</strong> Todos los demás usuarios</li>
+                <li>Elimina la fragmentación externa</li>
+                <li>Permite compartir memoria entre procesos</li>
+                <li>Facilita la implementación de memoria virtual</li>
+                <li>Simplifica la asignación y liberación de memoria</li>
             </ul>
         </section>
 
-        <section id="permisos-basicos">
-            <h2>2. Permisos Básicos (rwx)</h2>
-
-            <h3>Tipos de Permisos</h3>
-            <pre><code>r - Read    (lectura)    - Puede leer el contenido
-w - Write   (escritura)  - Puede modificar el contenido
-x - eXecute (ejecución)  - Puede ejecutar como programa</code></pre>
-
-            <h3>Estructura de Permisos</h3>
-            <pre><code>-rwxr-xr--  1 juan developers 1024 Feb 15 10:30 archivo.txt
-│  │  │     │     │       │        │       │
-│  │  │     │     │       │        │       └─ Nombre del archivo
-│  │  │     │     │       │        └─ Tamaño y fecha
-│  │  │     │     │       └─ Grupo propietario
-│  │  │     │     └─ Usuario propietario
-│  │  │     └─ Número de hard links
-│  │  └─ Permisos Others (r--)
-│  └─ Permisos Group (r-x)
-└─ Permisos User (rwx)</code></pre>
-
-            <h3>Notación Octal</h3>
+        <section id="paginacion">
+            <h2>2. Paginación de Memoria</h2>
+            
+            <h3>Conceptos Clave</h3>
             <table>
-                <thead>
-                    <tr>
-                        <th>Permiso</th>
-                        <th>Valor</th>
-                        <th>Binario</th>
-                        <th>Significado</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr><td>---</td><td>0</td><td>000</td><td>Sin permisos</td></tr>
-                    <tr><td>--x</td><td>1</td><td>001</td><td>Solo ejecución</td></tr>
-                    <tr><td>-w-</td><td>2</td><td>010</td><td>Solo escritura</td></tr>
-                    <tr><td>-wx</td><td>3</td><td>011</td><td>Escritura y ejecución</td></tr>
-                    <tr><td>r--</td><td>4</td><td>100</td><td>Solo lectura</td></tr>
-                    <tr><td>r-x</td><td>5</td><td>101</td><td>Lectura y ejecución</td></tr>
-                    <tr><td>rw-</td><td>6</td><td>110</td><td>Lectura y escritura</td></tr>
-                    <tr><td>rwx</td><td>7</td><td>111</td><td> Todos los permisos</td></tr>
-                </tbody>
+                <tr><th>Concepto</th><th>Tamaño</th><th>Descripción</th></tr>
+                <tr><td><strong>Página</strong></td><td>4KB (típico)</td><td>Bloque de memoria lógica</td></tr>
+                <tr><td><strong>Marco</strong></td><td>4KB (típico)</td><td>Bloque de memoria física</td></tr>
+                <tr><td><strong>Offset</strong></td><td>12 bits</td><td>Posición dentro de la página</td></tr>
+                <tr><td><strong>Número de página</strong></td><td>20 bits (x86)</td><td>Identifica la página</td></tr>
             </table>
+
+            <h3>Estructura de una Dirección Lógica</h3>
+            <pre>
+Dirección Lógica (32 bits):
+┌─────────────────────────────┬─────────────┐
+│   Número de Página (p)      │   Offset(d) │
+│       20 bits               │   12 bits   │
+└─────────────────────────────┴─────────────┘
+         ↓ Tabla de Páginas
+Dirección Física (32 bits):
+┌─────────────────────────────┬─────────────┐
+│   Número de Marco (f)       │   Offset(d) │
+│       20 bits               │   12 bits   │
+└─────────────────────────────┴─────────────┘
+</pre>
 
             <div class="callout success">
-                <strong>Cálculo rápido:</strong>
-                r = 4, w = 2, x = 1 → Suma los valores que quieras activar
-                <br>ej: rwx = 4+2+1 = 7, r-x = 4+1 = 5
+                <strong>Ejemplo de traducción:</strong>
+                <ul>
+                    <li>Dirección lógica: 0x00401234</li>
+                    <li>Número de página: 0x00401 (página 1025)</li>
+                    <li>Offset: 0x234 (posición 564)</li>
+                    <li>Si el marco es 0x00005 → Dirección física: 0x00005234</li>
+                </ul>
             </div>
         </section>
 
-        <section id="chmod">
-            <h2>3. Comando chmod (Change Mode)</h2>
+        <section id="tablas">
+            <h2>3. Tablas de Páginas</h2>
+            
+            <p>La tabla de páginas mapea páginas lógicas a marcos físicos:</p>
 
-            <p>El comando <code>chmod</code> modifica los permisos de archivos y directorios.</p>
+            <h3>Estructura de una Entrada de Tabla de Páginas (PTE)</h3>
+            <pre>
+┌──────────────────────────────────────────────────────────────┐
+│ Número de Marco │ Flags (Presente, Modificado, Referenciado) │
+│    20 bits      │   Protección (R/W/X), Cache, etc.          │
+└──────────────────────────────────────────────────────────────┘
+</pre>
 
-            <h3>Sintaxis Simbólica</h3>
-            <pre><code># Agregar permiso
-chmod +x script.sh           # Hacer ejecutable
-
-# Quitar permiso
-chmod -w archivo.txt         # Quitar escritura
-
-# Específico por categoría
-chmod u+x script.sh          # Usuario: ejecutar
-chmod g+r archivo.txt        # Grupo: leer
-chmod o-w archivo.txt        # Otros: no escribir
-
-# Múltiples cambios
-chmod u+x,g+r,o-w archivo.txt</code></pre>
-
-            <h3>Sintaxis Octal</h3>
-            <pre><code># Formato: chmod [usuario][grupo][otros] archivo
-chmod 644 archivo.txt        # rw-r--r--
-chmod 755 script.sh          # rwxr-xr-x
-chmod 700 privado.txt        # rwx------
-chmod 777 publico.txt        # rwxrwxrwx (NO RECOMENDADO)</code></pre>
-
-            <h3>Permisos Comunes</h3>
+            <h3>Bits de Control Comunes</h3>
             <table>
-                <thead>
-                    <tr>
-                        <th>Octal</th>
-                        <th>Permiso</th>
-                        <th>Uso típico</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr><td>644</td><td>rw-r--r--</td><td>Archivos de texto</td></tr>
-                    <tr><td>755</td><td>rwxr-xr-x</td><td>Scripts y programas</td></tr>
-                    <tr><td>600</td><td>rw-------</td><td>Archivos confidenciales</td></tr>
-                    <tr><td>700</td><td>rwx------</td><td>Directorios privados</td></tr>
-                </tbody>
+                <tr><th>Bit</th><th>Nombre</th><th>Descripción</th></tr>
+                <tr><td>P</td><td>Presente</td><td>Página cargada en memoria física</td></tr>
+                <tr><td>R/W</td><td>Lectura/Escritura</td><td>Permisos de acceso</td></tr>
+                <tr><td>U/S</td><td>Usuario/Supervisor</td><td>Nivel de privilegio requerido</td></tr>
+                <tr><td>A</td><td>Accedido</td><td>Página ha sido leída</td></tr>
+                <tr><td>D</td><td>Sucio</td><td>Página ha sido modificada</td></tr>
             </table>
 
+            <h3>Tablas de Páginas Multinivel</h3>
             <div class="callout warning">
-                <strong>Advertencia:</strong> Nunca uses 777 en servidores de producción. Da permisos totales a todos los usuarios.
+                <strong>Problema:</strong> Una tabla de páginas de un nivel para 32 bits necesitaría 4MB (2^20 entradas × 4 bytes).
+                <br><br>
+                <strong>Solución:</strong> Tablas multinivel (x86 usa 2 niveles, x86-64 usa 4 niveles).
             </div>
         </section>
 
-        <section id="chown">
-            <h2>4. Comando chown (Change Owner)</h2>
+        <section id="tlb">
+            <h2>4. TLB (Translation Lookaside Buffer)</h2>
+            
+            <p>El TLB es una caché de traducciones de direcciones que acelera el acceso a memoria:</p>
 
-            <p>El comando <code>chown</code> cambia el propietario y grupo de un archivo.</p>
+            <h3>Funcionamiento</h3>
+            <ol>
+                <li>CPU genera dirección lógica</li>
+                <li>Se busca en TLB (acceso rápido: ~1 ciclo)</li>
+                <li>Si TLB hit: obtener marco directamente</li>
+                <li>Si TLB miss: consultar tabla de páginas en RAM (~100 ciclos)</li>
+                <li>Actualizar TLB con nueva traducción</li>
+            </ol>
 
-            <h3>Cambiar Propietario</h3>
-            <pre><code># Cambiar solo el usuario
-sudo chown nuevo_usuario archivo.txt
+            <h3>Rendimiento del TLB</h3>
+            <pre>
+Tiempo de acceso efectivo = (TLB_hit × TLB_time) + (TLB_miss × Memory_time)
 
-# Cambiar usuario y grupo
-sudo chown usuario:grupo archivo.txt
-
-# Cambiar solo el grupo
-sudo chown :grupo archivo.txt
-
-# Recursivo (directorios)
-sudo chown -R usuario:grupo /directorio/</code></pre>
-
-            <h3>Ejemplos Prácticos</h3>
-            <pre><code># Servidor web: archivos pertenecen a www-data
-sudo chown -R www-data:www-data /var/www/html
-
-# Proyecto compartido: grupo developers
-sudo chown -R juan:developers /proyecto/compartido
-
-# Directorio personal: usuario y su grupo
-sudo chown -R $USER:$USER ~/documentos</code></pre>
-        </section>
-
-        <section id="permisos-especiales">
-            <h2>5. Permisos Especiales</h2>
-
-            <h3>SUID (Set User ID)</h3>
-            <p>El archivo se ejecuta con los privilegios del propietario, no del usuario que lo ejecuta.</p>
-            <pre><code># Ejemplo: /usr/bin/passwd
-$ ls -l /usr/bin/passwd
--rwsr-xr-x  1 root root 73465 Feb 15 10:30 /usr/bin/passwd
- │             │
- │             └─ Dueño = root
- └─ s = SUID activo</code></pre>
-
-            <p>Cualquier usuario puede cambiar su contraseña porque passwd se ejecuta temporalmente como root.</p>
-
-            <pre><code># Activar SUID
-chmod u+s archivo
-chmod 4755 archivo            # 4 = SUID</code></pre>
-
-            <div class="callout warning">
-                <strong>Peligro:</strong> SUID puede ser un vector de escalada de privilegios. Solo usar cuando sea absolutamente necesario.
-            </div>
-
-            <h3>SGID (Set Group ID)</h3>
-            <p>Los archivos nuevos heredan el grupo del directorio padre.</p>
-            <pre><code># Crear directorio colaborativo
-mkdir /proyecto/compartido
-sudo chown -R :developers /proyecto/compartido
-sudo chmod g+s /proyecto/compartido
-
-# Verificar
-ls -ld /proyecto/compartido
-drwxrwsr-x  2 juan developers 4096 Feb 15 10:30 /proyecto/compartido
- │                │
- │                └─ s = SGID activo</code></pre>
-
-            <pre><code># Activar SGID
-chmod g+s directorio
-chmod 2755 directorio           # 2 = SGID</code></pre>
-
-            <h3>Sticky Bit</h3>
-            <p>Solo el propietario puede borrar sus archivos (útil en directorios compartidos).</p>
-            <pre><code># Ejemplo: /tmp
-$ ls -ld /tmp
-drwxrwxrwt  10 root root 4096 Feb 15 10:30 /tmp
- │                │
- │                └─ t = Sticky bit activo</code></pre>
-
-            <pre><code># Activar sticky bit
-chmod +t directorio
-chmod 1755 directorio           # 1 = Sticky bit</code></pre>
+Ejemplo:
+- TLB hit rate: 98%
+- TLB access: 1 ns
+- Memory access: 100 ns
+- Tiempo efectivo = 0.98 × 1 + 0.02 × 100 = 2.98 ns
+</pre>
 
             <div class="callout success">
-                <strong>Uso típico:</strong> Directorios compartidos donde múltiples usuarios pueden crear archivos, pero solo pueden borrar los suyos propios (como /tmp).
+                <strong>TLB hit rate típico:</strong> 95-99% gracias a la localidad temporal y espacial.
             </div>
         </section>
 
-        <section id="usuarios-grupos">
-            <h2>6. Usuarios y Grupos en Linux</h2>
+        <section id="segmentacion">
+            <h2>5. Segmentación</h2>
+            
+            <p>La segmentación divide la memoria en bloques lógicos de tamaño variable:</p>
 
-            <h3>Archivos de Configuración</h3>
+            <h3>Segmentos Típicos</h3>
             <table>
-                <thead>
-                    <tr>
-                        <th>Archivo</th>
-                        <th>Contenido</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr><td>/etc/passwd</td><td>Información de usuarios</td></tr>
-                    <tr><td>/etc/shadow</td><td>Contraseñas encriptadas</td></tr>
-                    <tr><td>/etc/group</td><td>Información de grupos</td></tr>
-                    <tr><td>/etc/gshadow</td><td>Contraseñas de grupos</td></tr>
-                </tbody>
+                <tr><th>Segmento</th><th>Contenido</th><th>Características</th></tr>
+                <tr><td><strong>Código</strong></td><td>Instrucciones del programa</td><td>Read-only, Ejecutable</td></tr>
+                <tr><td><strong>Datos</strong></td><td>Variables globales</td><td>Lectura/Escritura</td></tr>
+                <tr><td><strong>Pila</strong></td><td>Variables locales, parámetros</td><td>Lectura/Escritura, Crece hacia abajo</td></tr>
+                <tr><td><strong>Heap</strong></td><td>Memoria dinámica (malloc)</td><td>Lectura/Escritura, Crece hacia arriba</td></tr>
             </table>
 
-            <h3>Gestión de Usuarios</h3>
-            <pre><code># Crear usuario
-sudo useradd -m -s /bin/bash nuevo_usuario
+            <h3>Dirección en Segmentación</h3>
+            <pre>
+Dirección Lógica:
+┌────────────────────┬──────────────────────────────┐
+│  Selector (s)      │         Offset (d)           │
+│    16 bits         │         32 bits              │
+└────────────────────┴──────────────────────────────┘
 
-# Establecer contraseña
-sudo passwd nuevo_usuario
+Traducción:
+1. Selector → Tabla de Segmentos → Base + Límite
+2. Verificar: 0 ≤ offset < límite
+3. Dirección física = Base + offset
+</pre>
 
-# Ver información de usuario
-id nuevo_usuario
-groups nuevo_usuario
-
-# Eliminar usuario
-sudo userdel usuario
-sudo userdel -r usuario       # Eliminar también home</code></pre>
-
-            <h3>Gestión de Grupos</h3>
-            <pre><code># Crear grupo
-sudo groupadd desarrolladores
-
-# Agregar usuario a grupo
-sudo usermod -aG desarrolladores usuario
-
-# Ver miembros de un grupo
-getent group desarrolladores
-
-# Eliminar grupo
-sudo groupdel desarrolladores</code></pre>
-
-            <h3>Estructura de /etc/passwd</h3>
-            <pre><code>juan:x:1000:1000:Juan Perez:/home/juan:/bin/bash
-│  │ │   │    │            │           │
-│  │ │   │    │            │           └─ Shell predeterminado
-│  │ │   │    │            └─ Directorio home
-│  │ │   │    └─ Comentario (nombre completo)
-│  │ │   └─ GID (grupo primario)
-│  │ └─ UID (ID de usuario)
-│  └─ x = contraseña en /etc/shadow
-└─ Nombre de usuario</code></pre>
-        </section>
-
-        <section id="acls">
-            <h2>7. ACLs (Access Control Lists)</h2>
+            <h3>Paginación vs Segmentación</h3>
+            <table>
+                <tr><th>Característica</th><th>Paginación</th><th>Segmentación</th></tr>
+                <tr><td>Tamaño de unidad</td><td>Fijo (4KB)</td><td>Variable</td></tr>
+                <tr><td>Visibilidad</td><td>Transparente al programador</td><td>Visible al programador</td></tr>
+                <tr><td>Fragmentación</td><td>Interna (última página)</td><td>Externa</td></tr>
+                <tr><td>Protección</td><td>Por página</td><td>Por segmento</td></tr>
+            </table>
 
             <div class="callout info">
-                <strong>¿Qué son las ACLs?</strong> Permiten permisos más granulares que el modelo UGO tradicional. Puedes dar permisos a múltiples usuarios y grupos específicos.
-            </div>
-
-            <h3>Instalar ACL</h3>
-            <pre><code># Debian/Ubuntu
-sudo apt install acl
-
-# RHEL/CentOS
-sudo yum install acl</code></pre>
-
-            <h3>Ver ACL</h3>
-            <pre><code># Ver ACL de un archivo
-getfacl archivo.txt
-
-# Salida ejemplo:
-# file: archivo.txt
-# owner: juan
-# group: developers
-user::rw-
-user:maria:rw-
-group::r--
-mask::rw-
-other::r--</code></pre>
-
-            <h3>Modificar ACL</h3>
-            <pre><code># Dar permisos a usuario específico
-setfacl -m u:maria:rw archivo.txt
-
-# Dar permisos a grupo específico
-setfacl -m g:equiporh:rx documento.txt
-
-# Eliminar permiso de usuario
-setfacl -x u:maria archivo.txt
-
-# Eliminar todas las ACLs
-setfacl -b archivo.txt</code></pre>
-
-            <h3>ACLs por Defecto para Directorios</h3>
-            <pre><code># Establecer ACLs predeterminadas (nuevos archivos heredan)
-setfacl -d -m u:maria:rw /directorio/compartido
-
-# Ver ACLs predeterminadas
-getfacl -d /directorio/compartido</code></pre>
-
-            <div class="callout success">
-                <strong>Ventaja de ACLs:</strong> No necesitas crear nuevos grupos para cada combinación de permisos. Puedes dar permisos específicos a usuarios individuales sin afectar al modelo UGO.
+                <strong>Segmentación paginada:</strong> Linux y Windows combinan ambas técnicas. La segmentación divide el espacio lógico y cada segmento se pagina.
             </div>
         </section>
 
         <section id="practica">
-            <h2>8. Actividad Práctica</h2>
+            <h2>6. Práctica en Linux</h2>
+            
+            <h3>Comandos para analizar paginación y memoria:</h3>
+            <pre>
+# Ver tamaño de página del sistema
+getconf PAGE_SIZE
 
-            <div class="info-box" style="margin-bottom: 1.5rem;">
-                <h3>📋 Laboratorio Complementario</h3>
-                <p>Para practicar permisos y usuarios en Linux con ejercicios guiados, consulta el <strong><a href="../laboratorios-html/lab-02-permisos-usuarios.html" target="_blank">Laboratorio 2: Permisos y Usuarios en Linux</a></strong>.</p>
-            </div>
+# Ver información de memoria virtual de un proceso
+cat /proc/[PID]/maps
 
+# Ver estadísticas de TLB (si disponible)
+cat /proc/vmstat | grep -i tlb
+
+# Ver uso de memoria con detalles de paginación
+vmstat -s
+
+# Información detallada de memoria del sistema
+cat /proc/meminfo
+
+# Ver tabla de páginas (requiere permisos de root)
+sudo cat /proc/[PID]/pagemap
+</pre>
+
+            <h3>Ejercicio práctico:</h3>
             <div class="actividad">
-                <h3>Ejercicio 1: Permisos Básicos</h3>
-                <p><strong>Objetivo:</strong> Practicar con chmod y chown</p>
-                <pre><code># 1. Crear archivo de prueba
-touch prueba.txt
-
-# 2. Ver permisos iniciales
-ls -l prueba.txt
-
-# 3. Cambiar a 644 (rw-r--r--)
-chmod 644 prueba.txt
-ls -l prueba.txt
-
-# 4. Quitar permiso de lectura a otros
-chmod o-r prueba.txt
-ls -l prueba.txt
-
-# 5. Hacer ejecutable
-chmod +x prueba.txt
-ls -l prueba.txt</code></pre>
+                <h3>Ejercicio: Análisis de Paginación</h3>
+                <ol>
+                    <li>Verificar tamaño de página con <code>getconf PAGE_SIZE</code></li>
+                    <li>Ejecutar un proceso (ej: <code>sleep 100</code>) y obtener su PID</li>
+                    <li>Examinar su mapa de memoria con <code>cat /proc/[PID]/maps</code></li>
+                    <li>Identificar los diferentes segmentos (código, datos, heap, pila)</li>
+                    <li>Calcular cuántas páginas ocupa cada región</li>
+                </ol>
             </div>
-
-            <div class="actividad">
-                <h3>Ejercicio 2: Permisos Especiales</h3>
-                <p><strong>Objetivo:</strong> Configurar directorio compartido con SGID</p>
-                <pre><code># 1. Crear directorio compartido
-mkdir -p ~/proyecto/compartido
-
-# 2. Crear grupo de desarrolladores
-sudo groupadd desarrolladores
-
-# 3. Agregarte al grupo
-sudo usermod -aG desarrolladores $USER
-
-# 4. Configurar directorio
-sudo chown -R :desarrolladores ~/proyecto/compartido
-sudo chmod g+s ~/proyecto/compartido
-
-# 5. Verificar (inicia nueva sesión para que surta efecto)
-newgrp desarrolladores
-ls -ld ~/proyecto/compartido</code></pre>
-            </div>
-
-            <div class="actividad">
-                <h3>Ejercicio 3: ACLs</h3>
-                <p><strong>Objetivo:</strong> Dar acceso específico a otro usuario</p>
-                <pre><code># 1. Crear archivo confidencial
-echo "Datos importantes" > confidencial.txt
-
-# 2. Ver ACL actual
-getfacl confidencial.txt
-
-# 3. Dar permiso de lectura a usuario compañero
-sudo setfacl -m u:compañero:r confidencial.txt
-
-# 4. Verificar ACL
-getfacl confidencial.txt</code></pre>
-            </div>
-
-            <p><strong>Tiempo estimado:</strong> 45 minutos</p>
         </section>
 
         <section id="entregable">
-            <h2>9. Entregable</h2>
+            <h2>7. Entregable de la Clase</h2>
+            
+            <div class="actividad">
+                <h3>Análisis de Paginación y Memoria</h3>
+                <p><strong>Descripción:</strong> Documento técnico sobre paginación en tu VM Ubuntu</p>
+                
+                <h4>Requisitos:</h4>
+                <ol>
+                    <li>Captura de <code>getconf PAGE_SIZE</code> y explicación</li>
+                    <li>Mapa de memoria de un proceso (<code>/proc/[PID]/maps</code>)</li>
+                    <li>Diagrama de traducción dirección lógica → física</li>
+                    <li>Comparación tabla: paginación vs segmentación</li>
+                    <li>Ejemplo numérico de traducción de dirección</li>
+                </ol>
 
-            <div class="callout info">
-                <h3>Esquema de Permisos para Empresa Ficticia</h3>
-                <p><strong>Empresa:</strong> TechSolutions S.A.S.</p>
-                <p><strong>Departamentos:</strong> Desarrollo, Gerencia, Contabilidad</p>
-            </div>
-
-            <h3>Requisitos:</h3>
-            <ol>
-                <li><strong>Directorio /proyectos/compartido:</strong>
-                    <ul>
-                        <li>Equipo de desarrollo: lectura y escritura</li>
-                        <li>Gerencia: solo lectura</li>
-                        <li>Resto de usuarios: sin acceso</li>
-                    </ul>
-                </li>
-                <li><strong>Directorio /proyectos/confidencial:</strong>
-                    <ul>
-                        <li>Solo gerencia: acceso completo</li>
-                        <li>Resto de usuarios: sin acceso</li>
-                    </ul>
-                </li>
-                <li><strong>Script de configuración:</strong>
-                    <ul>
-                        <li>Automatizar la creación de estructura</li>
-                        <li>Configurar permisos apropiados</li>
-                        <li>Crear usuarios y grupos necesarios</li>
-                    </ul>
-                </li>
-            </ol>
-
-            <h3>Formato de Entrega:</h3>
-            <ul>
-                <li>Diagrama de la estructura de directorios</li>
-                <li>Tabla de permisos (quién puede acceder a qué)</li>
-                <li>Script bash funcional con comentarios</li>
-                <li>Documentación explicando cada permiso</li>
-            </ul>
-
-            <div class="callout warning">
-                <strong>Fecha de entrega:</strong> Consultar plataforma virtual
+                <h4>Rúbrica:</h4>
+                <table>
+                    <tr><th>Criterio</th><th>Puntaje</th></tr>
+                    <tr><td>Capturas con comandos correctos</td><td>25%</td></tr>
+                    <tr><td>Mapa de memoria analizado</td><td>25%</td></tr>
+                    <tr><td>Diagrama de traducción claro</td><td>20%</td></tr>
+                    <tr><td>Comparación técnica completa</td><td>20%</td></tr>
+                    <tr><td>Ejemplo numérico correcto</td><td>10%</td></tr>
+                </table>
             </div>
         </section>
 
         <section id="resumen">
-            <h2>Resumen de la Clase</h2>
-
+            <h2>Resumen</h2>
             <table>
-                <thead>
-                    <tr>
-                        <th>Concepto</th>
-                        <th>Descripción</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr><td><strong>UGO</strong></td><td>User, Group, Others - modelo de permisos</td></tr>
-                    <tr><td><strong>rwx</strong></td><td>Read, Write, eXecute - tipos de permisos</td></tr>
-                    <tr><td><strong>chmod</strong></td><td>Cambiar permisos de archivos</td></tr>
-                    <tr><td><strong>chown</strong></td><td>Cambiar propietario y grupo</td></tr>
-                    <tr><td><strong>SUID</strong></td><td>Ejecutar como propietario (4)</td></tr>
-                    <tr><td><strong>SGID</strong></td><td>Heredar grupo del directorio (2)</td></tr>
-                    <tr><td><strong>Sticky bit</strong></td><td>Solo dueño puede borrar (1)</td></tr>
-                    <tr><td><strong>ACL</strong></td><td>Permisos granulares avanzados</td></tr>
-                    <tr><td><strong>setfacl/getfacl</strong></td><td>Gestionar ACLs</td></tr>
-                </tbody>
+                <tr><th>Concepto</th><th>Descripción</th></tr>
+                <tr><td>Paginación</td><td>División en páginas/marcos de tamaño fijo</td></tr>
+                <tr><td>Tabla de páginas</td><td>Mapeo página → marco con bits de control</td></tr>
+                <tr><td>TLB</td><td>Caché de traducciones para acelerar acceso</td></tr>
+                <tr><td>Segmentación</td><td>División lógica por tipo de dato</td></tr>
+                <tr><td>Offset</td><td>Posición dentro de página (no cambia en traducción)</td></tr>
             </table>
 
-            <div class="callout success">
-                <strong>Concepto fundamental:</strong> Los permisos en Linux son la base de la seguridad del sistema. El modelo UGO es simple pero efectivo para la mayoría de casos, mientras que las ACLs proporcionan flexibilidad cuando se necesita control granular.
-            </div>
-
             <h3>Próxima Clase</h3>
-            <p><strong>Clase 10: Permisos en Windows Server</strong></p>
+            <p><strong>Clase 10: Memoria Virtual</strong></p>
             <ul>
-                <li>NTFS vs FAT32</li>
-                <li>Permisos NTFS y ACLs</li>
-                <li>Carpetas compartidas SMB</li>
-                <li>Gestión con PowerShell</li>
+                <li>Memoria virtual y demand paging</li>
+                <li>Page faults</li>
+                <li>Algoritmos de reemplazo de páginas</li>
+                <li>Swap y thrashing</li>
             </ul>
-        </section>
-
-        <!-- Videos Recomendados -->
-        <section id="videos">
-            <h2>Videos Recomendados</h2>
-
-            <div class="callout info">
-                <h3>📹 Video 1: Domina CHMOD - Guía DEFINITIVA de Permisos en Linux (Español)</h3>
-                <p><strong>Desde cero hasta avanzado</strong></p>
-                <p>Duración: ~25 minutos | Nivel: Todos los niveles | Idioma: Español</p>
-                <p>Guía completa sobre permisos en Linux usando chmod, chown y variantes numéricas/simbólicas.</p>
-                <p><a href="https://www.youtube.com/watch?v=w1FntACweog" target="_blank">📺 Ver en YouTube</a></p>
-            </div>
-
-            <div class="callout info">
-                <h3>📹 Video 2: PERMISOS LINUX: Chmod, Chown y la Regla del Octal (4-2-1)</h3>
-                <p><strong>Guía completa de permisos en Linux</strong></p>
-                <p>Duración: ~20 minutos | Nivel: Todos los niveles | Idioma: Español</p>
-                <p>Explicación detallada de permisos de archivos en Linux: lectura de permisos con ls -l, significado de letras, y la regla del octal (4-2-1).</p>
-                <p><a href="https://www.youtube.com/watch?v=LN9sxO0y7_I" target="_blank">📺 Ver en YouTube</a></p>
-            </div>
         </section>
 
         <!-- Navigation between classes -->
@@ -905,50 +346,29 @@ getfacl confidencial.txt</code></pre>
                 <span class="class-nav-icon">←</span>
                 <div>
                     <div class="nav-label">Clase Anterior</div>
-                    <div class="nav-title">← Comunicación entre Procesos</div>
+                    <div class="nav-title">← Gestión de Memoria</div>
                 </div>
             </a>
             <a href="clase-10.html" class="class-nav-link next">
                 <div>
                     <div class="nav-label">Siguiente Clase</div>
-                    <div class="nav-title">Permisos Windows →</div>
+                    <div class="nav-title">Memoria Virtual →</div>
                 </div>
                 <span class="class-nav-icon">→</span>
             </a>
         </nav>
     </div>
 
-    
-    
     <footer>
         <div class="container">
-            <p><strong>IF0099 - Sistemas Operativos I</strong> - Permisos y Seguridad en Linux</p>
+            <p><strong>IF0099 - Sistemas Operativos I</strong> - Paginación</p>
             <p>Fecha: 04 de Marzo 2026 | Plan Practico v2.0</p>
             <p style="margin-top: 10px;">
-                <a href="index.html" style="color: #10b981;">Inicio</a> |
-                <a href="cronograma.html" style="color: #10b981;">Cronograma</a> |
-                <a href="rubricas.html" style="color: #3b82f6;">Rubricas</a>
+                <a href="index.html">Inicio</a> |
+                <a href="cronograma.html">Cronograma</a> |
+                <a href="rubricas.html">Rubricas</a>
             </p>
         </div>
     </footer>
-
-
-
-    <a href="#" class="scroll-top" id="scrollTop" aria-label="Scroll to top">↑</a>
-
-    <script>
-        const scrollTopBtn = document.getElementById('scrollTop');
-        window.addEventListener('scroll', () => {
-            if (window.pageYOffset > 300) {
-                scrollTopBtn.classList.add('visible');
-            } else {
-                scrollTopBtn.classList.remove('visible');
-            }
-        });
-        scrollTopBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-    </script>
 </body>
 </html>

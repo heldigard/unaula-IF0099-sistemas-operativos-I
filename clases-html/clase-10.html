@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clase 10: Permisos y Seguridad en Windows | IF0099 - Sistemas Operativos I</title>
+    <title>Clase 10: Memoria Virtual | IF0099 - Sistemas Operativos I</title>
     <style>
         :root {
             --primary: #2563eb;
@@ -335,6 +335,23 @@
             color: var(--secondary);
         }
 
+        .diagram-box {
+            background: var(--bg-light);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            text-align: center;
+        }
+        .diagram-box pre {
+            background: none;
+            color: var(--text-main);
+            padding: 0;
+            margin: 0;
+            font-size: 0.85rem;
+            line-height: 1.4;
+        }
+
         @media (max-width: 768px) {
             header h1 {
                 font-size: 1.6rem;
@@ -354,10 +371,10 @@
 <body>
     <header>
         <div class="container">
-            <h1>Clase 10: Permisos y Seguridad en Windows</h1>
-            <p class="subtitle">IF0099 - Sistemas Operativos I | Unidad 5 - Archivos y Permisos</p>
-            <p class="subtitle">NTFS, Permisos NTFS, SMB Shares y PowerShell</p>
-            <p class="meta">Fecha: 11 de Marzo 2026 | Teoría: 6:00-8:00 AM | Plan Practico v2.0</p>
+            <h1>Clase 10: Memoria Virtual</h1>
+            <p class="subtitle">IF0099 - Sistemas Operativos I | Unidad 7 - Gestión de Memoria</p>
+            <p class="subtitle">Paging, Swapping, Thrashing y Monitoreo</p>
+            <p class="meta">Fecha: 11 de Marzo 2026 | Práctica: 8:00-9:00 AM | Plan Practico v2.0</p>
         </div>
     </header>
 
@@ -368,7 +385,7 @@
             <div style="display: flex; align-items: center; gap: 1rem;">
                 <a href="index.html" style="color: var(--primary); text-decoration: none; font-weight: 500;">Inicio</a>
                 <span style="color: var(--text-muted);">|</span>
-                <span style="color: var(--text-main); font-weight: 600;">Permisos y Seguridad en Windows</span>
+                <span style="color: var(--text-main); font-weight: 600;">Memoria Virtual</span>
             </div>
             <div style="display: flex; align-items: center; gap: 0.5rem;">
                 <a href="cronograma.html" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: #10b981; color: white; text-decoration: none; border-radius: 6px; font-weight: 500;">Cronograma</a>
@@ -380,14 +397,15 @@
             <h2>Contenido de la Clase</h2>
             <ul>
                 <li><a href="#objetivos">Objetivos de Aprendizaje</a></li>
-                <li><a href="#intro">1. Introducción a Permisos Windows</a></li>
-                <li><a href="#sistemas-archivos">2. Sistemas de Archivos (NTFS vs FAT32)</a></li>
-                <li><a href="#permisos-ntfs">3. Permisos NTFS</a></li>
-                <li><a href="#powershell">4. Gestión con PowerShell</a></li>
-                <li><a href="#smb">5. Compartir Archivos (SMB)</a></li>
-                <li><a href="#usuarios">6. Usuarios y Grupos</a></li>
-                <li><a href="#practica">7. Actividad Práctica</a></li>
-                <li><a href="#entregable">8. Entregable</a></li>
+                <li><a href="#intro">1. Introducción a la Memoria Virtual</a></li>
+                <li><a href="#memoria-fisica-virtual">2. Memoria Física vs Virtual</a></li>
+                <li><a href="#paging">3. Paginación (Paging)</a></li>
+                <li><a href="#swapping">4. Swapping</a></li>
+                <li><a href="#thrashing">5. Thrashing</a></li>
+                <li><a href="#monitoreo">6. Monitoreo de Memoria</a></li>
+                <li><a href="#linux-windows">7. Comparación Linux vs Windows</a></li>
+                <li><a href="#practica">8. Actividad Práctica</a></li>
+                <li><a href="#entregable">Entregable</a></li>
                 <li><a href="#resumen">Resumen</a></li>
             </ul>
         </nav>
@@ -396,474 +414,741 @@
             <h2>Objetivos de Aprendizaje</h2>
             <p>Al finalizar esta clase, serás capaz de:</p>
             <ol>
-                <li><strong>Diferenciar</strong> entre NTFS y FAT32</li>
-                <li><strong>Configurar</strong> permisos NTFS básicos y avanzados</li>
-                <li><strong>Gestionar</strong> permisos con PowerShell</li>
-                <li><strong>Compartir</strong> carpetas vía SMB</li>
-                <li><strong>Crear</strong> usuarios y grupos en Windows Server</li>
-                <li><strong>Verificar</strong> permisos desde cliente Linux</li>
+                <li><strong>Explicar</strong> la diferencia entre memoria física y virtual</li>
+                <li><strong>Describir</strong> cómo funciona la paginación (paging)</li>
+                <li><strong>Entender</strong> el proceso de swapping</li>
+                <li><strong>Reconocer</strong> el fenómeno de thrashing y cómo evitarlo</li>
+                <li><strong>Monitorear</strong> el uso de memoria y swap</li>
+                <li><strong>Comparar</strong> la gestión de memoria entre Linux y Windows</li>
             </ol>
         </section>
 
         <section id="intro">
-            <h2>1. Introducción a Permisos en Windows</h2>
+            <h2>1. Introducción a la Memoria Virtual</h2>
 
             <div class="callout info">
-                <strong>Concepto fundamental:</strong> Windows Server utiliza un modelo de seguridad basado en ACLs (Access Control Lists) mucho más granular que el modelo UGO de Linux.
+                <strong>Pregunta fundamental:</strong> ¿Cómo ejecutar programas que requieren más memoria de la disponible físicamente?
             </div>
 
-            <h3>Modelo de Seguridad de Windows</h3>
+            <h3>El Problema de la Memoria Limitada</h3>
+
+            <p>La memoria física (RAM) es un recurso limitado y costoso:</p>
+
             <ul>
-                <li><strong>ACLs:</strong> Listas de Control de Acceso</li>
-                <li><strong>ACEs:</strong> Entradas de Control de Acceso (Access Control Entries)</li>
-                <li><strong>SIDs:</strong> Security Identifiers (identificadores únicos)</li>
-                <li><strong>Tokens de acceso:</strong> Contienen información de seguridad del usuario</li>
+                <li>Los programas modernos requieren cada vez más memoria</li>
+                <li>Múltiples programas ejecutándose simultáneamente</li>
+                <li>La RAM física es finita y costosa</li>
+                <li>Sin memoria virtual, estaríamos limitados por la RAM instalada</li>
             </ul>
 
-            <h3>Jerarquía de Permisos</h3>
+            <h3>La Solución: Memoria Virtual</h3>
+
+            <p><strong>Memoria Virtual</strong> es una técnica que crea una ilusión de memoria ilimitada:</p>
+
             <ul>
-                <li><strong>Permisos NTFS:</strong> Controlan acceso local a archivos y carpetas</li>
-                <li><strong>Permisos de Compartido (Share):</strong> Controlan acceso vía red</li>
-                <li><strong>Permisos Combinados:</strong> Se aplica el más restrictivo de ambos</li>
+                <li><strong>Abstracción:</strong> Cada proceso cree que tiene toda la memoria para sí</li>
+                <li><strong>Espacio de direcciones virtual:</strong> Independiente de la memoria física</li>
+                <li><strong>Uso de disco:</strong> Parte del disco se usa como extensión de la RAM</li>
+                <li><strong>Gestión automática:</strong> El SO mueve datos entre RAM y disco transparentemente</li>
             </ul>
         </section>
 
-        <section id="sistemas-archivos">
-            <h2>2. Sistemas de Archivos: NTFS vs FAT32</h2>
+        <section id="memoria-fisica-virtual">
+            <h2>2. Memoria Física vs Virtual</h2>
 
-            <h3>Comparación</h3>
             <table>
                 <thead>
                     <tr>
-                        <th>Característica</th>
-                        <th>NTFS</th>
-                        <th>FAT32</th>
+                        <th>Aspecto</th>
+                        <th>Memoria Física</th>
+                        <th>Memoria Virtual</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr><td><strong>Permisos</strong></td><td>ACLs completas</td><td>Solo lectura/oculto/sistema</td></tr>
-                    <tr><td><strong>Tamaño máximo archivo</strong></td><td>16 TB (teóricamente ilimitado)</td><td>4 GB</td></tr>
-                    <tr><td><strong>Tamaño máximo volumen</strong></td><td>256 TB</td><td>2 TB</td></tr>
-                    <tr><td><strong>Compresión</strong></td><td>Sí</td><td>No</td></tr>
-                    <tr><td><strong>Encriptación (EFS)</strong></td><td>Sí</td><td>No</td></tr>
-                    <tr><td><strong>Journaling</strong></td><td>Sí</td><td>No</td></tr>
-                    <tr><td><strong>Recuperación errores</strong></td><td>Excelente</td><td>Básica</td></tr>
-                    <tr><td><strong>Cuotas de disco</strong></td><td>Sí</td><td>No</td></tr>
+                    <tr>
+                        <td><strong>También llamada</strong></td>
+                        <td>RAM, memoria real</td>
+                        <td>Memoria lógica, espacio de direcciones</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Ubicación</strong></td>
+                        <td>Hardware (chips de RAM)</td>
+                        <td>Abstracción del SO (RAM + disco)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Tamaño</strong></td>
+                        <td>Físico (ej: 8GB, 16GB)</td>
+                        <td>Lógico (ej: 2TB por proceso en x86-64)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Velocidad</strong></td>
+                        <td>Muy rápida (nanosegundos)</td>
+                        <td>Variable (RAM rápida, disco lento)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Costo</strong></td>
+                        <td>Alto por GB</td>
+                        <td>Bajo (usa espacio en disco)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Visibilidad</strong></td>
+                        <td>Hardware, gestionada por MMU</td>
+                        <td>Visible para procesos</td>
+                    </tr>
                 </tbody>
             </table>
 
-            <div class="callout success">
-                <strong>Recomendación:</strong> Siempre usar NTFS en servidores de producción. FAT32 solo para compatibilidad con sistemas antiguos o dispositivos USB.
+            <h3>Relación entre Ambos Tipos de Memoria</h3>
+
+            <div class="diagram-box">
+<pre>+---------------------------------------------------------------+
+|  ESPACIO DE DIRECCIONES VIRTUAL (Proceso)                      |
+|  0x0000000000000000 ─────────────────────────────→ 0xFFFFFFFFFFFFFFFF |
+|     ↓                                        ↓                    |
+|  ┌────────────────────────────────────────────────────────────┐   |
+|  │  Páginas Virtuales                                        │   |
+|  │  ┌─────┐ ┌─────┐ ┌─────┐ ┌─────┐ ┌─────┐ ┌─────┐         │   |
+|  │  │ P0  │ │ P1  │ │ P2  │ │ P3  │ │ P4  │ │ P5  │ ...      │   |
+|  │  └──┬──┘ └──┬──┘ └──┬──┘ └──┬──┘ └──┬──┘ └──┬──┘         │   |
++─────┼───────┼───────┼───────┼───────┼───────┼────────────────────+
+       │       │       │       │       │       │
+       ▼       ▼       ▼       ▼       ▼       ▼
++---------------------------------------------------------------+
+|  TABLA DE PÁGINAS (Page Table)                                |
+|  Mapea páginas virtuales → marcos de página físicos          |
++---------------------------------------------------------------+
+       │       │       │       │       │       │
+       ▼       ▼       ▼       ▼       ▼       ▼
++---------------------------------------------------------------+
+|  MEMORIA FÍSICA (RAM)                                         |
+|  ┌────────────────────────────────────────────────────────────┐  |
+|  │ Marcos de Página (Page Frames)                            │  |
+|  │ ┌─────┐ ┌─────┐ ┌─────┐ ┌─────┐                         │  |
+|  │ │ F0  │ │ F1  │ │ F2  │ │ F3  │ ...                      │  |
+|  │ └─────┘ └─────┘ └─────┘ └─────┘                         │  |
++---------------------------------------------------------------+
+        │       │       │       │
+        ▼       ▼       ▼       ▼
++---------------------------------------------------------------+
+|  DISCO (Swap/Backing Store)                                   |
+|  Páginas que no caben en RAM                                  |
++---------------------------------------------------------------+</pre>
             </div>
-
-            <h3>Ver Tipo de Sistema de Archivos</h3>
-            <pre><code># PowerShell
-Get-Volume
-
-# Comando diskpart
-diskpart
-list volume</code></pre>
-
-            <h3>Convertir a NTFS</h3>
-            <pre><code># Convertir volumen C: a NTFS (sin pérdida de datos)
-Convert C: /FS:NTFS</code></pre>
         </section>
 
-        <section id="permisos-ntfs">
-            <h2>3. Permisos NTFS</h2>
+        <section id="paging">
+            <h2>3. Paginación (Paging)</h2>
 
-            <h3>Permisos Básicos</h3>
+            <p><strong>Paging</strong> es el mecanismo fundamental de la memoria virtual. Divide la memoria en unidades fijas llamadas <strong>páginas</strong>.</p>
+
+            <h3>Conceptos Clave</h3>
+
             <table>
                 <thead>
                     <tr>
-                        <th>Permiso</th>
+                        <th>Concepto</th>
                         <th>Descripción</th>
-                        <th>Carpeta</th>
-                        <th>Archivo</th>
+                        <th>Tamaño Típico</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr><td>Full Control</td><td>Control total</td><td>✅</td><td>✅</td></tr>
-                    <tr><td>Modify</td><td>Modificar</td><td>✅</td><td>✅</td></tr>
-                    <tr><td>Read & execute</td><td>Leer y ejecutar</td><td>✅</td><td>✅</td></tr>
-                    <tr><td>List folder contents</td><td>Listar contenido</td><td>✅</td><td>❌</td></tr>
-                    <tr><td>Read</td><td>Leer</td><td>✅</td><td>✅</td></tr>
-                    <tr><td>Write</td><td>Escribir</td><td>✅</td><td>✅</td></tr>
+                    <tr>
+                        <td><strong>Página Virtual</strong></td>
+                        <td>Unidad de memoria virtual</td>
+                        <td>4 KB (también 2 MB, 1 GB para huge pages)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Marco de Página</strong></td>
+                        <td>Unidad de memoria física</td>
+                        <td>4 KB (igual que la página)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Tabla de Páginas</strong></td>
+                        <td>Mapeo virtual → físico</td>
+                        <td>1 entrada por página</td>
+                    </tr>
+                    <tr>
+                        <td><strong>MMU</strong></td>
+                        <td>Memory Management Unit (hardware)</td>
+                        <td>Traduce direcciones en tiempo real</td>
+                    </tr>
                 </tbody>
             </table>
 
-            <h3>Permisos Avanzados</h3>
-            <ul>
-                <li><strong>Traverse folder:</strong> Navegar carpetas</li>
-                <li><strong>Create files:</strong> Crear archivos</li>
-                <li><strong>Create folders:</strong> Crear subcarpetas</li>
-                <li><strong>Delete subfolders:</strong> Borrar subcarpetas</li>
-                <li><strong>Delete:</strong> Borrar</li>
-                <li><strong>Read attributes:</strong> Leer atributos</li>
-                <li><strong>Write attributes:</strong> Escribir atributos</li>
-                <li><strong>Read permissions:</strong> Leer permisos</li>
-                <li><strong>Change permissions:</strong> Cambiar permisos</li>
-                <li><strong>Take ownership:</strong> Tomar ownership</li>
-            </ul>
+            <h3>Proceso de Traducción de Direcciones</h3>
 
-            <h3>Herencia de Permisos</h3>
-            <div class="callout info">
-                <strong>Herencia:</strong> Por defecto, las subcarpetas y archivos heredan los permisos de la carpeta padre. Puedes desactivar la herencia para configurar permisos explícitos.
+            <div class="diagram-box">
+<pre>Dirección Virtual (48 bits en x86-64)
+├──────────────┬──────────────────────────────────┐
+│  Número de Página │       Desplazamiento        │
+│    (36 bits)  │         (12 bits)             │
+└──────────────┴──────────────────────────────────┘
+       │                              │
+       ▼                              ▼
++----------------+           +------------------+
+│ Tabla de       │           │  Desplazamiento  │
+│ Páginas        │           │  se mantiene     │
+│ (en RAM/TLB)   │           │  igual           │
+└────────┬───────┘           └──────────────────┘
+         │
+         ▼
++------------------+
+│  Número de       │
+│  Marco de Página │
+└────────┬─────────┘
+         │
+         ▼
+┌─────────────────────────────────────────┐
+│    Dirección Física                     │
+├───────────────────┬─────────────────────┤
+│ Marco de Página   │   Desplazamiento   │
+└───────────────────┴─────────────────────┘
+         │                    │
+         └────────┬───────────┘
+                  ▼
+           Datos en RAM</pre>
             </div>
 
-            <pre><code># Ver permisos con PowerShell
-Get-Acl C:\Carpeta | Format-List
+            <h3>Page Fault</h3>
 
-# Ver permisos en formato tabla
-Get-Acl C:\Carpeta | Select-Object -ExpandProperty Access</code></pre>
+            <p>Un <strong>page fault</strong> ocurre cuando el proceso accede a una página que no está en RAM:</p>
+
+            <ol>
+                <li>El proceso accede a una dirección virtual</li>
+                <li>La MMU busca la página en la tabla de páginas</li>
+                <li>La página está marcada como "no presente" (en disco)</li>
+                <li>Se genera una excepción de page fault</li>
+                <li>El SO maneja el fault:
+                    <ul>
+                        <li>Encuentra un marco de página libre en RAM</li>
+                        <li>Si no hay libre, selecciona una víctima para expulsar</li>
+                        <li>Carga la página desde disco a RAM</li>
+                        <li>Actualiza la tabla de páginas</li>
+                        <li>Reinicia la instrucción que falló</li>
+                    </ul>
+                </li>
+            </ol>
+
+            <div class="callout warning">
+                <strong>Costo de un page fault:</strong> Un page fault típico toma ~10-100 µs si la página está en RAM, pero ~10-20 ms si requiere acceso a disco. ¡Eso es 100-1000 veces más lento!
+            </div>
         </section>
 
-        <section id="powershell">
-            <h2>4. Gestión con PowerShell</h2>
+        <section id="swapping">
+            <h2>4. Swapping</h2>
 
-            <h3>Ver Permisos</h3>
-            <pre><code># Ver ACL de una carpeta
-Get-Acl C:\Datos\Proyectos
+            <p><strong>Swapping</strong> es el proceso de mover páginas completas entre RAM y disco.</p>
 
-# Ver ACL en formato legible
-Get-Acl C:\Datos\Proyectos | Format-List
+            <h3>¿Cuándo Ocurre Swapping?</h3>
 
-# Exportar ACL a archivo
-Get-Acl C:\Datos\Proyectos | Export-Clixml acl.xml</code></pre>
+            <ul>
+                <li><strong>Memoria insuficiente:</strong> Cuando la RAM está casi llena</li>
+                <li><strong>Page fault:</strong> Cuando se accede a una página en disco</li>
+                <li><strong>Algoritmo de reemplazo:</strong> Cuando el SO necesita liberar marcos</li>
+            </ul>
 
-            <h3>Configurar Permisos NTFS</h3>
-            <pre><code># Variables
-$carpeta = "C:\Datos\Proyectos"
-$usuario = "DOMAIN\juanperez"
+            <h3>Algoritmos de Reemplazo de Páginas</h3>
 
-# Dar permisos de lectura
-$acl = Get-Acl $carpeta
-$accessRule = New-Object System.Security.AccessControl.FileSystemAccessRule(
-    $usuario,
-    "ReadAndExecute",
-    "ContainerInherit,ObjectInherit",
-    "None",
-    "Allow"
-)
-$acl.SetAccessRule($accessRule)
-Set-Acl $carpeta $acl
+            <table>
+                <thead>
+                    <tr>
+                        <th>Algoritmo</th>
+                        <th>Descripción</th>
+                        <th>Uso Real</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>FIFO</strong></td>
+                        <td>First In, First Out - Reemplaza la página más antigua</td>
+                        <td>Raramente usado (muy simple)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Óptimo</strong></td>
+                        <td>Reemplaza la página que se usará más tarde</td>
+                        <td>Teórico, imposible de implementar</td>
+                    </tr>
+                    <tr>
+                        <td><strong>LRU</strong></td>
+                        <td>Least Recently Used - Reemplaza la menos usada recientemente</td>
+                        <td>Común, aproximado en hardware</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Clock</strong></td>
+                        <td>Approximación de LRU con bit de referencia</td>
+                        <td>Muy usado en Linux</td>
+                    </tr>
+                </tbody>
+            </table>
 
-# Dar permisos completos
-$fullControl = New-Object System.Security.AccessControl.FileSystemAccessRule(
-    $usuario,
-    "FullControl",
-    "Allow"
-)
-$acl.SetAccessRule($fullControl)
-Set-Acl $carpeta $acl</code></pre>
+            <h3>Swap Space en Linux</h3>
 
-            <h3>Script Completo de Configuración</h3>
-            <pre><code># Script para configurar carpeta compartida
-$carpeta = "C:\Compartido\Documentos"
-$grupoLectura = "DOMAIN\Lectores"
-$grupoEscritura = "DOMAIN\Editores"
+            <p>En Linux, el swap puede ser de dos tipos:</p>
 
-# Crear carpeta si no existe
-if (-not (Test-Path $carpeta)) {
-    New-Item -ItemType Directory -Path $carpeta -Force
-}
-
-# Obtener ACL actual
-$acl = Get-Acl $carpeta
-
-# Deshabilitar herencia
-$acl.SetAccessRuleProtection($true, $false)
-
-# Agregar permisos de lectura
-$ruleLectura = New-Object System.Security.AccessControl.FileSystemAccessRule(
-    $grupoLectura,
-    "ReadAndExecute",
-    "ContainerInherit,ObjectInherit",
-    "None",
-    "Allow"
-)
-$acl.AddAccessRule($ruleLectura)
-
-# Agregar permisos de escritura
-$ruleEscritura = New-Object System.Security.AccessControl.FileSystemAccessRule(
-    $grupoEscritura,
-    "Modify",
-    "ContainerInherit,ObjectInherit",
-    "None",
-    "Allow"
-)
-$acl.AddAccessRule($ruleEscritura)
-
-# Aplicar ACL
-Set-Acl $carpeta $acl
-
-Write-Host "Permisos configurados correctamente"</code></pre>
-
-            <h3>Quitar Permisos</h3>
-            <pre><code># Quitar permiso específico
-$acl = Get-Acl C:\Datos\Proyectos
-$usuario = "DOMAIN\usuario_antiguo"
-
-# Buscar y eliminar regla
-$ruleToRemove = $acl.Access | Where-Object {
-    $_.IdentityReference.Value -eq $usuario
-}
-
-if ($ruleToRemove) {
-    $acl.RemoveAccessRule($ruleToRemove)
-    Set-Acl C:\Datos\Proyectos $acl
-}</code></pre>
-        </section>
-
-        <section id="smb">
-            <h2>5. Compartir Archivos (SMB)</h2>
-
-            <h3>Diferencia: Permisos NTFS vs Share</h3>
             <div class="comparison">
                 <div>
-                    <h4>Permisos NTFS</h4>
+                    <h4>Partición de Swap</h4>
                     <ul>
-                        <li>Se aplican localmente</li>
-                        <li>Funcionan siempre</li>
-                        <li>Más granulares</li>
-                        <li>Se aplican primero</li>
+                        <li>Partición dedicada en disco</li>
+                        <li>Más eficiente</li>
+                        <li>Se crea durante instalación</li>
+                        <li>Tipo 82 en fdisk</li>
                     </ul>
                 </div>
                 <div>
-                    <h4>Permisos Share</h4>
+                    <h4>Archivo de Swap</h4>
                     <ul>
-                        <li>Se aplican vía red</li>
-                        <li>Solo para SMB/NFS</li>
-                        <li>Menos granulares</li>
-                        <li>Luego se combinan con NTFS</li>
+                        <li>Archivo normal en filesystem</li>
+                        <li>Fácil de agregar/redimensionar</li>
+                        <li>Ligero overhead de filesystem</li>
+                        <li>Usa <code>dd</code> y <code>mkswap</code></li>
                     </ul>
                 </div>
             </div>
 
-            <div class="callout warning">
-                <strong>Regla:</strong> El acceso final es el <strong>MÁS RESTRICTIVO</strong> entre permisos NTFS y Share. Si NTFS es Read y Share es Full Control, el resultado es Read.
-            </div>
+            <h4>Crear y Activar Swap en Linux</h4>
 
-            <h3>Crear Compartido SMB con PowerShell</h3>
-            <pre><code># Crear carpeta
-$carpeta = "C:\Compartido\Publico"
-New-Item -ItemType Directory -Path $carpeta -Force
+            <pre><code># Crear archivo de swap de 2GB
+sudo fallocate -l 2G /swapfile
+sudo chmod 600 /swapfile
+sudo mkswap /swapfile
+sudo swapon /swapfile
 
-# Crear usuario para pruebas (opcional)
-$Password = ConvertTo-SecureString "P@ssw0rd123" -AsPlainText -Force
-New-LocalUser -Name "usuario1" -Password $Password -FullName "Usuario de Prueba"
+# Verificar
+free -h
+swapon --show
 
-# Compartir carpeta
-New-SmbShare -Name "Publico" -Path $carpeta -FullAccess "Administradores","usuario1" -ReadAccess "Todos"
+# Hacer permanente (agregar a /etc/fstab)
+'/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab</code></pre>
 
-# Verificar el compartido
-Get-SmbShare</code></pre>
+            <h3>Swapping en Windows</h3>
 
-            <h3>Configurar Permisos de Compartido</h3>
-            <pre><code># Ver permisos actuales del share
-Get-SmbShareAccess -Name "Publico"
+            <p>Windows usa <strong>pagefile.sys</strong> para el swap:</p>
 
-# Agregar usuario con permisos de lectura
-Grant-SmbShareAccess -Name "Publico" -AccountName "DOMAIN\usuario" -AccessRight Read -Force
-
-# Agregar usuario con permisos completos
-Grant-SmbShareAccess -Name "Publico" -AccountName "DOMAIN\admin" -AccessRight Full -Force
-
-# Quitar permiso
-Revoke-SmbShareAccess -Name "Publico" -AccountName "DOMAIN\usuario_antiguo" -Force</code></pre>
-
-            <h3>Verificar desde Cliente Linux</h3>
-            <pre><code># Instalar smbclient
-sudo apt install smbclient
-
-# Listar shares disponibles
-smbclient -L //192.168.1.100 -U usuario1
-
-# Acceder a un share
-smbclient //192.168.1.100/Publico -U usuario1
-
-# Comandos dentro de smbclient
-smb: \> ls
-smb: \> get archivo.txt
-smb: \> put subida.txt
-smb: \> exit</code></pre>
-
-            <h3>Montar Share en Linux</h3>
-            <pre><code># Crear punto de montaje
-sudo mkdir -p /mnt/compartido
-
-# Montar temporalmente
-sudo mount -t cifs //192.168.1.100/Publico /mnt/compartido \
-    -o username=usuario1,password=P@ssw0rd123
-
-# Montar permanentemente (en /etc/fstab)
-//192.168.1.100/Publico /mnt/compartido cifs \
-    username=usuario1,password=P@ssw0rd123,uid=1000,gid=1000 0 0</code></pre>
+            <ul>
+                <li>Ubicación: C:\pagefile.sys (oculto)</li>
+                <li>Gestión: Panel de control → Sistema → Configuración avanzada</li>
+                <li>Administración automática por defecto</li>
+                <li>Se puede desactivar (no recomendado)</li>
+            </ul>
         </section>
 
-        <section id="usuarios">
-            <h2>6. Usuarios y Grupos en Windows Server</h2>
+        <section id="thrashing">
+            <h2>5. Thrashing</h2>
 
-            <h3>Gestión de Usuarios con PowerShell</h3>
-            <pre><code># Crear usuario local
-$Password = ConvertTo-SecureString "P@ssw0rd123" -AsPlainText -Force
-New-LocalUser -Name "juanperez" -Password $Password -FullName "Juan Perez" -Description "Usuario de Desarrollo"
+            <p><strong>Thrashing</strong> es un estado degenerativo donde el SO gasta más tiempo paginando que ejecutando procesos.</p>
 
-# Ver todos los usuarios locales
-Get-LocalUser
+            <h3>Causas del Thrashing</h3>
 
-# Habilitar/deshabilitar usuario
-Disable-LocalUser -Name "juanperez"
-Enable-LocalUser -Name "juanperez"
+            <ul>
+                <li><strong>Sobrecarga de memoria:</strong> Demasiados procesos para la RAM disponible</li>
+                <li><strong>Falta de localidad:</strong> Los procesos no exhiben buena localidad de referencia</li>
+                <li><strong>Ciclo vicioso:</strong> Page faults → Swap → Más page faults</li>
+            </ul>
 
-# Eliminar usuario
-Remove-LocalUser -Name "juanperez"</code></pre>
+            <h3>Ciclo de Thrashing</h3>
 
-            <h3>Gestión de Grupos</h3>
-            <pre><code># Crear grupo local
-New-LocalGroup -Name "Desarrollo" -Description "Equipo de Desarrollo"
+            <div class="diagram-box">
+<pre>+---------------------------------------------------------------+
+|  CPU UTILIZACIÓN ↓                                              |
+|    │                                                            |
+|    ▼                                                            |
+|  Procesos esperan page fault                                   |
+|    │                                                            |
+|    ▼                                                            |
+|  Cola de procesos ready aumenta                                |
+|    │                                                            |
+|    ▼                                                            |
+|  SO carga más procesos para mantener CPU ocupada                |
+|    │                                                            |
+|    ▼                                                            |
+|  Menos marcos por proceso                                       |
+|    │                                                            |
+|    ▼                                                            |
+|  Más page faults                                                |
+|    │                                                            |
+|    └─────────────────────────────────────┐                      |
+|                                          ▼                      |
+|                              (CICLO SE REPITE)                  |
++---------------------------------------------------------------+</pre>
+            </div>
 
-# Ver todos los grupos
-Get-LocalGroup
-
-# Agregar usuario a grupo
-Add-LocalGroupMember -Group "Desarrollo" -Member "juanperez"
-
-# Ver miembros de un grupo
-Get-LocalGroupMember -Group "Desarrollo"
-
-# Quitar usuario de grupo
-Remove-LocalGroupMember -Group "Desarrollo" -Member "juanperez"</code></pre>
-
-            <h3>Usuarios de Dominio (Active Directory)</h3>
-            <pre><code># Crear usuario de dominio
-New-ADUser -SamAccountName "maria.lopez" `
-    -UserPrincipalName "maria.lopez@domain.local" `
-    -Name "Maria Lopez" `
-    -GivenName "Maria" `
-    -Surname "Lopez" `
-    -Enabled $true `
-    -ChangePasswordAtLogon $true `
-    -AccountPassword (ConvertTo-SecureString "P@ssw0rd123" -AsPlainText -Force)
-
-# Agregar a grupo de dominio
-Add-ADGroupMember -Identity "Domain Admins" -Members "maria.lopez"</code></pre>
+            <h3>Detectar Thrashing</h3>
 
             <div class="callout warning">
-                <strong>Nota:</strong> Los comandos de Active Directory requieren el módulo RSAT-AD-PowerShell y privilegios de administrador de dominio.
+                <strong>Señales de thrashing:</strong>
+                <ul>
+                    <li>Uso de CPU bajo pero alto uso de disco</li>
+                    <li>Tasa de page faults muy alta</li>
+                    <li>Responsividad del sistema muy pobre</li>
+                    <li>Swap casi al máximo</li>
+                </ul>
+            </div>
+
+            <h3>Soluciones al Thrashing</h3>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Solución</th>
+                        <th>Descripción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Reducir multiprogramación</strong></td>
+                        <td>Ejecutar menos procesos simultáneamente</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Aumentar RAM</strong></td>
+                        <td>Solución hardware más directa</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Algoritmo de working set</strong></td>
+                        <td>Mantener en RAM las páginas en uso reciente</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Priority paging</strong></td>
+                        <td>Dar prioridad a páginas del kernel</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="monitoreo">
+            <h2>6. Monitoreo de Memoria</h2>
+
+            <h3>Monitoreo en Linux</h3>
+
+            <h4>Comando: free</h4>
+
+            <pre><code># Mostrar uso de memoria en formato humano
+free -h
+
+# Salida ejemplo:
+#               total        used        free      shared  buff/cache   available
+# Mem:           7.7G        2.1G        3.2G        150M        2.4G        5.2G
+# Swap:          2.0G          0B        2.0G
+
+# Mostrar con actualización continua
+free -h -s 2
+
+# Ver en bytes (no human-readable)
+free -b</code></pre>
+
+            <h4>Comando: vmstat</h4>
+
+            <pre><code># Estadísticas de memoria virtual
+vmstat 2 5
+
+# Salida ejemplo:
+# procs -----------memory---------- ---swap-- -----io---- -system-- ------cpu-----
+#  r  b   swpd   free   buff  cache   si   so    bi    bo   in   cs us sy id wa st
+#  1  0      0 3200000 200000 2400000    0    0     5    10   50   30  5  2 92  1  0
+#  0  1      0 3100000 210000 2500000    0    0   100     0  600 1200 10  5 85  0  0
+
+# Campos clave:
+# si - Swap in (KB/s desde disco)
+# so - Swap out (KB/s a disco)
+# wa - CPU time waiting for I/O</code></pre>
+
+            <h4>Comando: top / htop</h4>
+
+            <pre><code># Ver uso de memoria por proceso
+top
+
+# Presiona 'M' para ordenar por uso de memoria
+# Presiona 'P' para ordenar por CPU
+
+# htop es más visual
+htop</code></pre>
+
+            <h4>/proc/meminfo</h4>
+
+            <pre><code># Información detallada de memoria
+cat /proc/meminfo
+
+# Campos útiles:
+# MemTotal, MemFree, MemAvailable
+# SwapTotal, SwapFree
+# Dirty (páginas modificadas en RAM)
+# Cached (páginas cached)</code></pre>
+
+            <h3>Monitoreo en Windows</h3>
+
+            <h4>Administrador de Tareas</h4>
+
+            <ul>
+                <li>Ver memoria por proceso</li>
+                <li>Ver uso total de RAM</li>
+                <li>Ver commit charge (uso de página)</li>
+            </ul>
+
+            <h4>Monitor de Rendimiento (perfmon)</h4>
+
+            <pre><code># Contadores clave:
+Memory\Available MBytes
+Memory\Pages/sec
+Memory\Page Faults/sec
+Memory\Pool Paged Bytes
+Paging File\% Usage</code></pre>
+
+            <h4>PowerShell</h4>
+
+            <pre><code># Ver uso de memoria
+Get-Process | Sort-Object WorkingSet -Descending | Select-Object -First 10
+
+# Ver estadísticas de memoria
+Get-WmiObject Win32_OperatingSystem | Select-Object TotalVisibleMemorySize, FreePhysicalMemory
+
+# Ver pagefile
+Get-WmiObject Win32_PageFileUsage</code></pre>
+        </section>
+
+        <section id="linux-windows">
+            <h2>7. Comparación: Gestión de Memoria Linux vs Windows</h2>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Aspecto</th>
+                        <th>Linux</th>
+                        <th>Windows</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Tamaño de página</strong></td>
+                        <td>4 KB (también huge pages de 2 MB, 1 GB)</td>
+                        <td>4 KB (x86/x64), también large pages</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Espacio de swap</strong></td>
+                        <td>Partición o archivo, múltiples swap</td>
+                        <td>pagefile.sys, uno o más por volumen</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Configuración</strong></td>
+                        <td>/proc/sys, swapon, sysctl</td>
+                        <td>Registro, Panel de control</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Caché de archivos</strong></td>
+                        <td>Páginas cache (free + buff/cache)</td>
+                        <td>System Cache, Standby List</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Overcommit</strong></td>
+                        <td>Sí, configurable (/proc/sys/vm/overcommit_memory)</td>
+                        <td>No tan explícito, pero permite commit mayor que RAM</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Herramientas</strong></td>
+                        <td>free, vmstat, top, /proc</td>
+                        <td>Task Manager, perfmon, PowerShell</td>
+                    </tr>
+                    <tr>
+                        <td><strong>OOM Killer</strong></td>
+                        <td>Sí, mata procesos si no hay memoria</td>
+                        <td>Similar, pero menos agresivo</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Políticas de Caché</h3>
+
+            <div class="comparison">
+                <div>
+                    <h4>Linux</h4>
+                    <ul>
+                        <li>Usa RAM libre para caché</li>
+                        <li>Buff/cache: archivos cacheados</li>
+                        <li>Recupera fácilmente si un proceso necesita memoria</li>
+                        <li>vm.swappiness controla agresividad de swap (0-100)</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Windows</h4>
+                    <ul>
+                        <li>SuperFetch, ReadyBoost</li>
+                        <li>Standby List: páginas no usadas recientemente</li>
+                        <li>Modified List: páginas modificadas para escribir</li>
+                        <li>Prioriza caché de aplicaciones sobre archivos</li>
+                    </ul>
+                </div>
             </div>
         </section>
 
         <section id="practica">
-            <h2>7. Actividad Práctica</h2>
+            <h2>8. Actividad Práctica</h2>
 
             <div class="actividad">
-                <h3>Ejercicio 1: Configurar Servidor de Archivos</h3>
-                <p><strong>Objetivo:</strong> Crear servidor de archivos con 3 usuarios y permisos diferenciados</p>
+                <h3>Ejercicio 1: Monitoreo de Memoria en Linux</h3>
 
-                <h4>Paso 1: Crear Estructura</h4>
-                <pre><code># Crear directorios
-New-Item -ItemType Directory -Path "C:\ServidorArchivos\Publico" -Force
-New-Item -ItemType Directory -Path "C:\ServidorArchivos\Proyectos" -Force
-New-Item -ItemType Directory -Path "C:\ServidorArchivos\Confidencial" -Force</code></pre>
+                <h4>Parte 1: Uso Básico</h4>
+                <pre><code># Ver uso actual de memoria
+free -h
 
-                <h4>Paso 2: Crear Usuarios</h4>
-                <pre><code># Crear usuarios
-$pass1 = ConvertTo-SecureString "User1Pass" -AsPlainText -Force
-$pass2 = ConvertTo-SecureString "User2Pass" -AsPlainText -Force
-$pass3 = ConvertTo-SecureString "User3Pass" -AsPlainText -Force
+# Ver detalles de memoria
+cat /proc/meminfo | head -20</code></pre>
 
-New-LocalUser -Name "usuario1" -Password $pass1 -FullName "Usuario 1"
-New-LocalUser -Name "usuario2" -Password $pass2 -FullName "Usuario 2"
-New-LocalUser -Name "usuario3" -Password $pass3 -FullName "Usuario 3"</code></pre>
+                <h4>Parte 2: Monitoreo Continuo</h4>
+                <pre><code># Monitorear cada 2 segundos
+vmstat 2 10
 
-                <h4>Paso 3: Configurar Permisos NTFS</h4>
-                <pre><code># Público: todos pueden leer y escribir
-$aclPublico = Get-Acl "C:\ServidorArchivos\Publico"
-$ruleTodos = New-Object System.Security.AccessControl.FileSystemAccessRule(
-    "Todos","Modify","ContainerInherit,ObjectInherit","None","Allow"
-)
-$aclPublico.AddAccessRule($ruleTodos)
-Set-Acl "C:\ServidorArchivos\Publico" $aclPublico
+# Ver page faults
+ps -o pid,comm,minflt,majflt -p $$</code></pre>
 
-# Proyectos: usuario1 y usuario2 pueden editar
-$aclProyectos = Get-Acl "C:\ServidorArchivos\Proyectos"
-$aclProyectos.SetAccessRuleProtection($true,$false)
+                <h4>Parte 3: Ver procesos por uso de memoria</h4>
+                <pre><code># Top 10 procesos por memoria
+ps aux --sort=-%mem | head -10
 
-$ruleUser1 = New-Object System.Security.AccessControl.FileSystemAccessRule(
-    "usuario1","Modify","ContainerInherit,ObjectInherit","None","Allow"
-)
-$aclProyectos.AddAccessRule($ruleUser1)
-
-$ruleUser2 = New-Object System.Security.AccessControl.FileSystemAccessRule(
-    "usuario2","Modify","ContainerInherit,ObjectInherit","None","Allow"
-)
-$aclProyectos.AddAccessRule($ruleUser2)
-
-Set-Acl "C:\ServidorArchivos\Proyectos" $aclProyectos</code></pre>
-
-                <h4>Paso 4: Crear Compartidos SMB</h4>
-                <pre><code># Crear shares
-New-SmbShare -Name "Publico" -Path "C:\ServidorArchivos\Publico" -FullAccess "Administradores" -ReadAccess "Todos"
-New-SmbShare -Name "Proyectos" -Path "C:\ServidorArchivos\Proyectos" -FullAccess "usuario1","usuario2"
-New-SmbShare -Name "Confidencial" -Path "C:\ServidorArchivos\Confidencial" -FullAccess "Administradores"</code></pre>
+# Con formato personalizado
+ps -eo pid,ppid,cmd,%mem,%cpu --sort=-%mem | head -10</code></pre>
             </div>
 
             <div class="actividad">
-                <h3>Ejercicio 2: Verificar desde Cliente</h3>
-                <p><strong>Objetivo:</strong> Conectarse desde Linux y verificar permisos</p>
-                <pre><code># Desde cliente Linux
-# Listar shares
-smbclient -L //IP_DEL_SERVIDOR -U usuario1
+                <h3>Ejercicio 2: Script de Alerta de Memoria</h3>
+                <p><strong>Objetivo:</strong> Crear un script que alerte cuando el uso de memoria supere un umbral</p>
 
-# Acceder a share público
-smbclient //IP_DEL_SERVIDOR/Publico -U usuario1
-smb: \> ls
-smb: \> put prueba.txt
+                <pre><code>#!/bin/bash
+# memory_alert.sh - Alerta cuando el uso de memoria es alto
 
-# Intentar acceder a confidencial (debería fallar)
-smbclient //IP_DEL_SERVIDOR/Confidencial -U usuario1</code></pre>
+UMBRAL=80  # Porcentaje
+EMAIL="usuario@example.com"
+
+while true; do
+    # Obtener porcentaje de memoria usada
+    MEM_USADA=$(free | grep Mem | awk '{printf("%.0f"), $3/$2 * 100.0}')
+    MEM_TOTAL=$(free -h | grep Mem | awk '{print $2}')
+    MEM_USADA_GB=$(free -h | grep Mem | awk '{print $3}')
+
+    echo "[$(date)] Memoria usada: $MEM_USADA% ($MEM_USADA_GB de $MEM_TOTAL)"
+
+    if [ $MEM_USADA -gt $UMBRAL ]; then
+        echo "¡ALERTA! Uso de memoria alto: $MEM_USADA%"
+        echo "Memoria usada: $MEM_USADA_GB de $MEM_TOTAL" |
+            mail -s "Alerta de memoria: $MEM_USADA%" $EMAIL
+    fi
+
+    sleep 300  # Verificar cada 5 minutos
+done</code></pre>
+
+                <p><strong>Uso del script:</strong></p>
+                <pre><code># Dar permisos
+chmod +x memory_alert.sh
+
+# Ejecutar en background
+nohup ./memory_alert.sh &</code></pre>
+            </div>
+
+            <div class="actividad">
+                <h3>Ejercicio 3: Comparación Linux vs Windows</h3>
+                <p><strong>Objetivo:</strong> Crear un informe comparativo de gestión de memoria</p>
+
+                <h4>En Linux:</h4>
+                <pre><code># Recopilar datos
+free -h > memoria_linux.txt
+vmstat 1 10 >> memoria_linux.txt
+cat /proc/meminfo >> memoria_linux.txt</code></pre>
+
+                <h4>En Windows (PowerShell):</h4>
+                <pre><code># Recopilar datos
+Get-WmiObject Win32_OperatingSystem |
+    Select-Object TotalVisibleMemorySize, FreePhysicalMemory |
+    Out-File memoria_windows.txt
+
+Get-Process | Sort-Object WorkingSet -Descending |
+    Select-Object -First 10 |
+    Out-File -Append memoria_windows.txt</code></pre>
+
+                <h4>Análisis a Incluir:</h4>
+                <ul>
+                    <li>Comparación de uso de RAM vs swap/pagefile</li>
+                    <li>Diferencias en políticas de caché</li>
+                    <li>Herramientas disponibles en cada sistema</li>
+                    <li>Ventajas y desventajas de cada enfoque</li>
+                </ul>
             </div>
 
             <p><strong>Tiempo estimado:</strong> 60 minutos</p>
         </section>
 
         <section id="entregable">
-            <h2>8. Entregable</h2>
+            <h2>Entregable de la Clase</h2>
 
-            <div class="callout info">
-                <h3>Servidor de Archivos Configurado</h3>
-                <p><strong>Requisitos:</strong></p>
-            </div>
+            <h3>Requisitos:</h3>
 
             <ol>
-                <li><strong>Servidor Windows Server con:</strong>
+                <li><strong>Script de monitoreo</strong> de memoria en Linux
                     <ul>
-                        <li>3 usuarios de prueba creados</li>
-                        <li>3 grupos: Lectores, Editores, Administradores</li>
-                        <li>Estructura de directorios compartidos</li>
+                        <li>Alerta cuando umbral es superado</li>
+                        <li>Registra eventos en log</li>
+                        <li>Envía notificación (opcional)</li>
                     </ul>
                 </li>
-                <li><strong>Permisos configurados:</strong>
+                <li><strong>Informe comparativo</strong> Linux vs Windows
                     <ul>
-                        <li>carpeta Pública: todos pueden leer/escribir</li>
-                        <li>carpeta Proyectos: Editores pueden modificar, Lectores solo leer</li>
-                        <li>carpeta Confidencial: solo Administradores</li>
+                        <li>Capturas de pantalla de herramientas</li>
+                        <li>Análisis de diferencias en gestión de memoria</li>
+                        <li>Tabla comparativa de políticas y algoritmos</li>
                     </ul>
                 </li>
-                <li><strong>Evidencias:</strong>
+                <li><strong>Análisis de thrashing:</strong>
                     <ul>
-                        <li>Capturas de pantalla de permisos NTFS</li>
-                        <li>Capturas de SMB shares configurados</li>
-                        <li>Prueba de acceso desde cliente (smbclient)</li>
-                        <li>Script PowerShell de configuración</li>
+                        <li>Descripción del fenómeno</li>
+                        <li>Cómo detectarlo</li>
+                        <li>Estrategias para prevenirlo</li>
                     </ul>
                 </li>
             </ol>
 
-            <div class="callout warning">
-                <strong>Fecha de entrega:</strong> Consultar plataforma virtual
+            <div class="callout success">
+                <strong>Formato de entrega:</strong> Script en bash (.sh) + informe en PDF con capturas y análisis comparativo.
             </div>
+
+            <h3>Rúbrica de Evaluación</h3>
+            <table class="rubrica-table">
+                <thead>
+                    <tr>
+                        <th>Criterio</th>
+                        <th class="level-excelente">Excelente (4)</th>
+                        <th class="level-bueno">Bueno (3)</th>
+                        <th class="level-satisfactorio">Satisfactorio (2)</th>
+                        <th class="level-insuficiente">Insuficiente (1)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Conceptos de Memoria Virtual</strong></td>
+                        <td>Explica claramente paginación, swapping, thrashing con ejemplos</td>
+                        <td>Conoce los conceptos principales</td>
+                        <td>Solo conoce términos</td>
+                        <td>No conoce memoria virtual</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Monitoreo en Linux</strong></td>
+                        <td>Usa free, vmstat, top para analizar memoria</td>
+                        <td>Usa free y top</td>
+                        <td>Usa solo un comando</td>
+                        <td>No sabe monitorear memoria</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Monitoreo en Windows</strong></td>
+                        <td>Usa Performance Monitor, Task Manager, PowerShell</td>
+                        <td>Usa Task Manager</td>
+                        <td>Solo observa memoria</td>
+                        <td>No sabe monitorear</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Análisis Comparativo</strong></td>
+                        <td>Compara correctamente gestión de memoria Linux vs Windows</td>
+                        <td>Hace comparación básica</td>
+                        <td>Mención superficial</td>
+                        <td>No hace comparación</td>
+                    </tr>
+                </tbody>
+            </table>
         </section>
 
         <section id="resumen">
@@ -873,36 +1158,26 @@ smbclient //IP_DEL_SERVIDOR/Confidencial -U usuario1</code></pre>
                 <thead>
                     <tr>
                         <th>Concepto</th>
-                        <th>Descripción</th>
+                        <th>Idea Clave</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr><td><strong>NTFS</strong></td><td>Sistema de archivos con seguridad avanzada</td></tr>
-                    <tr><td><strong>FAT32</strong></td><td>Sistema simple, sin permisos avanzados</td></tr>
-                    <tr><td><strong>ACL</strong></td><td>Lista de Control de Acceso</td></tr>
-                    <tr><td><strong>ACE</strong></td><td>Entrada de Control de Acceso</td></tr>
-                    <tr><td><strong>Get-Acl / Set-Acl</strong></td><td>Gestionar permisos NTFS</td></tr>
-                    <tr><td><strong>Permisos NTFS</strong></td><td>Controlan acceso local</td></tr>
-                    <tr><td><strong>Permisos Share</strong></td><td>Controlan acceso vía red</td></tr>
-                    <tr><td><strong>New-SmbShare</strong></td><td>Crear compartido SMB</td></tr>
-                    <tr><td><strong>smbclient</strong></td><td>Cliente Linux para SMB</td></tr>
-                    <tr><td><strong>New-LocalUser</strong></td><td>Crear usuario local</td></tr>
+                    <tr><td><strong>Memoria Virtual</strong></td><td>Abstracción que crea ilusión de memoria ilimitada</td></tr>
+                    <tr><td><strong>Memoria Física</strong></td><td>RAM real, limitada y rápida</td></tr>
+                    <tr><td><strong>Paging</strong></td><td>División en páginas de tamaño fijo (4 KB)</td></tr>
+                    <tr><td><strong>Page Fault</strong></td><td>Fallo cuando página no está en RAM</td></tr>
+                    <tr><td><strong>Swapping</strong></td><td>Mover páginas entre RAM y disco</td></tr>
+                    <tr><td><strong>Thrashing</strong></td><td>Sistema gastando más tiempo paginando que ejecutando</td></tr>
+                    <tr><td><strong>LRU</strong></td><td>Algoritmo: reemplazar página menos recientemente usada</td></tr>
+                    <tr><td><strong>free</strong></td><td>Comando Linux para ver uso de memoria</td></tr>
+                    <tr><td><strong>vmstat</strong></td><td>Comando Linux para estadísticas de memoria virtual</td></tr>
+                    <tr><td><strong>pagefile.sys</strong></td><td>Archivo de swap en Windows</td></tr>
                 </tbody>
             </table>
 
             <div class="callout success">
-                <strong>Concepto fundamental:</strong> Windows Server combina permisos NTFS y permisos de compartido para proporcionar seguridad multicapa. El permiso más restrictivo es el que se aplica.
+                <strong>Concepto fundamental:</strong> La memoria virtual permite ejecutar programas más grandes que la RAM disponible, usando el disco como extensión. El precio es el rendimiento: acceder a disco es 100-1000 veces más lento que acceder a RAM.
             </div>
-
-            <h3>Próxima Clase</h3>
-            <p><strong>Clase 11: Almacenamiento y LVM</strong></p>
-            <ul>
-                <li>MBR vs GPT</li>
-                <li>Sistemas de archivos (ext4)</li>
-                <li>LVM (Physical Volumes, Volume Groups, Logical Volumes)</li>
-                <li>RAID básico</li>
-                <li>Configuración de /etc/fstab</li>
-            </ul>
         </section>
 
         <!-- Videos Recomendados -->
@@ -910,35 +1185,35 @@ smbclient //IP_DEL_SERVIDOR/Confidencial -U usuario1</code></pre>
             <h2>Videos Recomendados</h2>
 
             <div class="callout info">
-                <h3>📹 Video 1: ICACLS en Windows: Aprende a Gestionar Permisos NTFS</h3>
-                <p><strong>Tutorial completo de permisos NTFS en español</strong></p>
-                <p>Duración: ~20 minutos | Nivel: Intermedio | Idioma: Español</p>
-                <p>Aprende a gestionar permisos NTFS en Windows usando el comando ICACLS, ACLs y carpetas compartidas.</p>
-                <p><a href="https://www.youtube.com/watch?v=WzmyGB3eFFs" target="_blank">📺 Ver en YouTube</a></p>
+                <h3>📹 Video 1: Memoria Virtual | Sistemas Operativos</h3>
+                <p><strong>Gestión de memoria, paginación, TLB</strong></p>
+                <p>Duración: ~30 minutos | Nivel: Universitario | Idioma: Español</p>
+                <p>Explicación completa de gestión de memoria: paginación, tamaños de página, división binaria, TLB e introducción a memoria virtual.</p>
+                <p><a href="https://www.youtube.com/watch?v=nAeBtmH_pfM" target="_blank">📺 Ver en YouTube</a></p>
             </div>
 
             <div class="callout info">
-                <h3>📹 Video 2: Uso de permisos NTFS y Share en carpetas y archivos</h3>
-                <p><strong>Windows Server 2022</strong></p>
-                <p>Duración: ~25 minutos | Nivel: Intermedio | Idioma: Español</p>
-                <p>Demostración de cómo crear permisos de seguridad NTFS y permisos Share en carpetas y archivos de Windows Server.</p>
-                <p><a href="https://www.youtube.com/watch?v=cjKbcm6jopg" target="_blank">📺 Ver en YouTube</a></p>
+                <h3>📹 Video 2: VIRTUAL MEMORY AND PAGINATION | MMU AND PAGE TABLE</h3>
+                <p><strong>Explicación en español de memoria virtual y paginación</strong></p>
+                <p>Duración: ~25 minutos | Nivel: Universitario | Idioma: Español</p>
+                <p>Explicación detallada de memoria virtual y técnicas de paginación en sistemas operativos, incluyendo MMU y tablas de páginas.</p>
+                <p><a href="https://www.youtube.com/watch?v=epG_s806g6g" target="_blank">📺 Ver en YouTube</a></p>
             </div>
         </section>
 
         <!-- Navigation between classes -->
         <nav class="class-nav" aria-label="Navegación entre clases">
-            <a href="clase-09.html" class="class-nav-link prev">
+            <a href="clase-11.html" class="class-nav-link prev">
                 <span class="class-nav-icon">←</span>
                 <div>
                     <div class="nav-label">Clase Anterior</div>
-                    <div class="nav-title">← Permisos en Linux</div>
+                    <div class="nav-title">← Almacenamiento LVM</div>
                 </div>
             </a>
-            <a href="clase-11.html" class="class-nav-link next">
+            <a href="clase-13.html" class="class-nav-link next">
                 <div>
                     <div class="nav-label">Siguiente Clase</div>
-                    <div class="nav-title">Almacenamiento LVM →</div>
+                    <div class="nav-title">Servidor Web Apache →</div>
                 </div>
                 <span class="class-nav-icon">→</span>
             </a>
@@ -949,8 +1224,8 @@ smbclient //IP_DEL_SERVIDOR/Confidencial -U usuario1</code></pre>
     
     <footer>
         <div class="container">
-            <p><strong>IF0099 - Sistemas Operativos I</strong> - Permisos y Seguridad en Windows</p>
-            <p>Fecha: 11 de Marzo 2026 | Plan Practico v2.0</p>
+            <p><strong>IF0099 - Sistemas Operativos I</strong> - Memoria Virtual</p>
+            <p>Fecha: 18 de Marzo 2026 | Plan Practico v2.0</p>
             <p style="margin-top: 10px;">
                 <a href="index.html" style="color: #10b981;">Inicio</a> |
                 <a href="cronograma.html" style="color: #10b981;">Cronograma</a> |

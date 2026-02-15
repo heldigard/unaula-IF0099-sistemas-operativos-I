@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clase 11: Almacenamiento LVM | IF0099 - Sistemas Operativos I</title>
+    <title>Clase 11: Discos y E/S | IF0099 - Sistemas Operativos I</title>
     <style>
         :root {
             --primary: #2563eb;
@@ -15,414 +15,71 @@
             --text-muted: #64748b;
             --border: #e2e8f0;
         }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            line-height: 1.7;
-            color: var(--text-main);
-            background: var(--bg-light);
-            font-size: 16px;
-        }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        header {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            color: white;
-            padding: 3rem 0;
-            margin-bottom: 2rem;
-        }
-        header h1 {
-            font-size: 2.2rem;
-            margin-bottom: 0.5rem;
-            font-weight: 700;
-        }
-        header .subtitle {
-            font-size: 1.1rem;
-            opacity: 0.9;
-        }
-        header .meta {
-            margin-top: 1rem;
-            font-size: 0.9rem;
-            opacity: 0.8;
-        }
-
-        nav {
-            background: white;
-            padding: 1.5rem 0;
-            margin-bottom: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-        }
-        nav h2 {
-            font-size: 1.1rem;
-            color: var(--text-muted);
-            margin-bottom: 1rem;
-            padding: 0 20px;
-        }
-        nav ul {
-            list-style: none;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 0.5rem;
-            padding: 0 20px;
-        }
-        nav a {
-            color: var(--primary);
-            text-decoration: none;
-            padding: 0.5rem;
-            display: block;
-            border-radius: 4px;
-            transition: background 0.2s;
-        }
-        nav a:hover {
-            background: var(--bg-light);
-        }
-
-        section {
-            background: white;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-        }
-        section h2 {
-            color: var(--primary);
-            font-size: 1.8rem;
-            margin-bottom: 1.5rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 3px solid var(--accent);
-        }
-        section h3 {
-            color: var(--secondary);
-            font-size: 1.4rem;
-            margin: 2rem 0 1rem;
-        }
-        section h4 {
-            color: var(--text-main);
-            font-size: 1.1rem;
-            margin: 1.5rem 0 0.75rem;
-            font-weight: 600;
-        }
-        p {
-            margin-bottom: 1rem;
-        }
-
-        figure {
-            margin: 2rem 0;
-            text-align: center;
-        }
-        figure img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        figcaption {
-            margin-top: 0.75rem;
-            color: var(--text-muted);
-            font-style: italic;
-            font-size: 0.95rem;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 1.5rem 0;
-            font-size: 0.95rem;
-        }
-        th, td {
-            padding: 0.75rem 1rem;
-            text-align: left;
-            border-bottom: 1px solid var(--border);
-        }
-        th {
-            background: var(--bg-light);
-            font-weight: 600;
-            color: var(--secondary);
-        }
-        tr:hover {
-            background: var(--bg-light);
-        }
-
-        pre {
-            background: var(--bg-code);
-            color: #e2e8f0;
-            padding: 1.5rem;
-            border-radius: 8px;
-            overflow-x: auto;
-            margin: 1.5rem 0;
-            font-size: 0.9rem;
-            line-height: 1.5;
-        }
-        code {
-            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
-        }
-        p code, li code, td code {
-            background: var(--bg-light);
-            color: var(--primary);
-            padding: 0.2rem 0.4rem;
-            border-radius: 4px;
-            font-size: 0.9em;
-        }
-        pre code {
-            background: none;
-            padding: 0;
-            color: inherit;
-        }
-
-        ul, ol {
-            margin-left: 1.5rem;
-            margin-bottom: 1rem;
-        }
-        li {
-            margin-bottom: 0.5rem;
-        }
-
-        .callout {
-            padding: 1.5rem;
-            border-radius: 8px;
-            margin: 1.5rem 0;
-            border-left: 4px solid;
-        }
-        .callout.info {
-            background: #eff6ff;
-            border-left-color: var(--primary);
-        }
-        .callout.warning {
-            background: #fef3c7;
-            border-left-color: #f59e0b;
-        }
-        .callout.success {
-            background: #d1fae5;
-            border-left-color: var(--accent);
-        }
-        .callout.danger {
-            background: #fee2e2;
-            border-left-color: #ef4444;
-        }
-
-        .comparison {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-            margin: 2rem 0;
-        }
-        .comparison > div {
-            background: var(--bg-light);
-            padding: 1.5rem;
-            border-radius: 8px;
-        }
-
-        footer {
-            background: var(--text-main);
-            color: white;
-            padding: 2rem 0;
-            text-align: center;
-            margin-top: 3rem;
-        }
-        footer a {
-            color: var(--accent);
-            text-decoration: none;
-        }
-
-        /* Navigation between classes */
-        .class-nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: stretch;
-            gap: 1rem;
-            margin: 2rem 0;
-        }
-
-        .class-nav-link {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            padding: 1.25rem 1.5rem;
-            background: white;
-            border: 2px solid var(--border);
-            border-radius: 12px;
-            text-decoration: none;
-            color: var(--text-main);
-            transition: all 0.3s ease;
-        }
-
-        .class-nav-link:hover {
-            border-color: var(--primary);
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
-            transform: translateY(-2px);
-        }
-
-        .class-nav-link.prev {
-            border-left: 4px solid var(--primary);
-        }
-
-        .class-nav-link.next {
-            border-right: 4px solid var(--accent);
-            text-align: right;
-            margin-left: auto;
-        }
-
-        .class-nav-link .nav-label {
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: var(--text-muted);
-            margin-bottom: 0.25rem;
-        }
-
-        .class-nav-link .nav-title {
-            font-size: 1rem;
-            font-weight: 600;
-            color: var(--primary);
-        }
-
-        .class-nav-link.next .nav-title {
-            color: var(--accent);
-        }
-
-        .class-nav-icon {
-            font-size: 1.5rem;
-            line-height: 1;
-        }
-
-        .class-nav-placeholder {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 1.25rem;
-            background: var(--bg-light);
-            border: 2px dashed var(--border);
-            border-radius: 12px;
-            color: var(--text-muted);
-            font-size: 0.9rem;
-        }
-
-        .scroll-top {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            background: var(--primary);
-            color: white;
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            opacity: 0;
-            transition: opacity 0.3s;
-            text-decoration: none;
-            font-size: 1.5rem;
-        }
-        .scroll-top.visible {
-            opacity: 1;
-        }
-        .scroll-top:hover {
-            background: var(--secondary);
-        }
-
-        .actividad {
-            background: var(--bg-light);
-            border-left: 5px solid var(--accent);
-            padding: 1.5rem;
-            margin: 1.5rem 0;
-            border-radius: 4px;
-        }
-        .actividad h3 {
-            color: var(--primary);
-            margin-bottom: 1rem;
-        }
-        .actividad p {
-            margin-bottom: 0.75rem;
-        }
-        .actividad strong {
-            color: var(--secondary);
-        }
-
-        .diagram-box {
-            background: var(--bg-light);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 1.5rem;
-            margin: 1.5rem 0;
-            text-align: center;
-        }
-        .diagram-box pre {
-            background: none;
-            color: var(--text-main);
-            padding: 0;
-            margin: 0;
-            font-size: 0.85rem;
-            line-height: 1.4;
-        }
-
-        @media (max-width: 768px) {
-            header h1 {
-                font-size: 1.6rem;
-            }
-            section {
-                padding: 1.5rem;
-            }
-            nav ul {
-                grid-template-columns: 1fr;
-            }
-            .comparison {
-                grid-template-columns: 1fr;
-            }
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.7; color: var(--text-main); background: var(--bg-light); font-size: 16px; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        header { background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); color: white; padding: 3rem 0; margin-bottom: 2rem; }
+        header h1 { font-size: 2.2rem; margin-bottom: 0.5rem; font-weight: 700; }
+        header .subtitle { font-size: 1.1rem; opacity: 0.9; }
+        header .meta { margin-top: 1rem; font-size: 0.9rem; opacity: 0.8; }
+        nav { background: white; padding: 1.5rem 0; margin-bottom: 2rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        nav h2 { font-size: 1.1rem; color: var(--text-muted); margin-bottom: 1rem; padding: 0 20px; }
+        nav ul { list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.5rem; padding: 0 20px; }
+        nav a { color: var(--primary); text-decoration: none; padding: 0.5rem; display: block; border-radius: 4px; transition: background 0.2s; }
+        nav a:hover { background: var(--bg-light); }
+        section { background: white; padding: 2rem; margin-bottom: 2rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        section h2 { color: var(--primary); font-size: 1.8rem; margin-bottom: 1.5rem; padding-bottom: 0.5rem; border-bottom: 3px solid var(--accent); }
+        section h3 { color: var(--secondary); font-size: 1.4rem; margin: 2rem 0 1rem; }
+        p { margin-bottom: 1rem; }
+        pre { background: var(--bg-code); color: #e2e8f0; padding: 1.5rem; border-radius: 8px; overflow-x: auto; margin: 1.5rem 0; font-size: 0.9rem; line-height: 1.5; }
+        code { font-family: 'Consolas', 'Monaco', 'Courier New', monospace; background: var(--bg-light); color: var(--primary); padding: 0.2rem 0.4rem; border-radius: 4px; font-size: 0.9em; }
+        pre code { background: none; padding: 0; color: inherit; }
+        ul, ol { margin-left: 1.5rem; margin-bottom: 1rem; }
+        li { margin-bottom: 0.5rem; }
+        .callout { padding: 1.5rem; border-radius: 8px; margin: 1.5rem 0; border-left: 4px solid; }
+        .callout.info { background: #eff6ff; border-left-color: var(--primary); }
+        .callout.warning { background: #fef3c7; border-left-color: #f59e0b; }
+        .callout.success { background: #d1fae5; border-left-color: var(--accent); }
+        table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.95rem; }
+        th, td { padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid var(--border); }
+        th { background: var(--bg-light); font-weight: 600; color: var(--secondary); }
+        .actividad { background: var(--bg-light); border-left: 5px solid var(--accent); padding: 1.5rem; margin: 1.5rem 0; border-radius: 4px; }
+        .actividad h3 { color: var(--primary); margin-bottom: 1rem; }
+        .class-nav { display: flex; justify-content: space-between; align-items: stretch; gap: 1rem; margin: 2rem 0; }
+        .class-nav-link { flex: 1; display: flex; align-items: center; gap: 0.75rem; padding: 1.25rem 1.5rem; background: white; border: 2px solid var(--border); border-radius: 12px; text-decoration: none; color: var(--text-main); transition: all 0.3s ease; }
+        .class-nav-link:hover { border-color: var(--primary); box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15); transform: translateY(-2px); }
+        .class-nav-link.prev { border-left: 4px solid var(--primary); }
+        .class-nav-link.next { border-right: 4px solid var(--accent); text-align: right; margin-left: auto; }
+        .class-nav-link .nav-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); margin-bottom: 0.25rem; }
+        .class-nav-link .nav-title { font-size: 1rem; font-weight: 600; color: var(--primary); }
+        .class-nav-link.next .nav-title { color: var(--accent); }
+        .class-nav-icon { font-size: 1.5rem; line-height: 1; }
+        footer { background: var(--text-main); color: white; padding: 2rem 0; text-align: center; margin-top: 3rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        @media (max-width: 768px) { header h1 { font-size: 1.6rem; } section { padding: 1.5rem; } nav ul { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
     <header>
         <div class="container">
-            <h1>Clase 11: Almacenamiento LVM</h1>
-            <p class="subtitle">IF0099 - Sistemas Operativos I | Unidad 6 - Almacenamiento</p>
-            <p class="subtitle">MBR vs GPT, ext4, LVM y RAID</p>
+            <h1>Clase 11: Discos y E/S</h1>
+            <p class="subtitle">IF0099 - Sistemas Operativos I | Unidad 7 - Entrada/Salida</p>
+            <p class="subtitle">Gestión de discos, particiones, sistemas de archivos básicos, E/S</p>
             <p class="meta">Fecha: 18 de Marzo 2026 | Teoría: 6:00-8:00 AM | Plan Practico v2.0</p>
         </div>
     </header>
 
     <div class="container">
-
-        <!-- Quick Navigation Bar -->
-        <div class="quick-nav" style="background: white; padding: 1rem; margin-bottom: 2rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
-            <div style="display: flex; align-items: center; gap: 1rem;">
-                <a href="index.html" style="color: var(--primary); text-decoration: none; font-weight: 500;">Inicio</a>
-                <span style="color: var(--text-muted);">|</span>
-                <span style="color: var(--text-main); font-weight: 600;">Almacenamiento LVM</span>
-            </div>
-            <div style="display: flex; align-items: center; gap: 0.5rem;">
-                <a href="cronograma.html" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: #10b981; color: white; text-decoration: none; border-radius: 6px; font-weight: 500;">Cronograma</a>
-                <a href="rubricas.html" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: #3b82f6; color: white; text-decoration: none; border-radius: 6px; font-weight: 500;">Rubricas</a>
-            </div>
-        </div>
-
         <nav>
             <h2>Contenido de la Clase</h2>
             <ul>
                 <li><a href="#objetivos">Objetivos de Aprendizaje</a></li>
-                <li><a href="#intro">1. Introducción al Almacenamiento</a></li>
-                <li><a href="#mbr-gpt">2. MBR vs GPT</a></li>
-                <li><a href="#ext4">3. Sistema de Archivos ext4</a></li>
-                <li><a href="#lvm">4. Logical Volume Manager (LVM)</a></li>
-                <li><a href="#raid">5. RAID Básico</a></li>
-                <li><a href="#fstab">6. Archivo /etc/fstab</a></li>
-                <li><a href="#practica">7. Actividad Práctica</a></li>
+                <li><a href="#hardware">Hardware de Discos</a></li>
+                <li><a href="#particiones">Particiones</a></li>
+                <li><a href="#sistemas">Sistemas de Archivos Básicos</a></li>
+                <li><a href="#es">Gestión de E/S</a></li>
+                <li><a href="#practica">Práctica en Linux</a></li>
                 <li><a href="#entregable">Entregable</a></li>
-                <li><a href="#resumen">Resumen</a></li>
             </ul>
         </nav>
 
@@ -430,852 +87,289 @@
             <h2>Objetivos de Aprendizaje</h2>
             <p>Al finalizar esta clase, serás capaz de:</p>
             <ol>
-                <li><strong>Diferenciar</strong> entre MBR y GPT</li>
-                <li><strong>Describir</strong> las características del sistema de archivos ext4</li>
-                <li><strong>Entender</strong> la arquitectura de LVM (PV → VG → LV)</li>
-                <li><strong>Crear</strong> volúmenes lógicos con LVM</li>
-                <li><strong>Configurar</strong> montajes permanentes en /etc/fstab</li>
-                <li><strong>Explicar</strong> los niveles básicos de RAID</li>
+                <li><strong>Comprender</strong> la estructura física de los discos duros</li>
+                <li><strong>Explicar</strong> el concepto de particiones y esquemas de particionado</li>
+                <li><strong>Diferenciar</strong> entre sistemas de archivos básicos</li>
+                <li><strong>Analizar</strong> el subsistema de E/S del SO</li>
+                <li><strong>Gestionar</strong> discos y particiones en Linux</li>
             </ol>
         </section>
 
-        <section id="intro">
-            <h2>1. Introducción al Almacenamiento en Linux</h2>
+        <section id="hardware">
+            <h2>1. Hardware de Discos</h2>
+            
+            <h3>Estructura de un Disco Duro (HDD)</h3>
+            <pre>
+Componentes principales:
+┌────────────────────────────────────────────┐
+│  Platos: Discos magnéticos que giran       │
+│  Velocidad típica: 5400-7200 RPM           │
+├────────────────────────────────────────────┤
+│  Cabezales: Lectura/escritura              │
+│  Flotan sobre capa de aire (nanómetros)    │
+├────────────────────────────────────────────┤
+│  Brazo actuador: Posiciona cabezales       │
+├────────────────────────────────────────────┤
+│  Controladora: Gestiona operaciones        │
+└────────────────────────────────────────────┘
+
+Geometría lógica:
+- Cilindros: Conjunto de pistas en mismo radio
+- Cabezas: Una por superficie (2 por plato)
+- Sectores: División angular (512 bytes o 4KB)
+- Pista: Círculo concéntrico en una superficie
+</pre>
+
+            <h3>Tiempos de Acceso</h3>
+            <table>
+                <tr><th>Tipo de tiempo</th><th>Descripción</th><th>Valor típico</th></tr>
+                <tr><td><strong>Seek time</strong></td><td>Mover cabezal al cilindro</td><td>3-10 ms</td></tr>
+                <tr><td><strong>Latency</strong></td><td>Girar hasta el sector</td><td>2-6 ms (media rotación)</td></tr>
+                <tr><td><strong>Transfer</strong></td><td>Leer datos</td><td>100-200 MB/s</td></tr>
+                <tr><td><strong>Total</strong></td><td>Suma de anteriores</td><td>8-15 ms</td></tr>
+            </table>
 
             <div class="callout info">
-                <strong>Pregunta fundamental:</strong> ¿Cómo gestiona Linux el almacenamiento físico para proporcionar flexibilidad y escalabilidad?
-            </div>
-
-            <h3>El Desafío del Almacenamiento Tradicional</h3>
-
-            <p>En el almacenamiento tradicional, las particiones son estáticas:</p>
-
-            <ul>
-                <li>Una vez creadas, es difícil redimensionarlas</li>
-                <li>El espacio no utilizado en una partición no puede usarse en otra</li>
-                <li>Limitado a 4 particiones primarias (MBR)</li>
-                <li>Difícil agregar nuevo almacenamiento sin interrumpir el servicio</li>
-            </ul>
-
-            <h3>La Solución: LVM</h3>
-
-            <p><strong>LVM (Logical Volume Manager)</strong> abstrae el almacenamiento físico para proporcionar:</p>
-
-            <ul>
-                <li><strong>Flexibilidad:</strong> Redimensionar volúmenes en tiempo de ejecución</li>
-                <li><strong>Agilidad:</strong> Agregar nuevos discos sin detener el sistema</li>
-                <li><strong>Snapshots:</strong> Crear instantáneas de volúmenes para backups</li>
-                <li><strong>Striping:</strong> Distribuir datos across múltiples discos para mejor rendimiento</li>
-            </ul>
-        </section>
-
-        <section id="mbr-gpt">
-            <h2>2. MBR vs GPT</h2>
-
-            <h3>MBR (Master Boot Record)</h3>
-
-            <p>El esquema de particionado tradicional:</p>
-
-            <table>
-                <thead>
-                    <tr>
-                        <th>Característica</th>
-                        <th>MBR</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Tamaño máximo disco</strong></td>
-                        <td>2 TB</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Máximo de particiones</strong></td>
-                        <td>4 primarias o 3 primarias + 1 extendida (con lógicas)</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Ubicación</strong></td>
-                        <td>Primer sector del disco (512 bytes)</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Compatibilidad</strong></td>
-                        <td>Universal (BIOS y UEFI con CSM)</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Bootloader</strong></td>
-                        <td>Almacena código de arranque</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <div class="diagram-box">
-<pre>+-------------------+
-|  MBR (512 bytes)  |
-| - Código de arranque (446 bytes) |
-| - Tabla de particiones (64 bytes) |
-| - Firma (2 bytes) |
-+-------------------+
-|  Partición 1      |
-+-------------------+
-|  Partición 2      |
-+-------------------+
-|  ...              |
-+-------------------+</pre>
-            </div>
-
-            <h3>GPT (GUID Partition Table)</h3>
-
-            <p>El esquema moderno de particionado:</p>
-
-            <table>
-                <thead>
-                    <tr>
-                        <th>Característica</th>
-                        <th>GPT</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Tamaño máximo disco</strong></td>
-                        <td>18 EB (prácticamente ilimitado)</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Máximo de particiones</strong></td>
-                        <td>128 (por defecto, expandible)</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Ubicación</strong></td>
-                        <td>Múltiples copias en el disco (redundancia)</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Compatibilidad</strong></td>
-                        <td>UEFI (requiere), BIOS con bootloader híbrido</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Backup</strong></td>
-                        <td>Copia de seguridad al final del disco</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <div class="comparison">
-                <div>
-                    <h4>MBR</h4>
-                    <ul>
-                        <li>Discos ≤ 2TB</li>
-                        <li>Máximo 4 particiones primarias</li>
-                        <li>Compatible con BIOS</li>
-                        <li>Universalmente soportado</li>
-                    </ul>
-                </div>
-                <div>
-                    <h4>GPT</h4>
-                    <ul>
-                        <li>Discos > 2TB</li>
-                        <li>Hasta 128 particiones</li>
-                        <li>Requiere UEFI</li>
-                        <li>Tabla con redundancia</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="callout warning">
-                <strong>Recomendación actual:</strong> Usar GPT con UEFI para sistemas nuevos. MBR solo para compatibilidad con hardware antiguo o sistemas que requieran BIOS.
+                <strong>SSD (Solid State Drive):</strong>
+                <ul>
+                    <li>Sin partes móviles (memoria flash)</li>
+                    <li>Tiempo de acceso: ~0.1 ms (100x más rápido)</li>
+                    <li>Velocidad: 500-7000 MB/s (NVMe)</li>
+                    <li>Vida útil limitada por ciclos de escritura</li>
+                </ul>
             </div>
         </section>
 
-        <section id="ext4">
-            <h2>3. Sistema de Archivos ext4</h2>
+        <section id="particiones">
+            <h2>2. Particiones</h2>
+            
+            <p>Las particiones dividen un disco en secciones independientes:</p>
 
-            <p><strong>ext4</strong> (Fourth Extended Filesystem) es el sistema de archivos por defecto en la mayoría de distribuciones Linux.</p>
-
-            <h3>Características Principales</h3>
-
+            <h3>Esquemas de Particionado</h3>
             <table>
-                <thead>
-                    <tr>
-                        <th>Característica</th>
-                        <th>Descripción</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Tamaño máximo archivo</strong></td>
-                        <td>16 TB</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Tamaño máximo volumen</strong></td>
-                        <td>1 EB</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Máximo de archivos</strong></td>
-                        <td>~4 mil millones (límite de 32-bit)</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Journaling</strong></td>
-                        <td>Sí, previene corrupción por fallos</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Extents</strong></td>
-                        <td>Asignación más eficiente de bloques</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Delayed allocation</strong></td>
-                        <td>Mejora rendimiento y fragmentación</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Fast fsck</strong></td>
-                        <td>Verificación de disco más rápida</td>
-                    </tr>
-                </tbody>
+                <tr><th>Esquema</th><th>Descripción</th><th>Límites</th></tr>
+                <tr><td><strong>MBR</strong></td><td>Master Boot Record</td><td>4 particiones primarias, 2TB máx</td></tr>
+                <tr><td><strong>GPT</strong></td><td>GUID Partition Table</td><td>128 particiones, 9.4 ZB máx</td></tr>
             </table>
 
-            <h3>Estructura de ext4</h3>
+            <h3>Tipos de Particiones MBR</h3>
+            <pre>
+MBR (512 bytes):
+- 446 bytes: Boot loader (código de arranque)
+- 64 bytes: Tabla de particiones (4 × 16 bytes)
+- 2 bytes: Firma (0xAA55)
 
-            <div class="diagram-box">
-<pre>+-------------------+
-|  Superbloque      |  Información del sistema de archivos
-+-------------------+
-|  Descriptores de Grupo |  Describen grupos de bloques
-+-------------------+
-|  Tabla de Inodos |  Metadatos de archivos
-+-------------------+
-|  Mapa de Bits     |  Bloques libres/inodos libres
-+-------------------+
-|  Bloques de Datos |  Contenido real de archivos
-+-------------------+</pre>
-            </div>
+Tipos de partición:
+├─ Partición Primaria (hasta 4)
+│   └─ Contiene sistema de archivos directamente
+├─ Partición Extendida (solo 1)
+│   └─ Contiene particiones lógicas
+└─ Particiones Lógicas
+    └─ Dentro de extendida, ilimitadas en teoría
 
-            <h3>Journaling</h3>
+Ejemplo de layout:
+┌─────────┬─────────┬────────────────────────────┐
+│Primaria │Primaria │ Partición Extendida         │
+│  /boot  │  swap   │ ┌────────┬────────┐        │
+│  500MB  │  2GB    │ │Lógica 1│Lógica 2│ ...    │
+│         │         │ │  /     │ /home  │        │
+│         │         │ │  20GB  │  50GB  │        │
+└─────────┴─────────┴─┴────────┴────────┴────────┘
+</pre>
 
-            <p>ext4 usa un <strong>journal</strong> (diario) para registrar transacciones antes de aplicarlas:</p>
-
-            <ol>
-                <li>Se escribe la transacción en el journal</li>
-                <li>Se aplica la transacción al sistema de archivos</li>
-                <li>Se marca la transacción como completada</li>
-            </ol>
-
+            <h3>Tipos de Sistemas de Archivos Linux</h3>
             <div class="callout success">
-                <strong>Ventaja del journaling:</strong> Si ocurre un fallo de energía o crash, el sistema puede recuperar el estado consistente usando el journal.
+                <strong>IDs comunes en MBR:</strong>
+                <ul>
+                    <li>0x83 - Linux native (ext2/3/4)</li>
+                    <li>0x82 - Linux swap</li>
+                    <li>0x8e - Linux LVM</li>
+                    <li>0x07 - NTFS/HPFS</li>
+                    <li>0x0b/0x0c - FAT32</li>
+                </ul>
             </div>
         </section>
 
-        <section id="lvm">
-            <h2>4. Logical Volume Manager (LVM)</h2>
-
-            <h3>Arquitectura de LVM</h3>
-
-            <p>LVM usa tres capas de abstracción:</p>
-
-            <div class="diagram-box">
-<pre>+---------------------------------------------------------------+
-|  Volúmenes Lógicos (LV)                                        |
-|  /dev/vg00/root    /dev/vg00/home    /dev/vg01/data           |
-+---------------------------------------------------------------+
-|  Grupo de Volúmenes (VG)                                       |
-|  vg00 (combina sda1, sdb1)         vg01 (combina sdc1)        |
-+---------------------------------------------------------------+
-|  Volúmenes Físicos (PV)                                        |
-|  /dev/sda1         /dev/sdb1         /dev/sdc1                |
-+---------------------------------------------------------------+
-|  Discos Físicos                                                |
-|  /dev/sda          /dev/sdb          /dev/sdc                 |
-+---------------------------------------------------------------+</pre>
-            </div>
-
-            <h4>Componentes LVM</h4>
-
+        <section id="sistemas">
+            <h2>3. Sistemas de Archivos Básicos</h2>
+            
+            <h3>EXT4 (Extended File System 4)</h3>
             <table>
-                <thead>
-                    <tr>
-                        <th>Componente</th>
-                        <th>Descripción</th>
-                        <th>Comandos</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>PV (Physical Volume)</strong></td>
-                        <td>Partición o disco físico usado por LVM</td>
-                        <td><code>pvcreate, pvdisplay, pvs</code></td>
-                    </tr>
-                    <tr>
-                        <td><strong>VG (Volume Group)</strong></td>
-                        <td>Pool de almacenamiento que combina PVs</td>
-                        <td><code>vgcreate, vgdisplay, vgs</code></td>
-                    </tr>
-                    <tr>
-                        <td><strong>LV (Logical Volume)</strong></td>
-                        <td>Volumen lógico que se puede formatear y montar</td>
-                        <td><code>lvcreate, lvdisplay, lvs</code></td>
-                    </tr>
-                </tbody>
+                <tr><th>Característica</th><th>Descripción</th></tr>
+                <tr><td>Tamaño máximo archivo</td><td>16 TB</td></tr>
+                <tr><td>Tamaño máximo volumen</td><td>1 EB (exabyte)</td></tr>
+                <tr><td>Tamaño de bloque</td><td>1KB - 64KB</td></tr>
+                <tr><td>Características</td><td>Journaling, extents, defragmentación online</td></tr>
             </table>
 
-            <h3>Flujo de Trabajo Completo LVM</h3>
+            <h3>Estructura Básica de un Sistema de Archivos</h3>
+            <pre>
+Layout típico de un FS:
+┌───────────────┬───────────────┬─────────────────┬──────────────┐
+│  Boot Block   │  Superblock   │  Metadata       │  Data Blocks │
+│  (reservado)  │               │  (inodos, etc)  │              │
+└───────────────┴───────────────┴─────────────────┴──────────────┘
 
-            <h4>1. Crear Volúmenes Físicos (PV)</h4>
+Superblock contiene:
+- Tamaño del sistema de archivos
+- Número de bloques libres
+- Tamaño de bloque
+- Fecha de último montaje
+- Estado (limpio/sucio)
+</pre>
 
-            <pre><code># Particionar disco nuevo (opcional - puedes usar el disco directamente)
-fdisk /dev/sdb
-# o
-parted /dev/sdb
-
-# Crear partición tipo LVM (código 8e para fdisk)
-# Luego crear el volumen físico
-pvcreate /dev/sdb1
-
-# Ver información del PV
-pvdisplay /dev/sdb1
-pvs</code></pre>
-
-            <h4>2. Crear Grupo de Volúmenes (VG)</h4>
-
-            <pre><code># Crear VG usando el PV
-vgcreate vg_datos /dev/sdb1
-
-# Agregar más PVs al VG (opcional)
-vgextend vg_datos /dev/sdc1
-
-# Ver información del VG
-vgdisplay vg_datos
-vgs</code></pre>
-
-            <h4>3. Crear Volúmenes Lógicos (LV)</h4>
-
-            <pre><code># Crear LV de 10GB
-lvcreate -L 10G -n lv_documentos vg_datos
-
-# Crear LV usando todo el espacio disponible
-lvcreate -l 100%FREE -n lv_backup vg_datos
-
-# Ver información del LV
-lvdisplay /dev/vg_datos/lv_documentos
-lvs</code></pre>
-
-            <h4>4. Formatear y Montar</h4>
-
-            <pre><code># Formatear con ext4
-mkfs.ext4 /dev/vg_datos/lv_documentos
-
-# Crear punto de montaje
-mkdir /datos/documentos
-
-# Montar temporalmente
-mount /dev/vg_datos/lv_documentos /datos/documentos
-
-# Verificar
-df -h /datos/documentos</code></pre>
-
-            <h3>Redimensionamiento en VIVO</h3>
-
-            <div class="callout info">
-                <strong>Ventaja clave de LVM:</strong> Puedes redimensionar volúmenes sin reiniciar el servicio.
-            </div>
-
-            <h4>Expandir un LV</h4>
-
-            <pre><code># 1. Extender el LV (agregar 5GB)
-lvextend -L +5G /dev/vg_datos/lv_documentos
-
-# 2. Redimensionar el sistema de archivos
-resize2fs /dev/vg_datos/lv_documentos
-
-# En un solo paso:
-lvextend -L +5G -r /dev/vg_datos/lv_documentos</code></pre>
-
-            <h4>Reducir un LV</h4>
-
-            <div class="callout warning">
-                <strong>Precaución:</strong> Reducir es más peligroso. Primero reduce el sistema de archivos, luego el LV.
-            </div>
-
-            <pre><code># 1. Desmontar
-umount /datos/documentos
-
-# 2. Verificar sistema de archivos
-e2fsck -f /dev/vg_datos/lv_documentos
-
-# 3. Reducir sistema de archivos a 8GB
-resize2fs /dev/vg_datos/lv_documentos 8G
-
-# 4. Reducir LV a 8GB
-lvreduce -L 8G /dev/vg_datos/lv_documentos
-
-# 5. Remontar
-mount /dev/vg_datos/lv_documentos /datos/documentos</code></pre>
-
-            <h3>Snapshots de LVM</h3>
-
-            <p>Los snapshots permiten capturar el estado de un LV en un momento dado:</p>
-
-            <pre><code># Crear snapshot de 2GB
-lvcreate -L 2G -s -n lv_snap /dev/vg_datos/lv_documentos
-
-# Montar el snapshot
-mount /dev/vg_datos/lv_snap /mnt/snapshot
-
-# Eliminar snapshot cuando ya no se necesite
-lvremove /dev/vg_datos/lv_snap</code></pre>
+            <h3>Comparación de Sistemas de Archivos</h3>
+            <table>
+                <tr><th>Sistema</th><th>Soporte</th><th>Journaling</th><th>Casos de uso</th></tr>
+                <tr><td>EXT4</td><td>Linux</td><td>Sí</td><td>Propósito general Linux</td></tr>
+                <tr><td>XFS</td><td>Linux</td><td>Sí</td><td>Archivos grandes, servidores</td></tr>
+                <tr><td>Btrfs</td><td>Linux</td><td>Sí</td><td>Avanzado (snapshots, RAID)</td></tr>
+                <tr><td>NTFS</td><td>Windows/Linux</td><td>Sí</td><td>Windows moderno</td></tr>
+                <tr><td>FAT32</td><td>Universal</td><td>No</td><td>USB, compatibilidad</td></tr>
+            </table>
         </section>
 
-        <section id="raid">
-            <h2>5. RAID Básico</h2>
+        <section id="es">
+            <h2>4. Gestión de Entrada/Salida (E/S)</h2>
+            
+            <h3>Subsistema de E/S del SO</h3>
+            <p>El SO gestiona el acceso a dispositivos mediante:</p>
+            
+            <ul>
+                <li><strong>Device Drivers:</strong> Controladores específicos de hardware</li>
+                <li><strong>Buffering:</strong> Almacenamiento temporal de datos</li>
+                <li><strong>Caching:</strong> Mantener copias en memoria para acceso rápido</li>
+                <li><strong>Spooling:</strong> Cola de trabajos para dispositivos compartidos</li>
+            </ul>
 
-            <p><strong>RAID (Redundant Array of Independent Disks)</strong> combina múltiples discos para mejorar rendimiento, redundancia o ambos.</p>
-
-            <h3>Niveles RAID Comunes</h3>
-
+            <h3>Métodos de E/S</h3>
             <table>
-                <thead>
-                    <tr>
-                        <th>Nivel</th>
-                        <th>Mínimo Discos</th>
-                        <th>Descripción</th>
-                        <th>Ventajas</th>
-                        <th>Desventajas</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>RAID 0</strong></td>
-                        <td>2</td>
-                        <td>Striping (distribuye datos)</td>
-                        <td>Máximo rendimiento</td>
-                        <td>Sin redundancia</td>
-                    </tr>
-                    <tr>
-                        <td><strong>RAID 1</strong></td>
-                        <td>2</td>
-                        <td>Mirroring (espejo)</td>
-                        <td>Redundancia completa</td>
-                        <td>50% de capacidad</td>
-                    </tr>
-                    <tr>
-                        <td><strong>RAID 5</strong></td>
-                        <td>3</td>
-                        <td>Striping + paridad distribuida</td>
-                        <td>Rendimiento + redundancia</td>
-                        <td>Escritura lenta en rebuild</td>
-                    </tr>
-                    <tr>
-                        <td><strong>RAID 10</strong></td>
-                        <td>4</td>
-                        <td>RAID 1 + RAID 0</td>
-                        <td>Rendimiento + redundancia</td>
-                        <td>50% de capacidad</td>
-                    </tr>
-                </tbody>
+                <tr><th>Método</th><th>Descripción</th><th>Eficiencia</th></tr>
+                <tr><td><strong>Programada</strong></td><td>CPU espera activa</td><td>Baja</td></tr>
+                <tr><td><strong>Por interrupción</strong></td><td>Dispositivo notifica a CPU</td><td>Media</td></tr>
+                <tr><td><strong>DMA</strong></td><td>Transferencia directa memoria-dispositivo</td><td>Alta</td></tr>
             </table>
 
-            <h4>Comparación Visual</h4>
+            <h3>DMA (Direct Memory Access)</h3>
+            <pre>
+Sin DMA:
+CPU ──lee byte──> Dispositivo
+CPU ──escribe──> Memoria
+(repite para cada byte)
 
-            <div class="comparison">
-                <div>
-                    <h4>RAID 0 (Striping)</h4>
-                    <pre>Dato 1 → Disco 1, Bloque 1
-Dato 1 → Disco 2, Bloque 1
-Dato 2 → Disco 1, Bloque 2
-Dato 2 → Disco 2, Bloque 2
+Con DMA:
+CPU ──configura──> Controlador DMA
+DMA ──transfiere──> Memoria ↔ Dispositivo
+DMA ──interrumpe──> CPU (transferencia completa)
 
-Capacidad: 100% (sumada)
-Rendimiento: 2x en lectura/escritura
-Redundancia: Ninguna</pre>
-                </div>
-                <div>
-                    <h4>RAID 1 (Mirroring)</h4>
-                    <pre>Dato 1 → Disco 1, Bloque 1
-Dato 1 → Disco 2, Bloque 1 (copia)
-Dato 2 → Disco 1, Bloque 2
-Dato 2 → Disco 2, Bloque 2 (copia)
-
-Capacidad: 50% (un disco)
-Rendimiento: 2x lectura, 1x escritura
-Redundancia: Completa</pre>
-                </div>
-            </div>
+Beneficio: CPU libre durante transferencia
+</pre>
 
             <div class="callout warning">
-                <strong>Importante:</strong> RAID NO es backup. Protege contra fallo de disco, no contra borrado accidental, corrupción de datos o desastres.
-            </div>
-        </section>
-
-        <section id="fstab">
-            <h2>6. Archivo /etc/fstab</h2>
-
-            <p><strong>fstab</strong> (file system table) define cómo y dónde se montan los sistemas de archivos automáticamente durante el arranque.</p>
-
-            <h3>Formato de /etc/fstab</h3>
-
-            <pre><code># &lt;file system&gt; &lt;mount point&gt;   &lt;type&gt;  &lt;options&gt;       &lt;dump&gt;  &lt;pass&gt;
-UUID=xxxx-xxxx    /               ext4    errors=remount-ro 0       1
-UUID=yyyy-yyyy    /home           ext4    defaults          0       2
-/dev/sdb1         /data           ext4    defaults          0       2
-/swapfile         none            swap    sw                0       0</code></pre>
-
-            <h4>Campos Explicados</h4>
-
-            <table>
-                <thead>
-                    <tr>
-                        <th>Campo</th>
-                        <th>Descripción</th>
-                        <th>Ejemplo</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>file system</strong></td>
-                        <td>Dispositivo a montar</td>
-                        <td><code>/dev/sda1</code>, <code>UUID=xxx</code>, <code>/dev/vg00/root</code></td>
-                    </tr>
-                    <tr>
-                        <td><strong>mount point</strong></td>
-                        <td>Directorio donde se monta</td>
-                        <td><code>/</code>, <code>/home</code>, <code>/data</code></td>
-                    </tr>
-                    <tr>
-                        <td><strong>type</strong></td>
-                        <td>Tipo de sistema de archivos</td>
-                        <td><code>ext4</code>, <code>xfs</code>, <code>btrfs</code>, <code>swap</code></td>
-                    </tr>
-                    <tr>
-                        <td><strong>options</strong></td>
-                        <td>Opciones de montaje</td>
-                        <td><code>defaults</code>, <code>ro</code>, <code>noauto</code></td>
-                    </tr>
-                    <tr>
-                        <td><strong>dump</strong></td>
-                        <td>Backup con dump (0=no)</td>
-                        <td><code>0</code>, <code>1</code></td>
-                    </tr>
-                    <tr>
-                        <td><strong>pass</strong></td>
-                        <td>Orden de fsck (0=omitir)</td>
-                        <td><code>0</code>, <code>1</code> (root), <code>2</code> (otros)</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <h3>Opciones Comunes</h3>
-
-            <table>
-                <thead>
-                    <tr>
-                        <th>Opción</th>
-                        <th>Descripción</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><code>defaults</code></td>
-                        <td>rw, suid, dev, exec, auto, nouser, async</td>
-                    </tr>
-                    <tr>
-                        <td><code>ro</code></td>
-                        <td>Solo lectura (read-only)</td>
-                    </tr>
-                    <tr>
-                        <td><code>rw</code></td>
-                        <td>Lectura-escritura (default)</td>
-                    </tr>
-                    <tr>
-                        <td><code>auto</code></td>
-                        <td>Montar automáticamente en arranque</td>
-                    </tr>
-                    <tr>
-                        <td><code>noauto</code></td>
-                        <td>No montar automáticamente</td>
-                    </tr>
-                    <tr>
-                        <td><code>user</code></td>
-                        <td>Permitir montar por usuario normal</td>
-                    </tr>
-                    <tr>
-                        <td><code>nosuid</code></td>
-                        <td>Ignorar bits SUID/SGID</td>
-                    </tr>
-                    <tr>
-                        <td><code>nofail</code></td>
-                        <td>No fallar arranque si error</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <h3>Cómo Obtener el UUID</h3>
-
-            <pre><code># Método 1: blkid
-sudo blkid /dev/sda1
-
-# Método 2: lsblk
-lsblk -f
-
-# Método 3: udevadm
-udevadm info --query=all --name=/dev/sda1 | grep UUID</code></pre>
-
-            <h3>Ejemplo Completo: Agregar LVM a fstab</h3>
-
-            <pre><code># 1. Crear punto de montaje
-sudo mkdir -p /datos/documentos
-
-# 2. Obtener UUID (o usar ruta /dev/vg_datos/lv_documentos)
-sudo blkid /dev/vg_datos/lv_documentos
-
-# 3. Editar fstab
-sudo nano /etc/fstab
-
-# Agregar línea:
-UUID=xxxx-xxxx  /datos/documentos  ext4  defaults  0  2
-
-# 4. Verificar sintaxis
-sudo mount -a
-
-# 5. Verificar que está montado
-df -h /datos/documentos</code></pre>
-
-            <div class="callout warning">
-                <strong>Siempre verificar con mount -a:</strong> Antes de reiniciar, ejecuta <code>mount -a</code> para detectar errores en fstab sin dejar el sistema inarrancable.
+                <strong>Scheduling de disco:</strong> El SO reordena peticiones de E/S para minimizar movimiento del cabezal:
+                <ul>
+                    <li>FIFO: Orden de llegada</li>
+                    <li>SSTF: Shortest Seek Time First</li>
+                    <li>SCAN/Elevator: Va de extremo a extremo</li>
+                </ul>
             </div>
         </section>
 
         <section id="practica">
-            <h2>7. Actividad Práctica</h2>
-
-            <div class="actividad">
-                <h3>Ejercicio 1: Agregar Disco a Máquina Virtual</h3>
-                <p><strong>Objetivo:</strong> Agregar un nuevo disco a tu VM y configurarlo con LVM</p>
-
-                <h4>Paso 1: Agregar disco en VirtualBox/VMware</h4>
-                <ul>
-                    <li>Apagar la VM</li>
-                    <li>En configuración de VM, agregar nuevo disco duro (10GB)</li>
-                    <li>Iniciar la VM</li>
-                </ul>
-
-                <h4>Paso 2: Verificar que el disco es visible</h4>
-                <pre><code># Listar discos
+            <h2>5. Práctica en Linux</h2>
+            
+            <h3>Comandos para gestión de discos:</h3>
+            <pre>
+# Listar discos y particiones
 lsblk
+fdisk -l
 
-# Ver información detallada
-sudo fdisk -l</code></pre>
+# Ver uso de disco
+df -h
 
-                <h4>Paso 3: Particionar con fdisk</h4>
-                <pre><code># Iniciar fdisk en el nuevo disco (ej: /dev/sdb)
+# Ver información detallada de particiones
+sudo fdisk -l /dev/sda
+
+# Crear particiones (interactivo)
 sudo fdisk /dev/sdb
 
-# Comandos en fdisk:
-# n - nueva partición
-# p - primaria
-# 1 - número de partición
-# ENTER - usar primer sector por defecto
-# ENTER - usar último sector por defecto (todo el disco)
-# t - cambiar tipo
-# 8e - tipo Linux LVM
-# p - imprimir tabla
-# w - escribir y salir</code></pre>
+# Versión moderna con GPT
+sudo gdisk /dev/sdb
 
-                <h4>Paso 4: Crear volumen físico LVM</h4>
-                <pre><code># Crear PV
-sudo pvcreate /dev/sdb1
+# Formatear una partición
+sudo mkfs.ext4 /dev/sdb1
 
-# Verificar
-sudo pvdisplay</code></pre>
+# Ver información de filesystem
+sudo dumpe2fs /dev/sda1 | head -20
 
-                <h4>Paso 5: Crear grupo de volúmenes</h4>
-                <pre><code># Crear VG
-sudo vgcreate vg_practica /dev/sdb1
+# Ver estadísticas de E/S
+iostat -x 1 5
 
-# Verificar
-sudo vgdisplay vg_practica</code></pre>
+# Ver procesos usando E/S
+iotop
+</pre>
 
-                <h4>Paso 6: Crear volumen lógico</h4>
-                <pre><code># Crear LV de 5GB
-sudo lvcreate -L 5G -n lv_datos vg_practica
-
-# Verificar
-sudo lvdisplay</code></pre>
-
-                <h4>Paso 7: Formatear y montar</h4>
-                <pre><code># Formatear
-sudo mkfs.ext4 /dev/vg_practica/lv_datos
-
-# Crear punto de montaje
-sudo mkdir /datos
-
-# Montar temporalmente
-sudo mount /dev/vg_practica/lv_datos /datos
-
-# Verificar
-df -h /datos</code></pre>
-
-                <h4>Paso 8: Montaje permanente en fstab</h4>
-                <pre><code># Obtener UUID
-sudo blkid /dev/vg_practica/lv_datos
-
-# Editar fstab
-sudo nano /etc/fstab
-
-# Agregar línea:
-UUID=tu-uuid-aqui  /datos  ext4  defaults  0  2
-
-# Guardar y verificar
-sudo mount -a
-df -h /datos
-
-# Crear archivo de prueba
-echo "Prueba LVM" | sudo tee /datos/prueba.txt
-cat /datos/prueba.txt</code></pre>
-            </div>
-
+            <h3>Ejercicio práctico:</h3>
             <div class="actividad">
-                <h3>Ejercicio 2: Script de Automatización</h3>
-                <p><strong>Objetivo:</strong> Crear un script que automatice el proceso de configuración de LVM</p>
-
-                <pre><code>#!/bin/bash
-# script_lvm.sh - Automatiza configuración de LVM
-
-set -e  # Detener si hay error
-
-DISCO=$1
-VG_NAME="vg_datos"
-LV_NAME="lv_datos"
-MOUNT_POINT="/datos"
-
-# Verificar argumentos
-if [ -z "$DISCO" ]; then
-    echo "Uso: $0 &lt;disco&gt; (ej: /dev/sdb)"
-    exit 1
-fi
-
-echo "Configurando LVM en $DISCO..."
-
-# Crear partición LVM (automático con parted)
-echo "Creando partición LVM..."
-sudo parted -s $DISCO mklabel gpt
-sudo parted -s $DISCO mkpart primary 0% 100%
-sudo parted -s $DISCO set 1 lvm on
-
-PARTICION="${DISCO}1"
-
-# Crear volumen físico
-echo "Creando volumen físico..."
-sudo pvcreate $PARTICION
-
-# Crear grupo de volúmenes
-echo "Creando grupo de volúmenes..."
-sudo vgcreate $VG_NAME $PARTICION
-
-# Crear volumen lógico (todo el espacio)
-echo "Creando volumen lógico..."
-sudo lvcreate -l 100%FREE -n $LV_NAME $VG_NAME
-
-# Formatear
-echo "Formateando con ext4..."
-sudo mkfs.ext4 /dev/${VG_NAME}/${LV_NAME}
-
-# Crear punto de montaje
-echo "Creando punto de montaje..."
-sudo mkdir -p $MOUNT_POINT
-
-# Montar
-echo "Montando volumen..."
-sudo mount /dev/${VG_NAME}/${LV_NAME} $MOUNT_POINT
-
-# Agregar a fstab
-UUID=$(sudo blkid -s UUID -o value /dev/${VG_NAME}/${LV_NAME})
-if ! grep -q "$UUID" /etc/fstab; then
-    echo "Agregando a fstab..."
-    echo "UUID=$UUID $MOUNT_POINT ext4 defaults 0 2" | sudo tee -a /etc/fstab
-fi
-
-echo "¡Configuración completada!"
-echo "Volumen montado en: $MOUNT_POINT"
-df -h $MOUNT_POINT</code></pre>
-
-                <p><strong>Uso del script:</strong></p>
-                <pre><code># Dar permisos
-chmod +x script_lvm.sh
-
-# Ejecutar (con el nuevo disco como argumento)
-sudo ./script_lvm.sh /dev/sdb</code></pre>
+                <h3>Ejercicio: Análisis de Discos</h3>
+                <ol>
+                    <li>Listar todos los discos con <code>lsblk</code> y explicar la salida</li>
+                    <li>Ver tabla de particiones con <code>sudo fdisk -l</code></li>
+                    <li>Ver uso de disco con <code>df -h</code></li>
+                    <li>Identificar sistema de archivos de cada partición</li>
+                    <li>Ver estadísticas de E/S con <code>iostat</code> (instalar si es necesario)</li>
+                </ol>
             </div>
-
-            <p><strong>Tiempo estimado:</strong> 60 minutos</p>
         </section>
 
         <section id="entregable">
-            <h2>Entregable de la Clase</h2>
+            <h2>6. Entregable de la Clase</h2>
+            
+            <div class="actividad">
+                <h3>Análisis de Almacenamiento</h3>
+                <p><strong>Descripción:</strong> Documento técnico sobre discos y E/S en tu VM Ubuntu</p>
+                
+                <h4>Requisitos:</h4>
+                <ol>
+                    <li>Captura de <code>lsblk</code> con explicación de cada columna</li>
+                    <li>Captura de <code>fdisk -l</code> mostrando particiones</li>
+                    <li>Tabla comparativa: MBR vs GPT</li>
+                    <li>Diagrama de componentes de un disco HDD</li>
+                    <li>Comparación de tiempos de acceso: HDD vs SSD</li>
+                </ol>
 
-            <h3>Requisitos:</h3>
-
-            <ol>
-                <li><strong>Disco adicional agregado</strong> a la máquina virtual</li>
-                <li><strong>Volumen LVM configurado</strong> con al menos 5GB</li>
-                <li><strong>Montaje permanente</strong> en /etc/fstab</li>
-                <li><strong>Script de automatización</strong> que realice todo el proceso</li>
-                <li><strong>Capturas de pantalla</strong> demostrando:
-                    <ul>
-                        <li>Salida de <code>lsblk</code> mostrando el nuevo disco</li>
-                        <li>Salida de <code>vgdisplay</code> y <code>lvdisplay</code></li>
-                        <li>Salida de <code>df -h</code> mostrando el volumen montado</li>
-                        <li>Contenido de /etc/fstab</li>
-                    </ul>
-                </li>
-            </ol>
-
-            <div class="callout success">
-                <strong>Formato de entrega:</strong> Script en bash (.sh) + reporte en PDF con capturas y explicación del proceso.
+                <h4>Rúbrica:</h4>
+                <table>
+                    <tr><th>Criterio</th><th>Puntaje</th></tr>
+                    <tr><td>Capturas con comandos correctos</td><td>25%</td></tr>
+                    <tr><td>Explicación técnica de salidas</td><td>25%</td></tr>
+                    <tr><td>Comparativa MBR vs GPT completa</td><td>20%</td></tr>
+                    <tr><td>Diagrama claro de componentes</td><td>15%</td></tr>
+                    <tr><td>Comparación HDD vs SSD</td><td>15%</td></tr>
+                </table>
             </div>
         </section>
 
         <section id="resumen">
-            <h2>Resumen de la Clase</h2>
-
+            <h2>Resumen</h2>
             <table>
-                <thead>
-                    <tr>
-                        <th>Concepto</th>
-                        <th>Idea Clave</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr><td><strong>MBR</strong></td><td>Particionado tradicional, max 2TB, 4 particiones</td></tr>
-                    <tr><td><strong>GPT</strong></td><td>Particionado moderno, hasta 18EB, 128 particiones</td></tr>
-                    <tr><td><strong>ext4</strong></td><td>Sistema de archivos con journaling</td></tr>
-                    <tr><td><strong>PV (Physical Volume)</strong></td><td>Partición o disco usado por LVM</td></tr>
-                    <tr><td><strong>VG (Volume Group)</strong></td><td>Pool de almacenamiento que combina PVs</td></tr>
-                    <tr><td><strong>LV (Logical Volume)</strong></td><td>Volumen lógico formateable y montable</td></tr>
-                    <tr><td><strong>RAID 0</strong></td><td>Striping, máximo rendimiento, sin redundancia</td></tr>
-                    <tr><td><strong>RAID 1</strong></td><td>Mirroring, redundancia completa, 50% capacidad</td></tr>
-                    <tr><td><strong>RAID 5</strong></td><td>Striping + paridad, buen balance</td></tr>
-                    <tr><td><strong>/etc/fstab</strong></td><td>Configura montajes automáticos</td></tr>
-                </tbody>
+                <tr><th>Concepto</th><th>Descripción</th></tr>
+                <tr><td>HDD</td><td>Disco magnético con platos y cabezales</td></tr>
+                <tr><td>SSD</td><td>Memoria flash sin partes móviles</td></tr>
+                <tr><td>MBR</td><td>Esquema antiguo, 4 particiones, 2TB límite</td></tr>
+                <tr><td>GPT</td><td>Esquema moderno, 128 particiones, ZB límite</td></tr>
+                <tr><td>EXT4</td><td>Sistema de archivos estándar Linux</td></tr>
+                <tr><td>DMA</td><td>Transferencia directa sin intervención de CPU</td></tr>
             </table>
 
-            <div class="callout success">
-                <strong>Concepto fundamental:</strong> LVM abstrae el almacenamiento físico para proporcionar flexibilidad, permitiendo redimensionar volúmenes, agregar discos en caliente y crear snapshots sin interrumpir el servicio.
-            </div>
-        </section>
-
-        <!-- Videos Recomendados -->
-        <section id="videos">
-            <h2>Videos Recomendados</h2>
-
-            <div class="callout info">
-                <h3>📹 Video 1: LVM en Linux: domina el gestor de volúmenes lógicos</h3>
-                <p><strong>Domina el Logical Volume Manager</strong></p>
-                <p>Duración: ~25 minutos | Nivel: Intermedio | Idioma: Español</p>
-                <p>Tutorial completo de LVM en español: qué es LVM, por qué fue creado y cómo resuelve las limitaciones del particionamiento tradicional.</p>
-                <p><a href="https://www.youtube.com/watch?v=xFQu2HCQg5w" target="_blank">📺 Ver en YouTube</a></p>
-            </div>
-
-            <div class="callout info">
-                <h3>📹 Video 2: Cómo Extender Volumen Lógico LVM en Linux</h3>
-                <p><strong>Gestión de LVM: pvcreate, vgcreate, lvcreate, lvextend</strong></p>
-                <p>Duración: ~20 minutos | Nivel: Intermedio | Idioma: Español</p>
-                <p>Aprende a extender y redimensionar volúmenes lógicos LVM en tiempo de ejecución sin reiniciar el sistema.</p>
-                <p><a href="https://www.youtube.com/watch?v=fr3L73CXG_k" target="_blank">📺 Ver en YouTube</a></p>
-            </div>
+            <h3>Próxima Clase</h3>
+            <p><strong>Clase 12: Sistemas de Archivos</strong></p>
+            <ul>
+                <li>Sistemas de archivos ext4 y NTFS</li>
+                <li>Inodos y estructura interna</li>
+                <li>Directorios y estructura jerárquica</li>
+                <li>Permisos y atributos</li>
+            </ul>
         </section>
 
         <!-- Navigation between classes -->
@@ -1284,50 +378,29 @@ sudo ./script_lvm.sh /dev/sdb</code></pre>
                 <span class="class-nav-icon">←</span>
                 <div>
                     <div class="nav-label">Clase Anterior</div>
-                    <div class="nav-title">← Permisos en Windows</div>
+                    <div class="nav-title">← Memoria Virtual</div>
                 </div>
             </a>
             <a href="clase-12.html" class="class-nav-link next">
                 <div>
                     <div class="nav-label">Siguiente Clase</div>
-                    <div class="nav-title">Memoria Virtual →</div>
+                    <div class="nav-title">Sistemas de Archivos →</div>
                 </div>
                 <span class="class-nav-icon">→</span>
             </a>
         </nav>
     </div>
 
-    
-    
     <footer>
         <div class="container">
-            <p><strong>IF0099 - Sistemas Operativos I</strong> - Almacenamiento LVM</p>
+            <p><strong>IF0099 - Sistemas Operativos I</strong> - Discos y E/S</p>
             <p>Fecha: 18 de Marzo 2026 | Plan Practico v2.0</p>
             <p style="margin-top: 10px;">
-                <a href="index.html" style="color: #10b981;">Inicio</a> |
-                <a href="cronograma.html" style="color: #10b981;">Cronograma</a> |
-                <a href="rubricas.html" style="color: #3b82f6;">Rubricas</a>
+                <a href="index.html">Inicio</a> |
+                <a href="cronograma.html">Cronograma</a> |
+                <a href="rubricas.html">Rubricas</a>
             </p>
         </div>
     </footer>
-
-
-
-    <a href="#" class="scroll-top" id="scrollTop" aria-label="Scroll to top">↑</a>
-
-    <script>
-        const scrollTopBtn = document.getElementById('scrollTop');
-        window.addEventListener('scroll', () => {
-            if (window.pageYOffset > 300) {
-                scrollTopBtn.classList.add('visible');
-            } else {
-                scrollTopBtn.classList.remove('visible');
-            }
-        });
-        scrollTopBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-    </script>
 </body>
 </html>

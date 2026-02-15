@@ -785,110 +785,65 @@ Kernel abre archivo → Hardware lee disco
                 </tbody>
             </table>
 
-            <h3>1.6 Comparación: Linux vs Windows Server</h3>
+            <h3>1.6 Comandos Prácticos para Explorar el SO</h3>
 
-            <figure>
-                <img src="../assets/infografias/so-componentes-arquitectura.png" alt="Componentes y arquitectura del SO">
-                <figcaption>Figura 2: Componentes principales del Sistema Operativo</figcaption>
-            </figure>
-
-            <h4>Linux (Ubuntu Server)</h4>
-            <pre><code class="language-bash"># Ver información del kernel
-estudiante@ubuntu-server:~$ uname -a
-Linux ubuntu-server 5.15.0-76-generic #83-Ubuntu SMP Thu Jun 15 19:16:32 UTC 2023 x86_64 x86_64 x86_64 GNU/Linux
+            <h4>En Linux (Ubuntu Server)</h4>
+            <div class="code-block terminal-block">
+                <div class="code-header">Terminal - Explorando el Sistema</div>
+                <pre><code class="language-bash"># Ver información del kernel
+uname -a
 
 # Ver módulos del kernel cargados
-estudiante@ubuntu-server:~$ lsmod
-Module                  Size  Used by
-nft_compat            18944  5
-nf_nat                49152  2
-nft_compat,nft_masq
+lsmod
 
 # Ver system calls disponibles
-estudiante@ubuntu-server:~$ man syscalls
+man syscalls
 
 # Ver procesos en ejecución
-estudiante@ubuntu-server:~$ ps aux
-USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
-root           1  0.0  0.3 168500 12460 ?        Ss   10:00   0:01 /sbin/init
-root         456  0.0  0.5  90612 20760 ?        Ss   10:00   0:00 /usr/sbin/sshd
-estudiante   789  0.0  0.3  19204 11988 pts/0    Ss   10:05   0:00 -bash</code></pre>
+ps aux
 
-            <h4>Windows Server 2022</h4>
-            <pre><code class="language-bash"># Ver información del sistema
-PS C:\> Get-ComputerInfo
+# Ver espacio de usuario vs kernel
+strace ls 2>&1 | head -20</code></pre>
+            </div>
 
-OsName               : Microsoft Windows Server 2022 Datacenter
-OsVersion            : 10.0.20348
-OsHardwareAbstractionLayer : 10.0.20348
-WindowsVersion       : 2009
+            <h4>En Windows Server</h4>
+            <div class="code-block terminal-block">
+                <div class="code-header">PowerShell - Explorando el Sistema</div>
+                <pre><code class="language-powershell"># Ver información del sistema
+Get-ComputerInfo | Select-Object OsName, WindowsVersion
 
 # Ver procesos
-PS C:\> Get-Process
+Get-Process | Select-Object -First 10
 
-Handles  NPM(K)    PM(K)      WS(K)     CPU(s)     Id  SI ProcessName
--------  ------    -----      -----     ------     --  -- -----------
-    112       8     2048       5236       2.45    456   0 smss
-    256      12     3456      12345      15.67   789   1 svchost
+# Ver servicios
+Get-Service | Where-Object {$_.Status -eq "Running"} | Select-Object -First 10</code></pre>
+            </div>
 
-# Ver drivers (módulos del kernel)
-PS C:\> Get-Driver
+            <div class="callout info">
+                <p class="callout-title">💡 Tip</p>
+                <p>Estos comandos te permiten ver la estructura interna del SO en acción. Úsalos para completar tu entregable.</p>
+            </div>
 
-# Ver servicios del sistema
-PS C:\> Get-Service</code></pre>
+            <div class="actividad">
+                <h3>📋 Actividad de la Clase 04</h3>
+                <p><strong>Fecha de entrega:</strong> Próxima clase</p>
+                <p><strong>Tiempo estimado:</strong> 45 minutos</p>
+                
+                <h4>Entregables:</h4>
+                <ol>
+                    <li><strong>Diagrama de arquitectura:</strong> Dibuja la estructura del SO (Kernel, Shell, System Calls, Modos) - puede ser a mano o digital</li>
+                    <li><strong>Cuadro comparativo:</strong> Tabla de 5 aspectos comparando Linux vs Windows Server (Kernel, Shell, Comandos básicos)</li>
+                    <li><strong>Capturas:</strong> 2 comandos ejecutados en Linux (uname -a, lsmod) con breve explicación</li>
+                </ol>
 
-            <h4>Tabla Comparativa</h4>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Concepto</th>
-                        <th>Linux</th>
-                        <th>Windows Server</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Kernel</strong></td>
-                        <td>Monolítico (Linux kernel)</td>
-                        <td>Híbrido (NT Kernel)</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Shell</strong></td>
-                        <td>bash, sh, zsh</td>
-                        <td>PowerShell, cmd</td>
-                    </tr>
-                    <tr>
-                        <td><strong>System calls</strong></td>
-                        <td>fork(), exec(), open()</td>
-                        <td>CreateProcess, CreateFile</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Ver procesos</strong></td>
-                        <td>ps aux, top</td>
-                        <td>Get-Process, taskmgr</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Ver kernel</strong></td>
-                        <td>uname -a</td>
-                        <td>Get-ComputerInfo</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Drivers</strong></td>
-                        <td>lsmod</td>
-                        <td>Get-Driver</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <div class="callout success">
-                <p class="callout-title">Entregable de la Clase 04</p>
-                <p><strong>Fecha:</strong> [Próxima clase]</p>
-                <p><strong>Entregables:</strong></p>
-                <ul>
-                    <li><strong>Cuadro comparativo:</strong> Tabla comparando Linux vs Windows Server (mínimo 10 aspectos)</li>
-                    <li><strong>Diagrama propio:</strong> Diagrama de la arquitectura del SO hecho por ti (puede ser en papel, digital o herramienta como draw.io)</li>
-                    <li><strong>Capturas:</strong> Evidencia de ejecutar comandos en ambos sistemas</li>
-                </ul>
+                <h4>Rúbrica:</h4>
+                <table>
+                    <tr><th>Criterio</th><th>Puntaje</th></tr>
+                    <tr><td>Diagrama claro con componentes principales</td><td>40%</td></tr>
+                    <tr><td>Cuadro comparativo completo (5 aspectos)</td><td>30%</td></tr>
+                    <tr><td>Capturas con explicación</td><td>20%</td></tr>
+                    <tr><td>Presentación y organización</td><td>10%</td></tr>
+                </table>
             </div>
         </section>
 
@@ -946,11 +901,11 @@ PS C:\> Get-Service</code></pre>
 
         <!-- Navigation between classes -->
         <nav class="class-nav" aria-label="Navegación entre clases">
-            <a href="clase-03.html" class="class-nav-link prev">
+            <a href="clase-02.html" class="class-nav-link prev">
                 <span class="class-nav-icon">←</span>
                 <div>
                     <div class="nav-label">Clase Anterior</div>
-                    <div class="nav-title">← Windows Server 2022</div>
+                    <div class="nav-title">← Linux Terminal</div>
                 </div>
             </a>
             <a href="clase-05.html" class="class-nav-link next">
