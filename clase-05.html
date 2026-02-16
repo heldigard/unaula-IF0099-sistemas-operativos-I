@@ -416,9 +416,10 @@
             <h1>Clase 05: Procesos en Linux - Gestión y Monitoreo</h1>
             <p class="subtitle">IF0099 - Sistemas Operativos I | Unidad 3 - Procesos</p>
             <p class="subtitle">ps, top, htop, kill, señales y systemd</p>
-            <p class="meta">Fecha: 18 de Febrero 2026 | Teoría: 6:00-8:00 AM | Plan Practico v2.0</p>
+            <p class="meta">📅 17 de Febrero 2026 | Sesión Martes: 6:00-8:00 AM | Teoría: 60 min + Práctica: 60 min</p>
         </div>
     </header>
+
 
     <div class="container">
 
@@ -748,7 +749,13 @@ root      1234  1000  0 10:00 ?        00:00:01 /bin/bash
 
             <div class="callout info">
                 <strong>ps muestra un snapshot de los procesos actuales</strong>
+                <p>Linux maneja dos estándares históricos para los parámetros de los comandos:</p>
+                <ul>
+                    <li><strong>BSD (Berkeley Software Distribution):</strong> Parámetros sin guión (ej. <code>aux</code>).</li>
+                    <li><strong>POSIX/UNIX:</strong> Parámetros con guión (ej. <code>-ef</code>).</li>
+                </ul>
             </div>
+
 
             <h4>Opciones más usadas:</h4>
 
@@ -1135,7 +1142,13 @@ journalctl -u nginx -f</code></pre>
         <section id="practica">
             <h2>Práctica Guiada</h2>
 
+            <div class="info-box" style="margin-bottom: 1.5rem; background: #eff6ff; border-left: 4px solid var(--primary); padding: 1.5rem; border-radius: 8px;">
+                <h3>📋 Laboratorio Complementario</h3>
+                <p>Para profundizar en la gestión de procesos con ejercicios prácticos y scripts avanzados, consulta el <strong><a href="../laboratorios-html/lab-03-gestion-procesos.html" target="_blank">Laboratorio 3: Gestión de Procesos</a></strong>.</p>
+            </div>
+
             <div class="actividad">
+
                 <h3>Actividad 1: Explorar procesos</h3>
                 <p><strong>Tiempo:</strong> 10 minutos</p>
                 <ol>
@@ -1390,7 +1403,8 @@ cat "$archivo"</code></pre>
     <footer>
         <div class="container">
             <p><strong>IF0099 - Sistemas Operativos I</strong> - Procesos en Linux</p>
-            <p>Fecha: 18 de Febrero 2026 | Plan Practico v2.0</p>
+            <p>📅 17 de Febrero 2026 | Sesión Martes: 6:00-8:00 AM | Teoría: 60 min + Práctica: 60 min</p>
+
             <p style="margin-top: 10px;">
                 <a href="index.html" style="color: #10b981;">Inicio</a> |
                 <a href="cronograma.html" style="color: #10b981;">Cronograma</a> |

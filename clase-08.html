@@ -65,9 +65,10 @@
             <h1>Clase 08: Gestión de Memoria</h1>
             <p class="subtitle">IF0099 - Sistemas Operativos I | Unidad 6 - Memoria</p>
             <p class="subtitle">Jerarquía de memoria, asignación contigua, particiones</p>
-            <p class="meta">Fecha: 04 de Marzo 2026 | Bloque 2: 8:00-9:00 AM | Plan Practico v2.0</p>
+            <p class="meta">📅 03 de Marzo 2026 | Sesión Martes: 6:00-8:00 AM | Teoría: 60 min + Práctica: 60 min</p>
         </div>
     </header>
+
 
     <div class="container">
 
@@ -108,7 +109,18 @@
                 <li><strong>Identificar</strong> y solucionar problemas de fragmentación</li>
                 <li><strong>Monitorear</strong> el uso de memoria en Linux</li>
             </ol>
+
+            <div class="callout info">
+                <p class="callout-title">Glosario de Memoria</p>
+                <ul>
+                    <li><strong>MMU (Memory Management Unit):</strong> Dispositivo de hardware que traduce direcciones virtuales a físicas.</li>
+                    <li><strong>Swap:</strong> Área en el disco duro que se usa como extensión de la memoria RAM.</li>
+                    <li><strong>Fragmentación:</strong> Desperdicio de memoria RAM que no puede ser utilizada.</li>
+                    <li><strong>Localidad de Referencia:</strong> Tendencia de los programas a acceder a direcciones de memoria cercanas en el tiempo y espacio.</li>
+                </ul>
+            </div>
         </section>
+
 
         <section id="introduccion">
             <h2>1. Introducción a la Gestión de Memoria</h2>
@@ -240,8 +252,14 @@ Después de compactar:
 
         <section id="practica">
             <h2>6. Práctica en Linux</h2>
+
+            <div class="info-box" style="margin-bottom: 1.5rem; background: #eff6ff; border-left: 4px solid var(--primary); padding: 1.5rem; border-radius: 8px;">
+                <h3>📋 Laboratorio Complementario</h3>
+                <p>Para practicar el monitoreo de memoria y recursos en un entorno real, consulta el <strong><a href="../laboratorios-html/lab-04-memoria-monitoreo.html" target="_blank">Laboratorio 4: Memoria y Monitoreo</a></strong>.</p>
+            </div>
             
             <h3>Comandos para monitorear memoria:</h3>
+
             <pre>
 # Ver uso de memoria total
 free -h
@@ -344,7 +362,8 @@ vmstat 1 5
     <footer>
         <div class="container">
             <p><strong>IF0099 - Sistemas Operativos I</strong> - Gestión de Memoria</p>
-            <p>Fecha: 04 de Marzo 2026 | Bloque 2: 8:00-9:00 AM | Plan Practico v2.0</p>
+            <p>📅 03 de Marzo 2026 | Sesión Martes: 6:00-8:00 AM | Teoría: 60 min + Práctica: 60 min</p>
+
             <p style="margin-top: 10px;">
                 <a href="index.html">Inicio</a> |
                 <a href="cronograma.html">Cronograma</a> |
