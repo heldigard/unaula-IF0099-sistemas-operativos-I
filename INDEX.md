@@ -50,9 +50,9 @@ Este curso está diseñado para ser visualizado en formato HTML. Utiliza los sig
 
 | Eval | Fecha | Tipo | Tema | % | Clases Previas |
 |------|-------|------|------|---|----------------|
-| E1 | 25 Feb | Taller | Estructura y tipos de SO | 15% | 01, 02, 03, 04 |
-| E2 | 11 Mar | Informe | Gestión de procesos | 15% | 05, 06, 07, 08, 09 |
-| E3 | 25 Mar | Examen | Memoria, E/S | 20% | 10, 11 |
+| E1 | 25 Feb | Taller | Estructura y tipos de SO | 15% | 01, 02, 04 |
+| E2 | 11 Mar | Informe | Gestión de procesos | 15% | 05, 06, 07 |
+| E3 | 25 Mar | Examen | Memoria, E/S | 20% | 04 al 10 |
 | E4 | 22 Abr | Reporte | **Seguridad en SO** | 15% | 15, 16, 17 |
 | **E5** | **6 May** | **Proyecto** | **Fase 4: Servidores Web y Monitoreo** | **15%** | **12, 13, 14** |
 | **E6** | **27 May** | **Proyecto** | **Fase 5: Entrega Completa (Sustentación)** | **20%** | **Todas** |
