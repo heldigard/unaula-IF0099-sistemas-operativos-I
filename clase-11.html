@@ -57,6 +57,58 @@
         footer { background: var(--text-main); color: white; padding: 2rem 0; text-align: center; margin-top: 3rem; }
         footer a { color: var(--accent); text-decoration: none; }
         @media (max-width: 768px) { header h1 { font-size: 1.6rem; } section { padding: 1.5rem; } nav ul { grid-template-columns: 1fr; } }
+
+        .eval-alert {
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            border-left: 4px solid #3b82f6;
+            padding: 1.25rem 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .eval-alert-icon {
+            font-size: 1.75rem;
+            line-height: 1;
+        }
+
+        .eval-alert-content {
+            flex: 1;
+        }
+
+        .eval-alert-title {
+            font-weight: 700;
+            color: #1e40af;
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .eval-alert-text {
+            color: #1e3a8a;
+            font-size: 0.9rem;
+        }
+
+        .eval-alert-date {
+            background: #3b82f6;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+
+        .class-nav-date {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        .class-nav-link:hover .nav-title {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
@@ -84,6 +136,18 @@
                 <a href="rubricas.html" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: #3b82f6; color: white; text-decoration: none; border-radius: 6px; font-weight: 500;">Rubricas</a>
             </div>
         </div>
+
+        <!-- Próxima Evaluación Alert -->
+        <a href="evaluaciones.html#e3" style="text-decoration: none; display: block;">
+            <div class="eval-alert" style="cursor: pointer; transition: transform 0.2s;">
+                <span class="eval-alert-icon">📌</span>
+                <div class="eval-alert-content">
+                    <div class="eval-alert-title">Próxima Evaluación: E3 - Examen Parcial</div>
+                    <div class="eval-alert-text">25 de Marzo 2026 (20%) - Memoria, E/S, Archivos</div>
+                </div>
+                <span class="eval-alert-date">📅 25 Mar</span>
+            </div>
+        </a>
 
         <nav>
             <h2>Contenido de la Clase</h2>
@@ -411,13 +475,15 @@ iotop
                 <span class="class-nav-icon">←</span>
                 <div>
                     <div class="nav-label">Clase Anterior</div>
-                    <div class="nav-title">← Memoria Virtual</div>
+                    <div class="nav-title">Memoria Virtual</div>
+                    <div class="class-nav-date">📅 12 Mar 2026</div>
                 </div>
             </a>
             <a href="clase-12.html" class="class-nav-link next">
                 <div>
                     <div class="nav-label">Siguiente Clase</div>
-                    <div class="nav-title">Sistemas de Archivos →</div>
+                    <div class="nav-title">Sistemas de Archivos</div>
+                    <div class="class-nav-date">📅 07 Abr 2026</div>
                 </div>
                 <span class="class-nav-icon">→</span>
             </a>
@@ -432,6 +498,7 @@ iotop
             <p style="margin-top: 10px;">
                 <a href="index.html">Inicio</a> |
                 <a href="cronograma.html">Cronograma</a> |
+                <a href="evaluaciones.html" style="color: #8b5cf6;">Evaluaciones</a> |
                 <a href="rubricas.html">Rubricas</a>
             </p>
         </div>

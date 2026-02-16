@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acta de Concertación | IF0099 - Sistemas Operativos I</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #1e3a5f 0%, #2d5a87 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+
+        h1 {
+            color: #1e3a5f;
+            font-size: 2.2em;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 1.2em;
+            margin-bottom: 15px;
+        }
+
+        .meta-info {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        .meta-info p {
+            margin: 5px 0;
+            color: #555;
+        }
+
+        .nav-links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            display: inline-block;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #1e3a5f 0%, #2d5a87 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+
+        .nav-links a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(30, 58, 95, 0.3);
+        }
+
+        .section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .section h2 {
+            color: #1e3a5f;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #1e3a5f;
+        }
+
+        .section h3 {
+            color: #2d5a87;
+            font-size: 1.4em;
+            margin: 25px 0 15px;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 0.95em;
+        }
+
+        th {
+            background: linear-gradient(135deg, #1e3a5f 0%, #2d5a87 100%);
+            color: white;
+            padding: 15px 12px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        tr:hover {
+            background: #f8f9fa;
+        }
+
+        .eval-code {
+            font-weight: 700;
+            color: #1e3a5f;
+            font-size: 1.1em;
+        }
+
+        .percentage {
+            font-weight: 700;
+            color: #10b981;
+        }
+
+        .exam-percentage {
+            color: #3b82f6;
+        }
+
+        .date {
+            font-weight: 600;
+            color: #d97706;
+        }
+
+        /* Info boxes */
+        .info-box {
+            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+            border-left: 4px solid #3b82f6;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .info-box h4 {
+            color: #1e40af;
+            margin-bottom: 10px;
+        }
+
+        .success-box {
+            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+            border-left: 4px solid #10b981;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .success-box h4 {
+            color: #065f46;
+            margin-bottom: 10px;
+        }
+
+        .warning-box {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-left: 4px solid #f59e0b;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .warning-box h4 {
+            color: #92400e;
+            margin-bottom: 10px;
+        }
+
+        /* Lists */
+        ul, ol {
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Month sections */
+        .month-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .month-section h4 {
+            color: #1e3a5f;
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #1e3a5f;
+        }
+
+        .activity {
+            padding: 10px 0;
+            border-bottom: 1px dashed #ddd;
+        }
+
+        .activity:last-child {
+            border-bottom: none;
+        }
+
+        .activity strong {
+            color: #1e3a5f;
+        }
+
+        .eval-activity {
+            background: #d1fae5;
+            padding: 10px;
+            border-radius: 6px;
+            margin: 5px 0;
+            font-weight: 600;
+        }
+
+        .exam-activity {
+            background: #dbeafe;
+            padding: 10px;
+            border-radius: 6px;
+            margin: 5px 0;
+            font-weight: 600;
+        }
+
+        .seguimiento-activity {
+            background: #fef3c7;
+            padding: 10px;
+            border-radius: 6px;
+            margin: 5px 0;
+            font-weight: 600;
+        }
+
+        footer {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            color: #555;
+        }
+
+        footer a {
+            color: #1e3a5f;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+
+        .badge-success {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .badge-info {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .badge-warning {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        @media (max-width: 768px) {
+            header, .section, footer {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 1.8em;
+            }
+            
+            table {
+                font-size: 0.85em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📋 Acta de Concertación</h1>
+            <p class="subtitle">IF0099 - Sistemas Operativos I | Semestre 2026-I</p>
+            
+            <div class="meta-info">
+                <p><strong>Docente:</strong> Ing. Eldigardo Evelio Camacho Cespedes</p>
+                <p><strong>Programa:</strong> Ingeniería Informática (302 Pensum 2023-2)</p>
+                <p><strong>Fecha de Concertación:</strong> 16 de febrero de 2026</p>
+                <p><strong>Estado:</strong> <span class="badge badge-success">✅ APROBADO PARA PANDORA</span></p>
+            </div>
+
+            <div class="nav-links">
+                <a href="../index.html">Inicio del Curso</a>
+                <a href="cronograma.html">Cronograma</a>
+                <a href="evaluaciones.html">Evaluaciones</a>
+                <a href="rubricas.html">Rúbricas</a>
+            </div>
+        </header>
+
+        <section class="section">
+            <h2>📊 Estructura de Evaluaciones</h2>
+            <p style="margin-bottom: 20px;">El curso consta de <strong>6 evaluaciones</strong> con una distribución del <strong>100%</strong> de la nota final. Cada evaluación está alineada con un resultado de aprendizaje específico del sistema PANDORA.</p>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Eval</th>
+                        <th>%</th>
+                        <th>Tipo</th>
+                        <th>Tema</th>
+                        <th>Fecha</th>
+                        <th>Resultado de Aprendizaje</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="eval-code">E1</td>
+                        <td class="percentage">15%</td>
+                        <td><span class="badge badge-info">Taller</span></td>
+                        <td>Estructura y Tipos de SO</td>
+                        <td class="date">25/02/2026</td>
+                        <td>Identifica la estructura y los tipos de los sistemas operativos</td>
+                    </tr>
+                    <tr>
+                        <td class="eval-code">E2</td>
+                        <td class="percentage">15%</td>
+                        <td><span class="badge badge-info">Informe</span></td>
+                        <td>Gestión de Procesos</td>
+                        <td class="date">11/03/2026</td>
+                        <td>Gestiona los procesos que se llevan a cabo en los sistemas operativos</td>
+                    </tr>
+                    <tr style="background: #eff6ff;">
+                        <td class="eval-code">E3</td>
+                        <td class="percentage exam-percentage">20%</td>
+                        <td><span class="badge badge-warning">Examen</span></td>
+                        <td>Memoria, E/S, Archivos</td>
+                        <td class="date">25/03/2026</td>
+                        <td>Administra la memoria, los procesos de entrada y salida, el sistema de archivos...</td>
+                    </tr>
+                    <tr>
+                        <td class="eval-code">E4</td>
+                        <td class="percentage">15%</td>
+                        <td><span class="badge badge-info">Reporte</span></td>
+                        <td>Seguridad en SO</td>
+                        <td class="date">22/04/2026</td>
+                        <td>Evalúa la seguridad de los sistemas operativos</td>
+                    </tr>
+                    <tr>
+                        <td class="eval-code">E5</td>
+                        <td class="percentage">15%</td>
+                        <td><span class="badge badge-success">Proyecto</span></td>
+                        <td>Fase 4: Servidores Web y Monitoreo</td>
+                        <td class="date">06/05/2026</td>
+                        <td>comprende la funcionalidad de conceptos fundamentales de la materia...</td>
+                    </tr>
+                    <tr style="background: #eff6ff;">
+                        <td class="eval-code">E6</td>
+                        <td class="percentage exam-percentage">20%</td>
+                        <td><span class="badge badge-success">Proyecto</span></td>
+                        <td>Fase 5: Entrega Final + Sustentación</td>
+                        <td class="date">27/05/2026</td>
+                        <td>Estudia las interfaces que ofrece el Sistema Operativo al usuario...</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="info-box">
+                <h4>📌 Información Importante</h4>
+                <ul>
+                    <li>Las evaluaciones E3 y E6 son <strong>exámenes</strong> con énfasis en análisis de escenarios (no memorización)</li>
+                    <li>Las evaluaciones E1, E2, E4 y E5 son <strong>trabajos prácticos</strong> con sustentación obligatoria</li>
+                    <li>Todas las evaluaciones incluyen componente teórico (40%) y práctico (60%)</li>
+                    <li>La suma total de porcentajes es <strong>100%</strong></li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>📅 Seguimientos Académicos</h2>
+            <p>Las fechas de seguimiento son fijas según el calendario académico UNAULA:</p>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Seguimiento</th>
+                        <th>% Acumulado</th>
+                        <th>Fecha Límite</th>
+                        <th>Evaluaciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>1° Seguimiento</strong></td>
+                        <td class="percentage">50%</td>
+                        <td class="date">27/03/2026</td>
+                        <td>E1 + E2 + E3 = 50%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>2° Seguimiento</strong></td>
+                        <td class="percentage">80%</td>
+                        <td class="date">15/05/2026</td>
+                        <td>E4 + E5 = 30%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>3° Seguimiento</strong></td>
+                        <td class="percentage">100%</td>
+                        <td class="date">28/05/2026</td>
+                        <td>E6 = 20%</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="success-box">
+                <h4>✅ Cumplimiento de Fechas</h4>
+                <ul>
+                    <li>E1, E2, E3 ≤ <strong>27 de marzo</strong> (1° seguimiento)</li>
+                    <li>E4, E5 ≤ <strong>15 de mayo</strong> (2° seguimiento)</li>
+                    <li>E6 ≤ <strong>28 de mayo</strong> (3° seguimiento)</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>🗓️ Cronograma Detallado</h2>
+
+            <div class="month-section">
+                <h4>📆 Febrero 2026</h4>
+                <div class="activity">03: Inicio de clases</div>
+                <div class="activity">04: <strong>C01</strong> - ¿Qué es un SO?</div>
+                <div class="activity">06: <strong>C02</strong> - Linux Terminal</div>
+                <div class="activity">11: <strong>C04</strong> - Estructura del SO</div>
+                <div class="activity">18: <strong>C05</strong> - Procesos Linux</div>
+                <div class="eval-activity">📋 <strong>25: E1 (15%)</strong> - Estructura y Tipos de SO</div>
+            </div>
+
+            <div class="month-section">
+                <h4>📆 Marzo 2026</h4>
+                <div class="activity">04: <strong>C06</strong> - Procesos Windows</div>
+                <div class="activity">06: <strong>C07</strong> - Hilos y Sincronización</div>
+                <div class="eval-activity">📋 <strong>11: E2 (15%)</strong> - Gestión de Procesos</div>
+                <div class="activity">13: <strong>C08</strong> - Gestión de Memoria</div>
+                <div class="activity">18: <strong>C09</strong> - Paginación</div>
+                <div class="activity">20: <strong>C10</strong> - Memoria Virtual</div>
+                <div class="exam-activity">📝 <strong>25: E3 (20%)</strong> - EXAMEN PARCIAL</div>
+                <div class="seguimiento-activity">📊 <strong>27: 1° Seguimiento (50%)</strong></div>
+            </div>
+
+            <div class="month-section">
+                <h4>📆 Semana Santa 2026 - Receso</h4>
+                <div class="activity" style="background: #fee2e2; padding: 15px; border-radius: 6px;">
+                    <strong>29 marzo - 05 abril:</strong> No hay clases
+                </div>
+            </div>
+
+            <div class="month-section">
+                <h4>📆 Abril 2026</h4>
+                <div class="activity">07: <strong>C15</strong> - Seguridad Linux</div>
+                <div class="activity">09: <strong>Lab 06</strong> - Seguridad y Hardening</div>
+                <div class="activity">14: <strong>C16</strong> - Seguridad Windows</div>
+                <div class="activity">16: <strong>C17</strong> - Servidor Apache</div>
+                <div class="eval-activity">📋 <strong>22: E4 (15%)</strong> - Seguridad en SO</div>
+                <div class="activity">23: <strong>C12</strong> - Sistemas de Archivos</div>
+                <div class="activity">28: <strong>C13</strong> - Implementación FS</div>
+                <div class="activity">30: <strong>Lab 05</strong> - Sistemas de Archivos</div>
+            </div>
+
+            <div class="month-section">
+                <h4>📆 Mayo 2026</h4>
+                <div class="activity">05: <strong>C14</strong> - Servidor IIS</div>
+                <div class="eval-activity">📋 <strong>06: E5 (15%)</strong> - Conceptos Fundamentales</div>
+                <div class="seguimiento-activity">📊 <strong>15: 2° Seguimiento (80%)</strong></div>
+                <div class="activity">19: Simulacro Examen Final</div>
+                <div class="activity">21: Taller de Consultas</div>
+                <div class="exam-activity">📝 <strong>27: E6 (20%)</strong> - EXAMEN FINAL</div>
+                <div class="seguimiento-activity">📊 <strong>28: 3° Seguimiento (100%)</strong></div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>🎯 Metodología del Curso</h2>
+            
+            <h3>Distribución Teórico-Práctica</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Tipo de Evaluación</th>
+                        <th>Teoría</th>
+                        <th>Práctica</th>
+                        <th>Evaluaciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Trabajos (E1, E2, E4, E5)</td>
+                        <td>40%</td>
+                        <td>60%</td>
+                        <td>Taller, Informe, Reporte</td>
+                    </tr>
+                    <tr>
+                        <td>Exámenes (E3, E6)</td>
+                        <td>60%</td>
+                        <td>40%</td>
+                        <td>Examen Parcial, Examen Final</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="info-box">
+                <h4>💻 Componente Práctico</h4>
+                <ul>
+                    <li><strong>Scripts:</strong> Bash (Linux) y PowerShell (Windows)</li>
+                    <li><strong>Comandos reales:</strong> Ejecución en entornos Linux y Windows</li>
+                    <li><strong>Evidencias:</strong> Capturas de pantalla de configuraciones</li>
+                    <li><strong>Configuraciones prácticas:</strong> Servidores, permisos, monitoreo</li>
+                </ul>
+            </div>
+
+            <div class="success-box">
+                <h4>🧠 Enfoque: Sin Exámenes de Memorización</h4>
+                <ul>
+                    <li><strong>Análisis de escenarios:</strong> Resolver situaciones reales</li>
+                    <li><strong>Resolución de problemas:</strong> Aplicar conocimiento práctico</li>
+                    <li><strong>Desarrollo de soluciones:</strong> Crear scripts y configuraciones</li>
+                    <li><strong>Sustentación:</strong> Defensa oral de trabajos</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>📚 Contenido por Evaluación</h2>
+            
+            <h3>E1 - Estructura y Tipos de SO (15%)</h3>
+            <ul>
+                <li>Definición y funciones del SO</li>
+                <li>Tipos: monolítico, microkernel, híbrido</li>
+                <li>Estructura: kernel, shell, utilidades</li>
+                <li>Evolución histórica de los SO</li>
+                <li>Comparación Linux vs Windows vs macOS</li>
+            </ul>
+
+            <h3>E2 - Gestión de Procesos (15%)</h3>
+            <ul>
+                <li>Concepto de proceso y estados</li>
+                <li>PCB (Process Control Block)</li>
+                <li>Cambio de contexto</li>
+                <li>Comandos: ps, top, kill, nice</li>
+                <li>Scripts de monitoreo</li>
+            </ul>
+
+            <h3>E3 - Examen Parcial (20%)</h3>
+            <ul>
+                <li>Gestión de memoria: paginación, segmentación</li>
+                <li>Memoria virtual y swap</li>
+                <li>Entrada/Salida y DMA</li>
+                <li>Sistemas de archivos (introducción)</li>
+                <li>Sincronización: semáforos, mutex, deadlock</li>
+            </ul>
+
+            <h3>E4 - Seguridad en SO (15%)</h3>
+            <ul>
+                <li>Mecanismos: SELinux, AppArmor, UAC</li>
+                <li>Control de acceso: DAC, MAC, RBAC</li>
+                <li>Permisos avanzados: SUID, SGID, ACLs</li>
+                <li>Hardening y auditoría de sistemas</li>
+                <li>Matriz de riesgos de seguridad</li>
+            </ul>
+
+            <h3>E5 - Conceptos Fundamentales (15%)</h3>
+            <ul>
+                <li><strong>Evaluación integradora</strong></li>
+                <li>Sistema de archivos: EXT4, NTFS, inodos</li>
+                <li>Procesos e hilos: gestión avanzada</li>
+                <li>Memoria: administración y tuning</li>
+                <li>Scripts integrales de todo el curso</li>
+            </ul>
+
+            <h3>E6 - Examen Final (20%)</h3>
+            <ul>
+                <li>Todo el contenido del curso</li>
+                <li>Énfasis en interfaces: CLI, GUI, APIs</li>
+                <li>Análisis de escenarios prácticos</li>
+                <li>Configuración de servicios web</li>
+                <li>Hardening básico de sistemas</li>
+            </ul>
+        </section>
+
+        <section class="section">
+            <h2>🔗 Documentos Relacionados</h2>
+            <div class="nav-links" style="justify-content: flex-start;">
+                <a href="cronograma.html">📅 Cronograma Completo</a>
+                <a href="evaluaciones.html">📝 Detalle de Evaluaciones</a>
+                <a href="rubricas.html">📋 Rúbricas de Calificación</a>
+                <a href="../docs/AC-IF0099-001-2026-1-Sistemas%20Operativos%20I.pdf">📄 Acta UNAULA (PDF)</a>
+            </div>
+        </section>
+
+        <footer>
+            <p><strong>IF0099 - Sistemas Operativos I</strong></p>
+            <p>UNAULA - Ingeniería Informática - 2026-I</p>
+            <p style="margin-top: 15px;">
+                <a href="../index.html">Inicio</a> |
+                <a href="cronograma.html">Cronograma</a> |
+                <a href="evaluaciones.html">Evaluaciones</a> |
+                <a href="rubricas.html">Rúbricas</a>
+            </p>
+            <p style="margin-top: 10px; color: #999; font-size: 0.9em;">
+                Última actualización: 16 de febrero de 2026 | Versión Final
+            </p>
+        </footer>
+    </div>
+</body>
+</html>
