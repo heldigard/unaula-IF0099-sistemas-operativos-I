@@ -58,14 +58,22 @@ Según Compromisos Docentes UNAULA 2026-1:
 
 | Evento | Fecha | Notas |
 |--------|-------|-------|
-| Inicio de clases | 4 de febrero de 2026 | Miércoles |
-| Evaluación 1 | 25 de febrero de 2026 | Miércoles |
-| Evaluación 2 | 11 de marzo de 2026 | Miércoles |
-| Evaluación 3 | 25 de marzo de 2026 | Miércoles |
-| **Semana Santa** | **1-5 de abril de 2026** | **NO hay clases** (29 marzo - 5 abril litúrgico) |
-| Evaluación 4 | 22 de abril de 2026 | Miércoles (después de Semana Santa) |
-| Evaluación 5 | 6 de mayo de 2026 | Miércoles |
-| Evaluación 6 (Final) | 27 de mayo de 2026 | Miércoles |
+| Inicio de clases | 3 de febrero de 2026 | Martes |
+| Evaluación 1 | 24 de febrero de 2026 | Martes |
+| Evaluación 2 | 10 de marzo de 2026 | Martes |
+| Evaluación 3 | 24 de marzo de 2026 | Martes |
+| **Semana Santa** | **29 de marzo - 5 de abril de 2026** | **NO hay clases** |
+| Evaluación 4 | 21 de abril de 2026 | Martes |
+| Evaluación 5 | 5 de mayo de 2026 | Martes |
+| Evaluación 6 (Final) | 26 de mayo de 2026 | Martes |
+
+---
+
+## Regla 7: Horario y Sesiones
+
+- **Días:** Martes (6-8 AM) y Jueves (6-7 AM).
+- **Metodología:** 50% Teoría / 50% Laboratorio Práctico.
+
 
 ---
 

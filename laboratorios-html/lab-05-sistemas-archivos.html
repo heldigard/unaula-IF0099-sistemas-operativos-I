@@ -1,0 +1,1209 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laboratorio 5: Sistemas de Archivos Avanzados | IF0099 - Sistemas Operativos I</title>
+    <!-- Prism.js CSS para syntax highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #1e40af;
+            --accent: #059669;
+            --bg-light: #f8fafc;
+            --bg-code: #1e293b;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --warning: #f59e0b;
+            --danger: #dc2626;
+            --info: #0891b2;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.7;
+            color: var(--text-main);
+            background: var(--bg-light);
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 3rem 0;
+            margin-bottom: 2rem;
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        header .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        header .meta {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .warning-box {
+            background: #fffbeb;
+            border-left: 4px solid var(--warning);
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 8px;
+        }
+
+        .warning-box h3 {
+            color: #92400e;
+            margin-bottom: 0.5rem;
+        }
+
+        .success-box {
+            background: #f0fdf4;
+            border-left: 4px solid var(--accent);
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 8px;
+        }
+
+        .info-box {
+            background: #ecfeff;
+            border-left: 4px solid var(--info);
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 8px;
+        }
+
+        section {
+            background: white;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        section h2 {
+            color: var(--primary);
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid var(--accent);
+        }
+
+        section h3 {
+            color: var(--secondary);
+            font-size: 1.4rem;
+            margin: 2rem 0 1rem;
+        }
+
+        section h4 {
+            color: var(--text-main);
+            font-size: 1.1rem;
+            margin: 1.5rem 0 0.75rem;
+            font-weight: 600;
+        }
+
+        .command-box {
+            background: var(--bg-code);
+            color: #e2e8f0;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            overflow-x: auto;
+        }
+
+        .command {
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .command-prompt {
+            color: #4ade80;
+        }
+
+        .command-input {
+            color: #60a5fa;
+        }
+
+        .command-output {
+            color: #94a3b8;
+            margin: 0.5rem 0;
+            padding-left: 1rem;
+        }
+
+        .step {
+            background: var(--bg-light);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 6px;
+            border-left: 3px solid var(--primary);
+        }
+
+        .step-number {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }
+
+        .exercise {
+            background: #eff6ff;
+            border-left: 4px solid var(--primary);
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 8px;
+        }
+
+        .exercise h4 {
+            color: var(--primary);
+            margin-top: 0;
+        }
+
+        .command-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+        }
+
+        .command-table th,
+        .command-table td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .command-table th {
+            background: var(--bg-light);
+            font-weight: 600;
+            color: var(--secondary);
+        }
+
+        .command-table code {
+            background: var(--bg-code);
+            color: #60a5fa;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .lab-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: stretch;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .lab-nav-link {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1.25rem 1.5rem;
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            text-decoration: none;
+            color: var(--text-main);
+            transition: all 0.3s ease;
+        }
+
+        .lab-nav-link:hover {
+            border-color: var(--primary);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .lab-nav-link.prev {
+            border-left: 4px solid var(--primary);
+        }
+
+        .lab-nav-link.next {
+            border-right: 4px solid var(--accent);
+            text-align: right;
+            margin-left: auto;
+        }
+
+        .lab-nav-link .nav-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            margin-bottom: 0.25rem;
+        }
+
+        .lab-nav-link .nav-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .lab-nav-link.next .nav-title {
+            color: var(--accent);
+        }
+
+        .lab-nav-icon {
+            font-size: 1.5rem;
+            line-height: 1;
+        }
+
+        .lab-nav-placeholder {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.25rem;
+            background: var(--bg-light);
+            border: 2px dashed var(--border);
+            border-radius: 12px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .nav-btn {
+            background: var(--primary);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .nav-btn:hover {
+            background: var(--secondary);
+        }
+
+        .footer {
+            text-align: center;
+            padding: 2rem 0;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .tips {
+            background: #fef3c7;
+            border-left: 4px solid var(--warning);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 6px;
+        }
+
+        .tips strong {
+            color: #92400e;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Laboratorio 5: Sistemas de Archivos Avanzados</h1>
+            <p class="subtitle">IF0099 - Sistemas Operativos I | 2026-I</p>
+            <p class="meta">Duracion: 120 minutos | Nivel: Intermedio-Avanzado | Prerrequisito: Labs 1-4 completados</p>
+        </div>
+    </header>
+
+    <!-- Quick Navigation Bar -->
+    <div class="quick-nav" style="background: white; padding: 1rem; margin-bottom: 2rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
+        <div style="display: flex; align-items: center; gap: 1rem;">
+            <a href="../clases-html/index.html" style="color: var(--primary); text-decoration: none; font-weight: 500;">Inicio</a>
+            <span style="color: var(--text-muted);">|</span>
+            <span style="color: var(--text-main); font-weight: 600;">Lab 5: Sistemas de Archivos Avanzados</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <a href="../clases-html/cronograma.html" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: #10b981; color: white; text-decoration: none; border-radius: 6px; font-weight: 500;">Cronograma</a>
+            <a href="../clases-html/rubricas.html" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: #3b82f6; color: white; text-decoration: none; border-radius: 6px; font-weight: 500;">Rubricas</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="success-box">
+            <h3>Entorno de Laboratorio</h3>
+            <p>Este laboratorio utiliza tu <strong>maquina virtual de Ubuntu Server</strong>. Conectate via SSH y asegurate de tener suficiente espacio en disco para los ejercicios de compresion y backup.</p>
+        </div>
+
+        <div class="warning-box">
+            <h3>Antes de comenzar</h3>
+            <p>Asegurate de tener privilegios de sudo. Algunos comandos requieren instalacion de paquetes adicionales. Los ejercicios de permisos especiales deben hacerse con precaucion.</p>
+        </div>
+
+        <section>
+            <h2>Objetivos del Laboratorio</h2>
+            <ul>
+                <li>Comprender los diferentes tipos de sistemas de archivos</li>
+                <li>Dominar comandos avanzados de busqueda y manipulacion</li>
+                <li>Aplicar permisos especiales (SUID, SGID, Sticky Bit)</li>
+                <li>Configurar Access Control Lists (ACLs)</li>
+                <li>Implementar estrategias de compresion y backup</li>
+                <li>Crear scripts automatizados de respaldo</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>1. Tipos de Sistemas de Archivos</h2>
+
+            <h3>Comparativa de Sistemas de Archivos</h3>
+            
+            <table class="command-table">
+                <thead>
+                    <tr>
+                        <th>Sistema</th>
+                        <th>Plataforma</th>
+                        <th>Tamano Max Archivo</th>
+                        <th>Tamano Max Volumen</th>
+                        <th>Caracteristicas</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>ext4</strong></td>
+                        <td>Linux</td>
+                        <td>16 TB</td>
+                        <td>1 EB</td>
+                        <td>Journaling, extents, mejoras en rendimiento</td>
+                    </tr>
+                    <tr>
+                        <td><strong>XFS</strong></td>
+                        <td>Linux</td>
+                        <td>8 EB</td>
+                        <td>8 EB</td>
+                        <td>Alto rendimiento, paralelizacion, ideal para grandes archivos</td>
+                    </tr>
+                    <tr>
+                        <td><strong>NTFS</strong></td>
+                        <td>Windows</td>
+                        <td>16 EB</td>
+                        <td>256 TB</td>
+                        <td>Journaling, ACLs, compresion, cifrado</td>
+                    </tr>
+                    <tr>
+                        <td><strong>FAT32</strong></td>
+                        <td>Multiplataforma</td>
+                        <td>4 GB</td>
+                        <td>2 TB</td>
+                        <td>Compatible universal, limitado, sin permisos</td>
+                    </tr>
+                    <tr>
+                        <td><strong>btrfs</strong></td>
+                        <td>Linux</td>
+                        <td>16 EB</td>
+                        <td>16 EB</td>
+                        <td>Copy-on-write, snapshots, checksums, RAID integrado</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Verificar Sistema de Archivos Actual</h3>
+            <pre><code class="language-bash">df -T
+cat /etc/fstab</code></pre>
+
+            <div class="info-box">
+                <h4>Journaling</h4>
+                <p>Es una tecnica que registra los cambios antes de aplicarlos al sistema de archivos. Esto permite recuperacion rapida despues de un corte de energia o crash del sistema. ext4 y XFS usan journaling; FAT32 no lo tiene.</p>
+            </div>
+        </section>
+
+        <section>
+            <h2>2. Comandos Avanzados</h2>
+
+            <h3>find - Busqueda Avanzada</h3>
+            <p>Busca archivos y directorios segun multiples criterios.</p>
+            
+            <div class="command-box">
+                <div class="command">
+                    <span class="command-prompt">~ $</span> <span class="command-input">find /var/log -name "*.log" -mtime +7</span><br>
+                    <span class="command-output">/var/log/syslog.1<br>/var/log/auth.log.1</span>
+                </div>
+            </div>
+
+            <table class="command-table">
+                <thead>
+                    <tr>
+                        <th>Opcion</th>
+                        <th>Descripcion</th>
+                        <th>Ejemplo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>-name</code></td>
+                        <td>Por nombre (case sensitive)</td>
+                        <td><code>find . -name "*.txt"</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>-iname</code></td>
+                        <td>Por nombre (case insensitive)</td>
+                        <td><code>find . -iname "*.jpg"</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>-size</code></td>
+                        <td>Por tamano</td>
+                        <td><code>find . -size +100M</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>-mtime</code></td>
+                        <td>Modificado hace N dias</td>
+                        <td><code>find . -mtime -7</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>-type</code></td>
+                        <td>Por tipo (f=archivo, d=directorio)</td>
+                        <td><code>find . -type d</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>-exec</code></td>
+                        <td>Ejecuta comando en resultados</td>
+                        <td><code>find . -exec ls -lh {} \;</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>-delete</code></td>
+                        <td>Elimina archivos encontrados</td>
+                        <td><code>find . -name "*.tmp" -delete</code></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>locate - Busqueda Rapida</h3>
+            <p>Busca en una base de datos preconstruida (mas rapido que find).</p>
+            <pre><code class="language-bash"># Actualizar la base de datos
+sudo updatedb
+
+# Buscar archivos
+locate *.conf
+locate -i nginx</code></pre>
+
+            <div class="tips">
+                <strong>Tip:</strong> locate no busca en directorios configurados en /etc/updatedb.conf (tipicamente /tmp, /var/tmp). Para busquedas en tiempo real, usa find.
+            </div>
+
+            <h3>tar - Archivado</h3>
+            <p>Crea archivos comprimidos (.tar) de multiples archivos y directorios.</p>
+
+            <div class="command-box">
+                <div class="command">
+                    <span class="command-prompt">~ $</span> <span class="command-input">tar -cvf backup.tar /home/usuario/documentos</span><br>
+                    <span class="command-output">home/usuario/documentos/<br>home/usuario/documentos/archivo1.txt<br>home/usuario/documentos/archivo2.txt</span>
+                </div>
+            </div>
+
+            <table class="command-table">
+                <thead>
+                    <tr>
+                        <th>Opcion</th>
+                        <th>Significado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>-c</code></td>
+                        <td>Crear archivo</td>
+                    </tr>
+                    <tr>
+                        <td><code>-x</code></td>
+                        <td>Extraer</td>
+                    </tr>
+                    <tr>
+                        <td><code>-v</code></td>
+                        <td>Verbose (muestra progreso)</td>
+                    </tr>
+                    <tr>
+                        <td><code>-f</code></td>
+                        <td>Especifica nombre de archivo</td>
+                    </tr>
+                    <tr>
+                        <td><code>-z</code></td>
+                        <td>Comprimir con gzip (.tar.gz)</td>
+                    </tr>
+                    <tr>
+                        <td><code>-j</code></td>
+                        <td>Comprimir con bzip2 (.tar.bz2)</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>gzip y gunzip - Compresion</h3>
+            <pre><code class="language-bash"># Comprimir archivo
+gzip archivo.txt
+# Resultado: archivo.txt.gz
+
+# Descomprimir
+gunzip archivo.txt.gz
+
+# Ver contenido sin descomprimir
+zcat archivo.txt.gz</code></pre>
+
+            <h3>rsync - Sincronizacion</h3>
+            <p>Herramienta poderosa para copiar y sincronizar archivos (local y remoto).</p>
+            
+            <div class="command-box">
+                <div class="command">
+                    <span class="command-prompt">~ $</span> <span class="command-input">rsync -avz --progress /origen/ /destino/</span><br>
+                    <span class="command-output">sending incremental file list<br>./<br>archivo1.txt<br>1,234 100% 1.21MB/s 0:00:00 (xfr#1, to-chk=2/4)</span>
+                </div>
+            </div>
+
+            <table class="command-table">
+                <thead>
+                    <tr>
+                        <th>Opcion</th>
+                        <th>Descripcion</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>-a</code></td>
+                        <td>Modo archivo (preserva permisos, enlaces, etc.)</td>
+                    </tr>
+                    <tr>
+                        <td><code>-v</code></td>
+                        <td>Verbose</td>
+                    </tr>
+                    <tr>
+                        <td><code>-z</code></td>
+                        <td>Comprime durante transferencia</td>
+                    </tr>
+                    <tr>
+                        <td><code>--progress</code></td>
+                        <td>Muestra progreso</td>
+                    </tr>
+                    <tr>
+                        <td><code>--delete</code></td>
+                        <td>Elimina archivos en destino que no estan en origen</td>
+                    </tr>
+                    <tr>
+                        <td><code>-n</code></td>
+                        <td>Dry-run (simulacion, no copia nada)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section>
+            <h2>3. Permisos Avanzados</h2>
+
+            <h3>SUID (Set User ID)</h3>
+            <p>Permite que un archivo ejecutable se ejecute con los permisos del propietario, no del usuario que lo ejecuta.</p>
+            
+            <pre><code class="language-bash"># Ver archivos con SUID
+find /usr/bin -perm -4000 -ls
+
+# Establecer SUID (4xxx)
+chmod 4755 script.sh
+# O
+chmod u+s script.sh</code></pre>
+
+            <div class="warning-box">
+                <h3>ADVERTENCIA: Riesgos de SUID</h3>
+                <p>Los archivos con SUID son potencialmente peligrosos. Si tienen vulnerabilidades, pueden ser explotados para escalar privilegios. Solo deben usarse cuando sea absolutamente necesario.</p>
+            </div>
+
+            <h3>SGID (Set Group ID)</h3>
+            <p>Similar a SUID pero para el grupo. En directorios, hace que los archivos nuevos hereden el grupo del directorio.</p>
+            
+            <pre><code class="language-bash"># Establecer SGID en directorio (2xxx)
+chmod 2775 /compartido/proyecto/
+# O
+chmod g+s /compartido/proyecto/
+
+# Ver archivos con SGID
+find / -perm -2000 -type f 2>/dev/null</code></pre>
+
+            <h3>Sticky Bit</h3>
+            <p>En directorios, solo el propietario puede eliminar o renombrar sus archivos (aunque otros tengan permisos de escritura).</p>
+            
+            <pre><code class="language-bash"># Ejemplo clasico: /tmp tiene sticky bit
+ls -ld /tmp
+# drwxrwxrwt 12 root root ... /tmp
+
+# Establecer sticky bit (1xxx)
+chmod 1777 /compartido/temp/
+# O
+chmod +t /compartido/temp/</code></pre>
+
+            <table class="command-table">
+                <thead>
+                    <tr>
+                        <th>Permiso Especial</th>
+                        <th>Octal</th>
+                        <th>Simbolico</th>
+                        <th>Efecto en Archivos</th>
+                        <th>Efecto en Directorios</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>SUID</strong></td>
+                        <td>4000</td>
+                        <td>u+s</td>
+                        <td>Ejecuta como propietario</td>
+                        <td>Ninguno</td>
+                    </tr>
+                    <tr>
+                        <td><strong>SGID</strong></td>
+                        <td>2000</td>
+                        <td>g+s</td>
+                        <td>Ejecuta como grupo</td>
+                        <td>Archivos heredan grupo</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Sticky Bit</strong></td>
+                        <td>1000</td>
+                        <td>+t</td>
+                        <td>Sin efecto</td>
+                        <td>Solo propietario puede borrar</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="tips">
+                <strong>Mnemotecnia:</strong> SUID=4, SGID=2, Sticky=1. Orden: U-G-T (Usuario-Grupo-Temp).
+            </div>
+        </section>
+
+        <section>
+            <h2>4. Access Control Lists (ACLs)</h2>
+
+            <h3>Instalacion</h3>
+            <pre><code class="language-bash">sudo apt install acl -y</code></pre>
+
+            <h3>setfacl - Establecer ACLs</h3>
+            <p>Permite asignar permisos especificos a usuarios y grupos individuales.</p>
+
+            <div class="command-box">
+                <div class="command">
+                    <span class="command-prompt">~ $</span> <span class="command-input">setfacl -m u:maria:rw documento.txt</span><br>
+                    <span class="command-output"># Otorga lectura y escritura al usuario maria</span>
+                </div>
+            </div>
+
+            <h3>getfacl - Ver ACLs</h3>
+            <pre><code class="language-bash">getfacl documento.txt</code></pre>
+
+            <div class="command-box">
+                <div class="command">
+                    <span class="command-prompt">~ $</span> <span class="command-input">getfacl documento.txt</span><br>
+                    <span class="command-output"># file: documento.txt<br># owner: juan<br># group: desarrollo<br>user::rw-<br>user:maria:rw-<br>group::r--<br>mask::rw-<br>other::r--</span>
+                </div>
+            </div>
+
+            <h3>ACLs en Directorios (Default ACLs)</h3>
+            <pre><code class="language-bash"># Establecer ACL por defecto en directorio
+setfacl -d -m u:maria:rwX proyectos/
+
+# Recursivo en directorio existente
+setfacl -R -m u:maria:rwX proyectos/
+
+# Eliminar ACL especifico
+setfacl -x u:maria documento.txt
+
+# Eliminar todas las ACLs
+setfacl -b documento.txt</code></pre>
+
+            <table class="command-table">
+                <thead>
+                    <tr>
+                        <th>Opcion</th>
+                        <th>Descripcion</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>-m</code></td>
+                        <td>Modificar ACL</td>
+                    </tr>
+                    <tr>
+                        <td><code>-x</code></td>
+                        <td>Eliminar ACL</td>
+                    </tr>
+                    <tr>
+                        <td><code>-b</code></td>
+                        <td>Eliminar todas las ACLs</td>
+                    </tr>
+                    <tr>
+                        <td><code>-d</code></td>
+                        <td>ACL por defecto (para directorios)</td>
+                    </tr>
+                    <tr>
+                        <td><code>-R</code></td>
+                        <td>Recursivo</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section>
+            <h2>5. Compresion y Backup</h2>
+
+            <h3>Combinando tar con compresion</h3>
+            
+            <pre><code class="language-bash"># Crear tar.gz (gzip)
+tar -czvf backup.tar.gz /ruta/a/respaldar
+
+# Crear tar.bz2 (bzip2 - mejor compresion, mas lento)
+tar -cjvf backup.tar.bz2 /ruta/a/respaldar
+
+# Crear tar.xz (xz - maxima compresion)
+tar -cJvf backup.tar.xz /ruta/a/respaldar
+
+# Extraer
+tar -xzvf backup.tar.gz     # gzip
+tar -xjvf backup.tar.bz2    # bzip2
+tar -xJvf backup.tar.xz     # xz</code></pre>
+
+            <h3>Comparativa de Algoritmos de Compresion</h3>
+
+            <table class="command-table">
+                <thead>
+                    <tr>
+                        <th>Formato</th>
+                        <th>Comando</th>
+                        <th>Velocidad</th>
+                        <th>Ratio</th>
+                        <th>Uso Recomendado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>.tar.gz</td>
+                        <td>gzip</td>
+                        <td>Rapida</td>
+                        <td>Buena</td>
+                        <td>Uso general</td>
+                    </tr>
+                    <tr>
+                        <td>.tar.bz2</td>
+                        <td>bzip2</td>
+                        <td>Media</td>
+                        <td>Muy buena</td>
+                        <td>Archivos de texto</td>
+                    </tr>
+                    <tr>
+                        <td>.tar.xz</td>
+                        <td>xz</td>
+                        <td>Lenta</td>
+                        <td>Excelente</td>
+                        <td>Distribuciones, archivos grandes</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>rsync para Backup Incremental</h3>
+
+            <pre><code class="language-bash"># Backup local con preservacion completa
+rsync -avz --delete /origen/ /backup/origen/
+
+# Backup a servidor remoto
+rsync -avz -e ssh /origen/ usuario@servidor:/ruta/backup/
+
+# Backup con exclusiones
+rsync -avz --exclude='*.tmp' --exclude='cache/' /origen/ /backup/
+
+# Backup con hardlinks (copia solo cambios, conserva historial)
+rsync -avz --link-dest=/backup/anterior/ /origen/ /backup/actual/</code></pre>
+
+            <div class="info-box">
+                <h4>Backup Incremental vs Diferencial</h4>
+                <ul style="margin-top: 1rem;">
+                    <li><strong>Incremental:</strong> Solo respalda archivos modificados desde el ultimo backup (de cualquier tipo)</li>
+                    <li><strong>Diferencial:</strong> Respalda archivos modificados desde el ultimo backup completo</li>
+                    <li><strong>Completo:</strong> Respalda todo</li>
+                </ul>
+            </div>
+        </section>
+
+        <section>
+            <h2>6. Ejercicios Practicos</h2>
+
+            <div class="exercise">
+                <h4>Ejercicio 1: Busqueda con find</h4>
+
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <strong>Buscar todos los archivos .log mayores a 10MB en /var:</strong>
+                    <pre><code>sudo find /var -name "*.log" -size +10M</code></pre>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <strong>Buscar archivos modificados en las ultimas 24 horas:</strong>
+                    <pre><code>find ~ -mtime -1 -type f</code></pre>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <strong>Buscar y eliminar archivos temporales:</strong>
+                    <pre><code>find /tmp -name "*.tmp" -mtime +7 -delete</code></pre>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <strong>Buscar archivos vacios:</strong>
+                    <pre><code>find ~ -type f -empty</code></pre>
+                </div>
+            </div>
+
+            <div class="exercise">
+                <h4>Ejercicio 2: Compresion y Archivado</h4>
+
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <strong>Crear estructura de prueba:</strong>
+                    <pre><code>mkdir -p ~/prueba_backup/{docs,imgs,scripts}
+touch ~/prueba_backup/docs/{a,b,c}.txt
+touch ~/prueba_backup/imgs/{1,2,3}.jpg
+echo "#!/bin/bash" > ~/prueba_backup/scripts/test.sh</code></pre>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <strong>Crear backup comprimido:</strong>
+                    <pre><code>tar -czvf ~/backup_prueba_$(date +%Y%m%d).tar.gz ~/prueba_backup</code></pre>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <strong>Comparar tamano con bzip2:</strong>
+                    <pre><code>tar -cjvf ~/backup_prueba.tar.bz2 ~/prueba_backup
+ls -lh ~/backup_prueba.*</code></pre>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <strong>Extraer y verificar:</strong>
+                    <pre><code>mkdir ~/restaurado
+tar -xzvf ~/backup_prueba_*.tar.gz -C ~/restaurado
+ls -la ~/restaurado</code></pre>
+                </div>
+            </div>
+
+            <div class="exercise">
+                <h4>Ejercicio 3: Permisos Especiales</h4>
+
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <strong>Crear directorio compartido:</strong>
+                    <pre><code>sudo mkdir /compartido
+sudo chmod 2775 /compartido
+ls -ld /compartido</code></pre>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <strong>Crear directorio temporal con sticky bit:</strong>
+                    <pre><code>sudo mkdir /compartido/temp
+sudo chmod 1777 /compartido/temp
+ls -ld /compartido/temp</code></pre>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <strong>Ver archivos con SUID en el sistema:</strong>
+                    <pre><code>sudo find /usr/bin -perm -4000 -ls | head -10</code></pre>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <strong>Practicar con chmod simbolico:</strong>
+                    <pre><code>touch ~/archivo_test
+chmod u+rwx,g+rx,o-rwx ~/archivo_test
+ls -l ~/archivo_test</code></pre>
+                </div>
+            </div>
+
+            <div class="exercise">
+                <h4>Ejercicio 4: ACLs</h4>
+
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <strong>Instalar y verificar ACL:</strong>
+                    <pre><code>sudo apt install acl -y
+mount | grep acl</code></pre>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <strong>Crear archivo y establecer ACL:</strong>
+                    <pre><code>touch ~/documento_acl.txt
+setfacl -m u:$(whoami):rw ~/documento_acl.txt
+getfacl ~/documento_acl.txt</code></pre>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <strong>Establecer ACL por defecto en directorio:</strong>
+                    <pre><code>mkdir ~/proyecto_acl
+setfacl -d -m u:$(whoami):rwx ~/proyecto_acl
+getfacl ~/proyecto_acl</code></pre>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <strong>Crear archivo dentro y verificar herencia:</strong>
+                    <pre><code>touch ~/proyecto_acl/nuevo.txt
+getfacl ~/proyecto_acl/nuevo.txt</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>7. Desafio: Script de Backup Automatizado</h2>
+
+            <div class="exercise">
+                <h4>Desafio: Sistema de Backup Rotativo con rsync</h4>
+                <p>Crea un script que implemente una estrategia de backup GFS (Grandfather-Father-Son) con retencion:</p>
+
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <strong>Crear el script de backup avanzado:</strong>
+                    <pre><code>cat > backup_rotativo.sh << 'EOF'
+#!/bin/bash
+
+# Configuracion
+SOURCE_DIR="/home/$(whoami)"
+BACKUP_DIR="/backup"
+LOG_FILE="/var/log/backup.log"
+RETENTION_DAILY=7
+RETENTION_WEEKLY=4
+RETENTION_MONTHLY=12
+
+# Funcion para logging
+log() {
+    echo "[$(date '+%Y-%m-%d %H:%M:%S')] $1" | tee -a "$LOG_FILE"
+}
+
+# Crear directorios de backup
+crear_estructura() {
+    mkdir -p "$BACKUP_DIR"/{diario,semanal,mensual}
+    log "Estructura de backup creada"
+}
+
+# Backup dieno
+backup_diario() {
+    local fecha=$(date +%Y%m%d)
+    local destino="$BACKUP_DIR/diario/backup_$fecha.tar.gz"
+    
+    log "Iniciando backup dieno: $destino"
+    
+    tar -czf "$destino" \
+        --exclude="*.tmp" \
+        --exclude="cache" \
+        --exclude=".cache" \
+        "$SOURCE_DIR" 2>> "$LOG_FILE"
+    
+    if [ $? -eq 0 ]; then
+        log "Backup dieno completado: $(du -h "$destino" | cut -f1)"
+    else
+        log "ERROR: Backup dieno fallo"
+    fi
+}
+
+# Limpiar backups antiguos
+limpiar_antiguos() {
+    log "Limpiando backups antiguos..."
+    
+    # Mantener solo los ultimos N backups diarios
+    find "$BACKUP_DIR/diario" -name "backup_*.tar.gz" -mtime +$RETENTION_DAILY -delete
+    
+    # Mantener solo los ultimos N backups semanales
+    find "$BACKUP_DIR/semanal" -name "backup_*.tar.gz" -mtime +$((RETENTION_WEEKLY * 7)) -delete
+    
+    log "Limpieza completada"
+}
+
+# Rotacion semanal (ejecutar domingos)
+rotacion_semanal() {
+    if [ "$(date +%u)" -eq 7 ]; then
+        local fecha=$(date +%Y%m%d)
+        cp "$BACKUP_DIR/diario/backup_$fecha.tar.gz" \
+           "$BACKUP_DIR/semanal/semanal_$fecha.tar.gz"
+        log "Rotacion semanal creada"
+    fi
+}
+
+# Rotacion mensual (primer dia del mes)
+rotacion_mensual() {
+    if [ "$(date +%d)" -eq 01 ]; then
+        local fecha=$(date +%Y%m%d)
+        cp "$BACKUP_DIR/diario/backup_$fecha.tar.gz" \
+           "$BACKUP_DIR/mensual/mensual_$fecha.tar.gz"
+        log "Rotacion mensual creada"
+    fi
+}
+
+# Verificar integridad del ultimo backup
+verificar_integridad() {
+    local ultimo=$(ls -t "$BACKUP_DIR/diario"/backup_*.tar.gz 2>/dev/null | head -1)
+    if [ -n "$ultimo" ]; then
+        log "Verificando integridad de: $ultimo"
+        if tar -tzf "$ultimo" > /dev/null 2>> "$LOG_FILE"; then
+            log "Integridad verificada correctamente"
+        else
+            log "ERROR: Problema de integridad en backup"
+        fi
+    fi
+}
+
+# Reporte de estado
+generar_reporte() {
+    echo "=== REPORTE DE BACKUP ==="
+    echo "Fecha: $(date)"
+    echo ""
+    echo "Espacio usado:"
+    du -sh "$BACKUP_DIR"/* 2>/dev/null
+    echo ""
+    echo "Ultimos 5 backups:"
+    ls -ltr "$BACKUP_DIR"/*/*.tar.gz 2>/dev/null | tail -5
+    echo ""
+    echo "Estado del log:"
+    tail -10 "$LOG_FILE"
+}
+
+# Ejecucion principal
+case "${1:-backup}" in
+    backup)
+        crear_estructura
+        backup_diario
+        rotacion_semanal
+        rotacion_mensual
+        limpiar_antiguos
+        verificar_integridad
+        ;;
+    reporte)
+        generar_reporte
+        ;;
+    limpiar)
+        limpiar_antiguos
+        ;;
+    *)
+        echo "Uso: $0 {backup|reporte|limpiar}"
+        exit 1
+        ;;
+esac
+
+log "=== Proceso de backup finalizado ==="
+EOF</code></pre>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <strong>Hacer ejecutable y probar:</strong>
+                    <pre><code>chmod +x backup_rotativo.sh
+./backup_rotativo.sh</code></pre>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <strong>Ver reporte:</strong>
+                    <pre><code>./backup_rotativo.sh reporte</code></pre>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <strong>Configurar cron para ejecucion diaria:</strong>
+                    <pre><code>crontab -e
+# Agregar al final:
+0 2 * * * /home/$(whoami)/backup_rotativo.sh >> /var/log/backup_cron.log 2>&1</code></pre>
+                </div>
+            </div>
+
+            <div class="tips">
+                <strong>Extension del desafio:</strong> Modifica el script para incluir:
+                <ul>
+                    <li>Backup remoto via rsync sobre SSH</li>
+                    <li>Notificacion por correo si el backup falla</li>
+                    <li>Encriptacion de backups con gpg</li>
+                    <li>Exclusiones configurables desde archivo externo</li>
+                </ul>
+            </div>
+        </section>
+
+        <section>
+            <h2>Preguntas de Reflexion</h2>
+            <ol>
+                <li>Por que XFS es recomendado para grandes volumenes de datos sobre ext4?</li>
+                <li>En que situaciones usarias ACLs en lugar de permisos estandar?</li>
+                <li>Cual es el riesgo principal de los archivos con SUID y como mitigarlo?</li>
+                <li>Como funciona rsync para hacer backups incrementales tan eficientes?</li>
+                <li>Por que es importante verificar la integridad de los backups?</li>
+            </ol>
+        </section>
+
+        <section>
+            <h2>Preparacion para el Proximo Laboratorio</h2>
+            <p>Para el proximo laboratorio (Seguridad y Hardening), necesitaras:</p>
+            <ul>
+                <li>Comprender bien los permisos de archivos y directorios</li>
+                <li>Tener experiencia con comandos de busqueda y filtrado</li>
+                <li>Entender la estructura de /etc/passwd, /etc/shadow</li>
+                <li>Estar familiarizado con logs del sistema</li>
+            </ul>
+        </section>
+
+        <!-- Enhanced navigation between labs -->
+        <nav class="lab-nav" aria-label="Navegacion entre laboratorios">
+            <a href="lab-04-memoria-monitoreo.html" class="lab-nav-link prev">
+                <span class="lab-nav-icon">←</span>
+                <div>
+                    <div class="nav-label">Laboratorio Anterior</div>
+                    <div class="nav-title">Memoria y Monitoreo</div>
+                </div>
+            </a>
+            <a href="lab-06-seguridad-hardening.html" class="lab-nav-link next">
+                <div>
+                    <div class="nav-label">Siguiente Laboratorio</div>
+                    <div class="nav-title">Seguridad y Hardening →</div>
+                </div>
+                <span class="lab-nav-icon">→</span>
+            </a>
+        </nav>
+
+        <div class="footer">
+            <p>IF0099 - Sistemas Operativos I | 2026-I | Ing. Eldigardo Evelio Camacho Cespedes</p>
+            <p>Laboratorio 5: Sistemas de Archivos Avanzados</p>
+        </div>
+    </div>
+
+    <!-- Prism.js para syntax highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            Prism.highlightAll();
+        });
+    </script>
+</body>
+</html>

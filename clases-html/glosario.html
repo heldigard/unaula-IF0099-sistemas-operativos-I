@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glosario | IF0099 - Sistemas Operativos I</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #1e40af;
+            --accent: #059669;
+            --bg-light: #f8fafc;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.7;
+            color: var(--text-main);
+            background: var(--bg-light);
+            padding: 20px;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            border-radius: 12px;
+        }
+        header h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+        header .subtitle { opacity: 0.9; }
+        .nav-links { display: flex; gap: 15px; margin-top: 1.5rem; flex-wrap: wrap; }
+        .nav-links a {
+            padding: 10px 20px;
+            background: white;
+            color: var(--primary);
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        .nav-links a:hover { background: #dbeafe; }
+        section {
+            background: white;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        section h2 {
+            color: var(--primary);
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid var(--accent);
+        }
+        .glossary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1rem;
+        }
+        .glossary-item {
+            background: #f8fafc;
+            padding: 1rem 1.25rem;
+            border-radius: 8px;
+            border-left: 4px solid var(--accent);
+            transition: all 0.2s;
+        }
+        .glossary-item:hover {
+            border-left-color: var(--primary);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .glossary-item .term {
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 1.1rem;
+        }
+        .glossary-item .definition {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-top: 0.25rem;
+        }
+        .letter-section {
+            margin-bottom: 2rem;
+        }
+        .letter-header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        footer {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            text-align: center;
+            color: var(--text-muted);
+            margin-top: 2rem;
+        }
+        footer a { color: var(--accent); text-decoration: none; }
+        @media (max-width: 768px) {
+            .glossary-grid { grid-template-columns: 1fr; }
+            header h1 { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Glosario de Sistemas Operativos</h1>
+            <p class="subtitle">IF0099 - Sistemas Operativos I | UNAULA 2026-I</p>
+            <div class="nav-links">
+                <a href="index.html">Inicio</a>
+                <a href="cronograma.html">Cronograma</a>
+                <a href="rubricas.html">Rubricas</a>
+                <a href="../laboratorios-html/index.html">Laboratorios</a>
+            </div>
+        </header>
+
+        <section>
+            <p style="margin-bottom: 1.5rem;">Este glosario contiene las abreviaciones y terminos tecnicos utilizados en el curso. Consultalo cuando encuentres un termino que no conozcas.</p>
+            
+            <div class="letter-section">
+                <div class="letter-header">A</div>
+                <div class="glossary-grid">
+                    <div class="glossary-item">
+                        <div class="term">ACL</div>
+                        <div class="definition">Access Control List (Lista de Control de Acceso) - Lista que especifica que usuarios o procesos tienen permiso para acceder a objetos del sistema.</div>
+                    </div>
+                    <div class="glossary-item">
+                        <div class="term">AD</div>
+                        <div class="definition">Active Directory - Servicio de directorio de Microsoft para gestionar usuarios, equipos y recursos en redes Windows.</div>
+                    </div>
+                    <div class="glossary-item">
+                        <div class="term">API</div>
+                        <div class="definition">Application Programming Interface (Interfaz de Programacion de Aplicaciones) - Conjunto de funciones que permiten a los programas comunicarse con el SO.</div>
+                    </div>
+                    <div class="glossary-item">
+                        <div class="term">AWS</div>
+                        <div class="definition">Amazon Web Services - Plataforma de servicios en la nube de Amazon, utilizada para practicas con EC2.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="letter-section">
+                <div class="letter-header">B</div>
+                <div class="glossary-grid">
+                    <div class="glossary-item">
+                        <div class="term">Bash</div>
+                        <div class="definition">Bourne Again Shell - Interprete de comandos por defecto en la mayoria de distribuciones Linux.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="letter-section">
+                <div class="letter-header">C</div>
+                <div class="glossary-grid">
+                    <div class="glossary-item">
+                        <div class="term">CLI</div>
+                        <div class="definition">Command Line Interface (Interfaz de Linea de Comandos) - Metodo de interaccion con el sistema mediante comandos de texto.</div>
+                    </div>
+                    <div class="glossary-item">
+                        <div class="term">CPU</div>
+                        <div class="definition">Central Processing Unit (Unidad Central de Procesamiento) - Componente principal que ejecuta instrucciones de los programas.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="letter-section">
+                <div class="letter-header">E</div>
+                <div class="glossary-grid">
+                    <div class="glossary-item">
+                        <div class="term">E/S o I/O</div>
+                        <div class="definition">Entrada/Salida (Input/Output) - Comunicacion entre el procesador y dispositivos perifericos (teclado, disco, pantalla).</div>
+                    </div>
+                    <div class="glossary-item">
+                        <div class="term">EC2</div>
+                        <div class="definition">Elastic Compute Cloud - Servicio de maquinas virtuales en la nube de Amazon Web Services.</div>
+                    </div>
+                    <div class="glossary-item">
+                        <div class="term">EXT4</div>
+                        <div class="definition">Fourth Extended Filesystem - Sistema de archivos por defecto en muchas distribuciones Linux.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="letter-section">
+                <div class="letter-header">F</div>
+                <div class="glossary-grid">
+                    <div class="glossary-item">
+                        <div class="term">FS</div>
+                        <div class="definition">File System (Sistema de Archivos) - Metodo para organizar y almacenar datos en dispositivos de almacenamiento.</div>
+                    </div>
+                    <div class="glossary-item">
+                        <div class="term">FTP</div>
+                        <div class="definition">File Transfer Protocol - Protocolo para transferencia de archivos en redes.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="letter-section">
+                <div class="letter-header">G</div>
+                <div class="glossary-grid">
+                    <div class="glossary-item">
+                        <div class="term">GPO</div>
+                        <div class="definition">Group Policy Object - Objeto de politica de grupo en Active Directory para gestionar configuraciones.</div>
+                    </div>
+                    <div class="glossary-item">
+                        <div class="term">GUI</div>
+                        <div class="definition">Graphical User Interface (Interfaz Grafica de Usuario) - Metodo de interaccion visual con el sistema.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="letter-section">
+                <div class="letter-header">H</div>
+                <div class="glossary-grid">
+                    <div class="glossary-item">
+                        <div class="term">Hardening</div>
+                        <div class="definition">Proceso de asegurar un sistema reduciendo su superficie de vulnerabilidad.</div>
+                    </div>
+                    <div class="glossary-item">
+                        <div class="term">HTTP/HTTPS</div>
+                        <div class="definition">Hypertext Transfer Protocol (Secure) - Protocolos para transferencia de paginas web.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="letter-section">
+                <div class="letter-header">I</div>
+                <div class="glossary-grid">
+                    <div class="glossary-item">
+                        <div class="term">IIS</div>
+                        <div class="definition">Internet Information Services - Servidor web de Microsoft para Windows Server.</div>
+                    </div>
+                    <div class="glossary-item">
+                        <div class="term">IPC</div>
+                        <div class="definition">Inter-Process Communication (Comunicacion Entre Procesos) - Mecanismos que permiten a los procesos intercambiar datos.</div>
+                    </div>
+                    <div class="glossary-item">
+                        <div class="term">ISO</div>
+                        <div class="definition">Imagen de disco optico - Archivo que contiene una copia exacta de un sistema de archivos, usado para instalar SO.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="letter-section">
+                <div class="letter-header">J</div>
+                <div class="glossary-grid">
+                    <div class="glossary-item">
+                        <div class="term">Journaling</div>
+                        <div class="definition">Tecnica de sistemas de archivos que registra cambios antes de aplicarlos para prevenir perdida de datos.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="letter-section">
+                <div class="letter-header">K</div>
+                <div class="glossary-grid">
+                    <div class="glossary-item">
+                        <div class="term">Kernel</div>
+                        <div class="definition">Nucleo del sistema operativo - componente central que gestiona recursos del hardware y proporciona servicios a los programas.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="letter-section">
+                <div class="letter-header">L</div>
+                <div class="glossary-grid">
+                    <div class="glossary-item">
+                        <div class="term">LTS</div>
+                        <div class="definition">Long Term Support (Soporte a Largo Plazo) - Version de software con soporte extendido, como Ubuntu 22.04 LTS.</div>
+                    </div>
+                    <div class="glossary-item">
+                        <div class="term">LVM</div>
+                        <div class="definition">Logical Volume Manager - Sistema para gestionar espacio de disco de forma flexible en Linux.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="letter-section">
+                <div class="letter-header">M</div>
+                <div class="glossary-grid">
+                    <div class="glossary-item">
+                        <div class="term">Mutex</div>
+                        <div class="definition">Mutual Exclusion (Exclusion Mutua) - Mecanismo de sincronizacion que evita acceso concurrente a recursos compartidos.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="letter-section">
+                <div class="letter-header">N</div>
+                <div class="glossary-grid">
+                    <div class="glossary-item">
+                        <div class="term">NTFS</div>
+                        <div class="definition">New Technology File System - Sistema de archivos nativo de Windows con soporte para permisos ACL.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="letter-section">
+                <div class="letter-header">P</div>
+                <div class="glossary-grid">
+                    <div class="glossary-item">
+                        <div class="term">PCB</div>
+                        <div class="definition">Process Control Block (Bloque de Control de Proceso) - Estructura de datos que almacena informacion de un proceso.</div>
+                    </div>
+                    <div class="glossary-item">
+                        <div class="term">PID</div>
+                        <div class="definition">Process Identifier - Numero unico asignado a cada proceso en ejecucion.</div>
+                    </div>
+                    <div class="glossary-item">
+                        <div class="term">PowerShell</div>
+                        <div class="definition">Shell de linea de comandos y lenguaje de scripting de Microsoft para administracion de Windows.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="letter-section">
+                <div class="letter-header">R</div>
+                <div class="glossary-grid">
+                    <div class="glossary-item">
+                        <div class="term">RAID</div>
+                        <div class="definition">Redundant Array of Independent Disks - Tecnica para combinar multiples discos para mejorar rendimiento o redundancia.</div>
+                    </div>
+                    <div class="glossary-item">
+                        <div class="term">RAM</div>
+                        <div class="definition">Random Access Memory (Memoria de Acceso Aleatorio) - Memoria volatil donde se cargan los programas en ejecucion.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="letter-section">
+                <div class="letter-header">S</div>
+                <div class="glossary-grid">
+                    <div class="glossary-item">
+                        <div class="term">Semaforo</div>
+                        <div class="definition">Variable especial para controlar acceso a recursos compartidos en programacion concurrente.</div>
+                    </div>
+                    <div class="glossary-item">
+                        <div class="term">Shell</div>
+                        <div class="definition">Interprete de comandos que permite a los usuarios interactuar con el sistema operativo.</div>
+                    </div>
+                    <div class="glossary-item">
+                        <div class="term">SO</div>
+                        <div class="definition">Sistema Operativo - Software que gestiona el hardware y proporciona servicios a los programas.</div>
+                    </div>
+                    <div class="glossary-item">
+                        <div class="term">SSH</div>
+                        <div class="definition">Secure Shell - Protocolo para acceso remoto seguro a servidores.</div>
+                    </div>
+                    <div class="glossary-item">
+                        <div class="term">SSL/TLS</div>
+                        <div class="definition">Secure Sockets Layer / Transport Layer Security - Protocolos para comunicaciones cifradas.</div>
+                    </div>
+                    <div class="glossary-item">
+                        <div class="term">Swap</div>
+                        <div class="definition">Espacio en disco usado como extension de la memoria RAM cuando esta se agota.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="letter-section">
+                <div class="letter-header">T</div>
+                <div class="glossary-grid">
+                    <div class="glossary-item">
+                        <div class="term">TLB</div>
+                        <div class="definition">Translation Lookaside Buffer - Cache del procesador para traducir direcciones virtuales a fisicas.</div>
+                    </div>
+                    <div class="glossary-item">
+                        <div class="term">Thrashing</div>
+                        <div class="definition">Condicion donde el sistema pasa mas tiempo paginando que ejecutando programas.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="letter-section">
+                <div class="letter-header">V</div>
+                <div class="glossary-grid">
+                    <div class="glossary-item">
+                        <div class="term">VM</div>
+                        <div class="definition">Virtual Machine (Maquina Virtual) - Software que emula un sistema de computo completo.</div>
+                    </div>
+                    <div class="glossary-item">
+                        <div class="term">VirtualBox</div>
+                        <div class="definition">Software de virtualizacion gratuito de Oracle para crear maquinas virtuales.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <p><strong>IF0099 - Sistemas Operativos I</strong></p>
+            <p>UNAULA - Ingenieria Informatica - 2026-I</p>
+            <p style="margin-top: 10px;">
+                <a href="index.html">Inicio</a> |
+                <a href="cronograma.html">Cronograma</a> |
+                <a href="rubricas.html">Rubricas</a>
+            </p>
+        </footer>
+    </div>
+</body>
+</html>

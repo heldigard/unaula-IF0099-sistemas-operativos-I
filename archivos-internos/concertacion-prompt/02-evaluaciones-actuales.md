@@ -178,7 +178,8 @@
   - Sección C: Problemas de cálculo (25 pts) - paginación, planificación
   - Sección D: Análisis de escenarios prácticos (25 pts)
 - **Modalidad:** Individual, presencial
-- **Duración:** 2.5 horas (150 min)
+- **Duración:** 2 horas (120 min)
+
 - **Distribución:** 60% Teoría / 40% Práctica (según Regla 5 para exámenes)
 
 ---

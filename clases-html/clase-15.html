@@ -357,9 +357,10 @@
             <h1>Clase 15: Permisos y Seguridad en Linux</h1>
             <p class="subtitle">IF0099 - Sistemas Operativos I | Unidad 5 - Archivos y Permisos</p>
             <p class="subtitle">Permisos rwx, SUID, SGID, Sticky Bit, ACLs y Gestión de Usuarios</p>
-            <p class="meta">Fecha: 29 de Abril 2026 | Bloque 1 | Práctica: 8:00-9:00 AM | Plan Practico v2.0</p>
+            <p class="meta">📅 21 de Abril 2026 | Sesión Martes: 6:00-8:00 AM | Teoría: 60 min + Práctica: 60 min | E4: Reporte 15%</p>
         </div>
     </header>
+
 
     <div class="container">
 
@@ -404,7 +405,18 @@
                 <li><strong>Implementar</strong> ACLs para control de acceso granular</li>
                 <li><strong>Diseñar</strong> esquemas de permisos para empresas</li>
             </ol>
+
+            <div class="callout info">
+                <p class="callout-title">Glosario de Seguridad Linux</p>
+                <ul>
+                    <li><strong>UGO:</strong> User (Propietario), Group (Grupo), Others (Otros).</li>
+                    <li><strong>rwx:</strong> Read (Lectura), Write (Escritura), eXecute (Ejecución).</li>
+                    <li><strong>ACL:</strong> Access Control List (Listas de Control de Acceso para permisos más granulares).</li>
+                    <li><strong>Sticky Bit:</strong> Permiso que asegura que solo el dueño del archivo pueda borrarlo, aunque otros tengan permiso de escritura en la carpeta.</li>
+                </ul>
+            </div>
         </section>
+
 
         <section id="intro">
             <h2>1. Introducción a Permisos en Linux</h2>
@@ -728,12 +740,13 @@ getfacl -d /directorio/compartido</code></pre>
         <section id="practica">
             <h2>8. Actividad Práctica</h2>
 
-            <div class="info-box" style="margin-bottom: 1.5rem;">
+            <div class="info-box" style="margin-bottom: 1.5rem; background: #eff6ff; border-left: 4px solid var(--primary); padding: 1.5rem; border-radius: 8px;">
                 <h3>📋 Laboratorio Complementario</h3>
-                <p>Para practicar permisos y usuarios en Linux con ejercicios guiados, consulta el <strong><a href="../laboratorios-html/lab-02-permisos-usuarios.html" target="_blank">Laboratorio 2: Permisos y Usuarios en Linux</a></strong>.</p>
+                <p>Para aplicar técnicas de aseguramiento y hardening en tu servidor Linux, consulta el <strong><a href="../laboratorios-html/lab-06-seguridad-hardening.html" target="_blank">Laboratorio 6: Seguridad y Hardening</a></strong>.</p>
             </div>
 
             <div class="actividad">
+
                 <h3>Ejercicio 1: Permisos Básicos</h3>
                 <p><strong>Objetivo:</strong> Practicar con chmod y chown</p>
                 <pre><code># 1. Crear archivo de prueba
@@ -792,7 +805,8 @@ sudo setfacl -m u:compañero:r confidencial.txt
 getfacl confidencial.txt</code></pre>
             </div>
 
-            <p><strong>Tiempo estimado:</strong> 45 minutos</p>
+            <p><strong>Tiempo estimado:</strong> 60 minutos</p>
+
         </section>
 
         <section id="entregable">
@@ -912,7 +926,8 @@ getfacl confidencial.txt</code></pre>
             </div>
 
             <h3>Próxima Clase</h3>
-            <p><strong>Clase 10: Permisos en Windows Server</strong></p>
+            <p><strong>Clase 16: Permisos y Seguridad en Windows</strong></p>
+
             <ul>
                 <li>NTFS vs FAT32</li>
                 <li>Permisos NTFS y ACLs</li>
@@ -966,7 +981,8 @@ getfacl confidencial.txt</code></pre>
     <footer>
         <div class="container">
             <p><strong>IF0099 - Sistemas Operativos I</strong> - Permisos y Seguridad en Linux</p>
-            <p>Fecha: 29 de Abril 2026 | Plan Practico v2.0</p>
+            <p>📅 21 de Abril 2026 | Sesión Martes: 6:00-8:00 AM | Teoría: 60 min + Práctica: 60 min</p>
+
             <p style="margin-top: 10px;">
                 <a href="index.html" style="color: #10b981;">Inicio</a> |
                 <a href="cronograma.html" style="color: #10b981;">Cronograma</a> |

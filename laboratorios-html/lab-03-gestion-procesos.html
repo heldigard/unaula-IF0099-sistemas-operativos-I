@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laboratorio 3: Gestión de Procesos | IF0099 - Sistemas Operativos I</title>
+    <!-- Prism.js CSS para syntax highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #1e40af;
+            --accent: #059669;
+            --bg-light: #f8fafc;
+            --bg-code: #1e293b;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --warning: #f59e0b;
+            --danger: #dc2626;
+            --info: #0891b2;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.7;
+            color: var(--text-main);
+            background: var(--bg-light);
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 3rem 0;
+            margin-bottom: 2rem;
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        header .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        header .meta {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .warning-box {
+            background: #fffbeb;
+            border-left: 4px solid var(--warning);
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 8px;
+        }
+
+        .warning-box h3 {
+            color: #92400e;
+            margin-bottom: 0.5rem;
+        }
+
+        .success-box {
+            background: #f0fdf4;
+            border-left: 4px solid var(--accent);
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 8px;
+        }
+
+        .info-box {
+            background: #ecfeff;
+            border-left: 4px solid var(--info);
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 8px;
+        }
+
+        section {
+            background: white;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        section h2 {
+            color: var(--primary);
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid var(--accent);
+        }
+
+        section h3 {
+            color: var(--secondary);
+            font-size: 1.4rem;
+            margin: 2rem 0 1rem;
+        }
+
+        section h4 {
+            color: var(--text-main);
+            font-size: 1.1rem;
+            margin: 1.5rem 0 0.75rem;
+            font-weight: 600;
+        }
+
+        .command-box {
+            background: var(--bg-code);
+            color: #e2e8f0;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            overflow-x: auto;
+        }
+
+        .command {
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .command-prompt {
+            color: #4ade80;
+        }
+
+        .command-input {
+            color: #60a5fa;
+        }
+
+        .command-output {
+            color: #94a3b8;
+            margin: 0.5rem 0;
+            padding-left: 1rem;
+        }
+
+        .step {
+            background: var(--bg-light);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 6px;
+            border-left: 3px solid var(--primary);
+        }
+
+        .step-number {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }
+
+        .exercise {
+            background: #eff6ff;
+            border-left: 4px solid var(--primary);
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 8px;
+        }
+
+        .exercise h4 {
+            color: var(--primary);
+            margin-top: 0;
+        }
+
+        .command-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+        }
+
+        .command-table th,
+        .command-table td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .command-table th {
+            background: var(--bg-light);
+            font-weight: 600;
+            color: var(--secondary);
+        }
+
+        .command-table code {
+            background: var(--bg-code);
+            color: #60a5fa;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .lab-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: stretch;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .lab-nav-link {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1.25rem 1.5rem;
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            text-decoration: none;
+            color: var(--text-main);
+            transition: all 0.3s ease;
+        }
+
+        .lab-nav-link:hover {
+            border-color: var(--primary);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .lab-nav-link.prev {
+            border-left: 4px solid var(--primary);
+        }
+
+        .lab-nav-link.next {
+            border-right: 4px solid var(--accent);
+            text-align: right;
+            margin-left: auto;
+        }
+
+        .lab-nav-link .nav-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            margin-bottom: 0.25rem;
+        }
+
+        .lab-nav-link .nav-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .lab-nav-link.next .nav-title {
+            color: var(--accent);
+        }
+
+        .lab-nav-icon {
+            font-size: 1.5rem;
+            line-height: 1;
+        }
+
+        .lab-nav-placeholder {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.25rem;
+            background: var(--bg-light);
+            border: 2px dashed var(--border);
+            border-radius: 12px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .nav-btn {
+            background: var(--primary);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .nav-btn:hover {
+            background: var(--secondary);
+        }
+
+        .footer {
+            text-align: center;
+            padding: 2rem 0;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .tips {
+            background: #fef3c7;
+            border-left: 4px solid var(--warning);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 6px;
+        }
+
+        .tips strong {
+            color: #92400e;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Laboratorio 3: Gestión de Procesos</h1>
+            <p class="subtitle">IF0099 - Sistemas Operativos I | 2026-I</p>
+            <p class="meta">Duración: 60 minutos | Nivel: Intermedio | Prerrequisito: Labs 0-2 completados</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Quick Navigation Bar -->
+        <div class="quick-nav" style="background: white; padding: 1rem; margin-bottom: 2rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <a href="../clases-html/index.html" style="color: var(--primary); text-decoration: none; font-weight: 500;">Inicio</a>
+                <span style="color: var(--text-muted);">|</span>
+                <span style="color: var(--text-main); font-weight: 600;">Lab 3: Gestión de Procesos</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <a href="../clases-html/cronograma.html" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: #10b981; color: white; text-decoration: none; border-radius: 6px; font-weight: 500;">Cronograma</a>
+                <a href="../clases-html/rubricas.html" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: #3b82f6; color: white; text-decoration: none; border-radius: 6px; font-weight: 500;">Rubricas</a>
+            </div>
+        </div>
+
+        <div class="success-box">
+            <h3>Entorno de Laboratorio</h3>
+            <p>Este laboratorio utiliza tu <strong>máquina virtual de Ubuntu Server</strong>. Conéctate via SSH y asegúrate de tener privilegios de administrador (sudo).</p>
+        </div>
+
+        <section>
+            <h2>Objetivos del Laboratorio</h2>
+            <ul>
+                <li>Monitorear procesos en tiempo real con <code>ps</code>, <code>top</code>, <code>htop</code> y <code>pgrep</code></li>
+                <li>Gestionar procesos con <code>kill</code>, <code>killall</code>, <code>pkill</code>, <code>nice</code> y <code>renice</code></li>
+                <li>Administrar servicios del sistema con <code>systemctl</code></li>
+                <li>Gestionar procesos en Windows con PowerShell</li>
+                <li>Crear scripts de monitoreo automático</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>1. Comandos de Monitoreo de Procesos</h2>
+
+            <h3>ps - Process Status</h3>
+            <p>Muestra una instantánea de los procesos actuales.</p>
+            
+            <h4>Variantes útiles:</h4>
+            <pre><code class="language-bash">ps aux              # Todos los procesos de todos los usuarios
+ps aux | grep ssh   # Buscar procesos específicos
+ps -ef              # Formato completo
+ps -u usuario       # Procesos de un usuario específico</code></pre>
+
+            <div class="command-box">
+                <div class="command">
+                    <span class="command-prompt">~ $</span> <span class="command-input">ps aux | head -10</span><br>
+                    <span class="command-output">USER PID %CPU %MEM VSZ RSS TTY STAT START TIME COMMAND<br>root 1 0.0 0.1 185432 6200 ? Ss 10:00 0:01 /sbin/init<br>root 2 0.0 0.0 0 0 ? S 10:00 0:00 [kthreadd]</span>
+                </div>
+            </div>
+
+            <div class="tips">
+                <strong>💡 Interpretación:</strong> USER=usuario, PID=ID proceso, %CPU=uso CPU, %MEM=uso memoria, VSZ=memoria virtual, RSS=memoria física, STAT=estado
+            </div>
+
+            <h3>top - Monitor de Procesos en Tiempo Real</h3>
+            <p>Muestra procesos en tiempo real con actualización automática.</p>
+            <pre><code class="language-bash">top                 # Iniciar monitor
+# Dentro de top:
+q                   # Salir
+k                   # Matar proceso (ingresar PID)
+n                   # Cambiar número de procesos mostrados
+M                   # Ordenar por uso de memoria
+P                   # Ordenar por uso de CPU</code></pre>
+
+            <h3>htop - Monitor Interactivo Mejorado</h3>
+            <p>Versión mejorada de top con interfaz visual.</p>
+            <pre><code class="language-bash">sudo apt install htop    # Instalar si no está disponible
+htop                     # Ejecutar</code></pre>
+
+            <div class="tips">
+                <strong>💡 Ventajas de htop:</strong> Navegación con flechas, matar procesos con F9, búsqueda con F3, árbol de procesos con F5
+            </div>
+
+            <h3>pgrep - Buscar Procesos por Nombre</h3>
+            <pre><code class="language-bash">pgrep ssh           # Buscar PID de procesos ssh
+pgrep -l ssh        # Mostrar nombre también
+pgrep -u root       # Procesos del usuario root
+pgrep -x bash       # Coincidencia exacta</code></pre>
+
+            <h3>pidof - Obtener PID de un Programa</h3>
+            <pre><code class="language-bash">pidof apache2       # Obtener PID de apache2
+pidof -x script.sh  # PID de un script</code></pre>
+        </section>
+
+        <section>
+            <h2>2. Gestión de Procesos</h2>
+
+            <h3>kill - Enviar Señales a Procesos</h3>
+            <p>Envía señales para controlar procesos.</p>
+
+            <table class="command-table">
+                <thead>
+                    <tr>
+                        <th>Señal</th>
+                        <th>Número</th>
+                        <th>Descripción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>SIGHUP</code></td>
+                        <td>1</td>
+                        <td>Recargar configuración</td>
+                    </tr>
+                    <tr>
+                        <td><code>SIGINT</code></td>
+                        <td>2</td>
+                        <td>Interrupción (Ctrl+C)</td>
+                    </tr>
+                    <tr>
+                        <td><code>SIGTERM</code></td>
+                        <td>15</td>
+                        <td>Terminar graceful (por defecto)</td>
+                    </tr>
+                    <tr>
+                        <td><code>SIGKILL</code></td>
+                        <td>9</td>
+                        <td>Matar forzosamente</td>
+                    </tr>
+                    <tr>
+                        <td><code>SIGSTOP</code></td>
+                        <td>19</td>
+                        <td>Detener proceso</td>
+                    </tr>
+                    <tr>
+                        <td><code>SIGCONT</code></td>
+                        <td>18</td>
+                        <td>Continuar proceso</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>Ejemplos:</h4>
+            <pre><code class="language-bash">kill 1234           # Enviar SIGTERM al PID 1234
+kill -9 1234        # Matar forzosamente
+kill -15 1234       # Terminar graceful
+kill -HUP 1234      # Recargar configuración</code></pre>
+
+            <h3>killall - Matar por Nombre</h3>
+            <pre><code class="language-bash">killall firefox     # Matar todos los procesos firefox
+killall -9 apache2  # Forzar cierre de apache2
+killall -u usuario  # Matar procesos de un usuario</code></pre>
+
+            <div class="warning-box">
+                <h3>⚠️ Precaución</h3>
+                <p><code>killall</code> mata TODOS los procesos con ese nombre. Usa con cuidado en sistemas de producción.</p>
+            </div>
+
+            <h3>pkill - Matar por Patrón</h3>
+            <pre><code class="language-bash">pkill ssh           # Matar todos los procesos ssh
+pkill -f "python app.py"  # Matar por comando completo
+pkill -u usuario    # Matar todos los procesos de un usuario</code></pre>
+
+            <h3>nice y renice - Prioridad de Procesos</h3>
+            <p>Valores de nice: -20 (máxima prioridad) a 19 (mínima prioridad)</p>
+            
+            <pre><code class="language-bash"># Iniciar proceso con prioridad baja
+nice -n 10 ./script.sh
+
+# Iniciar con prioridad alta (requiere root)
+sudo nice -n -5 ./script.sh
+
+# Cambiar prioridad de proceso existente
+renice 10 -p 1234   # Cambiar PID 1234 a nice 10
+renice -5 -u usuario # Cambiar prioridad de todos los procesos de un usuario</code></pre>
+        </section>
+
+        <section>
+            <h2>3. Gestión de Servicios con systemctl</h2>
+
+            <h3>Estados de Servicios</h3>
+            <pre><code class="language-bash">systemctl status ssh        # Ver estado del servicio SSH
+systemctl is-active ssh     # ¿Está activo?
+systemctl is-enabled ssh    # ¿Está habilitado al inicio?</code></pre>
+
+            <h3>Control de Servicios</h3>
+            <pre><code class="language-bash">sudo systemctl start ssh     # Iniciar servicio
+sudo systemctl stop ssh      # Detener servicio
+sudo systemctl restart ssh   # Reiniciar servicio
+sudo systemctl reload ssh    # Recargar configuración</code></pre>
+
+            <h3>Habilitar/Deshabilitar al Inicio</h3>
+            <pre><code class="language-bash">sudo systemctl enable ssh    # Habilitar al inicio
+sudo systemctl disable ssh   # Deshabilitar al inicio</code></pre>
+
+            <h3>Listar Servicios</h3>
+            <pre><code class="language-bash">systemctl list-units --type=service           # Servicios activos
+systemctl list-units --type=service --state=running  # Solo en ejecución
+systemctl list-unit-files --type=service      # Todos los servicios</code></pre>
+
+            <div class="tips">
+                <strong>💡 Servicios comunes:</strong> ssh, apache2, nginx, mysql, postgresql, cron
+            </div>
+        </section>
+
+        <section>
+            <h2>4. Procesos en Windows con PowerShell</h2>
+
+            <h3>Comandos Equivalentes</h3>
+            <table class="command-table">
+                <thead>
+                    <tr>
+                        <th>Linux</th>
+                        <th>PowerShell</th>
+                        <th>Descripción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>ps aux</code></td>
+                        <td><code>Get-Process</code></td>
+                        <td>Listar procesos</td>
+                    </tr>
+                    <tr>
+                        <td><code>kill</code></td>
+                        <td><code>Stop-Process</code></td>
+                        <td>Matar proceso</td>
+                    </tr>
+                    <tr>
+                        <td><code>top</code></td>
+                        <td><code>Get-Process | Sort-Object CPU -Descending</code></td>
+                        <td>Procesos por CPU</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Ejemplos PowerShell</h3>
+            <pre><code class="language-powershell">Get-Process                    # Listar todos los procesos
+Get-Process | Sort-Object CPU -Descending | Select-Object -First 10  # Top 10 por CPU
+Get-Process -Name chrome       # Procesos específicos
+Stop-Process -Name notepad     # Matar proceso
+Stop-Process -ID 1234 -Force   # Forzar cierre
+Get-Service                    # Listar servicios
+Start-Service -Name sshd       # Iniciar servicio
+Stop-Service -Name sshd        # Detener servicio</code></pre>
+        </section>
+
+        <section>
+            <h2>5. Scripts de Monitoreo</h2>
+
+            <h3>Script 1: Monitor de Procesos</h3>
+            <p>Crea un script que monitorea procesos zombies y consume muchos recursos.</p>
+
+            <pre><code class="language-bash">#!/bin/bash
+# monitor_procesos.sh - Script de monitoreo
+
+echo "=== Monitor de Procesos ==="
+echo "Fecha: $(date)"
+echo ""
+
+echo "Top 5 procesos por CPU:"
+ps aux --sort=-%cpu | head -6
+
+echo ""
+echo "Top 5 procesos por Memoria:"
+ps aux --sort=-%mem | head -6
+
+echo ""
+echo "Procesos zombies:"
+ps aux | grep 'Z' | grep -v grep
+
+echo ""
+echo "Procesos del usuario actual:"
+ps -u $(whoami) --sort=-%cpu | head -10</code></pre>
+
+            <h4>Para ejecutar:</h4>
+            <pre><code class="language-bash">chmod +x monitor_procesos.sh
+./monitor_procesos.sh</code></pre>
+
+            <h3>Script 2: Alerta de Recursos</h3>
+            <pre><code class="language-bash">#!/bin/bash
+# alerta_recursos.sh - Alerta cuando CPU > 80%
+
+CPU_USAGE=$(top -bn1 | grep "Cpu(s)" | awk '{print $2}' | cut -d'%' -f1)
+
+if (( $(echo "$CPU_USAGE > 80" | bc -l) )); then
+    echo "⚠️ ALERTA: Uso de CPU alto: ${CPU_USAGE}%"
+    echo "Procesos que consumen más CPU:"
+    ps aux --sort=-%cpu | head -5
+else
+    echo "✅ Uso de CPU normal: ${CPU_USAGE}%"
+fi</code></pre>
+        </section>
+
+        <section>
+            <h2>Actividades Prácticas</h2>
+
+            <div class="exercise">
+                <h4>Ejercicio 1: Monitoreo Básico</h4>
+
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <strong>Listar todos los procesos:</strong>
+                    <pre><code>ps aux | head -20</code></pre>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <strong>Buscar procesos SSH:</strong>
+                    <pre><code>pgrep -l ssh</code></pre>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <strong>Ver procesos de tu usuario:</strong>
+                    <pre><code>ps -u $(whoami)</code></pre>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <strong>Abrir top y explorar:</strong>
+                    <pre><code>top</code></pre>
+                    <p style="font-size: 0.9rem; color: var(--text-muted);">Presiona M para ordenar por memoria, P por CPU, q para salir</p>
+                </div>
+            </div>
+
+            <div class="exercise">
+                <h4>Ejercicio 2: Gestión de Servicios</h4>
+
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <strong>Ver estado de SSH:</strong>
+                    <pre><code>sudo systemctl status ssh</code></pre>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <strong>Listar servicios activos:</strong>
+                    <pre><code>systemctl list-units --type=service --state=running | head -10</code></pre>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <strong>Si SSH está activo, reinícialo:</strong>
+                    <pre><code>sudo systemctl restart ssh</code></pre>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <strong>Verificar que sigue funcionando:</strong>
+                    <pre><code>sudo systemctl status ssh</code></pre>
+                </div>
+            </div>
+
+            <div class="exercise">
+                <h4>Ejercicio 3: Crear Script de Monitoreo</h4>
+
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <strong>Crear el script:</strong>
+                    <pre><code>cd ~/if0099/labs
+touch monitoreo.sh
+chmod +x monitoreo.sh</code></pre>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <strong>Editar con nano:</strong>
+                    <pre><code>nano monitoreo.sh</code></pre>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <strong>Copiar el script del ejemplo anterior y pegarlo</strong>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <strong>Guardar y ejecutar:</strong>
+                    <pre><code>./monitoreo.sh</code></pre>
+                </div>
+            </div>
+
+            <div class="exercise">
+                <h4>🎯 Desafío: Script de Seguridad</h4>
+                <p>Crea un script que:</p>
+                <ol>
+                    <li>Detecte procesos que consumen más del 50% de CPU</li>
+                    <li>Muestre el usuario propietario de esos procesos</li>
+                    <li>Guarde un log con fecha y hora en <code>/tmp/procesos_criticos.log</code></li>
+                    <li>Envíe una alerta si hay más de 5 procesos zombies</li>
+                </ol>
+
+                <pre style="background: var(--bg-code); color: #e2e8f0; padding: 1rem; border-radius: 8px; margin-top: 1rem;">
+Pista: Usa ps aux, awk, grep, y redirección >>
+                </pre>
+            </div>
+        </section>
+
+        <section>
+            <h2>Preguntas de Reflexión</h2>
+            <ol>
+                <li>¿Cuál es la diferencia entre <code>kill</code>, <code>killall</code> y <code>pkill</code>?</li>
+                <li>¿Por qué es peligroso usar <code>kill -9</code> indiscriminadamente?</li>
+                <li>¿Qué ventaja tiene <code>systemctl</code> sobre el antiguo <code>service</code>?</li>
+                <li>¿Cómo puedes hacer que un script se ejecute cada 5 minutos?</li>
+                <li>¿Cuál es el equivalente en Windows de <code>ps aux</code>?</li>
+            </ol>
+        </section>
+
+        <section>
+            <h2>Preparación para el Próximo Laboratorio</h2>
+            <p>Para el próximo laboratorio, necesitarás:</p>
+            <ul>
+                <li>✅ Comprender bien ps, top, kill y systemctl</li>
+                <li>✅ Haber creado al menos un script funcional</li>
+                <li>✅ Entender la diferencia entre señales TERM y KILL</li>
+                <li>✅ Saber gestionar servicios básicos</li>
+            </ul>
+        </section>
+
+        <!-- Enhanced navigation between labs -->
+        <nav class="lab-nav" aria-label="Navegación entre laboratorios">
+            <a href="lab-02-permisos-usuarios.html" class="lab-nav-link prev">
+                <span class="lab-nav-icon">←</span>
+                <div>
+                    <div class="nav-label">Laboratorio Anterior</div>
+                    <div class="nav-title">Permisos y Usuarios</div>
+                </div>
+            </a>
+            <a href="lab-04-memoria-monitoreo.html" class="lab-nav-link next">
+                <div>
+                    <div class="nav-label">Siguiente Laboratorio</div>
+                    <div class="nav-title">Memoria y Monitoreo →</div>
+                </div>
+                <span class="lab-nav-icon">→</span>
+            </a>
+        </nav>
+
+        <div class="footer">
+            <p>IF0099 - Sistemas Operativos I | 2026-I | Ing. Eldigardo Evelio Camacho Cespedes</p>
+            <p>Laboratorio 3: Gestión de Procesos</p>
+        </div>
+    </div>
+
+    <!-- Prism.js para syntax highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            Prism.highlightAll();
+        });
+    </script>
+</body>
+</html>
