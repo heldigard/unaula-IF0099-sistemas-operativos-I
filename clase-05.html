@@ -468,7 +468,7 @@
             <h1>Clase 05: Procesos en Linux - Gestión y Monitoreo</h1>
             <p class="subtitle">IF0099 - Sistemas Operativos I | Unidad 3 - Procesos</p>
             <p class="subtitle">ps, top, htop, kill, señales y systemd</p>
-            <p class="meta">📅 17 de Febrero 2026 | Sesión Martes: 6:00-8:00 AM | Teoría: 60 min + Práctica: 60 min</p>
+            <p class="meta">📅 18 de Febrero 2026 | Sesion Miercoles: 6:00-8:00 AM | Teoria: 60 min + Practica: 60 min</p>
         </div>
     </header>
 
@@ -493,8 +493,8 @@
             <div class="eval-alert" style="cursor: pointer; transition: transform 0.2s;">
                 <span class="eval-alert-icon">📌</span>
                 <div class="eval-alert-content">
-                    <div class="eval-alert-title">FASE 2 - Procesos y Monitoreo (15%)</div>
-                    <div class="eval-alert-text">11 de Marzo 2026 (15%) - Gestión de Procesos</div>
+                    <div class="eval-alert-title">E2: FASE 2 - Procesos y Monitoreo (11 Mar)</div>
+                    <div class="eval-alert-text">15% - Monitoreo y control de procesos (gestiona procesos en SO)</div>
                 </div>
                 <span class="eval-alert-date">📅 11 Mar</span>
             </div>
@@ -524,6 +524,7 @@
         <!-- Objetivos -->
         <section id="objetivos">
             <h2>Objetivos de Aprendizaje</h2>
+            <p><strong>Resultado de Aprendizaje:</strong> Gestiona los procesos que se llevan a cabo en los sistemas operativos.</p>
             <p>Al finalizar esta clase, serás capaz de:</p>
             <ol>
                 <li><strong>Entender</strong> el concepto de proceso y su ciclo de vida</li>
@@ -1301,6 +1302,71 @@ journalctl -u nginx -f</code></pre>
                     <li>Reinicia un servicio (si tienes permisos): <code>sudo systemctl restart cron</code></li>
                 </ol>
             </div>
+
+            <div class="actividad">
+                <h3>Actividad 5: Análisis de Procesos Zombie</h3>
+                <p><strong>Tiempo:</strong> 15 minutos</p>
+                <ol>
+                    <li>Busca procesos en estado zombie: <code>ps aux | grep 'Z'</code></li>
+                    <li>Identifica el PPID (padre) de los procesos zombie encontrados</li>
+                    <li>Verifica el árbol de procesos: <code>pstree -p | grep -A2 -B2 [PPID]</code></li>
+                    <li>Documenta: ¿Cuántos zombies hay? ¿Quién es su padre?</li>
+                    <li>Investiga: Si el padre termina, ¿qué pasa con los zombies? (Pista: init/systemd)</li>
+                </ol>
+                <div class="callout warning">
+                    <strong>Nota:</strong> Los procesos zombie son normales en sistemas Linux y no consumen recursos. Solo indican que el padre no ha llamado a wait() para leer el estado de salida del hijo.
+                </div>
+            </div>
+
+            <div class="actividad">
+                <h3>Actividad 6: Jerarquía de Procesos con pstree</h3>
+                <p><strong>Tiempo:</strong> 15 minutos</p>
+                <ol>
+                    <li>Visualiza todo el árbol de procesos: <code>pstree -p</code></li>
+                    <li>Encuentra el proceso init/systemd (PID 1) y sus hijos directos</li>
+                    <li>Busca tu shell actual y traza su línea de ancestros hasta init</li>
+                    <li>Compara: ¿Cuántos niveles de profundidad hay desde init hasta tu terminal?</li>
+                    <li>Ejecuta: <code>pstree -p | grep -E "(systemd|bash|ssh)" | head -20</code> y analiza</li>
+                </ol>
+            </div>
+
+            <div class="actividad">
+                <h3>Actividad 7: Cambio de Prioridades (nice y renice)</h3>
+                <p><strong>Tiempo:</strong> 15 minutos</p>
+                <ol>
+                    <li>Inicia un proceso con prioridad baja: <code>nice -n 10 sleep 300 &</code></li>
+                    <li>Obtén su PID: <code>pgrep sleep</code></li>
+                    <li>Verifica su valor nice: <code>ps -o pid,ni,cmd -p [PID]</code></li>
+                    <li>Cambia la prioridad a más alta (como root): <code>sudo renice -n -5 -p [PID]</code></li>
+                    <li>Verifica el cambio: <code>ps -o pid,ni,cmd -p [PID]</code></li>
+                    <li>Explica: ¿Por qué no puedes poner nice negativo sin ser root?</li>
+                </ol>
+            </div>
+
+            <div class="actividad">
+                <h3>Actividad 8: Script de Monitoreo Avanzado</h3>
+                <p><strong>Tiempo:</strong> 20 minutos</p>
+                <ol>
+                    <li>Crea un script que monitoree un proceso específico por nombre</li>
+                    <li>El script debe aceptar el nombre del proceso como parámetro</li>
+                    <li>Debe mostrar: PID, uso de CPU, uso de memoria, tiempo de ejecución</li>
+                    <li>Debe verificar si el proceso existe antes de mostrar datos</li>
+                    <li>Bonus: Agregar opción para matar el proceso si supera cierto umbral de CPU</li>
+                </ol>
+                <pre><code class="language-bash">#!/bin/bash
+# Ejemplo de estructura:
+# ./monitor_proceso.sh firefox
+
+PROCESO=$1
+
+if [ -z "$PROCESO" ]; then
+    echo "Uso: $0 <nombre_proceso>"
+    exit 1
+fi
+
+# Tu código aquí...
+</code></pre>
+            </div>
         </section>
 
         <!-- Entregable -->
@@ -1492,14 +1558,14 @@ cat "$archivo"</code></pre>
                 <div>
                     <div class="nav-label">Clase Anterior</div>
                     <div class="nav-title">Estructura del SO</div>
-                    <div class="class-nav-date">📅 10 Feb 2026</div>
+                    <div class="class-nav-date">📅 11 Feb 2026</div>
                 </div>
             </a>
             <a href="clase-06.html" class="class-nav-link next">
                 <div>
                     <div class="nav-label">Siguiente Clase</div>
                     <div class="nav-title">Procesos en Windows</div>
-                    <div class="class-nav-date">📅 25 Feb 2026</div>
+                    <div class="class-nav-date">📅 18 Feb 2026</div>
                 </div>
                 <span class="class-nav-icon">→</span>
             </a>
@@ -1510,8 +1576,7 @@ cat "$archivo"</code></pre>
     
     <footer>
         <div class="container">
-            <p><strong>IF0099 - Sistemas Operativos I</strong> - Procesos en Linux</p>
-            <p>📅 17 de Febrero 2026 | Sesión Martes: 6:00-8:00 AM | Teoría: 60 min + Práctica: 60 min</p>
+            <p>📅 18 de Febrero 2026 | Sesion Miercoles: 6:00-8:00 AM | Teoria: 60 min + Practica: 60 min</p>
 
             <p style="margin-top: 10px;">
                 <a href="index.html" style="color: #10b981;">Inicio</a> |

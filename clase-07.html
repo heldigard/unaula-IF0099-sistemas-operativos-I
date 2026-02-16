@@ -411,7 +411,7 @@
             <h1>Clase 07: Hilos y Sincronización</h1>
             <p class="subtitle">IF0099 - Sistemas Operativos I | Unidad 4 - Concurrencia</p>
             <p class="subtitle">Threads, Mutex, Semáforos, Deadlock y Problemas Clásicos</p>
-            <p class="meta">📅 26 de Febrero 2026 | Sesión Jueves: 6:00-7:00 AM | Teoría: 30 min + Práctica: 30 min</p>
+            <p class="meta">📅 25 de Febrero 2026 | Sesion Miercoles: 6:00-8:00 AM | Teoria: 60 min + Practica: 60 min</p>
         </div>
     </header>
 
@@ -432,14 +432,16 @@
         </div>
 
         <!-- Próxima Evaluación Alert -->
-        <div class="eval-alert">
-            <span class="eval-alert-icon">📌</span>
-            <div class="eval-alert-content">
-                <div class="eval-alert-title">FASE 2 - Procesos y Monitoreo (15%)</div>
-                <div class="eval-alert-text">11 de Marzo 2026 (15%) - Gestión de Procesos</div>
+        <a href="evaluaciones.html#e2" style="text-decoration: none; display: block;">
+            <div class="eval-alert" style="cursor: pointer; transition: transform 0.2s;">
+                <span class="eval-alert-icon">📌</span>
+                <div class="eval-alert-content">
+                    <div class="eval-alert-title">E2: FASE 2 - Procesos y Monitoreo (11 Mar)</div>
+                    <div class="eval-alert-text">15% - Monitoreo y control de procesos (gestiona procesos en SO)</div>
+                </div>
+                <span class="eval-alert-date">📅 11 Mar</span>
             </div>
-            <span class="eval-alert-date">📅 11 Mar</span>
-        </div>
+        </a>
 
         <nav>
             <h2>Contenido de la Clase</h2>
@@ -462,6 +464,7 @@
         <!-- Objetivos -->
         <section id="objetivos">
             <h2>Objetivos de Aprendizaje</h2>
+            <p><strong>Resultado de Aprendizaje:</strong> Gestiona los procesos que se llevan a cabo en los sistemas operativos.</p>
             <p>Al finalizar esta clase, serás capaz de:</p>
             <ol>
                 <li><strong>Diferenciar</strong> entre procesos y threads (hilos)</li>
@@ -898,12 +901,106 @@ lock(Lock1, Lock2) {
             </ul>
         </section>
 
-        <!-- Ejercicios -->
+        <!-- Ejercicios Prácticos -->
         <section id="ejercicios">
-            <h2>Ejercicios Conceptuales</h2>
+            <h2>Ejercicios Prácticos y Conceptuales</h2>
+
+            <div class="callout success" style="background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%); border-left-color: #059669; margin-bottom: 2rem;">
+                <p class="callout-title" style="font-size: 1.1rem; color: #065f46;">📋 Instrucciones para los Ejercicios Prácticos</p>
+                <p>Para realizar los ejercicios prácticos necesitas acceso a una terminal Linux. Usa uno de estos recursos gratuitos:</p>
+                <ul style="margin-top: 0.5rem;">
+                    <li><strong><a href="https://www.webminal.org" target="_blank">Webminal</a></strong> - Terminal Linux real (requiere registro gratuito)</li>
+                    <li><strong><a href="https://bellard.org/jslinux/" target="_blank">JSLinux</a></strong> - Emulador Linux sin registro</li>
+                </ul>
+            </div>
+
+            <h3 style="color: var(--primary); border-bottom: 2px solid var(--accent); padding-bottom: 0.5rem; margin-top: 2rem;">🔧 Ejercicios Prácticos (Parte 1)</h3>
 
             <div class="ejercicio">
-                <h3>Ejercicio 1: Productor-Consumidor</h3>
+                <h3>Ejercicio Práctico 1: Observación de Threads en Linux</h3>
+                <p><strong>Tiempo:</strong> 15 minutos | <strong>Recurso:</strong> Webminal o JSLinux</p>
+                <p><strong>Objetivo:</strong> Observar threads reales de procesos en ejecución</p>
+                <ol>
+                    <li>Abre una terminal Linux</li>
+                    <li>Ejecuta: <code>ps -eLf | head -20</code> (muestra procesos y threads)</li>
+                    <li>Identifica la columna LWP (Light Weight Process = Thread ID)</li>
+                    <li>Busca un proceso con múltiples threads: <code>ps -eLf | grep firefox</code> (si está instalado) o <code>ps -eLf | grep bash</code></li>
+                    <li>Cuenta: ¿Cuántos threads tiene el proceso systemd (PID 1)?</li>
+                    <li>Compara: <code>ps aux | wc -l</code> vs <code>ps -eLf | wc -l</code>. ¿Por qué la diferencia?</li>
+                </ol>
+                <div class="callout info">
+                    <strong>Explicación:</strong> El comando <code>ps -eLf</code> muestra cada thread en una línea separada, mientras que <code>ps aux</code> agrupa por proceso. La diferencia en el conteo te dice cuántos threads hay en el sistema.
+                </div>
+            </div>
+
+            <div class="ejercicio">
+                <h3>Ejercicio Práctico 2: Análisis de /proc para Threads</h3>
+                <p><strong>Tiempo:</strong> 15 minutos | <strong>Recurso:</strong> Webminal o JSLinux</p>
+                <p><strong>Objetivo:</strong> Explorar la información de threads en el sistema de archivos /proc</p>
+                <ol>
+                    <li>Encuentra tu shell actual: <code>echo $$</code> (muestra el PID)</li>
+                    <li>Lista los threads de tu shell: <code>ls /proc/$$/task/</code></li>
+                    <li>Observa: Cada número en ese directorio es un Thread ID (TID)</li>
+                    <li>Entra a un thread: <code>cd /proc/$$/task/[primer número]</code></li>
+                    <li>Mira su estado: <code>cat status | grep State</code></li>
+                    <li>Documenta: ¿Cuántos threads tiene tu shell? ¿En qué estado están?</li>
+                </ol>
+                <div class="callout success">
+                    <strong>Descubrimiento:</strong> Incluso procesos simples como bash pueden tener múltiples threads para manejar señales, jobs en background, etc.
+                </div>
+            </div>
+
+            <div class="ejercicio">
+                <h3>Ejercicio Práctico 3: Simulación de Condición de Carrera</h3>
+                <p><strong>Tiempo:</strong> 20 minutos | <strong>Recurso:</strong> Webminal</p>
+                <p><strong>Objetivo:</strong> Entender cómo ocurre una race condition</p>
+                <ol>
+                    <li>Crea un archivo compartido: <code>echo 100 > /tmp/saldo.txt</code></li>
+                    <li>Abre dos terminales (o dos sesiones en Webminal)</li>
+                    <li>En Terminal 1, ejecuta repetidamente: <code>saldo=$(cat /tmp/saldo.txt); echo $((saldo + 10)) > /tmp/saldo.txt</code></li>
+                    <li>En Terminal 2, ejecuta repetidamente: <code>saldo=$(cat /tmp/saldo.txt); echo $((saldo - 5)) > /tmp/saldo.txt</code></li>
+                    <li>Después de 10 segundos en ambas, verifica: <code>cat /tmp/saldo.txt</code></li>
+                    <li>Pregunta: ¿El resultado es 150 (100 + 10*10 - 5*10)? ¿Por qué sí o por qué no?</li>
+                </ol>
+                <div class="callout warning">
+                    <strong>Análisis:</strong> Si el resultado no es 150, es porque ocurrió una race condition. Ambos procesos leyeron el mismo valor, modificaron, y el último en escribir "ganó", perdiendo la actualización del otro.
+                </div>
+            </div>
+
+            <div class="ejercicio">
+                <h3>Ejercicio Práctico 4: Identificación de Deadlock Potencial</h3>
+                <p><strong>Tiempo:</strong> 15 minutos | <strong>Recurso:</strong> Webminal</p>
+                <p><strong>Objetivo:</strong> Identificar procesos bloqueados en el sistema</p>
+                <ol>
+                    <li>Busca procesos en estado D (uninterruptible sleep): <code>ps aux | grep ' D '</code></li>
+                    <li>Busca procesos zombie: <code>ps aux | grep ' Z '</code></li>
+                    <li>Identifica procesos con tiempo de CPU cero pero tiempo de ejecución alto: <code>ps -eo pid,comm,cputime,etime | grep -E "00:00:[0-9]{2}.*[0-9]{2}:[0-9]{2}:[0-9]{2}"</code></li>
+                    <li>Para cada proceso encontrado, investiga: ¿Está esperando I/O? ¿Está bloqueado?</li>
+                    <li>Documenta: Lista los procesos que parecen estar bloqueados y por qué</li>
+                </ol>
+            </div>
+
+            <div class="ejercicio">
+                <h3>Ejercicio Práctico 5: Análisis de Archivos Bloqueados</h3>
+                <p><strong>Tiempo:</strong> 15 minutos | <strong>Recurso:</strong> Webminal</p>
+                <p><strong>Objetivo:</strong> Entender cómo los archivos pueden causar bloqueos</p>
+                <ol>
+                    <li>Crea un archivo de bloqueo: <code>touch /tmp/mi_bloqueo.lock</code></li>
+                    <li>Abre el archivo en modo exclusivo (terminal 1): <code>exec 200>/tmp/mi_bloqueo.lock; flock -x 200</code></li>
+                    <li>Intenta abrirlo en otra terminal: <code>flock -x /tmp/mi_bloqueo.lock -c "echo Hola"</code></li>
+                    <li>Observa: El segundo comando espera hasta que el primero libere el lock</li>
+                    <li>Libera el lock (terminal 1): Presiona Ctrl+C o cierra la terminal</li>
+                    <li>Documenta: ¿Qué mecanismo de sincronización estás observando?</li>
+                </ol>
+                <div class="callout info">
+                    <strong>Conexión:</strong> Esto es similar a un mutex a nivel de sistema de archivos. El comando <code>flock</code> implementa un lock exclusivo (como un mutex binario).
+                </div>
+            </div>
+
+            <h3 style="color: var(--primary); border-bottom: 2px solid var(--accent); padding-bottom: 0.5rem; margin-top: 3rem;">📝 Ejercicios Conceptuales (Parte 2)</h3>
+
+            <div class="ejercicio">
+                <h3>Ejercicio Conceptual 1: Productor-Consumidor</h3>
                 <p><strong>Problema:</strong> Un productor coloca items en un buffer finito. Un consumidor los retira. Si el buffer está lleno, el productor espera. Si está vacío, el consumidor espera.</p>
                 <p><strong>Preguntas:</strong></p>
                 <ol>
@@ -920,7 +1017,7 @@ lock(Lock1, Lock2) {
             </div>
 
             <div class="ejercicio">
-                <h3>Ejercicio 2: Filósofos Comensales</h3>
+                <h3>Ejercicio Conceptual 2: Filósofos Comensales</h3>
                 <p><strong>Problema:</strong> 5 filósofos alrededor de una mesa. Cada uno tiene un palillo a izquierda y derecha. Para comer, necesita AMBOS palillos.</p>
                 <p><strong>Preguntas:</strong></p>
                 <ol>
@@ -937,54 +1034,14 @@ lock(Lock1, Lock2) {
             </div>
 
             <div class="ejercicio">
-                <h3>Ejercicio 3: Lectores-Escritores</h3>
-                <p><strong>Problema:</strong> Una base de datos permite múltiples lecturas simultáneas, pero solo una escritura a la vez. Lectores y escritores no pueden acceder simultáneamente.</p>
+                <h3>Ejercicio Conceptual 3: Análisis de Deadlock en Sistemas Reales</h3>
+                <p><strong>Escenario:</strong> En tu ejercicio práctico 4, encontraste procesos bloqueados.</p>
                 <p><strong>Preguntas:</strong></p>
                 <ol>
-                    <li>¿Cómo priorizas lectores vs escritores?</li>
-                    <li>¿Puede ocurrir inanición de escritores?</li>
-                    <li>¿Puede ocurrir inanición de lectores?</li>
+                    <li>¿Cuáles de las 4 condiciones de Coffman se cumplían en cada caso?</li>
+                    <li>¿Era un deadlock real o solo un proceso esperando I/O?</li>
+                    <li>Si hubiera sido deadlock, ¿qué estrategia usarías para recuperarte?</li>
                 </ol>
-                <p><strong>Discusión:</strong></p>
-                <ul>
-                    <li>Prioridad lectores: Escritores pueden sufrir inanición</li>
-                    <li>Prioridad escritores: Lectores esperan más</li>
-                    <li>Balance: Mecanismos de equidad (FIFO)</li>
-                </ul>
-            </div>
-
-            <div class="ejercicio">
-                <h3>Ejercicio 4: Problema de la Barbería</h3>
-                <p><strong>Problema:</strong> Una barbería con 1 barbero, N sillas de espera. Si no hay clientes, el barbero duerme. Si llega un cliente y el barbero duerme, lo despierta. Si la sala está llena, el cliente se va.</p>
-                <p><strong>Preguntas:</strong></p>
-                <ol>
-                    <li>¿Cuántos semáforos necesitas?</li>
-                    <li>¿Qué variables de condición requieres?</li>
-                    <li>¿Cómo manejas cuando la sala está llena?</li>
-                </ol>
-                <p><strong>Discusión:</strong></p>
-                <ul>
-                    <li>Semáforo para sillas (contador)</li>
-                    <li>Variable condición: clientes_esperando, barbero_listo</li>
-                    <li>Sala llena: El cliente se va sin esperar</li>
-                </ul>
-            </div>
-
-            <div class="ejercicio">
-                <h3>Ejercicio 5: Cena de los Sabios</h3>
-                <p><strong>Problema:</strong> Variante de filósofos donde solo 4 personas pueden comer simultáneamente (en lugar de 5).</p>
-                <p><strong>Preguntas:</strong></p>
-                <ol>
-                    <li>¿Por qué esto previene deadlock?</li>
-                    <li>¿Qué condición de Coffman se rompe?</li>
-                    <li>¿Es una solución justa?</li>
-                </ol>
-                <p><strong>Discusión:</strong></p>
-                <ul>
-                    <li>Previene porque al menos 1 persona puede comer siempre</li>
-                    <li>Rompe: Espera circular (no todos pueden estar esperando)</li>
-                    <li>Injusto: Uno siempre come menos (posible inanición)</li>
-                </ul>
             </div>
         </section>
 
@@ -992,9 +1049,34 @@ lock(Lock1, Lock2) {
         <section id="entregable">
             <h2>Entregable de la Clase</h2>
 
+            <div class="callout info" style="margin-bottom: 2rem;">
+                <h3 style="margin-top: 0;">📋 Estructura del Entregable</h3>
+                <p>El entregable tiene <strong>dos partes obligatorias</strong>:</p>
+                <ol>
+                    <li><strong>Parte Práctica (50%):</strong> Capturas y análisis de los 5 ejercicios prácticos</li>
+                    <li><strong>Parte Conceptual (50%):</strong> Respuestas a los 3 ejercicios conceptuales</li>
+                </ol>
+            </div>
+
             <div class="ejercicio">
-                <h3>Respuestas a 5 Ejercicios Conceptuales</h3>
-                <p><strong>Descripción:</strong> Responde los 5 ejercicios planteados arriba con tus propias palabras</p>
+                <h3>Parte 1: Documentación de Ejercicios Prácticos (50%)</h3>
+                <p><strong>Descripción:</strong> Documenta la ejecución de los 5 ejercicios prácticos</p>
+                <p><strong>Requisitos:</strong></p>
+                <ul>
+                    <li>Captura de pantalla de cada ejercicio práctico ejecutado</li>
+                    <li>Comandos utilizados visibles en las capturas</li>
+                    <li>Breve análisis (2-3 líneas) de lo observado en cada ejercicio</li>
+                    <li>Ejercicio 1: Conteo de threads observados</li>
+                    <li>Ejercicio 2: Lista de threads de tu shell</li>
+                    <li>Ejercicio 3: Valor final del archivo y explicación de race condition</li>
+                    <li>Ejercicio 4: Lista de procesos bloqueados encontrados</li>
+                    <li>Ejercicio 5: Explicación del mecanismo flock observado</li>
+                </ul>
+            </div>
+
+            <div class="ejercicio">
+                <h3>Parte 2: Respuestas a Ejercicios Conceptuales (50%)</h3>
+                <p><strong>Descripción:</strong> Responde los 3 ejercicios conceptuales planteados</p>
                 <p><strong>Requisitos:</strong></p>
                 <ul>
                     <li>Responde cada ejercicio en 1-2 párrafos</li>
@@ -1006,14 +1088,14 @@ lock(Lock1, Lock2) {
 
                 <h4>Formato de entrega:</h4>
                 <ul>
-                    <li>Documento PDF o texto plano</li>
-                    <li>Incluye nombre y fecha</li>
-                    <li>Número y título de cada ejercicio</li>
-                    <li>Explicaciones claras y concisas</li>
+                    <li>Documento PDF único que combine ambas partes</li>
+                    <li>Incluye nombre, fecha y secciones claramente marcadas</li>
+                    <li>Parte 1: "Ejercicios Prácticos" con capturas</li>
+                    <li>Parte 2: "Ejercicios Conceptuales" con respuestas</li>
                 </ul>
             </div>
 
-            <h3>Rúbrica de Evaluación</h3>
+            <h3>Rúbrica de Evaluación (100 puntos)</h3>
             <table class="rubrica-table">
                 <thead>
                     <tr>
@@ -1022,15 +1104,33 @@ lock(Lock1, Lock2) {
                         <th class="level-bueno">Bueno (3)</th>
                         <th class="level-satisfactorio">Satisfactorio (2)</th>
                         <th class="level-insuficiente">Insuficiente (1)</th>
+                        <th>Peso</th>
                     </tr>
                 </thead>
                 <tbody>
+                    <tr>
+                        <td><strong>Ejercicios Prácticos - Completitud</strong></td>
+                        <td>Los 5 ejercicios prácticos completos con capturas y análisis</td>
+                        <td>4 ejercicios prácticos completos</td>
+                        <td>2-3 ejercicios prácticos completos</td>
+                        <td>Menos de 2 ejercicios o sin capturas</td>
+                        <td>25%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Ejercicios Prácticos - Análisis</strong></td>
+                        <td>Análisis profundo de cada observación, conexión clara con teoría</td>
+                        <td>Análisis correcto de la mayoría de ejercicios</td>
+                        <td>Análisis superficial o incompleto</td>
+                        <td>Sin análisis o solo capturas sin explicación</td>
+                        <td>25%</td>
+                    </tr>
                     <tr>
                         <td><strong>Comprensión de Conceptos</strong></td>
                         <td>Explica claramente mutex, semáforos, monitores con ejemplos precisos</td>
                         <td>Explica los conceptos con algunas imprecisiones</td>
                         <td>Explicaciones básicas con errores</td>
                         <td>No entiende los conceptos</td>
+                        <td>20%</td>
                     </tr>
                     <tr>
                         <td><strong>Análisis de Deadlock</strong></td>
@@ -1038,13 +1138,7 @@ lock(Lock1, Lock2) {
                         <td>Identifica deadlock pero no todas las condiciones</td>
                         <td>Reconoce deadlock pero no sabe cómo resolverlo</td>
                         <td>No identifica deadlock</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Propuestas de Solución</strong></td>
-                        <td>Propone soluciones viables con mecanismos de sincronización apropiados</td>
-                        <td>Propone soluciones parciales</td>
-                        <td>Soluciones incompletas o incorrectas</td>
-                        <td>Sin propuestas de solución</td>
+                        <td>15%</td>
                     </tr>
                     <tr>
                         <td><strong>Calidad de Explicación</strong></td>
@@ -1052,6 +1146,7 @@ lock(Lock1, Lock2) {
                         <td>Explicaciones claras sin diagramas</td>
                         <td>Explicaciones confusas</td>
                         <td>Sin explicaciones o Copiadas</td>
+                        <td>15%</td>
                     </tr>
                 </tbody>
             </table>
@@ -1140,14 +1235,14 @@ lock(Lock1, Lock2) {
                 <div>
                     <div class="nav-label">Clase Anterior</div>
                     <div class="nav-title">Procesos en Windows</div>
-                    <div class="class-nav-date">📅 25 Feb 2026</div>
+                    <div class="class-nav-date">📅 18 Feb 2026</div>
                 </div>
             </a>
             <a href="clase-08.html" class="class-nav-link next">
                 <div>
                     <div class="nav-label">Siguiente Clase</div>
                     <div class="nav-title">Gestión de Memoria</div>
-                    <div class="class-nav-date">📅 03 Mar 2026</div>
+                    <div class="class-nav-date">📅 04 Mar 2026</div>
                 </div>
                 <span class="class-nav-icon">→</span>
             </a>
@@ -1158,8 +1253,7 @@ lock(Lock1, Lock2) {
     
     <footer>
         <div class="container">
-            <p><strong>IF0099 - Sistemas Operativos I</strong> - Hilos y Sincronización</p>
-            <p>📅 26 de Febrero 2026 | Sesión Jueves: 6:00-7:00 AM | Teoría: 30 min + Práctica: 30 min</p>
+            <p>📅 25 de Febrero 2026 | Sesion Miercoles: 6:00-8:00 AM | Teoria: 60 min + Practica: 60 min</p>
 
             <p style="margin-top: 10px;">
                 <a href="index.html" style="color: #10b981;">Inicio</a> |
