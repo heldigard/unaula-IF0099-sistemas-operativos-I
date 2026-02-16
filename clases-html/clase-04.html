@@ -889,27 +889,195 @@ Get-Service | Where-Object {$_.Status -eq "Running"} | Select-Object -First 10</
                 <p>Estos comandos te permiten ver la estructura interna del SO en acción. Úsalos para completar tu entregable.</p>
             </div>
 
+            <h3>1.7 Laboratorio Práctico: System Calls en Acción (20 min)</h3>
+            
+            <div class="actividad">
+                <h4>🎯 Objetivo del Laboratorio</h4>
+                <p>Visualizar cómo los programas hacen System Calls para interactuar con el Kernel, y experimentar con la transición entre Modo Usuario y Modo Kernel.</p>
+            </div>
+
+            <h4>Ejercicio 1: Rastreando System Calls con strace</h4>
+            <p>El comando <code>strace</code> muestra todas las System Calls que un programa hace al Kernel:</p>
+            <div class="code-block terminal-block">
+                <div class="code-header">Terminal - Rastreando System Calls</div>
+                <pre><code class="language-bash"># Ejercicio 1.1: Ver System Calls de un comando simple
+strace -c ls /tmp
+
+# El flag -c muestra estadísticas al final
+# Observa cuántas veces se llamó a cada syscall
+
+# Ejercicio 1.2: Ver el flujo detallado de open()
+strace -e open,openat ls /tmp 2>&1 | head -20
+
+# Esto muestra solo las llamadas a open/openat
+# Cada vez que se abre un archivo, el programa
+# hace una System Call al Kernel
+
+# Ejercicio 1.3: Contar System Calls de un cat
+strace -c cat /etc/hostname
+# Observa: read(), write(), open(), close(), etc.</code></pre>
+            </div>
+
+            <div class="callout success">
+                <p class="callout-title">📊 Análisis</p>
+                <p>En el resultado de <code>strace -c</code>, fíjate en:</p>
+                <ul>
+                    <li><strong>openat:</strong> Abrir archivos (acceso al sistema de archivos)</li>
+                    <li><strong>read/write:</strong> Lectura/escritura de datos</li>
+                    <li><strong>mmap:</strong> Asignación de memoria</li>
+                    <li><strong>close:</strong> Cerrar archivos</li>
+                </ul>
+                <p>¡Estas son las "puertas" entre Modo Usuario y Modo Kernel!</p>
+            </div>
+
+            <h4>Ejercicio 2: Creando un Programa con System Calls</h4>
+            <p>Crearemos un script que explícitamente use System Calls:</p>
+            <div class="code-block terminal-block">
+                <div class="code-header">Crear archivo: explora_syscall.sh</div>
+                <pre><code class="language-bash"># Crear el script
+cat > ~/explora_syscall.sh << 'EOF'
+#!/bin/bash
+# Script para explorar System Calls
+
+echo "=== Explorando System Calls ==="
+echo "PID del proceso actual: $$"
+echo "Usuario actual: $(whoami)"
+echo ""
+
+# System Call implícita: open() y read()
+echo "1. Leyendo archivo (open, read):"
+cat /etc/os-release | head -1
+
+# System Call implícita: getuid()
+echo ""
+echo "2. ID de usuario (getuid):"
+id -u
+
+# System Call implícita: uname()
+echo ""
+echo "3. Información del sistema (uname):"
+uname -r
+
+# System Call implícita: getpid()
+echo ""
+echo "4. Listando archivos (getdents):"
+ls /tmp | wc -l
+echo ""
+
+echo "=== Fin de exploración ==="
+EOF
+
+# Hacer ejecutable
+chmod +x ~/explora_syscall.sh
+
+# Ejecutar y rastrear
+strace -c ~/explora_syscall.sh</code></pre>
+            </div>
+
+            <h4>Ejercicio 3: Comparar Linux vs Windows (Práctica Guiada)</h4>
+            <p>Si tienes acceso a Windows (o puedes usar tu máquina host), compara:</p>
+            <div class="code-block terminal-block">
+                <div class="code-header">Comparativa Práctica</div>
+                <pre><code class="language-bash"># En Linux (Ubuntu Server):
+uname -a                    # Kernel info
+ls /bin | wc -l          # Número de binarios
+ps aux | wc -l           # Número de procesos
+cat /proc/version        # Versión del kernel
+
+# En Windows PowerShell (si aplica):
+# Get-ComputerInfo | Select OsName, WindowsVersion
+# Get-Process | Measure-Object
+# Get-ChildItem C:\Windows\System32 | Measure-Object</code></pre>
+            </div>
+
+            <h4>Ejercicio 4: Explorando Módulos del Kernel</h4>
+            <div class="code-block terminal-block">
+                <div class="code-header">Explorar Drivers/Módulos</div>
+                <pre><code class="language-bash"># Ver módulos cargados
+lsmod
+
+# Contar cuántos módulos hay
+lsmod | wc -l
+
+# Ver información de un módulo específico
+modinfo ext4 2>/dev/null || echo "ext4 es parte del kernel monolítico"
+
+# Ver módulos relacionados con red
+lsmod | grep -E "net|wifi|ethernet"
+
+# Ver módulos de almacenamiento
+lsmod | grep -E "scsi|sata|nvme"</code></pre>
+            </div>
+
+            <div class="callout warning">
+                <p class="callout-title">🔍 Reflexión</p>
+                <p>¿Notas que Linux tiene muchos módulos cargados? Esto es característico de la arquitectura <strong>monolítica</strong> que mencionamos. Windows Server también tiene drivers, pero su arquitectura híbrida los organiza de forma diferente.</p>
+            </div>
+
             <div class="actividad">
                 <h3>📋 Actividad de la Clase 04</h3>
                 <p><strong>Fecha de entrega:</strong> Próxima clase</p>
                 <p><strong>Tiempo estimado:</strong> 60 minutos</p>
                 <p>Para esta práctica, utilizaremos la máquina virtual configurada en el <strong><a href="../laboratorios-html/lab-00-introduccion-simuladores.html" target="_blank">Laboratorio 0: VirtualBox + Ubuntu Server</a></strong>.</p>
                 
-                <h4>Entregables:</h4>
+                <h4>Entregables (Elige 2 de 3 opciones):</h4>
 
                 <ol>
-                    <li><strong>Diagrama de arquitectura:</strong> Dibuja la estructura del SO (Kernel, Shell, System Calls, Modos) - puede ser a mano o digital</li>
-                    <li><strong>Cuadro comparativo:</strong> Tabla de 5 aspectos comparando Linux vs Windows Server (Kernel, Shell, Comandos básicos)</li>
-                    <li><strong>Capturas:</strong> 2 comandos ejecutados en Linux (uname -a, lsmod) con breve explicación</li>
+                    <li><strong>Opción A - Análisis de System Calls:</strong>
+                        <ul>
+                            <li>Ejecuta <code>strace -c ls /tmp</code> y captura la salida</li>
+                            <li>Identifica las 5 System Calls más usadas</li>
+                            <li>Explica brevemente qué hace cada una (openat, read, write, close, mmap)</li>
+                            <li>Incluye captura de <code>lsmod | head -10</code></li>
+                        </ul>
+                    </li>
+                    <li><strong>Opción B - Diagrama Visual:</strong>
+                        <ul>
+                            <li>Crea un diagrama mostrando la arquitectura en capas (Hardware → Kernel → Shell → Aplicaciones)</li>
+                            <li>Indica dónde ocurren las System Calls</li>
+                            <li>Diferencia Modo Usuario vs Modo Kernel con colores</li>
+                            <li>Puede ser a mano (foto) o digital</li>
+                        </ul>
+                    </li>
+                    <li><strong>Opción C - Cuadro Comparativo:</strong>
+                        <ul>
+                            <li>Compara Linux vs Windows Server en 5 aspectos:</li>
+                            <li>Kernel, Shell, Comandos básicos, Arquitectura, System Calls</li>
+                            <li>Incluye captura de <code>uname -a</code> y breve explicación</li>
+                        </ul>
+                    </li>
                 </ol>
 
                 <h4>Rúbrica:</h4>
                 <table>
-                    <tr><th>Criterio</th><th>Puntaje</th></tr>
-                    <tr><td>Diagrama claro con componentes principales</td><td>40%</td></tr>
-                    <tr><td>Cuadro comparativo completo (5 aspectos)</td><td>30%</td></tr>
-                    <tr><td>Capturas con explicación</td><td>20%</td></tr>
-                    <tr><td>Presentación y organización</td><td>10%</td></tr>
+                    <thead>
+                        <tr>
+                            <th>Criterio</th>
+                            <th>Excelente (100%)</th>
+                            <th>Bueno (75%)</th>
+                            <th>Suficiente (50%)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Complejidad técnica</strong></td>
+                            <td>Muestra comprensión profunda con ejemplos específicos</td>
+                            <td>Muestra comprensión correcta con ejemplos</td>
+                            <td>Muestra comprensión básica</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Capturas/Evidencias</strong></td>
+                            <td>Capturas claras con anotaciones explicativas</td>
+                            <td>Capturas claras con breve explicación</td>
+                            <td>Capturas sin explicación</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Presentación</strong></td>
+                            <td>Documento bien organizado y profesional</td>
+                            <td>Documento organizado</td>
+                            <td>Documento desorganizado pero completo</td>
+                        </tr>
+                    </tbody>
                 </table>
             </div>
         </section>

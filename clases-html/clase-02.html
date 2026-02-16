@@ -775,6 +775,57 @@ docs  src</code></pre>
                 <p class="callout-title">⚠️ CUIDADO: rm -rf</p>
                 <p><code>rm -rf</code> elimina recursivamente y sin preguntar. Un error puede borrar archivos importantes. Siempre verifica el comando antes de presionar Enter.</p>
             </div>
+
+            <h3>🛠️ Ejercicio Práctico Guiado: Creando tu Primer Proyecto (10 min)</h3>
+            <div class="actividad">
+                <h4>Objetivo</h4>
+                <p>Crear una estructura de directorios para un proyecto de Sistemas Operativos usando los comandos aprendidos.</p>
+                
+                <h4>Instrucciones Paso a Paso</h4>
+                <ol>
+                    <li><strong>Crea tu directorio de trabajo:</strong>
+                        <pre><code class="language-bash">cd ~
+mkdir practica_clase_02
+cd practica_clase_02</code></pre>
+                    </li>
+                    <li><strong>Crea la estructura del proyecto:</strong>
+                        <pre><code class="language-bash">mkdir -p proyecto_so/{src,docs,tests,bin}
+touch proyecto_so/src/main.sh proyecto_so/src/utils.sh
+touch proyecto_so/docs/README.md proyecto_so/docs/NOTAS.txt</code></pre>
+                    </li>
+                    <li><strong>Verifica la estructura:</strong>
+                        <pre><code class="language-bash">ls -la proyecto_so/
+find proyecto_so -type f | sort</code></pre>
+                    </li>
+                    <li><strong>Practica copiar y mover:</strong>
+                        <pre><code class="language-bash"># Crear backup de main.sh
+cp proyecto_so/src/main.sh proyecto_so/src/main.sh.backup
+
+# Mover NOTAS.txt a tests (simulando reorganización)
+mv proyecto_so/docs/NOTAS.txt proyecto_so/tests/
+
+# Verificar cambios
+ls -la proyecto_so/src/
+ls -la proyecto_so/docs/
+ls -la proyecto_so/tests/</code></pre>
+                    </li>
+                    <li><strong>Limpia archivos temporales:</strong>
+                        <pre><code class="language-bash">rm proyecto_so/src/main.sh.backup
+ls proyecto_so/src/</code></pre>
+                    </li>
+                </ol>
+
+                <div class="callout success">
+                    <p class="callout-title">✅ Verificación</p>
+                    <p>Si ejecutas <code>find proyecto_so -type f</code>, deberías ver 4 archivos:</p>
+                    <ul>
+                        <li>proyecto_so/docs/README.md</li>
+                        <li>proyecto_so/src/main.sh</li>
+                        <li>proyecto_so/src/utils.sh</li>
+                        <li>proyecto_so/tests/NOTAS.txt</li>
+                    </ul>
+                </div>
+            </div>
         </section>
 
         <!-- File Viewing -->
@@ -850,6 +901,52 @@ estudiante@ubuntu-server:~$ tail -f /var/log/syslog
             <div class="callout info">
                 <p class="callout-title">Tip Útil</p>
                 <p><code>grep</code> es uno de los comandos más útiles. Combínalo con <code>|</code> (pipe) para filtrar salida de otros comandos.</p>
+            </div>
+
+            <h3>🛠️ Ejercicio Práctico Guiado: Explorando el Sistema (8 min)</h3>
+            <div class="actividad">
+                <h4>Objetivo</h4>
+                <p>Practicar la visualización de archivos usando diferentes comandos para diferentes propósitos.</p>
+                
+                <h4>Parte 1: Explorar Archivos del Sistema (4 min)</h4>
+                <pre><code class="language-bash"># 1. Ver el nombre de tu servidor
+cat /etc/hostname
+
+# 2. Ver información del sistema operativo
+cat /etc/os-release | head -5
+
+# 3. Buscar tu usuario en el archivo de contraseñas
+grep "$USER" /etc/passwd
+
+# 4. Ver los últimos 10 comandos ejecutados (requiere que hayas usado la terminal)
+head -10 ~/.bash_history 2>/dev/null || echo "Aún no hay historial"
+
+# 5. Contar cuántas líneas tiene un archivo del sistema
+wc -l /etc/passwd</code></pre>
+
+                <h4>Parte 2: Explorar Logs (4 min)</h4>
+                <pre><code class="language-bash"># 1. Ver últimas entradas del syslog (necesita sudo)
+sudo tail -n 20 /var/log/syslog
+
+# 2. Buscar errores en el syslog
+grep -i "error" /var/log/syslog | tail -5
+
+# 3. Ver procesos en ejecución y filtrar por tu usuario
+ps aux | grep "$USER" | head -10
+
+# 4. Usar less para explorar un archivo grande (presiona 'q' para salir)
+sudo less /var/log/syslog
+# Dentro de less:
+# - Usa / para buscar (ej: /error)
+# - Usa n para siguiente coincidencia
+# - Usa N para coincidencia anterior
+# - Usa q para salir</code></pre>
+
+                <div class="callout success">
+                    <p class="callout-title">✅ Desafío Extra</p>
+                    <p>Intenta encontrar tu dirección IP en el archivo <code>/etc/hosts</code> usando grep:</p>
+                    <pre><code class="language-bash">grep "127\.0\|localhost" /etc/hosts</code></pre>
+                </div>
             </div>
         </section>
 
@@ -946,6 +1043,69 @@ estudiante@ubuntu-server:~$ ls -la archivo.txt
                     <li><code>755</code> = Scripts ejecutables (rwxr-xr-x)</li>
                     <li><code>600</code> = Archivos privados (rw-------)</li>
                 </ul>
+            </div>
+
+            <h3>🛠️ Ejercicio Práctico Guiado: Jugando con Permisos (8 min)</h3>
+            <div class="actividad">
+                <h4>Objetivo</h4>
+                <p>Practicar la asignación de permisos en diferentes escenarios.</p>
+                
+                <h4>Parte 1: Crear un Script y Hacerlo Ejecutable</h4>
+                <pre><code class="language-bash"># Navega al directorio de la práctica
+cd ~/practica_clase_02
+
+# Crea un script simple con contenido
+cat > proyecto_so/bin/hola_mundo.sh << 'EOF'
+#!/bin/bash
+echo "¡Hola, Sistemas Operativos!"
+echo "Fecha actual: $(date)"
+EOF
+
+# Verificar que NO es ejecutable (no tiene 'x')
+ls -l proyecto_so/bin/hola_mundo.sh
+
+# Intentar ejecutarlo (debería fallar)
+./proyecto_so/bin/hola_mundo.sh
+# Error: Permission denied
+
+# Hacerlo ejecutable
+chmod +x proyecto_so/bin/hola_mundo.sh
+
+# Verificar que AHORA sí es ejecutable (tiene 'x')
+ls -l proyecto_so/bin/hola_mundo.sh
+
+# Ejecutar el script
+./proyecto_so/bin/hola_mundo.sh</code></pre>
+
+                <h4>Parte 2: Probar Diferentes Permisos</h4>
+                <pre><code class="language-bash"># Crear un archivo de configuración privado
+touch proyecto_so/config.txt
+echo "password=secreto123" > proyecto_so/config.txt
+
+# Hacerlo privado (solo el propietario puede leer/escribir)
+chmod 600 proyecto_so/config.txt
+
+# Verificar permisos (-rw-------)
+ls -l proyecto_so/config.txt
+
+# Probar que otros no pueden leerlo
+# (Esto simula que otros usuarios no pueden ver el archivo)
+
+# Crear un archivo de solo lectura para todos
+touch proyecto_so/publico.txt
+echo "Información pública" > proyecto_so/publico.txt
+chmod 444 proyecto_so/publico.txt
+
+# Intentar modificarlo (debería fallar)
+echo "Nuevo texto" >> proyecto_so/publico.txt
+
+# Verificar los permisos
+ls -l proyecto_so/*.txt</code></pre>
+
+                <div class="callout warning">
+                    <p class="callout-title">⚠️ Importante</p>
+                    <p>Nunca guardes contraseñas reales en archivos de texto plano. Este es solo un ejercicio educativo.</p>
+                </div>
             </div>
         </section>
 
