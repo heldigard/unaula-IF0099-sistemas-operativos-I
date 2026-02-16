@@ -533,6 +533,41 @@
                 <p class="callout-title">Prerrequisitos</p>
                 <p>Debes tener <strong>Ubuntu Server</strong> instalado en VirtualBox (Clase 01) o tener acceso a una terminal Linux.</p>
             </div>
+
+            <div class="callout success" style="background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%); border-left-color: #059669;">
+                <p class="callout-title" style="font-size: 1.1rem; color: #065f46;">Plan B: Recursos Alternativos Gratuitos</p>
+                <p>Si no puedes conectarte al laboratorio Docker del curso, puedes usar estos recursos gratuitos verificados:</p>
+
+                <table style="margin-top: 1rem; background: white; border-radius: 8px;">
+                    <tr style="background: #d1fae5;">
+                        <th style="width: 25%;">Recurso</th>
+                        <th style="width: 35%;">Descripción</th>
+                        <th style="width: 40%;">Ideal para</th>
+                    </tr>
+                    <tr>
+                        <td><strong><a href="https://www.webminal.org" target="_blank">Webminal</a></strong></td>
+                        <td>Terminal Linux real en el navegador</td>
+                        <td>Todos los ejercicios de comandos</td>
+                    </tr>
+                    <tr>
+                        <td><strong><a href="https://bellard.org/jslinux/" target="_blank">JSLinux</a></strong></td>
+                        <td>Emulador Linux completo en navegador</td>
+                        <td>Práctica rápida sin registro</td>
+                    </tr>
+                    <tr>
+                        <td><strong><a href="https://linuxsurvival.com" target="_blank">Linux Survival</a></strong></td>
+                        <td>Tutorial interactivo con terminal simulada</td>
+                        <td>Aprender comandos básicos</td>
+                    </tr>
+                    <tr>
+                        <td><strong><a href="https://www.practicelinux.com" target="_blank">PracticeLinux</a></strong></td>
+                        <td>Terminal Linux sin registro</td>
+                        <td>Ejercicios rápidos</td>
+                    </tr>
+                </table>
+
+                <p style="margin-top: 1rem; font-size: 0.9rem; color: #047857;"><strong>Recomendado:</strong> Regístrate en <strong>Webminal</strong> para guardar tu progreso. Para VMs completas con root, considera <a href="https://www.oracle.com/cloud/free/" target="_blank">Oracle Cloud Free Tier</a> o <a href="https://azure.microsoft.com/free/students/" target="_blank">Azure for Students</a>.</p>
+            </div>
         </section>
 
         <!-- Theory: Directory Structure -->
@@ -777,6 +812,11 @@ docs  src</code></pre>
             </div>
 
             <h3>🛠️ Ejercicio Práctico Guiado: Creando tu Primer Proyecto (10 min)</h3>
+
+            <div class="callout warning" style="background: #fef3c7; border-left-color: #f59e0b; padding: 0.75rem 1rem; margin-bottom: 1rem;">
+                <p style="font-size: 0.9rem; margin: 0;"><strong>Acceso al Laboratorio:</strong> Conéctate vía SSH a <code>ssh estudiante@181.142.135.159 -p 22XX</code> (tu puerto asignado). <strong>¿Sin acceso?</strong> Usa <a href="https://www.webminal.org" target="_blank">Webminal</a> o <a href="https://bellard.org/jslinux/" target="_blank">JSLinux</a> como alternativa.</p>
+            </div>
+
             <div class="actividad">
                 <h4>Objetivo</h4>
                 <p>Crear una estructura de directorios para un proyecto de Sistemas Operativos usando los comandos aprendidos.</p>
@@ -904,6 +944,11 @@ estudiante@ubuntu-server:~$ tail -f /var/log/syslog
             </div>
 
             <h3>🛠️ Ejercicio Práctico Guiado: Explorando el Sistema (8 min)</h3>
+
+            <div class="callout warning" style="background: #fef3c7; border-left-color: #f59e0b; padding: 0.75rem 1rem; margin-bottom: 1rem;">
+                <p style="font-size: 0.9rem; margin: 0;"><strong>Alternativa:</strong> Si no tienes acceso a <code>/var/log</code>, practica con archivos en tu home usando <a href="https://www.webminal.org" target="_blank">Webminal</a>.</p>
+            </div>
+
             <div class="actividad">
                 <h4>Objetivo</h4>
                 <p>Practicar la visualización de archivos usando diferentes comandos para diferentes propósitos.</p>
@@ -1046,6 +1091,11 @@ estudiante@ubuntu-server:~$ ls -la archivo.txt
             </div>
 
             <h3>🛠️ Ejercicio Práctico Guiado: Jugando con Permisos (8 min)</h3>
+
+            <div class="callout warning" style="background: #fef3c7; border-left-color: #f59e0b; padding: 0.75rem 1rem; margin-bottom: 1rem;">
+                <p style="font-size: 0.9rem; margin: 0;"><strong>Alternativa:</strong> Los permisos funcionan igual en <a href="https://www.webminal.org" target="_blank">Webminal</a>. Para usar <code>sudo</code>, necesitas una VM propia o <a href="https://www.oracle.com/cloud/free/" target="_blank">Oracle Cloud Free Tier</a>.</p>
+            </div>
+
             <div class="actividad">
                 <h4>Objetivo</h4>
                 <p>Practicar la asignación de permisos en diferentes escenarios.</p>
