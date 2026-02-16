@@ -11,7 +11,9 @@
 Este curso está diseñado para ser visualizado en formato HTML. Utiliza los siguientes enlaces para navegar por el contenido oficial:
 
 - 📅 **[Cronograma Detallado (Tue/Thu)](https://eldigardocamacho.github.io/IF0099-sistemas-operativos-I/clases-html/cronograma.html)**
-- 📋 **[Rúbricas de Evaluación](https://eldigardocamacho.github.io/IF0099-sistemas-operativos-I/clases-html/rubricas.html)**
+- 📋 **[Acta de Concertación](https://eldigardocamacho.github.io/IF0099-sistemas-operativos-I/clases-html/concertacion.html)**
+- 📝 **[Evaluaciones del Curso](https://eldigardocamacho.github.io/IF0099-sistemas-operativos-I/clases-html/evaluaciones.html)**
+- 📊 **[Rúbricas de Evaluación](https://eldigardocamacho.github.io/IF0099-sistemas-operativos-I/clases-html/rubricas.html)**
 - 📖 **[Glosario de Términos](https://eldigardocamacho.github.io/IF0099-sistemas-operativos-I/clases-html/glosario.html)**
 - 🧪 **[Índice de Laboratorios](https://eldigardocamacho.github.io/IF0099-sistemas-operativos-I/laboratorios-html/index.html)**
 
@@ -31,12 +33,27 @@ Este curso está diseñado para ser visualizado en formato HTML. Utiliza los sig
 | 09 | Semana 6 | Paginación | [Ver Clase 09](https://eldigardocamacho.github.io/IF0099-sistemas-operativos-I/clases-html/clase-09.html) |
 | 10 | Semana 6 | Memoria Virtual | [Ver Clase 10](https://eldigardocamacho.github.io/IF0099-sistemas-operativos-I/clases-html/clase-10.html) |
 | 11 | Semana 7 | Discos y E/S | [Ver Clase 11](https://eldigardocamacho.github.io/IF0099-sistemas-operativos-I/clases-html/clase-11.html) |
-| 12 | Semana 9 | Sistemas de Archivos | [Ver Clase 12](https://eldigardocamacho.github.io/IF0099-sistemas-operativos-I/clases-html/clase-12.html) |
-| 13 | Semana 9 | Implementación de Sistemas de Archivos | [Ver Clase 13](https://eldigardocamacho.github.io/IF0099-sistemas-operativos-I/clases-html/clase-13.html) |
-| 14 | Semana 10 | Servidor Web IIS | [Ver Clase 14](https://eldigardocamacho.github.io/IF0099-sistemas-operativos-I/clases-html/clase-14.html) |
-| 15 | Semana 11 | Permisos y Seguridad en Linux | [Ver Clase 15](https://eldigardocamacho.github.io/IF0099-sistemas-operativos-I/clases-html/clase-15.html) |
-| 16 | Semana 11 | Permisos y Seguridad en Windows | [Ver Clase 16](https://eldigardocamacho.github.io/IF0099-sistemas-operativos-I/clases-html/clase-16.html) |
-| 17 | Semana 12 | Servidor Web Apache | [Ver Clase 17](https://eldigardocamacho.github.io/IF0099-sistemas-operativos-I/clases-html/clase-17.html) |
+| 15 | Semana 9 | Permisos y Seguridad en Linux | [Ver Clase 15](https://eldigardocamacho.github.io/IF0099-sistemas-operativos-I/clases-html/clase-15.html) |
+| 16 | Semana 10 | Permisos y Seguridad en Windows | [Ver Clase 16](https://eldigardocamacho.github.io/IF0099-sistemas-operativos-I/clases-html/clase-16.html) |
+| 17 | Semana 10 | Servidor Web Apache | [Ver Clase 17](https://eldigardocamacho.github.io/IF0099-sistemas-operativos-I/clases-html/clase-17.html) |
+| 12 | Semana 11 | Sistemas de Archivos | [Ver Clase 12](https://eldigardocamacho.github.io/IF0099-sistemas-operativos-I/clases-html/clase-12.html) |
+| 13 | Semana 12 | Implementación de Sistemas de Archivos | [Ver Clase 13](https://eldigardocamacho.github.io/IF0099-sistemas-operativos-I/clases-html/clase-13.html) |
+| 14 | Semana 12 | Servidor Web IIS | [Ver Clase 14](https://eldigardocamacho.github.io/IF0099-sistemas-operativos-I/clases-html/clase-14.html) |
+
+---
+
+## 📝 Evaluaciones del Curso (Corregidas)
+
+| Eval | Fecha | Tipo | Tema | % | Clases Previas |
+|------|-------|------|------|---|----------------|
+| E1 | 25 Feb | Taller | Estructura y tipos de SO | 15% | 01, 02, 04 |
+| E2 | 11 Mar | Informe | Gestión de procesos | 15% | 05, 06, 07, 08, 09 |
+| E3 | 25 Mar | Examen | Memoria, E/S | 20% | 10, 11 |
+| E4 | 22 Abr | Reporte | **Seguridad en SO** | 15% | 15, 16, 17 |
+| E5 | 6 May | Informe | **Conceptos Fundamentales** (integradora) | 15% | 12, 13, 14 |
+| E6 | 27 May | Examen | Todo el curso (interfaces) | 20% | Todas |
+
+**✅ ORGANIZACIÓN ÓPTIMA:** Clases de seguridad (15, 16, 17) van PRIMERO en abril, luego E4 evalúa seguridad. Clases de archivos (12, 13, 14) van DESPUÉS, luego E5 evalúa conceptos fundamentales de forma integradora.
 
 ---
 

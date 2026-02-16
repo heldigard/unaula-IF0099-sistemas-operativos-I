@@ -349,6 +349,58 @@
                 grid-template-columns: 1fr;
             }
         }
+
+        .eval-alert {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-left: 4px solid #f59e0b;
+            padding: 1.25rem 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .eval-alert-icon {
+            font-size: 1.75rem;
+            line-height: 1;
+        }
+
+        .eval-alert-content {
+            flex: 1;
+        }
+
+        .eval-alert-title {
+            font-weight: 700;
+            color: #92400e;
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .eval-alert-text {
+            color: #78350f;
+            font-size: 0.9rem;
+        }
+
+        .eval-alert-date {
+            background: #f59e0b;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+
+        .class-nav-date {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        .class-nav-link:hover .nav-title {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
@@ -357,7 +409,7 @@
             <h1>Clase 15: Permisos y Seguridad en Linux</h1>
             <p class="subtitle">IF0099 - Sistemas Operativos I | Unidad 5 - Archivos y Permisos</p>
             <p class="subtitle">Permisos rwx, SUID, SGID, Sticky Bit, ACLs y Gestión de Usuarios</p>
-            <p class="meta">📅 21 de Abril 2026 | Sesión Martes: 6:00-8:00 AM | Teoría: 60 min + Práctica: 60 min | E4: Reporte 15%</p>
+            <p class="meta">📅 22 de Abril 2026 | Sesión Martes: 6:00-8:00 AM | Teoría: 60 min + Práctica: 60 min | E4: Reporte 15%</p>
         </div>
     </header>
 
@@ -376,6 +428,18 @@
                 <a href="rubricas.html" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: #3b82f6; color: white; text-decoration: none; border-radius: 6px; font-weight: 500;">Rubricas</a>
             </div>
         </div>
+
+        <!-- Próxima Evaluación Alert -->
+        <a href="evaluaciones.html#e4" style="text-decoration: none; display: block;">
+            <div class="eval-alert" style="cursor: pointer; transition: transform 0.2s;">
+                <span class="eval-alert-icon">📌</span>
+                <div class="eval-alert-content">
+                    <div class="eval-alert-title">Próxima Evaluación: E4 - Seguridad en SO</div>
+                    <div class="eval-alert-text">22 de Abril 2026 (15%) - Seguridad en SO</div>
+                </div>
+                <span class="eval-alert-date">📅 22 Abr</span>
+            </div>
+        </a>
 
         <nav>
             <h2>Contenido de la Clase</h2>
@@ -413,6 +477,12 @@
                     <li><strong>rwx:</strong> Read (Lectura), Write (Escritura), eXecute (Ejecución).</li>
                     <li><strong>ACL:</strong> Access Control List (Listas de Control de Acceso para permisos más granulares).</li>
                     <li><strong>Sticky Bit:</strong> Permiso que asegura que solo el dueño del archivo pueda borrarlo, aunque otros tengan permiso de escritura en la carpeta.</li>
+                    <li><strong>SUID (Set User ID):</strong> Bit de permiso que permite ejecutar un archivo con los privilegios del propietario.</li>
+                    <li><strong>SGID (Set Group ID):</strong> Bit de permiso que permite ejecutar un archivo con los privilegios del grupo.</li>
+                    <li><strong>SELinux:</strong> Security-Enhanced Linux, sistema de seguridad MAC desarrollado por la NSA.</li>
+                    <li><strong>DAC:</strong> Discretionary Access Control, modelo donde los usuarios controlan acceso a sus archivos.</li>
+                    <li><strong>MAC:</strong> Mandatory Access Control, modelo donde el sistema impone políticas de seguridad centralizadas.</li>
+                    <li><strong>RBAC:</strong> Role-Based Access Control, control de acceso basado en roles del usuario.</li>
                 </ul>
             </div>
         </section>
@@ -963,13 +1033,15 @@ getfacl confidencial.txt</code></pre>
                 <span class="class-nav-icon">←</span>
                 <div>
                     <div class="nav-label">Clase Anterior</div>
-                    <div class="nav-title">← Servidor Web IIS</div>
+                    <div class="nav-title">Servidor Web IIS</div>
+                    <div class="class-nav-date">📅 14 Abr 2026</div>
                 </div>
             </a>
             <a href="clase-16.html" class="class-nav-link next">
                 <div>
                     <div class="nav-label">Siguiente Clase</div>
-                    <div class="nav-title">Permisos Windows →</div>
+                    <div class="nav-title">Permisos y Seguridad en Windows</div>
+                    <div class="class-nav-date">📅 23 Abr 2026</div>
                 </div>
                 <span class="class-nav-icon">→</span>
             </a>
@@ -986,6 +1058,7 @@ getfacl confidencial.txt</code></pre>
             <p style="margin-top: 10px;">
                 <a href="index.html" style="color: #10b981;">Inicio</a> |
                 <a href="cronograma.html" style="color: #10b981;">Cronograma</a> |
+                <a href="evaluaciones.html" style="color: #8b5cf6;">Evaluaciones</a> |
                 <a href="rubricas.html" style="color: #3b82f6;">Rubricas</a>
             </p>
         </div>
