@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IF0099 - Sistemas Operativos I | UNAULA 2026-I</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #1e3a5f 0%, #2d5a87 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        header {
+            background: white;
+            border-radius: 20px;
+            padding: 50px 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+
+        .unaula-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #1e3a5f 0%, #2d5a87 100%);
+            color: white;
+            padding: 10px 25px;
+            border-radius: 25px;
+            font-size: 0.9em;
+            font-weight: 600;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+        }
+
+        h1 {
+            color: #1e3a5f;
+            font-size: 2.8em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            color: #555;
+            font-size: 1.4em;
+            margin-bottom: 25px;
+            font-weight: 400;
+        }
+
+        .course-meta {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin: 30px 0;
+        }
+
+        .meta-item {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 15px 25px;
+            border-radius: 12px;
+            text-align: center;
+            border-left: 4px solid #1e3a5f;
+        }
+
+        .meta-item .label {
+            font-size: 0.85em;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 5px;
+        }
+
+        .meta-item .value {
+            font-size: 1.2em;
+            font-weight: 700;
+            color: #1e3a5f;
+        }
+
+        .version-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 1em;
+            font-weight: 600;
+            margin-top: 20px;
+        }
+
+        /* Navigation Grid */
+        .nav-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+
+        .nav-section h2 {
+            color: #1e3a5f;
+            font-size: 1.8em;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .nav-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .nav-card {
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            border-radius: 15px;
+            padding: 30px;
+            text-decoration: none;
+            color: #333;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, #1e3a5f, #2d5a87);
+        }
+
+        .nav-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(30, 58, 95, 0.2);
+            border-color: #1e3a5f;
+        }
+
+        .nav-card .icon {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+        }
+
+        .nav-card h3 {
+            color: #1e3a5f;
+            font-size: 1.3em;
+            margin-bottom: 10px;
+        }
+
+        .nav-card p {
+            color: #666;
+            font-size: 0.95em;
+            line-height: 1.5;
+        }
+
+        /* Phases Section */
+        .phases-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+
+        .phases-section h2 {
+            color: #1e3a5f;
+            font-size: 1.8em;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .phases-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .phase-card {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            border-left: 4px solid #10b981;
+            transition: all 0.3s;
+        }
+
+        .phase-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .phase-card.e3, .phase-card.e6 {
+            border-left-color: #8b5cf6;
+        }
+
+        .phase-card .phase-num {
+            font-size: 2em;
+            font-weight: 700;
+            color: #1e3a5f;
+            margin-bottom: 5px;
+        }
+
+        .phase-card .phase-name {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .phase-card .phase-date {
+            color: #666;
+            font-size: 0.9em;
+            margin-bottom: 5px;
+        }
+
+        .phase-card .phase-pct {
+            display: inline-block;
+            background: #1e3a5f;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-size: 0.9em;
+            font-weight: 600;
+        }
+
+        /* Info Boxes */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .info-box {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+
+        .info-box h2 {
+            color: #1e3a5f;
+            font-size: 1.4em;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .info-box ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .info-box li {
+            padding: 10px 0;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .info-box li:last-child {
+            border-bottom: none;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-left: 5px solid #f59e0b;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+        }
+
+        .highlight-box h3 {
+            color: #92400e;
+            margin-bottom: 10px;
+        }
+
+        .highlight-box p {
+            color: #78350f;
+        }
+
+        /* Quick Access */
+        .quick-access {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+
+        .quick-access h2 {
+            color: #1e3a5f;
+            font-size: 1.8em;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .quick-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .quick-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 25px;
+            background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%);
+            color: #3730a3;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .quick-link:hover {
+            background: linear-gradient(135deg, #3730a3 0%, #4338ca 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* Footer */
+        footer {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+            color: #666;
+        }
+
+        footer a {
+            color: #1e3a5f;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2em;
+            }
+            
+            .subtitle {
+                font-size: 1.1em;
+            }
+            
+            .course-meta {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .nav-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <div class="unaula-badge">UNAULA - INGENIERÍA INFORMÁTICA</div>
+            <h1>IF0099 - Sistemas Operativos I</h1>
+            <p class="subtitle">Proyecto Incremental de 6 Fases | 50% Teoría - 50% Práctica</p>
+            
+            <div class="course-meta">
+                <div class="meta-item">
+                    <div class="label">Docente</div>
+                    <div class="value">Ing. Eldigardo Camacho</div>
+                </div>
+                <div class="meta-item">
+                    <div class="label">Horario</div>
+                    <div class="value">Miércoles 6-9 AM</div>
+                </div>
+                <div class="meta-item">
+                    <div class="label">Créditos</div>
+                    <div class="value">3 (48 horas)</div>
+                </div>
+                <div class="meta-item">
+                    <div class="label">Semestre</div>
+                    <div class="value">2026-I</div>
+                </div>
+            </div>
+            
+            <div class="version-badge">✅ v5.1 - Sistema Coherente</div>
+        </header>
+
+        <!-- Important Notice -->
+        <div class="highlight-box">
+            <h3>📢 Modelo Pedagógico: Sin Exámenes de Memorización</h3>
+            <p>Este curso utiliza un <strong>proyecto incremental de 6 fases (E1-E6)</strong>. No hay exámenes tradicionales. Cada fase construye sobre la anterior hasta completar un proyecto integral de administración de sistemas operativos.</p>
+        </div>
+
+        <!-- Main Navigation -->
+        <section class="nav-section">
+            <h2>📚 Acceso Rápido a Documentos</h2>
+            <div class="nav-grid">
+                <a href="clases-html/concertacion.html" class="nav-card">
+                    <div class="icon">📋</div>
+                    <h3>Acta de Concertación</h3>
+                    <p>Documento oficial con fechas, porcentajes, resultados de aprendizaje y metodología del curso aprobada por UNAULA.</p>
+                </a>
+                
+                <a href="clases-html/cronograma.html" class="nav-card">
+                    <div class="icon">📅</div>
+                    <h3>Cronograma Completo</h3>
+                    <p>Calendario detallado de las 17 sesiones. Todos los miércoles de 6:00 AM a 9:00 AM con distribución por franjas.</p>
+                </a>
+                
+                <a href="clases-html/evaluaciones.html" class="nav-card">
+                    <div class="icon">📝</div>
+                    <h3>6 Fases del Proyecto</h3>
+                    <p>Detalle completo de cada fase (E1-E6): contenidos, entregables, rúbricas y criterios de evaluación.</p>
+                </a>
+                
+                <a href="clases-html/rubricas.html" class="nav-card">
+                    <div class="icon">📊</div>
+                    <h3>Rúbricas de Calificación</h3>
+                    <p>Criterios específicos de evaluación para cada fase. Distribución 40% teoría / 60% práctica.</p>
+                </a>
+                
+                <a href="clases-html/proyecto.html" class="nav-card">
+                    <div class="icon">🚀</div>
+                    <h3>Guía del Proyecto</h3>
+                    <p>Estructura del proyecto incremental, entregables por fase y recomendaciones para la sustentación final.</p>
+                </a>
+                
+                <a href="clases-html/index.html" class="nav-card">
+                    <div class="icon">📖</div>
+                    <h3>17 Clases del Curso</h3>
+                    <p>Material completo de cada sesión: presentaciones, ejercicios prácticos, laboratorios y recursos.</p>
+                </a>
+            </div>
+        </section>
+
+        <!-- Project Phases -->
+        <section class="phases-section">
+            <h2>🎯 Las 6 Fases del Proyecto Incremental</h2>
+            <div class="phases-grid">
+                <div class="phase-card">
+                    <div class="phase-num">E1</div>
+                    <div class="phase-name">Fundamentos</div>
+                    <div class="phase-date">25 Feb 2026</div>
+                    <div class="phase-pct">15%</div>
+                </div>
+                <div class="phase-card">
+                    <div class="phase-num">E2</div>
+                    <div class="phase-name">Procesos</div>
+                    <div class="phase-date">11 Mar 2026</div>
+                    <div class="phase-pct">15%</div>
+                </div>
+                <div class="phase-card e3">
+                    <div class="phase-num">E3</div>
+                    <div class="phase-name">Checkpoint</div>
+                    <div class="phase-date">25 Mar 2026</div>
+                    <div class="phase-pct">20%</div>
+                </div>
+                <div class="phase-card">
+                    <div class="phase-num">E4</div>
+                    <div class="phase-name">Seguridad</div>
+                    <div class="phase-date">22 Abr 2026</div>
+                    <div class="phase-pct">15%</div>
+                </div>
+                <div class="phase-card">
+                    <div class="phase-num">E5</div>
+                    <div class="phase-name">Integración</div>
+                    <div class="phase-date">29 Abr 2026</div>
+                    <div class="phase-pct">15%</div>
+                </div>
+                <div class="phase-card e6">
+                    <div class="phase-num">E6</div>
+                    <div class="phase-name">Sustentación</div>
+                    <div class="phase-date">27 May 2026</div>
+                    <div class="phase-pct">20%</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Info Grid -->
+        <div class="info-grid">
+            <div class="info-box">
+                <h2>⏰ Horario y Estructura</h2>
+                <ul>
+                    <li>📅 <strong>Día:</strong> Miércoles únicamente</li>
+                    <li>🕕 <strong>Franja 1:</strong> 6:00 - 8:00 AM (Clase teórica)</li>
+                    <li>🕗 <strong>Franja 2:</strong> 8:00 - 9:00 AM (Práctica/Entrega)</li>
+                    <li>📍 <strong>Modalidad:</strong> Presencial</li>
+                    <li>💻 <strong>Labs:</strong> VirtualBox + AWS EC2</li>
+                </ul>
+            </div>
+            
+            <div class="info-box">
+                <h2>📊 Seguimientos Académicos</h2>
+                <ul>
+                    <li>📈 <strong>1° Seguimiento:</strong> 27 Mar (50%)</li>
+                    <li>📈 <strong>2° Seguimiento:</strong> 15 May (80%)</li>
+                    <li>📈 <strong>3° Seguimiento:</strong> 28 May (100%)</li>
+                    <li>🐰 <strong>Receso:</strong> Semana Santa (29 Mar - 5 Abr)</li>
+                    <li>🎓 <strong>Fin:</strong> 27 Mayo 2026</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Quick Access -->
+        <section class="quick-access">
+            <h2>🔗 Accesos Directos</h2>
+            <div class="quick-links">
+                <a href="clases-html/clase-01.html" class="quick-link">📖 Clase 01</a>
+                <a href="clases-html/clase-05.html" class="quick-link">📖 Clase 05</a>
+                <a href="clases-html/clase-10.html" class="quick-link">📖 Clase 10</a>
+                <a href="clases-html/clase-15.html" class="quick-link">📖 Clase 15</a>
+                <a href="clases-html/glosario.html" class="quick-link">📚 Glosario</a>
+                <a href="laboratorios-html/index.html" class="quick-link">🔬 Laboratorios</a>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <p><strong>IF0099 - Sistemas Operativos I</strong></p>
+            <p>Universidad Autónoma Latinoamericana (UNAULA)</p>
+            <p>Programa de Ingeniería Informática - Pensum 302-2023-2</p>
+            <p style="margin-top: 15px;">
+                <a href="clases-html/concertacion.html">Concertación</a> |
+                <a href="clases-html/cronograma.html">Cronograma</a> |
+                <a href="clases-html/evaluaciones.html">Evaluaciones</a> |
+                <a href="clases-html/rubricas.html">Rúbricas</a>
+            </p>
+            <p style="margin-top: 10px; font-size: 0.9em; color: #999;">
+                Última actualización: 16 de febrero de 2026 | Versión 5.1
+            </p>
+        </footer>
+    </div>
+</body>
+</html>
