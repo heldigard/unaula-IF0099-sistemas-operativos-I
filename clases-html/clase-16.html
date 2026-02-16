@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clase 16: Permisos y Seguridad en Windows | IF0099 - Sistemas Operativos I</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #1e40af;
+            --accent: #059669;
+            --bg-light: #f8fafc;
+            --bg-code: #1e293b;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.7;
+            color: var(--text-main);
+            background: var(--bg-light);
+            font-size: 16px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 3rem 0;
+            margin-bottom: 2rem;
+        }
+        header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+        header .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        header .meta {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        nav {
+            background: white;
+            padding: 1.5rem 0;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        nav h2 {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            padding: 0 20px;
+        }
+        nav ul {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 0.5rem;
+            padding: 0 20px;
+        }
+        nav a {
+            color: var(--primary);
+            text-decoration: none;
+            padding: 0.5rem;
+            display: block;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+        nav a:hover {
+            background: var(--bg-light);
+        }
+
+        section {
+            background: white;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        section h2 {
+            color: var(--primary);
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid var(--accent);
+        }
+        section h3 {
+            color: var(--secondary);
+            font-size: 1.4rem;
+            margin: 2rem 0 1rem;
+        }
+        section h4 {
+            color: var(--text-main);
+            font-size: 1.1rem;
+            margin: 1.5rem 0 0.75rem;
+            font-weight: 600;
+        }
+        p {
+            margin-bottom: 1rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.95rem;
+        }
+        th, td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+        th {
+            background: var(--bg-light);
+            font-weight: 600;
+            color: var(--secondary);
+        }
+        tr:hover {
+            background: var(--bg-light);
+        }
+
+        pre {
+            background: var(--bg-code);
+            color: #e2e8f0;
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        code {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+        }
+        p code, li code, td code {
+            background: var(--bg-light);
+            color: var(--primary);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+        pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+        }
+
+        ul, ol {
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        .callout {
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            border-left: 4px solid;
+        }
+        .callout.info {
+            background: #eff6ff;
+            border-left-color: var(--primary);
+        }
+        .callout.warning {
+            background: #fef3c7;
+            border-left-color: #f59e0b;
+        }
+        .callout.success {
+            background: #d1fae5;
+            border-left-color: var(--accent);
+        }
+        .callout.danger {
+            background: #fee2e2;
+            border-left-color: #ef4444;
+        }
+
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        .comparison > div {
+            background: var(--bg-light);
+            padding: 1.5rem;
+            border-radius: 8px;
+        }
+
+        footer {
+            background: var(--text-main);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            margin-top: 3rem;
+        }
+        footer a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        /* Navigation between classes */
+        .class-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: stretch;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .class-nav-link {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1.25rem 1.5rem;
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            text-decoration: none;
+            color: var(--text-main);
+            transition: all 0.3s ease;
+        }
+
+        .class-nav-link:hover {
+            border-color: var(--primary);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .class-nav-link.prev {
+            border-left: 4px solid var(--primary);
+        }
+
+        .class-nav-link.next {
+            border-right: 4px solid var(--accent);
+            text-align: right;
+            margin-left: auto;
+        }
+
+        .class-nav-link .nav-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            margin-bottom: 0.25rem;
+        }
+
+        .class-nav-link .nav-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .class-nav-link.next .nav-title {
+            color: var(--accent);
+        }
+
+        .class-nav-icon {
+            font-size: 1.5rem;
+            line-height: 1;
+        }
+
+        .class-nav-placeholder {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.25rem;
+            background: var(--bg-light);
+            border: 2px dashed var(--border);
+            border-radius: 12px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .scroll-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--primary);
+            color: white;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.3s;
+            text-decoration: none;
+            font-size: 1.5rem;
+        }
+        .scroll-top.visible {
+            opacity: 1;
+        }
+        .scroll-top:hover {
+            background: var(--secondary);
+        }
+
+        .actividad {
+            background: var(--bg-light);
+            border-left: 5px solid var(--accent);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+        .actividad h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        .actividad p {
+            margin-bottom: 0.75rem;
+        }
+        .actividad strong {
+            color: var(--secondary);
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.6rem;
+            }
+            section {
+                padding: 1.5rem;
+            }
+            nav ul {
+                grid-template-columns: 1fr;
+            }
+            .comparison {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .eval-alert {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-left: 4px solid #f59e0b;
+            padding: 1.25rem 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .eval-alert-icon {
+            font-size: 1.75rem;
+            line-height: 1;
+        }
+
+        .eval-alert-content {
+            flex: 1;
+        }
+
+        .eval-alert-title {
+            font-weight: 700;
+            color: #92400e;
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .eval-alert-text {
+            color: #78350f;
+            font-size: 0.9rem;
+        }
+
+        .eval-alert-date {
+            background: #f59e0b;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+
+        .class-nav-date {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        .class-nav-link:hover .nav-title {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Clase 16: Permisos y Seguridad en Windows</h1>
+            <p class="subtitle">IF0099 - Sistemas Operativos I | Unidad 5 - Archivos y Permisos</p>
+            <p class="subtitle">NTFS, Permisos NTFS, SMB Shares y PowerShell</p>
+            <p class="meta">📅 23 de Abril 2026 | Sesión Jueves: 6:00-7:00 AM | Teoría: 30 min + Práctica: 30 min</p>
+        </div>
+    </header>
+
+
+    <div class="container">
+
+        <!-- Quick Navigation Bar -->
+        <div class="quick-nav" style="background: white; padding: 1rem; margin-bottom: 2rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <a href="index.html" style="color: var(--primary); text-decoration: none; font-weight: 500;">Inicio</a>
+                <span style="color: var(--text-muted);">|</span>
+                <span style="color: var(--text-main); font-weight: 600;">Permisos y Seguridad en Windows</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <a href="cronograma.html" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: #10b981; color: white; text-decoration: none; border-radius: 6px; font-weight: 500;">Cronograma</a>
+                <a href="rubricas.html" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: #3b82f6; color: white; text-decoration: none; border-radius: 6px; font-weight: 500;">Rubricas</a>
+            </div>
+        </div>
+
+        <!-- Próxima Evaluación Alert -->
+        <a href="evaluaciones.html#e4" style="text-decoration: none; display: block;">
+            <div class="eval-alert" style="cursor: pointer; transition: transform 0.2s;">
+                <span class="eval-alert-icon">📌</span>
+                <div class="eval-alert-content">
+                    <div class="eval-alert-title">Próxima Evaluación: E4 - Seguridad en SO</div>
+                    <div class="eval-alert-text">22 de Abril 2026 (15%) - Seguridad en SO</div>
+                </div>
+                <span class="eval-alert-date">📅 22 Abr</span>
+            </div>
+        </a>
+
+        <nav>
+            <h2>Contenido de la Clase</h2>
+            <ul>
+                <li><a href="#objetivos">Objetivos de Aprendizaje</a></li>
+                <li><a href="#intro">1. Introducción a Permisos Windows</a></li>
+                <li><a href="#sistemas-archivos">2. Sistemas de Archivos (NTFS vs FAT32)</a></li>
+                <li><a href="#permisos-ntfs">3. Permisos NTFS</a></li>
+                <li><a href="#powershell">4. Gestión con PowerShell</a></li>
+                <li><a href="#smb">5. Compartir Archivos (SMB)</a></li>
+                <li><a href="#usuarios">6. Usuarios y Grupos</a></li>
+                <li><a href="#practica">7. Actividad Práctica</a></li>
+                <li><a href="#entregable">8. Entregable</a></li>
+                <li><a href="#resumen">Resumen</a></li>
+            </ul>
+        </nav>
+
+        <section id="objetivos">
+            <h2>Objetivos de Aprendizaje</h2>
+            <p>Al finalizar esta clase, serás capaz de:</p>
+            <ol>
+                <li><strong>Diferenciar</strong> entre NTFS y FAT32</li>
+                <li><strong>Configurar</strong> permisos NTFS básicos y avanzados</li>
+                <li><strong>Gestionar</strong> permisos con PowerShell</li>
+                <li><strong>Compartir</strong> carpetas vía SMB</li>
+                <li><strong>Crear</strong> usuarios y grupos en Windows Server</li>
+                <li><strong>Verificar</strong> permisos desde cliente Linux</li>
+            </ol>
+
+            <div class="callout info">
+                <p class="callout-title">Glosario de Seguridad Windows</p>
+                <ul>
+                    <li><strong>ACL:</strong> Access Control List (Lista de Control de Acceso).</li>
+                    <li><strong>ACE:</strong> Access Control Entry (Cada entrada individual en una ACL).</li>
+                    <li><strong>SID:</strong> Security Identifier (ID único para usuarios y grupos en Windows).</li>
+                    <li><strong>SMB:</strong> Server Message Block (Protocolo para compartir archivos en red).</li>
+                </ul>
+            </div>
+        </section>
+
+
+        <section id="intro">
+            <h2>1. Introducción a Permisos en Windows</h2>
+
+            <div class="callout info">
+                <strong>Concepto fundamental:</strong> Windows Server utiliza un modelo de seguridad basado en ACLs (Access Control Lists) mucho más granular que el modelo UGO de Linux.
+            </div>
+
+            <h3>Modelo de Seguridad de Windows</h3>
+            <ul>
+                <li><strong>ACLs:</strong> Listas de Control de Acceso</li>
+                <li><strong>ACEs:</strong> Entradas de Control de Acceso (Access Control Entries)</li>
+                <li><strong>SIDs:</strong> Security Identifiers (identificadores únicos)</li>
+                <li><strong>Tokens de acceso:</strong> Contienen información de seguridad del usuario</li>
+            </ul>
+
+            <h3>Jerarquía de Permisos</h3>
+            <ul>
+                <li><strong>Permisos NTFS:</strong> Controlan acceso local a archivos y carpetas</li>
+                <li><strong>Permisos de Compartido (Share):</strong> Controlan acceso vía red</li>
+                <li><strong>Permisos Combinados:</strong> Se aplica el más restrictivo de ambos</li>
+            </ul>
+        </section>
+
+        <section id="sistemas-archivos">
+            <h2>2. Sistemas de Archivos: NTFS vs FAT32</h2>
+
+            <h3>Comparación</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Característica</th>
+                        <th>NTFS</th>
+                        <th>FAT32</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td><strong>Permisos</strong></td><td>ACLs completas</td><td>Solo lectura/oculto/sistema</td></tr>
+                    <tr><td><strong>Tamaño máximo archivo</strong></td><td>16 TB (teóricamente ilimitado)</td><td>4 GB</td></tr>
+                    <tr><td><strong>Tamaño máximo volumen</strong></td><td>256 TB</td><td>2 TB</td></tr>
+                    <tr><td><strong>Compresión</strong></td><td>Sí</td><td>No</td></tr>
+                    <tr><td><strong>Encriptación (EFS)</strong></td><td>Sí</td><td>No</td></tr>
+                    <tr><td><strong>Journaling</strong></td><td>Sí</td><td>No</td></tr>
+                    <tr><td><strong>Recuperación errores</strong></td><td>Excelente</td><td>Básica</td></tr>
+                    <tr><td><strong>Cuotas de disco</strong></td><td>Sí</td><td>No</td></tr>
+                </tbody>
+            </table>
+
+            <div class="callout success">
+                <strong>Recomendación:</strong> Siempre usar NTFS en servidores de producción. FAT32 solo para compatibilidad con sistemas antiguos o dispositivos USB.
+            </div>
+
+            <h3>Ver Tipo de Sistema de Archivos</h3>
+            <pre><code># PowerShell
+Get-Volume
+
+# Comando diskpart
+diskpart
+list volume</code></pre>
+
+            <h3>Convertir a NTFS</h3>
+            <pre><code># Convertir volumen C: a NTFS (sin pérdida de datos)
+Convert C: /FS:NTFS</code></pre>
+        </section>
+
+        <section id="permisos-ntfs">
+            <h2>3. Permisos NTFS</h2>
+
+            <h3>Permisos Básicos</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Permiso</th>
+                        <th>Descripción</th>
+                        <th>Carpeta</th>
+                        <th>Archivo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>Full Control</td><td>Control total</td><td>✅</td><td>✅</td></tr>
+                    <tr><td>Modify</td><td>Modificar</td><td>✅</td><td>✅</td></tr>
+                    <tr><td>Read & execute</td><td>Leer y ejecutar</td><td>✅</td><td>✅</td></tr>
+                    <tr><td>List folder contents</td><td>Listar contenido</td><td>✅</td><td>❌</td></tr>
+                    <tr><td>Read</td><td>Leer</td><td>✅</td><td>✅</td></tr>
+                    <tr><td>Write</td><td>Escribir</td><td>✅</td><td>✅</td></tr>
+                </tbody>
+            </table>
+
+            <h3>Permisos Avanzados</h3>
+            <ul>
+                <li><strong>Traverse folder:</strong> Navegar carpetas</li>
+                <li><strong>Create files:</strong> Crear archivos</li>
+                <li><strong>Create folders:</strong> Crear subcarpetas</li>
+                <li><strong>Delete subfolders:</strong> Borrar subcarpetas</li>
+                <li><strong>Delete:</strong> Borrar</li>
+                <li><strong>Read attributes:</strong> Leer atributos</li>
+                <li><strong>Write attributes:</strong> Escribir atributos</li>
+                <li><strong>Read permissions:</strong> Leer permisos</li>
+                <li><strong>Change permissions:</strong> Cambiar permisos</li>
+                <li><strong>Take ownership:</strong> Tomar ownership</li>
+            </ul>
+
+            <h3>Herencia de Permisos</h3>
+            <div class="callout info">
+                <strong>Herencia:</strong> Por defecto, las subcarpetas y archivos heredan los permisos de la carpeta padre. Puedes desactivar la herencia para configurar permisos explícitos.
+            </div>
+
+            <pre><code># Ver permisos con PowerShell
+Get-Acl C:\Carpeta | Format-List
+
+# Ver permisos en formato tabla
+Get-Acl C:\Carpeta | Select-Object -ExpandProperty Access</code></pre>
+        </section>
+
+        <section id="powershell">
+            <h2>4. Gestión con PowerShell</h2>
+
+            <h3>Ver Permisos</h3>
+            <pre><code># Ver ACL de una carpeta
+Get-Acl C:\Datos\Proyectos
+
+# Ver ACL en formato legible
+Get-Acl C:\Datos\Proyectos | Format-List
+
+# Exportar ACL a archivo
+Get-Acl C:\Datos\Proyectos | Export-Clixml acl.xml</code></pre>
+
+            <h3>Configurar Permisos NTFS</h3>
+            <pre><code># Variables
+$carpeta = "C:\Datos\Proyectos"
+$usuario = "DOMAIN\juanperez"
+
+# Dar permisos de lectura
+$acl = Get-Acl $carpeta
+$accessRule = New-Object System.Security.AccessControl.FileSystemAccessRule(
+    $usuario,
+    "ReadAndExecute",
+    "ContainerInherit,ObjectInherit",
+    "None",
+    "Allow"
+)
+$acl.SetAccessRule($accessRule)
+Set-Acl $carpeta $acl
+
+# Dar permisos completos
+$fullControl = New-Object System.Security.AccessControl.FileSystemAccessRule(
+    $usuario,
+    "FullControl",
+    "Allow"
+)
+$acl.SetAccessRule($fullControl)
+Set-Acl $carpeta $acl</code></pre>
+
+            <h3>Script Completo de Configuración</h3>
+            <pre><code># Script para configurar carpeta compartida
+$carpeta = "C:\Compartido\Documentos"
+$grupoLectura = "DOMAIN\Lectores"
+$grupoEscritura = "DOMAIN\Editores"
+
+# Crear carpeta si no existe
+if (-not (Test-Path $carpeta)) {
+    New-Item -ItemType Directory -Path $carpeta -Force
+}
+
+# Obtener ACL actual
+$acl = Get-Acl $carpeta
+
+# Deshabilitar herencia
+$acl.SetAccessRuleProtection($true, $false)
+
+# Agregar permisos de lectura
+$ruleLectura = New-Object System.Security.AccessControl.FileSystemAccessRule(
+    $grupoLectura,
+    "ReadAndExecute",
+    "ContainerInherit,ObjectInherit",
+    "None",
+    "Allow"
+)
+$acl.AddAccessRule($ruleLectura)
+
+# Agregar permisos de escritura
+$ruleEscritura = New-Object System.Security.AccessControl.FileSystemAccessRule(
+    $grupoEscritura,
+    "Modify",
+    "ContainerInherit,ObjectInherit",
+    "None",
+    "Allow"
+)
+$acl.AddAccessRule($ruleEscritura)
+
+# Aplicar ACL
+Set-Acl $carpeta $acl
+
+Write-Host "Permisos configurados correctamente"</code></pre>
+
+            <h3>Quitar Permisos</h3>
+            <pre><code># Quitar permiso específico
+$acl = Get-Acl C:\Datos\Proyectos
+$usuario = "DOMAIN\usuario_antiguo"
+
+# Buscar y eliminar regla
+$ruleToRemove = $acl.Access | Where-Object {
+    $_.IdentityReference.Value -eq $usuario
+}
+
+if ($ruleToRemove) {
+    $acl.RemoveAccessRule($ruleToRemove)
+    Set-Acl C:\Datos\Proyectos $acl
+}</code></pre>
+        </section>
+
+        <section id="smb">
+            <h2>5. Compartir Archivos (SMB)</h2>
+
+            <h3>Diferencia: Permisos NTFS vs Share</h3>
+            <div class="comparison">
+                <div>
+                    <h4>Permisos NTFS</h4>
+                    <ul>
+                        <li>Se aplican localmente</li>
+                        <li>Funcionan siempre</li>
+                        <li>Más granulares</li>
+                        <li>Se aplican primero</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Permisos Share</h4>
+                    <ul>
+                        <li>Se aplican vía red</li>
+                        <li>Solo para SMB/NFS</li>
+                        <li>Menos granulares</li>
+                        <li>Luego se combinan con NTFS</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="callout warning">
+                <strong>Regla:</strong> El acceso final es el <strong>MÁS RESTRICTIVO</strong> entre permisos NTFS y Share. Si NTFS es Read y Share es Full Control, el resultado es Read.
+            </div>
+
+            <h3>Crear Compartido SMB con PowerShell</h3>
+            <pre><code># Crear carpeta
+$carpeta = "C:\Compartido\Publico"
+New-Item -ItemType Directory -Path $carpeta -Force
+
+# Crear usuario para pruebas (opcional)
+$Password = ConvertTo-SecureString "P@ssw0rd123" -AsPlainText -Force
+New-LocalUser -Name "usuario1" -Password $Password -FullName "Usuario de Prueba"
+
+# Compartir carpeta
+New-SmbShare -Name "Publico" -Path $carpeta -FullAccess "Administradores","usuario1" -ReadAccess "Todos"
+
+# Verificar el compartido
+Get-SmbShare</code></pre>
+
+            <h3>Configurar Permisos de Compartido</h3>
+            <pre><code># Ver permisos actuales del share
+Get-SmbShareAccess -Name "Publico"
+
+# Agregar usuario con permisos de lectura
+Grant-SmbShareAccess -Name "Publico" -AccountName "DOMAIN\usuario" -AccessRight Read -Force
+
+# Agregar usuario con permisos completos
+Grant-SmbShareAccess -Name "Publico" -AccountName "DOMAIN\admin" -AccessRight Full -Force
+
+# Quitar permiso
+Revoke-SmbShareAccess -Name "Publico" -AccountName "DOMAIN\usuario_antiguo" -Force</code></pre>
+
+            <h3>Verificar desde Cliente Linux</h3>
+            <pre><code># Instalar smbclient
+sudo apt install smbclient
+
+# Listar shares disponibles
+smbclient -L //192.168.1.100 -U usuario1
+
+# Acceder a un share
+smbclient //192.168.1.100/Publico -U usuario1
+
+# Comandos dentro de smbclient
+smb: \> ls
+smb: \> get archivo.txt
+smb: \> put subida.txt
+smb: \> exit</code></pre>
+
+            <h3>Montar Share en Linux</h3>
+            <pre><code># Crear punto de montaje
+sudo mkdir -p /mnt/compartido
+
+# Montar temporalmente
+sudo mount -t cifs //192.168.1.100/Publico /mnt/compartido \
+    -o username=usuario1,password=P@ssw0rd123
+
+# Montar permanentemente (en /etc/fstab)
+//192.168.1.100/Publico /mnt/compartido cifs \
+    username=usuario1,password=P@ssw0rd123,uid=1000,gid=1000 0 0</code></pre>
+        </section>
+
+        <section id="usuarios">
+            <h2>6. Usuarios y Grupos en Windows Server</h2>
+
+            <h3>Gestión de Usuarios con PowerShell</h3>
+            <pre><code># Crear usuario local
+$Password = ConvertTo-SecureString "P@ssw0rd123" -AsPlainText -Force
+New-LocalUser -Name "juanperez" -Password $Password -FullName "Juan Perez" -Description "Usuario de Desarrollo"
+
+# Ver todos los usuarios locales
+Get-LocalUser
+
+# Habilitar/deshabilitar usuario
+Disable-LocalUser -Name "juanperez"
+Enable-LocalUser -Name "juanperez"
+
+# Eliminar usuario
+Remove-LocalUser -Name "juanperez"</code></pre>
+
+            <h3>Gestión de Grupos</h3>
+            <pre><code># Crear grupo local
+New-LocalGroup -Name "Desarrollo" -Description "Equipo de Desarrollo"
+
+# Ver todos los grupos
+Get-LocalGroup
+
+# Agregar usuario a grupo
+Add-LocalGroupMember -Group "Desarrollo" -Member "juanperez"
+
+# Ver miembros de un grupo
+Get-LocalGroupMember -Group "Desarrollo"
+
+# Quitar usuario de grupo
+Remove-LocalGroupMember -Group "Desarrollo" -Member "juanperez"</code></pre>
+
+            <h3>Usuarios de Dominio (Active Directory)</h3>
+            <pre><code># Crear usuario de dominio
+New-ADUser -SamAccountName "maria.lopez" `
+    -UserPrincipalName "maria.lopez@domain.local" `
+    -Name "Maria Lopez" `
+    -GivenName "Maria" `
+    -Surname "Lopez" `
+    -Enabled $true `
+    -ChangePasswordAtLogon $true `
+    -AccountPassword (ConvertTo-SecureString "P@ssw0rd123" -AsPlainText -Force)
+
+# Agregar a grupo de dominio
+Add-ADGroupMember -Identity "Domain Admins" -Members "maria.lopez"</code></pre>
+
+            <div class="callout warning">
+                <strong>Nota:</strong> Los comandos de Active Directory requieren el módulo RSAT-AD-PowerShell y privilegios de administrador de dominio.
+            </div>
+        </section>
+
+        <section id="practica">
+            <h2>7. Actividad Práctica</h2>
+
+            <div class="actividad">
+                <h3>Ejercicio 1: Configurar Servidor de Archivos</h3>
+                <p><strong>Objetivo:</strong> Crear servidor de archivos con 3 usuarios y permisos diferenciados</p>
+
+                <h4>Paso 1: Crear Estructura</h4>
+                <pre><code># Crear directorios
+New-Item -ItemType Directory -Path "C:\ServidorArchivos\Publico" -Force
+New-Item -ItemType Directory -Path "C:\ServidorArchivos\Proyectos" -Force
+New-Item -ItemType Directory -Path "C:\ServidorArchivos\Confidencial" -Force</code></pre>
+
+                <h4>Paso 2: Crear Usuarios</h4>
+                <pre><code># Crear usuarios
+$pass1 = ConvertTo-SecureString "User1Pass" -AsPlainText -Force
+$pass2 = ConvertTo-SecureString "User2Pass" -AsPlainText -Force
+$pass3 = ConvertTo-SecureString "User3Pass" -AsPlainText -Force
+
+New-LocalUser -Name "usuario1" -Password $pass1 -FullName "Usuario 1"
+New-LocalUser -Name "usuario2" -Password $pass2 -FullName "Usuario 2"
+New-LocalUser -Name "usuario3" -Password $pass3 -FullName "Usuario 3"</code></pre>
+
+                <h4>Paso 3: Configurar Permisos NTFS</h4>
+                <pre><code># Público: todos pueden leer y escribir
+$aclPublico = Get-Acl "C:\ServidorArchivos\Publico"
+$ruleTodos = New-Object System.Security.AccessControl.FileSystemAccessRule(
+    "Todos","Modify","ContainerInherit,ObjectInherit","None","Allow"
+)
+$aclPublico.AddAccessRule($ruleTodos)
+Set-Acl "C:\ServidorArchivos\Publico" $aclPublico
+
+# Proyectos: usuario1 y usuario2 pueden editar
+$aclProyectos = Get-Acl "C:\ServidorArchivos\Proyectos"
+$aclProyectos.SetAccessRuleProtection($true,$false)
+
+$ruleUser1 = New-Object System.Security.AccessControl.FileSystemAccessRule(
+    "usuario1","Modify","ContainerInherit,ObjectInherit","None","Allow"
+)
+$aclProyectos.AddAccessRule($ruleUser1)
+
+$ruleUser2 = New-Object System.Security.AccessControl.FileSystemAccessRule(
+    "usuario2","Modify","ContainerInherit,ObjectInherit","None","Allow"
+)
+$aclProyectos.AddAccessRule($ruleUser2)
+
+Set-Acl "C:\ServidorArchivos\Proyectos" $aclProyectos</code></pre>
+
+                <h4>Paso 4: Crear Compartidos SMB</h4>
+                <pre><code># Crear shares
+New-SmbShare -Name "Publico" -Path "C:\ServidorArchivos\Publico" -FullAccess "Administradores" -ReadAccess "Todos"
+New-SmbShare -Name "Proyectos" -Path "C:\ServidorArchivos\Proyectos" -FullAccess "usuario1","usuario2"
+New-SmbShare -Name "Confidencial" -Path "C:\ServidorArchivos\Confidencial" -FullAccess "Administradores"</code></pre>
+            </div>
+
+            <div class="actividad">
+                <h3>Ejercicio 2: Verificar desde Cliente</h3>
+                <p><strong>Objetivo:</strong> Conectarse desde Linux y verificar permisos</p>
+                <pre><code># Desde cliente Linux
+# Listar shares
+smbclient -L //IP_DEL_SERVIDOR -U usuario1
+
+# Acceder a share público
+smbclient //IP_DEL_SERVIDOR/Publico -U usuario1
+smb: \> ls
+smb: \> put prueba.txt
+
+# Intentar acceder a confidencial (debería fallar)
+smbclient //IP_DEL_SERVIDOR/Confidencial -U usuario1</code></pre>
+            </div>
+
+            <p><strong>Tiempo estimado:</strong> 60 minutos</p>
+        </section>
+
+        <section id="entregable">
+            <h2>8. Entregable</h2>
+
+            <div class="callout info">
+                <h3>Servidor de Archivos Configurado</h3>
+                <p><strong>Requisitos:</strong></p>
+            </div>
+
+            <ol>
+                <li><strong>Servidor Windows Server con:</strong>
+                    <ul>
+                        <li>3 usuarios de prueba creados</li>
+                        <li>3 grupos: Lectores, Editores, Administradores</li>
+                        <li>Estructura de directorios compartidos</li>
+                    </ul>
+                </li>
+                <li><strong>Permisos configurados:</strong>
+                    <ul>
+                        <li>carpeta Pública: todos pueden leer/escribir</li>
+                        <li>carpeta Proyectos: Editores pueden modificar, Lectores solo leer</li>
+                        <li>carpeta Confidencial: solo Administradores</li>
+                    </ul>
+                </li>
+                <li><strong>Evidencias:</strong>
+                    <ul>
+                        <li>Capturas de pantalla de permisos NTFS</li>
+                        <li>Capturas de SMB shares configurados</li>
+                        <li>Prueba de acceso desde cliente (smbclient)</li>
+                        <li>Script PowerShell de configuración</li>
+                    </ul>
+                </li>
+            </ol>
+
+            <div class="callout warning">
+                <strong>Fecha de entrega:</strong> Consultar plataforma virtual
+            </div>
+
+            <h3>Rúbrica de Evaluación</h3>
+            <table class="rubrica-table">
+                <thead>
+                    <tr>
+                        <th>Criterio</th>
+                        <th class="level-excelente">Excelente (4)</th>
+                        <th class="level-bueno">Bueno (3)</th>
+                        <th class="level-satisfactorio">Satisfactorio (2)</th>
+                        <th class="level-insuficiente">Insuficiente (1)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Permisos NTFS</strong></td>
+                        <td>Configura permisos NTFS correctamente (Read, Write, Modify, Full Control)</td>
+                        <td>Configura permisos básicos</td>
+                        <td>Solo entiende permisos</td>
+                        <td>No conoce permisos NTFS</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Gestión con PowerShell</strong></td>
+                        <td>Usa cmdlets de permisos (Get-Acl, Set-Acl) correctamente</td>
+                        <td>Usa cmdlets básicos</td>
+                        <td>Usa UI graphical</td>
+                        <td>No sabe usar PowerShell</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Usuarios y Grupos Windows</strong></td>
+                        <td>Crea usuarios, grupos y los configura correctamente</td>
+                        <td>Crea usuarios y grupos</td>
+                        <td>Crea solo usuarios</td>
+                        <td>No sabe crear usuarios</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Compartir Archivos (SMB)</strong></td>
+                        <td>Configura compartición SMB con permisos correctos</td>
+                        <td>Configura compartición básica</td>
+                        <td>Solo crea carpeta</td>
+                        <td>No configura compartición</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="resumen">
+            <h2>Resumen de la Clase</h2>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Concepto</th>
+                        <th>Descripción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td><strong>NTFS</strong></td><td>Sistema de archivos con seguridad avanzada</td></tr>
+                    <tr><td><strong>FAT32</strong></td><td>Sistema simple, sin permisos avanzados</td></tr>
+                    <tr><td><strong>ACL</strong></td><td>Lista de Control de Acceso</td></tr>
+                    <tr><td><strong>ACE</strong></td><td>Entrada de Control de Acceso</td></tr>
+                    <tr><td><strong>Get-Acl / Set-Acl</strong></td><td>Gestionar permisos NTFS</td></tr>
+                    <tr><td><strong>Permisos NTFS</strong></td><td>Controlan acceso local</td></tr>
+                    <tr><td><strong>Permisos Share</strong></td><td>Controlan acceso vía red</td></tr>
+                    <tr><td><strong>New-SmbShare</strong></td><td>Crear compartido SMB</td></tr>
+                    <tr><td><strong>smbclient</strong></td><td>Cliente Linux para SMB</td></tr>
+                    <tr><td><strong>New-LocalUser</strong></td><td>Crear usuario local</td></tr>
+                </tbody>
+            </table>
+
+            <div class="callout success">
+                <strong>Concepto fundamental:</strong> Windows Server combina permisos NTFS y permisos de compartido para proporcionar seguridad multicapa. El permiso más restrictivo es el que se aplica.
+            </div>
+
+            <h3>Próxima Clase</h3>
+            <p><strong>Clase 17: Servidor Web Apache</strong></p>
+
+            <ul>
+                <li>MBR vs GPT</li>
+                <li>Sistemas de archivos (ext4)</li>
+                <li>LVM (Physical Volumes, Volume Groups, Logical Volumes)</li>
+                <li>RAID básico</li>
+                <li>Configuración de /etc/fstab</li>
+            </ul>
+        </section>
+
+        <!-- Videos Recomendados -->
+        <section id="videos">
+            <h2>Videos Recomendados</h2>
+
+            <div class="callout info">
+                <h3>📹 Video 1: ICACLS en Windows: Aprende a Gestionar Permisos NTFS</h3>
+                <p><strong>Tutorial completo de permisos NTFS en español</strong></p>
+                <p>Duración: ~20 minutos | Nivel: Intermedio | Idioma: Español</p>
+                <p>Aprende a gestionar permisos NTFS en Windows usando el comando ICACLS, ACLs y carpetas compartidas.</p>
+                <p><a href="https://www.youtube.com/watch?v=WzmyGB3eFFs" target="_blank">📺 Ver en YouTube</a></p>
+            </div>
+
+            <div class="callout info">
+                <h3>📹 Video 2: Uso de permisos NTFS y Share en carpetas y archivos</h3>
+                <p><strong>Windows Server 2022</strong></p>
+                <p>Duración: ~25 minutos | Nivel: Intermedio | Idioma: Español</p>
+                <p>Demostración de cómo crear permisos de seguridad NTFS y permisos Share en carpetas y archivos de Windows Server.</p>
+                <p><a href="https://www.youtube.com/watch?v=cjKbcm6jopg" target="_blank">📺 Ver en YouTube</a></p>
+            </div>
+        </section>
+
+        <!-- Navigation between classes -->
+        <nav class="class-nav" aria-label="Navegación entre clases">
+            <a href="clase-15.html" class="class-nav-link prev">
+                <span class="class-nav-icon">←</span>
+                <div>
+                    <div class="nav-label">Clase Anterior</div>
+                    <div class="nav-title">Permisos y Seguridad en Linux</div>
+                    <div class="class-nav-date">📅 22 Abr 2026</div>
+                </div>
+            </a>
+            <a href="clase-17.html" class="class-nav-link next">
+                <div>
+                    <div class="nav-label">Siguiente Clase</div>
+                    <div class="nav-title">Servidor Web Apache</div>
+                    <div class="class-nav-date">📅 28 Abr 2026</div>
+                </div>
+                <span class="class-nav-icon">→</span>
+            </a>
+        </nav>
+    </div>
+
+    
+    
+    <footer>
+        <div class="container">
+            <p><strong>IF0099 - Sistemas Operativos I</strong> - Permisos y Seguridad en Windows</p>
+            <p>📅 23 de Abril 2026 | Sesión Jueves: 6:00-7:00 AM | Teoría: 30 min + Práctica: 30 min</p>
+
+            <p style="margin-top: 10px;">
+                <a href="index.html" style="color: #10b981;">Inicio</a> |
+                <a href="cronograma.html" style="color: #10b981;">Cronograma</a> |
+                <a href="evaluaciones.html" style="color: #8b5cf6;">Evaluaciones</a> |
+                <a href="rubricas.html" style="color: #3b82f6;">Rubricas</a>
+            </p>
+        </div>
+    </footer>
+
+
+
+    <a href="#" class="scroll-top" id="scrollTop" aria-label="Scroll to top">↑</a>
+
+    <script>
+        const scrollTopBtn = document.getElementById('scrollTop');
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                scrollTopBtn.classList.add('visible');
+            } else {
+                scrollTopBtn.classList.remove('visible');
+            }
+        });
+        scrollTopBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laboratorio 2: Permisos y Usuarios en Linux | IF0099 - Sistemas Operativos I</title>
+    <!-- Prism.js CSS para syntax highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #1e40af;
+            --accent: #059669;
+            --bg-light: #f8fafc;
+            --bg-code: #1e293b;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --warning: #f59e0b;
+            --danger: #dc2626;
+            --info: #0891b2;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.7;
+            color: var(--text-main);
+            background: var(--bg-light);
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 3rem 0;
+            margin-bottom: 2rem;
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        header .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        header .meta {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        section {
+            background: white;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        section h2 {
+            color: var(--primary);
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid var(--accent);
+        }
+
+        section h3 {
+            color: var(--secondary);
+            font-size: 1.4rem;
+            margin: 2rem 0 1rem;
+        }
+
+        .warning-box {
+            background: #fffbeb;
+            border-left: 4px solid var(--warning);
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 8px;
+        }
+
+        .info-box {
+            background: #ecfeff;
+            border-left: 4px solid var(--info);
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 8px;
+        }
+
+        .command-box {
+            background: var(--bg-code);
+            color: #e2e8f0;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            overflow-x: auto;
+        }
+
+        .permissions-diagram {
+            background: var(--bg-light);
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            padding: 2rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .perm-string {
+            font-family: 'Consolas', monospace;
+            font-size: 1.5rem;
+            letter-spacing: 0.3rem;
+            margin: 1rem 0;
+        }
+
+        .perm-breakdown {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .perm-group {
+            text-align: center;
+        }
+
+        .perm-group code {
+            background: var(--primary);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 1.2rem;
+        }
+
+        .perm-group p {
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+        }
+
+        th, td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            background: var(--bg-light);
+            font-weight: 600;
+            color: var(--secondary);
+        }
+
+        .octal-table {
+            font-family: 'Consolas', monospace;
+        }
+
+        .exercise {
+            background: #eff6ff;
+            border-left: 4px solid var(--primary);
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 8px;
+        }
+
+        .step {
+            background: var(--bg-light);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 6px;
+            border-left: 3px solid var(--primary);
+        }
+
+        .step-number {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .lab-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: stretch;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .lab-nav-link {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1.25rem 1.5rem;
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            text-decoration: none;
+            color: var(--text-main);
+            transition: all 0.3s ease;
+        }
+
+        .lab-nav-link:hover {
+            border-color: var(--primary);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .lab-nav-link.prev {
+            border-left: 4px solid var(--primary);
+        }
+
+        .lab-nav-link.next {
+            border-right: 4px solid var(--accent);
+            text-align: right;
+            margin-left: auto;
+        }
+
+        .lab-nav-link .nav-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            margin-bottom: 0.25rem;
+        }
+
+        .lab-nav-link .nav-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .lab-nav-link.next .nav-title {
+            color: var(--accent);
+        }
+
+        .lab-nav-icon {
+            font-size: 1.5rem;
+            line-height: 1;
+        }
+
+        .lab-nav-placeholder {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.25rem;
+            background: var(--bg-light);
+            border: 2px dashed var(--border);
+            border-radius: 12px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .nav-btn {
+            background: var(--primary);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .nav-btn:hover {
+            background: var(--secondary);
+        }
+
+        .footer {
+            text-align: center;
+            padding: 2rem 0;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Laboratorio 2: Permisos y Usuarios en Linux</h1>
+            <p class="subtitle">IF0099 - Sistemas Operativos I | 2026-I</p>
+            <p class="meta">Duración: 60 minutos | Nivel: Intermedio | Prerrequisito: Lab 1 completado</p>
+
+        </div>
+    </header>
+
+    
+        <!-- Quick Navigation Bar -->
+        <div class="quick-nav" style="background: white; padding: 1rem; margin-bottom: 2rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <a href="../clases-html/index.html" style="color: var(--primary); text-decoration: none; font-weight: 500;">Inicio</a>
+                <span style="color: var(--text-muted);">|</span>
+                <span style="color: var(--text-main); font-weight: 600;">Lab 2: Permisos y Usuarios</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <a href="../clases-html/cronograma.html" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: #10b981; color: white; text-decoration: none; border-radius: 6px; font-weight: 500;">Cronograma</a>
+                <a href="../clases-html/rubricas.html" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: #3b82f6; color: white; text-decoration: none; border-radius: 6px; font-weight: 500;">Rubricas</a>
+            </div>
+        </div>
+
+        <div class="container">
+        <div class="info-box">
+            <h3>Nota sobre Ubuntu Server</h3>
+            <p>En tu VM de Ubuntu Server, has creado un usuario durante la instalación. Sin embargo, también puedes usar <code>sudo</code> para ejecutar comandos como superusuario cuando sea necesario. En este laboratorio crearemos usuarios adicionales para practicar permisos en un entorno multiusuario.</p>
+        </div>
+
+        <section>
+            <h2>Objetivos del Laboratorio</h2>
+            <ul>
+                <li>Comprender el sistema de permisos de Linux</li>
+                <li>Aprender a interpretar los permisos de archivos</li>
+                <li>Modificar permisos usando chmod</li>
+                <li>Entender los conceptos de usuario y grupo</li>
+                <li>Practicar la gestión básica de permisos</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>El Sistema de Permisos de Linux</h2>
+
+            <p>Linux utiliza un sistema de permisos basado en tres categorías:</p>
+
+            <div class="permissions-diagram">
+                <h3>Estructura de Permisos</h3>
+                <div class="perm-string">-rwxr-xr--</div>
+
+                <div class="perm-breakdown">
+                    <div class="perm-group">
+                        <code>rwx</code>
+                        <p>Usuario (Owner)</p>
+                    </div>
+                    <div class="perm-group">
+                        <code>r-x</code>
+                        <p>Grupo</p>
+                    </div>
+                    <div class="perm-group">
+                        <code>r--</code>
+                        <p>Otros</p>
+                    </div>
+                </div>
+
+                <p style="margin-top: 2rem;">
+                    <strong>r</strong> = Read (lectura) | <strong>w</strong> = Write (escritura) | <strong>x</strong> = Execute (ejecución)
+                </p>
+            </div>
+
+            <h3>Tipos de Archivos</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Símbolo</th>
+                        <th>Tipo</th>
+                        <th>Descripción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>-</code></td>
+                        <td>Archivo regular</td>
+                        <td>Archivo de datos o texto</td>
+                    </tr>
+                    <tr>
+                        <td><code>d</code></td>
+                        <td>Directorio</td>
+                        <td>Carpeta que contiene archivos</td>
+                    </tr>
+                    <tr>
+                        <td><code>l</code></td>
+                        <td>Enlace simbólico</td>
+                        <p>Acceso directo a otro archivo</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section>
+            <h2>Ver Permisos: ls -l</h2>
+
+            <p>El comando <code>ls -l</code> muestra información detallada incluyendo permisos:</p>
+
+            <pre><code class="language-bash">ls -l</code></pre>
+            <p style="font-size: 0.9rem; color: var(--text-muted);">Salida de ejemplo:</p>
+            <pre><code class="language-bash">drwxr-xr-x  2 root root  4096 Jan 15 10:30 Documents
+-rw-r--r--  1 root root  1234 Jan 15 10:31 archivo.txt
+-rwxr-xr-x  1 root root  5678 Jan 15 10:32 script.sh</code></pre>
+
+            <div class="info-box">
+                <h4>Anatomía de la Salida</h4>
+                <pre style="background: var(--bg-code); color: #e2e8f0; padding: 1rem; border-radius: 6px; margin-top: 1rem;">
+-rw-r--r--  1  root  root  1234  Jan 15 10:31  archivo.txt
+││││││││  │  │     │     │     │          │
+││││││││  │  │     │     │     │          └─ Nombre del archivo
+││││││││  │  │     │     │     └──────────── Fecha de modificación
+││││││││  │  │     │     └────────────────── Tamaño en bytes
+││││││││  │  │     └─────────────────────── Grupo
+││││││││  │  └───────────────────────────── Propietario
+││││││││  └──────────────────────────────── Número de enlaces
+│││└└└└┴────────────────────────────────── Permisos grupo
+││└└└┴──────────────────────────────────── Permisos propietario
+└└─────────────────────────────────────── Tipo de archivo
+                </pre>
+            </div>
+        </section>
+
+        <section>
+            <h2>chmod - Cambiar Permisos</h2>
+
+            <p>El comando <code>chmod</code> modifica los permisos de archivos y directorios.</p>
+
+            <h3>Modo Simbólico</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Categoría</th>
+                        <th>Símbolo</th>
+                        <th>Operador</th>
+                        <th>Permiso</th>
+                        <th>Ejemplo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Usuario (u)</td>
+                        <td>u</td>
+                        <td>+ (añadir)</td>
+                        <td>r (read)</td>
+                        <td><code>chmod u+x archivo</code></td>
+                    </tr>
+                    <tr>
+                        <td>Grupo (g)</td>
+                        <td>g</td>
+                        <td>- (quitar)</td>
+                        <td>w (write)</td>
+                        <td><code>chmod g-w archivo</code></td>
+                    </tr>
+                    <tr>
+                        <td>Otros (o)</td>
+                        <td>o</td>
+                        <td>= (asignar)</td>
+                        <td>x (execute)</td>
+                        <td><code>chmod o=r archivo</code></td>
+                    </tr>
+                    <tr>
+                        <td>Todos (a)</td>
+                        <td>a</td>
+                        <td></td>
+                        <td></td>
+                        <td><code>chmod a+x archivo</code></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Modo Octal (Numérico)</h3>
+            <table class="octal-table">
+                <thead>
+                    <tr>
+                        <th>Número</th>
+                        <th>Binario</th>
+                        <th>Permisos</th>
+                        <th>Significado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>0</td>
+                        <td>000</td>
+                        <td>---</td>
+                        <td>Sin permisos</td>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>001</td>
+                        <td>--x</td>
+                        <td>Solo ejecución</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>010</td>
+                        <td>-w-</td>
+                        <td>Solo escritura</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>011</td>
+                        <td>-wx</td>
+                        <td>Escritura y ejecución</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>100</td>
+                        <td>r--</td>
+                        <td>Solo lectura</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>101</td>
+                        <td>r-x</td>
+                        <td>Lectura y ejecución</td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td>110</td>
+                        <td>rw-</td>
+                        <td>Lectura y escritura</td>
+                    </tr>
+                    <tr>
+                        <td>7</td>
+                        <td>111</td>
+                        <td>rwx</td>
+                        <td>Todos los permisos</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="info-box">
+                <h4>Ejemplos Comunes</h4>
+                <ul style="margin-top: 1rem;">
+                    <li><code>chmod 644 archivo</code> - rw-r--r-- (archivo normal)</li>
+                    <li><code>chmod 755 script.sh</code> - rwxr-xr-x (script ejecutable)</li>
+                    <li><code>chmod 700 privado.txt</code> - rwx------ (solo propietario)</li>
+                    <li><code>chmod 777 directorio</code> - rwxrwxrwx (todos, usar con cuidado)</li>
+                </ul>
+            </div>
+        </section>
+
+        <section>
+            <h2>chown - Cambiar Propietario</h2>
+
+            <p>El comando <code>chown</code> cambia el propietario de un archivo.</p>
+
+            <pre><code class="language-bash">chown usuario archivo.txt
+chown usuario:grupo archivo.txt
+chown -R usuario:grupo directorio/</code></pre>
+
+            <div class="success-box">
+                <h3>💡 Nota para Ubuntu Server</h3>
+                <p>En tu VM de Ubuntu Server, puedes crear usuarios reales con <code>sudo adduser</code> y practicar la gestión de permisos en un entorno multiusuario real.</p>
+            </div>
+        </section>
+
+        <section>
+            <h2>Actividad Práctica</h2>
+
+            <div class="exercise">
+                <h4>Ejercicio 1: Interpretar Permisos</h4>
+                <p>En tu VM de Ubuntu Server, examina los permisos de varios archivos:</p>
+
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <strong>Listar con detalles:</strong>
+                    <pre><code>ls -la /bin</code></pre>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <strong>Identificar:</strong> ¿Cuáles son ejecutables? ¿Cómo lo sabes?
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <strong>Examinar un directorio:</strong>
+                    <pre><code>ls -la /etc</code></pre>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <strong>Preguntarse:</strong> ¿Por qué algunos archivos no tienen permisos de escritura para nadie?
+                </div>
+            </div>
+
+            <div class="exercise">
+                <h4>Ejercicio 2: Modificar Permisos</h4>
+
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <strong>Crear archivo de prueba:</strong>
+                    <pre><code>echo "prueba" > test.txt
+ls -l test.txt</code></pre>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <strong>Quitar todos los permisos:</strong>
+                    <pre><code>chmod 000 test.txt
+ls -l test.txt</code></pre>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <strong>Intentar leer:</strong>
+                    <pre><code>cat test.txt</code></pre>
+                    <p>¿Qué sucede?</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <strong>Restaurar permisos:</strong>
+                    <pre><code>chmod 644 test.txt
+ls -l test.txt</code></pre>
+                </div>
+            </div>
+
+            <div class="exercise">
+                <h4>Ejercicio 3: Crear Script Ejecutable</h4>
+
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <strong>Crear un script:</strong>
+                    <pre><code>echo '#!/bin/bash' > mi_script.sh
+echo 'echo "Hola desde IF0099"' >> mi_script.sh
+cat mi_script.sh</code></pre>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <strong>Verificar permisos iniciales:</strong>
+                    <pre><code>ls -l mi_script.sh</code></pre>
+                    <p>¿Es ejecutable?</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <strong>Hacerlo ejecutable:</strong>
+                    <pre><code>chmod +x mi_script.sh
+ls -l mi_script.sh</code></pre>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <strong>Ejecutar el script:</strong>
+                    <pre><code>./mi_script.sh</code></pre>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">5</span>
+                    <strong>Probar diferentes métodos:</strong>
+                    <pre><code>bash mi_script.sh
+sh mi_script.sh</code></pre>
+                    <p>¿Cuál es la diferencia?</p>
+                </div>
+            </div>
+
+            <div class="exercise">
+                <h4>Ejercicio 4: Permisos de Directorios</h4>
+
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <strong>Crear estructura:</strong>
+                    <pre><code>mkdir -p test_permisos/dentro
+echo "contenido" > test_permisos/archivo.txt</code></pre>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <strong>Quitar permiso de lectura:</strong>
+                    <pre><code>chmod -r test_permisos
+ls -la</code></pre>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <strong>Intentar listar:</strong>
+                    <pre><code>ls test_permisos</code></pre>
+                    <p>¿Qué sucede?</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <strong>Restaurar y quitar ejecución:</strong>
+                    <pre><code>chmod u+r test_permisos
+chmod -x test_permisos
+cd test_permisos</code></pre>
+                    <p>¿Puedes entrar al directorio?</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">5</span
+                    ><strong>Limpiar:</strong>
+                    <pre><code>cd ..
+chmod 755 test_permisos
+rm -rf test_permisos</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>Conceptos Clave</h2>
+
+            <h3>Permisos de Directorios vs Archivos</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Permiso</th>
+                        <th>En Archivos</th>
+                        <th>En Directorios</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>r</strong> (read)</td>
+                        <td>Puede leer el contenido</td>
+                        <td>Puede listar los archivos (con ls)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>w</strong> (write)</td>
+                        <td>Puede modificar el contenido</td>
+                        <td>Puede crear/eliminar archivos</td>
+                    </tr>
+                    <tr>
+                        <td><strong>x</strong> (execute)</td>
+                        <td>Puede ejecutar como programa</td>
+                        <td>Puede entrar al directorio (cd)</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="info-box">
+                <h4>💡 Regla de Oro</h4>
+                <p style="margin-top: 1rem;">Para poder eliminar un archivo de un directorio, necesitas <strong>permiso de escritura en el directorio</strong>, no necesariamente en el archivo mismo.</p>
+            </div>
+        </section>
+
+        <section>
+            <h2>Desafío Adicional</h2>
+
+            <div class="exercise">
+                <h4>🎯 Desafío: Permisos Seguros</h4>
+                <p>Crea un sistema de archivos con permisos seguros para un escenario de equipo:</p>
+
+                <ol>
+                    <li>Crea un directorio <code>proyecto_equipo</code></li>
+                    <li>Dentro, crea subdirectorios: <code>compartido</code>, <code>privado</code>, <code>publico</code></li>
+                    <li>Configura los permisos de tal manera que:
+                        <ul>
+                            <li><code>compartido</code>: El equipo pueda leer/escribir, otros solo leer</li>
+                            <li><code>privado</code>: Solo el propietario pueda acceder</li>
+                            <li><code>publico</code>: Todos puedan leer y ejecutar</li>
+                        </ul>
+                    </li>
+                    <li>Crea archivos de prueba en cada directorio</li>
+                    <li>Documenta los comandos usados y los permisos resultantes</li>
+                </ol>
+            </div>
+        </section>
+
+        <section>
+            <h2>Preguntas de Reflexión</h2>
+            <ol>
+                <li>¿Por qué es importante el sistema de permisos en Linux?</li>
+                <li>¿Cuál es la diferencia entre <code>chmod +x</code> y <code>chmod 755</code>?</li>
+                <li>¿Por qué el permiso de ejecución en directorios significa poder entrar?</li>
+                <li>¿Qué riesgos hay al usar <code>chmod 777</code> indiscriminadamente?</li>
+                <li>¿Cómo proteges un archivo que contiene contraseñas?</li>
+            </ol>
+        </section>
+
+        <section>
+            <h2>Preparación para el Próximo Laboratorio</h2>
+            <p>Para el próximo laboratorio, necesitarás:</p>
+            <ul>
+                <li>✅ Haber completado todos los ejercicios de permisos</li>
+                <li>✅ Entender la diferencia entre permisos de archivos y directorios</li>
+                <li>✅ Saber usar chmod en modo simbólico y octal</li>
+                <li>✅ Haber creado al menos un script ejecutable</li>
+            </ul>
+
+            <div class="info-box">
+                <h4>Próximo Tema</h4>
+                <p>En el próximo laboratorio aprenderemos sobre procesos en Linux: cómo verlos, gestionarlos, y entender su relación con los temas teóricos del curso.</p>
+            </div>
+        </section>
+
+        <!-- Enhanced navigation between labs -->
+        <nav class="lab-nav" aria-label="Navegación entre laboratorios">
+            <a href="lab-01-comandos-basicos.html" class="lab-nav-link prev">
+                <span class="lab-nav-icon">←</span>
+                <div>
+                    <div class="nav-label">Laboratorio Anterior</div>
+                    <div class="nav-title">Comandos Básicos</div>
+                </div>
+            </a>
+            <a href="lab-aws-01-introduccion-ec2.html" class="lab-nav-link next">
+                <div>
+                    <div class="nav-label">Siguiente Laboratorio</div>
+                    <div class="nav-title">AWS EC2 →</div>
+                </div>
+                <span class="lab-nav-icon">→</span>
+            </a>
+        </nav>
+
+        <div class="footer">
+            <p>IF0099 - Sistemas Operativos I | 2026-I | Ing. Eldigardo Evelio Camacho Cespedes</p>
+
+            <p>Laboratorio 2: Permisos y Usuarios en Linux</p>
+        </div>
+    </div>
+
+    <!-- Prism.js para syntax highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            Prism.highlightAll();
+        });
+    </script>
+</body>
+</html>

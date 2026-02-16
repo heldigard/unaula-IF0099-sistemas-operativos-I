@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laboratorio 6: Seguridad y Hardening | IF0099 - Sistemas Operativos I</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <style>
+        :root { --primary: #2563eb; --secondary: #1e40af; --accent: #059669; --bg-light: #f8fafc; --bg-code: #1e293b; --text-main: #1e293b; --text-muted: #64748b; --border: #e2e8f0; --warning: #f59e0b; --danger: #dc2626; --info: #0891b2; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.7; color: var(--text-main); background: var(--bg-light); font-size: 16px; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        header { background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); color: white; padding: 3rem 0; margin-bottom: 2rem; }
+        header h1 { font-size: 2.2rem; margin-bottom: 0.5rem; font-weight: 700; }
+        header .subtitle { font-size: 1.1rem; opacity: 0.9; }
+        header .meta { margin-top: 1rem; font-size: 0.9rem; opacity: 0.8; }
+        .warning-box { background: #fffbeb; border-left: 4px solid var(--warning); padding: 1.5rem; margin: 2rem 0; border-radius: 8px; }
+        .warning-box h3 { color: #92400e; margin-bottom: 0.5rem; }
+        .success-box { background: #f0fdf4; border-left: 4px solid var(--accent); padding: 1.5rem; margin: 2rem 0; border-radius: 8px; }
+        .danger-box { background: #fef2f2; border-left: 4px solid var(--danger); padding: 1.5rem; margin: 2rem 0; border-radius: 8px; }
+        .danger-box h3 { color: #dc2626; margin-bottom: 0.5rem; }
+        .info-box { background: #ecfeff; border-left: 4px solid var(--info); padding: 1.5rem; margin: 2rem 0; border-radius: 8px; }
+        section { background: white; padding: 2rem; margin-bottom: 2rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        section h2 { color: var(--primary); font-size: 1.8rem; margin-bottom: 1.5rem; padding-bottom: 0.5rem; border-bottom: 3px solid var(--accent); }
+        section h3 { color: var(--secondary); font-size: 1.4rem; margin: 2rem 0 1rem; }
+        section h4 { color: var(--text-main); font-size: 1.1rem; margin: 1.5rem 0 0.75rem; font-weight: 600; }
+        .command-box { background: var(--bg-code); color: #e2e8f0; padding: 1.5rem; border-radius: 8px; margin: 1.5rem 0; overflow-x: auto; }
+        .command { font-family: 'Consolas', 'Monaco', monospace; font-size: 0.95rem; line-height: 1.6; }
+        .command-prompt { color: #4ade80; }
+        .command-input { color: #60a5fa; }
+        .command-output { color: #94a3b8; margin: 0.5rem 0; padding-left: 1rem; }
+        .step { background: var(--bg-light); padding: 1rem; margin: 1rem 0; border-radius: 6px; border-left: 3px solid var(--primary); }
+        .step-number { display: inline-block; background: var(--primary); color: white; width: 28px; height: 28px; border-radius: 50%; text-align: center; line-height: 28px; font-weight: bold; margin-right: 0.5rem; }
+        .exercise { background: #eff6ff; border-left: 4px solid var(--primary); padding: 1.5rem; margin: 2rem 0; border-radius: 8px; }
+        .exercise h4 { color: var(--primary); margin-top: 0; }
+        .command-table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; }
+        .command-table th, .command-table td { padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid var(--border); }
+        .command-table th { background: var(--bg-light); font-weight: 600; color: var(--secondary); }
+        .command-table code { background: var(--bg-code); color: #60a5fa; padding: 0.2rem 0.4rem; border-radius: 4px; font-size: 0.9em; }
+        .lab-nav { display: flex; justify-content: space-between; align-items: stretch; gap: 1rem; margin: 2rem 0; }
+        .lab-nav-link { flex: 1; display: flex; align-items: center; gap: 0.75rem; padding: 1.25rem 1.5rem; background: white; border: 2px solid var(--border); border-radius: 12px; text-decoration: none; color: var(--text-main); transition: all 0.3s ease; }
+        .lab-nav-link:hover { border-color: var(--primary); box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15); transform: translateY(-2px); }
+        .lab-nav-link.prev { border-left: 4px solid var(--primary); }
+        .lab-nav-link .nav-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); margin-bottom: 0.25rem; }
+        .lab-nav-link .nav-title { font-size: 1rem; font-weight: 600; color: var(--primary); }
+        .lab-nav-icon { font-size: 1.5rem; line-height: 1; }
+        .lab-nav-placeholder { flex: 1; display: flex; align-items: center; justify-content: center; padding: 1.25rem; background: var(--bg-light); border: 2px dashed var(--border); border-radius: 12px; color: var(--text-muted); font-size: 0.9rem; }
+        .footer { text-align: center; padding: 2rem 0; color: var(--text-muted); font-size: 0.9rem; }
+        .tips { background: #fef3c7; border-left: 4px solid var(--warning); padding: 1rem; margin: 1rem 0; border-radius: 6px; }
+        .tips strong { color: #92400e; }
+        .checklist { list-style: none; padding: 0; }
+        .checklist li { padding: 0.5rem 0; padding-left: 1.5rem; position: relative; }
+        .checklist li:before { content: "[ ]"; position: absolute; left: 0; color: var(--accent); font-weight: bold; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Laboratorio 6: Seguridad y Hardening</h1>
+            <p class="subtitle">IF0099 - Sistemas Operativos I | 2026-I</p>
+            <p class="meta">Duracion: 120 minutos | Nivel: Avanzado | Prerrequisito: Todos los labs anteriores</p>
+        </div>
+    </header>
+
+    <div class="quick-nav" style="background: white; padding: 1rem; margin-bottom: 2rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
+        <div style="display: flex; align-items: center; gap: 1rem;">
+            <a href="../clases-html/index.html" style="color: var(--primary); text-decoration: none; font-weight: 500;">Inicio</a>
+            <span style="color: var(--text-muted);">|</span>
+            <span style="color: var(--text-main); font-weight: 600;">Lab 6: Seguridad y Hardening</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <a href="../clases-html/cronograma.html" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: #10b981; color: white; text-decoration: none; border-radius: 6px; font-weight: 500;">Cronograma</a>
+            <a href="../clases-html/rubricas.html" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: #3b82f6; color: white; text-decoration: none; border-radius: 6px; font-weight: 500;">Rubricas</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="success-box">
+            <h3>Entorno de Laboratorio</h3>
+            <p>Este laboratorio utiliza tu maquina virtual de Ubuntu Server. Conectate via SSH. Se requieren privilegios de root o sudo. Es recomendable hacer snapshot de la VM antes de comenzar.</p>
+        </div>
+
+        <div class="danger-box">
+            <h3>IMPORTANTE: Entorno de Pruebas</h3>
+            <p>Los comandos de este laboratorio modifican configuraciones del sistema. Solo ejecutalos en tu VM de laboratorio. Nunca en sistemas de produccion.</p>
+        </div>
+
+        <section>
+            <h2>Objetivos del Laboratorio</h2>
+            <ul>
+                <li>Comprender la gestion de usuarios y grupos en Linux</li>
+                <li>Aplicar permisos avanzados de seguridad</li>
+                <li>Configurar firewall basico con ufw</li>
+                <li>Realizar auditorias de seguridad con lynis</li>
+                <li>Implementar checklist de hardening</li>
+                <li>Crear scripts de auditoria automatizada</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>1. Auditoria de Usuarios</h2>
+
+            <h3>Archivos de Configuracion de Usuarios</h3>
+
+            <h4>/etc/passwd - Informacion de Usuarios</h4>
+            <pre><code class="language-bash">cat /etc/passwd | head -5</code></pre>
+
+            <div class="command-box">
+                <div class="command">
+                    <span class="command-prompt">~ $</span> <span class="command-input">cat /etc/passwd | head -5</span><br>
+                    <span class="command-output">root:x:0:0:root:/root:/bin/bash<br>daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin<br>bin:x:2:2:bin:/bin:/usr/sbin/nologin</span>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <h4>Estructura de /etc/passwd</h4>
+                <p>code: username:password:UID:GID:GECOS:home:shell</p>
+                <ul style="margin-top: 1rem;">
+                    <li><strong>username:</strong> Nombre de usuario</li>
+                    <li><strong>password:</strong> x (indica que esta en /etc/shadow)</li>
+                    <li><strong>UID:</strong> User ID (0=root, 1-999=sistema, 1000+=usuarios)</li>
+                    <li><strong>GID:</strong> Group ID primario</li>
+                    <li><strong>GECOS:</strong> Informacion adicional</li>
+                    <li><strong>home:</strong> Directorio home</li>
+                    <li><strong>shell:</strong> Shell por defecto</li>
+                </ul>
+            </div>
+
+            <h4>/etc/shadow - Contraseñas Seguras</h4>
+            <pre><code class="language-bash">sudo cat /etc/shadow | head -3</code></pre>
+
+            <div class="warning-box">
+                <h3>Seguridad de /etc/shadow</h3>
+                <p>Este archivo solo debe ser legible por root. Contiene hashes de contraseñas. Nunca debe ser compartido o expuesto.</p>
+            </div>
+
+            <h4>/etc/group - Informacion de Grupos</h4>
+            <pre><code class="language-bash">cat /etc/group | head -10</code></pre>
+
+            <h3>Comandos de Visualizacion</h3>
+
+            <table class="command-table">
+                <thead>
+                    <tr>
+                        <th>Comando</th>
+                        <th>Descripcion</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>id</code></td>
+                        <td>Muestra ID y grupos del usuario actual</td>
+                    </tr>
+                    <tr>
+                        <td><code>id usuario</code></td>
+                        <td>Muestra ID y grupos de otro usuario</td>
+                    </tr>
+                    <tr>
+                        <td><code>getent passwd</code></td>
+                        <td>Lista todos los usuarios</td>
+                    </tr>
+                    <tr>
+                        <td><code>getent group</code></td>
+                        <td>Lista todos los grupos</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Identificar Usuarios Especiales</h3>
+
+            <pre><code class="language-bash"># Usuarios con UID 0 (root)
+grep ":0:" /etc/passwd
+
+# Usuarios sin contraseña (sin shell)
+grep "nologin\|false" /etc/passwd
+
+# Usuarios que pueden hacer login
+grep -v "nologin\|false" /etc/passwd | grep -v "^#"
+
+# Contar usuarios regulares (UID >= 1000)
+awk -F: '$3 >= 1000 {print $1}' /etc/passwd | wc -l</code></pre>
+        </section>
+
+        <section>
+            <h2>2. Comandos de Seguridad</h2>
+
+            <h3>chmod Avanzado</h3>
+            
+            <pre><code class="language-bash"># Modo simbolico completo
+chmod u+rwx,g+rx,o-rwx archivo
+
+# Quitar todos los permisos a otros
+chmod o-rwx archivo
+
+# Establecer permisos exactos
+chmod u=rw,g=r,o= archivo
+
+# Recursivo en directorio
+chmod -R 750 /directorio/
+
+# Preservar directorios (ejecutable) pero archivos no
+find /directorio -type f -exec chmod 640 {} \;
+find /directorio -type d -exec chmod 750 {} \;</code></pre>
+
+            <h3>chown - Cambiar Propietario</h3>
+
+            <div class="command-box">
+                <div class="command">
+                    <span class="command-prompt">~ $</span> <span class="command-input">sudo chown usuario:grupo archivo.txt</span><br>
+                    <span class="command-output"># Cambia usuario y grupo</span><br><br>
+                    <span class="command-prompt">~ $</span> <span class="command-input">sudo chown :grupo archivo.txt</span><br>
+                    <span class="command-output"># Solo cambia el grupo</span><br><br>
+                    <span class="command-prompt">~ $</span> <span class="command-input">sudo chown -R usuario:grupo /directorio/</span><br>
+                    <span class="command-output"># Recursivo</span>
+                </div>
+            </div>
+
+            <h3>chattr y lsattr - Atributos Extendidos</h3>
+
+            <p>Permiten establecer atributos especiales que protegen archivos incluso de root.</p>
+
+            <pre><code class="language-bash"># Ver atributos actuales
+lsattr archivo.txt
+
+# Hacer archivo inmutable
+sudo chattr +i archivo.txt
+
+# Quitar atributo de inmutable
+sudo chattr -i archivo.txt
+
+# Solo permitir append
+sudo chattr +a /var/log/importante.log</code></pre>
+
+            <table class="command-table">
+                <thead>
+                    <tr>
+                        <th>Atributo</th>
+                        <th>Significado</th>
+                        <th>Uso Tipico</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>+i</code></td>
+                        <td>Inmutable</td>
+                        <td>Proteger archivos criticos</td>
+                    </tr>
+                    <tr>
+                        <td><code>+a</code></td>
+                        <td>Append-only</td>
+                        <td>Archivos de log</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="tips">
+                <strong>Tip de Seguridad:</strong> Usa chattr +i en archivos criticos de configuracion para prevenir modificaciones accidentales o maliciosas.
+            </div>
+        </section>
+
+        <section>
+            <h2>3. Firewall Basico con ufw</h2>
+
+            <h3>Instalacion y Estado</h3>
+
+            <pre><code class="language-bash"># Verificar si esta instalado
+sudo apt install ufw -y
+
+# Ver estado
+sudo ufw status
+sudo ufw status verbose
+sudo ufw status numbered</code></pre>
+
+            <h3>Politicas Basicas</h3>
+
+            <div class="command-box">
+                <div class="command">
+                    <span class="command-prompt">~ $</span> <span class="command-input">sudo ufw default deny incoming</span><br>
+                    <span class="command-output">Default incoming policy changed to 'deny'</span><br><br>
+                    <span class="command-prompt">~ $</span> <span class="command-input">sudo ufw default allow outgoing</span><br>
+                    <span class="command-output">Default outgoing policy changed to 'allow'</span>
+                </div>
+            </div>
+
+            <h3>Permitir y Denegar Conexiones</h3>
+
+            <pre><code class="language-bash"># Permitir SSH
+sudo ufw allow ssh
+sudo ufw allow 22/tcp
+
+# Permitir HTTP y HTTPS
+sudo ufw allow http
+sudo ufw allow https
+
+# Permitir por rango de puertos
+sudo ufw allow 6000:6007/tcp
+
+# Permitir desde IP especifica
+sudo ufw allow from 192.168.1.100
+
+# Denegar puerto
+sudo ufw deny 3306/tcp
+
+# Eliminar regla
+sudo ufw delete allow 80/tcp
+sudo ufw delete 3</code></pre>
+
+            <h3>Habilitar y Deshabilitar</h3>
+
+            <pre><code class="language-bash"># Habilitar firewall
+sudo ufw enable
+
+# Deshabilitar firewall
+sudo ufw disable
+
+# Resetear a valores por defecto
+sudo ufw reset</code></pre>
+
+            <div class="warning-box">
+                <h3>IMPORTANTE: No Bloquees tu Acceso</h3>
+                <p>Si estas conectado por SSH, asegurate de permitir el puerto 22 ANTES de habilitar ufw, o perderas acceso al servidor.</p>
+            </div>
+
+            <table class="command-table">
+                <thead>
+                    <tr>
+                        <th>Comando</th>
+                        <th>Descripcion</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>ufw status</code></td>
+                        <td>Ver estado y reglas</td>
+                    </tr>
+                    <tr>
+                        <td><code>ufw enable/disable</code></td>
+                        <td>Activar/desactivar</td>
+                    </tr>
+                    <tr>
+                        <td><code>ufw allow [servicio]</code></td>
+                        <td>Permitir trafico</td>
+                    </tr>
+                    <tr>
+                        <td><code>ufw deny [servicio]</code></td>
+                        <td>Bloquear trafico</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section>
+            <h2>4. Analisis de Vulnerabilidades con lynis</h2>
+
+            <h3>Instalacion</h3>
+
+            <pre><code class="language-bash">sudo apt install lynis -y</code></pre>
+
+            <h3>Uso Basico</h3>
+
+            <div class="command-box">
+                <div class="command">
+                    <span class="command-prompt">~ $</span> <span class="command-input">sudo lynis audit system</span><br>
+                    <span class="command-output">[ Lynis 3.0.0 ]<br><br>Initializing... Done<br>[+] Operating System<br>[+] Hostname, Domainname, etc.</span>
+                </div>
+            </div>
+
+            <h3>Opciones Comunes</h3>
+
+            <pre><code class="language-bash"># Auditoria rapida
+sudo lynis audit system --quick
+
+# Solo tests especificos
+sudo lynis audit system --tests-from-group authentication
+
+# Generar reporte en archivo
+sudo lynis audit system > lynis_report.txt 2>&1</code></pre>
+
+            <h3>Interpretando Resultados</h3>
+
+            <div class="info-box">
+                <h4>Categorias de Recomendaciones</h4>
+                <ul style="margin-top: 1rem;">
+                    <li><strong>Warning:</strong> Problemas que deben corregirse</li>
+                    <li><strong>Suggestion:</strong> Mejoras recomendadas</li>
+                    <li><strong>Hardening Index:</strong> Puntuacion general (0-100)</li>
+                </ul>
+            </div>
+
+            <pre><code class="language-bash"># Ver puntuacion al final del reporte
+grep "Hardening index" /var/log/lynis-report.dat
+grep "suggestion\|warning" /var/log/lynis-report.dat</code></pre>
+        </section>
+
+        <section>
+            <h2>5. Checklist de Hardening</h2>
+
+            <div class="exercise">
+                <h4>Checklist de Seguridad Basica (15 puntos)</h4>
+
+                <ol class="checklist">
+                    <li>Actualizaciones: Mantener sistema actualizado (apt update && apt upgrade -y)</li>
+                    <li>Contraseñas: Configurar politica de contraseñas fuertes</li>
+                    <li>SSH: Deshabilitar login root via SSH (PermitRootLogin no)</li>
+                    <li>SSH: Cambiar puerto SSH de 22 a otro (Port 2222)</li>
+                    <li>SSH: Usar autenticacion solo por clave (PasswordAuthentication no)</li>
+                    <li>Firewall: Activar ufw con politica restrictiva</li>
+                    <li>Firewall: Permitir solo puertos necesarios (22, 80, 443)</li>
+                    <li>Usuarios: Eliminar o deshabilitar usuarios innecesarios</li>
+                    <li>Servicios: Deshabilitar servicios no utilizados</li>
+                    <li>Permisos: Verificar permisos de archivos criticos</li>
+                    <li>Logs: Configurar rotacion y monitoreo de logs</li>
+                    <li>Kernel: Aplicar parametros de seguridad (sysctl)</li>
+                    <li>SUID: Auditar y minimizar binarios con SUID</li>
+                    <li>Tmp: Configurar /tmp con noexec,nosuid,nodev</li>
+                    <li>Backups: Implementar estrategia de backup regular</li>
+                </ol>
+            </div>
+
+            <h3>Configuracion de SSH Seguro</h3>
+
+            <pre><code class="language-bash"># Editar configuracion
+sudo nano /etc/ssh/sshd_config
+
+# Cambios recomendados:
+PermitRootLogin no
+PasswordAuthentication no
+PubkeyAuthentication yes
+Port 2222
+MaxAuthTries 3
+ClientAliveInterval 300
+ClientAliveCountMax 2
+
+# Reiniciar SSH
+sudo systemctl restart sshd</code></pre>
+
+            <h3>Parametros de Kernel (sysctl)</h3>
+
+            <pre><code class="language-bash"># Crear archivo de configuracion de seguridad
+sudo tee /etc/sysctl.d/99-security.conf << EOF
+# Deshabilitar IP source routing
+net.ipv4.conf.all.accept_source_route = 0
+net.ipv4.conf.default.accept_source_route = 0
+
+# Deshabilitar ICMP redirect
+net.ipv4.conf.all.accept_redirects = 0
+
+# Proteccion contra SYN flood
+net.ipv4.tcp_syncookies = 1
+
+# Mejorar proteccion de memoria
+kernel.randomize_va_space = 2
+EOF
+
+# Aplicar cambios
+sudo sysctl -p /etc/sysctl.d/99-security.conf</code></pre>
+        </section>
+
+        <section>
+            <h2>6. Comandos de Auditoria</h2>
+
+            <h3>last - Historial de Logins</h3>
+
+            <pre><code class="language-bash"># Ultimos logins
+last
+
+# Logins de un usuario especifico
+last usuario
+
+# Ultimos 10 logins
+last -10</code></pre>
+
+            <h3>lastb - Intentos Fallidos de Login</h3>
+
+            <pre><code class="language-bash">sudo lastb
+sudo lastb -10</code></pre>
+
+            <h3>w y who - Usuarios Conectados</h3>
+
+            <pre><code class="language-bash">w
+who
+who -H  # Con headers</code></pre>
+
+            <table class="command-table">
+                <thead>
+                    <tr>
+                        <th>Comando</th>
+                        <th>Que Muestra</th>
+                        <th>Permisos</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>last</code></td>
+                        <td>Logins exitosos</td>
+                        <td>Cualquiera</td>
+                    </tr>
+                    <tr>
+                        <td><code>lastb</code></td>
+                        <td>Logins fallidos</td>
+                        <td>Root</td>
+                    </tr>
+                    <tr>
+                        <td><code>w</code></td>
+                        <td>Usuarios actuales + proceso</td>
+                        <td>Cualquiera</td>
+                    </tr>
+                    <tr>
+                        <td><code>who</code></td>
+                        <td>Usuarios conectados</td>
+                        <td>Cualquiera</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section>
+            <h2>7. Ejercicios Practicos</h2>
+
+            <div class="exercise">
+                <h4>Ejercicio 1: Auditoria de Usuarios</h4>
+
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <strong>Ver tu informacion de usuario:</strong>
+                    <pre><code>id
+id $(whoami)</code></pre>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <strong>Listar todos los usuarios del sistema:</strong>
+                    <pre><code>compgen -u | sort
+cat /etc/passwd | cut -d: -f1</code></pre>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <strong>Encontrar usuarios con shell de login:</strong>
+                    <pre><code>grep -v "nologin\|false" /etc/passwd</code></pre>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <strong>Verificar permisos de /etc/shadow:</strong>
+                    <pre><code>ls -l /etc/shadow</code></pre>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">5</span>
+                    <strong>Contar usuarios regulares:</strong>
+                    <pre><code>awk -F: '$3 >= 1000 && $3 < 65534 {print $1}' /etc/passwd</code></pre>
+                </div>
+            </div>
+
+            <div class="exercise">
+                <h4>Ejercicio 2: Seguridad de Archivos</h4>
+
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <strong>Crear archivo de prueba y establecer permisos seguros:</strong>
+                    <pre><code>touch ~/secreto.txt
+echo "informacion confidencial" > ~/secreto.txt
+chmod 600 ~/secreto.txt
+ls -l ~/secreto.txt</code></pre>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <strong>Hacer archivo inmutable:</strong>
+                    <pre><code>sudo chattr +i ~/secreto.txt
+lsattr ~/secreto.txt
+# Intentar modificar (fallara)
+echo "nuevo" >> ~/secreto.txt</code></pre>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <strong>Quitar atributo inmutable:</strong>
+                    <pre><code>sudo chattr -i ~/secreto.txt
+rm ~/secreto.txt</code></pre>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <strong>Verificar permisos de archivos criticos:</strong>
+                    <pre><code>ls -l /etc/passwd /etc/shadow /etc/group</code></pre>
+                </div>
+            </div>
+
+            <div class="exercise">
+                <h4>Ejercicio 3: Configuracion de Firewall</h4>
+
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <strong>Instalar y verificar ufw:</strong>
+                    <pre><code>sudo apt install ufw -y
+sudo ufw status</code></pre>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <strong>Configurar politicas por defecto:</strong>
+                    <pre><code>sudo ufw default deny incoming
+sudo ufw default allow outgoing</code></pre>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <strong>Permitir SSH antes de habilitar:</strong>
+                    <pre><code>sudo ufw allow ssh
+sudo ufw allow 22/tcp</code></pre>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <strong>Habilitar firewall:</strong>
+                    <pre><code>sudo ufw enable
+sudo ufw status verbose</code></pre>
+                </div>
+            </div>
+
+            <div class="exercise">
+                <h4>Ejercicio 4: Auditoria con lynis</h4>
+
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <strong>Instalar lynis:</strong>
+                    <pre><code>sudo apt install lynis -y</code></pre>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <strong>Ejecutar auditoria basica:</strong>
+                    <pre><code>sudo lynis audit system --quick</code></pre>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <strong>Ver reporte:</strong>
+                    <pre><code>sudo grep -E "(warning|suggestion)" /var/log/lynis-report.dat | head -10</code></pre>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <strong>Ver puntuacion:</strong>
+                    <pre><code>sudo grep "hardening_index" /var/log/lynis-report.dat</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>8. Desafio: Script de Auditoria de Seguridad</h2>
+
+            <div class="exercise">
+                <h4>Desafio: Sistema Completo de Auditoria de Seguridad</h4>
+                <p>Crea un script que realice auditoria completa y genere reporte HTML:</p>
+
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <strong>Crear script de auditoria:</strong>
+                    <pre><code>cat > security_audit.sh << 'ENDSCRIPT'
+#!/bin/bash
+
+REPORTE="/tmp/security_audit_$(date +%Y%m%d_%H%M%S).html"
+FECHA=$(date '+%Y-%m-%d %H:%M:%S')
+HOSTNAME=$(hostname)
+
+echo "Generando auditoria..."
+
+# Crear HTML
+cat > $REPORTE << EOF
+<!DOCTYPE html>
+<html>
+<head><title>Auditoria de Seguridad</title>
+<style>
+body{font-family:Arial;margin:40px;background:#f5f5f5}
+.container{max-width:1000px;margin:0 auto;background:white;padding:30px;border-radius:10px}
+h1{color:#dc2626}h2{color:#2563eb;border-bottom:2px solid #059669;padding-bottom:10px}
+table{width:100%;border-collapse:collapse;margin:15px 0}
+th,td{border:1px solid #ddd;padding:10px;text-align:left}
+th{background:#2563eb;color:white}
+.ok{color:green}.fail{color:red}.warning{color:orange}
+</style></head>
+<body><div class='container'>
+<h1>Reporte de Auditoria de Seguridad</h1>
+<p><strong>Servidor:</strong> $HOSTNAME | <strong>Fecha:</strong> $FECHA</p>
+
+<h2>1. Estado de Usuarios</h2>
+<table>
+<tr><th>Verificacion</th><th>Estado</th></tr>
+<tr><td>Usuarios con UID 0</td><td>$(grep ":0:" /etc/passwd | wc -l) usuarios</td></tr>
+<tr><td>Usuarios con shell valido</td><td>$(grep -v "nologin\|false" /etc/passwd | wc -l) usuarios</td></tr>
+<tr><td>Usuarios sin contraseña</td><td>$(sudo awk -F: '($2 == "" || $2 == "*" || $2 == "!") {print}' /etc/shadow | wc -l) usuarios</td></tr>
+</table>
+
+<h2>2. Estado del Firewall</h2>
+<table>
+<tr><th>Verificacion</th><th>Estado</th></tr>
+<tr><td>UFW instalado</td><td>$(which ufw >/dev/null 2>&1 && echo "Instalado" || echo "No instalado")</td></tr>
+<tr><td>UFW activo</td><td>$(sudo ufw status 2>/dev/null | grep -q "Status: active" && echo "Activo" || echo "Inactivo")</td></tr>
+</table>
+
+<h2>3. Actualizaciones Pendientes</h2>
+<pre>$(apt list --upgradable 2>/dev/null | head -10)</pre>
+
+<h2>4. Puertos Abiertos</h2>
+<pre>$(ss -tuln 2>/dev/null | head -15)</pre>
+
+<h2>5. Logins Recientes</h2>
+<pre>$(last | head -10)</pre>
+
+</div></body></html>
+EOF
+
+echo "Auditoria completada: $REPORTE"
+echo "Puedes ver el reporte con: cat $REPORTE"
+ENDSCRIPT</code></pre>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <strong>Hacer ejecutable y ejecutar:</strong>
+                    <pre><code>chmod +x security_audit.sh
+sudo ./security_audit.sh</code></pre>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <strong>Ver reporte generado:</strong>
+                    <pre><code>ls -lh /tmp/security_audit_*.html</code></pre>
+                </div>
+            </div>
+
+            <div class="tips">
+                <strong>Mejoras sugeridas:</strong>
+                <ul>
+                    <li>Integrar con lynis para auditoria mas profunda</li>
+                    <li>Enviar alertas por correo si se encuentran fallas criticas</li>
+                    <li>Comparar con ejecuciones anteriores y mostrar tendencias</li>
+                </ul>
+            </div>
+        </section>
+
+        <section>
+            <h2>Preguntas de Reflexion</h2>
+            <ol>
+                <li>Por que /etc/shadow tiene permisos mas restrictivos que /etc/passwd?</li>
+                <li>Que riesgos implica tener el puerto SSH en el puerto estandar (22)?</li>
+                <li>Como detectarias un intento de intrusion en tu sistema?</li>
+                <li>Por que es importante deshabilitar el login root via SSH?</li>
+                <li>Cuando usarias chattr +i en un archivo?</li>
+            </ol>
+        </section>
+
+        <section>
+            <h2>Conclusion del Curso</h2>
+            <p>Has completado el Laboratorio 6 y con ello, todos los laboratorios de Sistemas Operativos I. Los temas cubiertos incluyen:</p>
+            <ul>
+                <li>Fundamentos de Linux y comandos basicos</li>
+                <li>Permisos, usuarios y grupos</li>
+                <li>Gestion de procesos</li>
+                <li>Monitoreo del sistema</li>
+                <li>Sistemas de archivos avanzados</li>
+                <li>Seguridad y hardening</li>
+            </ul>
+        </section>
+
+        <nav class="lab-nav" aria-label="Navegacion entre laboratorios">
+            <a href="lab-05-sistemas-archivos.html" class="lab-nav-link prev">
+                <span class="lab-nav-icon">←</span>
+                <div>
+                    <div class="nav-label">Laboratorio Anterior</div>
+                    <div class="nav-title">Sistemas de Archivos</div>
+                </div>
+            </a>
+            <div class="lab-nav-placeholder">
+                Fin de los Laboratorios
+            </div>
+        </nav>
+
+        <div class="footer">
+            <p>IF0099 - Sistemas Operativos I | 2026-I | Ing. Eldigardo Evelio Camacho Cespedes</p>
+            <p>Laboratorio 6: Seguridad y Hardening</p>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            Prism.highlightAll();
+        });
+    </script>
+</body>
+</html>

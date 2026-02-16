@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laboratorio 4: Memoria y Monitoreo del Sistema | IF0099 - Sistemas Operativos I</title>
+    <!-- Prism.js CSS para syntax highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #1e40af;
+            --accent: #059669;
+            --bg-light: #f8fafc;
+            --bg-code: #1e293b;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --warning: #f59e0b;
+            --danger: #dc2626;
+            --info: #0891b2;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.7;
+            color: var(--text-main);
+            background: var(--bg-light);
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 3rem 0;
+            margin-bottom: 2rem;
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        header .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        header .meta {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .warning-box {
+            background: #fffbeb;
+            border-left: 4px solid var(--warning);
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 8px;
+        }
+
+        .warning-box h3 {
+            color: #92400e;
+            margin-bottom: 0.5rem;
+        }
+
+        .success-box {
+            background: #f0fdf4;
+            border-left: 4px solid var(--accent);
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 8px;
+        }
+
+        .info-box {
+            background: #ecfeff;
+            border-left: 4px solid var(--info);
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 8px;
+        }
+
+        section {
+            background: white;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        section h2 {
+            color: var(--primary);
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid var(--accent);
+        }
+
+        section h3 {
+            color: var(--secondary);
+            font-size: 1.4rem;
+            margin: 2rem 0 1rem;
+        }
+
+        section h4 {
+            color: var(--text-main);
+            font-size: 1.1rem;
+            margin: 1.5rem 0 0.75rem;
+            font-weight: 600;
+        }
+
+        .command-box {
+            background: var(--bg-code);
+            color: #e2e8f0;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            overflow-x: auto;
+        }
+
+        .command {
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .command-prompt {
+            color: #4ade80;
+        }
+
+        .command-input {
+            color: #60a5fa;
+        }
+
+        .command-output {
+            color: #94a3b8;
+            margin: 0.5rem 0;
+            padding-left: 1rem;
+        }
+
+        .step {
+            background: var(--bg-light);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 6px;
+            border-left: 3px solid var(--primary);
+        }
+
+        .step-number {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }
+
+        .exercise {
+            background: #eff6ff;
+            border-left: 4px solid var(--primary);
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 8px;
+        }
+
+        .exercise h4 {
+            color: var(--primary);
+            margin-top: 0;
+        }
+
+        .command-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+        }
+
+        .command-table th,
+        .command-table td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .command-table th {
+            background: var(--bg-light);
+            font-weight: 600;
+            color: var(--secondary);
+        }
+
+        .command-table code {
+            background: var(--bg-code);
+            color: #60a5fa;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .lab-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: stretch;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .lab-nav-link {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1.25rem 1.5rem;
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            text-decoration: none;
+            color: var(--text-main);
+            transition: all 0.3s ease;
+        }
+
+        .lab-nav-link:hover {
+            border-color: var(--primary);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .lab-nav-link.prev {
+            border-left: 4px solid var(--primary);
+        }
+
+        .lab-nav-link.next {
+            border-right: 4px solid var(--accent);
+            text-align: right;
+            margin-left: auto;
+        }
+
+        .lab-nav-link .nav-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            margin-bottom: 0.25rem;
+        }
+
+        .lab-nav-link .nav-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .lab-nav-link.next .nav-title {
+            color: var(--accent);
+        }
+
+        .lab-nav-icon {
+            font-size: 1.5rem;
+            line-height: 1;
+        }
+
+        .lab-nav-placeholder {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.25rem;
+            background: var(--bg-light);
+            border: 2px dashed var(--border);
+            border-radius: 12px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .nav-btn {
+            background: var(--primary);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .nav-btn:hover {
+            background: var(--secondary);
+        }
+
+        .footer {
+            text-align: center;
+            padding: 2rem 0;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .tips {
+            background: #fef3c7;
+            border-left: 4px solid var(--warning);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 6px;
+        }
+
+        .tips strong {
+            color: #92400e;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Laboratorio 4: Memoria y Monitoreo del Sistema</h1>
+            <p class="subtitle">IF0099 - Sistemas Operativos I | 2026-I</p>
+            <p class="meta">Duracion: 120 minutos | Nivel: Intermedio | Prerrequisito: Labs 1-3 completados</p>
+        </div>
+    </header>
+
+    <!-- Quick Navigation Bar -->
+    <div class="quick-nav" style="background: white; padding: 1rem; margin-bottom: 2rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
+        <div style="display: flex; align-items: center; gap: 1rem;">
+            <a href="../clases-html/index.html" style="color: var(--primary); text-decoration: none; font-weight: 500;">Inicio</a>
+            <span style="color: var(--text-muted);">|</span>
+            <span style="color: var(--text-main); font-weight: 600;">Lab 4: Memoria y Monitoreo del Sistema</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <a href="../clases-html/cronograma.html" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: #10b981; color: white; text-decoration: none; border-radius: 6px; font-weight: 500;">Cronograma</a>
+            <a href="../clases-html/rubricas.html" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: #3b82f6; color: white; text-decoration: none; border-radius: 6px; font-weight: 500;">Rubricas</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="success-box">
+            <h3>Entorno de Laboratorio</h3>
+            <p>Este laboratorio utiliza tu <strong>maquina virtual de Ubuntu Server</strong>. Conectate via SSH a tu VM antes de comenzar los ejercicios. Se requiere acceso root o sudo para algunos comandos.</p>
+        </div>
+
+        <div class="warning-box">
+            <h3>Antes de comenzar</h3>
+            <p>Asegurate de haber completado los <strong>Laboratorios 1, 2 y 3</strong>. Algunos comandos requieren privilegios de administrador. Usa <code>sudo</code> cuando sea necesario.</p>
+        </div>
+
+        <section>
+            <h2>Objetivos del Laboratorio</h2>
+            <ul>
+                <li>Comprender el uso y monitoreo de memoria en Linux</li>
+                <li>Aprender comandos para monitorear disco, red y procesos</li>
+                <li>Interpretar metricas del sistema en tiempo real</li>
+                <li>Crear scripts de monitoreo automatizado</li>
+                <li>Generar reportes del estado del sistema</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>1. Comandos de Memoria</h2>
+            
+            <h3>free - Informacion de Memoria</h3>
+            <p>Muestra el uso total de memoria RAM y swap del sistema.</p>
+            <div class="command-box">
+                <div class="command">
+                    <span class="command-prompt">~ $</span> <span class="command-input">free -h</span><br>
+                    <span class="command-output">total used free shared buff/cache available<br>Mem: 7.7Gi 2.1Gi 3.2Gi 256Mi 2.4Gi 5.1Gi<br>Swap: 2.0Gi 0B 2.0Gi</span>
+                </div>
+            </div>
+            
+            <div class="tips">
+                <strong>Tip:</strong> La opcion <code>-h</code> muestra los valores en formato humano-legible (GB, MB).
+            </div>
+
+            <h3>vmstat - Estadisticas del Sistema</h3>
+            <p>Reporta estadisticas de procesos, memoria, paginacion, bloqueo de E/S, traps y actividad de CPU.</p>
+            <div class="command-box">
+                <div class="command">
+                    <span class="command-prompt">~ $</span> <span class="command-input">vmstat 1 5</span><br>
+                    <span class="command-output">procs -----------memory---------- ---swap-- -----io---- -system-- ------cpu-----<br>r b swpd free buff cache si so bi bo in cs us sy id wa st<br>2 0 0 3321456 234512 1890234 0 0 12 34 123 456 5 2 91 2 0</span>
+                </div>
+            </div>
+            <p style="font-size: 0.9rem; color: var(--text-muted);">El comando anterior muestra estadisticas cada 1 segundo, 5 veces.</p>
+
+            <h3>/proc/meminfo - Informacion Detallada</h3>
+            <p>Archivo virtual del kernel con informacion detallada de memoria.</p>
+            <pre><code class="language-bash">cat /proc/meminfo | head -20</code></pre>
+            
+            <div class="info-box">
+                <h4>Campos Importantes de /proc/meminfo</h4>
+                <ul style="margin-top: 1rem;">
+                    <li><code>MemTotal</code> - Memoria RAM total</li>
+                    <li><code>MemFree</code> - Memoria completamente libre</li>
+                    <li><code>MemAvailable</code> - Memoria disponible para nuevas aplicaciones</li>
+                    <li><code>Buffers</code> - Cache de buffers del kernel</li>
+                    <li><code>Cached</code> - Cache de paginas</li>
+                    <li><code>SwapTotal/SwapFree</code> - Informacion de swap</li>
+                </ul>
+            </div>
+
+            <table class="command-table">
+                <thead>
+                    <tr>
+                        <th>Comando</th>
+                        <th>Descripcion</th>
+                        <th>Uso Tipico</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>free</code></td>
+                        <td>Resumen de memoria</td>
+                        <td><code>free -h</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>vmstat</code></td>
+                        <td>Estadisticas virtuales</td>
+                        <td><code>vmstat 1 10</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>cat /proc/meminfo</code></td>
+                        <td>Detalles del kernel</td>
+                        <td><code>cat /proc/meminfo | grep Mem</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>top</code></td>
+                        <td>Procesos en tiempo real</td>
+                        <td>Presiona 'M' para ordenar por memoria</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section>
+            <h2>2. Monitoreo de Disco</h2>
+
+            <h3>df - Espacio en Disco</h3>
+            <p>Muestra el espacio disponible en los sistemas de archivos montados.</p>
+            <pre><code class="language-bash">df -h</code></pre>
+            <p style="font-size: 0.9rem; color: var(--text-muted);">Muestra uso de disco en formato humano-legible</p>
+
+            <h3>du - Uso de Disco por Archivos</h3>
+            <p>Estima el uso de espacio de archivos y directorios.</p>
+            <div class="command-box">
+                <div class="command">
+                    <span class="command-prompt">~ $</span> <span class="command-input">du -sh /var/log</span><br>
+                    <span class="command-output">245M /var/log</span>
+                </div>
+            </div>
+
+            <div class="tips">
+                <strong>Tip:</strong> <code>du -sh *</code> muestra el tamaño de todos los archivos/directorios en la ubicacion actual.
+            </div>
+
+            <h3>iostat - Estadisticas de E/S</h3>
+            <p>Primero instala el paquete sysstat:</p>
+            <pre><code class="language-bash">sudo apt install sysstat -y</code></pre>
+            
+            <p>Uso de iostat:</p>
+            <div class="command-box">
+                <div class="command">
+                    <span class="command-prompt">~ $</span> <span class="command-input">iostat -x 1 5</span><br>
+                    <span class="command-output">Linux 5.15.0-91-generic (server) 02/15/2026 _x86_64_ (4 CPU)<br><br>avg-cpu: %user %nice %system %iowait %steal %idle<br>1.23 0.00 0.45 0.12 0.00 98.20</span>
+                </div>
+            </div>
+
+            <table class="command-table">
+                <thead>
+                    <tr>
+                        <th>Comando</th>
+                        <th>Funcion</th>
+                        <th>Ejemplo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>df -h</code></td>
+                        <td>Espacio libre en filesystems</td>
+                        <td><code>df -h /home</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>du -sh</code></td>
+                        <td>Tamaño de directorio</td>
+                        <td><code>du -sh /var</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>iostat</code></td>
+                        <td>Estadisticas de E/S</td>
+                        <td><code>iostat -x 1</code></td>
+                    </tr>
+                    <tr>
+                        <code>lsblk</code>
+                        <td>Informacion de bloques</td>
+                        <td><code>lsblk -f</code></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section>
+            <h2>3. Monitoreo de Red</h2>
+
+            <h3>netstat - Conexiones de Red</h3>
+            <p>Muestra conexiones de red, tablas de routing, estadisticas de interfaces.</p>
+            <pre><code class="language-bash">sudo apt install net-tools -y
+netstat -tuln</code></pre>
+            <div class="info-box">
+                <h4>Opciones Comunes de netstat</h4>
+                <ul style="margin-top: 1rem;">
+                    <li><code>-t</code> - Conexiones TCP</li>
+                    <li><code>-u</code> - Conexiones UDP</li>
+                    <li><code>-l</code> - Solo sockets en escucha</li>
+                    <li><code>-n</code> - Muestra direcciones numericas</li>
+                    <li><code>-p</code> - Muestra PID/programa</li>
+                </ul>
+            </div>
+
+            <h3>ss - Socket Statistics (Reemplazo de netstat)</h3>
+            <p>Comando moderno mas rapido que netstat.</p>
+            <div class="command-box">
+                <div class="command">
+                    <span class="command-prompt">~ $</span> <span class="command-input">ss -tuln</span><br>
+                    <span class="command-output">State Recv-Q Send-Q Local Address:Port Peer Address:Port Process<br>LISTEN 0 4096 127.0.0.53%lo:53 0.0.0.0:*<br>LISTEN 0 128 0.0.0.0:22 0.0.0.0:*</span>
+                </div>
+            </div>
+
+            <h3>lsof - Archivos Abiertos</h3>
+            <p>Lista archivos abiertos y los procesos que los usan.</p>
+            <pre><code class="language-bash">lsof -i :22</code></pre>
+            <p style="font-size: 0.9rem; color: var(--text-muted);">Muestra que proceso usa el puerto 22 (SSH)</p>
+
+            <h3>iftop - Monitoreo de Ancho de Banda</h3>
+            <p>Visualiza el uso de ancho de banda en tiempo real.</p>
+            <pre><code class="language-bash">sudo apt install iftop -y
+sudo iftop -i eth0</code></pre>
+
+            <table class="command-table">
+                <thead>
+                    <tr>
+                        <th>Comando</th>
+                        <th>Proposito</th>
+                        <th>Uso</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>netstat -tuln</code></td>
+                        <td>Puertos en escucha</td>
+                        <td>Ver servicios activos</td>
+                    </tr>
+                    <tr>
+                        <td><code>ss -tuln</code></td>
+                        <td>Puertos (moderno)</td>
+                        <td>Alternativa rapida a netstat</td>
+                    </tr>
+                    <tr>
+                        <td><code>lsof -i :PORT</code></td>
+                        <td>Proceso por puerto</td>
+                        <td>Identificar que usa un puerto</td>
+                    </tr>
+                    <tr>
+                        <td><code>iftop</code></td>
+                        <td>Ancho de banda</td>
+                        <td>Monitoreo en tiempo real</td>
+                    </tr>
+                    <tr>
+                        <td><code>ping</code></td>
+                        <td>Conectividad</td>
+                        <td><code>ping -c 4 google.com</code></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section>
+            <h2>4. Comandos de Sistema</h2>
+
+            <h3>uptime - Tiempo de Actividad</h3>
+            <p>Muestra cuanto tiempo lleva encendido el sistema y carga promedio.</p>
+            <div class="command-box">
+                <div class="command">
+                    <span class="command-prompt">~ $</span> <span class="command-input">uptime</span><br>
+                    <span class="command-output">14:32:15 up 15 days, 3:45, 2 users, load average: 0.12, 0.08, 0.05</span>
+                </div>
+            </div>
+
+            <h3>w - Usuarios Conectados</h3>
+            <p>Muestra quien esta conectado y que esta haciendo.</p>
+            <pre><code class="language-bash">w</code></pre>
+
+            <h3>who - Usuarios Logueados</h3>
+            <p>Lista usuarios actualmente conectados.</p>
+            <pre><code class="language-bash">who</code></pre>
+
+            <div class="info-box">
+                <h4>Interpretando load average</h4>
+                <p>Los tres numeros representan la carga promedio del sistema en los ultimos 1, 5 y 15 minutos. Un valor cercano al numero de CPUs indica carga optima. Valores mayores indican sobrecarga.</p>
+            </div>
+        </section>
+
+        <section>
+            <h2>5. Script Integral de Monitoreo</h2>
+
+            <p>Crea un script que genere un reporte HTML completo del sistema:</p>
+
+            <div class="command-box">
+                <div class="command">
+                    <span class="command-prompt">~ $</span> <span class="command-input">cat > monitor_system.sh << 'EOF'</span><br>
+                    <span class="command-output">#!/bin/bash<br><br>REPORTE="/tmp/reporte_sistema_$(date +%Y%m%d_%H%M%S).html"<br><br>echo "<!DOCTYPE html>" > $REPORTE<br>echo "<html><head><title>Reporte del Sistema</title>" >> $REPORTE<br>echo "<style>body{font-family:Arial;margin:40px;}table{border-collapse:collapse;width:100%;}th,td{border:1px solid #ddd;padding:8px;text-align:left;}th{background:#2563eb;color:white;}.warning{color:red;}.ok{color:green;}</style>" >> $REPORTE<br>echo "</head><body>" >> $REPORTE<br>echo "<h1>Reporte del Sistema - $(date)</h1>" >> $REPORTE<br><br>echo "<h2>Uptime</h2><pre>$(uptime)</pre>" >> $REPORTE<br><br>echo "<h2>Memoria</h2><pre>$(free -h)</pre>" >> $REPORTE<br><br>echo "<h2>Disco</h2><pre>$(df -h)</pre>" >> $REPORTE<br><br>echo "<h2>Usuarios Conectados</h2><pre>$(who)</pre>" >> $REPORTE<br><br>echo "<h2>Puertos en Escucha</h2><pre>$(ss -tuln)</pre>" >> $REPORTE<br><br>echo "</body></html>" >> $REPORTE<br><br>echo "Reporte generado: $REPORTE"<br>EOF</span>
+                </div>
+            </div>
+
+            <div class="step">
+                <span class="step-number">1</span>
+                <strong>Hacer ejecutable el script:</strong>
+                <pre><code>chmod +x monitor_system.sh</code></pre>
+            </div>
+
+            <div class="step">
+                <span class="step-number">2</span>
+                <strong>Ejecutar el script:</strong>
+                <pre><code>./monitor_system.sh</code></pre>
+            </div>
+
+            <div class="step">
+                <span class="step-number">3</span>
+                <strong>Ver el reporte generado:</strong>
+                <pre><code>cat /tmp/reporte_sistema_*.html</code></pre>
+            </div>
+        </section>
+
+        <section>
+            <h2>6. Ejercicios Practicos</h2>
+
+            <div class="exercise">
+                <h4>Ejercicio 1: Analisis de Memoria</h4>
+
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <strong>Ver uso actual de memoria:</strong>
+                    <pre><code>free -h</code></pre>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <strong>Ver estadisticas de memoria cada 2 segundos (5 veces):</strong>
+                    <pre><code>vmstat 2 5</code></pre>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <strong>Filtrar informacion relevante de /proc/meminfo:</strong>
+                    <pre><code>cat /proc/meminfo | grep -E "(MemTotal|MemFree|MemAvailable|Swap)"</code></pre>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <strong>Identificar los 5 procesos que mas memoria usan:</strong>
+                    <pre><code>ps aux --sort=-%mem | head -6</code></pre>
+                </div>
+            </div>
+
+            <div class="exercise">
+                <h4>Ejercicio 2: Monitoreo de Disco</h4>
+
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <strong>Ver espacio disponible en todos los filesystems:</strong>
+                    <pre><code>df -h</code></pre>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <strong>Encontrar los 10 directorios mas grandes en /var:</strong>
+                    <pre><code>sudo du -h /var | sort -rh | head -10</code></pre>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <strong>Instalar y usar iostat:</strong>
+                    <pre><code>sudo apt install sysstat -y
+iostat -x 1 3</code></pre>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <strong>Ver informacion de bloques y filesystems:</strong>
+                    <pre><code>lsblk -f</code></pre>
+                </div>
+            </div>
+
+            <div class="exercise">
+                <h4>Ejercicio 3: Monitoreo de Red</h4>
+
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <strong>Ver todas las conexiones TCP/UDP en escucha:</strong>
+                    <pre><code>sudo ss -tuln</code></pre>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <strong>Identificar que proceso usa el puerto 22:</strong>
+                    <pre><code>sudo lsof -i :22</code></pre>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <strong>Ver tabla de routing:</strong>
+                    <pre><code>ip route</code></pre>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <strong>Ver estadisticas de interfaces de red:</strong>
+                    <pre><code>ip -s link</code></pre>
+                </div>
+            </div>
+
+            <div class="exercise">
+                <h4>Ejercicio 4: Informacion del Sistema</h4>
+
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <strong>Ver tiempo de actividad y carga:</strong>
+                    <pre><code>uptime</code></pre>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <strong>Ver usuarios conectados y sus actividades:</strong>
+                    <pre><code>w</code></pre>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <strong>Listar usuarios logueados:</strong>
+                    <pre><code>who</code></pre>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <strong>Ver informacion del kernel y sistema:</strong>
+                    <pre><code>uname -a
+cat /etc/os-release</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>7. Desafio: Dashboard de Monitoreo</h2>
+
+            <div class="exercise">
+                <h4>Desafio: Crear Dashboard HTML de Monitoreo en Tiempo Real</h4>
+                <p>Crea un script avanzado que genere un dashboard HTML con actualizacion automatica:</p>
+
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <strong>Crear el script del dashboard:</strong>
+                    <pre><code>cat > dashboard_monitor.sh << 'EOF'
+#!/bin/bash
+
+HTML_FILE="/var/www/html/dashboard.html"
+mkdir -p /var/www/html
+
+generate_dashboard() {
+cat > $HTML_FILE << 'HTMLEOF'
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="refresh" content="5">
+    <title>Dashboard de Monitoreo</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background: #f0f0f0; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .card { background: white; padding: 20px; margin: 10px 0; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        h1 { color: #2563eb; }
+        h2 { color: #1e40af; border-bottom: 2px solid #059669; padding-bottom: 10px; }
+        pre { background: #1e293b; color: #e2e8f0; padding: 15px; border-radius: 5px; overflow-x: auto; }
+        .metric { display: inline-block; margin: 10px 20px 10px 0; }
+        .metric-label { font-weight: bold; color: #64748b; }
+        .metric-value { font-size: 1.5em; color: #059669; }
+        .warning { color: #dc2626; }
+        .timestamp { text-align: right; color: #64748b; font-size: 0.9em; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Dashboard de Monitoreo del Sistema</h1>
+        <p class="timestamp">Ultima actualizacion: HTMLEOF
+echo "$(date '+%Y-%m-%d %H:%M:%S')" >> $HTML_FILE
+cat >> $HTML_FILE << 'HTMLEOF'
+</p>
+        
+        <div class="card">
+            <h2>Estado General</h2>
+            <div class="metric">
+                <div class="metric-label">Uptime</div>
+                <div class="metric-value">HTMLEOF
+echo "$(uptime | awk -F',' '{print $1}' | awk '{print $3,$4}')" >> $HTML_FILE
+cat >> $HTML_FILE << 'HTMLEOF'
+</div>
+            </div>
+            <div class="metric">
+                <div class="metric-label">Usuarios</div>
+                <div class="metric-value">HTMLEOF
+echo "$(who | wc -l)" >> $HTML_FILE
+cat >> $HTML_FILE << 'HTMLEOF'
+</div>
+            </div>
+            <div class="metric">
+                <div class="metric-label">Carga</div>
+                <div class="metric-value">HTMLEOF
+echo "$(uptime | awk -F'load average:' '{print $2}' | awk '{print $1}')" >> $HTML_FILE
+cat >> $HTML_FILE << 'HTMLEOF'
+</div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2>Memoria</h2>
+            <pre>HTMLEOF
+free -h >> $HTML_FILE
+cat >> $HTML_FILE << 'HTMLEOF'
+</pre>
+        </div>
+        
+        <div class="card">
+            <h2>Disco</h2>
+            <pre>HTMLEOF
+df -h >> $HTML_FILE
+cat >> $HTML_FILE << 'HTMLEOF'
+</pre>
+        </div>
+        
+        <div class="card">
+            <h2>Procesos Principales</h2>
+            <pre>HTMLEOF
+ps aux --sort=-%cpu | head -11 >> $HTML_FILE
+cat >> $HTML_FILE << 'HTMLEOF'
+</pre>
+        </div>
+        
+        <div class="card">
+            <h2>Conexiones de Red</h2>
+            <pre>HTMLEOF
+ss -tuln >> $HTML_FILE
+cat >> $HTML_FILE << 'HTMLEOF'
+</pre>
+        </div>
+    </div>
+</body>
+</html>
+HTMLEOF
+}
+
+generate_dashboard
+echo "Dashboard generado en: $HTML_FILE"
+EOF</code></pre>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <strong>Hacer ejecutable y probar:</strong>
+                    <pre><code>chmod +x dashboard_monitor.sh
+sudo ./dashboard_monitor.sh</code></pre>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <strong>Instalar un servidor web ligero para ver el dashboard:</strong>
+                    <pre><code>sudo apt install nginx -y
+sudo cp /var/www/html/dashboard.html /var/www/html/index.html</code></pre>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <strong>Automatizar con cron (actualizar cada minuto):</strong>
+                    <pre><code>sudo crontab -e
+# Agregar esta linea:
+* * * * * /home/$(whoami)/dashboard_monitor.sh</code></pre>
+                </div>
+            </div>
+
+            <div class="tips">
+                <strong>Tip:</strong> Puedes acceder al dashboard desde tu navegador usando la IP de tu VM. Asegurate de que el puerto 80 este abierto en el firewall.
+            </div>
+        </section>
+
+        <section>
+            <h2>Preguntas de Reflexion</h2>
+            <ol>
+                <li>Que diferencia hay entre MemFree y MemAvailable en /proc/meminfo?</li>
+                <li>Por que es importante monitorear el load average del sistema?</li>
+                <li>Que ventajas tiene ss sobre netstat?</li>
+                <li>Como identificarias un proceso que esta consumiendo demasiados recursos?</li>
+                <li>Que metricas considerarias criticas para alertar en un sistema de produccion?</li>
+            </ol>
+        </section>
+
+        <section>
+            <h2>Preparacion para el Proximo Laboratorio</h2>
+            <p>Para el proximo laboratorio, necesitaras:</p>
+            <ul>
+                <li>Haber completado exitosamente todos los ejercicios</li>
+                <li>Entender las metricas de memoria, disco y red</li>
+                <li>Saber interpretar estadisticas del sistema</li>
+                <li>Tener experiencia creando scripts de monitoreo</li>
+            </ul>
+        </section>
+
+        <!-- Enhanced navigation between labs -->
+        <nav class="lab-nav" aria-label="Navegacion entre laboratorios">
+            <a href="lab-03-procesos.html" class="lab-nav-link prev">
+                <span class="lab-nav-icon">←</span>
+                <div>
+                    <div class="nav-label">Laboratorio Anterior</div>
+                    <div class="nav-title">Gestion de Procesos</div>
+                </div>
+            </a>
+            <a href="lab-05-sistemas-archivos.html" class="lab-nav-link next">
+                <div>
+                    <div class="nav-label">Siguiente Laboratorio</div>
+                    <div class="nav-title">Sistemas de Archivos Avanzados →</div>
+                </div>
+                <span class="lab-nav-icon">→</span>
+            </a>
+        </nav>
+
+        <div class="footer">
+            <p>IF0099 - Sistemas Operativos I | 2026-I | Ing. Eldigardo Evelio Camacho Cespedes</p>
+            <p>Laboratorio 4: Memoria y Monitoreo del Sistema</p>
+        </div>
+    </div>
+
+    <!-- Prism.js para syntax highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            Prism.highlightAll();
+        });
+    </script>
+</body>
+</html>

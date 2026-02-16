@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cronograma del Curso | IF0099 - Sistemas Operativos I</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #1e3a5f 0%, #2d5a87 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container { max-width: 1400px; margin: 0 auto; }
+        header {
+            background: white;
+            border-radius: 15px;
+            padding: 30px 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        h1 { color: #1e3a5f; font-size: 2em; margin-bottom: 10px; }
+        .subtitle { color: #666; font-size: 1.1em; }
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .info-card {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #1e3a5f;
+        }
+        .info-card strong { color: #1e3a5f; }
+        .section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .section h2 {
+            color: #1e3a5f;
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #1e3a5f;
+        }
+        .calendar-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        .calendar-table th {
+            background: #1e3a5f;
+            color: white;
+            padding: 12px 10px;
+            text-align: left;
+            font-size: 0.9em;
+        }
+        .calendar-table td { padding: 12px 10px; border-bottom: 1px solid #e0e0e0; vertical-align: top; }
+        .calendar-table tr:hover { background: #f8f9fa; }
+        .calendar-table .fecha { font-weight: 600; color: #1e3a5f; white-space: nowrap; }
+        .calendar-table .semana-santa { background: #fef3c7; }
+        .calendar-table .evaluacion { background: #dcfce7; }
+        .calendar-table .examen { background: #dbeafe; }
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 0.75em;
+            font-weight: 600;
+            margin-right: 5px;
+        }
+        .badge-eval { background: #10b981; color: white; }
+        .badge-exam { background: #3b82f6; color: white; }
+        .badge-receso { background: #f59e0b; color: white; }
+        .alert-box {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-left: 4px solid #f59e0b;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .alert-box h3 { color: #92400e; margin-bottom: 10px; }
+        .alert-box p { color: #78350f; }
+        .eval-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .eval-card {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            border-left: 4px solid #10b981;
+        }
+        .eval-card.examen { border-left-color: #3b82f6; }
+        .eval-card h4 { color: #1e3a5f; margin-bottom: 10px; }
+        .eval-card .fecha-eval { font-size: 1.2em; font-weight: 700; color: #10b981; margin-bottom: 5px; }
+        .eval-card.examen .fecha-eval { color: #3b82f6; }
+        .eval-card .porcentaje {
+            display: inline-block;
+            background: #1e3a5f;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 10px;
+            font-size: 0.85em;
+        }
+        .seguimientos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 20px; }
+        .seguimiento-card {
+            background: linear-gradient(135deg, #1e3a5f 0%, #2d5a87 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+        }
+        .seguimiento-card h4 { font-size: 1.2em; margin-bottom: 10px; }
+        .seguimiento-card .fecha { font-size: 1.1em; font-weight: 600; margin-bottom: 10px; }
+        .seguimiento-card .acumulado { font-size: 2em; font-weight: 700; }
+        .nav-links { display: flex; gap: 15px; margin-top: 20px; }
+        .nav-links a {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #1e3a5f;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: background 0.3s;
+        }
+        .nav-links a:hover { background: #2d5a87; }
+        footer {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            color: #555;
+        }
+        @media (max-width: 768px) {
+            .seguimientos { grid-template-columns: 1fr; }
+            .calendar-table { font-size: 0.85em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Cronograma del Curso</h1>
+            <p class="subtitle">IF0099 - Sistemas Operativos I | 2026-I | Plan Práctico v2.0</p>
+            <div class="info-grid">
+                <div class="info-card"><strong>Días de clase:</strong><br>Martes y Jueves</div>
+                <div class="info-card"><strong>Horario:</strong><br>Mar 6-8 AM | Jue 6-7 AM</div>
+                <div class="info-card"><strong>Distribución:</strong><br>50% Teoría / 50% Práctica</div>
+                <div class="info-card"><strong>Aula:</strong><br>TU301</div>
+            </div>
+            <div class="nav-links">
+                <a href="index.html">Inicio</a>
+                <a href="evaluaciones.html">Evaluaciones</a>
+                <a href="rubricas.html">Rúbricas</a>
+            </div>
+        </header>
+
+        <section class="section">
+            <h2>Fechas de Seguimiento Académico</h2>
+            <div class="seguimientos">
+                <div class="seguimiento-card">
+                    <h4>1° Seguimiento</h4>
+                    <div class="fecha">27 de marzo</div>
+                    <div class="acumulado">50%</div>
+                    <p style="margin-top:10px; font-size:0.9em;">E1 + E2 + E3</p>
+                </div>
+                <div class="seguimiento-card">
+                    <h4>2° Seguimiento</h4>
+                    <div class="fecha">15 de mayo</div>
+                    <div class="acumulado">80%</div>
+                    <p style="margin-top:10px; font-size:0.9em;">E4 + E5</p>
+                </div>
+                <div class="seguimiento-card">
+                    <h4>3° Seguimiento</h4>
+                    <div class="fecha">28 de mayo</div>
+                    <div class="acumulado">100%</div>
+                    <p style="margin-top:10px; font-size:0.9em;">E6 Final</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Calendario de Clases y Evaluaciones</h2>
+            <div class="alert-box">
+                <h3>Recordatorios de Evaluaciones</h3>
+                <p>Las evaluaciones están marcadas en <span class="badge badge-eval">verde</span>. Los exámenes en <span class="badge badge-exam">azul</span>. Revisa con anticipación los criterios en la sección de <a href="evaluaciones.html" style="color:#6d28d9; font-weight:600;">Evaluaciones</a> y <a href="rubricas.html" style="color:#1e40af; font-weight:600;">Rúbricas</a>.</p>
+            </div>
+            <table class="calendar-table">
+                <thead>
+                    <tr>
+                        <th>Semana</th>
+                        <th>Fecha</th>
+                        <th>Día</th>
+                        <th>Tema / Actividad</th>
+                        <th>Evaluación</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td class="fecha">03 Feb</td>
+                        <td>Martes</td>
+                        <td><a href="clase-01.html">Clase 01: ¿Qué es un SO?</a></td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td class="fecha">05 Feb</td>
+                        <td>Jueves</td>
+                        <td><a href="clase-02.html">Clase 02: Linux Terminal</a></td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td class="fecha">10 Feb</td>
+                        <td>Martes</td>
+                        <td><a href="clase-04.html">Clase 04: Estructura del SO</a></td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td class="fecha">12 Feb</td>
+                        <td>Jueves</td>
+                        <td><a href="../laboratorios-html/lab-00-introduccion-simuladores.html">Lab 00: VirtualBox + Ubuntu</a></td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td class="fecha">17 Feb</td>
+                        <td>Martes</td>
+                        <td><a href="clase-05.html">Clase 05: Procesos en Linux</a></td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td class="fecha">19 Feb</td>
+                        <td>Jueves</td>
+                        <td><a href="../laboratorios-html/lab-01-comandos-basicos.html">Lab 01: Comandos Básicos</a></td>
+                        <td>-</td>
+                    </tr>
+                    <tr class="evaluacion">
+                        <td>4</td>
+                        <td class="fecha">25 Feb</td>
+                        <td>Martes</td>
+                        <td><a href="clase-06.html">Clase 06: Procesos en Windows</a> + <strong>E1 (15%)</strong></td>
+                        <td><span class="badge badge-eval">E1 - 15%</span></td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td class="fecha">26 Feb</td>
+                        <td>Jueves</td>
+                        <td><a href="clase-07.html">Clase 07: Hilos y Sincronización</a></td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td class="fecha">03 Mar</td>
+                        <td>Martes</td>
+                        <td><a href="clase-08.html">Clase 08: Gestión de Memoria</a></td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td class="fecha">05 Mar</td>
+                        <td>Jueves</td>
+                        <td><a href="../laboratorios-html/lab-02-permisos-usuarios.html">Lab 02: Permisos y Usuarios</a></td>
+                        <td>-</td>
+                    </tr>
+                    <tr class="evaluacion">
+                        <td>6</td>
+                        <td class="fecha">11 Mar</td>
+                        <td>Martes</td>
+                        <td><a href="clase-09.html">Clase 09: Paginación</a> + <strong>E2 (15%)</strong></td>
+                        <td><span class="badge badge-eval">E2 - 15%</span></td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td class="fecha">12 Mar</td>
+                        <td>Jueves</td>
+                        <td><a href="clase-10.html">Clase 10: Memoria Virtual</a></td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>7</td>
+                        <td class="fecha">17 Mar</td>
+                        <td>Martes</td>
+                        <td><a href="clase-11.html">Clase 11: Discos y E/S</a></td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>7</td>
+                        <td class="fecha">19 Mar</td>
+                        <td>Jueves</td>
+                        <td><a href="../laboratorios-html/lab-03-gestion-procesos.html">Lab 03: Gestión de Procesos</a></td>
+                        <td>-</td>
+                    </tr>
+                    <tr class="examen">
+                        <td>8</td>
+                        <td class="fecha">25 Mar</td>
+                        <td>Martes</td>
+                        <td colspan="1"><strong>E3: EXAMEN PARCIAL (2 horas)</strong></td>
+                        <td><span class="badge badge-exam">E3 - 20%</span></td>
+                    </tr>
+                    <tr>
+                        <td>8</td>
+                        <td class="fecha">26 Mar</td>
+                        <td>Jueves</td>
+                        <td><a href="../laboratorios-html/lab-04-memoria-monitoreo.html">Lab 04: Memoria y Monitoreo</a></td>
+                        <td>-</td>
+                    </tr>
+                    <tr class="semana-santa">
+                        <td>-</td>
+                        <td class="fecha">31 Mar</td>
+                        <td>Martes</td>
+                        <td colspan="2"><span class="badge badge-receso">SEMANA SANTA</span> - No hay clase</td>
+                    </tr>
+                    <tr class="semana-santa">
+                        <td>-</td>
+                        <td class="fecha">02 Abr</td>
+                        <td>Jueves</td>
+                        <td colspan="2"><span class="badge badge-receso">SEMANA SANTA</span> - No hay clase</td>
+                    </tr>
+                    <tr>
+                        <td>9</td>
+                        <td class="fecha">07 Abr</td>
+                        <td>Martes</td>
+                        <td><a href="clase-15.html">Clase 15: Permisos y Seguridad Linux</a></td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>9</td>
+                        <td class="fecha">09 Abr</td>
+                        <td>Jueves</td>
+                        <td><a href="../laboratorios-html/lab-06-seguridad-hardening.html">Lab 06: Seguridad y Hardening</a></td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>10</td>
+                        <td class="fecha">14 Abr</td>
+                        <td>Martes</td>
+                        <td><a href="clase-16.html">Clase 16: Permisos y Seguridad Windows</a></td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>10</td>
+                        <td class="fecha">16 Abr</td>
+                        <td>Jueves</td>
+                        <td><a href="clase-17.html">Clase 17: Servidor Web Apache</a></td>
+                        <td>-</td>
+                    </tr>
+                    <tr class="evaluacion">
+                        <td>11</td>
+                        <td class="fecha">22 Abr</td>
+                        <td>Martes</td>
+                        <td><strong>E4 (15%)</strong> - Seguridad en SO</td>
+                        <td><span class="badge badge-eval">E4 - 15%</span></td>
+                    </tr>
+                    <tr>
+                        <td>11</td>
+                        <td class="fecha">23 Abr</td>
+                        <td>Jueves</td>
+                        <td><a href="clase-12.html">Clase 12: Sistemas de Archivos</a></td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>12</td>
+                        <td class="fecha">28 Abr</td>
+                        <td>Martes</td>
+                        <td><a href="clase-13.html">Clase 13: Implementación de Sistemas de Archivos</a></td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>12</td>
+                        <td class="fecha">30 Abr</td>
+                        <td>Jueves</td>
+                        <td><a href="../laboratorios-html/lab-05-sistemas-archivos.html">Lab 05: Sistemas de Archivos</a></td>
+                        <td>-</td>
+                    </tr>
+                    <tr class="evaluacion">
+                        <td>13</td>
+                        <td class="fecha">6 May</td>
+                        <td>Martes</td>
+                        <td><a href="clase-14.html">Clase 14: Servidor IIS</a> + <strong>E5 (15%)</strong> - Proyecto Fase 4: Servidores Web</td>
+                        <td><span class="badge badge-eval">E5 - 15%</span></td>
+                    </tr>
+                    <tr>
+                        <td>13</td>
+                        <td class="fecha">07 May</td>
+                        <td>Jueves</td>
+                        <td><a href="../laboratorios-html/lab-aws-01-introduccion-ec2.html">Lab AWS 01: Introducción a EC2</a></td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>14</td>
+                        <td class="fecha">12 May</td>
+                        <td>Martes</td>
+                        <td>Repaso General Conceptos</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>14</td>
+                        <td class="fecha">14 May</td>
+                        <td>Jueves</td>
+                        <td>Laboratorio de Refuerzo Final</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>15</td>
+                        <td class="fecha">19 May</td>
+                        <td>Martes</td>
+                        <td>Sesión de Simulacro Examen Final</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>15</td>
+                        <td class="fecha">21 May</td>
+                        <td>Jueves</td>
+                        <td>Taller de Consultas y Dudas</td>
+                        <td>-</td>
+                    </tr>
+                    <tr class="examen">
+                        <td>16</td>
+                        <td class="fecha">27 May</td>
+                        <td>Martes</td>
+                        <td colspan="1"><strong>E6: EXAMEN FINAL (2 horas)</strong></td>
+                        <td><span class="badge badge-exam">E6 - 20%</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2>Resumen de Evaluaciones</h2>
+            <div class="eval-summary">
+                <a href="evaluaciones.html#e1" style="text-decoration: none; color: inherit;">
+                    <div class="eval-card" style="cursor: pointer; transition: transform 0.2s;">
+                        <h4>E1 - Taller</h4>
+                        <div class="fecha-eval">25 Feb 2026</div>
+                        <span class="porcentaje">15%</span>
+                        <p style="margin-top:10px;">Estructura y tipos de SO</p>
+                        <p style="font-size:0.85em; color:#666;">Clases 01, 02, 04</p>
+                    </div>
+                </a>
+                <a href="evaluaciones.html#e2" style="text-decoration: none; color: inherit;">
+                    <div class="eval-card" style="cursor: pointer; transition: transform 0.2s;">
+                        <h4>E2 - Informe</h4>
+                        <div class="fecha-eval">11 Mar 2026</div>
+                        <span class="porcentaje">15%</span>
+                        <p style="margin-top:10px;">Gestión de Procesos</p>
+                        <p style="font-size:0.85em; color:#666;">Clases 05, 06, 07</p>
+                    </div>
+                </a>
+                <a href="evaluaciones.html#e3" style="text-decoration: none; color: inherit;">
+                    <div class="eval-card examen" style="cursor: pointer; transition: transform 0.2s;">
+                        <h4>E3 - Examen Parcial</h4>
+                        <div class="fecha-eval">25 Mar 2026</div>
+                        <span class="porcentaje">20%</span>
+                        <p style="margin-top:10px;">Memoria, E/S, Archivos</p>
+                        <p style="font-size:0.85em; color:#666;">Clases 08-11</p>
+                    </div>
+                </a>
+                <a href="evaluaciones.html#e4" style="text-decoration: none; color: inherit;">
+                    <div class="eval-card" style="cursor: pointer; transition: transform 0.2s;">
+                        <h4>E4 - Reporte</h4>
+                        <div class="fecha-eval">22 Abr 2026</div>
+                        <span class="porcentaje">15%</span>
+                        <p style="margin-top:10px;">Seguridad en SO</p>
+                        <p style="font-size:0.85em; color:#666;">Clases 15, 16, 17</p>
+                    </div>
+                </a>
+                <a href="evaluaciones.html#e5" style="text-decoration: none; color: inherit;">
+                    <div class="eval-card" style="cursor: pointer; transition: transform 0.2s;">
+                        <h4>E5 - Proyecto Fase 4</h4>
+                        <div class="fecha-eval">6 May 2026</div>
+                        <span class="porcentaje">15%</span>
+                        <p style="margin-top:10px;">Servidores Web y Monitoreo</p>
+                        <p style="font-size:0.85em; color:#666;">Scripts + Informe + Video</p>
+                    </div>
+                </a>
+                <a href="evaluaciones.html#e6" style="text-decoration: none; color: inherit;">
+                    <div class="eval-card examen" style="cursor: pointer; transition: transform 0.2s;">
+                        <h4>E6 - Proyecto Final</h4>
+                        <div class="fecha-eval">27 May 2026</div>
+                        <span class="porcentaje">20%</span>
+                        <p style="margin-top:10px;">Entrega Completa del Sistema</p>
+                        <p style="font-size:0.85em; color:#666;">Sustentación en vivo, 20-30 min</p>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <footer>
+            <p><strong>IF0099 - Sistemas Operativos I</strong></p>
+            <p>UNAULA - Ingeniería Informática - 2026-I</p>
+            <p style="margin-top: 10px; color: #999;">
+                <a href="index.html">Inicio</a> |
+                <a href="cronograma.html">Cronograma</a> |
+                <a href="evaluaciones.html">Evaluaciones</a> |
+                <a href="rubricas.html">Rúbricas</a>
+            </p>
+        </footer>
+    </div>
+</body>
+</html>

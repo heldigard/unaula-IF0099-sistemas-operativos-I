@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clase 09: Paginación | IF0099 - Sistemas Operativos I</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #1e40af;
+            --accent: #059669;
+            --bg-light: #f8fafc;
+            --bg-code: #1e293b;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.7; color: var(--text-main); background: var(--bg-light); font-size: 16px; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        header { background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); color: white; padding: 3rem 0; margin-bottom: 2rem; }
+        header h1 { font-size: 2.2rem; margin-bottom: 0.5rem; font-weight: 700; }
+        header .subtitle { font-size: 1.1rem; opacity: 0.9; }
+        header .meta { margin-top: 1rem; font-size: 0.9rem; opacity: 0.8; }
+        nav { background: white; padding: 1.5rem 0; margin-bottom: 2rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        nav h2 { font-size: 1.1rem; color: var(--text-muted); margin-bottom: 1rem; padding: 0 20px; }
+        nav ul { list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.5rem; padding: 0 20px; }
+        nav a { color: var(--primary); text-decoration: none; padding: 0.5rem; display: block; border-radius: 4px; transition: background 0.2s; }
+        nav a:hover { background: var(--bg-light); }
+        section { background: white; padding: 2rem; margin-bottom: 2rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        section h2 { color: var(--primary); font-size: 1.8rem; margin-bottom: 1.5rem; padding-bottom: 0.5rem; border-bottom: 3px solid var(--accent); }
+        section h3 { color: var(--secondary); font-size: 1.4rem; margin: 2rem 0 1rem; }
+        p { margin-bottom: 1rem; }
+        pre { background: var(--bg-code); color: #e2e8f0; padding: 1.5rem; border-radius: 8px; overflow-x: auto; margin: 1.5rem 0; font-size: 0.9rem; line-height: 1.5; }
+        code { font-family: 'Consolas', 'Monaco', 'Courier New', monospace; background: var(--bg-light); color: var(--primary); padding: 0.2rem 0.4rem; border-radius: 4px; font-size: 0.9em; }
+        pre code { background: none; padding: 0; color: inherit; }
+        ul, ol { margin-left: 1.5rem; margin-bottom: 1rem; }
+        li { margin-bottom: 0.5rem; }
+        .callout { padding: 1.5rem; border-radius: 8px; margin: 1.5rem 0; border-left: 4px solid; }
+        .callout.info { background: #eff6ff; border-left-color: var(--primary); }
+        .callout.warning { background: #fef3c7; border-left-color: #f59e0b; }
+        .callout.success { background: #d1fae5; border-left-color: var(--accent); }
+        table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.95rem; }
+        th, td { padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid var(--border); }
+        th { background: var(--bg-light); font-weight: 600; color: var(--secondary); }
+        .actividad { background: var(--bg-light); border-left: 5px solid var(--accent); padding: 1.5rem; margin: 1.5rem 0; border-radius: 4px; }
+        .actividad h3 { color: var(--primary); margin-bottom: 1rem; }
+        .class-nav { display: flex; justify-content: space-between; align-items: stretch; gap: 1rem; margin: 2rem 0; }
+        .class-nav-link { flex: 1; display: flex; align-items: center; gap: 0.75rem; padding: 1.25rem 1.5rem; background: white; border: 2px solid var(--border); border-radius: 12px; text-decoration: none; color: var(--text-main); transition: all 0.3s ease; }
+        .class-nav-link:hover { border-color: var(--primary); box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15); transform: translateY(-2px); }
+        .class-nav-link.prev { border-left: 4px solid var(--primary); }
+        .class-nav-link.next { border-right: 4px solid var(--accent); text-align: right; margin-left: auto; }
+        .class-nav-link .nav-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); margin-bottom: 0.25rem; }
+        .class-nav-link .nav-title { font-size: 1rem; font-weight: 600; color: var(--primary); }
+        .class-nav-link.next .nav-title { color: var(--accent); }
+        .class-nav-icon { font-size: 1.5rem; line-height: 1; }
+        footer { background: var(--text-main); color: white; padding: 2rem 0; text-align: center; margin-top: 3rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        @media (max-width: 768px) { header h1 { font-size: 1.6rem; } section { padding: 1.5rem; } nav ul { grid-template-columns: 1fr; } }
+
+        .eval-alert {
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            border-left: 4px solid #3b82f6;
+            padding: 1.25rem 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .eval-alert-icon {
+            font-size: 1.75rem;
+            line-height: 1;
+        }
+
+        .eval-alert-content {
+            flex: 1;
+        }
+
+        .eval-alert-title {
+            font-weight: 700;
+            color: #1e40af;
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .eval-alert-text {
+            color: #1e3a8a;
+            font-size: 0.9rem;
+        }
+
+        .eval-alert-date {
+            background: #3b82f6;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+
+        .class-nav-date {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        .class-nav-link:hover .nav-title {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Clase 09: Paginación</h1>
+            <p class="subtitle">IF0099 - Sistemas Operativos I | Unidad 6 - Memoria</p>
+            <p class="subtitle">Paginación de memoria, tablas de páginas, TLB, segmentación</p>
+            <p class="meta">📅 10 de Marzo 2026 | Sesión Martes: 6:00-8:00 AM | Teoría: 60 min + Práctica: 60 min | E2: Informe 15%</p>
+        </div>
+    </header>
+
+
+    <div class="container">
+
+        <!-- Quick Navigation Bar -->
+        <div class="quick-nav" style="background: white; padding: 1rem; margin-bottom: 2rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <a href="index.html" style="color: var(--primary); text-decoration: none; font-weight: 500;">Inicio</a>
+                <span style="color: var(--text-muted);">|</span>
+                <span style="color: var(--text-main); font-weight: 600;">Paginación</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <a href="cronograma.html" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: #10b981; color: white; text-decoration: none; border-radius: 6px; font-weight: 500;">Cronograma</a>
+                <a href="rubricas.html" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: #3b82f6; color: white; text-decoration: none; border-radius: 6px; font-weight: 500;">Rubricas</a>
+            </div>
+        </div>
+
+        <!-- Próxima Evaluación Alert -->
+        <div class="eval-alert">
+            <span class="eval-alert-icon">📌</span>
+            <div class="eval-alert-content">
+                <div class="eval-alert-title">Próxima Evaluación: E3 - Examen Parcial</div>
+                <div class="eval-alert-text">25 de Marzo 2026 (20%) - Memoria, E/S, Archivos</div>
+            </div>
+            <span class="eval-alert-date">📅 25 Mar</span>
+        </div>
+
+        <nav>
+            <h2>Contenido de la Clase</h2>
+            <ul>
+                <li><a href="#objetivos">Objetivos de Aprendizaje</a></li>
+                <li><a href="#introduccion">Introducción a Paginación</a></li>
+                <li><a href="#paginacion">Paginación de Memoria</a></li>
+                <li><a href="#tablas">Tablas de Páginas</a></li>
+                <li><a href="#tlb">TLB y Traducción</a></li>
+                <li><a href="#segmentacion">Segmentación</a></li>
+                <li><a href="#practica">Práctica en Linux</a></li>
+                <li><a href="#entregable">Entregable</a></li>
+            </ul>
+        </nav>
+
+        <section id="objetivos">
+            <h2>Objetivos de Aprendizaje</h2>
+            <p>Al finalizar esta clase, serás capaz de:</p>
+            <ol>
+                <li><strong>Comprender</strong> el concepto de paginación de memoria</li>
+                <li><strong>Explicar</strong> el funcionamiento de las tablas de páginas</li>
+                <li><strong>Diferenciar</strong> entre paginación y segmentación</li>
+                <li><strong>Analizar</strong> el rol del TLB en la traducción de direcciones</li>
+                <li><strong>Configurar</strong> parámetros de memoria en Linux</li>
+            </ol>
+
+            <div class="callout info">
+                <p class="callout-title">Glosario Técnico</p>
+                <ul>
+                    <li><strong>PTE (Page Table Entry):</strong> Entrada en la tabla de páginas que contiene el marco físico y bits de control.</li>
+                    <li><strong>TLB (Translation Lookaside Buffer):</strong> Caché de hardware que almacena traducciones recientes de páginas a marcos.</li>
+                    <li><strong>Hit / Miss:</strong> Acierto o fallo al buscar una traducción en la caché TLB.</li>
+                    <li><strong>Offset (Desplazamiento):</strong> La dirección relativa dentro de una página o marco.</li>
+                </ul>
+            </div>
+        </section>
+
+
+        <section id="introduccion">
+            <h2>1. Introducción a la Paginación</h2>
+            
+            <div class="callout info">
+                <strong>¿Qué es la paginación?</strong>
+                <p>Técnica de gestión de memoria que divide el espacio físico y lógico en bloques de tamaño fijo llamados marcos y páginas respectivamente.</p>
+            </div>
+
+            <h3>Ventajas sobre la asignación contigua:</h3>
+            <ul>
+                <li>Elimina la fragmentación externa</li>
+                <li>Permite compartir memoria entre procesos</li>
+                <li>Facilita la implementación de memoria virtual</li>
+                <li>Simplifica la asignación y liberación de memoria</li>
+            </ul>
+        </section>
+
+        <section id="paginacion">
+            <h2>2. Paginación de Memoria</h2>
+            
+            <h3>Conceptos Clave</h3>
+            <table>
+                <tr><th>Concepto</th><th>Tamaño</th><th>Descripción</th></tr>
+                <tr><td><strong>Página</strong></td><td>4KB (típico)</td><td>Bloque de memoria lógica</td></tr>
+                <tr><td><strong>Marco</strong></td><td>4KB (típico)</td><td>Bloque de memoria física</td></tr>
+                <tr><td><strong>Offset</strong></td><td>12 bits</td><td>Posición dentro de la página</td></tr>
+                <tr><td><strong>Número de página</strong></td><td>20 bits (x86)</td><td>Identifica la página</td></tr>
+            </table>
+
+            <h3>Estructura de una Dirección Lógica</h3>
+            <pre>
+Dirección Lógica (32 bits):
+┌─────────────────────────────┬─────────────┐
+│   Número de Página (p)      │   Offset(d) │
+│       20 bits               │   12 bits   │
+└─────────────────────────────┴─────────────┘
+         ↓ Tabla de Páginas
+Dirección Física (32 bits):
+┌─────────────────────────────┬─────────────┐
+│   Número de Marco (f)       │   Offset(d) │
+│       20 bits               │   12 bits   │
+└─────────────────────────────┴─────────────┘
+</pre>
+
+            <div class="callout success">
+                <strong>Ejemplo de traducción:</strong>
+                <ul>
+                    <li>Dirección lógica: 0x00401234</li>
+                    <li>Número de página: 0x00401 (página 1025)</li>
+                    <li>Offset: 0x234 (posición 564)</li>
+                    <li>Si el marco es 0x00005 → Dirección física: 0x00005234</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="tablas">
+            <h2>3. Tablas de Páginas</h2>
+            
+            <p>La tabla de páginas mapea páginas lógicas a marcos físicos:</p>
+
+            <h3>Estructura de una Entrada de Tabla de Páginas (PTE)</h3>
+            <pre>
+┌──────────────────────────────────────────────────────────────┐
+│ Número de Marco │ Flags (Presente, Modificado, Referenciado) │
+│    20 bits      │   Protección (R/W/X), Cache, etc.          │
+└──────────────────────────────────────────────────────────────┘
+</pre>
+
+            <h3>Bits de Control Comunes</h3>
+            <table>
+                <tr><th>Bit</th><th>Nombre</th><th>Descripción</th></tr>
+                <tr><td>P</td><td>Presente</td><td>Página cargada en memoria física</td></tr>
+                <tr><td>R/W</td><td>Lectura/Escritura</td><td>Permisos de acceso</td></tr>
+                <tr><td>U/S</td><td>Usuario/Supervisor</td><td>Nivel de privilegio requerido</td></tr>
+                <tr><td>A</td><td>Accedido</td><td>Página ha sido leída</td></tr>
+                <tr><td>D</td><td>Sucio</td><td>Página ha sido modificada</td></tr>
+            </table>
+
+            <h3>Tablas de Páginas Multinivel</h3>
+            <div class="callout warning">
+                <strong>Problema:</strong> Una tabla de páginas de un nivel para 32 bits necesitaría 4MB (2^20 entradas × 4 bytes).
+                <br><br>
+                <strong>Solución:</strong> Tablas multinivel (x86 usa 2 niveles, x86-64 usa 4 niveles).
+            </div>
+        </section>
+
+        <section id="tlb">
+            <h2>4. TLB (Translation Lookaside Buffer)</h2>
+            
+            <p>El TLB es una caché de traducciones de direcciones que acelera el acceso a memoria:</p>
+
+            <h3>Funcionamiento</h3>
+            <ol>
+                <li>CPU genera dirección lógica</li>
+                <li>Se busca en TLB (acceso rápido: ~1 ciclo)</li>
+                <li>Si TLB hit: obtener marco directamente</li>
+                <li>Si TLB miss: consultar tabla de páginas en RAM (~100 ciclos)</li>
+                <li>Actualizar TLB con nueva traducción</li>
+            </ol>
+
+            <h3>Rendimiento del TLB</h3>
+            <pre>
+Tiempo de acceso efectivo = (TLB_hit × TLB_time) + (TLB_miss × Memory_time)
+
+Ejemplo:
+- TLB hit rate: 98%
+- TLB access: 1 ns
+- Memory access: 100 ns
+- Tiempo efectivo = 0.98 × 1 + 0.02 × 100 = 2.98 ns
+</pre>
+
+            <div class="callout success">
+                <strong>TLB hit rate típico:</strong> 95-99% gracias a la localidad temporal y espacial.
+            </div>
+        </section>
+
+        <section id="segmentacion">
+            <h2>5. Segmentación</h2>
+            
+            <p>La segmentación divide la memoria en bloques lógicos de tamaño variable:</p>
+
+            <h3>Segmentos Típicos</h3>
+            <table>
+                <tr><th>Segmento</th><th>Contenido</th><th>Características</th></tr>
+                <tr><td><strong>Código</strong></td><td>Instrucciones del programa</td><td>Read-only, Ejecutable</td></tr>
+                <tr><td><strong>Datos</strong></td><td>Variables globales</td><td>Lectura/Escritura</td></tr>
+                <tr><td><strong>Pila</strong></td><td>Variables locales, parámetros</td><td>Lectura/Escritura, Crece hacia abajo</td></tr>
+                <tr><td><strong>Heap</strong></td><td>Memoria dinámica (malloc)</td><td>Lectura/Escritura, Crece hacia arriba</td></tr>
+            </table>
+
+            <h3>Dirección en Segmentación</h3>
+            <pre>
+Dirección Lógica:
+┌────────────────────┬──────────────────────────────┐
+│  Selector (s)      │         Offset (d)           │
+│    16 bits         │         32 bits              │
+└────────────────────┴──────────────────────────────┘
+
+Traducción:
+1. Selector → Tabla de Segmentos → Base + Límite
+2. Verificar: 0 ≤ offset < límite
+3. Dirección física = Base + offset
+</pre>
+
+            <h3>Paginación vs Segmentación</h3>
+            <table>
+                <tr><th>Característica</th><th>Paginación</th><th>Segmentación</th></tr>
+                <tr><td>Tamaño de unidad</td><td>Fijo (4KB)</td><td>Variable</td></tr>
+                <tr><td>Visibilidad</td><td>Transparente al programador</td><td>Visible al programador</td></tr>
+                <tr><td>Fragmentación</td><td>Interna (última página)</td><td>Externa</td></tr>
+                <tr><td>Protección</td><td>Por página</td><td>Por segmento</td></tr>
+            </table>
+
+            <div class="callout info">
+                <strong>Segmentación paginada:</strong> Linux y Windows combinan ambas técnicas. La segmentación divide el espacio lógico y cada segmento se pagina.
+            </div>
+        </section>
+
+        <section id="practica">
+            <h2>6. Práctica en Linux</h2>
+            
+            <h3>Comandos para analizar paginación y memoria:</h3>
+            <pre>
+# Ver tamaño de página del sistema
+getconf PAGE_SIZE
+
+# Ver información de memoria virtual de un proceso
+cat /proc/[PID]/maps
+
+# Ver estadísticas de TLB (si disponible)
+cat /proc/vmstat | grep -i tlb
+
+# Ver uso de memoria con detalles de paginación
+vmstat -s
+
+# Información detallada de memoria del sistema
+cat /proc/meminfo
+
+# Ver tabla de páginas (requiere permisos de root)
+sudo cat /proc/[PID]/pagemap
+</pre>
+
+            <h3>Ejercicio práctico:</h3>
+            <div class="actividad">
+                <h3>Ejercicio: Análisis de Paginación</h3>
+                <ol>
+                    <li>Verificar tamaño de página con <code>getconf PAGE_SIZE</code></li>
+                    <li>Ejecutar un proceso (ej: <code>sleep 100</code>) y obtener su PID</li>
+                    <li>Examinar su mapa de memoria con <code>cat /proc/[PID]/maps</code></li>
+                    <li>Identificar los diferentes segmentos (código, datos, heap, pila)</li>
+                    <li>Calcular cuántas páginas ocupa cada región</li>
+                </ol>
+            </div>
+        </section>
+
+        <section id="entregable">
+            <h2>7. Entregable de la Clase</h2>
+            
+            <div class="actividad">
+                <h3>Análisis de Paginación y Memoria</h3>
+                <p><strong>Descripción:</strong> Documento técnico sobre paginación en tu VM Ubuntu</p>
+                
+                <h4>Requisitos:</h4>
+                <ol>
+                    <li>Captura de <code>getconf PAGE_SIZE</code> y explicación</li>
+                    <li>Mapa de memoria de un proceso (<code>/proc/[PID]/maps</code>)</li>
+                    <li>Diagrama de traducción dirección lógica → física</li>
+                    <li>Comparación tabla: paginación vs segmentación</li>
+                    <li>Ejemplo numérico de traducción de dirección</li>
+                </ol>
+
+                <h4>Rúbrica:</h4>
+                <table>
+                    <tr><th>Criterio</th><th>Puntaje</th></tr>
+                    <tr><td>Capturas con comandos correctos</td><td>25%</td></tr>
+                    <tr><td>Mapa de memoria analizado</td><td>25%</td></tr>
+                    <tr><td>Diagrama de traducción claro</td><td>20%</td></tr>
+                    <tr><td>Comparación técnica completa</td><td>20%</td></tr>
+                    <tr><td>Ejemplo numérico correcto</td><td>10%</td></tr>
+                </table>
+            </div>
+        </section>
+
+        <section id="resumen">
+            <h2>Resumen</h2>
+            <table>
+                <tr><th>Concepto</th><th>Descripción</th></tr>
+                <tr><td>Paginación</td><td>División en páginas/marcos de tamaño fijo</td></tr>
+                <tr><td>Tabla de páginas</td><td>Mapeo página → marco con bits de control</td></tr>
+                <tr><td>TLB</td><td>Caché de traducciones para acelerar acceso</td></tr>
+                <tr><td>Segmentación</td><td>División lógica por tipo de dato</td></tr>
+                <tr><td>Offset</td><td>Posición dentro de página (no cambia en traducción)</td></tr>
+            </table>
+
+            <h3>Próxima Clase</h3>
+            <p><strong>Clase 10: Memoria Virtual</strong></p>
+            <ul>
+                <li>Memoria virtual y demand paging</li>
+                <li>Page faults</li>
+                <li>Algoritmos de reemplazo de páginas</li>
+                <li>Swap y thrashing</li>
+            </ul>
+        </section>
+
+        <!-- Navigation between classes -->
+        <nav class="class-nav" aria-label="Navegación entre clases">
+            <a href="clase-08.html" class="class-nav-link prev">
+                <span class="class-nav-icon">←</span>
+                <div>
+                    <div class="nav-label">Clase Anterior</div>
+                    <div class="nav-title">Gestión de Memoria</div>
+                    <div class="class-nav-date">📅 03 Mar 2026</div>
+                </div>
+            </a>
+            <a href="clase-10.html" class="class-nav-link next">
+                <div>
+                    <div class="nav-label">Siguiente Clase</div>
+                    <div class="nav-title">Memoria Virtual</div>
+                    <div class="class-nav-date">📅 12 Mar 2026</div>
+                </div>
+                <span class="class-nav-icon">→</span>
+            </a>
+        </nav>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p><strong>IF0099 - Sistemas Operativos I</strong> - Paginación</p>
+            <p>📅 10 de Marzo 2026 | Sesión Martes: 6:00-8:00 AM | Teoría: 60 min + Práctica: 60 min</p>
+
+            <p style="margin-top: 10px;">
+                <a href="index.html">Inicio</a> |
+                <a href="cronograma.html">Cronograma</a> |
+                <a href="rubricas.html">Rubricas</a>
+            </p>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,1040 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clase 04: Estructura del Sistema Operativo | IF0099 - Sistemas Operativos I</title>
+    <!-- Prism.js CSS para syntax highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #1e40af;
+            --accent: #059669;
+            --bg-light: #f8fafc;
+            --bg-code: #1e293b;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.7;
+            color: var(--text-main);
+            background: var(--bg-light);
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 3rem 0;
+            margin-bottom: 2rem;
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        header .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        header .meta {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        nav {
+            background: white;
+            padding: 1.5rem 0;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        nav h2 {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            padding: 0 20px;
+        }
+
+        nav ul {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 0.5rem;
+            padding: 0 20px;
+        }
+
+        nav a {
+            color: var(--primary);
+            text-decoration: none;
+            padding: 0.5rem;
+            display: block;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+
+        nav a:hover {
+            background: var(--bg-light);
+        }
+
+        section {
+            background: white;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        section h2 {
+            color: var(--primary);
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid var(--accent);
+        }
+
+        section h3 {
+            color: var(--secondary);
+            font-size: 1.4rem;
+            margin: 2rem 0 1rem;
+        }
+
+        section h4 {
+            color: var(--text-main);
+            font-size: 1.1rem;
+            margin: 1.5rem 0 0.75rem;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 1rem;
+        }
+
+        figure {
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        figure img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        figcaption {
+            margin-top: 0.75rem;
+            color: var(--text-muted);
+            font-style: italic;
+            font-size: 0.95rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.95rem;
+        }
+
+        th, td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            background: var(--bg-light);
+            font-weight: 600;
+            color: var(--secondary);
+        }
+
+        tr:hover {
+            background: var(--bg-light);
+        }
+
+        pre {
+            background: var(--bg-code);
+            color: #e2e8f0;
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+        }
+
+        p code, li code, td code {
+            background: var(--bg-light);
+            color: var(--primary);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+        }
+
+        ul, ol {
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        .callout {
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            border-left: 4px solid;
+        }
+
+        .callout.info {
+            background: #eff6ff;
+            border-left-color: var(--primary);
+        }
+
+        .callout.warning {
+            background: #fef3c7;
+            border-left-color: #f59e0b;
+        }
+
+        .callout.success {
+            background: #d1fae5;
+            border-left-color: var(--accent);
+        }
+
+        .ascii-diagram {
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.85rem;
+            line-height: 1.2;
+            background: var(--bg-light);
+            padding: 1rem;
+            border-radius: 4px;
+            overflow-x: auto;
+            white-space: pre;
+        }
+
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .comparison > div {
+            background: var(--bg-light);
+            padding: 1.5rem;
+            border-radius: 8px;
+        }
+
+        .gantt {
+            display: flex;
+            align-items: center;
+            margin: 2rem 0;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.8rem;
+        }
+
+        .gantt-bar {
+            height: 30px;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            margin: 0 2px;
+        }
+
+        .gantt-id {
+            width: 80px;
+            text-align: right;
+            padding-right: 10px;
+        }
+
+        .gantt-timeline {
+            flex: 1;
+            display: flex;
+            height: 30px;
+        }
+
+        .gantt-empty {
+            flex: 1;
+            border-bottom: 1px solid var(--border);
+        }
+
+        footer {
+            background: var(--text-main);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        footer a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        /* Navigation between classes */
+        .class-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: stretch;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .class-nav-link {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1.25rem 1.5rem;
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            text-decoration: none;
+            color: var(--text-main);
+            transition: all 0.3s ease;
+        }
+
+        .class-nav-link:hover {
+            border-color: var(--primary);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .class-nav-link.prev {
+            border-left: 4px solid var(--primary);
+        }
+
+        .class-nav-link.next {
+            border-right: 4px solid var(--accent);
+            text-align: right;
+            margin-left: auto;
+        }
+
+        .class-nav-link .nav-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            margin-bottom: 0.25rem;
+        }
+
+        .class-nav-link .nav-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .class-nav-link.next .nav-title {
+            color: var(--accent);
+        }
+
+        .class-nav-icon {
+            font-size: 1.5rem;
+            line-height: 1;
+        }
+
+        .class-nav-placeholder {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.25rem;
+            background: var(--bg-light);
+            border: 2px dashed var(--border);
+            border-radius: 12px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .scroll-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--primary);
+            color: white;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.3s;
+            text-decoration: none;
+            font-size: 1.5rem;
+        }
+
+        .scroll-top.visible {
+            opacity: 1;
+        }
+
+        .scroll-top:hover {
+            background: var(--secondary);
+        }
+
+        .actividad {
+            background: var(--bg-light);
+            border-left: 5px solid var(--accent);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+
+        .actividad h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .actividad p {
+            margin-bottom: 0.75rem;
+        }
+
+        .actividad strong {
+            color: var(--secondary);
+        }
+
+        .evaluacion {
+            background: #fef3c7;
+            border-left: 5px solid #f59e0b;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 8px;
+        }
+
+        .evaluacion h3 {
+            color: #b45309;
+            margin-bottom: 1rem;
+        }
+
+        .evaluacion .porcentaje {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #d97706;
+            margin: 0.5rem 0;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.6rem;
+            }
+
+            section {
+                padding: 1.5rem;
+            }
+
+            nav ul {
+                grid-template-columns: 1fr;
+            }
+
+            .comparison {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Code blocks with syntax highlighting */
+        pre {
+            background: #1e1e1e !important;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            overflow-x: auto;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        pre code {
+            font-family: 'Fira Code', 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: #d4d4d4;
+        }
+
+        /* Inline code */
+        code:not(pre code) {
+            background: #e2e8f0;
+            color: #c026d3;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-family: 'Fira Code', 'Consolas', 'Monaco', monospace;
+            font-size: 0.9em;
+        }
+
+        .code-header {
+            background: #2d2d2d;
+            color: #9cdcfe;
+            padding: 0.5rem 1rem;
+            border-radius: 8px 8px 0 0;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+        }
+
+        .code-block {
+            border-radius: 8px;
+            overflow: hidden;
+            margin: 1.5rem 0;
+        }
+
+        .code-block pre {
+            margin: 0;
+            border-radius: 0;
+        }
+
+        .terminal-block pre {
+            background: #0c0c0c !important;
+            border: 1px solid #333;
+        }
+
+        .terminal-block .code-header {
+            background: #1a1a1a;
+            color: #22c55e;
+        }
+
+        .eval-alert {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-left: 4px solid #f59e0b;
+            padding: 1.25rem 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .eval-alert-icon {
+            font-size: 1.75rem;
+            line-height: 1;
+        }
+
+        .eval-alert-content {
+            flex: 1;
+        }
+
+        .eval-alert-title {
+            font-weight: 700;
+            color: #92400e;
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .eval-alert-text {
+            color: #78350f;
+            font-size: 0.9rem;
+        }
+
+        .eval-alert-date {
+            background: #f59e0b;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+
+        .class-nav-date {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        .class-nav-link:hover .nav-title {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Clase 04: Estructura del Sistema Operativo</h1>
+            <p class="subtitle">IF0099 - Sistemas Operativos I | Unidad 1 - Sistemas Operativos</p>
+            <p class="subtitle">Kernel, Shell, System Calls y Modos de Operación</p>
+            <p class="meta">📅 10 de Febrero 2026 | Sesión Martes: 6:00-8:00 AM | Teoría: 60 min + Práctica: 60 min</p>
+        </div>
+    </header>
+
+
+    <div class="container">
+
+        <!-- Quick Navigation Bar -->
+        <div class="quick-nav" style="background: white; padding: 1rem; margin-bottom: 2rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <a href="index.html" style="color: var(--primary); text-decoration: none; font-weight: 500;">Inicio</a>
+                <span style="color: var(--text-muted);">|</span>
+                <span style="color: var(--text-main); font-weight: 600;">Estructura del Sistema Operativo</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <a href="cronograma.html" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: #10b981; color: white; text-decoration: none; border-radius: 6px; font-weight: 500;">Cronograma</a>
+                <a href="rubricas.html" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: #3b82f6; color: white; text-decoration: none; border-radius: 6px; font-weight: 500;">Rubricas</a>
+            </div>
+        </div>
+
+        <!-- Próxima Evaluación Alert -->
+        <a href="evaluaciones.html#e1" style="text-decoration: none; display: block;">
+            <div class="eval-alert" style="cursor: pointer; transition: transform 0.2s;">
+                <span class="eval-alert-icon">📌</span>
+                <div class="eval-alert-content">
+                    <div class="eval-alert-title">Próxima Evaluación: E1 - Taller</div>
+                    <div class="eval-alert-text">25 de Febrero 2026 (15%) - Clases 01, 02, 04</div>
+                </div>
+                <span class="eval-alert-date">📅 25 Feb</span>
+            </div>
+        </a>
+
+        <nav>
+            <h2>Contenido de la Clase</h2>
+            <ul>
+                <li><a href="#objetivos">Objetivos de Aprendizaje</a></li>
+                <li><a href="#que-es">1. Componentes del SO</a></li>
+                <li><a href="#metricas">2. Práctica Comparativa</a></li>
+                <li><a href="#laboratorio">3. Laboratorio</a></li>
+                <li><a href="#practica">4. Actividad Práctica</a></li>
+            </ul>
+        </nav>
+
+        <section id="objetivos">
+            <h2>Objetivos de Aprendizaje</h2>
+            <p>Al finalizar esta clase, serás capaz de:</p>
+            <ol>
+                <li><strong>Identificar</strong> los componentes principales de un Sistema Operativo</li>
+                <li><strong>Explicar</strong> la diferencia entre Kernel y Shell</li>
+                <li><strong>Describir</strong> qué son las System Calls y cómo funcionan</li>
+                <li><strong>Comparar</strong> Modo Usuario vs Modo Kernel</li>
+                <li><strong>Analizar</strong> la arquitectura de capas del SO</li>
+                <li><strong>Comparar</strong> la estructura de Linux y Windows Server</li>
+            </ol>
+        </section>
+
+        <section id="que-es">
+            <h2>1. Componentes del Sistema Operativo</h2>
+
+            <h3>1.1 Kernel - El Núcleo del Sistema</h3>
+            <p>El <strong>Kernel</strong> es el componente central del Sistema Operativo. Es el software que tiene control total sobre todo lo que sucede en el sistema.</p>
+
+            <div class="callout info">
+                <p class="callout-title">¿Por qué se llama "Kernel"?</p>
+                <p>La palabra viene del alemán "Kern" que significa "núcleo" o "semilla". Así como una semilla contiene toda la información para que una planta crezca, el Kernel contiene todo lo necesario para que el sistema funcione.</p>
+            </div>
+
+            <h4>Funciones del Kernel</h4>
+            <ul>
+                <li><strong>Gestión de procesos:</strong> Crear, schedule y terminar procesos</li>
+                <li><strong>Gestión de memoria:</strong> Asignar y liberar RAM</li>
+                <li><strong>Gestión de E/S:</strong> Controlar dispositivos</li>
+                <li><strong>Gestión de archivos:</strong> Organizar y acceder a datos</li>
+                <li><strong>Seguridad:</strong> Proteger recursos y procesos</li>
+            </ul>
+
+            <h3>1.2 Shell - La Interfaz de Comandos</h3>
+            <p>La <strong>Shell</strong> es un programa que permite interactuar con el Kernel. Es un intérprete de comandos que traduce lo que escribes en llamadas al sistema.</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Sistema</th>
+                        <th>Shell</th>
+                        <th>Características</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Linux</strong></td>
+                        <td>bash, zsh, fish</td>
+                        <td>Scripting, pipes, redirección</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Windows</strong></td>
+                        <td>PowerShell, cmd</td>
+                        <td>Objetos, .NET integrado</td>
+                    </tr>
+                    <tr>
+                        <td><strong>macOS</strong></td>
+                        <td>zsh (default), bash</td>
+                        <td>Unix-like, herramientas BSD</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>Analogía de la Shell</h4>
+            <div class="ascii-diagram">
+Usuario → Shell (traductor) → Kernel (ejecuta) → Hardware
+
+Sin Shell:
+Usuario ❌ No puede hablar con Kernel
+
+Con Shell:
+Usuario "abre archivo.txt"
+Shell traduce → open("archivo.txt")
+Kernel abre archivo → Hardware lee disco
+            </div>
+
+            <h3>1.3 System Calls - Llamadas al Sistema</h3>
+            <p>Las <strong>System Calls</strong> son la puerta de entrada al Kernel. Son funciones que permiten a los programas solicitar servicios que requieren privilegios especiales.</p>
+
+            <h4>Categorías de System Calls</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Categoría</th>
+                        <th>Linux</th>
+                        <th>Windows</th>
+                        <th>Propósito</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Control de procesos</strong></td>
+                        <td>fork(), exec(), exit()</td>
+                        <td>CreateProcess, ExitProcess</td>
+                        <td>Crear/terminar procesos</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Manipulación archivos</strong></td>
+                        <td>open(), read(), write()</td>
+                        <td>CreateFile, ReadFile</td>
+                        <td>Operaciones I/O</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Gestión memoria</strong></td>
+                        <td>mmap(), brk()</td>
+                        <td>VirtualAlloc</td>
+                        <td>Asignar memoria</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Comunicaciones</strong></td>
+                        <td>socket(), bind(), listen()</td>
+                        <td>WSAStartup, socket</td>
+                        <td>Comunicación en red</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>1.4 Modo Usuario vs Modo Kernel</h3>
+            <p>Los procesadores modernos tienen al menos dos modos de operación:</p>
+
+            <div class="comparison">
+                <div>
+                    <h4>🔓 Modo Usuario</h4>
+                    <p>Donde corren las aplicaciones:</p>
+                    <ul>
+                        <li>Acceso limitado a hardware</li>
+                        <li>No puede ejecutar instrucciones privilegiadas</li>
+                        <li>Acceso restringido a memoria</li>
+                        <li>Navegadores, editores, juegos</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>🔒 Modo Kernel</h4>
+                    <p>Donde corre el Sistema Operativo:</p>
+                    <ul>
+                        <li>Acceso completo al hardware</li>
+                        <li>Puede ejecutar cualquier instrucción</li>
+                        <li>Acceso a toda la memoria</li>
+                        <li>Kernel, drivers de dispositivo</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h4>Transición entre Modos</h4>
+            <div class="ascii-diagram">
+┌─────────────────────────────────────────────────────┐
+│                    MODO USUARIO                      │
+│  (Navegador, Word, Spotify, etc.)                    │
+│                                                       │
+│  Usuario ejecuta: open("archivo.txt")                │
+│           ↓                                           │
+│  ─────────────────────────────────────                │
+│           │ System Call (TRAP)                        │
+│           ▼                                           │
+│  ─────────────────────────────────────                │
+│                                                       │
+│                    MODO KERNEL                        │
+│  (Kernel verifica permisos y ejecuta)                 │
+│           │                                           │
+│           ▼                                           │
+│  ─────────────────────────────────────                │
+│           │ Retorno al modo usuario                   │
+│           ▼                                           │
+│  Usuario continúa ejecución                           │
+└─────────────────────────────────────────────────────┘
+            </div>
+
+            <div class="callout warning">
+                <p class="callout-title">¿Por qué dos modos?</p>
+                <p>Si todos los programas corrieran en modo kernel, cualquier programa podría:</p>
+                <ul>
+                    <li>Leer tu contraseña de la memoria</li>
+                    <li>Formatear tu disco duro</li>
+                    <li>Interceptar tus pulsaciones de teclado</li>
+                    <li>Causar que todo el sistema crashee</li>
+                </ul>
+                <p>La separación de modos protege al sistema y a los usuarios.</p>
+            </div>
+
+            <h3>1.5 Arquitectura en Capas</h3>
+            <p>Un Sistema Operativo está organizado en capas jerárquicas:</p>
+
+            <figure>
+                <img src="../assets/infografias/so-capas-sistema.png" alt="Diagrama de capas del sistema informático">
+                <figcaption>Figura 1: Arquitectura de capas de un Sistema Operativo</figcaption>
+            </figure>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Capa</th>
+                        <th>Descripción</th>
+                        <th>Ejemplos</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Aplicaciones</strong></td>
+                        <td>Programas de usuario</td>
+                        <td>Navegadores, editores, juegos</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Librerías</strong></td>
+                        <td>Funciones reutilizables</td>
+                        <td>libc, .NET Framework</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Shell</strong></td>
+                        <td>Intérprete de comandos</td>
+                        <td>bash, PowerShell</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Kernel</strong></td>
+                        <td>Núcleo del sistema</td>
+                        <td>Gestión procesos, memoria, E/S</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Hardware</strong></td>
+                        <td>Componentes físicos</td>
+                        <td>CPU, RAM, disco, red</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>1.6 Comandos Prácticos para Explorar el SO</h3>
+
+            <h4>En Linux (Ubuntu Server)</h4>
+            <div class="code-block terminal-block">
+                <div class="code-header">Terminal - Explorando el Sistema</div>
+                <pre><code class="language-bash"># Ver información del kernel
+uname -a
+
+# Ver módulos del kernel cargados
+lsmod
+
+# Ver system calls disponibles
+man syscalls
+
+# Ver procesos en ejecución
+ps aux
+
+# Ver espacio de usuario vs kernel
+strace ls 2>&1 | head -20</code></pre>
+            </div>
+
+            <h4>En Windows Server</h4>
+            <div class="code-block terminal-block">
+                <div class="code-header">PowerShell - Explorando el Sistema</div>
+                <pre><code class="language-powershell"># Ver información del sistema
+Get-ComputerInfo | Select-Object OsName, WindowsVersion
+
+# Ver procesos
+Get-Process | Select-Object -First 10
+
+# Ver servicios
+Get-Service | Where-Object {$_.Status -eq "Running"} | Select-Object -First 10</code></pre>
+            </div>
+
+            <div class="callout info">
+                <p class="callout-title">💡 Tip</p>
+                <p>Estos comandos te permiten ver la estructura interna del SO en acción. Úsalos para completar tu entregable.</p>
+            </div>
+
+            <div class="actividad">
+                <h3>📋 Actividad de la Clase 04</h3>
+                <p><strong>Fecha de entrega:</strong> Próxima clase</p>
+                <p><strong>Tiempo estimado:</strong> 60 minutos</p>
+                <p>Para esta práctica, utilizaremos la máquina virtual configurada en el <strong><a href="../laboratorios-html/lab-00-introduccion-simuladores.html" target="_blank">Laboratorio 0: VirtualBox + Ubuntu Server</a></strong>.</p>
+                
+                <h4>Entregables:</h4>
+
+                <ol>
+                    <li><strong>Diagrama de arquitectura:</strong> Dibuja la estructura del SO (Kernel, Shell, System Calls, Modos) - puede ser a mano o digital</li>
+                    <li><strong>Cuadro comparativo:</strong> Tabla de 5 aspectos comparando Linux vs Windows Server (Kernel, Shell, Comandos básicos)</li>
+                    <li><strong>Capturas:</strong> 2 comandos ejecutados en Linux (uname -a, lsmod) con breve explicación</li>
+                </ol>
+
+                <h4>Rúbrica:</h4>
+                <table>
+                    <tr><th>Criterio</th><th>Puntaje</th></tr>
+                    <tr><td>Diagrama claro con componentes principales</td><td>40%</td></tr>
+                    <tr><td>Cuadro comparativo completo (5 aspectos)</td><td>30%</td></tr>
+                    <tr><td>Capturas con explicación</td><td>20%</td></tr>
+                    <tr><td>Presentación y organización</td><td>10%</td></tr>
+                </table>
+            </div>
+        </section>
+
+        <section id="resumen">
+            <h2>📚 Resumen de la Clase</h2>
+
+            <h3>Conceptos Clave</h3>
+            <ul>
+                <li><strong>Kernel:</strong> El núcleo del SO que gestiona hardware y recursos</li>
+                <li><strong>Shell:</strong> Interfaz de usuario para interactuar con el kernel</li>
+                <li><strong>System Calls:</strong> Puertas de entrada al kernel modo protegido</li>
+                <li><strong>Modo Kernel vs Usuario:</strong> Protección de memoria y operaciones críticas</li>
+                <li><strong>Arquitectura:</strong> Monolítico (Linux), Microkernel (Minix), Híbrido (Windows)</li>
+            </ul>
+
+            <h3>Comandos Prácticos</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Comando</th>
+                        <th>Propósito</th>
+                        <th>Ejemplo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>uname -a</code></td>
+                        <td>Ver info del kernel</td>
+                        <td>Kernel version, architecture</td>
+                    </tr>
+                    <tr>
+                        <td><code>lsmod</code></td>
+                        <td>Listar módulos cargados</td>
+                        <td>Drivers del kernel activos</td>
+                    </tr>
+                    <tr>
+                        <td><code>strace ls</code></td>
+                        <td>Rastrear system calls</td>
+                        <td>Ver qué llama un comando</td>
+                    </tr>
+                    <tr>
+                        <td><code>Get-ComputerInfo</code></td>
+                        <td>Info de sistema Windows</td>
+                        <td>Kernel version, OS</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Para la Próxima Clase</h3>
+            <div class="callout info">
+                <p><strong>Clase 05:</strong> Procesos en Linux - Gestión y Monitoreo</p>
+                <p>Llevaremos la teoría de procesos a la práctica con <code>ps</code>, <code>top</code>, <code>htop</code>, <code>kill</code> y <code>systemctl</code>.</p>
+            </div>
+        </section>
+
+        <!-- Navigation between classes -->
+        <nav class="class-nav" aria-label="Navegación entre clases">
+            <a href="clase-02.html" class="class-nav-link prev">
+                <span class="class-nav-icon">←</span>
+                <div>
+                    <div class="nav-label">Clase Anterior</div>
+                    <div class="nav-title">Linux Terminal</div>
+                    <div class="class-nav-date">📅 05 Feb 2026</div>
+                </div>
+            </a>
+            <a href="clase-05.html" class="class-nav-link next">
+                <div>
+                    <div class="nav-label">Siguiente Clase</div>
+                    <div class="nav-title">Procesos en Linux</div>
+                    <div class="class-nav-date">📅 17 Feb 2026</div>
+                </div>
+                <span class="class-nav-icon">→</span>
+            </a>
+        </nav>
+    </div>
+
+    
+    
+    <footer>
+        <div class="container">
+            <p><strong>IF0099 - Sistemas Operativos I</strong> - Estructura del Sistema Operativo</p>
+            <p>📅 10 de Febrero 2026 | Sesión Martes: 6:00-8:00 AM | Teoría: 60 min + Práctica: 60 min</p>
+
+            <p style="margin-top: 10px;">
+                <a href="index.html" style="color: #10b981;">Inicio</a> |
+                <a href="cronograma.html" style="color: #10b981;">Cronograma</a> |
+                <a href="evaluaciones.html" style="color: #8b5cf6;">Evaluaciones</a> |
+                <a href="rubricas.html" style="color: #3b82f6;">Rubricas</a>
+            </p>
+        </div>
+    </footer>
+
+
+
+    <a href="#" class="scroll-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); return false;">↑</a>
+
+    <script>
+        const scrollTopBtn = document.querySelector('.scroll-top');
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                scrollTopBtn.classList.add('visible');
+            } else {
+                scrollTopBtn.classList.remove('visible');
+            }
+        });
+
+        document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+
+    <!-- Prism.js para syntax highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            Prism.highlightAll();
+        });
+    </script>
+</body>
+</html>

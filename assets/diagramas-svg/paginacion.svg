@@ -1,0 +1,173 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 750" style="background: #f8fafc; font-family: Arial, sans-serif;">
+  <!-- Título -->
+  <text x="550" y="30" text-anchor="middle" font-size="24" font-weight="bold" fill="#1e293b">Paginación y Memoria Virtual</text>
+
+  <!-- Subtítulo -->
+  <text x="550" y="55" text-anchor="middle" font-size="13" fill="#64748b">Cómo el SO abstrae la memoria física usando páginas</text>
+
+  <!-- Conceptos fundamentales -->
+  <g id="conceptos">
+    <rect x="50" y="80" width="1000" height="55" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+    <text x="550" y="100" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e40af">Conceptos Fundamentales</text>
+    <text x="120" y="120" font-size="11" fill="#64748b"><tspan font-weight="bold">Página:</tspan> Unidad fija de memoria lógica (4KB típico)</text>
+    <text x="480" y="120" font-size="11" fill="#64748b"><tspan font-weight="bold">Marco:</tspan> Unidad fija de memoria física</text>
+    <text x="800" y="120" font-size="11" fill="#64748b"><tspan font-weight="bold">MMU:</tspan> Hardware que traduce direcciones</text>
+  </g>
+
+  <!-- Memoria Lógica del Proceso -->
+  <g id="memoria-logica">
+    <text x="200" y="180" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e293b">Memoria Lógica del Proceso</text>
+
+    <!-- Espacio lógico -->
+    <rect x="50" y="200" width="300" height="260" rx="5" fill="white" stroke="#3b82f6" stroke-width="2"/>
+    <text x="200" y="220" text-anchor="middle" font-size="12" fill="#64748b">Espacio de direcciones lógicas</text>
+
+    <!-- Páginas lógicas -->
+    <rect x="70" y="235" width="260" height="30" fill="#3b82f6" opacity="0.7"/>
+    <text x="200" y="255" text-anchor="middle" font-size="11" fill="white">Página 0 (0x0000 - 0x0FFF)</text>
+
+    <rect x="70" y="270" width="260" height="30" fill="#22c55e" opacity="0.7"/>
+    <text x="200" y="290" text-anchor="middle" font-size="11" fill="white">Página 1 (0x1000 - 0x1FFF)</text>
+
+    <rect x="70" y="305" width="260" height="30" fill="#f59e0b" opacity="0.7"/>
+    <text x="200" y="325" text-anchor="middle" font-size="11" fill="white">Página 2 (0x2000 - 0x2FFF)</text>
+
+    <rect x="70" y="340" width="260" height="30" fill="#ef4444" opacity="0.7"/>
+    <text x="200" y="360" text-anchor="middle" font-size="11" fill="white">Página 3 (0x3000 - 0x3FFF)</text>
+
+    <rect x="70" y="375" width="260" height="30" fill="#8b5cf6" opacity="0.7"/>
+    <text x="200" y="395" text-anchor="middle" font-size="11" fill="white">Página 4 (0x4000 - 0x4FFF)</text>
+
+    <rect x="70" y="410" width="260" height="30" fill="#ec4899" opacity="0.7"/>
+    <text x="200" y="430" text-anchor="middle" font-size="11" fill="white">... más páginas ...</text>
+  </g>
+
+  <!-- Tabla de Páginas -->
+  <g id="tabla-paginas">
+    <text x="600" y="180" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e293b">Tabla de Páginas (Page Table)</text>
+
+    <!-- Tabla -->
+    <rect x="400" y="200" width="400" height="200" rx="5" fill="#fef3c7" stroke="#ca8a04" stroke-width="2"/>
+
+    <!-- Encabezados -->
+    <text x="470" y="225" font-size="11" font-weight="bold" fill="#9a3412">Página</text>
+    <text x="680" y="225" font-size="11" font-weight="bold" fill="#9a3412">Marco</text>
+    <line x1="400" y1="235" x2="800" y2="235" stroke="#ca8a04" stroke-width="1"/>
+
+    <!-- Filas -->
+    <rect x="420" y="245" width="80" height="25" fill="#3b82f6" opacity="0.5"/>
+    <text x="460" y="262" text-anchor="middle" font-size="10" fill="white">0</text>
+    <rect x="680" y="245" width="80" height="25" fill="#3b82f6" opacity="0.5"/>
+    <text x="720" y="262" text-anchor="middle" font-size="10" fill="white">3</text>
+    <line x1="510" y1="257" x2="680" y2="257" stroke="#ca8a04" stroke-width="1" marker-end="url(#arrow-small)"/>
+
+    <rect x="420" y="275" width="80" height="25" fill="#22c55e" opacity="0.5"/>
+    <text x="460" y="292" text-anchor="middle" font-size="10" fill="white">1</text>
+    <rect x="680" y="275" width="80" height="25" fill="#22c55e" opacity="0.5"/>
+    <text x="720" y="292" text-anchor="middle" font-size="10" fill="white">7</text>
+    <line x1="510" y1="287" x2="680" y2="287" stroke="#ca8a04" stroke-width="1" marker-end="url(#arrow-small)"/>
+
+    <rect x="420" y="305" width="80" height="25" fill="#f59e0b" opacity="0.5"/>
+    <text x="460" y="322" text-anchor="middle" font-size="10" fill="white">2</text>
+    <rect x="680" y="305" width="80" height="25" fill="#f59e0b" opacity="0.5"/>
+    <text x="720" y="322" text-anchor="middle" font-size="10" fill="white">5</text>
+    <line x1="510" y1="317" x2="680" y2="317" stroke="#ca8a04" stroke-width="1" marker-end="url(#arrow-small)"/>
+
+    <rect x="420" y="335" width="80" height="25" fill="#ef4444" opacity="0.5"/>
+    <text x="460" y="352" text-anchor="middle" font-size="10" fill="white">3</text>
+    <rect x="680" y="335" width="80" height="25" fill="#ef4444" opacity="0.5"/>
+    <text x="720" y="352" text-anchor="middle" font-size="10" fill="white">2</text>
+    <line x1="510" y1="347" x2="680" y2="347" stroke="#ca8a04" stroke-width="1" marker-end="url(#arrow-small)"/>
+
+    <rect x="420" y="365" width="80" height="25" fill="#8b5cf6" opacity="0.5"/>
+    <text x="460" y="382" text-anchor="middle" font-size="10" fill="white">4</text>
+    <rect x="680" y="365" width="80" height="25" fill="#8b5cf6" opacity="0.5"/>
+    <text x="720" y="382" text-anchor="middle" font-size="10" fill="white">1</text>
+    <line x1="510" y1="377" x2="680" y2="377" stroke="#ca8a04" stroke-width="1" marker-end="url(#arrow-small)"/>
+
+    <defs>
+      <marker id="arrow-small" markerWidth="8" markerHeight="8" refX="7" refY="2" orient="auto">
+        <polygon points="0 0, 8 2, 0 4" fill="#ca8a04"/>
+      </marker>
+    </defs>
+  </g>
+
+  <!-- Memoria Física -->
+  <g id="memoria-fisica">
+    <text x="975" y="180" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e293b">Memoria Física (RAM)</text>
+
+    <!-- Memoria física -->
+    <rect x="850" y="200" width="200" height="260" rx="5" fill="white" stroke="#16a34a" stroke-width="2"/>
+    <text x="950" y="220" text-anchor="middle" font-size="12" fill="#64748b">RAM física</text>
+
+    <!-- Marcos físicos -->
+    <rect x="860" y="240" width="180" height="30" fill="#8b5cf6" opacity="0.7"/>
+    <text x="950" y="260" text-anchor="middle" font-size="10" fill="white">Marco 1 (Página 4)</text>
+
+    <rect x="860" y="275" width="180" height="30" fill="#ef4444" opacity="0.7"/>
+    <text x="950" y="295" text-anchor="middle" font-size="10" fill="white">Marco 2 (Página 3)</text>
+
+    <rect x="860" y="310" width="180" height="30" fill="#f59e0b" opacity="0.7"/>
+    <text x="950" y="330" text-anchor="middle" font-size="10" fill="white">Marco 3 (Otro proc)</text>
+
+    <rect x="860" y="345" width="180" height="30" fill="#f59e0b" opacity="0.7"/>
+    <text x="950" y="365" text-anchor="middle" font-size="10" fill="white">Marco 4 (Página 2)</text>
+
+    <rect x="860" y="380" width="180" height="30" fill="#22c55e" opacity="0.7"/>
+    <text x="950" y="400" text-anchor="middle" font-size="10" fill="white">Marco 5 (Otro proc)</text>
+
+    <rect x="860" y="415" width="180" height="30" fill="#22c55e" opacity="0.7"/>
+    <text x="950" y="435" text-anchor="middle" font-size="10" fill="white">Marco 6 (Otro proc)</text>
+
+    <rect x="860" y="450" width="180" height="30" fill="#3b82f6" opacity="0.7"/>
+    <text x="950" y="470" text-anchor="middle" font-size="10" fill="white">Marco 8 (Página 0)</text>
+  </g>
+
+  <!-- Proceso de traducción -->
+  <g id="traduccion">
+    <rect x="50" y="490" width="1000" height="90" rx="8" fill="#e0e7ff" stroke="#4f46e5" stroke-width="2"/>
+    <text x="550" y="510" text-anchor="middle" font-size="13" font-weight="bold" fill="#3730a3">Proceso de Traducción de Direcciones</text>
+
+    <text x="100" y="535" font-size="10" fill="#4f46e5">1. CPU genera dirección</text>
+    <text x="280" y="535" font-size="10" fill="#4f46e5">→ 2. Divide en página + offset</text>
+    <text x="520" y="535" font-size="10" fill="#4f46e5">→ 3. Busca en tabla</text>
+    <text x="700" y="535" font-size="10" fill="#4f46e5">→ 4. Obtiene marco</text>
+    <text x="100" y="555" font-size="10" fill="#4f46e5">→ 5. Combina marco + offset</text>
+    <text x="300" y="555" font-size="10" fill="#4f46e5">→ 6. Dirección física</text>
+    <text x="500" y="555" font-size="10" fill="#4f46e5">→ 7. Accede a memoria</text>
+  </g>
+
+  <!-- TLB -->
+  <g id="tlb">
+    <rect x="50" y="600" width="300" height="75" rx="5" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+    <text x="200" y="620" text-anchor="middle" font-size="12" font-weight="bold" fill="#166534">TLB (Translation Lookaside Buffer)</text>
+    <text x="65" y="640" font-size="10" fill="#64748b">• Cache de traducciones recientes</text>
+    <text x="65" y="655" font-size="10" fill="#64748b">• Acelera traducción de direcciones</text>
+    <text x="65" y="670" font-size="10" fill="#16a34a">• Hit rate > 95% en sistemas típicos</text>
+  </g>
+
+  <!-- Page Fault -->
+  <g id="page-fault">
+    <rect x="370" y="600" width="300" height="75" rx="5" fill="#fee2e2" stroke="#dc2626" stroke-width="2"/>
+    <text x="520" y="620" text-anchor="middle" font-size="12" font-weight="bold" fill="#991b1b">Page Fault (Fallo de Página)</text>
+    <text x="385" y="640" font-size="10" fill="#7f1d1d">• Página no está en memoria</text>
+    <text x="385" y="655" font-size="10" fill="#7f1d1d">• SO trae página desde disco</text>
+    <text x="385" y="670" font-size="10" fill="#dc2626">• Costoso: miles de ciclos de CPU</text>
+  </g>
+
+  <!-- Thrashing -->
+  <g id="thrashing">
+    <rect x="690" y="600" width="360" height="75" rx="5" fill="#fef3c7" stroke="#ca8a04" stroke-width="2"/>
+    <text x="870" y="620" text-anchor="middle" font-size="12" font-weight="bold" fill="#9a3412">Thrashing (Sobre-paginación)</text>
+    <text x="705" y="640" font-size="10" fill="#92400e">• Sistema gasta más tiempo paginando que ejecutando</text>
+    <text x="705" y="655" font-size="10" fill="#92400e">• Causa: working set > RAM disponible</text>
+    <text x="705" y="670" font-size="10" fill="#ca8a04">• Solución: reducir multiprogramación o añadir RAM</text>
+  </g>
+
+  <!-- Algoritmos de reemplazo -->
+  <g id="algoritmos">
+    <rect x="50" y="690" width="1000" height="50" rx="5" fill="#e0e7ff" stroke="#4f46e5" stroke-width="1"/>
+    <text x="550" y="710" text-anchor="middle" font-size="12" font-weight="bold" fill="#3730a3">Algoritmos de Reemplazo de Páginas</text>
+    <text x="550" y="730" text-anchor="middle" font-size="10" fill="#4f46e5">FIFO (First-In, First-Out) • LRU (Least Recently Used) • Óptimo (reemplaza página usada más lejos) • Reloj (Clock)</text>
+  </g>
+</svg>

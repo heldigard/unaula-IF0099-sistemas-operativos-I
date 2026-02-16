@@ -1,0 +1,1086 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clase 15: Permisos y Seguridad en Linux | IF0099 - Sistemas Operativos I</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #1e40af;
+            --accent: #059669;
+            --bg-light: #f8fafc;
+            --bg-code: #1e293b;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.7;
+            color: var(--text-main);
+            background: var(--bg-light);
+            font-size: 16px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 3rem 0;
+            margin-bottom: 2rem;
+        }
+        header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+        header .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        header .meta {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        nav {
+            background: white;
+            padding: 1.5rem 0;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        nav h2 {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            padding: 0 20px;
+        }
+        nav ul {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 0.5rem;
+            padding: 0 20px;
+        }
+        nav a {
+            color: var(--primary);
+            text-decoration: none;
+            padding: 0.5rem;
+            display: block;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+        nav a:hover {
+            background: var(--bg-light);
+        }
+
+        section {
+            background: white;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        section h2 {
+            color: var(--primary);
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid var(--accent);
+        }
+        section h3 {
+            color: var(--secondary);
+            font-size: 1.4rem;
+            margin: 2rem 0 1rem;
+        }
+        section h4 {
+            color: var(--text-main);
+            font-size: 1.1rem;
+            margin: 1.5rem 0 0.75rem;
+            font-weight: 600;
+        }
+        p {
+            margin-bottom: 1rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.95rem;
+        }
+        th, td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+        th {
+            background: var(--bg-light);
+            font-weight: 600;
+            color: var(--secondary);
+        }
+        tr:hover {
+            background: var(--bg-light);
+        }
+
+        pre {
+            background: var(--bg-code);
+            color: #e2e8f0;
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        code {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+        }
+        p code, li code, td code {
+            background: var(--bg-light);
+            color: var(--primary);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+        pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+        }
+
+        ul, ol {
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        .callout {
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            border-left: 4px solid;
+        }
+        .callout.info {
+            background: #eff6ff;
+            border-left-color: var(--primary);
+        }
+        .callout.warning {
+            background: #fef3c7;
+            border-left-color: #f59e0b;
+        }
+        .callout.success {
+            background: #d1fae5;
+            border-left-color: var(--accent);
+        }
+        .callout.danger {
+            background: #fee2e2;
+            border-left-color: #ef4444;
+        }
+
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        .comparison > div {
+            background: var(--bg-light);
+            padding: 1.5rem;
+            border-radius: 8px;
+        }
+
+        footer {
+            background: var(--text-main);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            margin-top: 3rem;
+        }
+        footer a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        /* Navigation between classes */
+        .class-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: stretch;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .class-nav-link {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1.25rem 1.5rem;
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            text-decoration: none;
+            color: var(--text-main);
+            transition: all 0.3s ease;
+        }
+
+        .class-nav-link:hover {
+            border-color: var(--primary);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .class-nav-link.prev {
+            border-left: 4px solid var(--primary);
+        }
+
+        .class-nav-link.next {
+            border-right: 4px solid var(--accent);
+            text-align: right;
+            margin-left: auto;
+        }
+
+        .class-nav-link .nav-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            margin-bottom: 0.25rem;
+        }
+
+        .class-nav-link .nav-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .class-nav-link.next .nav-title {
+            color: var(--accent);
+        }
+
+        .class-nav-icon {
+            font-size: 1.5rem;
+            line-height: 1;
+        }
+
+        .class-nav-placeholder {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.25rem;
+            background: var(--bg-light);
+            border: 2px dashed var(--border);
+            border-radius: 12px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .scroll-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--primary);
+            color: white;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.3s;
+            text-decoration: none;
+            font-size: 1.5rem;
+        }
+        .scroll-top.visible {
+            opacity: 1;
+        }
+        .scroll-top:hover {
+            background: var(--secondary);
+        }
+
+        .actividad {
+            background: var(--bg-light);
+            border-left: 5px solid var(--accent);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+        .actividad h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        .actividad p {
+            margin-bottom: 0.75rem;
+        }
+        .actividad strong {
+            color: var(--secondary);
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.6rem;
+            }
+            section {
+                padding: 1.5rem;
+            }
+            nav ul {
+                grid-template-columns: 1fr;
+            }
+            .comparison {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .eval-alert {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-left: 4px solid #f59e0b;
+            padding: 1.25rem 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .eval-alert-icon {
+            font-size: 1.75rem;
+            line-height: 1;
+        }
+
+        .eval-alert-content {
+            flex: 1;
+        }
+
+        .eval-alert-title {
+            font-weight: 700;
+            color: #92400e;
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .eval-alert-text {
+            color: #78350f;
+            font-size: 0.9rem;
+        }
+
+        .eval-alert-date {
+            background: #f59e0b;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+
+        .class-nav-date {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        .class-nav-link:hover .nav-title {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Clase 15: Permisos y Seguridad en Linux</h1>
+            <p class="subtitle">IF0099 - Sistemas Operativos I | Unidad 5 - Archivos y Permisos</p>
+            <p class="subtitle">Permisos rwx, SUID, SGID, Sticky Bit, ACLs y Gestión de Usuarios</p>
+            <p class="meta">📅 22 de Abril 2026 | Sesión Martes: 6:00-8:00 AM | Teoría: 60 min + Práctica: 60 min | E4: Reporte 15%</p>
+        </div>
+    </header>
+
+
+    <div class="container">
+
+        <!-- Quick Navigation Bar -->
+        <div class="quick-nav" style="background: white; padding: 1rem; margin-bottom: 2rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <a href="index.html" style="color: var(--primary); text-decoration: none; font-weight: 500;">Inicio</a>
+                <span style="color: var(--text-muted);">|</span>
+                <span style="color: var(--text-main); font-weight: 600;">Permisos y Seguridad en Linux</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <a href="cronograma.html" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: #10b981; color: white; text-decoration: none; border-radius: 6px; font-weight: 500;">Cronograma</a>
+                <a href="rubricas.html" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: #3b82f6; color: white; text-decoration: none; border-radius: 6px; font-weight: 500;">Rubricas</a>
+            </div>
+        </div>
+
+        <!-- Próxima Evaluación Alert -->
+        <a href="evaluaciones.html#e4" style="text-decoration: none; display: block;">
+            <div class="eval-alert" style="cursor: pointer; transition: transform 0.2s;">
+                <span class="eval-alert-icon">📌</span>
+                <div class="eval-alert-content">
+                    <div class="eval-alert-title">Próxima Evaluación: E4 - Seguridad en SO</div>
+                    <div class="eval-alert-text">22 de Abril 2026 (15%) - Seguridad en SO</div>
+                </div>
+                <span class="eval-alert-date">📅 22 Abr</span>
+            </div>
+        </a>
+
+        <nav>
+            <h2>Contenido de la Clase</h2>
+            <ul>
+                <li><a href="#objetivos">Objetivos de Aprendizaje</a></li>
+                <li><a href="#intro">1. Introducción a Permisos</a></li>
+                <li><a href="#permisos-basicos">2. Permisos Básicos (rwx)</a></li>
+                <li><a href="#chmod">3. Comando chmod</a></li>
+                <li><a href="#chown">4. Comando chown</a></li>
+                <li><a href="#permisos-especiales">5. Permisos Especiales</a></li>
+                <li><a href="#usuarios-grupos">6. Usuarios y Grupos</a></li>
+                <li><a href="#acls">7. ACLs (Listas de Control de Acceso)</a></li>
+                <li><a href="#practica">8. Actividad Práctica</a></li>
+                <li><a href="#entregable">9. Entregable</a></li>
+                <li><a href="#resumen">Resumen</a></li>
+            </ul>
+        </nav>
+
+        <section id="objetivos">
+            <h2>Objetivos de Aprendizaje</h2>
+            <p>Al finalizar esta clase, serás capaz de:</p>
+            <ol>
+                <li><strong>Explicar</strong> el modelo de permisos UGO (User, Group, Others)</li>
+                <li><strong>Aplicar</strong> permisos básicos con chmod</li>
+                <li><strong>Gestionar</strong> propietarios y grupos con chown</li>
+                <li><strong>Configurar</strong> permisos especiales (SUID, SGID, Sticky Bit)</li>
+                <li><strong>Implementar</strong> ACLs para control de acceso granular</li>
+                <li><strong>Diseñar</strong> esquemas de permisos para empresas</li>
+            </ol>
+
+            <div class="callout info">
+                <p class="callout-title">Glosario de Seguridad Linux</p>
+                <ul>
+                    <li><strong>UGO:</strong> User (Propietario), Group (Grupo), Others (Otros).</li>
+                    <li><strong>rwx:</strong> Read (Lectura), Write (Escritura), eXecute (Ejecución).</li>
+                    <li><strong>ACL:</strong> Access Control List (Listas de Control de Acceso para permisos más granulares).</li>
+                    <li><strong>Sticky Bit:</strong> Permiso que asegura que solo el dueño del archivo pueda borrarlo, aunque otros tengan permiso de escritura en la carpeta.</li>
+                    <li><strong>SUID (Set User ID):</strong> Bit de permiso que permite ejecutar un archivo con los privilegios del propietario.</li>
+                    <li><strong>SGID (Set Group ID):</strong> Bit de permiso que permite ejecutar un archivo con los privilegios del grupo.</li>
+                    <li><strong>SELinux:</strong> Security-Enhanced Linux, sistema de seguridad MAC desarrollado por la NSA.</li>
+                    <li><strong>DAC:</strong> Discretionary Access Control, modelo donde los usuarios controlan acceso a sus archivos.</li>
+                    <li><strong>MAC:</strong> Mandatory Access Control, modelo donde el sistema impone políticas de seguridad centralizadas.</li>
+                    <li><strong>RBAC:</strong> Role-Based Access Control, control de acceso basado en roles del usuario.</li>
+                </ul>
+            </div>
+        </section>
+
+
+        <section id="intro">
+            <h2>1. Introducción a Permisos en Linux</h2>
+
+            <div class="callout info">
+                <strong>Concepto fundamental:</strong> Linux es un sistema multiusuario diseñado para la seguridad. Cada archivo y directorio tiene permisos que controlan quién puede leer, escribir o ejecutar.
+            </div>
+
+            <h3>¿Por qué son importantes los permisos?</h3>
+            <ul>
+                <li><strong>Seguridad:</strong> Protegen información confidencial</li>
+                <li><strong>Integridad:</strong> Evitan modificaciones no autorizadas</li>
+                <li><strong>Privacidad:</strong> Cada usuario tiene su espacio privado</li>
+                <li><strong>Control:</strong> El administrador decide quién accede a qué</li>
+            </ul>
+
+            <h3>Modelo de Seguridad UGO</h3>
+            <p>Linux utiliza el modelo <strong>UGO</strong> (User, Group, Others):</p>
+            <ul>
+                <li><strong>User (u):</strong> El propietario del archivo</li>
+                <li><strong>Group (g):</strong> El grupo del archivo</li>
+                <li><strong>Others (o):</strong> Todos los demás usuarios</li>
+            </ul>
+        </section>
+
+        <section id="permisos-basicos">
+            <h2>2. Permisos Básicos (rwx)</h2>
+
+            <h3>Tipos de Permisos</h3>
+            <pre><code>r - Read    (lectura)    - Puede leer el contenido
+w - Write   (escritura)  - Puede modificar el contenido
+x - eXecute (ejecución)  - Puede ejecutar como programa</code></pre>
+
+            <h3>Estructura de Permisos</h3>
+            <pre><code>-rwxr-xr--  1 juan developers 1024 Feb 15 10:30 archivo.txt
+│  │  │     │     │       │        │       │
+│  │  │     │     │       │        │       └─ Nombre del archivo
+│  │  │     │     │       │        └─ Tamaño y fecha
+│  │  │     │     │       └─ Grupo propietario
+│  │  │     │     └─ Usuario propietario
+│  │  │     └─ Número de hard links
+│  │  └─ Permisos Others (r--)
+│  └─ Permisos Group (r-x)
+└─ Permisos User (rwx)</code></pre>
+
+            <h3>Notación Octal</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Permiso</th>
+                        <th>Valor</th>
+                        <th>Binario</th>
+                        <th>Significado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>---</td><td>0</td><td>000</td><td>Sin permisos</td></tr>
+                    <tr><td>--x</td><td>1</td><td>001</td><td>Solo ejecución</td></tr>
+                    <tr><td>-w-</td><td>2</td><td>010</td><td>Solo escritura</td></tr>
+                    <tr><td>-wx</td><td>3</td><td>011</td><td>Escritura y ejecución</td></tr>
+                    <tr><td>r--</td><td>4</td><td>100</td><td>Solo lectura</td></tr>
+                    <tr><td>r-x</td><td>5</td><td>101</td><td>Lectura y ejecución</td></tr>
+                    <tr><td>rw-</td><td>6</td><td>110</td><td>Lectura y escritura</td></tr>
+                    <tr><td>rwx</td><td>7</td><td>111</td><td> Todos los permisos</td></tr>
+                </tbody>
+            </table>
+
+            <div class="callout success">
+                <strong>Cálculo rápido:</strong>
+                r = 4, w = 2, x = 1 → Suma los valores que quieras activar
+                <br>ej: rwx = 4+2+1 = 7, r-x = 4+1 = 5
+            </div>
+        </section>
+
+        <section id="chmod">
+            <h2>3. Comando chmod (Change Mode)</h2>
+
+            <p>El comando <code>chmod</code> modifica los permisos de archivos y directorios.</p>
+
+            <h3>Sintaxis Simbólica</h3>
+            <pre><code># Agregar permiso
+chmod +x script.sh           # Hacer ejecutable
+
+# Quitar permiso
+chmod -w archivo.txt         # Quitar escritura
+
+# Específico por categoría
+chmod u+x script.sh          # Usuario: ejecutar
+chmod g+r archivo.txt        # Grupo: leer
+chmod o-w archivo.txt        # Otros: no escribir
+
+# Múltiples cambios
+chmod u+x,g+r,o-w archivo.txt</code></pre>
+
+            <h3>Sintaxis Octal</h3>
+            <pre><code># Formato: chmod [usuario][grupo][otros] archivo
+chmod 644 archivo.txt        # rw-r--r--
+chmod 755 script.sh          # rwxr-xr-x
+chmod 700 privado.txt        # rwx------
+chmod 777 publico.txt        # rwxrwxrwx (NO RECOMENDADO)</code></pre>
+
+            <h3>Permisos Comunes</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Octal</th>
+                        <th>Permiso</th>
+                        <th>Uso típico</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>644</td><td>rw-r--r--</td><td>Archivos de texto</td></tr>
+                    <tr><td>755</td><td>rwxr-xr-x</td><td>Scripts y programas</td></tr>
+                    <tr><td>600</td><td>rw-------</td><td>Archivos confidenciales</td></tr>
+                    <tr><td>700</td><td>rwx------</td><td>Directorios privados</td></tr>
+                </tbody>
+            </table>
+
+            <div class="callout warning">
+                <strong>Advertencia:</strong> Nunca uses 777 en servidores de producción. Da permisos totales a todos los usuarios.
+            </div>
+        </section>
+
+        <section id="chown">
+            <h2>4. Comando chown (Change Owner)</h2>
+
+            <p>El comando <code>chown</code> cambia el propietario y grupo de un archivo.</p>
+
+            <h3>Cambiar Propietario</h3>
+            <pre><code># Cambiar solo el usuario
+sudo chown nuevo_usuario archivo.txt
+
+# Cambiar usuario y grupo
+sudo chown usuario:grupo archivo.txt
+
+# Cambiar solo el grupo
+sudo chown :grupo archivo.txt
+
+# Recursivo (directorios)
+sudo chown -R usuario:grupo /directorio/</code></pre>
+
+            <h3>Ejemplos Prácticos</h3>
+            <pre><code># Servidor web: archivos pertenecen a www-data
+sudo chown -R www-data:www-data /var/www/html
+
+# Proyecto compartido: grupo developers
+sudo chown -R juan:developers /proyecto/compartido
+
+# Directorio personal: usuario y su grupo
+sudo chown -R $USER:$USER ~/documentos</code></pre>
+        </section>
+
+        <section id="permisos-especiales">
+            <h2>5. Permisos Especiales</h2>
+
+            <h3>SUID (Set User ID)</h3>
+            <p>El archivo se ejecuta con los privilegios del propietario, no del usuario que lo ejecuta.</p>
+            <pre><code># Ejemplo: /usr/bin/passwd
+$ ls -l /usr/bin/passwd
+-rwsr-xr-x  1 root root 73465 Feb 15 10:30 /usr/bin/passwd
+ │             │
+ │             └─ Dueño = root
+ └─ s = SUID activo</code></pre>
+
+            <p>Cualquier usuario puede cambiar su contraseña porque passwd se ejecuta temporalmente como root.</p>
+
+            <pre><code># Activar SUID
+chmod u+s archivo
+chmod 4755 archivo            # 4 = SUID</code></pre>
+
+            <div class="callout warning">
+                <strong>Peligro:</strong> SUID puede ser un vector de escalada de privilegios. Solo usar cuando sea absolutamente necesario.
+            </div>
+
+            <h3>SGID (Set Group ID)</h3>
+            <p>Los archivos nuevos heredan el grupo del directorio padre.</p>
+            <pre><code># Crear directorio colaborativo
+mkdir /proyecto/compartido
+sudo chown -R :developers /proyecto/compartido
+sudo chmod g+s /proyecto/compartido
+
+# Verificar
+ls -ld /proyecto/compartido
+drwxrwsr-x  2 juan developers 4096 Feb 15 10:30 /proyecto/compartido
+ │                │
+ │                └─ s = SGID activo</code></pre>
+
+            <pre><code># Activar SGID
+chmod g+s directorio
+chmod 2755 directorio           # 2 = SGID</code></pre>
+
+            <h3>Sticky Bit</h3>
+            <p>Solo el propietario puede borrar sus archivos (útil en directorios compartidos).</p>
+            <pre><code># Ejemplo: /tmp
+$ ls -ld /tmp
+drwxrwxrwt  10 root root 4096 Feb 15 10:30 /tmp
+ │                │
+ │                └─ t = Sticky bit activo</code></pre>
+
+            <pre><code># Activar sticky bit
+chmod +t directorio
+chmod 1755 directorio           # 1 = Sticky bit</code></pre>
+
+            <div class="callout success">
+                <strong>Uso típico:</strong> Directorios compartidos donde múltiples usuarios pueden crear archivos, pero solo pueden borrar los suyos propios (como /tmp).
+            </div>
+        </section>
+
+        <section id="usuarios-grupos">
+            <h2>6. Usuarios y Grupos en Linux</h2>
+
+            <h3>Archivos de Configuración</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Archivo</th>
+                        <th>Contenido</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>/etc/passwd</td><td>Información de usuarios</td></tr>
+                    <tr><td>/etc/shadow</td><td>Contraseñas encriptadas</td></tr>
+                    <tr><td>/etc/group</td><td>Información de grupos</td></tr>
+                    <tr><td>/etc/gshadow</td><td>Contraseñas de grupos</td></tr>
+                </tbody>
+            </table>
+
+            <h3>Gestión de Usuarios</h3>
+            <pre><code># Crear usuario
+sudo useradd -m -s /bin/bash nuevo_usuario
+
+# Establecer contraseña
+sudo passwd nuevo_usuario
+
+# Ver información de usuario
+id nuevo_usuario
+groups nuevo_usuario
+
+# Eliminar usuario
+sudo userdel usuario
+sudo userdel -r usuario       # Eliminar también home</code></pre>
+
+            <h3>Gestión de Grupos</h3>
+            <pre><code># Crear grupo
+sudo groupadd desarrolladores
+
+# Agregar usuario a grupo
+sudo usermod -aG desarrolladores usuario
+
+# Ver miembros de un grupo
+getent group desarrolladores
+
+# Eliminar grupo
+sudo groupdel desarrolladores</code></pre>
+
+            <h3>Estructura de /etc/passwd</h3>
+            <pre><code>juan:x:1000:1000:Juan Perez:/home/juan:/bin/bash
+│  │ │   │    │            │           │
+│  │ │   │    │            │           └─ Shell predeterminado
+│  │ │   │    │            └─ Directorio home
+│  │ │   │    └─ Comentario (nombre completo)
+│  │ │   └─ GID (grupo primario)
+│  │ └─ UID (ID de usuario)
+│  └─ x = contraseña en /etc/shadow
+└─ Nombre de usuario</code></pre>
+        </section>
+
+        <section id="acls">
+            <h2>7. ACLs (Access Control Lists)</h2>
+
+            <div class="callout info">
+                <strong>¿Qué son las ACLs?</strong> Permiten permisos más granulares que el modelo UGO tradicional. Puedes dar permisos a múltiples usuarios y grupos específicos.
+            </div>
+
+            <h3>Instalar ACL</h3>
+            <pre><code># Debian/Ubuntu
+sudo apt install acl
+
+# RHEL/CentOS
+sudo yum install acl</code></pre>
+
+            <h3>Ver ACL</h3>
+            <pre><code># Ver ACL de un archivo
+getfacl archivo.txt
+
+# Salida ejemplo:
+# file: archivo.txt
+# owner: juan
+# group: developers
+user::rw-
+user:maria:rw-
+group::r--
+mask::rw-
+other::r--</code></pre>
+
+            <h3>Modificar ACL</h3>
+            <pre><code># Dar permisos a usuario específico
+setfacl -m u:maria:rw archivo.txt
+
+# Dar permisos a grupo específico
+setfacl -m g:equiporh:rx documento.txt
+
+# Eliminar permiso de usuario
+setfacl -x u:maria archivo.txt
+
+# Eliminar todas las ACLs
+setfacl -b archivo.txt</code></pre>
+
+            <h3>ACLs por Defecto para Directorios</h3>
+            <pre><code># Establecer ACLs predeterminadas (nuevos archivos heredan)
+setfacl -d -m u:maria:rw /directorio/compartido
+
+# Ver ACLs predeterminadas
+getfacl -d /directorio/compartido</code></pre>
+
+            <div class="callout success">
+                <strong>Ventaja de ACLs:</strong> No necesitas crear nuevos grupos para cada combinación de permisos. Puedes dar permisos específicos a usuarios individuales sin afectar al modelo UGO.
+            </div>
+        </section>
+
+        <section id="practica">
+            <h2>8. Actividad Práctica</h2>
+
+            <div class="info-box" style="margin-bottom: 1.5rem; background: #eff6ff; border-left: 4px solid var(--primary); padding: 1.5rem; border-radius: 8px;">
+                <h3>📋 Laboratorio Complementario</h3>
+                <p>Para aplicar técnicas de aseguramiento y hardening en tu servidor Linux, consulta el <strong><a href="../laboratorios-html/lab-06-seguridad-hardening.html" target="_blank">Laboratorio 6: Seguridad y Hardening</a></strong>.</p>
+            </div>
+
+            <div class="actividad">
+
+                <h3>Ejercicio 1: Permisos Básicos</h3>
+                <p><strong>Objetivo:</strong> Practicar con chmod y chown</p>
+                <pre><code># 1. Crear archivo de prueba
+touch prueba.txt
+
+# 2. Ver permisos iniciales
+ls -l prueba.txt
+
+# 3. Cambiar a 644 (rw-r--r--)
+chmod 644 prueba.txt
+ls -l prueba.txt
+
+# 4. Quitar permiso de lectura a otros
+chmod o-r prueba.txt
+ls -l prueba.txt
+
+# 5. Hacer ejecutable
+chmod +x prueba.txt
+ls -l prueba.txt</code></pre>
+            </div>
+
+            <div class="actividad">
+                <h3>Ejercicio 2: Permisos Especiales</h3>
+                <p><strong>Objetivo:</strong> Configurar directorio compartido con SGID</p>
+                <pre><code># 1. Crear directorio compartido
+mkdir -p ~/proyecto/compartido
+
+# 2. Crear grupo de desarrolladores
+sudo groupadd desarrolladores
+
+# 3. Agregarte al grupo
+sudo usermod -aG desarrolladores $USER
+
+# 4. Configurar directorio
+sudo chown -R :desarrolladores ~/proyecto/compartido
+sudo chmod g+s ~/proyecto/compartido
+
+# 5. Verificar (inicia nueva sesión para que surta efecto)
+newgrp desarrolladores
+ls -ld ~/proyecto/compartido</code></pre>
+            </div>
+
+            <div class="actividad">
+                <h3>Ejercicio 3: ACLs</h3>
+                <p><strong>Objetivo:</strong> Dar acceso específico a otro usuario</p>
+                <pre><code># 1. Crear archivo confidencial
+echo "Datos importantes" > confidencial.txt
+
+# 2. Ver ACL actual
+getfacl confidencial.txt
+
+# 3. Dar permiso de lectura a usuario compañero
+sudo setfacl -m u:compañero:r confidencial.txt
+
+# 4. Verificar ACL
+getfacl confidencial.txt</code></pre>
+            </div>
+
+            <p><strong>Tiempo estimado:</strong> 60 minutos</p>
+
+        </section>
+
+        <section id="entregable">
+            <h2>9. Entregable</h2>
+
+            <div class="callout info">
+                <h3>Esquema de Permisos para Empresa Ficticia</h3>
+                <p><strong>Empresa:</strong> TechSolutions S.A.S.</p>
+                <p><strong>Departamentos:</strong> Desarrollo, Gerencia, Contabilidad</p>
+            </div>
+
+            <h3>Requisitos:</h3>
+            <ol>
+                <li><strong>Directorio /proyectos/compartido:</strong>
+                    <ul>
+                        <li>Equipo de desarrollo: lectura y escritura</li>
+                        <li>Gerencia: solo lectura</li>
+                        <li>Resto de usuarios: sin acceso</li>
+                    </ul>
+                </li>
+                <li><strong>Directorio /proyectos/confidencial:</strong>
+                    <ul>
+                        <li>Solo gerencia: acceso completo</li>
+                        <li>Resto de usuarios: sin acceso</li>
+                    </ul>
+                </li>
+                <li><strong>Script de configuración:</strong>
+                    <ul>
+                        <li>Automatizar la creación de estructura</li>
+                        <li>Configurar permisos apropiados</li>
+                        <li>Crear usuarios y grupos necesarios</li>
+                    </ul>
+                </li>
+            </ol>
+
+            <h3>Formato de Entrega:</h3>
+            <ul>
+                <li>Diagrama de la estructura de directorios</li>
+                <li>Tabla de permisos (quién puede acceder a qué)</li>
+                <li>Script bash funcional con comentarios</li>
+                <li>Documentación explicando cada permiso</li>
+            </ul>
+
+            <div class="callout warning">
+                <strong>Fecha de entrega:</strong> Consultar plataforma virtual
+            </div>
+
+            <h3>Rúbrica de Evaluación</h3>
+            <table class="rubrica-table">
+                <thead>
+                    <tr>
+                        <th>Criterio</th>
+                        <th class="level-excelente">Excelente (4)</th>
+                        <th class="level-bueno">Bueno (3)</th>
+                        <th class="level-satisfactorio">Satisfactorio (2)</th>
+                        <th class="level-insuficiente">Insuficiente (1)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Configuración de Permisos</strong></td>
+                        <td>Usa correctamente chmod, chown con notación octal y simbólica</td>
+                        <td>Usa chmod y chown correctamente</td>
+                        <td>Usa solo uno de los comandos</td>
+                        <td>No sabe usar los comandos</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Usuarios y Grupos</strong></td>
+                        <td>Crea usuarios, grupos y los associa correctamente</td>
+                        <td>Crea usuarios y grupos</td>
+                        <td>Crea solo usuarios</td>
+                        <td>No crea usuarios/grupos</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Permisos Especiales</strong></td>
+                        <td>Explica y usa SUID, SGID, Sticky bit correctamente</td>
+                        <td>Conoce permisos especiales</td>
+                        <td>Los menciona pero no los usa</td>
+                        <td>No conoce permisos especiales</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Script y Documentación</strong></td>
+                        <td>Script funcional con comentarios claros y documentación completa</td>
+                        <td>Script funcional con algunos comentarios</td>
+                        <td>Script funciona sin comentarios</td>
+                        <td>Script no funciona</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="resumen">
+            <h2>Resumen de la Clase</h2>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Concepto</th>
+                        <th>Descripción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td><strong>UGO</strong></td><td>User, Group, Others - modelo de permisos</td></tr>
+                    <tr><td><strong>rwx</strong></td><td>Read, Write, eXecute - tipos de permisos</td></tr>
+                    <tr><td><strong>chmod</strong></td><td>Cambiar permisos de archivos</td></tr>
+                    <tr><td><strong>chown</strong></td><td>Cambiar propietario y grupo</td></tr>
+                    <tr><td><strong>SUID</strong></td><td>Ejecutar como propietario (4)</td></tr>
+                    <tr><td><strong>SGID</strong></td><td>Heredar grupo del directorio (2)</td></tr>
+                    <tr><td><strong>Sticky bit</strong></td><td>Solo dueño puede borrar (1)</td></tr>
+                    <tr><td><strong>ACL</strong></td><td>Permisos granulares avanzados</td></tr>
+                    <tr><td><strong>setfacl/getfacl</strong></td><td>Gestionar ACLs</td></tr>
+                </tbody>
+            </table>
+
+            <div class="callout success">
+                <strong>Concepto fundamental:</strong> Los permisos en Linux son la base de la seguridad del sistema. El modelo UGO es simple pero efectivo para la mayoría de casos, mientras que las ACLs proporcionan flexibilidad cuando se necesita control granular.
+            </div>
+
+            <h3>Próxima Clase</h3>
+            <p><strong>Clase 16: Permisos y Seguridad en Windows</strong></p>
+
+            <ul>
+                <li>NTFS vs FAT32</li>
+                <li>Permisos NTFS y ACLs</li>
+                <li>Carpetas compartidas SMB</li>
+                <li>Gestión con PowerShell</li>
+            </ul>
+        </section>
+
+        <!-- Videos Recomendados -->
+        <section id="videos">
+            <h2>Videos Recomendados</h2>
+
+            <div class="callout info">
+                <h3>📹 Video 1: Domina CHMOD - Guía DEFINITIVA de Permisos en Linux (Español)</h3>
+                <p><strong>Desde cero hasta avanzado</strong></p>
+                <p>Duración: ~25 minutos | Nivel: Todos los niveles | Idioma: Español</p>
+                <p>Guía completa sobre permisos en Linux usando chmod, chown y variantes numéricas/simbólicas.</p>
+                <p><a href="https://www.youtube.com/watch?v=w1FntACweog" target="_blank">📺 Ver en YouTube</a></p>
+            </div>
+
+            <div class="callout info">
+                <h3>📹 Video 2: PERMISOS LINUX: Chmod, Chown y la Regla del Octal (4-2-1)</h3>
+                <p><strong>Guía completa de permisos en Linux</strong></p>
+                <p>Duración: ~20 minutos | Nivel: Todos los niveles | Idioma: Español</p>
+                <p>Explicación detallada de permisos de archivos en Linux: lectura de permisos con ls -l, significado de letras, y la regla del octal (4-2-1).</p>
+                <p><a href="https://www.youtube.com/watch?v=LN9sxO0y7_I" target="_blank">📺 Ver en YouTube</a></p>
+            </div>
+        </section>
+
+        <!-- Navigation between classes -->
+        <nav class="class-nav" aria-label="Navegación entre clases">
+            <a href="clase-14.html" class="class-nav-link prev">
+                <span class="class-nav-icon">←</span>
+                <div>
+                    <div class="nav-label">Clase Anterior</div>
+                    <div class="nav-title">Servidor Web IIS</div>
+                    <div class="class-nav-date">📅 14 Abr 2026</div>
+                </div>
+            </a>
+            <a href="clase-16.html" class="class-nav-link next">
+                <div>
+                    <div class="nav-label">Siguiente Clase</div>
+                    <div class="nav-title">Permisos y Seguridad en Windows</div>
+                    <div class="class-nav-date">📅 23 Abr 2026</div>
+                </div>
+                <span class="class-nav-icon">→</span>
+            </a>
+        </nav>
+    </div>
+
+    
+    
+    <footer>
+        <div class="container">
+            <p><strong>IF0099 - Sistemas Operativos I</strong> - Permisos y Seguridad en Linux</p>
+            <p>📅 21 de Abril 2026 | Sesión Martes: 6:00-8:00 AM | Teoría: 60 min + Práctica: 60 min</p>
+
+            <p style="margin-top: 10px;">
+                <a href="index.html" style="color: #10b981;">Inicio</a> |
+                <a href="cronograma.html" style="color: #10b981;">Cronograma</a> |
+                <a href="evaluaciones.html" style="color: #8b5cf6;">Evaluaciones</a> |
+                <a href="rubricas.html" style="color: #3b82f6;">Rubricas</a>
+            </p>
+        </div>
+    </footer>
+
+
+
+    <a href="#" class="scroll-top" id="scrollTop" aria-label="Scroll to top">↑</a>
+
+    <script>
+        const scrollTopBtn = document.getElementById('scrollTop');
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                scrollTopBtn.classList.add('visible');
+            } else {
+                scrollTopBtn.classList.remove('visible');
+            }
+        });
+        scrollTopBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    </script>
+</body>
+</html>

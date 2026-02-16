@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía del Proyecto | IF0099 - Sistemas Operativos I</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #1e3a5f 0%, #2d5a87 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        header {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+        h1 { color: #1e3a5f; font-size: 2.2em; margin-bottom: 10px; }
+        .subtitle { color: #666; font-size: 1.2em; }
+        .project-badge {
+            display: inline-block;
+            padding: 10px 25px;
+            background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%);
+            color: white;
+            border-radius: 25px;
+            font-weight: 600;
+            margin-top: 15px;
+        }
+        .nav-links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        .nav-links a {
+            display: inline-block;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #1e3a5f 0%, #2d5a87 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+        .nav-links a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(30, 58, 95, 0.3);
+        }
+        .section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .section h2 {
+            color: #1e3a5f;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #1e3a5f;
+        }
+        .section h3 {
+            color: #2d5a87;
+            font-size: 1.4em;
+            margin: 25px 0 15px;
+        }
+        .info-box {
+            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+            border-left: 4px solid #3b82f6;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .info-box h4 { color: #1e40af; margin-bottom: 10px; }
+        .success-box {
+            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+            border-left: 4px solid #10b981;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .success-box h4 { color: #065f46; margin-bottom: 10px; }
+        .phase-card {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 25px;
+            margin: 20px 0;
+            border-left: 5px solid #8b5cf6;
+        }
+        .phase-card h4 {
+            color: #6d28d9;
+            font-size: 1.3em;
+            margin-bottom: 15px;
+        }
+        .phase-meta {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+        .phase-meta-item {
+            background: white;
+            padding: 8px 15px;
+            border-radius: 6px;
+            font-size: 0.9em;
+        }
+        .phase-meta-item strong { color: #1e3a5f; }
+        ul, ol { margin-left: 1.5rem; margin-bottom: 1rem; }
+        li { margin-bottom: 0.5rem; }
+        .entregable {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            border-left: 3px solid #10b981;
+        }
+        .entregable strong { color: #065f46; }
+        footer {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            color: #555;
+        }
+        footer a { color: #1e3a5f; text-decoration: none; }
+        footer a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📘 Guía del Proyecto</h1>
+            <p class="subtitle">Administración de Servidores Linux/Windows</p>
+            <div class="project-badge">Proyecto Integrador - 5 Fases</div>
+            
+            <div class="nav-links">
+                <a href="concertacion.html">← Acta de Concertación</a>
+                <a href="evaluaciones.html">Evaluaciones</a>
+                <a href="rubricas.html">Rúbricas</a>
+            </div>
+        </header>
+
+        <section class="section">
+            <h2>🎯 Objetivo del Proyecto</h2>
+            
+            <div class="info-box">
+                <h4>Propósito</h4>
+                <p>Diseñar, implementar y asegurar una <strong>infraestructura de servidores híbrida</strong> (Linux + Windows) para una empresa ficticia, aplicando todos los conceptos del curso de forma incremental.</p>
+            </div>
+
+            <div class="success-box">
+                <h4>Producto Final</h4>
+                <p>Al finalizar el curso, tendrás un <strong>portafolio profesional</strong> con:</p>
+                <ul>
+                    <li>Servidores Linux y Windows configurados y funcionando</li>
+                    <li>Servicios web desplegados (Apache + IIS)</li>
+                    <li>Sistema de monitoreo en funcionamiento</li>
+                    <li>Documentación técnica completa</li>
+                    <li>Scripts de automatización funcionales</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>🗓️ Fases del Proyecto</h2>
+
+            <div class="phase-card">
+                <h4>Fase 1: Diseño de Arquitectura (E1 - 15%)</h4>
+                <div class="phase-meta">
+                    <div class="phase-meta-item"><strong>Fecha:</strong> 25 Febrero</div>
+                    <div class="phase-meta-item"><strong>Tipo:</strong> Taller</div>
+                    <div class="phase-meta-item"><strong>Eval:</strong> E1</div>
+                </div>
+                <p><strong>Objetivo:</strong> Definir la arquitectura tecnológica de la empresa.</p>
+                <div class="entregable">
+                    <strong>Entregables:</strong>
+                    <ul>
+                        <li>Análisis de necesidades de la empresa ficticia</li>
+                        <li>Comparativa de arquitecturas SO (monolítico vs microkernel)</li>
+                        <li>Selección de Ubuntu Server + Windows Server</li>
+                        <li>Diagrama de arquitectura de red</li>
+                        <li>Lista de servicios y requisitos</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="phase-card">
+                <h4>Fase 2: Gestión de Procesos y Servicios (E2 - 15%)</h4>
+                <div class="phase-meta">
+                    <div class="phase-meta-item"><strong>Fecha:</strong> 11 Marzo</div>
+                    <div class="phase-meta-item"><strong>Tipo:</strong> Informe</div>
+                    <div class="phase-meta-item"><strong>Eval:</strong> E2</div>
+                </div>
+                <p><strong>Objetivo:</strong> Implementar procesos críticos y servicios base.</p>
+                <div class="entregable">
+                    <strong>Entregables:</strong>
+                    <ul>
+                        <li>Scripts de monitoreo (Bash + PowerShell)</li>
+                        <li>Configuración de servicios esenciales</li>
+                        <li>Gestión de prioridades y políticas</li>
+                        <li>Matriz de procesos y servicios</li>
+                        <li>Video demostración (5-7 min)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="phase-card">
+                <h4>Fase 3: Evaluación Intermedia (E3 - 20%)</h4>
+                <div class="phase-meta">
+                    <div class="phase-meta-item"><strong>Fecha:</strong> 25 Marzo</div>
+                    <div class="phase-meta-item"><strong>Tipo:</strong> Examen Parcial</div>
+                    <div class="phase-meta-item"><strong>Eval:</strong> E3</div>
+                </div>
+                <p><strong>Objetivo:</strong> Evaluar comprensión teórica antes de Semana Santa.</p>
+                <div class="entregable">
+                    <strong>Evaluación:</strong>
+                    <ul>
+                        <li>Análisis de escenarios prácticos</li>
+                        <li>Problemas de planificación de CPU</li>
+                        <li>Comandos reales Linux/Windows</li>
+                        <li>Sin memorización - enfoque en análisis</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="phase-card">
+                <h4>Fase 4: Seguridad y Hardening (E4 - 15%)</h4>
+                <div class="phase-meta">
+                    <div class="phase-meta-item"><strong>Fecha:</strong> 22 Abril</div>
+                    <div class="phase-meta-item"><strong>Tipo:</strong> Reporte</div>
+                    <div class="phase-meta-item"><strong>Eval:</strong> E4</div>
+                </div>
+                <p><strong>Objetivo:</strong> Proteger la infraestructura implementada.</p>
+                <div class="entregable">
+                    <strong>Entregables:</strong>
+                    <ul>
+                        <li>Matriz de riesgos (8+ identificados)</li>
+                        <li>Scripts de hardening automatizado</li>
+                        <li>Configuración de firewall básico</li>
+                        <li>Auditoría de seguridad</li>
+                        <li>Recomendaciones de mitigación</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="phase-card">
+                <h4>Fase 5: Proyecto Integrador (E5 - 15%) 🚀</h4>
+                <div class="phase-meta">
+                    <div class="phase-meta-item"><strong>Fecha:</strong> 6 Mayo</div>
+                    <div class="phase-meta-item"><strong>Tipo:</strong> Proyecto</div>
+                    <div class="phase-meta-item"><strong>Eval:</strong> E5</div>
+                </div>
+                <p><strong>Objetivo:</strong> Integrar todo: servidores web + monitoreo.</p>
+                <div class="entregable">
+                    <strong>Entregables:</strong>
+                    <ul>
+                        <li><strong>Servidores web funcionando:</strong> Apache (Linux) + IIS (Windows)</li>
+                        <li><strong>Scripts integrales:</strong> Monitor de sistema completo</li>
+                        <li><strong>Sistema de monitoreo:</strong> CPU, memoria, disco, red, servicios</li>
+                        <li><strong>Documentación:</strong> Integración de Fases 1-4</li>
+                        <li><strong>Video:</strong> Demostración del sistema (8-12 min)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="phase-card">
+                <h4>Fase 6: Entrega Final (E6 - 20%) 🎓</h4>
+                <div class="phase-meta">
+                    <div class="phase-meta-item"><strong>Fecha:</strong> 27 Mayo</div>
+                    <div class="phase-meta-item"><strong>Tipo:</strong> Proyecto Final</div>
+                    <div class="phase-meta-item"><strong>Eval:</strong> E6</div>
+                </div>
+                <p><strong>Objetivo:</strong> Presentar el proyecto completo funcionando.</p>
+                <div class="entregable">
+                    <strong>Entregables:</strong>
+                    <ul>
+                        <li><strong>Sistema funcionando:</strong> Demostración en vivo (20-30 min)</li>
+                        <li><strong>Documentación técnica:</strong> Manual completo del sistema</li>
+                        <li><strong>Presentación:</strong> 15-20 diapositivas</li>
+                        <li><strong>Portafolio:</strong> Evidencias de todo el proceso</li>
+                        <li><strong>Sustentación:</strong> Defensa del proyecto + preguntas</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>📊 Evolución del Proyecto</h2>
+            
+            <div class="info-box">
+                <h4>Flujo de Trabajo</h4>
+                <ol>
+                    <li><strong>Fase 1 (E1):</strong> Diseñas la arquitectura → <em>Entregas: Diagrama + justificación</em></li>
+                    <li><strong>Fase 2 (E2):</strong> Implementas servicios → <em>Entregas: Scripts + video</em></li>
+                    <li><strong>Fase 3 (E3):</strong> Evaluación de conocimientos → <em>Examen parcial</em></li>
+                    <li><strong>Fase 4 (E4):</strong> Aseguras el sistema → <em>Entregas: Hardening + auditoría</em></li>
+                    <li><strong>Fase 5 (E5):</strong> Integras servicios web → <em>Entregas: Proyecto integrado funcionando</em></li>
+                    <li><strong>Fase 6 (E6):</strong> Presentas todo → <em>Sustentación final en vivo</em></li>
+                </ol>
+            </div>
+
+            <div class="success-box">
+                <h4>Conexión entre Fases</h4>
+                <p>Cada fase <strong>construye</strong> sobre la anterior:</p>
+                <ul>
+                    <li>Fase 2 implementa lo diseñado en Fase 1</li>
+                    <li>Fase 3 valida conocimientos antes de continuar</li>
+                    <li>Fase 4 protege lo construido en Fases 1-2</li>
+                    <li>Fase 5 integra TODO en un sistema funcional</li>
+                    <li>Fase 6 muestra el producto final profesional</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>✅ Cumplimiento de la Concertación</h2>
+            
+            <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+                <thead>
+                    <tr style="background: #1e3a5f; color: white;">
+                        <th style="padding: 12px; text-align: left;">Seguimiento</th>
+                        <th style="padding: 12px; text-align: left;">Fecha</th>
+                        <th style="padding: 12px; text-align: left;">Fases del Proyecto</th>
+                        <th style="padding: 12px; text-align: left;">Acumulado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="padding: 12px; border-bottom: 1px solid #ddd;"><strong>1° Seguimiento</strong></td>
+                        <td style="padding: 12px; border-bottom: 1px solid #ddd;">27/03/2026</td>
+                        <td style="padding: 12px; border-bottom: 1px solid #ddd;">Fase 1 + Fase 2 + Evaluación Intermedia</td>
+                        <td style="padding: 12px; border-bottom: 1px solid #ddd;">50%</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 12px; border-bottom: 1px solid #ddd;"><strong>2° Seguimiento</strong></td>
+                        <td style="padding: 12px; border-bottom: 1px solid #ddd;">15/05/2026</td>
+                        <td style="padding: 12px; border-bottom: 1px solid #ddd;">Fase 3 (Seguridad) + Fase 4 (Proyecto Integrador)</td>
+                        <td style="padding: 12px; border-bottom: 1px solid #ddd;">80%</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 12px; border-bottom: 1px solid #ddd;"><strong>3° Seguimiento</strong></td>
+                        <td style="padding: 12px; border-bottom: 1px solid #ddd;">28/05/2026</td>
+                        <td style="padding: 12px; border-bottom: 1px solid #ddd;">Fase 5 (Proyecto Final)</td>
+                        <td style="padding: 12px; border-bottom: 1px solid #ddd;">100%</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2>📚 Recursos Relacionados</h2>
+            
+            <div class="nav-links" style="justify-content: flex-start;">
+                <a href="concertacion.html">📋 Acta de Concertación</a>
+                <a href="cronograma.html">📅 Cronograma Detallado</a>
+                <a href="evaluaciones.html">📝 Evaluaciones</a>
+                <a href="rubricas.html">📊 Rúbricas de Calificación</a>
+            </div>
+        </section>
+
+        <footer>
+            <p><strong>IF0099 - Sistemas Operativos I</strong></p>
+            <p>Proyecto Integrador: Administración de Servidores Linux/Windows</p>
+            <p style="margin-top: 15px;">
+                <a href="concertacion.html">Concertación</a> |
+                <a href="cronograma.html">Cronograma</a> |
+                <a href="evaluaciones.html">Evaluaciones</a> |
+                <a href="rubricas.html">Rúbricas</a>
+            </p>
+        </footer>
+    </div>
+</body>
+</html>

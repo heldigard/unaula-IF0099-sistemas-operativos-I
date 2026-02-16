@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laboratorio AWS: Introducción a EC2 Gratis | IF0099 - Sistemas Operativos I</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #1e40af;
+            --accent: #ff9900;
+            --aws-orange: #ff9900;
+            --aws-dark: #232f3e;
+            --bg-light: #f8fafc;
+            --bg-code: #1e293b;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --warning: #f59e0b;
+            --danger: #dc2626;
+            --success: #059669;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.7;
+            color: var(--text-main);
+            background: var(--bg-light);
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--aws-dark) 0%, #1a1a1a 100%);
+            color: white;
+            padding: 3rem 0;
+            margin-bottom: 2rem;
+            border-bottom: 4px solid var(--aws-orange);
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        header .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        header .meta {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .aws-badge {
+            display: inline-block;
+            background: var(--aws-orange);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-weight: 600;
+            margin: 1rem 0;
+        }
+
+        .critical-warning {
+            background: #fef2f2;
+            border: 3px solid var(--danger);
+            padding: 2rem;
+            margin: 2rem 0;
+            border-radius: 12px;
+        }
+
+        .critical-warning h3 {
+            color: var(--danger);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .success-box {
+            background: #f0fdf4;
+            border-left: 4px solid var(--success);
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 8px;
+        }
+
+        .info-box {
+            background: #eff6ff;
+            border-left: 4px solid var(--primary);
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 8px;
+        }
+
+        section {
+            background: white;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        section h2 {
+            color: var(--aws-dark);
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid var(--aws-orange);
+        }
+
+        section h3 {
+            color: var(--secondary);
+            font-size: 1.4rem;
+            margin: 2rem 0 1rem;
+        }
+
+        .tier-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+        }
+
+        .tier-table th,
+        .tier-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .tier-table th {
+            background: var(--aws-dark);
+            color: white;
+            font-weight: 600;
+        }
+
+        .tier-table tr:hover {
+            background: var(--bg-light);
+        }
+
+        .tier-table .free {
+            background: #f0fdf4;
+            color: var(--success);
+            font-weight: 600;
+        }
+
+        .tier-table .paid {
+            color: var(--danger);
+            font-weight: 600;
+        }
+
+        .cost-calculator {
+            background: var(--bg-light);
+            border: 2px solid var(--warning);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .step {
+            background: var(--bg-light);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 8px;
+            border-left: 4px solid var(--aws-orange);
+        }
+
+        .step-number {
+            display: inline-block;
+            background: var(--aws-orange);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 32px;
+            font-weight: bold;
+            margin-right: 0.75rem;
+        }
+
+        .screenshot-placeholder {
+            background: var(--bg-light);
+            border: 2px dashed var(--border);
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        .screenshot-placeholder img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        .checklist {
+            background: white;
+            border: 2px solid var(--success);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .checklist ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .checklist li {
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .checklist li:last-child {
+            border-bottom: none;
+        }
+
+        .checklist input[type="checkbox"] {
+            margin-right: 1rem;
+            transform: scale(1.2);
+        }
+
+        .command-box {
+            background: var(--bg-code);
+            color: #e2e8f0;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            overflow-x: auto;
+        }
+
+        .price-alert {
+            background: #fffbeb;
+            border: 3px solid var(--warning);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .price-alert h3 {
+            color: #92400e;
+            margin-bottom: 1rem;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .lab-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: stretch;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .lab-nav-link {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1.25rem 1.5rem;
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            text-decoration: none;
+            color: var(--text-main);
+            transition: all 0.3s ease;
+        }
+
+        .lab-nav-link:hover {
+            border-color: var(--aws-orange);
+            box-shadow: 0 4px 12px rgba(255, 153, 0, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .lab-nav-link.prev {
+            border-left: 4px solid var(--aws-orange);
+            max-width: 400px;
+        }
+
+        .lab-nav-link.next {
+            border-right: 4px solid var(--accent);
+            text-align: right;
+            margin-left: auto;
+        }
+
+        .lab-nav-link .nav-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            margin-bottom: 0.25rem;
+        }
+
+        .lab-nav-link .nav-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--aws-orange);
+        }
+
+        .lab-nav-link.next .nav-title {
+            color: var(--accent);
+        }
+
+        .lab-nav-icon {
+            font-size: 1.5rem;
+            line-height: 1;
+        }
+
+        .lab-nav-placeholder {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.25rem;
+            background: var(--bg-light);
+            border: 2px dashed var(--border);
+            border-radius: 12px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .nav-btn {
+            background: var(--aws-dark);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .nav-btn:hover {
+            background: #000;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 2rem 0;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <span class="aws-badge">AWS Educate / Free Tier</span>
+            <h1>Laboratorio AWS: Introducción a EC2 Gratis</h1>
+            <p class="subtitle">IF0099 - Sistemas Operativos I | 2026-I</p>
+            <p class="meta">Duración: 120 minutos | Nivel: Introductorio | REQUISITO: Tarjeta de crédito</p>
+        </div>
+    </header>
+
+    
+        <!-- Quick Navigation Bar -->
+        <div class="quick-nav" style="background: white; padding: 1rem; margin-bottom: 2rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <a href="../clases-html/index.html" style="color: var(--primary); text-decoration: none; font-weight: 500;">Inicio</a>
+                <span style="color: var(--text-muted);">|</span>
+                <span style="color: var(--text-main); font-weight: 600;">Lab AWS 1: Introduccion a EC2</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <a href="../clases-html/cronograma.html" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: #10b981; color: white; text-decoration: none; border-radius: 6px; font-weight: 500;">Cronograma</a>
+                <a href="../clases-html/rubricas.html" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: #3b82f6; color: white; text-decoration: none; border-radius: 6px; font-weight: 500;">Rubricas</a>
+            </div>
+        </div>
+
+        <div class="container">
+        <div class="critical-warning">
+            <h3>⚠️ CRÍTICO: EVITAR COSTOS INESPERADOS</h3>
+            <p><strong>REGLA #1:</strong> APAGA SIEMPRE tus instancias EC2 cuando no las uses.</p>
+            <p><strong>REGLA #2:</strong> MONITOREA tu factura de AWS diariamente.</p>
+            <p><strong>REGLA #3:</strong> NUNCA dejes instancias encendidas 24/7 sin motivo.</p>
+            <p style="margin-top: 1rem; font-weight: 600;">Si sigues estas reglas, el curso te costará $0 USD.</p>
+        </div>
+
+        <section>
+            <h2>Objetivos del Laboratorio</h2>
+            <ul>
+                <li>Crear una cuenta AWS gratuita</li>
+                <li>Entender el AWS Free Tier y sus límites</li>
+                <li>Lanzar tu primera instancia EC2 gratis</li>
+                <li>Conectarse a la instancia mediante SSH</li>
+                <li>APAGAR correctamente la instancia para evitar costos</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>¿Qué es AWS EC2?</h2>
+            <p><strong>Amazon Elastic Compute Cloud (EC2)</strong> es un servicio que proporciona capacidad de computación escalable en la nube de AWS. En términos simples:</p>
+
+            <div class="info-box">
+                <h4>Analogía</h4>
+                <p style="margin-top: 1rem;">EC2 es como alquilar una computadora en la nube. Puedes elegir el sistema operativo, el tamaño (RAM, CPU), y solo pagas por el tiempo que la usas.</p>
+            </div>
+
+            <h3>Ventajas para el Curso</h3>
+            <ul>
+                <li>✅ Acceso a Linux real (no simulador)</li>
+                <li>✅ Potencia de computación real</li>
+                <li>✅ Experiencia con tecnología de la industria</li>
+                <li>✅ 12 meses GRATIS con AWS Free Tier</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>AWS Free Tier: Qué es GRATIS</h2>
+
+            <p>Para estudiantes nuevos en AWS, Amazon ofrece 12 meses de servicios gratis:</p>
+
+            <table class="tier-table">
+                <thead>
+                    <tr>
+                        <th>Servicio</th>
+                        <th>Límite Gratuito</th>
+                        <th>Duración</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>EC2 (t2.micro o t3.micro)</strong></td>
+                        <td>750 horas/mes</td>
+                        <td>12 meses</td>
+                        <td class="free">GRATIS</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Almacenamiento EBS</strong></td>
+                        <td>30 GB</td>
+                        <td>12 meses</td>
+                        <td class="free">GRATIS</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Transferencia de datos</strong></td>
+                        <td>100 GB/mes</td>
+                        <td>12 meses</td>
+                        <td class="free">GRATIS</td>
+                    </tr>
+                    <tr>
+                        <td>EC2 (más grande que t2.micro)</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td class="paid">PAGA</td>
+                    </tr>
+                    <tr>
+                        <td>IP elástica (cuando instancia apagada)</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td class="paid">PAGA</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="success-box">
+                <h4>💡 Cómo Mantenerlo Gratis</h4>
+                <ul style="margin-top: 1rem;">
+                    <li>Usa <strong>solo instancias t2.micro o t3.micro</strong></li>
+                    <li>Mantén menos de 30 GB de almacenamiento</li>
+                    <li>APAGA la instancia cuando no la uses</li>
+                    <li>NO uses IP elástica (usar IP pública)</li>
+                    <li>Libera la instancia cuando termines el curso</li>
+                </ul>
+            </div>
+        </section>
+
+        <section>
+            <h2>Calculadora de Costos</h2>
+
+            <div class="cost-calculator">
+                <h3>📊 Escenarios de Uso y Costos</h3>
+
+                <table class="tier-table">
+                    <thead>
+                        <tr>
+                            <th>Escenario</th>
+                            <th>Horas/mes</th>
+                            <th>Tipo</th>
+                            <th>Costo Mensual</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Instancia encendida 24/7</td>
+                            <td>730 horas</td>
+                            <td>t2.micro</td>
+                            <td class="free">$0.00</td>
+                        </tr>
+                        <tr>
+                            <td>Usar solo 4 horas/semana</td>
+                            <td>16 horas</td>
+                            <td>t2.micro</td>
+                            <td class="free">$0.00</td>
+                        </tr>
+                        <tr>
+                            <td>Olvidarse encendida 1 semana</td>
+                            <td>168 horas</td>
+                            <td>t3.small</td>
+                            <td class="paid">$~5.00</td>
+                        </tr>
+                        <tr>
+                            <td>IP elástica con instancia apagada</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td class="paid">$~3.60/mes</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="price-alert">
+                    <h3>🔔 ALERTA DE COSTOS</h3>
+                    <p>Si usas <strong>solo t2.micro o t3.micro</strong> y NO usas IP elástica, el costo es <strong>$0.00</strong> mientras estés dentro de los límites del Free Tier.</p>
+                    <p style="margin-top: 0.5rem;">El peligro está en <strong>instancias más grandes</strong> o <strong>IPs elásticas olvidadas</strong>.</p>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>Paso 1: Crear Cuenta AWS</h2>
+
+            <div class="step">
+                <span class="step-number">1</span>
+                <strong>Ir a AWS:</strong> Visita <a href="https://aws.amazon.com/es/" target="_blank" style="color: var(--primary);">https://aws.amazon.com/es/</a>
+            </div>
+
+            <div class="step">
+                <span class="step-number">2</span>
+                <strong>Crear cuenta:</strong> Haz clic en "Crear una cuenta de AWS"
+            </div>
+
+            <div class="step">
+                <span class="step-number">3</span>
+                <strong>Información requerida:</strong>
+                <ul style="margin-left: 2rem; margin-top: 0.5rem;">
+                    <li>Correo electrónico</li>
+                    <li>Nombre de la cuenta de AWS</li>
+                    <li><strong>Tarjeta de crédito internacional</strong></li>
+                </ul>
+                <div class="warning-box" style="margin-top: 1rem;">
+                    <strong>NOTA:</strong> AWS requiere una tarjeta de crédito para verificar la identidad. NO harán cargos si respetas los límites del Free Tier.
+                </div>
+            </div>
+
+            <div class="step">
+                <span class="step-number">4</span>
+                <strong>Verificación:</strong>
+                    <ul style="margin-left: 2rem; margin-top: 0.5rem;">
+                    <li>AWS hará un cargo temporal de ~$1 USD (se devuelve)</li>
+                    <li>Pueden llamar a tu teléfono para verificar</li>
+                    <li>El proceso toma 5-10 minutos</li>
+                </ul>
+            </div>
+
+            <div class="step">
+                <span class="step-number">5</span>
+                <strong>Seleccionar plan de soporte:</strong> Elige "Plan básico - Gratis"
+            </div>
+        </section>
+
+        <section>
+            <h2>Paso 2: Configurar Alertas de Presupuesto</h2>
+
+            <div class="critical-warning">
+                <h3>🚨 ANTES DE LANZAR CUALQUIER INSTANCIA</h3>
+                <p>Configura alertas de presupuesto para recibir notificaciones si estás por generar costos.</p>
+            </div>
+
+            <div class="step">
+                <span class="step-number">1</span>
+                <strong>Ir a Billing:</strong> Console → Billing → Budgets
+            </div>
+
+            <div class="step">
+                <span class="step-number">2</span>
+                <strong>Crear presupuesto:</strong>
+                <ul style="margin-left: 2rem; margin-top: 0.5rem;">
+                    <li>Nombre: "Presupuesto IF0099"</li>
+                    <li>Presupuesto: $0.00 USD</li>
+                    <li>Alerta al 100%: Enviar correo electrónico</li>
+                </ul>
+            </div>
+
+            <div class="step">
+                <span class="step-number">3</span>
+                <strong>Configurar notificaciones:</strong> Agrega tu correo para recibir alertas
+            </div>
+        </section>
+
+        <section>
+            <h2>Paso 3: Lanzar Primera Instancia EC2</h2>
+
+            <div class="step">
+                <span class="step-number">1</span>
+                <strong>Ir a EC2:</strong> Console → Services → EC2
+            </div>
+
+            <div class="step">
+                <span class="step-number">2</span>
+                <strong>Lanzar instancia:</strong> Haz clic en "Launch Instance"
+            </div>
+
+            <div class="step">
+                <span class="step-number">3</span>
+                <strong>Configurar instancia:</strong>
+                <table style="width: 100%; margin: 1rem 0;">
+                    <tr>
+                        <td><strong>Name:</strong></td>
+                        <td>IF0099-Lab01</td>
+                    </tr>
+                    <tr>
+                        <td><strong>OS:</strong></td>
+                        <td>Ubuntu Server 22.04 LTS (HVM)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Type:</strong></td>
+                        <td>t2.micro (Free Tier eligible)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Key pair:</strong></td>
+                        <td>Crear nuevo (ver abajo)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Network:</strong></td>
+                        <td>Default (sin IP elástica)</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="step">
+                <span class="step-number">4</span>
+                <strong>Crear Key Pair (CRÍTICO):</strong>
+                <ul style="margin-left: 2rem; margin-top: 0.5rem;">
+                    <li>Nombre: "if0099-key"</li>
+                    <li>Tipo: RSA</li>
+                    <li>Formato: .pem (para OpenSSH)</li>
+                    <li><strong>DESCARGAR y guardar</strong> (no se puede volver a descargar)</li>
+                </ul>
+                <div class="warning-box" style="margin-top: 1rem;">
+                    <strong>⚠️ PERDER LA KEY = PERDER ACCESO</strong>
+                    <p>Si pierdes tu key pair, no podrás acceder a la instancia nunca más.</p>
+                </div>
+            </div>
+
+            <div class="step">
+                <span class="step-number">5</span>
+                <strong>Configurar Security Group:</strong>
+                <ul style="margin-left: 2rem; margin-top: 0.5rem;">
+                    <li>SSH: Port 22, Source: My IP (o tu IP actual)</li>
+                    <li>HTTP: Port 80 (opcional, para web)</li>
+                    <li>HTTPS: Port 443 (opcional, para web)</li>
+                </ul>
+            </div>
+
+            <div class="step">
+                <span class="step-number">6</span>
+                <strong>Lanzar:</strong> Revisa y haz clic en "Launch"
+            </div>
+
+            <div class="success-box">
+                <h4>✅ ¡Felicidades!</h4>
+                <p>Tu instancia está creándose. Espera 2-3 minutos hasta que el estado sea "Running".</p>
+            </div>
+        </section>
+
+        <section>
+            <h2>Paso 4: Conectarse por SSH</h2>
+
+            <div class="step">
+                <span class="step-number">1</span>
+                <strong>Obtener IP pública:</strong> En EC2 Console, copia la "Public IPv4 address"
+            </div>
+
+            <div class="step">
+                <span class="step-number">2</span>
+                <strong>Abrir terminal:</strong> Usa Git Bash, PowerShell, o terminal de Linux/Mac
+            </div>
+
+            <div class="step">
+                <span class="step-number">3</span>
+                <strong>Navegar a donde descargaste la key:</strong>
+                <pre><code>cd /ruta/a/donde/descargaste</code></pre>
+            </div>
+
+            <div class="step">
+                <span class="step-number">4</span>
+                <strong>Cambiar permisos de la key (solo Linux/Mac):</strong>
+                <pre><code>chmod 400 if0099-key.pem</code></pre>
+            </div>
+
+            <div class="step">
+                <span class="step-number">5</span>
+                <strong>Conectarse:</strong>
+                <div class="command-box">
+                    <span style="color: #4ade80;">$</span> <span style="color: #60a5fa;">ssh -i "if0099-key.pem" ubuntu@TU_IP_PUBLICA</span><br><br>
+                    <span style="color: #94a3b8;"># Ejemplo: ssh -i "if0099-key.pem" ubuntu@54.123.45.67</span>
+                </div>
+            </div>
+
+            <div class="step">
+                <span class="step-number">6</span>
+                <strong>Confirmar conexión:</strong>
+                <div class="command-box">
+                    <span style="color: #4ade80;">ubuntu@ip:~$</span> <span style="color: #60a5fa;">whoami</span><br><span style="color: #94a3b8;">ubuntu</span><br><br>
+                    <span style="color: #4ade80;">ubuntu@ip:~$</span> <span style="color: #60a5fa;">uname -a</span><br><span style="color: #94a3b8;">Linux ip-172-31-XX-XX 5.15.0-xxxx-generic #xx-Ubuntu SMP xx</span>
+                </div>
+            </div>
+
+            <div class="success-box">
+                <h4>🎉 ¡Conectado!</h4>
+                <p>Ahora estás ejecutando comandos en una instancia Linux real en la nube de AWS.</p>
+            </div>
+        </section>
+
+        <section>
+            <h2>Paso 5: APAGAR la Instancia (CRÍTICO)</h2>
+
+            <div class="critical-warning">
+                <h3>⚠️ SIEMPRE APAGA CUANDO TERMINES</h3>
+                <p>Una instancia encendida consume horas de tu Free Tier. APÁGALA cuando no la uses.</p>
+            </div>
+
+            <div class="step">
+                <span class="step-number">1</span>
+                <strong>En EC2 Console:</strong> Selecciona tu instancia
+            </div>
+
+            <div class="step">
+                <span class="step-number">2</span>
+                <strong>Clic derecho:</strong> → Instance State → Stop
+            </div>
+
+            <div class="step">
+                <span class="step-number">3</span>
+                <strong>Confirmar:</strong> Haz clic en "Stop"
+            </div>
+
+            <div class="step">
+                <span class="step-number">4</span>
+                <strong>Verificar:</strong> El estado cambia a "Stopped"
+            </div>
+
+            <div class="success-box">
+                <h4>✅ Instancia Apagada</h4>
+                <p>La instancia NO generará costos mientras esté apagada. Los datos en el disco se mantienen.</p>
+            </div>
+
+            <h3>Para Encender de Nuevo:</h3>
+            <div class="step">
+                <span class="step-number">→</span>
+                <strong>Instance State → Start</strong>
+            </div>
+            <div class="step">
+                <span class="step-number">→</span>
+                <strong>Esperar 1-2 minutos</strong>
+            </div>
+            <div class="step">
+                <span class="step-number">→</span>
+                <strong>Copiar NUEVA IP (puede cambiar)</strong>
+            </div>
+            <div class="step">
+                <span class="step-number">→</span>
+                <strong>Conectarse con la nueva IP</strong>
+            </div>
+        </section>
+
+        <section>
+            <h2>Checklist de Seguridad</h2>
+
+            <div class="checklist">
+                <h3>☑️ Antes de abandonar el laboratorio:</h3>
+                <ul>
+                    <li><input type="checkbox"> <strong>La instancia está STOPPED (no running)</strong></li>
+                    <li><input type="checkbox"> No tengo IPs elásticas asignadas</li>
+                    <li><input type="checkbox"> He configurado alertas de presupuesto</li>
+                    <li><input type="checkbox"> Sé cómo reconectar cuando la encienda</li>
+                    <li><input type="checkbox"> He guardado mi key pair en lugar seguro</li>
+                </ul>
+            </div>
+
+            <div class="price-alert">
+                <h3>🔔 RECORDATORIOS DIARIOS</h3>
+                <ul>
+                    <li>Revisa tu factura de AWS diariamente</li>
+                    <li>Configura una alarma en tu teléfono para revisar</li>
+                    <li>Si ves cualquier costo > $0.00, investiga de inmediato</li>
+                </ul>
+            </div>
+        </section>
+
+        <section>
+            <h2>Comandos Básicos en EC2</h2>
+
+            <p>Una vez conectado, practica estos comandos:</p>
+
+            <div class="command-box">
+                <span style="color: #4ade80;">ubuntu@ip:~$</span> <span style="color: #60a5fa;">sudo apt update</span><br><span style="color: #94a3b8;">(actualizar lista de paquetes)</span><br><br>
+                <span style="color: #4ade80;">ubuntu@ip:~$</span> <span style="color: #60a5fa;">sudo apt install htop -y</span><br><span style="color: #94a3b8;">(instalar monitor de recursos)</span><br><br>
+                <span style="color: #4ade80;">ubuntu@ip:~$</span> <span style="color: #60a5fa;">htop</span><br><span style="color: #94a3b8;">(ver uso de CPU, RAM)</span><br><br>
+                <span style="color: #4ade80;">ubuntu@ip:~$</span> <span style="color: #60a5fa;">free -h</span><br><span style="color: #94a3b8;">(ver memoria disponible)</span><br><br>
+                <span style="color: #4ade80;">ubuntu@ip:~$</span> <span style="color: #60a5fa;">df -h</span><br><span style="color: #94a3b8;">(ver espacio en disco)</span>
+            </div>
+        </section>
+
+        <section>
+            <h2>Actividad Práctica</h2>
+
+            <div class="exercise">
+                <h4>Ejercicio 1: Primeras Prácticas en EC2</h4>
+
+                <ol>
+                    <li>Conéctate a tu instancia EC2</li>
+                    <li>Crea un directorio para el curso: <code>mkdir if0099</code></li>
+                    <li>Entra al directorio: <code>cd if0099</code></li>
+                    <li>Crea un archivo: <code>echo "Mi primera instancia EC2" > readme.txt</code></li>
+                    <li>Verifica el contenido: <code>cat readme.txt</code></li>
+                    <li>Verifica los recursos: <code>free -h</code> y <code>df -h</code></li>
+                    <li>APAGA la instancia</li>
+                </ol>
+            </div>
+        </section>
+
+        <section>
+            <h2>Preguntas de Reflexión</h2>
+            <ol>
+                <li>¿Por qué AWS requiere una tarjeta de crédito si el servicio es gratis?</li>
+                <li>¿Qué sucede si olvidas apagar una instancia por una semana?</li>
+                <li>¿Cuál es la diferencia entre STOP y TERMINATE?</li>
+                <li>¿Por qué la IP pública puede cambiar al apagar y encender?</li>
+            </ol>
+        </section>
+
+        <section>
+            <h2>Preparación para el Próximo Laboratorio</h2>
+            <p>Para el próximo laboratorio, necesitarás:</p>
+            <ul>
+                <li>✅ Cuenta AWS creada y verificada</li>
+                <li>✅ Instancia EC2 lanzada al menos una vez</li>
+                <li>✅ Conexión SSH funcionando</li>
+                <li>✅ Key pair guardado en lugar seguro</li>
+                <li>✅ Alertas de presupuesto configuradas</li>
+            </ul>
+        </section>
+
+        <!-- Enhanced navigation between labs -->
+        <nav class="lab-nav" aria-label="Navegación entre laboratorios">
+            <a href="lab-02-permisos-usuarios.html" class="lab-nav-link prev">
+                <span class="lab-nav-icon">←</span>
+                <div>
+                    <div class="nav-label">Laboratorio Anterior</div>
+                    <div class="nav-title">Permisos y Usuarios</div>
+                </div>
+            </a>
+            <a href="index.html" class="lab-nav-link next">
+                <div>
+                    <div class="nav-label">Volver al Índice</div>
+                    <div class="nav-title">Índice de Laboratorios</div>
+                </div>
+                <span class="lab-nav-icon">→</span>
+            </a>
+        </nav>
+
+        <div class="footer">
+            <p>IF0099 - Sistemas Operativos I | 2026-I | Ing. Eldigardo Evelio Camacho Cespedes</p>
+
+            <p>Laboratorio AWS: Introducción a EC2 Gratis</p>
+            <p style="margin-top: 0.5rem;"><strong>Recuerda:</strong> APAGA SIEMPRE tu instancia cuando termines</p>
+        </div>
+    </div>
+</body>
+</html>
