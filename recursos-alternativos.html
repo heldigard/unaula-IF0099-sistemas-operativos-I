@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recursos Alternativos Gratuitos | IF0099 - Sistemas Operativos I</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #1e40af;
+            --accent: #059669;
+            --bg-light: #f8fafc;
+            --bg-code: #1e293b;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.7;
+            color: var(--text-main);
+            background: var(--bg-light);
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            color: white;
+            padding: 3rem 0;
+            margin-bottom: 2rem;
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        header .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        section {
+            background: white;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        section h2 {
+            color: var(--primary);
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid var(--accent);
+        }
+
+        section h3 {
+            color: var(--secondary);
+            font-size: 1.4rem;
+            margin: 2rem 0 1rem;
+        }
+
+        section h4 {
+            color: var(--text-main);
+            font-size: 1.1rem;
+            margin: 1.5rem 0 0.75rem;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 1rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.95rem;
+        }
+
+        th, td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            background: var(--bg-light);
+            font-weight: 600;
+            color: var(--secondary);
+        }
+
+        tr:hover {
+            background: var(--bg-light);
+        }
+
+        ul, ol {
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        .callout {
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            border-left: 4px solid;
+        }
+
+        .callout.info {
+            background: #eff6ff;
+            border-left-color: var(--primary);
+        }
+
+        .callout.warning {
+            background: #fef3c7;
+            border-left-color: #f59e0b;
+        }
+
+        .callout.success {
+            background: #d1fae5;
+            border-left-color: var(--accent);
+        }
+
+        .callout-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            background: var(--bg-light);
+            color: var(--primary);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        pre {
+            background: var(--bg-code);
+            color: #e2e8f0;
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+        }
+
+        .resource-card {
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .resource-card:hover {
+            border-color: var(--accent);
+            box-shadow: 0 4px 12px rgba(5, 150, 105, 0.15);
+        }
+
+        .resource-card h4 {
+            color: var(--accent);
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .resource-card .url {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-right: 0.5rem;
+        }
+
+        .badge-green { background: #d1fae5; color: #065f46; }
+        .badge-blue { background: #dbeafe; color: #1e40af; }
+        .badge-yellow { background: #fef3c7; color: #92400e; }
+        .badge-purple { background: #ede9fe; color: #5b21b6; }
+
+        footer {
+            background: var(--text-main);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        footer a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Plan B: Recursos Alternativos Gratuitos</h1>
+            <p class="subtitle">IF0099 - Sistemas Operativos I | Universidad Autónoma Latinoamericana</p>
+            <p class="subtitle" style="opacity: 0.8;">Alternativas para practicar cuando no tengas acceso al laboratorio Docker</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Introducción -->
+        <section>
+            <h2>¿Qué es el Plan B?</h2>
+            <p>Si no puedes conectarte al laboratorio Docker del curso (por problemas de red, firewall, o conectividad), puedes usar cualquiera de estos recursos gratuitos para completar los ejercicios de la clase.</p>
+
+            <div class="callout success">
+                <p class="callout-title">Todos los recursos verificados</p>
+                <p>Esta lista fue actualizada en <strong>Febrero 2026</strong>. Todos los recursos han sido verificados y están funcionando correctamente.</p>
+            </div>
+        </section>
+
+        <!-- Terminales Online -->
+        <section>
+            <h2>Terminales Linux en el Navegador</h2>
+
+            <div class="grid-2">
+                <div class="resource-card">
+                    <h4><span class="badge badge-green">Recomendado</span> Webminal</h4>
+                    <p class="url"><a href="https://www.webminal.org" target="_blank">https://www.webminal.org</a></p>
+                    <p><strong>Tipo:</strong> Terminal Linux real en el navegador</p>
+                    <p><strong>Requisito:</strong> Registro gratuito (email)</p>
+                    <p><strong>Ideal para:</strong> Todos los ejercicios del curso</p>
+                    <ul>
+                        <li>Sistema Linux completo con Ubuntu/Debian</li>
+                        <li>Puedes guardar archivos entre sesiones</li>
+                        <li>Soporta la mayoría de comandos del curso</li>
+                        <li>Sin necesidad de instalar nada</li>
+                    </ul>
+                </div>
+
+                <div class="resource-card">
+                    <h4><span class="badge badge-blue">Sin Registro</span> JSLinux</h4>
+                    <p class="url"><a href="https://bellard.org/jslinux/" target="_blank">https://bellard.org/jslinux/</a></p>
+                    <p><strong>Tipo:</strong> Emulador Linux completo</p>
+                    <p><strong>Requisito:</strong> Ninguno</p>
+                    <p><strong>Ideal para:</strong> Práctica rápida sin registro</p>
+                    <ul>
+                        <li>Arranca en segundos</li>
+                        <li>Varios sistemas: Alpine, Fedora, Windows</li>
+                        <li>Perfecto para comandos básicos</li>
+                        <li>Los cambios no se guardan</li>
+                    </ul>
+                </div>
+
+                <div class="resource-card">
+                    <h4><span class="badge badge-yellow">Tutorial</span> Linux Survival</h4>
+                    <p class="url"><a href="https://linuxsurvival.com" target="_blank">https://linuxsurvival.com</a></p>
+                    <p><strong>Tipo:</strong> Tutorial interactivo con terminal simulada</p>
+                    <p><strong>Requisito:</strong> Ninguno</p>
+                    <p><strong>Ideal para:</strong> Aprender comandos básicos guiados</p>
+                    <ul>
+                        <li>Ejercicios paso a paso</li>
+                        <li>Explicaciones en cada comando</li>
+                        <li>Terminal simulada integrada</li>
+                        <li>Disponible en español</li>
+                    </ul>
+                </div>
+
+                <div class="resource-card">
+                    <h4><span class="badge badge-blue">Sin Registro</span> PracticeLinux</h4>
+                    <p class="url"><a href="https://www.practicelinux.com" target="_blank">https://www.practicelinux.com</a></p>
+                    <p><strong>Tipo:</strong> Terminal Linux en navegador</p>
+                    <p><strong>Requisito:</strong> Ninguno</p>
+                    <p><strong>Ideal para:</strong> Ejercicios rápidos</p>
+                    <ul>
+                        <li>Sin registro requerido</li>
+                        <li>Interfaz simple</li>
+                        <li>Comandos básicos disponibles</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- VMs Gratuitas -->
+        <section>
+            <h2>Máquinas Virtuales Gratuitas (Con Root)</h2>
+            <p>Para ejercicios que requieren permisos de administrador (<code>sudo</code>, <code>systemctl</code>, etc.):</p>
+
+            <div class="grid-2">
+                <div class="resource-card">
+                    <h4><span class="badge badge-purple">VM Completa</span> Oracle Cloud Free Tier</h4>
+                    <p class="url"><a href="https://www.oracle.com/cloud/free/" target="_blank">https://www.oracle.com/cloud/free/</a></p>
+                    <p><strong>Tipo:</strong> VM en la nube con acceso root completo</p>
+                    <p><strong>Requisito:</strong> Tarjeta de crédito para verificación (no se cobra)</p>
+                    <ul>
+                        <li>Hasta 4 VMs ARM con 24GB RAM total</li>
+                        <li>Acceso SSH completo con root</li>
+                        <li>Sistema operativo a elegir (Ubuntu, Oracle Linux)</li>
+                        <li>Ideal para <code>systemctl</code>, <code>docker</code>, <code>htop</code></li>
+                    </ul>
+                    <div class="callout warning" style="margin-top: 1rem; margin-bottom: 0;">
+                        <p style="font-size: 0.9rem; margin: 0;"><strong>Nota:</strong> La tarjeta es solo para verificación de identidad. No se realizan cargos si usas solo el Free Tier.</p>
+                    </div>
+                </div>
+
+                <div class="resource-card">
+                    <h4><span class="badge badge-purple">Estudiantes</span> Azure for Students</h4>
+                    <p class="url"><a href="https://azure.microsoft.com/free/students/" target="_blank">https://azure.microsoft.com/free/students/</a></p>
+                    <p><strong>Tipo:</strong> Crédito de $100 para servicios Azure</p>
+                    <p><strong>Requisito:</strong> Email institucional (.edu) - Sin tarjeta de crédito</p>
+                    <ul>
+                        <li>$100 de crédito inicial</li>
+                        <li>Crear VMs Linux con acceso root</li>
+                        <li>Servicios gratuitos por 12 meses</li>
+                        <li>Perfecto si tienes email @unaula.edu.co</li>
+                    </ul>
+                </div>
+
+                <div class="resource-card">
+                    <h4><span class="badge badge-purple">Estudiantes</span> FreeVPS.edu.pl</h4>
+                    <p class="url"><a href="https://freevps.edu.pl" target="_blank">https://freevps.edu.pl</a></p>
+                    <p><strong>Tipo:</strong> VPS gratuito para estudiantes</p>
+                    <p><strong>Requisito:</strong> Email .edu y participación en el foro</p>
+                    <ul>
+                        <li>4GB RAM, 4 vCPU</li>
+                        <li>50GB de almacenamiento</li>
+                        <li>Acceso root completo</li>
+                        <li>Requiere posts en el foro mensualmente</li>
+                    </ul>
+                </div>
+
+                <div class="resource-card">
+                    <h4><span class="badge badge-blue">Docker</span> Play with Docker</h4>
+                    <p class="url"><a href="https://labs.play-with-docker.com/" target="_blank">https://labs.play-with-docker.com/</a></p>
+                    <p><strong>Tipo:</strong> Sesiones de Alpine Linux con Docker</p>
+                    <p><strong>Requisito:</strong> Cuenta de Docker Hub (gratuita)</p>
+                    <ul>
+                        <li>Sesiones de 4 horas</li>
+                        <li>Acceso root temporal</li>
+                        <li>Perfecto para practicar Docker</li>
+                        <li>Terminal completa en navegador</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Por Tipo de Ejercicio -->
+        <section>
+            <h2>¿Qué Recurso Usar Según el Ejercicio?</h2>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Tipo de Ejercicio</th>
+                        <th>Recurso Recomendado</th>
+                        <th>Comandos Disponibles</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Comandos básicos</strong> (ls, cd, mkdir, cp, mv)</td>
+                        <td>Webminal, JSLinux</td>
+                        <td><code>ls</code>, <code>cd</code>, <code>mkdir</code>, <code>cp</code>, <code>mv</code>, <code>rm</code>, <code>touch</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Permisos</strong> (chmod, chown)</td>
+                        <td>Webminal, Oracle Cloud</td>
+                        <td><code>chmod</code>, <code>chown</code> (limitado sin root)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Procesos</strong> (ps, top, kill)</td>
+                        <td>Webminal, Oracle Cloud</td>
+                        <td><code>ps</code>, <code>top</code>, <code>kill</code>, <code>htop</code> (requiere VM)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Memoria</strong> (free, vmstat)</td>
+                        <td>Webminal, Oracle Cloud</td>
+                        <td><code>free</code>, <code>vmstat</code>, <code>cat /proc/meminfo</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Servicios</strong> (systemctl)</td>
+                        <td>Oracle Cloud, Azure</td>
+                        <td><code>systemctl</code> (requiere root)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Red</strong> (netstat, ss, ifconfig)</td>
+                        <td>Oracle Cloud, Play with Docker</td>
+                        <td><code>ss</code>, <code>ip</code>, <code>netstat</code> (limitado)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Scripts bash</strong></td>
+                        <td>Webminal, JSLinux</td>
+                        <td>Scripts completos con <code>nano</code>, <code>vim</code></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Guía Rápida -->
+        <section>
+            <h2>Guía Rápida de Inicio</h2>
+
+            <h3>Opción 1: Webminal (Más fácil)</h3>
+            <pre><code>1. Ve a https://www.webminal.org
+2. Haz clic en "Register" (o usa tu cuenta existente)
+3. Completa el registro con tu email
+4. Haz clic en "Start Terminal"
+5. ¡Listo! Tienes una terminal Linux completa</code></pre>
+
+            <h3>Opción 2: JSLinux (Sin registro)</h3>
+            <pre><code>1. Ve a https://bellard.org/jslinux/
+2. Selecciona "Alpine Linux" o "Fedora"
+3. Haz clic en "Boot"
+4. Espera 5-10 segundos a que cargue
+5. ¡Listo! La terminal está lista para usar</code></pre>
+
+            <h3>Opción 3: Oracle Cloud Free Tier (Para root)</h3>
+            <pre><code>1. Ve a https://www.oracle.com/cloud/free/
+2. Crea una cuenta (requiere verificación con tarjeta)
+3. En el dashboard, crea una VM "Always Free"
+4. Elige Ubuntu 22.04 o similar
+5. Descarga la clave SSH y conéctate:
+   ssh -i key.pem ubuntu@<IP_PUBLICA>
+6. Usa sudo para comandos de administrador</code></pre>
+        </section>
+
+        <!-- Limitaciones -->
+        <section>
+            <h2>Limitaciones a Considerar</h2>
+
+            <div class="callout warning">
+                <p class="callout-title">Importante</p>
+                <p>Algunos recursos tienen limitaciones. Ten en cuenta:</p>
+                <ul>
+                    <li><strong>Webminal:</strong> Sin acceso root, sesiones limitadas, algunos comandos restringidos</li>
+                    <li><strong>JSLinux:</strong> Los cambios se pierden al cerrar, sin persistencia</li>
+                    <li><strong>Oracle Cloud:</strong> Requiere tarjeta para verificación, límite de recursos</li>
+                    <li><strong>Play with Docker:</strong> Sesiones de solo 4 horas</li>
+                </ul>
+            </div>
+
+            <div class="callout info">
+                <p class="callout-title">Recomendación</p>
+                <p>Para la mayoría de ejercicios del curso, <strong>Webminal</strong> es suficiente. Para ejercicios que requieran <code>systemctl</code>, <code>docker</code>, o <code>sudo</code>, considera <strong>Oracle Cloud Free Tier</strong> o <strong>Azure for Students</strong>.</p>
+            </div>
+        </section>
+
+        <!-- Navegación -->
+        <nav style="background: white; padding: 1.5rem 0; margin-bottom: 2rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); display: flex; justify-content: space-between; align-items: center;">
+            <a href="index.html" style="color: var(--primary); text-decoration: none; font-weight: 500; padding: 0.5rem 1rem;">← Volver al Inicio</a>
+            <div style="display: flex; gap: 1rem;">
+                <a href="cronograma.html" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: #10b981; color: white; text-decoration: none; border-radius: 6px; font-weight: 500;">📅 Cronograma</a>
+                <a href="clase-02.html" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: #3b82f6; color: white; text-decoration: none; border-radius: 6px; font-weight: 500;">📚 Ir a Clase 02</a>
+            </div>
+        </nav>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p><strong>IF0099 - Sistemas Operativos I</strong> • Recursos Alternativos Gratuitos</p>
+            <p>Actualizado: Febrero 2026</p>
+            <p style="margin-top: 10px;">
+                <a href="index.html">Inicio</a> |
+                <a href="cronograma.html">Cronograma</a> |
+                <a href="evaluaciones.html">Evaluaciones</a>
+            </p>
+        </div>
+    </footer>
+</body>
+</html>
