@@ -26,6 +26,7 @@ Este curso está diseñado para ser visualizado en formato HTML. Utiliza los sig
 |---|--------|----------------|--------|
 | 01 | Semana 1 | ¿Qué es un Sistema Operativo? | [Ver Clase 01](https://eldigardocamacho.github.io/IF0099-sistemas-operativos-I/clases-html/clase-01.html) |
 | 02 | Semana 1 | Linux Terminal - Comandos Esenciales | [Ver Clase 02](https://eldigardocamacho.github.io/IF0099-sistemas-operativos-I/clases-html/clase-02.html) |
+| 03 | Semana 2 | Cambio de Contexto y Concurrencia | [Ver Clase 03](https://eldigardocamacho.github.io/IF0099-sistemas-operativos-I/clases-html/clase-03.html) |
 | 04 | Semana 2 | Estructura del Sistema Operativo | [Ver Clase 04](https://eldigardocamacho.github.io/IF0099-sistemas-operativos-I/clases-html/clase-04.html) |
 | 05 | Semana 3 | Procesos en Linux - Gestión y Monitoreo | [Ver Clase 05](https://eldigardocamacho.github.io/IF0099-sistemas-operativos-I/clases-html/clase-05.html) |
 | 06 | Semana 4 | Procesos en Windows - Gestión y Servicios | [Ver Clase 06](https://eldigardocamacho.github.io/IF0099-sistemas-operativos-I/clases-html/clase-06.html) |
@@ -39,7 +40,9 @@ Este curso está diseñado para ser visualizado en formato HTML. Utiliza los sig
 | 17 | Semana 10 | Servidor Web Apache | [Ver Clase 17](https://eldigardocamacho.github.io/IF0099-sistemas-operativos-I/clases-html/clase-17.html) |
 | 12 | Semana 11 | Sistemas de Archivos | [Ver Clase 12](https://eldigardocamacho.github.io/IF0099-sistemas-operativos-I/clases-html/clase-12.html) |
 | 13 | Semana 12 | Implementación de Sistemas de Archivos | [Ver Clase 13](https://eldigardocamacho.github.io/IF0099-sistemas-operativos-I/clases-html/clase-13.html) |
-| 14 | Semana 12 | Servidor Web IIS | [Ver Clase 14](https://eldigardocamacho.github.io/IF0099-sistemas-operativos-I/clases-html/clase-14.html) |
+| 14 | Semana 13 | Servidor Web IIS | [Ver Clase 14](https://eldigardocamacho.github.io/IF0099-sistemas-operativos-I/clases-html/clase-14.html) |
+| -- | -- | -- | -- |
+| **TOTAL** | **17 clases** | | |
 
 ---
 
@@ -47,7 +50,7 @@ Este curso está diseñado para ser visualizado en formato HTML. Utiliza los sig
 
 | Eval | Fecha | Tipo | Tema | % | Clases Previas |
 |------|-------|------|------|---|----------------|
-| E1 | 25 Feb | Taller | Estructura y tipos de SO | 15% | 01, 02, 04 |
+| E1 | 25 Feb | Taller | Estructura y tipos de SO | 15% | 01, 02, 03, 04 |
 | E2 | 11 Mar | Informe | Gestión de procesos | 15% | 05, 06, 07, 08, 09 |
 | E3 | 25 Mar | Examen | Memoria, E/S | 20% | 10, 11 |
 | E4 | 22 Abr | Reporte | **Seguridad en SO** | 15% | 15, 16, 17 |
