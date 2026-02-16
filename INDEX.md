@@ -13,6 +13,7 @@ Este curso está diseñado para ser visualizado en formato HTML. Utiliza los sig
 - 📅 **[Cronograma Detallado (Tue/Thu)](https://eldigardocamacho.github.io/IF0099-sistemas-operativos-I/clases-html/cronograma.html)**
 - 📋 **[Acta de Concertación](https://eldigardocamacho.github.io/IF0099-sistemas-operativos-I/clases-html/concertacion.html)**
 - 📝 **[Evaluaciones del Curso](https://eldigardocamacho.github.io/IF0099-sistemas-operativos-I/clases-html/evaluaciones.html)**
+- 📘 **[Guía del Proyecto](https://eldigardocamacho.github.io/IF0099-sistemas-operativos-I/clases-html/proyecto.html)**
 - 📊 **[Rúbricas de Evaluación](https://eldigardocamacho.github.io/IF0099-sistemas-operativos-I/clases-html/rubricas.html)**
 - 📖 **[Glosario de Términos](https://eldigardocamacho.github.io/IF0099-sistemas-operativos-I/clases-html/glosario.html)**
 - 🧪 **[Índice de Laboratorios](https://eldigardocamacho.github.io/IF0099-sistemas-operativos-I/laboratorios-html/index.html)**
