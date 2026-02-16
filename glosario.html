@@ -156,12 +156,24 @@
                         <div class="term">Bash</div>
                         <div class="definition">Bourne Again Shell - Interprete de comandos por defecto en la mayoria de distribuciones Linux.</div>
                     </div>
+                    <div class="glossary-item">
+                        <div class="term">Blocked/Waiting (Estado)</div>
+                        <div class="definition">Estado de proceso que esta esperando un evento o recurso (E/S, señal) para poder continuar.</div>
+                    </div>
+                    <div class="glossary-item">
+                        <div class="term">Burst Time</div>
+                        <div class="definition">Tiempo de rafaga - Tiempo total de CPU que requiere un proceso para completarse.</div>
+                    </div>
                 </div>
             </div>
 
             <div class="letter-section">
                 <div class="letter-header">C</div>
                 <div class="glossary-grid">
+                    <div class="glossary-item">
+                        <div class="term">Cambio de Contexto</div>
+                        <div class="definition">Context Switch - Proceso mediante el cual el SO guarda el estado de un proceso y carga el estado de otro para cambiar la CPU entre procesos.</div>
+                    </div>
                     <div class="glossary-item">
                         <div class="term">CLI</div>
                         <div class="definition">Command Line Interface (Interfaz de Linea de Comandos) - Metodo de interaccion con el sistema mediante comandos de texto.</div>
@@ -208,6 +220,14 @@
             <div class="letter-section">
                 <div class="letter-header">F</div>
                 <div class="glossary-grid">
+                    <div class="glossary-item">
+                        <div class="term">FCFS</div>
+                        <div class="definition">First Come, First Served - Algoritmo de planificacion de CPU donde el primer proceso en llegar es el primero en ejecutarse.</div>
+                    </div>
+                    <div class="glossary-item">
+                        <div class="term">FIFO</div>
+                        <div class="definition">First In, First Out - Estructura de datos donde el primer elemento en entrar es el primero en salir.</div>
+                    </div>
                     <div class="glossary-item">
                         <div class="term">FS</div>
                         <div class="definition">File System (Sistema de Archivos) - Metodo para organizar y almacenar datos en dispositivos de almacenamiento.</div>
@@ -328,7 +348,7 @@
                 <div class="glossary-grid">
                     <div class="glossary-item">
                         <div class="term">PCB</div>
-                        <div class="definition">Process Control Block (Bloque de Control de Proceso) - Estructura de datos que almacena informacion de un proceso.</div>
+                        <div class="definition">Process Control Block (Bloque de Control de Proceso) - Estructura de datos que almacena toda la informacion de un proceso: PID, estado, registros, prioridad, etc.</div>
                     </div>
                     <div class="glossary-item">
                         <div class="term">PID</div>
@@ -341,6 +361,10 @@
                     <div class="glossary-item">
                         <div class="term">PowerShell</div>
                         <div class="definition">Shell de linea de comandos y lenguaje de scripting de Microsoft para administracion de Windows.</div>
+                    </div>
+                    <div class="glossary-item">
+                        <div class="term">Prioridad (PRI/NI)</div>
+                        <div class="definition">Valor numerico que determina la importancia de un proceso. PRI = Prioridad del kernel, NI = Valor nice ajustable por el usuario (rango -20 a 19).</div>
                     </div>
                 </div>
             </div>
@@ -356,6 +380,18 @@
                         <div class="term">RAM</div>
                         <div class="definition">Random Access Memory (Memoria de Acceso Aleatorio) - Memoria volatil donde se cargan los programas en ejecucion.</div>
                     </div>
+                    <div class="glossary-item">
+                        <div class="term">Ready (Estado)</div>
+                        <div class="definition">Estado de proceso que esta preparado para ejecutarse pero espera que el scheduler le asigne la CPU.</div>
+                    </div>
+                    <div class="glossary-item">
+                        <div class="term">Running (Estado)</div>
+                        <div class="definition">Estado de proceso que esta actualmente ejecutandose en la CPU.</div>
+                    </div>
+                    <div class="glossary-item">
+                        <div class="term">RR</div>
+                        <div class="definition">Round Robin - Algoritmo de planificacion que asigna un quantum de tiempo fijo a cada proceso en orden circular.</div>
+                    </div>
                 </div>
             </div>
 
@@ -365,6 +401,14 @@
                     <div class="glossary-item">
                         <div class="term">Semaforo</div>
                         <div class="definition">Variable especial para controlar acceso a recursos compartidos en programacion concurrente.</div>
+                    </div>
+                    <div class="glossary-item">
+                        <div class="term">SJF</div>
+                        <div class="definition">Shortest Job First - Algoritmo de planificacion que prioriza procesos con menor tiempo de ejecucion estimado.</div>
+                    </div>
+                    <div class="glossary-item">
+                        <div class="term">SRTF</div>
+                        <div class="definition">Shortest Remaining Time First - Version expulsiva de SJF que puede interrumpir procesos si llega uno con menor tiempo restante.</div>
                     </div>
                     <div class="glossary-item">
                         <div class="term">Shell</div>
@@ -401,6 +445,10 @@
                     <div class="glossary-item">
                         <div class="term">SGID</div>
                         <div class="definition">Set Group ID - Bit de permiso especial que permite ejecutar un programa con los permisos del grupo del archivo.</div>
+                    </div>
+                    <div class="glossary-item">
+                        <div class="term">Quantum</div>
+                        <div class="definition">Tiempo maximo de CPU asignado a un proceso en algoritmos de planificacion Round Robin.</div>
                     </div>
                 </div>
             </div>

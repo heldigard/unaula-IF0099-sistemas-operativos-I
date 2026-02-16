@@ -655,68 +655,234 @@ Secuencia: P1(4) → P2(4) → P3(4) → P1(4) → P2(1) → P3(4) → P1(2)</co
         </section>
 
         <section id="practica">
-            <h2>Práctica: Análisis de Procesos en Linux</h2>
+            <h2>Práctica Guiada: Análisis de Procesos en Linux (30 min)</h2>
+            
+            <div class="info">
+                <strong>Objetivo:</strong> Visualizar en tiempo real los conceptos teóricos: cambio de contexto, estados de proceso y PCB.
+            </div>
 
-            <h3>Comandos para Analizar Procesos</h3>
-            <pre><code class="language-bash"># Ver procesos en diferentes estados
-ps aux | head -20
+            <h3>Ejercicio 1: Explorando el PCB con ps (5 min)</h3>
+            <p>El PCB contiene información de identificación, CPU y estado. Vamos a verlo en vivo:</p>
+            <pre><code class="language-bash"># Ver campos del PCB de procesos en ejecución
+ps -eo pid,ppid,stat,pri,ni,pcpu,pmem,cmd --sort=-pcpu | head -10
 
-# Ver procesos con información de scheduling
-ps -eo pid,ppid,stat,pri,ni,time,cmd --sort=-pri
+# Explicación de columnas:
+# PID  = Process ID (identificador único)
+# PPID = Parent PID (identificador del padre)
+# STAT = Estado del proceso (R, S, D, Z, T)
+# PRI  = Prioridad del proceso
+# NI   = Nice value (valor de prioridad ajustable)
+# %CPU = Uso de CPU
+# %MEM = Uso de memoria
+# CMD  = Comando ejecutado
 
-# Procesos en tiempo real (ver cambios de estado)
+# Ejemplo de salida:
+#  PID  PPID STAT PRI  NI %CPU %MEM CMD
+# 1234     1 S    20   0  5.2  2.1 apache2
+# 5678  1234 S    20   0  3.1  1.8 mysql</code></pre>
+
+            <div class="success">
+                <strong>Pregunta de análisis:</strong> ¿Qué relación ves entre PPID y PID? ¿Cuál es el proceso padre de tus procesos de terminal?
+            </div>
+
+            <h3>Ejercicio 2: Simulando Estados de Proceso (10 min)</h3>
+            <p>Crearemos procesos en diferentes estados y los observaremos:</p>
+            
+            <h4>Paso 1: Proceso en Ejecución (Estado R)</h4>
+            <pre><code class="language-bash"># Terminal 1: Ejecutar un proceso que consuma CPU
+yes > /dev/null &
+# Guarda el PID que aparece (ej: [1] 1234)
+
+# Terminal 2: Verificar estado
+ps -eo pid,stat,cmd | grep yes
+# Deberías ver: 1234 R yes</code></pre>
+
+            <h4>Paso 2: Proceso Dormido (Estado S)</h4>
+            <pre><code class="language-bash"># Ejecutar sleep (espera sin consumir CPU)
+sleep 300 &
+# Guarda el PID
+
+# Verificar estado
+ps -eo pid,stat,cmd | grep sleep
+# Deberías ver: [PID] S sleep</code></pre>
+
+            <h4>Paso 3: Proceso Detenido (Estado T)</h4>
+            <pre><code class="language-bash"># Detener el proceso sleep con SIGSTOP
+kill -STOP [PID_del_sleep]
+
+# Verificar estado
+ps -eo pid,stat,cmd | grep sleep
+# Deberías ver: [PID] Tl sleep (T = Stopped)</code></pre>
+
+            <h4>Paso 4: Reanudar Proceso (Vuelve a S)</h4>
+            <pre><code class="language-bash"># Reanudar con SIGCONT
+kill -CONT [PID_del_sleep]
+
+# Verificar que vuelve a estado S
+ps -eo pid,stat,cmd | grep sleep</code></pre>
+
+            <h4>Paso 5: Terminar Procesos</h4>
+            <pre><code class="language-bash"># Matar ambos procesos
+kill %1  # Mata el job 1 (yes)
+kill [PID_del_sleep]  # Mata el sleep
+
+# Verificar que desaparecieron
+ps -eo pid,stat,cmd | grep -E "yes|sleep"</code></pre>
+
+            <div class="note">
+                <strong>Registra en tu cuaderno:</strong> Capturas de cada estado (R, S, T) con sus respectivos PIDs.
+            </div>
+
+            <h3>Ejercicio 3: Visualizando Cambios de Contexto con top (5 min)</h3>
+            <pre><code class="language-bash"># Ver cambios de contexto en tiempo real
 top
-# O mejor:
-htop
 
-# Ver árbol de procesos (ver padre-hijo)
-pstree
+# Dentro de top, presiona:
+# 'c' - Mostrar línea de comandos completa
+# 'k' - Matar proceso (pide PID)
+# 'r' - Cambiar nice (prioridad)
+# 'q' - Salir
 
-# Ver procesos de un usuario
-ps -u usuario
+# Observa:
+# - %CPU cambiando entre procesos (cambio de contexto)
+# - Estados cambiando entre R y S
+# - Prioridades (PR y NI)</code></pre>
 
-# Procesos zombies
-ps aux | grep -w Z</code></pre>
+            <h3>Ejercicio 4: Jerarquía de Procesos Padre-Hijo (5 min)</h3>
+            <pre><code class="language-bash"># Ver árbol de procesos desde init (PID 1)
+pstree -p | head -20
 
-            <h3>Estados de Procesos en Linux</h3>
+# Ver procesos de tu usuario con jerarquía
+pstree -p [tu_usuario]
+
+# Crear proceso hijo desde tu shell
+bash
+# Ahora estás en un sub-shell (hijo)
+echo $$
+# Muestra el PID del shell actual
+
+# Ver relación padre-hijo
+ps -eo pid,ppid,cmd | grep $$
+# El PPID debería ser el PID de tu shell anterior</code></pre>
+
+            <h3>Ejercicio 5: Simulación de Algoritmos (5 min)</h3>
+            <p>Vamos a simular cómo el scheduler asigna CPU:</p>
+            <pre><code class="language-bash"># Crear 3 procesos que consuman CPU
+yes > /dev/null &  # Proceso A
+yes > /dev/null &  # Proceso B  
+yes > /dev/null &  # Proceso C
+
+# Ver distribución de CPU
+top
+
+# Observa:
+# - Los 3 procesos compiten por CPU (~33% cada uno en Round Robin)
+# - Si cambias la prioridad de uno, cambia la distribución
+
+# Cambiar prioridad (nice) de uno
+sudo renice -10 [PID_proceso_A]
+
+# En top, observa cómo ese proceso recibe más CPU
+# Esto simula el algoritmo de Prioridad</code></pre>
+
+            <h3>Ejercicio 6: Limpieza y Conclusión</h3>
+            <pre><code class="language-bash"># Matar todos los procesos yes
+killall yes
+
+# Verificar que no queden procesos zombies
+ps aux | grep -w Z
+# No debería mostrar nada (o solo el grep)</code></pre>
+
+            <div class="success">
+                <strong>Conclusión práctica:</strong> Has visto en vivo:
+                <ul>
+                    <li>✅ PCB: Información de PID, PPID, estado, prioridad</li>
+                    <li>✅ Estados: R (running), S (sleeping), T (stopped)</li>
+                    <li>✅ Cambio de contexto: Procesos alternando CPU en top</li>
+                    <li>✅ Jerarquía: Procesos padre-hijo con pstree</li>
+                    <li>✅ Scheduling: Distribución de CPU entre procesos</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="actividad-entregable">
+            <h2>Actividad de Laboratorio: Entregable</h2>
+            <div class="warning">
+                <strong>Fecha de entrega:</strong> Próxima clase | <strong>Tiempo estimado:</strong> 45 minutos
+            </div>
+            
+            <h3>Instrucciones</h3>
+            <ol>
+                <li><strong>Crear procesos (15 min):</strong>
+                    <ul>
+                        <li>Crea 3 procesos: uno consumiendo CPU (yes), uno en espera (sleep), y uno ejecutando un script</li>
+                        <li>Captura pantalla de <code>ps -eo pid,ppid,stat,cmd</code> mostrando los 3 estados</li>
+                    </ul>
+                </li>
+                <li><strong>Árbol de procesos (10 min):</strong>
+                    <ul>
+                        <li>Ejecuta <code>pstree -p</code> y encuentra la jerarquía de tu shell actual</li>
+                        <li>Identifica: ¿Quién es el abuelo de tu shell?</li>
+                        <li>Captura pantalla mostrando la línea de tu shell con su padre y abuelo</li>
+                    </ul>
+                </li>
+                <li><strong>Análisis de scheduling (15 min):</strong>
+                    <ul>
+                        <li>Ejecuta <code>top</code> y observa durante 2 minutos</li>
+                        <li>Anota 5 procesos diferentes que veas en ejecución (estado R)</li>
+                        <li>Captura pantalla mostrando la distribución de CPU</li>
+                    </ul>
+                </li>
+                <li><strong>Documento de análisis (5 min):</strong>
+                    <ul>
+                        <li>Crea un documento con las 3 capturas</li>
+                        <li>Escribe 2-3 líneas explicando qué muestra cada captura</li>
+                    </ul>
+                </li>
+            </ol>
+
+            <h3>Rúbrica de Evaluación</h3>
             <table>
                 <thead>
                     <tr>
-                        <th>Estado</th>
-                        <th>Significado</th>
+                        <th>Criterio</th>
+                        <th>Excelente (100%)</th>
+                        <th>Bueno (75%)</th>
+                        <th>Suficiente (50%)</th>
+                        <th>Insuficiente (0%)</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td><code class="code-inline">R</code></td>
-                        <td>Running o Runnable (ejecutando o en cola)</td>
+                        <td>Captura de estados de proceso</td>
+                        <td>Muestra claramente 3 estados diferentes (R, S, otro)</td>
+                        <td>Muestra 2 estados diferentes</td>
+                        <td>Muestra 1 estado correctamente</td>
+                        <td>No hay captura o incorrecta</td>
                     </tr>
                     <tr>
-                        <td><code class="code-inline">S</code></td>
-                        <td>Sleeping (dormido, esperando evento)</td>
+                        <td>Árbol de procesos</td>
+                        <td>Identifica correctamente padre y abuelo del shell</td>
+                        <td>Identifica el padre correctamente</td>
+                        <td>Captura de pstree sin análisis</td>
+                        <td>No hay captura</td>
                     </tr>
                     <tr>
-                        <td><code class="code-inline">D</code></td>
-                        <td>Disk sleep (E/S sin interrupción)</td>
+                        <td>Análisis de top</td>
+                        <td>5 procesos identificados con sus estados</td>
+                        <td>3-4 procesos identificados</td>
+                        <td>1-2 procesos identificados</td>
+                        <td>No hay análisis</td>
                     </tr>
                     <tr>
-                        <td><code class="code-inline">Z</code></td>
-                        <td>Zombie (terminado pero no recuperado)</td>
-                    </tr>
-                    <tr>
-                        <td><code class="code-inline">T</code></td>
-                        <td>Stopped (detenido por señal)</td>
+                        <td>Documento organizado</td>
+                        <td>Capturas ordenadas con explicaciones claras</td>
+                        <td>Capturas con breves explicaciones</td>
+                        <td>Solo capturas sin texto</td>
+                        <td>Documento incompleto</td>
                     </tr>
                 </tbody>
             </table>
-
-            <h3>Ejercicio Propuesto</h3>
-            <ol>
-                <li>Abre varios terminales y ejecuta diferentes comandos</li>
-                <li>Ejecuta <code class="code-inline">top</code> y observa los cambios de estado</li>
-                <li>Identifica procesos en estado <strong>S</strong> (dormidos) y determina qué esperan</li>
-                <li>Usa <code class="code-inline">pstree</code> para ver la jerarquía de procesos</li>
-            </ol>
         </section>
 
         <section id="resumen">
@@ -739,14 +905,17 @@ ps aux | grep -w Z</code></pre>
                     <p>FCFS, SJF, SRTF, Round Robin, Prioridades. Cada uno tiene trade-offs entre throughput, latencia y fairness.</p>
                 </div>
             </div>
-        </section>
-
-        <section id="entregable">
-            <h2>Entregable de la Clase</h2>
-            <div class="warning">
-                <strong>Nota:</strong> Este contenido es teórico. La práctica con comandos de Linux se ve en la Clase 05.
+            
+            <div class="info" style="margin-top: 2rem;">
+                <h4>Comandos Aprendidos Hoy</h4>
+                <ul>
+                    <li><code>ps -eo pid,ppid,stat,pri,cmd</code> - Ver PCB de procesos</li>
+                    <li><code>pstree -p</code> - Jerarquía de procesos</li>
+                    <li><code>top</code> - Monitor en tiempo real</li>
+                    <li><code>kill -STOP/-CONT</code> - Controlar estados</li>
+                    <li><code>renice</code> - Cambiar prioridad</li>
+                </ul>
             </div>
-            <p>Para esta clase no hay entregable práctico. El conocimiento de cambio de contexto y PCB se evaluará en las evaluaciones E1 y E2.</p>
         </section>
     </main>
 
