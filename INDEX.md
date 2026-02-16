@@ -51,10 +51,10 @@ Este curso está diseñado para ser visualizado en formato HTML. Utiliza los sig
 | E2 | 11 Mar | Informe | Gestión de procesos | 15% | 05, 06, 07, 08, 09 |
 | E3 | 25 Mar | Examen | Memoria, E/S | 20% | 10, 11 |
 | E4 | 22 Abr | Reporte | **Seguridad en SO** | 15% | 15, 16, 17 |
-| E5 | 6 May | Informe | **Conceptos Fundamentales** (integradora) | 15% | 12, 13, 14 |
-| E6 | 27 May | Examen | Todo el curso (interfaces) | 20% | Todas |
+| **E5** | **6 May** | **Proyecto** | **Fase 4: Servidores Web y Monitoreo** | **15%** | **12, 13, 14** |
+| **E6** | **27 May** | **Proyecto** | **Fase 5: Entrega Completa (Sustentación)** | **20%** | **Todas** |
 
-**✅ ORGANIZACIÓN ÓPTIMA:** Clases de seguridad (15, 16, 17) van PRIMERO en abril, luego E4 evalúa seguridad. Clases de archivos (12, 13, 14) van DESPUÉS, luego E5 evalúa conceptos fundamentales de forma integradora.
+**✅ ORGANIZACIÓN ÓPTIMA:** Clases de seguridad (15, 16, 17) van PRIMERO en abril, luego E4 evalúa seguridad. Clases de archivos y servidores (12, 13, 14) van DESPUÉS, luego E5 evalúa el Proyecto Fase 4 (Servidores Web), y E6 es la sustentación final del proyecto completo.
 
 ---
 
