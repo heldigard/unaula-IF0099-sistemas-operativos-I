@@ -117,7 +117,7 @@
             <h1>Clase 09: Paginación</h1>
             <p class="subtitle">IF0099 - Sistemas Operativos I | Unidad 6 - Memoria</p>
             <p class="subtitle">Paginación de memoria, tablas de páginas, TLB, segmentación</p>
-            <p class="meta">📅 10 de Marzo 2026 | Sesión Martes: 6:00-8:00 AM | Teoría: 60 min + Práctica: 60 min | E2: Informe 15%</p>
+            <p class="meta">📅 04 de Marzo 2026 | Sesion Miercoles: 8:00-9:00 AM | Teoria: 30 min + Practica: 30 min</p>
         </div>
     </header>
 
@@ -138,14 +138,16 @@
         </div>
 
         <!-- Próxima Evaluación Alert -->
-        <div class="eval-alert">
-            <span class="eval-alert-icon">📌</span>
-            <div class="eval-alert-content">
-                <div class="eval-alert-title">FASE 3 - Checkpoint Optimización (20%)</div>
-                <div class="eval-alert-text">25 de Marzo 2026 (20%) - Memoria, E/S, Archivos</div>
+        <a href="evaluaciones.html#e3" style="text-decoration: none; display: block;">
+            <div class="eval-alert" style="cursor: pointer; transition: transform 0.2s;">
+                <span class="eval-alert-icon">📌</span>
+                <div class="eval-alert-content">
+                    <div class="eval-alert-title">E3: FASE 3 - Checkpoint Optimización (25 Mar)</div>
+                    <div class="eval-alert-text">20% - Checkpoint integral (memoria, E/S, archivos, sincronización)</div>
+                </div>
+                <span class="eval-alert-date">📅 25 Mar</span>
             </div>
-            <span class="eval-alert-date">📅 25 Mar</span>
-        </div>
+        </a>
 
         <nav>
             <h2>Contenido de la Clase</h2>
@@ -163,6 +165,7 @@
 
         <section id="objetivos">
             <h2>Objetivos de Aprendizaje</h2>
+            <p><strong>Resultado de Aprendizaje:</strong> Administra la memoria, los procesos de entrada y salida, el sistema de archivos, los mecanismos de protección y seguridad y las interfaces que ofrece el sistema operativo al usuario.</p>
             <p>Al finalizar esta clase, serás capaz de:</p>
             <ol>
                 <li><strong>Comprender</strong> el concepto de paginación de memoria</li>
@@ -366,15 +369,42 @@ cat /proc/meminfo
 sudo cat /proc/[PID]/pagemap
 </pre>
 
-            <h3>Ejercicio práctico:</h3>
+            <h3>Ejercicios Prácticos de Paginación:</h3>
             <div class="actividad">
-                <h3>Ejercicio: Análisis de Paginación</h3>
+                <h3>Ejercicio 1: Análisis de Tamaño de Página</h3>
+                <p><strong>Tiempo:</strong> 15 minutos</p>
                 <ol>
-                    <li>Verificar tamaño de página con <code>getconf PAGE_SIZE</code></li>
-                    <li>Ejecutar un proceso (ej: <code>sleep 100</code>) y obtener su PID</li>
-                    <li>Examinar su mapa de memoria con <code>cat /proc/[PID]/maps</code></li>
-                    <li>Identificar los diferentes segmentos (código, datos, heap, pila)</li>
-                    <li>Calcular cuántas páginas ocupa cada región</li>
+                    <li>Verificar tamaño de página base: <code>getconf PAGE_SIZE</code></li>
+                    <li>Verificar si el sistema soporta "Huge Pages": <code>grep -i huge /proc/meminfo</code></li>
+                    <li>Calcular: Si un proceso usa 1MB de RAM, ¿cuántas páginas de 4KB requiere?</li>
+                    <li>Investigar: ¿Cuál es el beneficio de usar páginas de 2MB (HugePages) en bases de datos?</li>
+                </ol>
+            </div>
+
+            <div class="actividad">
+                <h3>Ejercicio 2: Simulación de Traducción de Direcciones</h3>
+                <p><strong>Escenario:</strong> Sistema de 32 bits, páginas de 4KB (Offset = 12 bits)</p>
+                <p><strong>Tabla de Páginas:</strong> Página 0 -> Marco 5, Página 1 -> Marco 12, Página 2 -> Marco 8</p>
+                <ol>
+                    <li>Dirección Lógica: <code>0x00000500</code> (Página 0, Offset 0x500) -> ¿Física? _______</li>
+                    <li>Dirección Lógica: <code>0x00001ABC</code> (Página 1, Offset 0xABC) -> ¿Física? _______</li>
+                    <li>Dirección Lógica: <code>0x00002001</code> (Página 2, Offset 0x001) -> ¿Física? _______</li>
+                </ol>
+                <div class="callout info">
+                    <strong>Pista:</strong> Dirección Física = (Número de Marco * Tamaño de Página) + Offset
+                </div>
+            </div>
+
+            <div class="actividad">
+                <h3>Ejercicio 3: Mapa de Memoria Real (Fase 3 Prep)</h3>
+                <p><strong>Objetivo:</strong> Identificar segmentos paginados en un proceso real</p>
+                <ol>
+                    <li>Lanzar un proceso: <code>top &</code> y anotar su PID</li>
+                    <li>Ver su mapa: <code>cat /proc/[PID]/maps</code></li>
+                    <li>Identificar la región con permisos <code>r-xp</code> (Código/Texto)</li>
+                    <li>Identificar la región con permisos <code>rw-p</code> (Datos/Heap)</li>
+                    <li>Identificar la región con el nombre <code>[stack]</code></li>
+                    <li>Calcula el tamaño en KB de la pila (Restar dirección final - dirección inicial)</li>
                 </ol>
             </div>
         </section>
@@ -435,14 +465,14 @@ sudo cat /proc/[PID]/pagemap
                 <div>
                     <div class="nav-label">Clase Anterior</div>
                     <div class="nav-title">Gestión de Memoria</div>
-                    <div class="class-nav-date">📅 03 Mar 2026</div>
+                    <div class="class-nav-date">📅 04 Mar 2026</div>
                 </div>
             </a>
             <a href="clase-10.html" class="class-nav-link next">
                 <div>
                     <div class="nav-label">Siguiente Clase</div>
                     <div class="nav-title">Memoria Virtual</div>
-                    <div class="class-nav-date">📅 12 Mar 2026</div>
+                    <div class="class-nav-date">📅 11 Mar 2026</div>
                 </div>
                 <span class="class-nav-icon">→</span>
             </a>
@@ -451,8 +481,7 @@ sudo cat /proc/[PID]/pagemap
 
     <footer>
         <div class="container">
-            <p><strong>IF0099 - Sistemas Operativos I</strong> - Paginación</p>
-            <p>📅 10 de Marzo 2026 | Sesión Martes: 6:00-8:00 AM | Teoría: 60 min + Práctica: 60 min</p>
+            <p>📅 04 de Marzo 2026 | Sesion Miercoles: 8:00-9:00 AM | Teoria: 30 min + Practica: 30 min</p>
 
             <p style="margin-top: 10px;">
                 <a href="index.html">Inicio</a> |

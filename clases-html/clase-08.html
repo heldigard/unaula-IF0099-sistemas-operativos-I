@@ -117,7 +117,7 @@
             <h1>Clase 08: Gestión de Memoria</h1>
             <p class="subtitle">IF0099 - Sistemas Operativos I | Unidad 6 - Memoria</p>
             <p class="subtitle">Jerarquía de memoria, asignación contigua, particiones</p>
-            <p class="meta">📅 03 de Marzo 2026 | Sesión Martes: 6:00-8:00 AM | Teoría: 60 min + Práctica: 60 min</p>
+            <p class="meta">📅 04 de Marzo 2026 | Sesion Miercoles: 6:00-8:00 AM | Teoria: 60 min + Practica: 60 min</p>
         </div>
     </header>
 
@@ -138,14 +138,16 @@
         </div>
 
         <!-- Próxima Evaluación Alert -->
-        <div class="eval-alert">
-            <span class="eval-alert-icon">📌</span>
-            <div class="eval-alert-content">
-                <div class="eval-alert-title">FASE 2 - Procesos y Monitoreo (15%)</div>
-                <div class="eval-alert-text">11 de Marzo 2026 (15%) - Gestión de Procesos</div>
+        <a href="evaluaciones.html#e3" style="text-decoration: none; display: block;">
+            <div class="eval-alert" style="cursor: pointer; transition: transform 0.2s;">
+                <span class="eval-alert-icon">📌</span>
+                <div class="eval-alert-content">
+                    <div class="eval-alert-title">E3: FASE 3 - Checkpoint Optimización (25 Mar)</div>
+                    <div class="eval-alert-text">20% - Checkpoint integral (memoria, E/S, archivos, sincronización)</div>
+                </div>
+                <span class="eval-alert-date">📅 25 Mar</span>
             </div>
-            <span class="eval-alert-date">📅 11 Mar</span>
-        </div>
+        </a>
 
         <nav>
             <h2>Contenido de la Clase</h2>
@@ -163,6 +165,7 @@
 
         <section id="objetivos">
             <h2>Objetivos de Aprendizaje</h2>
+            <p><strong>Resultado de Aprendizaje:</strong> Administra la memoria, los procesos de entrada y salida, el sistema de archivos, los mecanismos de protección y seguridad y las interfaces que ofrece el sistema operativo al usuario.</p>
             <p>Al finalizar esta clase, serás capaz de:</p>
             <ol>
                 <li><strong>Comprender</strong> la jerarquía de memoria y sus niveles</li>
@@ -352,15 +355,108 @@ swapon -s
 vmstat 1 5
 </pre>
 
-            <h3>Ejercicio práctico:</h3>
+            <h3>Ejercicios Prácticos Guiados:</h3>
+            
             <div class="actividad">
-                <h3>Ejercicio: Análisis de Uso de Memoria</h3>
+                <h3>Ejercicio 1: Análisis de Uso de Memoria</h3>
+                <p><strong>Tiempo:</strong> 15 minutos</p>
                 <ol>
                     <li>Verificar memoria total disponible con <code>free -h</code></li>
-                    <li>Identificar los 5 procesos que más memoria usan</li>
-                    <li>Calcular porcentaje de uso de memoria</li>
-                    <li>Verificar si hay uso de swap</li>
-                    <li>Documentar en tabla comparativa</li>
+                    <li>Identificar los 5 procesos que más memoria usan: <code>ps aux --sort=-%mem | head -6</code></li>
+                    <li>Calcular porcentaje de uso de memoria: <code>free | grep Mem | awk '{print ($3/$2)*100}'</code></li>
+                    <li>Verificar si hay uso de swap: <code>swapon -s</code> o <code>free -h | grep Swap</code></li>
+                    <li>Documentar en tabla comparativa con todas las métricas</li>
+                </ol>
+            </div>
+
+            <div class="actividad">
+                <h3>Ejercicio 2: Exploración de /proc/meminfo</h3>
+                <p><strong>Tiempo:</strong> 15 minutos</p>
+                <ol>
+                    <li>Ver información detallada de memoria: <code>cat /proc/meminfo</code></li>
+                    <li>Buscar MemTotal, MemFree, MemAvailable, Buffers, Cached</li>
+                    <li>Calcular: MemTotal - MemFree = ¿Cuánta memoria está "usada"?</li>
+                    <li>Comparar con el valor de MemAvailable</li>
+                    <li>Pregunta: ¿Por qué MemAvailable es diferente de MemFree?</li>
+                </ol>
+                <div class="callout info">
+                    <strong>Pista:</strong> Linux usa memoria "libre" para caches. MemAvailable incluye memoria que puede liberarse de los caches.
+                </div>
+            </div>
+
+            <div class="actividad">
+                <h3>Ejercicio 3: Análisis de Procesos y Memoria</h3>
+                <p><strong>Tiempo:</strong> 15 minutos</p>
+                <ol>
+                    <li>Elegir un proceso (ej: bash): <code>ps aux | grep bash</code></li>
+                    <li>Obtener su PID y ejecutar: <code>pmap [PID]</code></li>
+                    <li>Identificar las diferentes regiones de memoria (heap, stack, librerías)</li>
+                    <li>Ver el uso de memoria virtual vs física (RSS)</li>
+                    <li>Calcular: ¿Qué porcentaje de la memoria virtual está realmente en RAM?</li>
+                </ol>
+            </div>
+
+            <div class="actividad">
+                <h3>Ejercicio 4: Simulación de Asignación de Memoria</h3>
+                <p><strong>Tiempo:</strong> 20 minutos</p>
+                <p><strong>Escenario:</strong> Memoria de 1000KB con particiones fijas de 200KB cada una</p>
+                <ol>
+                    <li>Proceso A llega y necesita 150KB → ¿En qué partición va?</li>
+                    <li>Proceso B llega y necesita 180KB → ¿En qué partición va?</li>
+                    <li>Proceso C llega y necesita 50KB → ¿En qué partición va?</li>
+                    <li>Calcula: ¿Cuánta memoria se desperdicia en cada partición (fragmentación interna)?</li>
+                    <li>Total: ¿Cuánta memoria total se desperdicia?</li>
+                </ol>
+                <div class="callout warning">
+                    <strong>Respuesta esperada:</strong> Fragmentación interna total = (200-150) + (200-180) + (200-50) = 50 + 20 + 150 = 220KB desperdiciados
+                </div>
+            </div>
+
+            <div class="actividad">
+                <h3>Ejercicio 5: Simulación de Fragmentación Externa</h3>
+                <p><strong>Tiempo:</strong> 20 minutos</p>
+                <p><strong>Escenario:</strong> Memoria de 1000KB usando particiones dinámicas</p>
+                <ol>
+                    <li>Estado inicial: Memoria vacía [1000KB libre]</li>
+                    <li>Proceso A (300KB) llega → [A:300KB][libre:700KB]</li>
+                    <li>Proceso B (200KB) llega → [A:300KB][B:200KB][libre:500KB]</li>
+                    <li>Proceso C (400KB) llega → [A:300KB][B:200KB][C:400KB][libre:100KB]</li>
+                    <li>Proceso B termina → [A:300KB][libre:200KB][C:400KB][libre:100KB]</li>
+                    <li>Proceso D (250KB) intenta llegar → ¿Puede entrar?</li>
+                    <li>Calcula: ¿Cuánta memoria libre hay? ¿Por qué no entra el proceso D?</li>
+                </ol>
+                <div class="callout danger">
+                    <strong>Análisis:</strong> Hay 300KB libres (200+100) pero no contiguos. El proceso D necesita 250KB contiguos → No puede entrar aunque haya suficiente memoria total. ¡Esto es fragmentación externa!
+                </div>
+            </div>
+
+            <div class="actividad">
+                <h3>Ejercicio 6: Cálculo de Direcciones Físicas (Base-Límite)</h3>
+                <p><strong>Tiempo:</strong> 15 minutos</p>
+                <p><strong>Datos:</strong> Proceso con Base = 2000, Límite = 1000</p>
+                <ol>
+                    <li>Dirección lógica 0 → ¿Física? _______</li>
+                    <li>Dirección lógica 500 → ¿Física? _______</li>
+                    <li>Dirección lógica 999 → ¿Física? _______</li>
+                    <li>Dirección lógica 1000 → ¿Válida? _______</li>
+                    <li>Dirección lógica 1500 → ¿Válida? _______</li>
+                </ol>
+                <div class="callout success">
+                    <strong>Fórmula:</strong> Dirección Física = Dirección Lógica + Base (solo si DL &lt; Límite)
+                </div>
+            </div>
+
+            <div class="actividad">
+                <h3>Ejercicio 7: Comparación de Estrategias de Ubicación</h3>
+                <p><strong>Tiempo:</strong> 15 minutos</p>
+                <p><strong>Escenario:</strong> Huecos de memoria disponibles: [100KB, 500KB, 200KB, 300KB, 50KB]</p>
+                <ol>
+                    <li>Proceso de 250KB llega:</li>
+                    <li>Con First Fit: ¿Qué hueco usa? _______</li>
+                    <li>Con Best Fit: ¿Qué hueco usa? _______</li>
+                    <li>Con Worst Fit: ¿Qué hueco usa? _______</li>
+                    <li>¿Cuál estrategia deja el mayor desperdicio?</li>
+                    <li>¿Cuál estrategia es más rápida de calcular?</li>
                 </ol>
             </div>
         </section>
@@ -419,14 +515,14 @@ vmstat 1 5
                 <div>
                     <div class="nav-label">Clase Anterior</div>
                     <div class="nav-title">Hilos y Sincronización</div>
-                    <div class="class-nav-date">📅 26 Feb 2026</div>
+                    <div class="class-nav-date">📅 25 Feb 2026</div>
                 </div>
             </a>
             <a href="clase-09.html" class="class-nav-link next">
                 <div>
                     <div class="nav-label">Siguiente Clase</div>
                     <div class="nav-title">Paginación</div>
-                    <div class="class-nav-date">📅 11 Mar 2026</div>
+                    <div class="class-nav-date">📅 04 Mar 2026</div>
                 </div>
                 <span class="class-nav-icon">→</span>
             </a>
@@ -435,8 +531,7 @@ vmstat 1 5
 
     <footer>
         <div class="container">
-            <p><strong>IF0099 - Sistemas Operativos I</strong> - Gestión de Memoria</p>
-            <p>📅 03 de Marzo 2026 | Sesión Martes: 6:00-8:00 AM | Teoría: 60 min + Práctica: 60 min</p>
+            <p>📅 04 de Marzo 2026 | Sesion Miercoles: 6:00-8:00 AM | Teoria: 60 min + Practica: 60 min</p>
 
             <p style="margin-top: 10px;">
                 <a href="index.html">Inicio</a> |

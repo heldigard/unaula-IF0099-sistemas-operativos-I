@@ -285,6 +285,51 @@
             section { padding: 1.5rem; }
             nav ul { flex-direction: column; gap: 0.5rem; }
         }
+
+        /* Alertas de Evaluación */
+        .eval-alert {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-left: 4px solid #f59e0b;
+            padding: 1.25rem 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .eval-alert-icon {
+            font-size: 1.75rem;
+            line-height: 1;
+        }
+
+        .eval-alert-content {
+            flex: 1;
+        }
+
+        .eval-alert-title {
+            font-weight: 700;
+            color: #92400e;
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .eval-alert-text {
+            color: #78350f;
+            font-size: 0.9rem;
+        }
+
+        .eval-alert-date {
+            background: #f59e0b;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
     </style>
 </head>
 <body>
@@ -292,6 +337,7 @@
         <div class="container">
             <h1>Clase 03: Cambio de Contexto y Concurrencia</h1>
             <p class="subtitle">IF0099 - Sistemas Operativos I | Universidad Autónoma Latinoamericana</p>
+            <p class="meta">📅 11 de Febrero 2026 | Sesion Miercoles: 6:00-8:00 AM | Teoria: 60 min + Practica: 60 min</p>
         </div>
     </header>
 
@@ -310,6 +356,7 @@
     <main class="container">
         <section id="objetivos">
             <h2>Objetivos de Aprendizaje</h2>
+            <p><strong>Resultado de Aprendizaje:</strong> Identifica la estructura y los tipos de los sistemas operativos.</p>
             <ul>
                 <li>Comprender el concepto de <strong>cambio de contexto</strong> y su importancia en los sistemas operativos</li>
                 <li>Identificar la estructura del <strong>PCB (Process Control Block)</strong> y su función</li>
@@ -929,12 +976,16 @@ ps aux | grep -w Z
         </section>
 
         <!-- Próxima Evaluación Alert -->
-        <section class="container" style="margin-top: 2rem;">
-            <div class="eval-alert" style="cursor: pointer; transition: transform 0.2s;" onclick="window.location.href='evaluaciones.html#e1'">
-                <div class="eval-alert-title">FASE 1 - Fundamentos y Arquitectura (15%) Estructura y Tipos de SO</div>
-                <div class="eval-alert-text">25 de Febrero 2026 (15%) - Documento PDF + Presentación + Scripts</div>
+        <a href="evaluaciones.html#e1" style="text-decoration: none; display: block; margin-top: 2rem;">
+            <div class="eval-alert" style="cursor: pointer; transition: transform 0.2s;">
+                <span class="eval-alert-icon">📌</span>
+                <div class="eval-alert-content">
+                    <div class="eval-alert-title">E1: FASE 1 - Fundamentos y Arquitectura (25 Feb)</div>
+                    <div class="eval-alert-text">15% - Configuración inicial del proyecto (identifica estructura y tipos de SO)</div>
+                </div>
+                <span class="eval-alert-date">📅 25 Feb</span>
             </div>
-        </section>
+        </a>
 
         <!-- Class Navigation -->
         <nav class="container class-nav" style="margin-top: 2rem; margin-bottom: 2rem;">
@@ -943,7 +994,7 @@ ps aux | grep -w Z
                 <div>
                     <div class="nav-label">Clase Anterior</div>
                     <div class="nav-title">Linux Terminal</div>
-                    <div class="class-nav-date">📅 06 Feb 2026</div>
+                    <div class="class-nav-date">📅 04 Feb 2026</div>
                 </div>
             </a>
             <a href="clase-04.html" class="class-nav-link next">
@@ -959,13 +1010,15 @@ ps aux | grep -w Z
 
     <footer>
         <div class="container">
-            <p><strong>IF0099 - Sistemas Operativos I</strong></p>
-            <p>Universidad Autónoma Latinoamericana - UNAULA</p>
-            <p style="margin-top: 1rem;">
-                <a href="index.html">Inicio</a> |
-                <a href="cronograma.html">Cronograma</a> |
-                <a href="evaluaciones.html">Evaluaciones</a>
+            <p><strong>IF0099 - Sistemas Operativos I</strong> • Clase 03: Cambio de Contexto y Concurrencia</p>
+            <p>📅 11 de Febrero 2026 | Sesion Miercoles: 6:00-8:00 AM | Teoria: 60 min + Practica: 60 min</p>
+            <p style="margin-top: 10px;">
+                <a href="index.html" style="color: #10b981;">Inicio</a> |
+                <a href="cronograma.html" style="color: #10b981;">Cronograma</a> |
+                <a href="evaluaciones.html" style="color: #8b5cf6;">Evaluaciones</a> |
+                <a href="rubricas.html" style="color: #3b82f6;">Rúbricas</a>
             </p>
+            <p><a href="#" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); return false;">Volver arriba ↑</a></p>
         </div>
     </footer>
 

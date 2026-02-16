@@ -117,7 +117,7 @@
             <h1>Clase 11: Discos y E/S</h1>
             <p class="subtitle">IF0099 - Sistemas Operativos I | Unidad 7 - Entrada/Salida</p>
             <p class="subtitle">Gestión de discos, particiones, sistemas de archivos básicos, E/S</p>
-            <p class="meta">📅 17 de Marzo 2026 | Sesión Martes: 6:00-8:00 AM | Teoría: 60 min + Práctica: 60 min</p>
+            <p class="meta">📅 18 de Marzo 2026 | Sesion Miercoles: 6:00-8:00 AM | Teoria: 60 min + Practica: 60 min</p>
         </div>
     </header>
 
@@ -142,8 +142,8 @@
             <div class="eval-alert" style="cursor: pointer; transition: transform 0.2s;">
                 <span class="eval-alert-icon">📌</span>
                 <div class="eval-alert-content">
-                    <div class="eval-alert-title">FASE 3 - Checkpoint Optimización (20%)</div>
-                    <div class="eval-alert-text">25 de Marzo 2026 (20%) - Memoria, E/S, Archivos</div>
+                    <div class="eval-alert-title">E3: FASE 3 - Checkpoint Optimización (25 Mar)</div>
+                    <div class="eval-alert-text">20% - Checkpoint integral (memoria, E/S, archivos, sincronización)</div>
                 </div>
                 <span class="eval-alert-date">📅 25 Mar</span>
             </div>
@@ -164,6 +164,7 @@
 
         <section id="objetivos">
             <h2>Objetivos de Aprendizaje</h2>
+            <p><strong>Resultado de Aprendizaje:</strong> Administra la memoria, los procesos de entrada y salida, el sistema de archivos, los mecanismos de protección y seguridad y las interfaces que ofrece el sistema operativo al usuario.</p>
             <p>Al finalizar esta clase, serás capaz de:</p>
             <ol>
                 <li><strong>Comprender</strong> la estructura física de los discos duros</li>
@@ -406,15 +407,39 @@ iostat -x 1 5
 iotop
 </pre>
 
-            <h3>Ejercicio práctico:</h3>
+            <h3>Ejercicios Prácticos de Almacenamiento:</h3>
             <div class="actividad">
-                <h3>Ejercicio: Análisis de Discos</h3>
+                <h3>Ejercicio 1: Benchmarking de Disco (Fase 3 Prep)</h3>
+                <p><strong>Objetivo:</strong> Medir la velocidad real de E/S en tu VM</p>
                 <ol>
-                    <li>Listar todos los discos con <code>lsblk</code> y explicar la salida</li>
-                    <li>Ver tabla de particiones con <code>sudo fdisk -l</code></li>
-                    <li>Ver uso de disco con <code>df -h</code></li>
-                    <li>Identificar sistema de archivos de cada partición</li>
-                    <li>Ver estadísticas de E/S con <code>iostat</code> (instalar si es necesario)</li>
+                    <li>Instalar herramientas: <code>sudo apt update && sudo apt install sysstat iotop -y</code></li>
+                    <li>Prueba de escritura (crear archivo de 1GB): <code>dd if=/dev/zero of=/tmp/testfile bs=1G count=1 oflag=dsync</code></li>
+                    <li>Observa la velocidad reportada en MB/s. ¿Es HDD o SSD virtual?</li>
+                    <li>Prueba de lectura: <code>dd if=/tmp/testfile of=/dev/null bs=1G count=1</code></li>
+                    <li>Compara ambas velocidades.</li>
+                </ol>
+            </div>
+
+            <div class="actividad">
+                <h3>Ejercicio 2: Monitoreo en Tiempo Real</h3>
+                <p><strong>Objetivo:</strong> Detectar cuellos de botella de E/S</p>
+                <ol>
+                    <li>Abre dos terminales.</li>
+                    <li>En T1 ejecuta: <code>iostat -xz 1</code> (Fíjate en la columna %util)</li>
+                    <li>En T2 ejecuta una carga: <code>find / -name "test*" 2>/dev/null</code></li>
+                    <li>Observa cómo sube el %util en T1. ¿Qué disco está trabajando?</li>
+                    <li>Ejecuta <code>sudo iotop -o</code> para ver qué proceso exacto está leyendo/escribiendo.</li>
+                </ol>
+            </div>
+
+            <div class="actividad">
+                <h3>Ejercicio 3: Análisis de Sectores y Tamaño</h3>
+                <p><strong>Objetivo:</strong> Entender la geometría lógica</p>
+                <ol>
+                    <li>Ejecuta <code>sudo fdisk -l</code></li>
+                    <li>Busca la línea "Units: sectors of 1 * 512 = 512 bytes"</li>
+                    <li>Identifica el sector de inicio y fin de tu partición principal.</li>
+                    <li>Calcula: (Sector Fin - Sector Inicio) * 512 / 1024 / 1024 / 1024. ¿Coincide con los GB reportados?</li>
                 </ol>
             </div>
         </section>
@@ -476,14 +501,14 @@ iotop
                 <div>
                     <div class="nav-label">Clase Anterior</div>
                     <div class="nav-title">Memoria Virtual</div>
-                    <div class="class-nav-date">📅 12 Mar 2026</div>
+                    <div class="class-nav-date">📅 11 Mar 2026</div>
                 </div>
             </a>
             <a href="clase-12.html" class="class-nav-link next">
                 <div>
                     <div class="nav-label">Siguiente Clase</div>
                     <div class="nav-title">Sistemas de Archivos</div>
-                    <div class="class-nav-date">📅 07 Abr 2026</div>
+                    <div class="class-nav-date">📅 18 Mar 2026</div>
                 </div>
                 <span class="class-nav-icon">→</span>
             </a>
@@ -492,8 +517,7 @@ iotop
 
     <footer>
         <div class="container">
-            <p><strong>IF0099 - Sistemas Operativos I</strong> - Discos y E/S</p>
-            <p>📅 17 de Marzo 2026 | Sesión Martes: 6:00-8:00 AM | Teoría: 60 min + Práctica: 60 min</p>
+            <p>📅 18 de Marzo 2026 | Sesion Miercoles: 6:00-8:00 AM | Teoria: 60 min + Practica: 60 min</p>
 
             <p style="margin-top: 10px;">
                 <a href="index.html">Inicio</a> |
