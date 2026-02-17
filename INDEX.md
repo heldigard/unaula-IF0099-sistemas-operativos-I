@@ -10,7 +10,7 @@
 ## 🚀 Acceso Rápido (Contenido Web)
 Este curso está diseñado para ser visualizado en formato HTML. Utiliza los siguientes enlaces para navegar por el contenido oficial:
 
-- 📅 **[Cronograma Detallado (Tue/Thu)](https://eldigardocamacho.github.io/IF0099-sistemas-operativos-I/clases-html/cronograma.html)**
+- 📅 **[Cronograma Detallado (Miércoles)](https://eldigardocamacho.github.io/IF0099-sistemas-operativos-I/clases-html/cronograma.html)**
 - 📋 **[Acta de Concertación](https://eldigardocamacho.github.io/IF0099-sistemas-operativos-I/clases-html/concertacion.html)**
 - 📝 **[Evaluaciones del Curso](https://eldigardocamacho.github.io/IF0099-sistemas-operativos-I/clases-html/evaluaciones.html)**
 - 📘 **[Guía del Proyecto](https://eldigardocamacho.github.io/IF0099-sistemas-operativos-I/clases-html/proyecto.html)**
@@ -20,7 +20,10 @@ Este curso está diseñado para ser visualizado en formato HTML. Utiliza los sig
 
 ---
 
-## 📚 Clases Teórico-Prácticas (50/50)
+## 📚 Clases Teórico-Prácticas (Enfoque Aplicado)
+
+**Jornada oficial:** Miércoles 6:00 AM - 9:00 AM (dos franjas: 6:00-8:00 y 8:00-9:00)  
+**Receso Semana Santa 2026:** 29 de marzo al 5 de abril (sin clase el miércoles 1 de abril)
 
 | # | Semana | Tema Principal | Enlace |
 |---|--------|----------------|--------|
@@ -29,18 +32,18 @@ Este curso está diseñado para ser visualizado en formato HTML. Utiliza los sig
 | 03 | Semana 2 | Cambio de Contexto y Concurrencia | [Ver Clase 03](https://eldigardocamacho.github.io/IF0099-sistemas-operativos-I/clases-html/clase-03.html) |
 | 04 | Semana 2 | Estructura del Sistema Operativo | [Ver Clase 04](https://eldigardocamacho.github.io/IF0099-sistemas-operativos-I/clases-html/clase-04.html) |
 | 05 | Semana 3 | Procesos en Linux - Gestión y Monitoreo | [Ver Clase 05](https://eldigardocamacho.github.io/IF0099-sistemas-operativos-I/clases-html/clase-05.html) |
-| 06 | Semana 4 | Procesos en Windows - Gestión y Servicios | [Ver Clase 06](https://eldigardocamacho.github.io/IF0099-sistemas-operativos-I/clases-html/clase-06.html) |
+| 06 | Semana 3 | Procesos en Windows - Gestión y Servicios | [Ver Clase 06](https://eldigardocamacho.github.io/IF0099-sistemas-operativos-I/clases-html/clase-06.html) |
 | 07 | Semana 4 | Hilos y Sincronización | [Ver Clase 07](https://eldigardocamacho.github.io/IF0099-sistemas-operativos-I/clases-html/clase-07.html) |
 | 08 | Semana 5 | Gestión de Memoria | [Ver Clase 08](https://eldigardocamacho.github.io/IF0099-sistemas-operativos-I/clases-html/clase-08.html) |
-| 09 | Semana 6 | Paginación | [Ver Clase 09](https://eldigardocamacho.github.io/IF0099-sistemas-operativos-I/clases-html/clase-09.html) |
+| 09 | Semana 5 | Paginación | [Ver Clase 09](https://eldigardocamacho.github.io/IF0099-sistemas-operativos-I/clases-html/clase-09.html) |
 | 10 | Semana 6 | Memoria Virtual | [Ver Clase 10](https://eldigardocamacho.github.io/IF0099-sistemas-operativos-I/clases-html/clase-10.html) |
 | 11 | Semana 7 | Discos y E/S | [Ver Clase 11](https://eldigardocamacho.github.io/IF0099-sistemas-operativos-I/clases-html/clase-11.html) |
-| 15 | Semana 9 | Permisos y Seguridad en Linux | [Ver Clase 15](https://eldigardocamacho.github.io/IF0099-sistemas-operativos-I/clases-html/clase-15.html) |
+| 12 | Semana 7 | Sistemas de Archivos | [Ver Clase 12](https://eldigardocamacho.github.io/IF0099-sistemas-operativos-I/clases-html/clase-12.html) |
+| 13 | Semana 9 | Implementación de Sistemas de Archivos | [Ver Clase 13](https://eldigardocamacho.github.io/IF0099-sistemas-operativos-I/clases-html/clase-13.html) |
+| 14 | Semana 9 | Servidor Web IIS | [Ver Clase 14](https://eldigardocamacho.github.io/IF0099-sistemas-operativos-I/clases-html/clase-14.html) |
+| 15 | Semana 10 | Permisos y Seguridad en Linux | [Ver Clase 15](https://eldigardocamacho.github.io/IF0099-sistemas-operativos-I/clases-html/clase-15.html) |
 | 16 | Semana 10 | Permisos y Seguridad en Windows | [Ver Clase 16](https://eldigardocamacho.github.io/IF0099-sistemas-operativos-I/clases-html/clase-16.html) |
-| 17 | Semana 10 | Servidor Web Apache | [Ver Clase 17](https://eldigardocamacho.github.io/IF0099-sistemas-operativos-I/clases-html/clase-17.html) |
-| 12 | Semana 11 | Sistemas de Archivos | [Ver Clase 12](https://eldigardocamacho.github.io/IF0099-sistemas-operativos-I/clases-html/clase-12.html) |
-| 13 | Semana 12 | Implementación de Sistemas de Archivos | [Ver Clase 13](https://eldigardocamacho.github.io/IF0099-sistemas-operativos-I/clases-html/clase-13.html) |
-| 14 | Semana 13 | Servidor Web IIS | [Ver Clase 14](https://eldigardocamacho.github.io/IF0099-sistemas-operativos-I/clases-html/clase-14.html) |
+| 17 | Semana 11 | Servidor Web Apache | [Ver Clase 17](https://eldigardocamacho.github.io/IF0099-sistemas-operativos-I/clases-html/clase-17.html) |
 | -- | -- | -- | -- |
 | **TOTAL** | **17 clases** | | |
 
@@ -50,14 +53,14 @@ Este curso está diseñado para ser visualizado en formato HTML. Utiliza los sig
 
 | Eval | Fecha | Tipo | Tema | % | Clases Previas |
 |------|-------|------|------|---|----------------|
-| E1 | 25 Feb | Taller | Estructura y tipos de SO | 15% | 01, 02, 04 |
-| E2 | 11 Mar | Informe | Gestión de procesos | 15% | 05, 06, 07 |
-| E3 | 25 Mar | Examen | Memoria, E/S | 20% | 04 al 10 |
-| E4 | 22 Abr | Reporte | **Seguridad en SO** | 15% | 15, 16, 17 |
-| **E5** | **6 May** | **Proyecto** | **Fase 4: Servidores Web y Monitoreo** | **15%** | **12, 13, 14** |
-| **E6** | **27 May** | **Proyecto** | **Fase 5: Entrega Completa (Sustentación)** | **20%** | **Todas** |
+| E1 | 25 Feb | Proyecto (Fase 1) | Fundamentos y Arquitectura del SO | 15% | 01, 02, 03, 04 |
+| E2 | 11 Mar | Proyecto (Fase 2) | Gestión de procesos y monitoreo | 15% | 05, 06, 07 |
+| E3 | 25 Mar | Checkpoint práctico (Fase 3) | Memoria, E/S, sincronización y FS básico | 20% | 04 al 12 |
+| E4 | 22 Abr | Proyecto (Fase 4) | **Seguridad y hardening** | 15% | 15, 16, 17 |
+| **E5** | **6 May** | **Proyecto (Fase 5)** | **Integración de servicios (Apache + IIS)** | **15%** | **12, 13, 14, 17** |
+| **E6** | **27 May** | **Proyecto (Fase 6)** | **Sustentación final del sistema completo** | **20%** | **Todas** |
 
-**✅ ORGANIZACIÓN ÓPTIMA:** Clases de seguridad (15, 16, 17) van PRIMERO en abril, luego E4 evalúa seguridad. Clases de archivos y servidores (12, 13, 14) van DESPUÉS, luego E5 evalúa el Proyecto Fase 4 (Servidores Web), y E6 es la sustentación final del proyecto completo.
+**✅ ORGANIZACIÓN ÓPTIMA:** El curso mantiene secuencia por miércoles, respeta receso de Semana Santa, y evalúa por fases acumulativas del proyecto (E1 a E6) hasta la sustentación final.
 
 ---
 
