@@ -142,7 +142,7 @@
         <header>
             <h1>📘 Guía del Proyecto</h1>
             <p class="subtitle">Administración de Servidores Linux/Windows</p>
-            <div class="project-badge">Proyecto Integrador - 5 Fases</div>
+            <div class="project-badge">Proyecto Integrador - 6 Fases</div>
             
             <div class="nav-links">
                 <a href="concertacion.html">← Acta de Concertación</a>
@@ -179,7 +179,7 @@
                 <h4>FASE 1: Fundamentos y Arquitectura (E1 - 15%)</h4>
                 <div class="phase-meta">
                     <div class="phase-meta-item"><strong>Fecha:</strong> 25 Febrero</div>
-                    <div class="phase-meta-item"><strong>Tipo:</strong> Taller</div>
+                    <div class="phase-meta-item"><strong>Tipo:</strong> Proyecto (avance incremental)</div>
                     <div class="phase-meta-item"><strong>Eval:</strong> E1</div>
                 </div>
                 <p><strong>Objetivo:</strong> Definir la arquitectura tecnológica de la empresa.</p>
@@ -199,7 +199,7 @@
                 <h4>Fase 2: Gestión de Procesos y Servicios (E2 - 15%)</h4>
                 <div class="phase-meta">
                     <div class="phase-meta-item"><strong>Fecha:</strong> 11 Marzo</div>
-                    <div class="phase-meta-item"><strong>Tipo:</strong> Informe</div>
+                    <div class="phase-meta-item"><strong>Tipo:</strong> Proyecto (avance incremental)</div>
                     <div class="phase-meta-item"><strong>Eval:</strong> E2</div>
                 </div>
                 <p><strong>Objetivo:</strong> Implementar procesos críticos y servicios base.</p>
@@ -219,17 +219,18 @@
                 <h4>Fase 3: Checkpoint Optimización (E3 - 20%)</h4>
                 <div class="phase-meta">
                     <div class="phase-meta-item"><strong>Fecha:</strong> 25 Marzo</div>
-                    <div class="phase-meta-item"><strong>Tipo:</strong> Checkpoint Optimización</div>
+                    <div class="phase-meta-item"><strong>Tipo:</strong> Checkpoint Práctico</div>
                     <div class="phase-meta-item"><strong>Eval:</strong> E3</div>
                 </div>
-                <p><strong>Objetivo:</strong> Evaluar comprensión teórica antes de Semana Santa.</p>
+                <p><strong>Objetivo:</strong> Evaluar comprensión de Memoria, E/S, Procesos y Sincronización antes de Semana Santa.</p>
                 <div class="entregable">
-                    <strong>Evaluación:</strong>
+                    <strong>Alcance del Checkpoint:</strong>
                     <ul>
-                        <li>Análisis de escenarios prácticos</li>
-                        <li>Problemas de planificación de CPU</li>
-                        <li>Comandos reales Linux/Windows</li>
-                        <li>Sin memorización - enfoque en análisis</li>
+                        <li><strong>Incluye:</strong> Memoria, Paginación, E/S, Procesos, Sincronización</li>
+                        <li><strong>Incluye:</strong> Sistemas de Archivos básico (C12: inodos, permisos, ext4/NTFS)</li>
+                        <li><strong>NO incluye:</strong> Journaling, RAID, fstab (se evalúa en Fase 5)</li>
+                        <li>Análisis de escenarios prácticos con enfoque en resolución de problemas</li>
+                        <li>Sin memorización - evalúa comprensión y aplicación</li>
                     </ul>
                 </div>
             </div>
@@ -238,7 +239,7 @@
                 <h4>Fase 4: Seguridad y Hardening (E4 - 15%)</h4>
                 <div class="phase-meta">
                     <div class="phase-meta-item"><strong>Fecha:</strong> 22 Abril</div>
-                    <div class="phase-meta-item"><strong>Tipo:</strong> Reporte</div>
+                    <div class="phase-meta-item"><strong>Tipo:</strong> Proyecto (avance incremental)</div>
                     <div class="phase-meta-item"><strong>Eval:</strong> E4</div>
                 </div>
                 <p><strong>Objetivo:</strong> Proteger la infraestructura implementada.</p>
@@ -257,7 +258,7 @@
             <div class="phase-card">
                 <h4>Fase 5: Proyecto Integrador (E5 - 15%) 🚀</h4>
                 <div class="phase-meta">
-                    <div class="phase-meta-item"><strong>Fecha:</strong> 6 Mayo</div>
+                    <div class="phase-meta-item"><strong>Fecha:</strong> 06 Mayo</div>
                     <div class="phase-meta-item"><strong>Tipo:</strong> Proyecto</div>
                     <div class="phase-meta-item"><strong>Eval:</strong> E5</div>
                 </div>
@@ -267,8 +268,8 @@
                     <ul>
                         <li><strong>Servidores web funcionando:</strong> Apache (Linux) + IIS (Windows)</li>
                         <li><strong>Scripts integrales:</strong> Monitor de sistema completo</li>
-                        <li><strong>Sistema de monitoreo:</strong> CPU, memoria, disco, red, servicios</li>
-                        <li><strong>Documentación:</strong> Integración de Fases 1-4</li>
+                        <li><strong>Sistema de monitoreo:</strong> CPU, memoria, disco, red, servicios y disponibilidad web</li>
+                        <li><strong>Documentación:</strong> Integración de Fases 1-4 + aplicación de C13 (journaling, RAID conceptual, fstab)</li>
                         <li><strong>Video:</strong> Demostración del sistema (8-12 min)</li>
                     </ul>
                 </div>
@@ -292,6 +293,73 @@
                         <li><strong>Sustentación:</strong> Defensa del proyecto + preguntas</li>
                     </ul>
                 </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>🧭 Especificación Operativa del Proyecto (Qué y Cómo)</h2>
+
+            <div class="info-box">
+                <h4>Regla de ejecución por fase</h4>
+                <p>Cada fase se evalúa con evidencia verificable en laboratorio. No basta con describir: se debe <strong>demostrar</strong> en Linux/Windows con comandos, scripts y resultados reproducibles.</p>
+            </div>
+
+            <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+                <thead>
+                    <tr style="background: #1e3a5f; color: white;">
+                        <th style="padding: 12px; text-align: left;">Fase</th>
+                        <th style="padding: 12px; text-align: left;">Qué debe hacer el estudiante</th>
+                        <th style="padding: 12px; text-align: left;">Evidencia obligatoria</th>
+                        <th style="padding: 12px; text-align: left;">Cómo se valida</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="padding: 12px; border-bottom: 1px solid #ddd;"><strong>E1</strong></td>
+                        <td style="padding: 12px; border-bottom: 1px solid #ddd;">Diseñar arquitectura técnica y justificar decisiones Linux/Windows para el caso de empresa.</td>
+                        <td style="padding: 12px; border-bottom: 1px solid #ddd;">Diagrama de red, matriz de servicios, justificación técnica.</td>
+                        <td style="padding: 12px; border-bottom: 1px solid #ddd;">Revisión de consistencia arquitectura↔requisitos y sustentación corta.</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 12px; border-bottom: 1px solid #ddd;"><strong>E2</strong></td>
+                        <td style="padding: 12px; border-bottom: 1px solid #ddd;">Implementar monitoreo de procesos/servicios y control operacional básico.</td>
+                        <td style="padding: 12px; border-bottom: 1px solid #ddd;">Scripts Bash/PowerShell funcionales + bitácora de pruebas.</td>
+                        <td style="padding: 12px; border-bottom: 1px solid #ddd;">Ejecución en vivo de scripts con interpretación de salida.</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 12px; border-bottom: 1px solid #ddd;"><strong>E3</strong></td>
+                        <td style="padding: 12px; border-bottom: 1px solid #ddd;">Resolver escenarios de optimización (memoria, E/S, procesos, sincronización, FS básico).</td>
+                        <td style="padding: 12px; border-bottom: 1px solid #ddd;">Respuestas técnicas + pruebas en VM (hasta C12).</td>
+                        <td style="padding: 12px; border-bottom: 1px solid #ddd;">Checklist de solución, comandos ejecutados y justificación técnica.</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 12px; border-bottom: 1px solid #ddd;"><strong>E4</strong></td>
+                        <td style="padding: 12px; border-bottom: 1px solid #ddd;">Aplicar hardening y control de acceso en Linux y Windows.</td>
+                        <td style="padding: 12px; border-bottom: 1px solid #ddd;">Matriz de riesgos, scripts de seguridad, evidencia de políticas activas.</td>
+                        <td style="padding: 12px; border-bottom: 1px solid #ddd;">Auditoría guiada de configuraciones y verificación de mitigaciones.</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 12px; border-bottom: 1px solid #ddd;"><strong>E5</strong></td>
+                        <td style="padding: 12px; border-bottom: 1px solid #ddd;">Integrar Apache + IIS, almacenamiento avanzado (C13) y monitoreo end-to-end.</td>
+                        <td style="padding: 12px; border-bottom: 1px solid #ddd;">Servicios web accesibles, scripts, reporte de integración, video técnico.</td>
+                        <td style="padding: 12px; border-bottom: 1px solid #ddd;">Prueba funcional de disponibilidad, seguridad y trazabilidad operativa.</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 12px; border-bottom: 1px solid #ddd;"><strong>E6</strong></td>
+                        <td style="padding: 12px; border-bottom: 1px solid #ddd;">Sustentar el sistema completo con demostración en vivo y defensa técnica.</td>
+                        <td style="padding: 12px; border-bottom: 1px solid #ddd;">Repositorio final, manual técnico, manual de operación, presentación.</td>
+                        <td style="padding: 12px; border-bottom: 1px solid #ddd;">Rúbrica de demostración (60%) + defensa/presentación (40%).</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="success-box">
+                <h4>Criterio mínimo de aprobación por fase</h4>
+                <ul>
+                    <li>Evidencia ejecutable y reproducible en laboratorio (no solo capturas).</li>
+                    <li>Coherencia entre diseño, implementación y resultados observados.</li>
+                    <li>Respuesta técnica a preguntas de validación del docente.</li>
+                </ul>
             </div>
         </section>
 
@@ -339,19 +407,19 @@
                     <tr>
                         <td style="padding: 12px; border-bottom: 1px solid #ddd;"><strong>1° Seguimiento</strong></td>
                         <td style="padding: 12px; border-bottom: 1px solid #ddd;">27/03/2026</td>
-                        <td style="padding: 12px; border-bottom: 1px solid #ddd;">Fase 1 + Fase 2 + Evaluación Intermedia</td>
+                        <td style="padding: 12px; border-bottom: 1px solid #ddd;">Fase 1 (15%) + Fase 2 (15%) + Fase 3 (20%)</td>
                         <td style="padding: 12px; border-bottom: 1px solid #ddd;">50%</td>
                     </tr>
                     <tr>
                         <td style="padding: 12px; border-bottom: 1px solid #ddd;"><strong>2° Seguimiento</strong></td>
                         <td style="padding: 12px; border-bottom: 1px solid #ddd;">15/05/2026</td>
-                        <td style="padding: 12px; border-bottom: 1px solid #ddd;">Fase 3 (Seguridad) + Fase 4 (Proyecto Integrador)</td>
+                        <td style="padding: 12px; border-bottom: 1px solid #ddd;">Fase 4 (15%) + Fase 5 (15%)</td>
                         <td style="padding: 12px; border-bottom: 1px solid #ddd;">80%</td>
                     </tr>
                     <tr>
                         <td style="padding: 12px; border-bottom: 1px solid #ddd;"><strong>3° Seguimiento</strong></td>
                         <td style="padding: 12px; border-bottom: 1px solid #ddd;">28/05/2026</td>
-                        <td style="padding: 12px; border-bottom: 1px solid #ddd;">Fase 5 (Proyecto Final)</td>
+                        <td style="padding: 12px; border-bottom: 1px solid #ddd;">Fase 6 (20%) - Sustentación Final</td>
                         <td style="padding: 12px; border-bottom: 1px solid #ddd;">100%</td>
                     </tr>
                 </tbody>
@@ -382,3 +450,4 @@
     </div>
 </body>
 </html>
+
