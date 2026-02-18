@@ -107,45 +107,127 @@
                 </tbody>
             </table>
 
-            <h3>2.2 El Proceso en la RAM</h3>
-            <div style="text-align: center; margin: 2rem 0;">
-                <svg viewBox="0 0 400 450" xmlns="http://www.w3.org/2000/svg" style="max-width: 300px; height: auto;">
-                    <rect x="50" y="10" width="300" height="430" fill="none" stroke="#cbd5e1" stroke-width="2" />
-                    
-                    <!-- Stack -->
-                    <rect x="60" y="20" width="280" height="60" rx="5" fill="#fee2e2" stroke="#ef4444" stroke-width="2" />
-                    <text x="200" y="55" text-anchor="middle" fill="#991b1b" font-weight="bold">STACK (PILA)</text>
-                    <path d="M 200 85 L 200 120" fill="none" stroke="#ef4444" stroke-width="2" marker-end="url(#arrow-red)" />
-                    
-                    <!-- Free Space -->
-                    <text x="200" y="180" text-anchor="middle" fill="#94a3b8" font-style="italic">Espacio Libre</text>
-                    
-                    <!-- Heap -->
-                    <path d="M 200 275 L 200 240" fill="none" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrow-blue)" />
-                    <rect x="60" y="280" width="280" height="60" rx="5" fill="#dbeafe" stroke="#3b82f6" stroke-width="2" />
-                    <text x="200" y="315" text-anchor="middle" fill="#1e40af" font-weight="bold">HEAP (MONTÍCULO)</text>
-                    
-                    <!-- Data -->
-                    <rect x="60" y="350" width="280" height="40" rx="5" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" />
-                    <text x="200" y="375" text-anchor="middle" fill="#92400e" font-weight="bold">DATA (ESTÁTICOS)</text>
-                    
-                    <!-- Text -->
-                    <rect x="60" y="400" width="280" height="30" rx="5" fill="#dcfce7" stroke="#10b981" stroke-width="2" />
-                    <text x="200" y="420" text-anchor="middle" fill="#065f46" font-weight="bold" font-size="12">TEXT (CÓDIGO - R/O)</text>
-                    
-                    <!-- Directions -->
-                    <text x="360" y="30" font-size="10" fill="#64748b" transform="rotate(90, 360, 30)">Dir. Alta</text>
-                    <text x="360" y="430" font-size="10" fill="#64748b" transform="rotate(90, 360, 430)">Dir. Baja</text>
-                    
-                    <defs>
-                        <marker id="arrow-red" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
-                            <path d="M0,0 L0,6 L9,3 z" fill="#ef4444" />
-                        </marker>
-                        <marker id="arrow-blue" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
-                            <path d="M0,0 L0,6 L9,3 z" fill="#3b82f6" />
-                        </marker>
-                    </defs>
-                </svg>
+            <h3>2.2 El Proceso en la RAM: La "Casa" del Programa</h3>
+            
+            <div class="callout info" style="margin: 1.5rem 0;">
+                <h4>🏠 Analogía: Imagina una Casa con 4 Habitaciones</h4>
+                <p>Cuando un programa se ejecuta, el SO le asigna un espacio en la RAM (su "casa"). Esta casa tiene 4 habitaciones específicas:</p>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr; gap: 1rem; margin: 2rem 0;">
+                <!-- STACK -->
+                <div style="background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%); border-left: 5px solid #ef4444; padding: 1.5rem; border-radius: 8px;">
+                    <h4 style="color: #991b1b; margin-bottom: 0.5rem;">📚 STACK (La Pila de Libros)</h4>
+                    <p style="margin-bottom: 0.5rem;"><strong>¿Qué es?</strong> Como una pila de libros donde solo puedes agregar o quitar el libro de arriba (LIFO - Last In, First Out).</p>
+                    <p style="margin-bottom: 0.5rem;"><strong>¿Qué guarda?</strong></p>
+                    <ul style="margin-left: 1.5rem; margin-bottom: 0.5rem;">
+                        <li>Variables locales de las funciones</li>
+                        <li>Direcciones de retorno (a dónde volver cuando termina una función)</li>
+                        <li>Parámetros de funciones</li>
+                    </ul>
+                    <p><strong>Ejemplo práctico:</strong> Cuando llamas a una función, sus variables se apilan aquí. Al terminar, se desapilan automáticamente.</p>
+                    <div style="background: white; padding: 0.75rem; border-radius: 4px; margin-top: 0.5rem; font-family: monospace; font-size: 0.9rem;">
+                        <span style="color: #64748b;">// Cada función apila sus variables:</span><br>
+                        funcionA() { <span style="color: #991b1b;">int x = 10; → se guarda en STACK</span> }<br>
+                        funcionB() { <span style="color: #991b1b;">int y = 20; → se guarda encima en STACK</span> }
+                    </div>
+                </div>
+
+                <!-- HEAP -->
+                <div style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); border-left: 5px solid #3b82f6; padding: 1.5rem; border-radius: 8px;">
+                    <h4 style="color: #1e40af; margin-bottom: 0.5rem;">📦 HEAP (El Almacén Flexible)</h4>
+                    <p style="margin-bottom: 0.5rem;"><strong>¿Qué es?</strong> Como un almacén donde puedes guardar cajas de cualquier tamaño en cualquier orden.</p>
+                    <p style="margin-bottom: 0.5rem;"><strong>¿Qué guarda?</strong></p>
+                    <ul style="margin-left: 1.5rem; margin-bottom: 0.5rem;">
+                        <li>Memoria asignada dinámicamente durante la ejecución</li>
+                        <li>Objetos grandes que no caben en el Stack</li>
+                        <li>Datos que deben persistir más allá de una función</li>
+                    </ul>
+                    <p><strong>Ejemplo práctico:</strong> Cuando un programa necesita memoria "extra" mientras corre (ej: cargar un archivo grande).</p>
+                    <div style="background: white; padding: 0.75rem; border-radius: 4px; margin-top: 0.5rem; font-family: monospace; font-size: 0.9rem;">
+                        <span style="color: #64748b;">// Memoria solicitada durante ejecución:</span><br>
+                        <span style="color: #1e40af;">malloc(1024)</span> <span style="color: #64748b;">// Pide 1KB en el HEAP</span><br>
+                        <span style="color: #1e40af;">new Array[1000]</span> <span style="color: #64748b;">// Objeto grande va al HEAP</span>
+                    </div>
+                    <p style="margin-top: 0.5rem; color: #92400e;"><strong>⚠️ Importante:</strong> La memoria del Heap NO se libera sola. Si no la liberas, causa <em>memory leaks</em> (fugas de memoria).</p>
+                </div>
+
+                <!-- DATA -->
+                <div style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-left: 5px solid #f59e0b; padding: 1.5rem; border-radius: 8px;">
+                    <h4 style="color: #92400e; margin-bottom: 0.5rem;">📋 DATA (Las Variables Globales)</h4>
+                    <p style="margin-bottom: 0.5rem;"><strong>¿Qué es?</strong> Como un archivador con documentos importantes que siempre están disponibles.</p>
+                    <p style="margin-bottom: 0.5rem;"><strong>¿Qué guarda?</strong></p>
+                    <ul style="margin-left: 1.5rem; margin-bottom: 0.5rem;">
+                        <li>Variables globales (visibles en todo el programa)</li>
+                        <li>Variables estáticas (conservan su valor entre llamadas)</li>
+                        <li>Constantes definidas en el código</li>
+                    </ul>
+                    <p><strong>Ejemplo práctico:</strong> Variables que necesitas que persistan durante toda la ejecución del programa.</p>
+                    <div style="background: white; padding: 0.75rem; border-radius: 4px; margin-top: 0.5rem; font-family: monospace; font-size: 0.9rem;">
+                        <span style="color: #64748b;">// Variables que viven todo el programa:</span><br>
+                        <span style="color: #92400e;">int contadorGlobal = 0;</span> <span style="color: #64748b;">// Se guarda en DATA</span><br>
+                        <span style="color: #92400e;">static int config = 100;</span> <span style="color: #64748b;">// También en DATA</span><br>
+                        <span style="color: #92400e;">#define PI 3.14159</span> <span style="color: #64748b;">// Constante en DATA</span>
+                    </div>
+                </div>
+
+                <!-- TEXT -->
+                <div style="background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%); border-left: 5px solid #10b981; padding: 1.5rem; border-radius: 8px;">
+                    <h4 style="color: #065f46; margin-bottom: 0.5rem;">📖 TEXT (El Libro de Instrucciones)</h4>
+                    <p style="margin-bottom: 0.5rem;"><strong>¿Qué es?</strong> Como el manual de instrucciones del programa. Es de solo lectura (no se puede modificar).</p>
+                    <p style="margin-bottom: 0.5rem;"><strong>¿Qué guarda?</strong></p>
+                    <ul style="margin-left: 1.5rem; margin-bottom: 0.5rem;">
+                        <li>El código máquina (instrucciones del programa)</li>
+                        <li>Las funciones compiladas</li>
+                        <li>Literales de texto constantes</li>
+                    </ul>
+                    <p><strong>Ejemplo práctico:</strong> Las instrucciones que el CPU ejecuta paso a paso.</p>
+                    <div style="background: white; padding: 0.75rem; border-radius: 4px; margin-top: 0.5rem; font-family: monospace; font-size: 0.9rem;">
+                        <span style="color: #64748b;">// El código compilado se guarda aquí:</span><br>
+                        <span style="color: #065f46;">void main() {</span><br>
+                        &nbsp;&nbsp;<span style="color: #065f46;">printf("Hola");</span> <span style="color: #64748b;">// Las instrucciones van a TEXT</span><br>
+                        &nbsp;&nbsp;<span style="color: #065f46;">int x = 5 + 3;</span> <span style="color: #64748b;">// El '5+3' compilado va a TEXT</span><br>
+                        <span style="color: #065f46;">}</span>
+                    </div>
+                    <p style="margin-top: 0.5rem; color: #065f46;"><strong>💡 Optimización:</strong> El SO puede compartir esta sección entre procesos idénticos (ej: varias ventanas del mismo programa).</p>
+                </div>
+            </div>
+
+            <div style="background: #f8fafc; border: 2px solid #64748b; border-radius: 8px; padding: 1.5rem; margin: 2rem 0;">
+                <h4 style="color: #334155; margin-top: 0;">🎯 Visualización del Espacio de Memoria</h4>
+                <div style="display: flex; flex-direction: column; gap: 0.5rem; font-family: monospace;">
+                    <div style="background: #fee2e2; padding: 1rem; border-radius: 4px; text-align: center; border: 2px solid #ef4444;">
+                        <strong>Direcciones Altas →</strong><br>
+                        <span style="color: #991b1b;">STACK (crece hacia abajo ↓)</span><br>
+                        <small>Variables locales, parámetros</small>
+                    </div>
+                    <div style="background: #f1f5f9; padding: 2rem; border-radius: 4px; text-align: center; border: 2px dashed #94a3b8;">
+                        <span style="color: #64748b; font-style: italic;">ESPACIO LIBRE</span><br>
+                        <small>(El Stack puede crecer hacia abajo, el Heap hacia arriba)</small>
+                    </div>
+                    <div style="background: #dbeafe; padding: 1rem; border-radius: 4px; text-align: center; border: 2px solid #3b82f6;">
+                        <span style="color: #1e40af;">HEAP (crece hacia arriba ↑)</span><br>
+                        <small>Memoria dinámica</small>
+                    </div>
+                    <div style="background: #fef3c7; padding: 1rem; border-radius: 4px; text-align: center; border: 2px solid #f59e0b;">
+                        <span style="color: #92400e;">DATA</span><br>
+                        <small>Variables globales y estáticas</small>
+                    </div>
+                    <div style="background: #dcfce7; padding: 1rem; border-radius: 4px; text-align: center; border: 2px solid #10b981;">
+                        <span style="color: #065f46;">TEXT (Código)</span><br>
+                        <small>Instrucciones del programa</small><br>
+                        <strong>← Direcciones Bajas</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="callout warning" style="margin-top: 1.5rem;">
+                <h4>⚠️ Problemas Comunes con la Memoria</h4>
+                <ul style="margin-left: 1.5rem;">
+                    <li><strong>Stack Overflow:</strong> Cuando el Stack crece tanto que choca con el Heap (ej: recursión infinita)</li>
+                    <li><strong>Memory Leak:</strong> Cuando pides memoria en el Heap pero olvidas liberarla</li>
+                    <li><strong>Segmentation Fault:</strong> Cuando intentas acceder a memoria que no te pertenece</li>
+                </ul>
             </div>
         </section>
 
