@@ -619,53 +619,281 @@
             <h2>Contenido de la Clase</h2>
             <ul>
                 <li><a href="#objetivos">Objetivos de Aprendizaje</a></li>
-                <li><a href="#que-es">1. Componentes del SO</a></li>
-                <li><a href="#metricas">2. Práctica Comparativa</a></li>
-                <li><a href="#laboratorio">3. Laboratorio</a></li>
-                <li><a href="#practica">4. Actividad Práctica</a></li>
+                <li><a href="#componentes">1. Componentes del SO (Kernel y Shell)</a></li>
+                <li><a href="#arquitecturas">2. Tipos de Arquitectura</a></li>
+                <li><a href="#syscalls">3. System Calls y Modos de Operación</a></li>
+                <li><a href="#laboratorio">4. Laboratorio: Explorando el Sistema</a></li>
+                <li><a href="#practica">5. Actividad Práctica</a></li>
             </ul>
         </nav>
 
         <section id="objetivos">
             <h2>Objetivos de Aprendizaje</h2>
-            <p><strong>Resultado de Aprendizaje:</strong> Identifica la estructura y los tipos de los sistemas operativos.</p>
+            <p><strong>Resultado de Aprendizaje (RA1):</strong> Identifica la estructura y los tipos de los sistemas operativos (Alineado con Evaluación E1).</p>
             <p>Al finalizar esta clase, serás capaz de:</p>
             <ol>
-                <li><strong>Identificar</strong> los componentes principales de un Sistema Operativo</li>
+                <li><strong>Mapear</strong> los componentes principales de un Sistema Operativo moderno</li>
                 <li><strong>Explicar</strong> la diferencia entre Kernel y Shell</li>
-                <li><strong>Describir</strong> qué son las System Calls y cómo funcionan</li>
-                <li><strong>Comparar</strong> Modo Usuario vs Modo Kernel</li>
-                <li><strong>Analizar</strong> la arquitectura de capas del SO</li>
-                <li><strong>Comparar</strong> la estructura de Linux y Windows Server</li>
+                <li><strong>Comparar</strong> los tres tipos de arquitecturas de SO (Monolítico, Microkernel, Híbrido)</li>
+                <li><strong>Describir</strong> qué son las System Calls y su impacto en la seguridad</li>
+                <li><strong>Analizar</strong> la arquitectura de capas de tu <strong>VM en VirtualBox</strong></li>
             </ol>
 
-            <div class="callout success" style="background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%); border-left-color: #059669;">
-                <p class="callout-title" style="font-size: 1.1rem; color: #065f46;">Plan B: Recursos Alternativos Gratuitos</p>
-                <p>Si no puedes acceder al laboratorio del curso, usa estos recursos gratuitos verificados:</p>
-
-                <table style="margin-top: 1rem; background: white; border-radius: 8px;">
-                    <tr style="background: #d1fae5;">
-                        <th style="width: 25%;">Recurso</th>
-                        <th style="width: 35%;">Descripción</th>
-                        <th style="width: 40%;">Ideal para</th>
-                    </tr>
-                    <tr>
-                        <td><strong><a href="https://www.webminal.org" target="_blank">Webminal</a></strong></td>
-                        <td>Terminal Linux real en el navegador</td>
-                        <td>Todos los ejercicios de comandos</td>
-                    </tr>
-                    <tr>
-                        <td><strong><a href="https://bellard.org/jslinux/" target="_blank">JSLinux</a></strong></td>
-                        <td>Emulador Linux completo en navegador</td>
-                        <td>Práctica rápida sin registro</td>
-                    </tr>
-                    <tr>
-                        <td><strong><a href="https://linuxsurvival.com" target="_blank">Linux Survival</a></strong></td>
-                        <td>Tutorial interactivo con terminal simulada</td>
-                        <td>Aprender comandos básicos</td>
-                    </tr>
-                </table>
+            <div class="callout success">
+                <p class="callout-title">🎯 Meta Evaluación E1 (25 Feb)</p>
+                <p>Esta clase cierra los temas para la primera evaluación. Debes ser capaz de identificar si el kernel de Linux en tu VM es monolítico y cómo interactúas con él vía syscalls.</p>
             </div>
+        </section>
+
+        <section id="componentes">
+            <h2>1. Componentes del Sistema Operativo</h2>
+
+            <h3>1.1 Kernel - El Núcleo del Sistema</h3>
+            <p>El <strong>Kernel</strong> es el componente central del Sistema Operativo. Es el software que tiene control total sobre todo lo que sucede en el sistema.</p>
+
+            <div class="callout info">
+                <p class="callout-title">¿Por qué se llama "Kernel"?</p>
+                <p>La palabra viene del alemán "Kern" que significa "núcleo" o "semilla". Así como una semilla contiene toda la información para que una planta crezca, el Kernel contiene todo lo necesario para que el sistema funcione.</p>
+            </div>
+
+            <h4>Funciones del Kernel</h4>
+            <ul>
+                <li><strong>Gestión de procesos:</strong> Crear, schedule y terminar procesos</li>
+                <li><strong>Gestión de memoria:</strong> Asignar y liberar RAM</li>
+                <li><strong>Gestión de E/S:</strong> Controlar dispositivos</li>
+                <li><strong>Gestión de archivos:</strong> Organizar y acceder a datos</li>
+                <li><strong>Seguridad:</strong> Proteger recursos y procesos</li>
+            </ul>
+
+            <h3>1.2 Shell - La Interfaz de Comandos</h3>
+            <p>La <strong>Shell</strong> es un programa que permite interactuar con el Kernel. Es un intérprete de comandos que traduce lo que escribes en llamadas al sistema.</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Sistema</th>
+                        <th>Shell</th>
+                        <th>Características</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Linux</strong></td>
+                        <td>bash, zsh, fish</td>
+                        <td>Scripting, pipes, redirección</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Windows</strong></td>
+                        <td>PowerShell, cmd</td>
+                        <td>Objetos, .NET integrado</td>
+                    </tr>
+                    <tr>
+                        <td><strong>macOS</strong></td>
+                        <td>zsh (default), bash</td>
+                        <td>Unix-like, herramientas BSD</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>Analogía de la Shell</h4>
+            <div class="ascii-diagram">
+Usuario → Shell (traductor) → Kernel (ejecuta) → Hardware
+
+Sin Shell:
+Usuario ❌ No puede hablar con Kernel
+
+Con Shell:
+Usuario "abre archivo.txt"
+Shell traduce → open("archivo.txt")
+Kernel abre archivo → Hardware lee disco
+            </div>
+        </section>
+
+        <section id="arquitecturas">
+            <h2>2. Tipos de Arquitectura de Sistema Operativo</h2>
+
+            <p>Los sistemas operativos se organizan internamente de diferentes maneras:</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Tipo</th>
+                        <th>Características</th>
+                        <th>Ventajas</th>
+                        <th>Ejemplos</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Monolítico</strong></td>
+                        <td>Todo el SO corre en un solo bloque en el espacio del kernel.</td>
+                        <td>Máximo rendimiento, comunicación rápida entre módulos.</td>
+                        <td>Linux, MS-DOS, Android</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Microkernel</strong></td>
+                        <td>Solo lo mínimo (gestión de hilos, memoria) en el kernel. Servicios corren en espacio de usuario.</td>
+                        <td>Alta estabilidad y seguridad (si un servicio falla, el kernel sigue vivo).</td>
+                        <td>MINIX, QNX, L4</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Híbrido</strong></td>
+                        <td>Combina ambos enfoques: una estructura de microkernel pero con algunos servicios en espacio de kernel por rendimiento.</td>
+                        <td>Balance entre rendimiento y estabilidad.</td>
+                        <td>Windows NT, macOS (XNU)</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="callout success">
+                <p class="callout-title">Dato Curioso</p>
+                <p>Linux es monolítico, pero usa "módulos cargables" (LKM) que permiten añadir drivers sin reiniciar, dándole una flexibilidad similar a los sistemas modulares.</p>
+            </div>
+        </section>
+
+        <section id="syscalls">
+            <h2>3. System Calls y Modos de Operación</h2>
+
+            <h3>3.1 System Calls - Llamadas al Sistema</h3>
+            <p>Las <strong>System Calls</strong> son la puerta de entrada al Kernel. Son funciones que permiten a los programas solicitar servicios que requieren privilegios especiales.</p>
+
+            <h4>Categorías de System Calls</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Categoría</th>
+                        <th>Linux</th>
+                        <th>Windows</th>
+                        <th>Propósito</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Control de procesos</strong></td>
+                        <td>fork(), exec(), exit()</td>
+                        <td>CreateProcess, ExitProcess</td>
+                        <td>Crear/terminar procesos</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Manipulación archivos</strong></td>
+                        <td>open(), read(), write()</td>
+                        <td>CreateFile, ReadFile</td>
+                        <td>Operaciones I/O</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Gestión memoria</strong></td>
+                        <td>mmap(), brk()</td>
+                        <td>VirtualAlloc</td>
+                        <td>Asignar memoria</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Comunicaciones</strong></td>
+                        <td>socket(), bind(), listen()</td>
+                        <td>WSAStartup, socket</td>
+                        <td>Comunicación en red</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>3.2 Modo Usuario vs Modo Kernel</h3>
+            <p>Los procesadores modernos tienen al menos dos modos de operación:</p>
+
+            <div class="comparison">
+                <div>
+                    <h4>🔓 Modo Usuario</h4>
+                    <p>Donde corren las aplicaciones:</p>
+                    <ul>
+                        <li>Acceso limitado a hardware</li>
+                        <li>No puede ejecutar instrucciones privilegiadas</li>
+                        <li>Acceso restringido a memoria</li>
+                        <li>Navegadores, editores, juegos</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>🔒 Modo Kernel</h4>
+                    <p>Donde corre el Sistema Operativo:</p>
+                    <ul>
+                        <li>Acceso completo al hardware</li>
+                        <li>Puede ejecutar cualquier instrucción</li>
+                        <li>Acceso a toda la memoria</li>
+                        <li>Kernel, drivers de dispositivo</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h4>Transición entre Modos</h4>
+            <div class="ascii-diagram">
+┌─────────────────────────────────────────────────────┐
+│                    MODO USUARIO                      │
+│  (Navegador, Word, Spotify, etc.)                    │
+│                                                       │
+│  Usuario ejecuta: open("archivo.txt")                │
+│           ↓                                           │
+│  ─────────────────────────────────────                │
+│           │ System Call (TRAP)                        │
+│           ▼                                           │
+│  ─────────────────────────────────────                │
+│                                                       │
+│                    MODO KERNEL                        │
+│  (Kernel verifica permisos y ejecuta)                 │
+│           │                                           │
+│           ▼                                           │
+│  ─────────────────────────────────────                │
+│           │ Retorno al modo usuario                   │
+│           ▼                                           │
+│  Usuario continúa ejecución                           │
+└─────────────────────────────────────────────────────┘
+            </div>
+
+            <div class="callout warning">
+                <p class="callout-title">¿Por qué dos modos?</p>
+                <p>Si todos los programas corrieran en modo kernel, cualquier programa podría leer tus contraseñas de la memoria o causar que todo el sistema crashee. La separación protege la integridad del sistema.</p>
+            </div>
+
+            <h3>3.3 Arquitectura en Capas</h3>
+            <p>Un Sistema Operativo está organizado en capas jerárquicas:</p>
+
+            <figure>
+                <img src="../assets/infografias/so-capas-sistema.png" alt="Diagrama de capas del sistema informático">
+                <figcaption>Figura 1: Arquitectura de capas de un Sistema Operativo</figcaption>
+            </figure>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Capa</th>
+                        <th>Descripción</th>
+                        <th>Ejemplos</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Aplicaciones</strong></td>
+                        <td>Programas de usuario</td>
+                        <td>Navegadores, editores, juegos</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Librerías</strong></td>
+                        <td>Funciones reutilizables</td>
+                        <td>libc, .NET Framework</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Shell</strong></td>
+                        <td>Intérprete de comandos</td>
+                        <td>bash, PowerShell</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Kernel</strong></td>
+                        <td>Núcleo del sistema</td>
+                        <td>Gestión procesos, memoria, E/S</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Hardware</strong></td>
+                        <td>Componentes físicos</td>
+                        <td>CPU, RAM, disco, red</td>
+                    </tr>
+                </tbody>
+            </table>
         </section>
 
         <section id="que-es">
@@ -1062,6 +1290,25 @@ Get-ComputerInfo | Select OsName  # Ver versión Windows</code></pre>
                     <strong>Recuerda:</strong> Esto es para tu aprendizaje. No hay nota ni fecha límite. ¡Explora a tu ritmo!
                 </div>
             </div>
+        </section>
+
+        <!-- Actividad -->
+        <section id="actividad">
+            <h2>Actividad Práctica: Arquitectura del Sistema</h2>
+
+            <section class="actividad">
+                <h3>Actividad 04: Identificación de Capas</h3>
+                <p><strong>Tipo:</strong> Cierre de Fase 1 (E1)</p>
+                <p><strong>Objetivo:</strong> Diferenciar entre hardware, kernel y shell en tu entorno de VirtualBox.</p>
+                <p><strong>Pasos:</strong></p>
+                <ol>
+                    <li>Ejecuta <code>lscpu</code> para ver las características del hardware gestionado por el SO</li>
+                    <li>Usa <code>uname -r</code> para identificar la versión exacta del kernel</li>
+                    <li>Ejecuta <code>echo $SHELL</code> para ver qué intérprete de comandos estás usando</li>
+                    <li>Usa <code>strace ls</code> para observar las llamadas al sistema (syscalls) que hace el comando ls</li>
+                </ol>
+                <p><strong>Entregable:</strong> Incluir estas capturas en tu entrega final de la Fase 1 (25 de Feb).</p>
+            </section>
         </section>
 
         <section id="resumen">

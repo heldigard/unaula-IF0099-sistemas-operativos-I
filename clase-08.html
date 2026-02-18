@@ -165,7 +165,7 @@
 
         <section id="objetivos">
             <h2>Objetivos de Aprendizaje</h2>
-            <p><strong>Resultado de Aprendizaje:</strong> Administra la memoria, los procesos de entrada y salida, la comunicación entre procesos y la sincronización de los mismos.</p>
+            <p><strong>Resultado de Aprendizaje (RA3):</strong> Administra la memoria, los procesos de entrada y salida, la comunicación entre procesos y la sincronización de los mismos (Alineado con Evaluación E3).</p>
             <p>Al finalizar esta clase, serás capaz de:</p>
             <ol>
                 <li><strong>Comprender</strong> la jerarquía de memoria y sus niveles</li>
@@ -185,14 +185,9 @@
                 </ul>
             </div>
 
-            <div class="callout success" style="background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%); border-left-color: #059669;">
-                <p class="callout-title" style="font-size: 1.1rem; color: #065f46;">Plan B: Recursos Alternativos Gratuitos</p>
-                <p>Para practicar los comandos de memoria en Linux (<code>free</code>, <code>top</code>, <code>vmstat</code>):</p>
-                <ul style="font-size: 0.9rem; margin-top: 0.5rem;">
-                    <li><strong><a href="https://www.webminal.org" target="_blank">Webminal</a></strong> - Terminal Linux real con acceso a <code>free -h</code>, <code>cat /proc/meminfo</code></li>
-                    <li><strong><a href="https://bellard.org/jslinux/" target="_blank">JSLinux</a></strong> - Para ver información de memoria con <code>cat /proc/meminfo</code></li>
-                    <li><strong><a href="https://www.oracle.com/cloud/free/" target="_blank">Oracle Cloud Free Tier</a></strong> - Para usar <code>vmstat</code> y <code>swapon</code> con root</li>
-                </ul>
+            <div class="callout success">
+                <p class="callout-title">🖥️ Laboratorio VirtualBox</p>
+                <p>Para esta clase, utilizaremos tu máquina virtual en <strong>VirtualBox</strong> para analizar el uso de memoria real del sistema con comandos como <code>free</code> y <code>vmstat</code>.</p>
             </div>
         </section>
 
@@ -605,6 +600,24 @@ Hueco 4: 300KB (sí sirve)
                     <strong>Consejo:</strong> Si no tienes Linux instalado, puedes usar <a href="https://www.webminal.org" target="_blank">Webminal</a> o <a href="https://bellard.org/jslinux/" target="_blank">JSLinux</a> para practicar los comandos.
                 </div>
             </div>
+        </section>
+
+        <!-- Actividad -->
+        <section id="actividad">
+            <h2>Actividad Práctica: Monitoreo de Memoria</h2>
+
+            <section class="actividad">
+                <h3>Actividad 08: Análisis de Consumo</h3>
+                <p><strong>Tipo:</strong> Preparación para Fase 3 (E3)</p>
+                <p><strong>Objetivo:</strong> Interpretar las métricas de memoria del kernel.</p>
+                <p><strong>Pasos:</strong></p>
+                <ol>
+                    <li>Ejecuta <code>free -h</code> y explica la diferencia entre 'used', 'free' y 'available'</li>
+                    <li>Usa <code>vmstat 1 5</code> para observar el comportamiento de la memoria en intervalos</li>
+                    <li>Identifica qué proceso consume más memoria usando <code>ps aux --sort=-%mem | head</code></li>
+                </ol>
+                <p><strong>Entregable:</strong> Ejercicio de interpretación para el Checkpoint E3.</p>
+            </section>
         </section>
 
         <section id="resumen">

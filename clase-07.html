@@ -464,7 +464,7 @@
         <!-- Objetivos -->
         <section id="objetivos">
             <h2>Objetivos de Aprendizaje</h2>
-            <p><strong>Resultado de Aprendizaje:</strong> Gestiona los procesos que se llevan a cabo en los sistemas operativos.</p>
+            <p><strong>Resultado de Aprendizaje (RA2):</strong> Gestiona los procesos que se llevan a cabo en los sistemas operativos (Alineado con Evaluación E2).</p>
             <p>Al finalizar esta clase, serás capaz de:</p>
             <ol>
                 <li><strong>Diferenciar</strong> entre procesos y threads (hilos)</li>
@@ -484,15 +484,9 @@
                 </ul>
             </div>
 
-            <div class="callout success" style="background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%); border-left-color: #059669;">
-                <p class="callout-title" style="font-size: 1.1rem; color: #065f46;">Plan B: Recursos Alternativos Gratuitos</p>
-                <p>Para practicar conceptos de concurrencia y sincronización:</p>
-                <ul style="font-size: 0.9rem; margin-top: 0.5rem;">
-                    <li><strong><a href="https://www.webminal.org" target="_blank">Webminal</a></strong> - Para ver procesos y threads en Linux con <code>ps -eLf</code></li>
-                    <li><strong><a href="https://bellard.org/jslinux/" target="_blank">JSLinux</a></strong> - Para experimentar con señales y procesos</li>
-                    <li><strong><a href="https://linuxsurvival.com" target="_blank">Linux Survival</a></strong> - Tutorial de procesos en Linux</li>
-                </ul>
-                <p style="margin-top: 0.5rem; font-size: 0.85rem; color: #047857;">Nota: Los ejercicios de deadlock y sincronización son principalmente teóricos y pueden estudiarse sin acceso a terminal.</p>
+            <div class="callout success">
+                <p class="callout-title">🖥️ Laboratorio VirtualBox</p>
+                <p>Para esta clase, utilizaremos tu máquina virtual en <strong>VirtualBox</strong> para observar cómo se comportan los hilos y los bloqueos mutuos en un entorno real.</p>
             </div>
         </section>
 
@@ -1090,6 +1084,25 @@ lock(Lock1, Lock2) {
         </section>
 
         <!-- Resumen -->
+        <!-- Actividad -->
+        <section id="actividad">
+            <h2>Actividad Práctica: Hilos y Concurrencia</h2>
+
+            <section class="actividad">
+                <h3>Actividad 07: Visualización de Hilos</h3>
+                <p><strong>Tipo:</strong> Cierre de Fase 2 (E2)</p>
+                <p><strong>Objetivo:</strong> Identificar procesos multihilo en el sistema operativo.</p>
+                <p><strong>Pasos:</strong></p>
+                <ol>
+                    <li>En tu VM Linux, abre <code>htop</code></li>
+                    <li>Presiona <code>F2</code> -> Setup -> Display options -> Selecciona "Tree view" y "Show custom thread names"</li>
+                    <li>Identifica un proceso que tenga múltiples hilos (ej: <code>systemd</code> o <code>ssh</code>)</li>
+                    <li>Usa <code>ps -eLf</code> para ver el conteo de hilos (LWP)</li>
+                </ol>
+                <p><strong>Entregable:</strong> Captura de pantalla evidenciando los hilos de un proceso para tu entrega de la Fase 2 (11 de Mar).</p>
+            </section>
+        </section>
+
         <section id="resumen">
             <h2>Resumen de la Clase</h2>
 

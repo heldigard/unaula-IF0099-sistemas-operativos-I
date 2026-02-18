@@ -169,7 +169,7 @@
         <main>
             <section id="objetivos">
                 <h2>Objetivos de Aprendizaje</h2>
-                <p><strong>Resultado de Aprendizaje:</strong> comprende la funcionalidad de conceptos fundamentales integrados.</p>
+                <p><strong>Resultado de Aprendizaje (RA5):</strong> Comprende la funcionalidad de conceptos fundamentales integrados (Alineado con Evaluación E5).</p>
                 <div class="callout success">
                     <strong>Al finalizar esta clase, podrás:</strong>
                     <ul>
@@ -180,6 +180,11 @@
                         <li>Comparar IIS con Apache HTTP Server</li>
                     </ul>
                 </div>
+
+            <div class="callout success">
+                <p class="callout-title">🖥️ Laboratorio Windows</p>
+                <p>En esta sesión configuraremos <strong>IIS</strong> en tu entorno Windows local o en una máquina virtual de <strong>VirtualBox</strong>.</p>
+            </div>
 
                 <div class="callout info">
                     <p class="callout-title">Glosario de Servicios Microsoft</p>
@@ -363,47 +368,34 @@ $cert = New-SelfSignedCertificate `
                 </ol>
             </section>
 
-            <section id="comparativa">
-                <h2>Apache vs IIS</h2>
-
-                <table>
-                    <thead>
-                        <tr><th>Característica</th><th>Apache</th><th>IIS</th></tr>
-                    </thead>
-                    <tbody>
-                        <tr><td>SO</td><td>Linux, Windows, macOS</td><td>Windows solamente</td></tr>
-                        <tr><td>Licencia</td><td>Open Source</td><td>Incluido en Windows</td></tr>
-                        <tr><td>Market Share</td><td>~35%</td><td>~30%</td></tr>
-                        <tr><td>Lenguajes</td><td>PHP, Python, Perl</td><td>ASP.NET, ASP.NET Core</td></tr>
-                        <tr><td>Configuración</td><td>Archivos .conf</td><td>GUI + PowerShell</td></tr>
-                        <tr><td>Mejor para</td><td>LAMP stack</td><td>Ecosistema Microsoft</td></tr>
-                    </tbody>
-                </table>
-            </section>
-
+            <!-- Actividad -->
             <section id="actividad">
-                <h2>Actividad Práctica</h2>
+                <h2>Actividad Práctica: Despliegue de IIS</h2>
 
                 <div class="actividad">
-                    <h3>Actividad: Configuración Completa de IIS</h3>
+                    <h3>Actividad 14: Configuración Completa de IIS (Fase 5 - E5)</h3>
+
+                    <p><strong>Objetivo:</strong> Configurar un servidor web funcional en Windows con seguridad básica.</p>
 
                     <h4>Requisitos</h4>
                     <ol class="checklist">
-                        <li><input type="checkbox"> Instalar IIS en Windows Server</li>
-                        <li><input type="checkbox"> Crear sitio web en puerto 8080</li>
-                        <li><input type="checkbox"> Crear Application Pool dedicado</li>
-                        <li><input type="checkbox"> Configurar HTTPS con certificado</li>
-                        <li><input type="checkbox"> Verificar acceso desde el host</li>
+                        <li><input type="checkbox"> Instalar IIS usando PowerShell: <code>Install-WindowsFeature -name Web-Server</code></li>
+                        <li><input type="checkbox"> Crear sitio web en <code>C:\inetpub\wwwroot</code></li>
+                        <li><input type="checkbox"> Configurar Application Pool dedicado</li>
+                        <li><input type="checkbox"> Configurar HTTPS con certificado self-signed</li>
+                        <li><input type="checkbox"> Verificar acceso desde el host (navegador)</li>
                     </ol>
 
-                    <h4>Rubrica</h4>
+                    <p><strong>Entregable:</strong> Captura de pantalla del navegador mostrando el sitio y evidencia de la configuración en IIS Manager para tu informe de la Fase 5.</p>
+
+                    <h4>Rubrica de Evaluación</h4>
                     <table>
                         <thead><tr><th>Criterio</th><th>Puntos</th></tr></thead>
                         <tbody>
-                            <tr><td>IIS instalado</td><td>20</td></tr>
+                            <tr><td>IIS instalado y operativo</td><td>20</td></tr>
                             <tr><td>Sitio y AppPool configurados</td><td>30</td></tr>
-                            <tr><td>HTTPS funcionando</td><td>30</td></tr>
-                            <tr><td>Evidencias</td><td>20</td></tr>
+                            <tr><td>HTTPS funcionando con certificado</td><td>30</td></tr>
+                            <tr><td>Evidencias claras documentadas</td><td>20</td></tr>
                             <tr><td><strong>Total</strong></td><td><strong>100</strong></td></tr>
                         </tbody>
                     </table>

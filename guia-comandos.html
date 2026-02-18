@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía Rápida de Comandos | IF0099 Sistemas Operativos I</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #1e40af;
+            --accent: #059669;
+            --bg-light: #f8fafc;
+            --bg-code: #1e293b;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: var(--text-main);
+            background: var(--bg-light);
+            padding: 20px;
+        }
+
+        .container { max-width: 1200px; margin: 0 auto; }
+
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .nav-links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            padding: 8px 16px;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: background 0.2s;
+            font-size: 0.9rem;
+        }
+
+        .nav-links a:hover { background: rgba(255,255,255,0.3); }
+
+        section {
+            background: white;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            color: var(--primary);
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1rem;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            background: var(--bg-light);
+            font-weight: 600;
+            color: var(--secondary);
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', monospace;
+            background: #f1f5f9;
+            color: #ef4444;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .info-card {
+            background: #f8fafc;
+            padding: 1.25rem;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .info-card h4 {
+            color: var(--secondary);
+            margin-bottom: 0.75rem;
+        }
+
+        .shortcut {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .key {
+            background: #e2e8f0;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+            box-shadow: 0 2px 0 #cbd5e1;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-muted);
+        }
+
+        @media (max-width: 768px) {
+            header h1 { font-size: 1.5rem; }
+            table { font-size: 0.85rem; display: block; overflow-x: auto; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📖 Guía Rápida de Comandos</h1>
+            <p>IF0099 - Sistemas Operativos I | Linux & Windows PowerShell</p>
+            <div class="nav-links">
+                <a href="index.html">Inicio</a>
+                <a href="glosario.html">Glosario</a>
+                <a href="../laboratorios-html/index.html">Laboratorios</a>
+            </div>
+        </header>
+
+        <!-- Sistema -->
+        <section>
+            <h2>🖥️ Información del Sistema</h2>
+            <table>
+                <thead>
+                    <tr><th>Comando</th><th>Descripción</th><th>Ejemplo</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>uname -a</code></td><td>Información completa del kernel</td><td><code>uname -a</code></td></tr>
+                    <tr><td><code>lsb_release -a</code></td><td>Datos de la distribución Linux</td><td><code>lsb_release -a</code></td></tr>
+                    <tr><td><code>whoami</code></td><td>Usuario actual logueado</td><td><code>whoami</code></td></tr>
+                    <tr><td><code>hostname -I</code></td><td>Dirección IP local del host</td><td><code>hostname -I</code></td></tr>
+                    <tr><td><code>uptime</code></td><td>Tiempo de actividad del sistema</td><td><code>uptime</code></td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Archivos -->
+        <section>
+            <h2>📁 Gestión de Archivos y Directorios</h2>
+            <table>
+                <thead>
+                    <tr><th>Comando</th><th>Descripción</th><th>Ejemplo</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>ls -la</code></td><td>Lista todo (incluye ocultos y detalles)</td><td><code>ls -la /var/log</code></td></tr>
+                    <tr><td><code>cd</code></td><td>Cambia de directorio (<code>cd ~</code> home)</td><td><code>cd ..</code></td></tr>
+                    <tr><td><code>pwd</code></td><td>Muestra ruta del directorio actual</td><td><code>pwd</code></td></tr>
+                    <tr><td><code>mkdir -p</code></td><td>Crea directorios anidados</td><td><code>mkdir -p lab/ej1</code></td></tr>
+                    <tr><td><code>cp -r</code></td><td>Copia archivos o directorios (recursivo)</td><td><code>cp -r dir1 dir2</code></td></tr>
+                    <tr><td><code>mv</code></td><td>Mueve o renombra archivos</td><td><code>mv viejo.txt nuevo.txt</code></td></tr>
+                    <tr><td><code>rm -rf</code></td><td>Borra archivos/directorios (forzado)</td><td><code>rm -rf tmp/</code></td></tr>
+                    <tr><td><code>tail -f</code></td><td>Sigue el final de un archivo en vivo</td><td><code>tail -f access.log</code></td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Permisos -->
+        <section>
+            <h2>🔐 Permisos y Seguridad</h2>
+            <div class="category-grid">
+                <div class="info-card">
+                    <h4>Básicos (UGO)</h4>
+                    <table>
+                        <tr><td><code>chmod 755</code></td><td>rwxr-xr-x</td></tr>
+                        <tr><td><code>chmod 644</code></td><td>rw-r--r--</td></tr>
+                        <tr><td><code>chmod 600</code></td><td>rw-------</td></tr>
+                    </table>
+                </div>
+                <div class="info-card">
+                    <h4>Propietarios</h4>
+                    <p><code>chown user:group archivo</code></p>
+                    <p><code>sudo</code>: Ejecuta como superusuario.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Procesos -->
+        <section>
+            <h2>⚙️ Gestión de Procesos</h2>
+            <table>
+                <thead>
+                    <tr><th>Comando</th><th>Descripción</th><th>Ejemplo</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>ps aux</code></td><td>Muestra todos los procesos del sistema</td><td><code>ps aux | grep apache</code></td></tr>
+                    <tr><td><code>top / htop</code></td><td>Monitor interactivo de recursos</td><td><code>htop</code></td></tr>
+                    <tr><td><code>kill -9</code></td><td>Mata un proceso forzosamente (SIGKILL)</td><td><code>kill -9 [PID]</code></td></tr>
+                    <tr><td><code>nice / renice</code></td><td>Ajusta la prioridad del proceso</td><td><code>nice -n 10 ./script</code></td></tr>
+                    <tr><td><code>jobs / bg / fg</code></td><td>Gestión de trabajos en background</td><td><code>fg %1</code></td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Red -->
+        <section>
+            <h2>🌐 Redes y Conectividad</h2>
+            <table>
+                <thead>
+                    <tr><th>Comando</th><th>Descripción</th><th>Ejemplo</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>ip addr</code></td><td>Configuración de interfaces e IP</td><td><code>ip addr show</code></td></tr>
+                    <tr><td><code>ss -tuln</code></td><td>Puertos en escucha (TCP/UDP)</td><td><code>ss -tuln</code></td></tr>
+                    <tr><td><code>ping</code></td><td>Prueba de conectividad</td><td><code>ping 8.8.8.8</code></td></tr>
+                    <tr><td><code>ssh</code></td><td>Acceso remoto seguro</td><td><code>ssh user@ip</code></td></tr>
+                    <tr><td><code>curl -I</code></td><td>Inspecciona cabeceras HTTP</td><td><code>curl -I localhost</code></td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Atajos -->
+        <section>
+            <h2>⌨️ Atajos de Terminal (Productividad)</h2>
+            <div class="category-grid">
+                <div class="info-card">
+                    <div class="shortcut"><span class="key">Ctrl + C</span> <span>Detener proceso actual</span></div>
+                    <div class="shortcut"><span class="key">Ctrl + Z</span> <span>Suspender proceso</span></div>
+                    <div class="shortcut"><span class="key">Ctrl + L</span> <span>Limpiar pantalla</span></div>
+                </div>
+                <div class="info-card">
+                    <div class="shortcut"><span class="key">Tab</span> <span>Autocompletar comando</span></div>
+                    <div class="shortcut"><span class="key">Ctrl + R</span> <span>Buscar en historial</span></div>
+                    <div class="shortcut"><span class="key">Alt + .</span> <span>Último argumento usado</span></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PowerShell -->
+        <section style="border-left: 4px solid #60a5fa;">
+            <h2>🟦 Windows PowerShell (Equivalentes)</h2>
+            <table>
+                <thead>
+                    <tr><th>Acción</th><th>PowerShell</th><th>Cmdlet Alternativo</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>Procesos</td><td><code>Get-Process</code></td><td><code>ps</code></td></tr>
+                    <tr><td>Servicios</td><td><code>Get-Service</code></td><td><code>sc query</code></td></tr>
+                    <tr><td>Red</td><td><code>Get-NetIPAddress</code></td><td><code>ipconfig</code></td></tr>
+                    <tr><td>Permisos</td><td><code>Get-Acl / Set-Acl</code></td><td><code>icacls</code></td></tr>
+                    <tr><td>Contenido</td><td><code>Get-Content</code></td><td><code>cat / type</code></td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <footer>
+            <p>IF0099 - Sistemas Operativos I | UNAULA | 2026</p>
+            <p>Actualizado: Febrero 2026</p>
+        </section>
+    </div>
+</body>
+</html>

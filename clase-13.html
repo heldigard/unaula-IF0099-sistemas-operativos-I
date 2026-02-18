@@ -164,7 +164,7 @@
 
         <section id="objetivos">
             <h2>Objetivos de Aprendizaje</h2>
-            <p><strong>Resultado de Aprendizaje:</strong> comprende la funcionalidad de conceptos fundamentales integrados.</p>
+            <p><strong>Resultado de Aprendizaje (RA5):</strong> Comprende la funcionalidad de conceptos fundamentales integrados (Alineado con Evaluación E5).</p>
             <p>Al finalizar esta clase, serás capaz de:</p>
             <ol>
                 <li><strong>Comprender</strong> la estructura interna de un sistema de archivos</li>
@@ -173,6 +173,11 @@
                 <li><strong>Diferenciar</strong> los niveles de RAID básicos</li>
                 <li><strong>Implementar</strong> configuraciones de almacenamiento</li>
             </ol>
+
+            <div class="callout success">
+                <p class="callout-title">🖥️ Laboratorio VirtualBox</p>
+                <p>Para esta clase, configuraremos sistemas de archivos avanzados y journaling en discos adicionales agregados a tu máquina virtual en <strong>VirtualBox</strong>.</p>
+            </div>
 
             <div class="callout info">
                 <p class="callout-title">Glosario de Implementación</p>
@@ -503,6 +508,25 @@ sudo mdadm --detail --scan >> /etc/mdadm/mdadm.conf
                     <strong>Consejo:</strong> Estos conceptos avanzados son fundamentales si algún día trabajas con servidores o administración de sistemas. Tómate tu tiempo para entenderlos.
                 </div>
             </div>
+        </section>
+
+        <!-- Actividad -->
+        <section id="actividad">
+            <h2>Actividad Práctica: Persistencia de Montaje</h2>
+
+            <section class="actividad">
+                <h3>Actividad 13: Configuración de fstab</h3>
+                <p><strong>Tipo:</strong> Avance para Fase 5 (E5)</p>
+                <p><strong>Objetivo:</strong> Asegurar que los discos adicionales se monten automáticamente al reiniciar.</p>
+                <p><strong>Pasos:</strong></p>
+                <ol>
+                    <li>Usa <code>blkid</code> para encontrar el UUID de una partición</li>
+                    <li>Edita el archivo <code>/etc/fstab</code> (con cuidado y respaldo)</li>
+                    <li>Agrega la línea correspondiente para montar la partición en <code>/mnt/datos</code></li>
+                    <li>Prueba con <code>sudo mount -a</code> para verificar que no haya errores</li>
+                </ol>
+                <p><strong>Entregable:</strong> Captura de pantalla de tu archivo <code>/etc/fstab</code> configurado para tu informe de la Fase 5.</p>
+            </section>
         </section>
 
         <section id="resumen">

@@ -9,7 +9,6 @@
             --primary: #2563eb;
             --secondary: #1e40af;
             --accent: #059669;
-            --aws-orange: #ff9900;
             --bg-light: #f8fafc;
             --text-main: #1e293b;
             --text-muted: #64748b;
@@ -58,12 +57,14 @@
             margin-bottom: 2rem;
             border-radius: 8px;
             box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            text-align: center;
         }
 
         .nav-breadcrumb a {
             color: var(--primary);
             text-decoration: none;
-            margin-right: 0.5rem;
+            margin: 0 0.5rem;
+            font-weight: 500;
         }
 
         .nav-breadcrumb a:hover {
@@ -101,7 +102,8 @@
             transition: all 0.3s ease;
             text-decoration: none;
             color: inherit;
-            display: block;
+            display: flex;
+            flex-direction: column;
         }
 
         .lab-card:hover {
@@ -119,10 +121,7 @@
             font-size: 0.85rem;
             font-weight: 600;
             margin-bottom: 0.75rem;
-        }
-
-        .lab-card.aws .lab-number {
-            background: var(--aws-orange);
+            width: fit-content;
         }
 
         .lab-title {
@@ -136,6 +135,7 @@
             font-size: 0.9rem;
             color: var(--text-muted);
             margin-bottom: 1rem;
+            flex-grow: 1;
         }
 
         .lab-meta {
@@ -143,12 +143,8 @@
             gap: 1rem;
             font-size: 0.85rem;
             color: var(--text-muted);
-        }
-
-        .lab-meta span {
-            display: flex;
-            align-items: center;
-            gap: 0.25rem;
+            border-top: 1px solid var(--border);
+            padding-top: 1rem;
         }
 
         .status-badge {
@@ -157,25 +153,11 @@
             border-radius: 12px;
             font-size: 0.75rem;
             font-weight: 600;
-            margin-left: 0.5rem;
         }
 
         .status-badge.available {
             background: #f0fdf4;
             color: var(--accent);
-        }
-
-        .status-badge.coming-soon {
-            background: #fffbeb;
-            color: var(--aws-orange);
-        }
-
-        .warning-box {
-            background: #fffbeb;
-            border-left: 4px solid var(--aws-orange);
-            padding: 1.5rem;
-            margin: 2rem 0;
-            border-radius: 8px;
         }
 
         .info-box {
@@ -186,11 +168,27 @@
             border-radius: 8px;
         }
 
+        .warning-box {
+            background: #fffbeb;
+            border-left: 4px solid #f59e0b;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 8px;
+        }
+
         .footer {
             text-align: center;
-            padding: 2rem 0;
+            padding: 3rem 0;
             color: var(--text-muted);
             font-size: 0.9rem;
+            background: white;
+            border-top: 1px solid var(--border);
+        }
+
+        .footer a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
         }
 
         @media (max-width: 768px) {
@@ -203,232 +201,141 @@
 <body>
     <header>
         <div class="container">
-            <h1>Laboratorios IF0099</h1>
-            <p class="subtitle">Sistemas Operativos I | 2026-I</p>
+            <h1>🔬 Laboratorios de Sistemas Operativos</h1>
+            <p class="subtitle">IF0099 - Universidad Autónoma Latinoamericana | 2026-I</p>
         </div>
     </header>
 
     <div class="container">
         <div class="nav-breadcrumb">
-            <a href="../clases-html/index.html">← Inicio</a> |
+            <a href="../index.html">Página Principal</a> |
+            <a href="../clases-html/index.html">Material de Clases</a> |
             <a href="../clases-html/cronograma.html">Cronograma</a> |
-            <a href="../clases-html/evaluaciones.html">Evaluaciones</a> |
-            <a href="../clases-html/rubricas.html">Rúbricas</a>
+            <a href="../clases-html/evaluaciones.html">Evaluaciones</a>
         </div>
 
         <div class="info-box">
-            <h3>📘 Bienvenido a los Laboratorios</h3>
-            <p style="margin-top: 0.5rem;">Esta sección contiene guías prácticas para complementar las clases teóricas. Los laboratorios están diseñados para realizarse en orden, ya que cada uno construye sobre los conceptos del anterior.</p>
+            <h3>📘 Guía de Laboratorios Prácticos</h3>
+            <p style="margin-top: 0.5rem;">Esta sección centraliza todas las prácticas guiadas del semestre. Cada laboratorio está diseñado para ejecutarse de forma 100% local en tu computadora usando <strong>VirtualBox</strong>.</p>
         </div>
 
         <div class="warning-box">
-            <h3>⚠️ Importante: Requisitos Previos</h3>
-            <p><strong>Lab 00:</strong> Requiere VirtualBox instalado y al menos 20GB de espacio libre y 4GB de RAM (8GB recomendado). Descargar ISO de Ubuntu Server 22.04 LTS.</p>
-            <p style="margin-top: 0.5rem;"><strong>Labs 01-02:</strong> Usan la VM de Ubuntu Server creada en Lab 00.</p>
-            <p style="margin-top: 0.5rem;"><strong>Lab AWS:</strong> Requiere cuenta de AWS con tarjeta de crédito, pero puede ser GRATIS si sigues las instrucciones.</p>
+            <h3>⚠️ Requisitos Técnicos Mínimos</h3>
+            <ul>
+                <li>Computadora con soporte para virtualización (habilitado en BIOS).</li>
+                <li>Mínimo 8GB de RAM (4GB funcionales, pero lentos).</li>
+                <li>20GB de espacio libre en disco.</li>
+                <li>Software: VirtualBox 7.x + Ext Pack.</li>
+            </ul>
         </div>
 
-        <!-- Laboratorios Básicos -->
+        <!-- Bloque 1 -->
         <div class="lab-section">
-            <h2>Fundamentos de Linux</h2>
-            <p style="margin-bottom: 1.5rem;">Laboratorios introductorios para familiarizarse con VirtualBox, Ubuntu Server y la línea de comandos de Linux.</p>
-
+            <h2>Módulo 1: Fundamentos y Gestión de Archivos</h2>
             <div class="lab-grid">
                 <a href="lab-00-introduccion-simuladores.html" class="lab-card">
                     <span class="lab-number">LAB 00</span>
                     <h3 class="lab-title">VirtualBox + Ubuntu Server</h3>
-                    <p class="lab-description">Instala VirtualBox, crea una máquina virtual con Ubuntu Server 22.04 LTS y configúrala para el curso.</p>
+                    <p class="lab-description">Configuración inicial del entorno. Instalación de Ubuntu Server 22.04 LTS y conceptos de virtualización.</p>
                     <div class="lab-meta">
                         <span>⏱️ 120 min</span>
-                        <span>📊 Introductorio</span>
-                        <span class="status-badge available">Requerido</span>
+                        <span class="status-badge available">Fundamental</span>
                     </div>
                 </a>
 
                 <a href="lab-01-comandos-basicos.html" class="lab-card">
                     <span class="lab-number">LAB 01</span>
-                    <h3 class="lab-title">Comandos Básicos de Linux</h3>
-                    <p class="lab-description">Aprende a navegar el sistema de archivos, crear archivos y directorios, y usar comandos esenciales.</p>
+                    <h3 class="lab-title">Terminal y Navegación</h3>
+                    <p class="lab-description">Domina la CLI de Linux. Navegación, creación de archivos, edición con Nano/Vim y tuberías simples.</p>
                     <div class="lab-meta">
                         <span>⏱️ 90 min</span>
-                        <span>📊 Introductorio</span>
                         <span class="status-badge available">Disponible</span>
                     </div>
                 </a>
 
                 <a href="lab-02-permisos-usuarios.html" class="lab-card">
                     <span class="lab-number">LAB 02</span>
-                    <h3 class="lab-title">Permisos y Usuarios</h3>
-                    <p class="lab-description">Entiende el sistema de permisos de Linux, chmod, chown y gestión de usuarios.</p>
+                    <h3 class="lab-title">Seguridad y Permisos</h3>
+                    <p class="lab-description">Gestión de usuarios y grupos. Modelo UGO, chmod numérico y simbólico, y chown.</p>
                     <div class="lab-meta">
                         <span>⏱️ 90 min</span>
-                        <span>📊 Intermedio</span>
                         <span class="status-badge available">Disponible</span>
                     </div>
                 </a>
+            </div>
+        </div>
 
+        <!-- Bloque 2 -->
+        <div class="lab-section">
+            <h2>Módulo 2: Procesos y Recursos</h2>
+            <div class="lab-grid">
                 <a href="lab-03-gestion-procesos.html" class="lab-card">
                     <span class="lab-number">LAB 03</span>
                     <h3 class="lab-title">Gestión de Procesos</h3>
-                    <p class="lab-description">Monitorea procesos con ps, top, htop. Gestiona servicios con systemctl y crea scripts de monitoreo.</p>
+                    <p class="lab-description">Control de señales, monitoreo con htop, jerarquía de procesos y prioridades (nice/renice).</p>
                     <div class="lab-meta">
                         <span>⏱️ 90 min</span>
-                        <span>📊 Intermedio</span>
                         <span class="status-badge available">Disponible</span>
                     </div>
                 </a>
 
                 <a href="lab-04-memoria-monitoreo.html" class="lab-card">
                     <span class="lab-number">LAB 04</span>
-                    <h3 class="lab-title">Memoria y Monitoreo</h3>
-                    <p class="lab-description">Comandos de memoria (free, vmstat), disco (df, du) y red (netstat, ss). Scripts de monitoreo.</p>
+                    <h3 class="lab-title">Memoria y SWAP</h3>
+                    <p class="lab-description">Análisis de consumo de RAM, configuración de archivos de intercambio y monitoreo de rendimiento.</p>
                     <div class="lab-meta">
                         <span>⏱️ 90 min</span>
-                        <span>📊 Intermedio</span>
                         <span class="status-badge available">Disponible</span>
                     </div>
                 </a>
+            </div>
+        </div>
 
+        <!-- Bloque 3 -->
+        <div class="lab-section">
+            <h2>Módulo 3: Sistemas de Archivos y Hardening</h2>
+            <div class="lab-grid">
                 <a href="lab-05-sistemas-archivos.html" class="lab-card">
                     <span class="lab-number">LAB 05</span>
-                    <h3 class="lab-title">Sistemas de Archivos Avanzados</h3>
-                    <p class="lab-description">Sistemas de archivos (ext4, XFS), comandos avanzados (find, tar, rsync), permisos especiales (SUID, ACLs).</p>
+                    <h3 class="lab-title">Discos y Particiones</h3>
+                    <p class="lab-description">Gestión de almacenamiento, montajes persistentes en fstab, inodos y tipos de FS (EXT4/NTFS).</p>
                     <div class="lab-meta">
-                        <span>⏱️ 90 min</span>
-                        <span>📊 Avanzado</span>
+                        <span>⏱️ 120 min</span>
                         <span class="status-badge available">Disponible</span>
                     </div>
                 </a>
 
                 <a href="lab-06-seguridad-hardening.html" class="lab-card">
                     <span class="lab-number">LAB 06</span>
-                    <h3 class="lab-title">Seguridad y Hardening</h3>
-                    <p class="lab-description">Auditoría de usuarios, firewall (ufw), análisis de vulnerabilidades (lynis), checklist de hardening.</p>
+                    <h3 class="lab-title">Auditoría y Hardening</h3>
+                    <p class="lab-description">Aseguramiento del sistema, auditoría de logs, ACLs avanzadas y reglas de firewall local.</p>
                     <div class="lab-meta">
-                        <span>⏱️ 90 min</span>
-                        <span>📊 Avanzado</span>
+                        <span>⏱️ 120 min</span>
                         <span class="status-badge available">Disponible</span>
                     </div>
                 </a>
             </div>
         </div>
 
-        <!-- Laboratorios AWS -->
-        <div class="lab-section">
-            <h2>AWS EC2 - Computación en la Nube <span style="background: var(--aws-orange); color: white; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.8rem; margin-left: 0.5rem;">AWS</span></h2>
-            <p style="margin-bottom: 1.5rem;">Laboratorios para usar Amazon EC2 con el Free Tier. <strong>Requieren tarjeta de crédito</strong> pero pueden ser completamente gratis si se siguen las instrucciones.</p>
-
-            <div class="warning-box" style="margin-top: 0;">
-                <h4>🚨 Antes de comenzar los laboratorios AWS</h4>
-                <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
-                    <li>Tarjeta de crédito internacional (requerida por AWS)</li>
-                    <li>Compromiso de APAGAR siempre las instancias</li>
-                    <li>Configurar alertas de presupuesto</li>
-                </ul>
-            </div>
-
-            <div class="lab-grid">
-                <a href="lab-aws-01-introduccion-ec2.html" class="lab-card aws">
-                    <span class="lab-number">AWS 01</span>
-                    <h3 class="lab-title">Introducción a EC2 Gratis</h3>
-                    <p class="lab-description">Crea tu cuenta AWS gratuita y lanza tu primera instancia EC2 sin costos. Aprende a conectarte por SSH.</p>
-                    <div class="lab-meta">
-                        <span>⏱️ 120 min</span>
-                        <span>📊 Introductorio</span>
-                        <span class="status-badge available">Disponible</span>
-                    </div>
-                </a>
-
-                <div class="lab-card aws">
-                    <span class="lab-number">AWS 02</span>
-                    <h3 class="lab-title">Procesos en EC2</h3>
-                    <p class="lab-description">Práctica con procesos reales: fork, exec, señales y monitoreo en EC2.</p>
-                    <div class="lab-meta">
-                        <span>⏱️ 90 min</span>
-                        <span>📊 Intermedio</span>
-                        <span class="status-badge coming-soon">Próximamente</span>
-                    </div>
-                </div>
-
-                <div class="lab-card aws">
-                    <span class="lab-number">AWS 03</span>
-                    <h3 class="lab-title">Gestión de Memoria</h3>
-                    <p class="lab-description">Explora la memoria real en EC2, swap, y herramientas de monitoreo.</p>
-                    <div class="lab-meta">
-                        <span>⏱️ 90 min</span>
-                        <span>📊 Intermedio</span>
-                        <span class="status-badge coming-soon">Próximamente</span>
-                    </div>
-                </div>
-
-                <div class="lab-card aws">
-                    <span class="lab-number">AWS 04</span>
-                    <h3 class="lab-title">Sistemas de Archivos</h3>
-                    <p class="lab-description">Trabaja con sistemas de archivos reales, particiones y montajes en EC2.</p>
-                    <div class="lab-meta">
-                        <span>⏱️ 120 min</span>
-                        <span>📊 Avanzado</span>
-                        <span class="status-badge coming-soon">Próximamente</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Recursos Adicionales -->
-        <div class="lab-section">
-            <h2>Recursos Adicionales</h2>
-
-            <div class="lab-grid">
-                <a href="https://aws.amazon.com/es/free/" target="_blank" class="lab-card" style="border-color: var(--aws-orange);">
-                    <span class="lab-number">AWS</span>
-                    <h3 class="lab-title">AWS Free Tier</h3>
-                    <p class="lab-description">Información oficial sobre los servicios gratuitos de AWS.</p>
-                    <div class="lab-meta">
-                        <span>🔗 Externo</span>
-                    </div>
-                </a>
-
-                <a href="https://docs.aws.amazon.com/ec2/" target="_blank" class="lab-card">
-                    <span class="lab-number">DOCS</span>
-                    <h3 class="lab-title">Documentación EC2</h3>
-                    <p class="lab-description">Documentación oficial de Amazon EC2.</p>
-                    <div class="lab-meta">
-                        <span>🔗 Externo</span>
-                    </div>
-                </a>
-
-                <a href="https://linux.die.net/" target="_blank" class="lab-card">
-                    <span class="lab-number">MAN</span>
-                    <h3 class="lab-title">Man Pages Linux</h3>
-                    <p class="lab-description">Páginas de manual de comandos Linux.</p>
-                    <div class="lab-meta">
-                        <span>🔗 Externo</span>
-                    </div>
-                </a>
-            </div>
-        </div>
-
-        <!-- Recomendaciones -->
-        <div class="info-box">
-            <h3>📋 Recomendaciones</h3>
+        <!-- Recomendaciones Finales -->
+        <div class="info-box" style="background: #f0fdf4; border-left-color: var(--accent);">
+            <h3>🎯 Recomendaciones para el Éxito</h3>
             <ol style="margin-left: 1.5rem; margin-top: 1rem;">
-                <li style="margin-bottom: 0.5rem;"><strong>Completa los laboratorios en orden:</strong> Cada laboratorio asume conocimientos del anterior.</li>
-                <li style="margin-bottom: 0.5rem;"><strong>Lab 00 es fundamental:</strong> Debes completar Lab 00 antes de continuar, ya que Labs 01-02 usan la VM creada.</li>
-                <li style="margin-bottom: 0.5rem;"><strong>Crea snapshots:</strong> Usa snapshots de VirtualBox antes de cambios importantes para poder revertir.</li>
-                <li style="margin-bottom: 0.5rem;"><strong>Cuidado con AWS:</strong> Solo crea instancias EC2 cuando estés listo para usarlas (Lab AWS es opcional).</li>
-                <li style="margin-bottom: 0.5rem;"><strong>Documenta tu trabajo:</strong> Toma notas de lo que aprendes en cada laboratorio.</li>
+                <li style="margin-bottom: 0.5rem;"><strong>Snapshots:</strong> Toma una captura de tu VM antes de realizar cambios críticos en permisos o sistemas de archivos.</li>
+                <li style="margin-bottom: 0.5rem;"><strong>Bitácora:</strong> Documenta cada comando ejecutado para tus entregas de Fase del Proyecto.</li>
+                <li style="margin-bottom: 0.5rem;"><strong>Red:</strong> Configura tu VM en modo "Adaptador Puente" (Bridge) si deseas acceder desde otros dispositivos en tu casa.</li>
             </ol>
         </div>
 
         <div class="footer">
-            <p>IF0099 - Sistemas Operativos I | 2026-I | Ing. Eldigardo Evelio Camacho Cespedes</p>
+            <p><strong>IF0099 - Sistemas Operativos I</strong> | 2026-I</p>
             <p style="margin-top: 0.5rem;">
-                <a href="../clases-html/index.html">Inicio</a> |
+                <a href="../index.html">Inicio</a> |
                 <a href="../clases-html/cronograma.html">Cronograma</a> |
                 <a href="../clases-html/evaluaciones.html">Evaluaciones</a> |
                 <a href="../clases-html/rubricas.html">Rúbricas</a>
             </p>
-            <p style="margin-top: 0.5rem; font-size: 0.9em; color: #666;">Los laboratorios están diseñados para complementar las clases teóricas con práctica real.</p>
+            <p style="margin-top: 1rem; color: #999;">Plan Educativo Libre de Nube | Enfoque 100% VirtualBox Local</p>
         </div>
     </div>
 </body>

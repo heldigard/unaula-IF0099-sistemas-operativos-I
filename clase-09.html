@@ -165,7 +165,7 @@
 
         <section id="objetivos">
             <h2>Objetivos de Aprendizaje</h2>
-            <p><strong>Resultado de Aprendizaje:</strong> Administra la memoria, los procesos de entrada y salida, la comunicación entre procesos y la sincronización de los mismos.</p>
+            <p><strong>Resultado de Aprendizaje (RA3):</strong> Administra la memoria, los procesos de entrada y salida, la comunicación entre procesos y la sincronización de los mismos (Alineado con Evaluación E3).</p>
             <p>Al finalizar esta clase, serás capaz de:</p>
             <ol>
                 <li><strong>Comprender</strong> el concepto de paginación de memoria</li>
@@ -175,14 +175,9 @@
                 <li><strong>Configurar</strong> parámetros de memoria en Linux</li>
             </ol>
 
-            <div class="callout info">
-                <p class="callout-title">Glosario Técnico</p>
-                <ul>
-                    <li><strong>PTE (Page Table Entry):</strong> Entrada en la tabla de páginas que contiene el marco físico y bits de control.</li>
-                    <li><strong>TLB (Translation Lookaside Buffer):</strong> Caché de hardware que almacena traducciones recientes de páginas a marcos.</li>
-                    <li><strong>Hit / Miss:</strong> Acierto o fallo al buscar una traducción en la caché TLB.</li>
-                    <li><strong>Offset (Desplazamiento):</strong> La dirección relativa dentro de una página o marco.</li>
-                </ul>
+            <div class="callout success">
+                <p class="callout-title">🖥️ Laboratorio VirtualBox</p>
+                <p>En tu máquina de <strong>VirtualBox</strong>, observaremos cómo el kernel gestiona las páginas de memoria y cómo esto afecta el rendimiento de las aplicaciones.</p>
             </div>
         </section>
 
@@ -449,6 +444,24 @@ sudo cat /proc/[PID]/pagemap
                     <strong>Consejo:</strong> La paginación puede parecer compleja, pero es solo una forma de organizar la memoria. La práctica la hace más clara.
                 </div>
             </div>
+        </section>
+
+        <!-- Actividad -->
+        <section id="actividad">
+            <h2>Actividad Práctica: Paginación</h2>
+
+            <section class="actividad">
+                <h3>Actividad 09: Inspección de Páginas</h3>
+                <p><strong>Tipo:</strong> Preparación para Fase 3 (E3)</p>
+                <p><strong>Objetivo:</strong> Ver cómo el SO reporta el tamaño de página y las estadísticas.</p>
+                <p><strong>Pasos:</strong></p>
+                <ol>
+                    <li>Usa el comando <code>getconf PAGESIZE</code> para ver el tamaño de página en tu sistema</li>
+                    <li>Inspecciona <code>cat /proc/meminfo | grep -i page</code></li>
+                    <li>Calcula cuántas páginas hay en 1GB de RAM basándote en tu PAGESIZE</li>
+                </ol>
+                <p><strong>Entregable:</strong> Resolución del cálculo para el Checkpoint E3.</p>
+            </section>
         </section>
 
         <section id="resumen">

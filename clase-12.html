@@ -165,7 +165,7 @@
 
         <section id="objetivos">
             <h2>Objetivos de Aprendizaje</h2>
-            <p><strong>Resultado de Aprendizaje:</strong> Administra la memoria, los procesos de entrada y salida, la comunicación entre procesos y la sincronización de los mismos, aplicando fundamentos de sistemas de archivos.</p>
+            <p><strong>Resultado de Aprendizaje (RA3):</strong> Administra la memoria, los procesos de entrada y salida, la comunicación entre procesos y la sincronización de los mismos, aplicando fundamentos de sistemas de archivos (Alineado con Evaluación E3).</p>
             <p>Al finalizar esta clase, serás capaz de:</p>
             <ol>
                 <li><strong>Comprender</strong> la estructura de inodos en sistemas Unix</li>
@@ -175,14 +175,9 @@
                 <li><strong>Analizar</strong> el contenido de inodos</li>
             </ol>
 
-            <div class="callout info">
-                <p class="callout-title">Glosario de Sistemas de Archivos</p>
-                <ul>
-                    <li><strong>UID / GID:</strong> User ID / Group ID (Identificadores numéricos de usuario y grupo).</li>
-                    <li><strong>MFT (Master File Table):</strong> Tabla maestra de archivos, el corazón del sistema NTFS.</li>
-                    <li><strong>Journaling:</strong> Registro de transacciones para evitar corrupción de datos tras un fallo.</li>
-                    <li><strong>Extent:</strong> Área contigua de almacenamiento asignada a un archivo para mejorar el rendimiento.</li>
-                </ul>
+            <div class="callout success">
+                <p class="callout-title">🖥️ Laboratorio VirtualBox</p>
+                <p>Para esta clase, utilizaremos tu servidor en <strong>VirtualBox</strong> para crear, montar y desmontar particiones de disco reales.</p>
             </div>
         </section>
 
@@ -489,6 +484,24 @@ ln -s archivo.txt enlace_simbolico.txt
                     <strong>Consejo:</strong> Los permisos son fundamentales para la seguridad. Practica en archivos de prueba, nunca en archivos importantes del sistema.
                 </div>
             </div>
+        </section>
+
+        <!-- Actividad -->
+        <section id="actividad">
+            <h2>Actividad Práctica: Sistemas de Archivos</h2>
+
+            <section class="actividad">
+                <h3>Actividad 12: Exploración de Inodos</h3>
+                <p><strong>Tipo:</strong> Cierre para Fase 3 (E3)</p>
+                <p><strong>Objetivo:</strong> Entender la estructura física de los archivos.</p>
+                <p><strong>Pasos:</strong></p>
+                <ol>
+                    <li>Usa <code>ls -i</code> para ver el número de inodo de un archivo</li>
+                    <li>Usa <code>df -i</code> para ver cuántos inodos libres quedan en tu partición raíz</li>
+                    <li>Crea un "Hard Link" y un "Symbolic Link" y compara sus números de inodo</li>
+                </ol>
+                <p><strong>Entregable:</strong> Evidencia de la diferencia entre links para el Checkpoint E3 (25 de Mar).</p>
+            </section>
         </section>
 
         <section id="resumen">

@@ -504,19 +504,14 @@
             <h2>Contenido de la Clase</h2>
             <ul>
                 <li><a href="#objetivos">Objetivos de Aprendizaje</a></li>
-                <li><a href="#introduccion">Introducción a Procesos</a></li>
-                <li><a href="#ciclo-vida">Ciclo de Vida de un Proceso</a></li>
-                <li><a href="#pcb">PCB (Process Control Block)</a></li>
-                <li><a href="#estados">Estados de un Proceso</a></li>
-                <li><a href="#pid-ppid">PID y PPID</a></li>
-                <li><a href="#comandos-basicos">Comandos Básicos</a></li>
-                <li><a href="#ps">Comando ps</a></li>
-                <li><a href="#top-htop">Comandos top y htop</a></li>
-                <li><a href="#kill">kill y Señales</a></li>
-                <li><a href="#prioridades">Prioridades y nice</a></li>
-                <li><a href="#systemd">systemd y systemctl</a></li>
-                <li><a href="#practica">Práctica Guiada</a></li>
-                
+                <li><a href="#introduccion">Introducción</a></li>
+                <li><a href="#comandos-basicos">1. Comandos de Gestión</a></li>
+                <li><a href="#ps">2. Listado con ps</a></li>
+                <li><a href="#top-htop">3. Monitoreo con top y htop</a></li>
+                <li><a href="#kill">4. kill y Señales</a></li>
+                <li><a href="#prioridades">5. Prioridades y nice</a></li>
+                <li><a href="#systemd">6. systemd y systemctl</a></li>
+                <li><a href="#practica">7. Práctica Guiada</a></li>
                 <li><a href="#resumen">Resumen</a></li>
             </ul>
         </nav>
@@ -524,278 +519,46 @@
         <!-- Objetivos -->
         <section id="objetivos">
             <h2>Objetivos de Aprendizaje</h2>
-            <p><strong>Resultado de Aprendizaje:</strong> Gestiona los procesos que se llevan a cabo en los sistemas operativos.</p>
+            <p><strong>Resultado de Aprendizaje (RA2):</strong> Gestiona los procesos que se llevan a cabo en los sistemas operativos (Alineado con Evaluación E2).</p>
             <p>Al finalizar esta clase, serás capaz de:</p>
             <ol>
-                <li><strong>Entender</strong> el concepto de proceso y su ciclo de vida</li>
-                <li><strong>Usar</strong> comandos básicos de gestión de procesos en Linux</li>
-                <li><strong>Monitorear</strong> procesos en tiempo real con top/htop</li>
-                <li><strong>Gestionar</strong> procesos con kill y señales</li>
-                <li><strong>Controlar</strong> servicios con systemd</li>
+                <li><strong>Gestionar</strong> procesos con comandos profesionales (ps, kill, nice)</li>
+                <li><strong>Monitorear</strong> el rendimiento de tu <strong>servidor en VirtualBox</strong> en tiempo real</li>
+                <li><strong>Analizar</strong> la jerarquía de procesos y detectar anomalías</li>
+                <li><strong>Administrar</strong> servicios críticos con <code>systemd</code></li>
             </ol>
 
-            <div class="callout info">
-                <p class="callout-title">Glosario de Procesos</p>
-                <ul>
-                    <li><strong>Proceso:</strong> Programa en ejecución con recursos asignados.</li>
-                    <li><strong>PID (Process ID):</strong> Identificador único numérico del proceso.</li>
-                    <li><strong>PPID (Parent PID):</strong> Identificador del proceso padre.</li>
-                    <li><strong>PCB (Process Control Block):</strong> Estructura del kernel que guarda el estado del proceso.</li>
-                    <li><strong>Señal (Signal):</strong> Notificación enviada a un proceso para interrumpirlo o controlarlo.</li>
-                </ul>
-            </div>
-
-            <div class="callout success" style="background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%); border-left-color: #059669;">
-                <p class="callout-title" style="font-size: 1.1rem; color: #065f46;">Plan B: Recursos Alternativos Gratuitos</p>
-                <p>Si no puedes conectarte al laboratorio Docker del curso, puedes usar estos recursos gratuitos verificados:</p>
-
-                <table style="margin-top: 1rem; background: white; border-radius: 8px;">
-                    <tr style="background: #d1fae5;">
-                        <th style="width: 25%;">Recurso</th>
-                        <th style="width: 35%;">Descripción</th>
-                        <th style="width: 40%;">Ideal para</th>
-                    </tr>
-                    <tr>
-                        <td><strong><a href="https://www.webminal.org" target="_blank">Webminal</a></strong></td>
-                        <td>Terminal Linux real en el navegador</td>
-                        <td>Todos los ejercicios de procesos</td>
-                    </tr>
-                    <tr>
-                        <td><strong><a href="https://bellard.org/jslinux/" target="_blank">JSLinux</a></strong></td>
-                        <td>Emulador Linux completo en navegador</td>
-                        <td>Práctica rápida sin registro</td>
-                    </tr>
-                    <tr>
-                        <td><strong><a href="https://www.practicelinux.com" target="_blank">PracticeLinux</a></strong></td>
-                        <td>Terminal Linux sin registro</td>
-                        <td>Ejercicios rápidos</td>
-                    </tr>
-                </table>
-
-                <p style="margin-top: 1rem; font-size: 0.9rem; color: #047857;"><strong>Recomendado:</strong> Regístrate en <strong>Webminal</strong> para guardar tu progreso. Para usar <code>systemctl</code> y <code>htop</code>, necesitas una VM propia o <a href="https://www.oracle.com/cloud/free/" target="_blank">Oracle Cloud Free Tier</a>.</p>
+            <div class="callout success">
+                <p class="callout-title">🖥️ Laboratorio VirtualBox</p>
+                <p>Es vital saber qué proceso consume más recursos. Aprenderemos a usar <code>htop</code> para monitorear tu VM de VirtualBox.</p>
             </div>
         </section>
 
 
         <!-- Introducción -->
         <section id="introduccion">
-            <h2>Introducción a Procesos</h2>
+            <h2>Introducción a la Gestión de Procesos</h2>
 
             <div class="callout info">
-                <strong>¿Qué es un proceso?</strong>
-                <ul>
-                    <li>Un programa en ejecución</li>
-                    <li>Tiene su propio espacio de memoria</li>
-                    <li>Identificado por un PID (Process ID)</li>
-                    <li>Contiene: código, datos, stack, heap y PCB</li>
-                </ul>
+                <p>En la <strong>Clase 03: Cambio de Contexto y Concurrencia</strong> vimos la teoría detrás de los procesos (PCB, estados, scheduling). Hoy pondremos esos conceptos en práctica usando la terminal de Linux.</p>
             </div>
 
-            <h4>Diferencia entre programa y proceso:</h4>
-            <div class="comparison">
-                <div>
-                    <h4>Programa</h4>
-                    <ul>
-                        <li>Archivo en disco</li>
-                        <li>Código ejecutable</li>
-                        <li>Pasivo (estático)</li>
-                        <li>Ejemplo: <code>/bin/bash</code></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4>Proceso</h4>
-                    <ul>
-                        <li>Programa en ejecución</li>
-                        <li>En memoria RAM</li>
-                        <li>Activo (dinámico)</li>
-                        <li>Ejemplo: bash con PID 1234</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
-        <!-- Ciclo de Vida -->
-        <section id="ciclo-vida">
-            <h2>Ciclo de Vida de un Proceso</h2>
-
-            <div class="callout info">
-                <strong>Un proceso pasa por varios estados desde su creación hasta su terminación</strong>
-            </div>
-
-            <pre class="ascii-diagram">    ┌─────────────┐
-    │   NUEVO     │  ← Proceso creado
-    └──────┬──────┘
-           │
-           ▼
-    ┌─────────────┐
-    │   LISTO     │  ← Esperando CPU
-    └──────┬──────┘
-           │
-           ▼
-    ┌─────────────┐
-    │ EJECUTANDO  │  ← Usando CPU
-    └──────┬──────┘
-           │
-           ├──► ┌─────────────┐
-           │    │ ESPERANDO   │  ← Esperando I/O
-           │    └──────┬──────┘
-           │           │
-           └───────────┘
-           │
-           ▼
-    ┌─────────────┐
-    │ TERMINADO   │  ← Proceso finalizado
-    └─────────────┘</pre>
-        </section>
-
-        <!-- PCB -->
-        <section id="pcb">
-            <h2>PCB (Process Control Block)</h2>
-            <h3>Bloque de Control de Proceso</h3>
-
-            <div class="callout info">
-                <strong>El PCB es la "huella digital" de un proceso</strong>
-                <ul>
-                    <li>Estructura de datos que contiene toda la información del proceso</li>
-                    <li>Almacenado en el kernel</li>
-                    <li>Cada proceso tiene su propio PCB</li>
-                </ul>
-            </div>
-
-            <h4>Contenido del PCB:</h4>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Campo</th>
-                        <th>Descripción</th>
-                        <th>Ejemplo</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>PID</strong></td>
-                        <td>Process Identifier (único)</td>
-                        <td>1234</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Estado</strong></td>
-                        <td>Estado actual del proceso</td>
-                        <td>Running, Sleeping</td>
-                    </tr>
-                    <tr>
-                        <td><strong>PC</strong></td>
-                        <td>Program Counter (siguiente instrucción)</td>
-                        <td>0x7f8a4b2c</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Registros</strong></td>
-                        <td>Estado de los registros del CPU</td>
-                        <td>RAX=0x100, RBX=0x200</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Memoria</strong></td>
-                        <td>Límites de memoria del proceso</td>
-                        <td>Base=0x4000, Límite=0x2000</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Archivos</strong></td>
-                        <td>Archivos abiertos por el proceso</td>
-                        <td>stdin, stdout, /tmp/log</td>
-                    </tr>
-                </tbody>
-            </table>
-        </section>
-
-        <!-- Estados -->
-        <section id="estados">
-            <h2>Estados de un Proceso en Linux</h2>
-
-            <table>
-                <thead>
-                    <tr>
-                        <th>Estado</th>
-                        <th>Símbolo ps</th>
-                        <th>Descripción</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Running</strong></td>
-                        <td>R</td>
-                        <td>Ejecutándose o en cola de ejecución</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Sleeping</strong></td>
-                        <td>S</td>
-                        <td>Esperando evento interrumpible</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Disk sleep</strong></td>
-                        <td>D</td>
-                        <td>Esperando E/S de disco (no interrumpible)</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Stopped</strong></td>
-                        <td>T</td>
-                        <td>Detenido por señal (SIGSTOP, SIGTSTP)</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Zombie</strong></td>
-                        <td>Z</td>
-                        <td>Terminado pero no limpiado por padre</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <div class="callout warning">
-                <strong>⚠️ Procesos Zombie:</strong>
-                <ul>
-                    <li>Hijo terminó pero padre no hizo wait()</li>
-                    <li>Ocupan entrada en tabla de procesos</li>
-                    <li>Se eliminan cuando el padre termina</li>
-                </ul>
-            </div>
-        </section>
-
-        <!-- PID y PPID -->
-        <section id="pid-ppid">
-            <h2>PID y PPID</h2>
-
-            <div class="callout info">
-                <strong>Cada proceso tiene identificadores únicos</strong>
-            </div>
-
+            <h4>Conceptos Clave para Recordar:</h4>
             <div class="comparison">
                 <div>
                     <h4>PID (Process ID)</h4>
-                    <ul>
-                        <li>Identificador único del proceso</li>
-                        <li>Número entero positivo</li>
-                        <li>Asignado por el kernel</li>
-                        <li>Se reutiliza después de terminar</li>
-                    </ul>
+                    <p>Identificador único numérico asignado por el kernel a cada proceso en ejecución.</p>
                 </div>
                 <div>
                     <h4>PPID (Parent PID)</h4>
-                    <ul>
-                        <li>PID del proceso padre</li>
-                        <li>Cada proceso tiene un padre (excepto init)</li>
-                        <li>init/systemd es PID 1</li>
-                        <li>Crea jerarquía de procesos</li>
-                    </ul>
+                    <p>PID del proceso que dio origen al proceso actual, creando una estructura de árbol.</p>
                 </div>
             </div>
-
-            <h4>Ver PID y PPID:</h4>
-            <pre><code class="language-bash">$ ps -ef | grep bash
-root      1234  1000  0 10:00 ?        00:00:01 /bin/bash
-          ↑      ↑
-         PID    PPID</code></pre>
         </section>
 
         <!-- Comandos Básicos -->
         <section id="comandos-basicos">
-            <h2>Comandos Básicos para Gestión de Procesos</h2>
+            <h2>1. Comandos Básicos para Gestión de Procesos</h2>
 
             <table>
                 <thead>
@@ -1412,6 +1175,25 @@ echo "Reporte generado el: $fecha"
         </section>
 
         <!-- Resumen -->
+        <!-- Actividad -->
+        <section id="actividad">
+            <h2>Actividad Práctica: Gestión de Procesos Linux</h2>
+
+            <section class="actividad">
+                <h3>Actividad 05: Monitoreo y Control</h3>
+                <p><strong>Tipo:</strong> Avance para Fase 2 (E2)</p>
+                <p><strong>Objetivo:</strong> Manipular procesos y cambiar sus prioridades.</p>
+                <p><strong>Pasos:</strong></p>
+                <ol>
+                    <li>Lanza un comando que tome tiempo (ej: <code>sleep 1000 &</code>)</li>
+                    <li>Usa <code>jobs</code> y <code>ps</code> para encontrar su PID</li>
+                    <li>Cambia su prioridad con <code>renice</code> a un valor de 10</li>
+                    <li>Termina el proceso usando el comando <code>kill</code></li>
+                </ol>
+                <p><strong>Entregable:</strong> Captura de pantalla del cambio de prioridad evidenciado en <code>htop</code> o <code>top</code>.</p>
+            </section>
+        </section>
+
         <section id="resumen">
             <h2>Resumen de la Clase</h2>
 
