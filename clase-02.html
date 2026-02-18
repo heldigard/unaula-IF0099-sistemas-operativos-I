@@ -196,9 +196,16 @@ Get-Service | Select-Object Name, Status</code></pre>
 
             <!-- EJERCICIO ADICIONAL -->
             <div class="actividad" style="background: #f0fdf4; border-left-color: #16a34a; margin-top: 2rem;">
-                <h3>Ejercicio: Script de Automatización Completo</h3>
-                <p><strong>Crea <code>setup_webserver.sh</code></strong> que: actualice el sistema, instale Apache/PHP/MySQL, cree usuario webadmin, configure el firewall, cree directorio /var/www/html/miapp, y genere un log.</p>
-                <p><strong>Entregable:</strong> Script completo + captura de Apache funcionando.</p>
+                <h3>Ejercicio: Script de Configuración Básica</h3>
+                <p><strong>Crea <code>configurar_sistema.sh</code></strong> que:</p>
+                <ul>
+                    <li>Cree un usuario llamado "estudiante" con directorio home</li>
+                    <li>Cree la estructura de directorios: <code>/home/estudiante/proyectos/backup</code></li>
+                    <li>Genere un archivo de log con la fecha de ejecución</li>
+                    <li>Muestre un resumen de lo creado</li>
+                </ul>
+                <p><strong>Ejercicio PowerShell:</strong> Crea un script <code>crear_estructura.ps1</code> que haga lo equivalente en Windows.</p>
+                <p style="margin-top: 1rem; font-size: 0.9rem; color: #166534;"><strong>💡 Nota:</strong> Este ejercicio practica comandos básicos. Instalación de servidores web se verá más adelante en el curso.</p>
             </div>
 
             <!-- AUTO-EVALUACIÓN -->

@@ -288,12 +288,38 @@
             <div class="step-card"><span class="step-num">3</span> Integre ambos scripts en el arranque del sistema (systemd unit en Linux y Scheduled Task en Windows).</div>
 
             <div class="deliverable-box">
-                <h4>📦 Qué debe entregar:</h4>
-                <ul class="deliverable-list">
-                    <li><strong>Código Fuente:</strong> Archivos <code>.sh</code> y <code>.ps1</code> limpios y comentados.</li>
-                    <li><strong>Video Técnico (Link):</strong> Video de máximo 5 min demostrando la ejecución de los scripts y la reacción ante una caída simulada.</li>
-                    <li><strong>Bitácora de Pruebas:</strong> PDF corto con la tabla de errores encontrados durante el desarrollo.</li>
-                </ul>
+                <h4>📦 ENTREGABLES OBLIGATORIOS:</h4>
+
+                <div style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); padding: 1rem; border-radius: 6px; margin-bottom: 1rem; border-left: 4px solid #f59e0b;">
+                    <p style="margin: 0; font-weight: 700; color: #92400e; font-size: 1.1rem;">📅 Fecha límite: 11 de Marzo, 2026 | ⏰ 11:59 PM</p>
+                    <p style="margin: 0.5rem 0 0 0; font-size: 0.95rem; color: #78350f;">
+                        📤 Formato: <strong>ZIP</strong> | Nombre: <code>E2_ApellidoNombre.zip</code>
+                    </p>
+                </div>
+
+                <ol style="margin-left: 1.5rem; line-height: 1.8;">
+                    <li><strong>Código Fuente:</strong>
+                        <ul>
+                            <li><code>monitor_procesos.sh</code> - Script de monitoreo Linux (comentado)</li>
+                            <li><code>gestionar_servicios.ps1</code> - Script de gestión Windows (comentado)</li>
+                            <li>Ambos scripts deben ejecutarse sin errores y cumplir los requisitos</li>
+                        </ul>
+                    </li>
+                    <li><strong>Video Técnico (máx 5 minutos):</strong>
+                        <ul>
+                            <li>Demostración de <code>monitor.sh</code> detectando alto uso de CPU</li>
+                            <li>Demostración de <code>services.ps1</code> reiniciando Spooler automáticamente</li>
+                            <li>Subir a YouTube (no listado) o Google Drive</li>
+                        </ul>
+                    </li>
+                    <li><strong>Bitácora de Pruebas (PDF 3-5 páginas):</strong>
+                        <ul>
+                            <li>Código de scripts explicado línea por línea</li>
+                            <li>Capturas de ejecución exitosa</li>
+                            <li>Tabla de errores encontrados y soluciones aplicadas</li>
+                        </ul>
+                    </li>
+                </ol>
                 
                 <div style="background: #eff6ff; border-left: 4px solid #3b82f6; padding: 1rem; border-radius: 6px; margin-top: 1.5rem;">
                     <p style="margin: 0 0 0.5rem 0; color: #1e40af;">
@@ -326,10 +352,36 @@
             </ul>
 
             <div class="deliverable-box">
-                <h4>📦 Qué debe entregar:</h4>
-                <ul class="deliverable-list">
-                    <li><strong>PDF de Análisis (Forense):</strong> Por cada escenario: Problema identificado + Datos que lo prueban + Solución aplicada + Captura del comando final.</li>
-                </ul>
+                <h4>📦 ENTREGABLES OBLIGATORIOS:</h4>
+
+                <div style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); padding: 1rem; border-radius: 6px; margin-bottom: 1rem; border-left: 4px solid #f59e0b;">
+                    <p style="margin: 0; font-weight: 700; color: #92400e; font-size: 1.1rem;">📅 Fecha: 25 de Marzo, 2026 | ⏰ En clase (60 min)</p>
+                    <p style="margin: 0.5rem 0 0 0; font-size: 0.95rem; color: #78350f;">
+                        📤 Formato: <strong>PDF</strong> | Nombre: <code>E3_ApellidoNombre.pdf</code>
+                    </p>
+                </div>
+
+                <ol style="margin-left: 1.5rem; line-height: 1.8;">
+                    <li><strong>PDF de Análisis Forense (una sección por escenario):</strong>
+                        <ul>
+                            <li><strong>Problema Identificado:</strong> Descripción clara del síntoma observado</li>
+                            <li><strong>Datos de Evidencia:</strong> Capturas de comandos ejecutados (vmstat, resmon, iostat, etc.)</li>
+                            <li><strong>Diagnóstico:</strong> Explicación técnica de la causa raíz</li>
+                            <li><strong>Solución Aplicada:</strong> Comando o acción correctiva ejecutada</li>
+                            <li><strong>Resultado:</strong> Captura del estado final corregido</li>
+                        </ul>
+                    </li>
+                </ol>
+
+                <div style="background: #fee2e2; border: 2px solid #ef4444; padding: 1rem; border-radius: 6px; margin-top: 1.5rem;">
+                    <h4 style="color: #991b1b; margin: 0 0 0.5rem 0; font-size: 1rem;">⚠️ IMPORTANTE - Laboratorio Presencial</h4>
+                    <ul style="margin: 0; color: #7f1d1d; font-size: 0.95rem;">
+                        <li>Se entrega <strong>en clase</strong> al finalizar la sesión</li>
+                        <li>Los escenarios son proporcionados por el docente el día del laboratorio</li>
+                        <li>Evaluación <strong>100% individual</strong></li>
+                        <li>Traer laptop con ambas VMs funcionando</li>
+                    </ul>
+                </div>
                 
                 <div style="background: #eff6ff; border-left: 4px solid #3b82f6; padding: 1rem; border-radius: 6px; margin-top: 1.5rem;">
                     <p style="margin: 0 0 0.5rem 0; color: #1e40af;">
@@ -358,11 +410,39 @@
             <div class="step-card"><span class="step-num">3</span> Construya la Matriz de Riesgos del sistema UCS.</div>
 
             <div class="deliverable-box">
-                <h4>📦 Qué debe entregar (PDF):</h4>
-                <ul class="deliverable-list">
-                    <li><strong>Matriz de Riesgos:</strong> Identificación de 8 vulnerabilidades y su mitigación técnica.</li>
-                    <li><strong>Reporte de Auditoría:</strong> Capturas de <code>ufw status</code>, <code>getfacl</code> y las políticas locales de Windows aplicadas.</li>
-                </ul>
+                <h4>📦 ENTREGABLES OBLIGATORIOS:</h4>
+
+                <div style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); padding: 1rem; border-radius: 6px; margin-bottom: 1rem; border-left: 4px solid #f59e0b;">
+                    <p style="margin: 0; font-weight: 700; color: #92400e; font-size: 1.1rem;">📅 Fecha límite: 22 de Abril, 2026 | ⏰ 11:59 PM</p>
+                    <p style="margin: 0.5rem 0 0 0; font-size: 0.95rem; color: #78350f;">
+                        📤 Formato: <strong>PDF</strong> | Nombre: <code>E4_ApellidoNombre.pdf</code>
+                    </p>
+                </div>
+
+                <ol style="margin-left: 1.5rem; line-height: 1.8;">
+                    <li><strong>Matriz de Riesgos (tabla):</strong>
+                        <ul>
+                            <li>8 vulnerabilidades identificadas (4 Linux + 4 Windows)</li>
+                            <li>Columnas: Vulnerabilidad | Nivel de Riesgo | Impacto | Mitigación Técnica | Estado</li>
+                            <li>Incluir comandos específicos usados para cada mitigación</li>
+                        </ul>
+                    </li>
+                    <li><strong>Reporte de Auditoría Linux (capturas):</strong>
+                        <ul>
+                            <li><code>sudo ufw status verbose</code> - Firewall configurado</li>
+                            <li><code>getfacl /var/www/ucs</code> - ACLs aplicadas</li>
+                            <li><code>cat /etc/ssh/sshd_config | grep Port</code> - Puerto SSH cambiado</li>
+                            <li><code>ss -tulpn</code> - Solo puertos necesarios abiertos</li>
+                        </ul>
+                    </li>
+                    <li><strong>Reporte de Auditoría Windows (capturas):</strong>
+                        <ul>
+                            <li><code>secpol.msc</code> - Políticas de contraseña y bloqueo</li>
+                            <li>Event Viewer - Logs de auditoría</li>
+                            <li>Firewall con seguridad avanzada - Reglas configuradas</li>
+                        </ul>
+                    </li>
+                </ol>
                 
                 <div style="background: #eff6ff; border-left: 4px solid #3b82f6; padding: 1rem; border-radius: 6px; margin-top: 1.5rem;">
                     <p style="margin: 0 0 0.5rem 0; color: #1e40af;">
@@ -457,12 +537,53 @@
             <div class="step-card"><strong>Live Demo:</strong> El docente pedirá realizar un cambio en vivo (ej: "Matar el proceso Apache y mostrar cómo el monitor lo detecta").</div>
 
             <div class="deliverable-box">
-                <h4>📦 Qué debe entregar:</h4>
-                <ul class="deliverable-list">
-                    <li><strong>Portafolio Final:</strong> El PDF "Libro Blanco" de su infraestructura.</li>
-                    <li><strong>Presentación:</strong> Archivo PPTX o PDF del Pitch.</li>
-                    <li><strong>Link al Repositorio:</strong> GitHub/GitLab con todo el código del semestre organizado.</li>
-                </ul>
+                <h4>📦 ENTREGABLES OBLIGATORIOS:</h4>
+
+                <div style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); padding: 1rem; border-radius: 6px; margin-bottom: 1rem; border-left: 4px solid #f59e0b;">
+                    <p style="margin: 0; font-weight: 700; color: #92400e; font-size: 1.1rem;">📅 Fecha: 27 de Mayo, 2026 | ⏰ Sustentación en vivo</p>
+                    <p style="margin: 0.5rem 0 0 0; font-size: 0.95rem; color: #78350f;">
+                        📤 Formato: <strong>PDF + PPTX + Repositorio</strong> | Enviar antes de clase
+                    </p>
+                </div>
+
+                <ol style="margin-left: 1.5rem; line-height: 1.8;">
+                    <li><strong>Portafolio Final (PDF consolidado):</strong>
+                        <ul>
+                            <li>Introducción al proyecto UCS y arquitectura implementada</li>
+                            <li>Todas las fases E1-E5 con mejoras según feedback recibido</li>
+                            <li>Conclusiones técnicas y lecciones aprendidas</li>
+                            <li>Anexos con configuraciones clave</li>
+                        </ul>
+                    </li>
+                    <li><strong>Pitch Técnico (PPTX o PDF - máx 8 diapositivas):</strong>
+                        <ul>
+                            <li>Portada con nombres</li>
+                            <li>Arquitectura UCS (diagrama)</li>
+                            <li>Retos técnicos y soluciones</li>
+                            <li>Stack tecnológico utilizado</li>
+                            <li>Estrategia de seguridad implementada</li>
+                            <li>Conclusiones y trabajo futuro</li>
+                        </ul>
+                    </li>
+                    <li><strong>Repositorio GitHub/GitLab:</strong>
+                        <ul>
+                            <li>Todo el código del semestre organizado por fase</li>
+                            <li>README con instrucciones de uso</li>
+                            <li>Scripts funcionales y documentados</li>
+                            <li>Link al repositorio en el PDF del portafolio</li>
+                        </ul>
+                    </li>
+                </ol>
+
+                <div style="background: #f0fdf4; border: 2px solid #86efac; padding: 1rem; border-radius: 6px; margin-top: 1.5rem;">
+                    <h4 style="color: #166534; margin: 0 0 0.5rem 0; font-size: 1rem;">🎯 Preparación para la Sustentación</h4>
+                    <ul style="margin: 0; color: #166534; font-size: 0.95rem;">
+                        <li>Practica la demo en vivo: el docente puede pedir ejecutar cualquier script</li>
+                        <li>Lleva backup de tus VMs por si algo falla</li>
+                        <li>Revisa feedback de evaluaciones anteriores</li>
+                        <li>Prepárate para preguntas técnicas sobre tu implementación</li>
+                    </ul>
+                </div>
 
                 <div style="background: #eff6ff; border-left: 4px solid #3b82f6; padding: 1rem; border-radius: 6px; margin-top: 1.5rem;">
                     <p style="margin: 0 0 0.5rem 0; color: #1e40af;">
