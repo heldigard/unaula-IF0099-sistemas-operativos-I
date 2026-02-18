@@ -167,6 +167,64 @@ Select-Object DisplayName, Action</code></pre>
 
                 <p><strong>Entregable:</strong> Captura de pantalla de la política de bloqueo de cuenta y del comando <code>icacls</code> sobre su carpeta segura para la Evaluación E4.</p>
             </div>
+
+            <!-- CASOS LABORALES -->
+            <div class="actividad" style="background: #fff7ed; border-left-color: #ea580c; margin-top: 2rem;">
+                <h3>Casos Reales: Seguridad Windows en Producción</h3>
+                <div class="card" style="margin: 1rem 0; border-left: 4px solid #dc2626;">
+                    <h4 style="color: #991b1b;">Caso 1: Permisos NTFS Conflictivos</h4>
+                    <p><strong>Escenario:</strong> Un usuario no puede acceder a una carpeta compartida aunque está en el grupo correcto. Otros usuarios con mismos permisos sí pueden.</p>
+                    <p><strong>Diagnóstico:</strong></p>
+                    <pre><code class="language-powershell"># Ver permisos efectivos de un usuario específico
+    icacls C:\carpeta_compartida /findsid "dominio\usuario"
+
+    # Ver permisos efectivos reales
+    icacls C:\carpeta /t /c /q</code></pre>
+                </div>
+                <div class="card" style="margin: 1rem 0; border-left: 4px solid #059669;">
+                    <h4 style="color: #065f46;">Caso 2: Cuenta Bloqueada por Política</h4>
+                    <p><strong>Escenario:</strong> El administrador no puede iniciar sesión. La cuenta está bloqueada tras múltiples intentos fallidos.</p>
+                    <p><strong>Solución:</strong></p>
+                    <pre><code class="language-powershell"># Desbloquear cuenta desde otra sesión admin
+    net user administrador /domain /unlock
+
+    # O desde ADUC (Active Directory Users and Computers)</code></pre>
+                </div>
+                <div class="card" style="margin: 1rem 0; border-left: 4px solid #2563eb;">
+                    <h4 style="color: #1e40af;">Caso 3: Auditoría No Registra Eventos</h4>
+                    <p><strong>Escenario:</strong> Se configuró auditoría de acceso a archivos pero el Log de Seguridad no muestra eventos.</p>
+                    <p><strong>Causa:</strong> La auditoría solo se activa si el objeto tiene habilitado el auditing en sus SACL.</p>
+                    <p><strong>Solución:</strong></p>
+                    <pre><code class="language-powershell"># Habilitar auditoría en el objeto
+    auditpol /set /subcategory:"File System" /success:enable /failure:enable
+
+    # Ver configuración actual
+    auditpol /get /category:*</code></pre>
+                </div>
+            </div>
+
+            <!-- EJERCICIO ADICIONAL -->
+            <div class="actividad" style="background: #f0fdf4; border-left-color: #16a34a; margin-top: 2rem;">
+                <h3>Ejercicio: Configuración de Directivas de Grupo</h3>
+                <p>Investiga y configura:</p>
+                <ol>
+                    <li>¿Qué es el "Principio de Menor Privilegio" y cómo se implementa en Windows Server?</li>
+                    <li>¿Cómo configuras una política de contraseñas para que expire cada 90 días?</li>
+                    <li>Configura el registro de eventos de Seguridad para que retenga logs por 1 año</li>
+                </ol>
+            </div>
+
+            <!-- AUTO-EVALUACIÓN -->
+            <div class="actividad" style="background: #f1f5f9; border-left-color: #6366f1; margin-top: 2rem;">
+                <h3>Auto-Evaluación: Seguridad Windows</h3>
+                <p>Responde antes de avanzar:</p>
+                <ol>
+                    <li><strong>¿Cuál es la diferencia entre permisos NTFS y permisos Share?</strong></li>
+                    <li><strong>¿Qué significa "Romper la Herencia" en NTFS?</strong></li>
+                    <li><strong>¿Qué evento indica un intento de acceso fallido en Windows?</strong></li>
+                    <li><strong>¿Por qué es importante auditar el acceso a archivos sensibles?</strong></li>
+                </ol>
+            </div>
         </section>
 
         <nav class="class-nav">

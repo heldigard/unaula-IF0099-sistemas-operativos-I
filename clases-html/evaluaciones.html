@@ -5,2121 +5,230 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Evaluaciones del Curso | IF0099 - Sistemas Operativos I</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        :root {
+            --primary: #1e3a5f;
+            --secondary: #2d5a87;
+            --accent: #10b981;
+            --bg-light: #f8fafc;
+            --text-main: #1e293b;
+            --border: #e2e8f0;
         }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
             line-height: 1.6;
-            color: #333;
+            color: var(--text-main);
             background: linear-gradient(135deg, #1e3a5f 0%, #2d5a87 100%);
             min-height: 100vh;
-            padding: 20px;
+            padding: 2rem;
         }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
+        .container { max-width: 1200px; margin: 0 auto; }
         header {
             background: white;
-            border-radius: 15px;
-            padding: 40px;
-            margin-bottom: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            border-radius: 1.5rem;
+            padding: 3rem;
             text-align: center;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
         }
-
-        h1 {
-            color: #1e3a5f;
-            font-size: 2.5em;
-            margin-bottom: 10px;
-        }
-
-        .subtitle {
-            color: #666;
-            font-size: 1.3em;
-            margin-bottom: 20px;
-        }
-
-        .version-badge {
-            display: inline-block;
-            padding: 8px 20px;
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-            color: white;
-            border-radius: 20px;
-            font-size: 0.9em;
-            font-weight: 600;
-        }
-
-        .nav-links {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-top: 20px;
-            flex-wrap: wrap;
-        }
-
-        .nav-links a {
-            display: inline-block;
-            padding: 12px 24px;
-            background: linear-gradient(135deg, #1e3a5f 0%, #2d5a87 100%);
-            color: white;
-            text-decoration: none;
-            border-radius: 8px;
-            transition: all 0.3s;
-            font-weight: 600;
-        }
-
-        .nav-links a:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(30, 58, 95, 0.3);
-        }
-
+        h1 { color: var(--primary); font-size: 2.2rem; margin-bottom: 0.5rem; }
+        .subtitle { color: #64748b; font-size: 1.1rem; margin-bottom: 2rem; }
+        
         .section {
             background: white;
-            border-radius: 15px;
-            padding: 30px;
-            margin-bottom: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            border-radius: 1.5rem;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
         }
+        h2 { color: var(--primary); border-bottom: 3px solid var(--accent); padding-bottom: 0.5rem; margin-bottom: 1.5rem; font-size: 1.6rem; }
+        
+        table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.9rem; }
+        th, td { padding: 1rem; text-align: left; border-bottom: 1px solid var(--border); }
+        th { background: var(--bg-light); color: var(--primary); font-weight: 700; }
+        tr:hover { background: #f1f5f9; }
 
-        .section h2 {
-            color: #1e3a5f;
-            font-size: 1.8em;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 3px solid #1e3a5f;
+        .eval-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 1.5rem;
         }
-
-        .section h3 {
-            color: #2d5a87;
-            font-size: 1.4em;
-            margin: 25px 0 15px;
-        }
-
-        .section h4 {
-            color: #1e3a5f;
-            font-size: 1.2em;
-            margin: 20px 0 10px;
-        }
-
-        /* Summary Table */
-        .summary-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-            font-size: 0.95em;
-        }
-
-        .summary-table th {
-            background: linear-gradient(135deg, #1e3a5f 0%, #2d5a87 100%);
-            color: white;
-            padding: 15px 12px;
-            text-align: left;
-            font-weight: 600;
-        }
-
-        .summary-table td {
-            padding: 12px;
-            border-bottom: 1px solid #e0e0e0;
-        }
-
-        .summary-table tr:hover {
-            background: #f8f9fa;
-        }
-
-        .summary-table .eval-code {
-            font-weight: 700;
-            color: #1e3a5f;
-            font-size: 1.1em;
-        }
-
-        .summary-table .percentage {
-            font-weight: 700;
-            color: #10b981;
-        }
-
-        .summary-table .percentage-lab {
-            color: #3b82f6;
-        }
-
-        .summary-table .date {
-            font-weight: 600;
-            color: #d97706;
-        }
-
-        .badge {
-            display: inline-block;
-            padding: 4px 12px;
-            border-radius: 15px;
-            font-size: 0.8em;
-            font-weight: 600;
-        }
-
-        .badge-taller {
-            background: #d1fae5;
-            color: #065f46;
-        }
-
-        .badge-informe {
-            background: #dbeafe;
-            color: #1e40af;
-        }
-
-        .badge-reporte {
-            background: #fef3c7;
-            color: #92400e;
-        }
-
-        .badge-examen {
-            background: #e0e7ff;
-            color: #3730a3;
-        }
-
-        .badge-proyecto {
-            background: #ede9fe;
-            color: #8b5cf6;
-        }
-
-        /* Evaluation Cards */
         .eval-card {
-            background: #f8f9fa;
-            border-radius: 12px;
-            padding: 25px;
-            margin-bottom: 30px;
-            border-left: 5px solid #10b981;
+            background: var(--bg-light);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            border-left: 6px solid var(--primary);
         }
+        .eval-card.highlight { border-left-color: var(--accent); background: #f0fdf4; }
+        .eval-card h3 { color: var(--primary); margin-bottom: 0.5rem; display: flex; justify-content: space-between; align-items: center; }
+        .eval-card .pct { background: var(--primary); color: white; padding: 0.2rem 0.6rem; border-radius: 0.5rem; font-size: 0.8rem; }
+        .eval-card p { font-size: 0.9rem; color: #475569; margin-bottom: 1rem; }
+        .eval-card .meta { font-size: 0.8rem; font-weight: 600; color: #64748b; }
 
-        .eval-card.laboratorio {
-            border-left-color: #3b82f6;
-        }
+        .instruction-box { background: #fffbeb; border: 1px solid #fef3c7; padding: 1.5rem; border-radius: 1rem; margin-top: 1rem; }
+        .instruction-box h4 { color: #92400e; margin-bottom: 0.5rem; font-size: 1rem; }
+        .instruction-box ul { padding-left: 1.2rem; font-size: 0.85rem; color: #92400e; }
 
-        .eval-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
+        .nav-footer { display: flex; justify-content: center; gap: 1rem; margin-top: 3rem; }
+        .btn { padding: 0.75rem 1.5rem; border-radius: 0.75rem; text-decoration: none; font-weight: 700; transition: all 0.3s; }
+        .btn-white { background: white; color: var(--primary); }
+        .btn-white:hover { background: var(--bg-light); transform: translateY(-2px); }
 
-        .eval-title {
-            flex: 1;
-        }
-
-        .eval-title h3 {
-            color: #1e3a5f;
-            font-size: 1.5em;
-            margin-bottom: 5px;
-            margin-top: 0;
-        }
-
-        .eval-title .ra {
-            color: #666;
-            font-style: italic;
-            font-size: 0.95em;
-        }
-
-        .eval-meta {
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-
-        .eval-meta-item {
-            background: white;
-            padding: 10px 15px;
-            border-radius: 8px;
-            text-align: center;
-            min-width: 100px;
-        }
-
-        .eval-meta-item .label {
-            font-size: 0.75em;
-            color: #666;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .eval-meta-item .value {
-            font-size: 1.2em;
-            font-weight: 700;
-            color: #1e3a5f;
-        }
-
-        .eval-meta-item .value.percentage {
-            color: #10b981;
-        }
-
-        .eval-card.laboratorio .eval-meta-item .value.percentage {
-            color: #3b82f6;
-        }
-
-        /* Content sections */
-        .content-box {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            margin: 15px 0;
-        }
-
-        .content-box h4 {
-            margin-top: 0;
-            color: #1e3a5f;
-            border-bottom: 2px solid #e0e0e0;
-            padding-bottom: 10px;
-            margin-bottom: 15px;
-        }
-
-        .content-list {
-            margin: 0;
-            padding-left: 20px;
-        }
-
-        .content-list li {
-            margin-bottom: 8px;
-            line-height: 1.6;
-        }
-
-        .content-list li strong {
-            color: #2d5a87;
-        }
-
-        /* Two column layout */
-        .two-columns {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin: 15px 0;
-        }
-
-        @media (max-width: 768px) {
-            .two-columns {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* Deliverables table */
-        .deliverables-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 15px 0;
-        }
-
-        .deliverables-table th {
-            background: #1e3a5f;
-            color: white;
-            padding: 12px;
-            text-align: left;
-        }
-
-        .deliverables-table td {
-            padding: 12px;
-            border-bottom: 1px solid #e0e0e0;
-        }
-
-        .deliverables-table tr:nth-child(even) {
-            background: #f8f9fa;
-        }
-
-        /* Timeline */
-        .timeline {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            margin: 20px 0;
-        }
-
-        .timeline-card {
-            background: linear-gradient(135deg, #1e3a5f 0%, #2d5a87 100%);
-            color: white;
-            padding: 25px;
-            border-radius: 12px;
-            text-align: center;
-        }
-
-        .timeline-card h4 {
-            font-size: 1.2em;
-            margin-bottom: 10px;
-            color: white;
-        }
-
-        .timeline-card .date {
-            font-size: 1.1em;
-            font-weight: 600;
-            margin-bottom: 10px;
-        }
-
-        .timeline-card .accumulated {
-            font-size: 2.5em;
-            font-weight: 700;
-            margin: 10px 0;
-        }
-
-        .timeline-card .evals {
-            font-size: 0.9em;
-            opacity: 0.9;
-        }
-
-        @media (max-width: 768px) {
-            .timeline {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* Info boxes */
-        .info-box {
-            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
-            border-left: 4px solid #3b82f6;
-            padding: 20px;
-            border-radius: 8px;
-            margin: 20px 0;
-        }
-
-        .info-box h4 {
-            color: #1e40af;
-            margin-bottom: 10px;
-            margin-top: 0;
-        }
-
-        .warning-box {
-            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-            border-left: 4px solid #f59e0b;
-            padding: 20px;
-            border-radius: 8px;
-            margin: 20px 0;
-        }
-
-        .warning-box h4 {
-            color: #92400e;
-            margin-bottom: 10px;
-            margin-top: 0;
-        }
-
-        .success-box {
-            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
-            border-left: 4px solid #10b981;
-            padding: 20px;
-            border-radius: 8px;
-            margin: 20px 0;
-        }
-
-        .success-box h4 {
-            color: #065f46;
-            margin-bottom: 10px;
-            margin-top: 0;
-        }
-
-        /* Quick links */
-        .quick-links {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin: 15px 0;
-        }
-
-        .quick-link {
-            display: inline-block;
-            padding: 8px 16px;
-            background: #e0e7ff;
-            color: #3730a3;
-            text-decoration: none;
-            border-radius: 6px;
-            font-size: 0.9em;
-            transition: all 0.3s;
-        }
-
-        .quick-link:hover {
-            background: #3730a3;
-            color: white;
-        }
-
-        footer {
-            background: white;
-            border-radius: 15px;
-            padding: 25px;
-            text-align: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            color: #555;
-        }
-
-        footer a {
-            color: #1e3a5f;
-            text-decoration: none;
-        }
-
-        footer a:hover {
-            text-decoration: underline;
-        }
-
-        /* Theory/Practice distribution */
-        .distribution-bar {
-            display: flex;
-            height: 40px;
-            border-radius: 8px;
-            overflow: hidden;
-            margin: 15px 0;
-        }
-
-        .distribution-teoria {
-            background: #3b82f6;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: 600;
-        }
-
-        .distribution-practica {
-            background: #10b981;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: 600;
-        }
-
-        /* Table of Contents */
-        .toc {
-            background: #f8f9fa;
-            padding: 25px;
-            border-radius: 12px;
-            margin-bottom: 30px;
-        }
-
-        .toc h3 {
-            color: #1e3a5f;
-            margin-bottom: 20px;
-            margin-top: 0;
-        }
-
-        .toc-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 10px;
-        }
-
-        .toc-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 12px 15px;
-            background: white;
-            border-radius: 8px;
-            text-decoration: none;
-            color: #333;
-            transition: all 0.3s;
-        }
-
-        .toc-item:hover {
-            background: #1e3a5f;
-            color: white;
-            transform: translateX(5px);
-        }
-
-        .toc-item .num {
-            background: #10b981;
-            color: white;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
-            font-size: 0.9em;
-        }
-
-        .toc-item:hover .num {
-            background: white;
-            color: #1e3a5f;
-        }
-
-        .toc-item .info {
-            flex: 1;
-        }
-
-        .toc-item .info .name {
-            font-weight: 600;
-        }
-
-        .toc-item .info .date {
-            font-size: 0.85em;
-            color: #666;
-        }
-
-        .toc-item:hover .info .date {
-            color: rgba(255,255,255,0.8);
-        }
-
-        .toc-item .pct {
-            font-weight: 700;
-            color: #10b981;
-        }
-
-        .toc-item:hover .pct {
-            color: white;
-        }
+        .badge { display: inline-block; padding: 0.2rem 0.5rem; border-radius: 0.4rem; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; }
+        .badge-lx { background: #fef3c7; color: #92400e; }
+        .badge-wn { background: #dbeafe; color: #1e40af; }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>Evaluaciones del Curso</h1>
-            <p class="subtitle">IF0099 - Sistemas Operativos I | 2026-I</p>
-            <span class="version-badge">Evaluación Teórico-Práctica 40/60</span>
-            
-            <div class="nav-links">
-                <a href="index.html">Inicio</a>
-                <a href="cronograma.html">Cronograma</a>
-                <a href="rubricas.html">Rúbricas</a>
-                <a href="presentacion-docente.html">Presentación</a>
+            <h1>Evaluación PANDORA</h1>
+            <p class="subtitle">Modelo de Evaluación por Resultados de Aprendizaje (RA)</p>
+            <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
+                <span class="badge" style="background: white; color: var(--primary); border: 1px solid var(--primary);">40% Teoría Aplicada</span>
+                <span class="badge" style="background: var(--accent); color: white;">60% Laboratorio Real</span>
             </div>
         </header>
 
-        <!-- Resumen de Seguimientos -->
         <section class="section">
-            <h2>Corte de Notas y Seguimientos</h2>
-            <div class="timeline">
-                <div class="timeline-card">
-                    <h4>1° Seguimiento</h4>
-                    <div class="date">27 de marzo 2026</div>
-                    <div class="accumulated">50%</div>
-                    <div class="evals">E1 + E2 + E3</div>
-                </div>
-                <div class="timeline-card">
-                    <h4>2° Seguimiento</h4>
-                    <div class="date">15 de mayo 2026</div>
-                    <div class="accumulated">80%</div>
-                    <div class="evals">E4 + E5</div>
-                </div>
-                <div class="timeline-card">
-                    <h4>3° Seguimiento</h4>
-                    <div class="date">28 de mayo 2026</div>
-                    <div class="accumulated">100%</div>
-                    <div class="evals">E6 Final</div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Tabla Resumen -->
-        <section class="section">
-            <h2>Resumen de Evaluaciones</h2>
-            <table class="summary-table">
+            <h2>📊 Cuadro de Seguimiento</h2>
+            <table>
                 <thead>
                     <tr>
-                        <th>Evaluación</th>
-                        <th>%</th>
-                        <th>Tipo</th>
-                        <th>Resultado de Aprendizaje</th>
-                        <th>Fecha</th>
-                        <th>Clases Relacionadas</th>
+                        <th>Corte</th>
+                        <th>Fecha Límite</th>
+                        <th>Porcentaje Acumulado</th>
+                        <th>Fases Incluidas</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td class="eval-code">E1</td>
-                        <td class="percentage">15%</td>
-                        <td><span class="badge badge-taller">Fase 1</span></td>
-                        <td>Identifica la estructura y los tipos de los sistemas operativos</td>
-                        <td class="date">25/02/2026</td>
-                        <td><a href="clase-01.html">C1</a>, <a href="clase-02.html">C2</a>, <a href="clase-04.html">C4</a></td>
+                        <td><strong>Primer Seguimiento</strong></td>
+                        <td>27 de Marzo</td>
+                        <td><strong>50%</strong></td>
+                        <td>Fase 1 (15%) + Fase 2 (15%) + Fase 3 (20%)</td>
                     </tr>
                     <tr>
-                        <td class="eval-code">E2</td>
-                        <td class="percentage">15%</td>
-                        <td><span class="badge badge-informe">Fase 2</span></td>
-                        <td>Gestiona los procesos que se llevan a cabo en los sistemas operativos</td>
-                        <td class="date">11/03/2026</td>
-                        <td><a href="clase-05.html">C5</a>, <a href="clase-06.html">C6</a></td>
-                    </tr>
-                    <tr style="background: #eff6ff;">
-                        <td class="eval-code">E3</td>
-                        <td class="percentage percentage-lab">20%</td>
-                        <td><span class="badge badge-laboratorio">Fase 3</span></td>
-                        <td>Rendimiento, optimización y concurrencia</td>
-                        <td class="date">25/03/2026</td>
-                        <td><a href="clase-03.html">C03</a>, <a href="clase-07.html">C07</a> a <a href="clase-12.html">C12</a></td>
+                        <td><strong>Segundo Seguimiento</strong></td>
+                        <td>15 de Mayo</td>
+                        <td><strong>80%</strong></td>
+                        <td>Fase 4 (15%) + Fase 5 (15%)</td>
                     </tr>
                     <tr>
-                        <td class="eval-code">E4</td>
-                        <td class="percentage">15%</td>
-                        <td><span class="badge badge-reporte">Fase 4</span></td>
-                        <td>Evalúa la seguridad de los sistemas operativos</td>
-                        <td class="date">22/04/2026</td>
-                        <td><a href="clase-15.html">C15</a>, <a href="clase-16.html">C16</a></td>
-                    </tr>
-                    <tr>
-                        <td class="eval-code">E5</td>
-                        <td class="percentage">15%</td>
-                        <td><span class="badge badge-proyecto">Fase 5</span></td>
-                        <td>Comprende conceptos fundamentales (integración de servicios)</td>
-                        <td class="date">06/05/2026</td>
-                        <td><a href="clase-13.html">C13</a>, <a href="clase-14.html">C14</a>, <a href="clase-17.html">C17</a></td>
-                    </tr>
-                    <tr style="background: #f5f3ff;">
-                        <td class="eval-code">E6</td>
-                        <td class="percentage">20%</td>
-                        <td><span class="badge badge-proyecto">Fase 6</span></td>
-                        <td>Estudia las interfaces del SO (Sustentación Final del Proyecto)</td>
-                        <td class="date">27/05/2026</td>
-                        <td>Todo el curso (Unidades 1-8)</td>
+                        <td><strong>Tercer Seguimiento</strong></td>
+                        <td>28 de Mayo</td>
+                        <td><strong>100%</strong></td>
+                        <td>Fase 6 (20%) Sustentación Final</td>
                     </tr>
                 </tbody>
             </table>
         </section>
 
         <section class="section">
-            <h2>Matriz Operativa por Evaluación (Qué se busca y Qué debe hacer)</h2>
-            <table class="summary-table">
-                <thead>
-                    <tr>
-                        <th>Fase</th>
-                        <th>Qué se busca evaluar</th>
-                        <th>Qué debe hacer el estudiante</th>
-                        <th>Evidencia mínima verificable</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="eval-code">E1</td>
-                        <td>Capacidad de diseñar una arquitectura coherente con un caso real.</td>
-                        <td>Definir plataforma Linux/Windows, justificarla y modelar servicios.</td>
-                        <td>Diagrama de red, tabla de hardware virtual y reporte de <code>uname/systeminfo</code>.</td>
-                    </tr>
-                    <tr>
-                        <td class="eval-code">E2</td>
-                        <td>Gestión de procesos/servicios y observabilidad básica.</td>
-                        <td>Construir y ejecutar scripts Bash/PowerShell con lectura de métricas.</td>
-                        <td>Scripts <code>monitor.sh</code>/<code>servicios.ps1</code> + capturas de <code>htop</code> y <strong>Process Explorer</strong>.</td>
-                    </tr>
-                    <tr>
-                        <td class="eval-code">E3</td>
-                        <td>Resolución técnica de escenarios de rendimiento y concurrencia.</td>
-                        <td>Resolver 5 escenarios prácticos de memoria, E/S, sincronización y FS básico en su VM.</td>
-                        <td>PDF con análisis técnico basado en <strong>PerfMon</strong>, <code>vmstat</code>, <code>iostat</code> y <strong>Wait Chain</strong>.</td>
-                    </tr>
-                    <tr>
-                        <td class="eval-code">E4</td>
-                        <td>Capacidad de asegurar un sistema operativo en operación.</td>
-                        <td>Aplicar hardening, permisos y control de acceso en Linux/Windows.</td>
-                        <td>Matriz de riesgos + evidencia de <code>setfacl</code> (Linux) y <code>secpol.msc</code> (Windows).</td>
-                    </tr>
-                    <tr>
-                        <td class="eval-code">E5</td>
-                        <td>Integración de servicios y operación de plataforma híbrida.</td>
-                        <td>Integrar Apache + IIS, FS avanzado (C13) y monitoreo integral.</td>
-                        <td>Servicios web accesibles (puertos 80/8080), RAID/Storage Spaces funcional y script de integración.</td>
-                    </tr>
-                    <tr>
-                        <td class="eval-code">E6</td>
-                        <td>Madurez técnica para defender un sistema completo funcionando.</td>
-                        <td>Sustentar decisiones, demostrar el sistema y responder preguntas técnicas.</td>
-                        <td>Demo en vivo + repositorio final + manual técnico y de operación.</td>
-                    </tr>
-                </tbody>
-            </table>
-        </section>
+            <h2>🎯 Detalle de las 6 Fases (E1-E6)</h2>
+            <div class="eval-grid">
+                <!-- E1 -->
+                <div class="eval-card">
+                    <h3>Fase 1: Arquitectura <span class="pct">15%</span></h3>
+                    <p>Diseño estructural del centro de datos UCS. Selección de OS y mapeo de hardware virtual.</p>
+                    <div class="meta">📅 25 Feb | RA1: Estructura</div>
+                    <div class="instruction-box">
+                        <h4>Entregables:</h4>
+                        <ul>
+                            <li>Diagrama de red (Bridge mode).</li>
+                            <li>Reporte de <code>uname -a</code> y <code>systeminfo</code>.</li>
+                            <li>Justificación técnica de recursos asignados.</li>
+                        </ul>
+                    </div>
+                </div>
 
-        <!-- Tabla de Contenidos -->
-        <section class="section">
-            <div class="toc">
-                <h3>Navegación Rápida a Evaluaciones</h3>
-                <div class="toc-grid">
-                    <a href="#e1" class="toc-item">
-                        <span class="num">1</span>
-                        <div class="info">
-                            <div class="name">FASE 1 - Fundamentos y Arquitectura</div>
-                            <div class="date">25 Feb 2026</div>
-                        </div>
-                        <span class="pct">15%</span>
-                    </a>
-                    <a href="#e2" class="toc-item">
-                        <span class="num">2</span>
-                        <div class="info">
-                            <div class="name">FASE 2 - Procesos y Monitoreo</div>
-                            <div class="date">11 Mar 2026</div>
-                        </div>
-                        <span class="pct">15%</span>
-                    </a>
-                    <a href="#e3" class="toc-item">
-                        <span class="num">3</span>
-                        <div class="info">
-                            <div class="name">FASE 3 - Checkpoint Optimización</div>
-                            <div class="date">25 Mar 2026</div>
-                        </div>
-                        <span class="pct">20%</span>
-                    </a>
-                    <a href="#e4" class="toc-item">
-                        <span class="num">4</span>
-                        <div class="info">
-                            <div class="name">FASE 4 - Seguridad y Hardening</div>
-                            <div class="date">22 Abr 2026</div>
-                        </div>
-                        <span class="pct">15%</span>
-                    </a>
-                    <a href="#e5" class="toc-item">
-                        <span class="num">5</span>
-                        <div class="info">
-                            <div class="name">FASE 5 - Integración de Servicios</div>
-                            <div class="date">06 May 2026</div>
-                        </div>
-                        <span class="pct">15%</span>
-                    </a>
-                    <a href="#e6" class="toc-item">
-                        <span class="num">6</span>
-                        <div class="info">
-                            <div class="name">FASE 6 - Sustentación Final</div>
-                            <div class="date">27 May 2026</div>
-                        </div>
-                        <span class="pct">20%</span>
-                    </a>
+                <!-- E2 -->
+                <div class="eval-card">
+                    <h3>Fase 2: Monitoreo <span class="pct">15%</span></h3>
+                    <p>Automatización de la observabilidad mediante scripts Bash y PowerShell.</p>
+                    <div class="meta">📅 11 Mar | RA2: Procesos</div>
+                    <div class="instruction-box">
+                        <h4>Entregables:</h4>
+                        <ul>
+                            <li><code>monitor.sh</code> (CPU/RAM/Alertas).</li>
+                            <li><code>servicios.ps1</code> (Auto-restart de Spooler).</li>
+                            <li>Video demo de los scripts en acción.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- E3 -->
+                <div class="eval-card highlight">
+                    <h3>Fase 3: Optimización <span class="pct">20%</span></h3>
+                    <p>Laboratorio individual de resolución de 5 escenarios técnicos de alto nivel.</p>
+                    <div class="meta">📅 25 Mar | RA3: Rendimiento</div>
+                    <div class="instruction-box">
+                        <h4>Escenarios Real-World:</h4>
+                        <ul>
+                            <li>Diagnóstico de Memory Pressure (PerfMon/vmstat).</li>
+                            <li>Wait Chain Forensics (Deadlocks en hilos).</li>
+                            <li>Análisis de Inodos y enlaces físicos.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- E4 -->
+                <div class="eval-card">
+                    <h3>Fase 4: Hardening <span class="pct">15%</span></h3>
+                    <p>Aseguramiento integral de los nodos Linux y Windows.</p>
+                    <div class="meta">📅 22 Abr | RA4: Seguridad</div>
+                    <div class="instruction-box">
+                        <h4>Blindaje Requerido:</h4>
+                        <ul>
+                            <li>ACLs granulares (<code>setfacl</code> / NTFS).</li>
+                            <li>Firewall Hardening (UFW / Advanced Firewall).</li>
+                            <li>Matriz de riesgos de infraestructura.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- E5 -->
+                <div class="eval-card">
+                    <h3>Fase 5: Producción <span class="pct">15%</span></h3>
+                    <p>Integración final de servicios web y almacenamiento redundante.</p>
+                    <div class="meta">📅 06 May | RA5: Integración</div>
+                    <div class="instruction-box">
+                        <h4>Servicios Activos:</h4>
+                        <ul>
+                            <li>Apache (SSL/VHost) + IIS (AppPools).</li>
+                            <li>RAID 1 (Linux) + Storage Spaces (Windows).</li>
+                            <li>Persistencia vía <code>/etc/fstab</code>.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- E6 -->
+                <div class="eval-card highlight">
+                    <h3>Fase 6: Sustentación <span class="pct">20%</span></h3>
+                    <p>Defensa técnica oral y demostración en vivo del sistema UCS completo.</p>
+                    <div class="meta">📅 27 May | RA6: Interfaces</div>
+                    <div class="instruction-box">
+                        <h4>Componentes de Defensa:</h4>
+                        <ul>
+                            <li>Portafolio Ejecutivo (Consolidado F1-F5).</li>
+                            <li>Pitch Técnico (8 diapositivas).</li>
+                            <li>Live Demo: El docente solicitará cambios en vivo.</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- FASE 1 - Fundamentos y Arquitectura -->
-        <section class="section" id="e1">
-            <div class="eval-card">
-                <div class="eval-header">
-                    <div class="eval-title">
-                        <h3>FASE 1 - Fundamentos y Arquitectura del SO</h3>
-                        <div class="ra">Resultado de Aprendizaje: Identifica la estructura y los tipos de los sistemas operativos</div>
-                    </div>
-                    <div class="eval-meta">
-                        <div class="eval-meta-item">
-                            <div class="label">Porcentaje</div>
-                            <div class="value percentage">15%</div>
-                        </div>
-                        <div class="eval-meta-item">
-                            <div class="label">Tipo</div>
-                            <div class="value">Proyecto</div>
-                        </div>
-                        <div class="eval-meta-item">
-                            <div class="label">Fecha</div>
-                            <div class="value">25 Feb</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="info-box">
-                    <h4>Distribución de la Evaluación</h4>
-                    <div class="distribution-bar">
-                        <div class="distribution-teoria" style="width: 40%;">40% Teoría</div>
-                        <div class="distribution-practica" style="width: 60%;">60% Práctica</div>
-                    </div>
-                </div>
-
-                <div class="two-columns">
-                    <div class="content-box">
-                        <h4>Contenido Teórico (40%)</h4>
-                        <ul class="content-list">
-                            <li><strong>Definición y funciones del SO</strong> - Conceptos fundamentales</li>
-                            <li><strong>Tipos de SO</strong> - Monolítico, microkernel, híbrido</li>
-                            <li><strong>Estructura del SO</strong> - Kernel, shell, utilidades</li>
-                            <li><strong>Evolución histórica</strong> - Línea de tiempo de los SO</li>
-                            <li><strong>Comparación</strong> - Linux vs Windows vs macOS</li>
-                        </ul>
-                    </div>
-                    <div class="content-box">
-                        <h4>Contenido Práctico (60%)</h4>
-                        <ul class="content-list">
-                            <li><strong>Exploración Kernel Linux:</strong>
-                                <ul>
-                                    <li><code>uname -a</code> - Información del kernel</li>
-                                    <li><code>/proc</code> - Sistema de archivos virtual</li>
-                                    <li><code>lsmod</code> - Módulos del kernel</li>
-                                </ul>
-                            </li>
-                            <li><strong>Exploración Windows:</strong>
-                                <ul>
-                                    <li><code>systeminfo</code> - Información del sistema</li>
-                                    <li><code>Get-Process</code> - Gestión de procesos</li>
-                                </ul>
-                            </li>
-                            <li><strong>Comparación de shells</strong> - Bash vs PowerShell</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="content-box">
-                    <h4>🛠️ INSTRUCCIONES DETALLADAS - QUÉ DEBE HACER EL ESTUDIANTE</h4>
-                    <p style="background: #fef3c7; padding: 10px; border-radius: 6px; margin-bottom: 15px;"><strong>Objetivo:</strong> Diseñar y documentar la arquitectura base del sistema UCS (UNAULA Cloud Services)</p>
-                    
-                    <h5 style="color: #1e3a5f; margin: 15px 0 10px 0;">PASO 1: Crear las Máquinas Virtuales</h5>
-                    <ol class="content-list">
-                        <li><strong>VM Linux (Ubuntu Server 22.04 LTS):</strong>
-                            <ul>
-                                <li>RAM: 2GB mínimo (recomendado 4GB)</li>
-                                <li>CPU: 2 cores</li>
-                                <li>Disco: 20GB dinámico</li>
-                                <li>Red: Adaptador Puente (Bridge)</li>
-                                <li>NO instalar interfaz gráfica (modo consola)</li>
-                            </ul>
-                        </li>
-                        <li><strong>VM Windows (Windows 10/11 Pro o Server 2022):</strong>
-                            <ul>
-                                <li>RAM: 4GB mínimo</li>
-                                <li>CPU: 2 cores</li>
-                                <li>Disco: 40GB dinámico</li>
-                                <li>Red: Adaptador Puente (Bridge)</li>
-                            </ul>
-                        </li>
-                        <li><strong>Configurar IPs estáticas en ambas VMs</strong> (ej: Linux 192.168.1.100, Windows 192.168.1.101)</li>
-                    </ol>
-
-                    <h5 style="color: #1e3a5f; margin: 15px 0 10px 0;">PASO 2: Documentar la Instalación</h5>
-                    <ol class="content-list">
-                        <li>En Linux, ejecutar y capturar pantalla de:
-                            <ul>
-                                <li><code>uname -a</code> (muestra kernel y arquitectura)</li>
-                                <li><code>lsb_release -a</code> (versión Ubuntu)</li>
-                                <li><code>lscpu</code> (información CPU)</li>
-                                <li><code>free -h</code> (memoria RAM)</li>
-                            </ul>
-                        </li>
-                        <li>En Windows, ejecutar y capturar pantalla de:
-                            <ul>
-                                <li><code>systeminfo</code> (información completa)</li>
-                                <li><code>winver</code> (versión Windows)</li>
-                                <li><code>Get-ComputerInfo</code> (PowerShell)</li>
-                            </ul>
-                        </li>
-                    </ol>
-
-                    <h5 style="color: #1e3a5f; margin: 15px 0 10px 0;">PASO 3: Análisis Arquitectónico</h5>
-                    <ol class="content-list">
-                        <li>Investigar y escribir comparativa técnica (mínimo 2 páginas):
-                            <ul>
-                                <li>¿Por qué Linux es monolítico? (kernel + drivers en modo kernel)</li>
-                                <li>¿Por qué Windows es híbrido? (kernel + subsistemas en user mode)</li>
-                                <li>Citar componentes: Kernel, HAL, Shell, Subsistemas</li>
-                                <li>Incluir diagrama de estructura de ambos SO</li>
-                            </ul>
-                        </li>
-                    </ol>
-
-                    <h5 style="color: #1e3a5f; margin: 15px 0 10px 0;">PASO 4: Diagrama de Red</h5>
-                    <ol class="content-list">
-                        <li>Crear diagrama de red que incluya:
-                            <ul>
-                                <li>Su computadora (Host) con IP de su red local</li>
-                                <li>VM Linux con IP estática asignada</li>
-                                <li>VM Windows con IP estática asignada</li>
-                                <li>VirtualBox como capa de abstracción</li>
-                                <li>Flechas indicando conectividad (ping entre todas)</li>
-                            </ul>
-                        </li>
-                    </ol>
-
-                    <h5 style="color: #1e3a5f; margin: 15px 0 10px 0;">PASO 5: Matriz de Hardware Virtualizado</h5>
-                    <ol class="content-list">
-                        <li>Crear tabla comparativa:
-                            <table style="width: 100%; margin: 10px 0; border-collapse: collapse;">
-                                <tr style="background: #f0f0f0;">
-                                    <th style="border: 1px solid #ddd; padding: 8px;">Recurso</th>
-                                    <th style="border: 1px solid #ddd; padding: 8px;">Hardware Real (Host)</th>
-                                    <th style="border: 1px solid #ddd; padding: 8px;">Hardware Virtual (VM Linux)</th>
-                                    <th style="border: 1px solid #ddd; padding: 8px;">Hardware Virtual (VM Windows)</th>
-                                </tr>
-                                <tr>
-                                    <td style="border: 1px solid #ddd; padding: 8px;">CPU</td>
-                                    <td style="border: 1px solid #ddd; padding: 8px;">[Modelo real]</td>
-                                    <td style="border: 1px solid #ddd; padding: 8px;">[2 cores virtualizados]</td>
-                                    <td style="border: 1px solid #ddd; padding: 8px;">[2 cores virtualizados]</td>
-                                </tr>
-                                <tr>
-                                    <td style="border: 1px solid #ddd; padding: 8px;">RAM</td>
-                                    <td style="border: 1px solid #ddd; padding: 8px;">[Total real]</td>
-                                    <td style="border: 1px solid #ddd; padding: 8px;">[2GB asignados]</td>
-                                    <td style="border: 1px solid #ddd; padding: 8px;">[4GB asignados]</td>
-                                </tr>
-                            </table>
-                        </li>
-                    </ol>
-                </div>
-
-                <div class="content-box">
-                    <h4>Entregables Requeridos</h4>
-                    <table class="deliverables-table">
-                        <thead>
-                            <tr>
-                                <th>Entregable</th>
-                                <th>Contenido Mínimo Obligatorio</th>
-                                <th>Formato</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><strong>Bitácora Técnica</strong></td>
-                                <td>Comparativa de arquitecturas (RA1) + Capturas de instalación + Tabla de Hardware.</td>
-                                <td>PDF (máx. 5 páginas)</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Pitch de Diseño</strong></td>
-                                <td>Explicación visual de por qué eligió esas versiones de SO y cómo planea conectarlas.</td>
-                                <td>PPTX (máx. 8 diapositivas)</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="quick-links">
-                    <strong>Clases relacionadas:</strong>
-                    <a href="clase-01.html" class="quick-link">Clase 01 - ¿Qué es un SO?</a>
-                    <a href="clase-02.html" class="quick-link">Clase 02 - Linux Terminal</a>
-                    <a href="clase-04.html" class="quick-link">Clase 04 - Estructura del SO</a>
-                    <a href="rubricas.html" class="quick-link">Ver Rúbrica Completa</a>
-                </div>
-            </div>
-        </section>
-
-        <!-- FASE 2 - Procesos y Monitoreo -->
-        <section class="section" id="e2">
-            <div class="eval-card">
-                <div class="eval-header">
-                    <div class="eval-title">
-                        <h3>FASE 2 - Procesos y Monitoreo</h3>
-                        <div class="ra">Resultado de Aprendizaje: Gestiona los procesos que se llevan a cabo en los sistemas operativos</div>
-                    </div>
-                    <div class="eval-meta">
-                        <div class="eval-meta-item">
-                            <div class="label">Porcentaje</div>
-                            <div class="value percentage">15%</div>
-                        </div>
-                        <div class="eval-meta-item">
-                            <div class="label">Tipo</div>
-                            <div class="value">Proyecto</div>
-                        </div>
-                        <div class="eval-meta-item">
-                            <div class="label">Fecha</div>
-                            <div class="value">11 Mar</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="info-box">
-                    <h4>Distribución de la Evaluación</h4>
-                    <div class="distribution-bar">
-                        <div class="distribution-teoria" style="width: 40%;">40% Teoría</div>
-                        <div class="distribution-practica" style="width: 60%;">60% Práctica</div>
-                    </div>
-                </div>
-
-                <div class="two-columns">
-                    <div class="content-box">
-                        <h4>Contenido Teórico (40%)</h4>
-                        <ul class="content-list">
-                            <li><strong>Concepto de proceso</strong> - Definición y características</li>
-                            <li><strong>Estados de proceso</strong> - New, Ready, Running, Waiting, Terminated</li>
-                            <li><strong>PCB</strong> - Process Control Block</li>
-                            <li><strong>Cambio de contexto</strong> - Context switching</li>
-                            <li><strong>Servicios del SO</strong> - Linux (systemctl) vs Windows (Get-Service)</li>
-                            <li><strong>Scripts de monitoreo</strong> - Automatización</li>
-                        </ul>
-                    </div>
-                    <div class="content-box">
-                        <h4>Contenido Práctico (60%)</h4>
-                        <ul class="content-list">
-                            <li><strong>Comandos Linux:</strong>
-                                <ul>
-                                    <li><code>ps</code> - Procesos actuales</li>
-                                    <li><code>top / htop</code> - Monitoreo interactivo</li>
-                                    <li><code>kill</code> - Terminar procesos</li>
-                                    <li><code>nice / renice</code> - Prioridades</li>
-                                    <li><code>systemctl</code> - Control de servicios</li>
-                                </ul>
-                            </li>
-                            <li><strong>Scripts requeridos:</strong>
-                                <ul>
-                                    <li><code>monitor_procesos.sh</code> - Bash</li>
-                                    <li><code>gestionar_servicios.ps1</code> - PowerShell</li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="content-box">
-                    <h4>🛠️ INSTRUCCIONES DETALLADAS - QUÉ DEBE HACER EL ESTUDIANTE</h4>
-                    <p style="background: #fef3c7; padding: 10px; border-radius: 6px; margin-bottom: 15px;"><strong>Objetivo:</strong> Implementar monitoreo automatizado de procesos y servicios en ambos sistemas operativos</p>
-                    
-                    <h5 style="color: #1e3a5f; margin: 15px 0 10px 0;">PASO 1: Script de Monitoreo en Linux (Bash)</h5>
-                    <p><strong>Crear archivo:</strong> <code>monitor_procesos.sh</code></p>
-                    <p><strong>El script DEBE hacer:</strong></p>
-                    <ol class="content-list">
-                        <li>Listar los 5 procesos que más RAM consumen usando <code>ps aux --sort=-%mem | head -6</code></li>
-                        <li>Obtener uso de CPU total con <code>top -bn1 | grep "Cpu(s)"</code></li>
-                        <li>Obtener uso de memoria con <code>free -h</code></li>
-                        <li>Guardar toda la información en <code>bitacora_procesos.txt</code> con timestamp</li>
-                        <li>Mostrar alerta si algún proceso usa más de 50% de CPU</li>
-                    </ol>
-                    <p><strong>Ejemplo de salida esperada en bitacora_procesos.txt:</strong></p>
-                    <pre style="background: #f5f5f5; padding: 10px; border-radius: 4px; font-size: 0.9em;">
-=== Reporte de Sistema ===
-Fecha: 2026-03-11 08:30:15
-
-Top 5 procesos por memoria:
-USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
-mysql     1234  2.5 15.2 892340 15432 ?        Ssl  08:00   0:25 mysqld
-apache    5678  1.2  8.5 234567  8654 ?        S    08:00   0:15 httpd
-...
-
-Uso de CPU: 15.3%
-Uso de Memoria: 2.3G / 4.0G (57%)
-
-ALERTA: Proceso mysql consumiendo >50% CPU
-                    </pre>
-
-                    <h5 style="color: #1e3a5f; margin: 15px 0 10px 0;">PASO 2: Script de Servicios en Windows (PowerShell)</h5>
-                    <p><strong>Crear archivo:</strong> <code>gestionar_servicios.ps1</code></p>
-                    <p><strong>El script DEBE hacer:</strong></p>
-                    <ol class="content-list">
-                        <li>Verificar estado del servicio "Spooler" (cola de impresión):
-                            <ul>
-                                <li>Comando: <code>Get-Service -Name Spooler</code></li>
-                            </ul>
-                        </li>
-                        <li>Si está detenido (Stopped):
-                            <ul>
-                                <li>Intentar iniciarlo: <code>Start-Service -Name Spooler</code></li>
-                                <li>Mostrar mensaje: "ALERTA: Servicio Spooler iniciado automáticamente"</li>
-                            </ul>
-                        </li>
-                        <li>Verificar servicios críticos adicionales:
-                            <ul>
-                                <li>Windows Update (wuauserv)</li>
-                                <li>Firewall (MpsSvc)</li>
-                                <li>Antivirus (Windows Defender)</li>
-                            </ul>
-                        </li>
-                        <li>Generar reporte en <code>C:\Reportes\servicios_estado.txt</code></li>
-                    </ol>
-
-                    <h5 style="color: #1e3a5f; margin: 15px 0 10px 0;">PASO 3: Análisis de Estados de Procesos</h5>
-                    <ol class="content-list">
-                        <li>Ejecutar <code>ps aux</code> y encontrar ejemplos de cada estado:
-                            <ul>
-                                <li><strong>R (Running):</strong> Proceso ejecutándose activamente</li>
-                                <li><strong>S (Sleeping):</strong> Proceso esperando evento (interrumpible)</li>
-                                <li><strong>Z (Zombie):</strong> Proceso hijo terminado pero no reclamado por padre</li>
-                            </ul>
-                        </li>
-                        <li>Capturar pantalla mostrando al menos 3 procesos en cada estado</li>
-                        <li>Escribir explicación técnica de qué significa cada estado (1 párrafo cada uno)</li>
-                    </ol>
-
-                    <h5 style="color: #1e3a5f; margin: 15px 0 10px 0;">PASO 4: Control de Prioridades (Laboratorio Híbrido)</h5>
-                    <ol class="content-list">
-                        <li><strong>En Linux:</strong> Inicie un proceso en background (<code>sleep 300 &</code>) y use <code>sudo renice 15 -p [PID]</code> para bajar su prioridad. Verifique en <code>htop</code> la columna <strong>NI</strong>.</li>
-                        <li><strong>En Windows:</strong> Use PowerShell para iniciar un proceso con prioridad baja: <code>Start-Process notepad.exe -PriorityClass BelowNormal</code>.</li>
-                        <li><strong>Evidencia:</strong> Capturar el cambio de prioridad en el <strong>Task Manager</strong> (Windows) y en <code>htop</code> (Linux).</li>
-                    </ol>
-
-                    <h5 style="color: #1e3a5f; margin: 15px 0 10px 0;">PASO 5: Documentar Bitácora de Pruebas</h5>
-                    <p>Crear PDF con:</p>
-                    <ol class="content-list">
-                        <li>Código fuente completo de ambos scripts (con comentarios explicativos)</li>
-                        <li>Screenshots de ejecución de cada script</li>
-                        <li>Archivos de salida generados (bitacora_procesos.txt y servicios_estado.txt)</li>
-                        <li>Análisis de estados de procesos con evidencias</li>
-                        <li>Explicación del cambio de prioridades nice</li>
-                    </ol>
-                </div>
-
-                <div class="content-box">
-                    <h4>Entregables Requeridos</h4>
-                    <table class="deliverables-table">
-                        <thead>
-                            <tr>
-                                <th>Entregable</th>
-                                <th>Contenido Mínimo Obligatorio</th>
-                                <th>Formato</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><strong>Scripts de Automatización</strong></td>
-                                <td>Archivo <code>monitor.sh</code> y <code>servicios.ps1</code> funcionales y comentados línea por línea.</td>
-                                <td>ZIP / Repositorio</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Bitácora de Pruebas</strong></td>
-                                <td>Reporte de ejecución de los scripts (salidas obtenidas) + Explicación de estados de procesos (RA2).</td>
-                                <td>PDF (máx. 5 páginas)</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Video Demo</strong></td>
-                                <td>Screencast de máximo 5 min mostrando los scripts funcionando y el cambio de prioridad 'nice'.</td>
-                                <td>MP4 / Link Video</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="quick-links">
-                    <strong>Clases relacionadas:</strong>
-                    <a href="clase-05.html" class="quick-link">Clase 05 - Procesos Linux</a>
-                    <a href="clase-06.html" class="quick-link">Clase 06 - Procesos Windows</a>
-                    <a href="clase-07.html" class="quick-link">Clase 07 - Hilos y Sincronización</a>
-                    <a href="rubricas.html" class="quick-link">Ver Rúbrica Completa</a>
-                </div>
-            </div>
-        </section>
-
-        <!-- FASE 3 - Laboratorio de Optimización -->
-        <section class="section" id="e3">
-            <div class="eval-card laboratorio">
-                <div class="eval-header">
-                    <div class="eval-title">
-                        <h3>FASE 3 - Laboratorio de Optimización (Memoria, E/S, Sincronización)</h3>
-                        <div class="ra">Resultado de Aprendizaje: Administra la memoria, los procesos de entrada y salida, la comunicación entre procesos y la sincronización de los mismos (hasta Clase 12 - Sistemas de Archivos introductorio)</div>
-                    </div>
-                    <div class="eval-meta">
-                        <div class="eval-meta-item">
-                            <div class="label">Porcentaje</div>
-                            <div class="value percentage">20%</div>
-                        </div>
-                        <div class="eval-meta-item">
-                            <div class="label">Tipo</div>
-                            <div class="value">Laboratorio</div>
-                        </div>
-                        <div class="eval-meta-item">
-                            <div class="label">Fecha</div>
-                            <div class="value">25 Mar</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="info-box">
-                    <h4>📋 Información Importante - Laboratorio Individual</h4>
-                    <ul class="content-list">
-                        <li><strong>Modalidad:</strong> Individual, se trabaja en casa con su VM</li>
-                        <li><strong>Tiempo disponible:</strong> 1 semana (publicación 18 Mar → entrega 25 Mar)</li>
-                        <li><strong>Distribución:</strong> 40% Análisis / 60% Práctica (resolución de problemas reales en VM)</li>
-                        <li><strong>Material permitido:</strong> <span style="color: #10b981; font-weight: bold;">TODO: Documentación, apuntes, acceso a VM, Internet para consulta técnica</span></li>
-                        <li><strong style="color: #dc2626;">🚫 PROHIBIDO:</strong> Copia entre estudiantes, uso de IA para generar respuestas</li>
-                    </ul>
-                </div>
-
-                <div class="warning-box" style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); border-left-color: #2563eb;">
-                    <h4 style="color: #1e40af;">📚 Alcance del Laboratorio - IMPORTANTE</h4>
-                    <p style="margin-bottom: 10px;">Este laboratorio evalúa el contenido visto <strong>hasta la Clase 12 (18 de Marzo)</strong>:</p>
-                    <ul class="content-list">
-                        <li>✅ <strong>C08-C11:</strong> Memoria, Paginación, Memoria Virtual, Discos y E/S</li>
-                        <li>✅ <strong>C12:</strong> Sistemas de Archivos (conceptos introductorios: inodos, permisos, ext4/NTFS)</li>
-                        <li>✅ <strong>C05-C07:</strong> Procesos, Hilos y Sincronización</li>
-                        <li>⚠️ <strong>NO incluye:</strong> Clase 13 (Implementación avanzada de FS) ni temas posteriores a Semana Santa</li>
-                    </ul>
-                    <p style="margin-top: 10px; font-size: 0.95em; color: #1e40af;"><strong>Nota:</strong> Los temas avanzados de sistemas de archivos (journaling, RAID, fstab) se evaluarán en E5 (Fase 5) como parte de la integración de servicios.</p>
-                </div>
-
-                <div class="content-box">
-                    <h4>🛠️ INSTRUCCIONES DETALLADAS - QUÉ DEBE HACER EL ESTUDIANTE</h4>
-                    <p style="background: #fef3c7; padding: 10px; border-radius: 6px; margin-bottom: 15px;"><strong>Objetivo:</strong> Resolver 5 escenarios prácticos de optimización en entornos Linux y Windows, documentando cada paso con capturas y análisis técnico.</p>
-                    
-                    <h5 style="color: #1e3a5f; margin: 15px 0 10px 0;">ESTRUCTURA DEL LABORATORIO (5 Escenarios Profesionales Híbridos)</h5>
-                    <table class="deliverables-table">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Escenario</th>
-                                <th>Herramientas Real-World</th>
-                                <th>Qué Debe Hacer el Estudiante</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><strong>1</strong></td>
-                                <td>Gestión de RAM Critica</td>
-                                <td><code>free</code>, <code>vmstat</code> (LX) / <strong>Resource Monitor</strong> (WN)</td>
-                                <td>Identificar fuga de memoria en un servicio. Comparar cómo Linux usa el Cache vs cómo Windows gestiona la memoria "Standby". Proponer ajustes de Swap/Pagefile.</td>
-                            </tr>
-                            <tr>
-                                <td><strong>2</strong></td>
-                                <td>Diagnóstico de Almacenamiento</td>
-                                <td><code>iostat</code>, <code>df</code> (LX) / <strong>PerfMon - Disk Queue</strong> (WN)</td>
-                                <td>Detectar latencia de disco. En Windows, monitorear la "Cola de espera de lectura/escritura". En Linux, analizar el %util. Identificar el disco saturado.</td>
-                            </tr>
-                            <tr>
-                                <td><strong>3</strong></td>
-                                <td>Sincronización y Bloqueos</td>
-                                <td><code>lsof</code>, <code>fuser</code> (LX) / <strong>Wait Chain Traversal</strong> (WN)</td>
-                                <td>Resolver un archivo bloqueado. Identificar qué proceso impide el acceso al recurso. Usar el "Analizar cadena de espera" en Windows para detectar Deadlocks reales.</td>
-                            </tr>
-                            <tr>
-                                <td><strong>4</strong></td>
-                                <td>Rendimiento de CPU</td>
-                                <td><code>htop</code>, <code>nice</code> (LX) / <strong>Process Explorer (Sysinternals)</strong> (WN)</td>
-                                <td>Optimizar un servidor bajo carga. Cambiar prioridades de hilos en tiempo real y observar el impacto en el consumo de ciclos de reloj. (Cero cálculos, solo monitoreo).</td>
-                            </tr>
-                            <tr>
-                                <td><strong>5</strong></td>
-                                <td>Estructura de Archivos</td>
-                                <td><code>ls -li</code>, inodos (LX) / <strong>NTFS Advanced Permissions</strong> (WN)</td>
-                                <td>Configurar cuotas de disco en Windows para evitar llenado de logs. En Linux, demostrar cómo un enlace duro (Hard Link) ahorra inodos pero no espacio extra.</td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                    <h5 style="color: #1e3a5f; margin: 15px 0 10px 0;">PASO A PASO - CÓMO REALIZAR EL LABORATORIO</h5>
-                    <ol class="content-list">
-                        <li><strong>Descargar la guía:</strong> El 18 de Marzo se publica el PDF con los requerimientos técnicos de los 5 escenarios.</li>
-                        <li><strong>Entorno Híbrido:</strong> Los escenarios 1 y 4 se resuelven en la VM Linux; los escenarios 2 y 5 en el entorno Windows; el 3 es conceptual/aplicado.</li>
-                        <li><strong>Capturar evidencias:</strong> Use herramientas profesionales (Resource Monitor, PerfMon, htop, vmstat). No se aceptan fotos de celular.</li>
-                        <li><strong>Análisis Técnico:</strong> Para cada escenario, explique el diagnóstico basado en los datos obtenidos (ej: "¿Por qué la cola de disco es >2?").</li>
-                        <li><strong>Entregar:</strong> Subir el PDF consolidado antes del 25 de Marzo a las 8:00 AM.</li>
-                    </ol>
-
-                    <h5 style="color: #1e3a5f; margin: 15px 0 10px 0;">HERRAMIENTAS A DOMINAR</h5>
-                    <div class="two-columns">
-                        <ul class="content-list">
-                            <li><strong>Entorno Linux:</strong>
-                                <ul>
-                                    <li><code>htop / top</code> - Procesos y CPU</li>
-                                    <li><code>free -h</code> y <code>vmstat</code> - Memoria</li>
-                                    <li><code>iostat -xz 1</code> - Latencia de disco</li>
-                                    <li><code>ls -li</code> y <code>stat</code> - Inodos</li>
-                                </ul>
-                            </li>
-                            <li><strong>Entorno Windows:</strong>
-                                <ul>
-                                    <li><strong>Resource Monitor</strong> (resmon) - Memoria y Red</li>
-                                    <li><strong>Performance Monitor</strong> (perfmon) - Contadores</li>
-                                    <li><strong>Process Explorer</strong> - Threads y Locks</li>
-                                    <li><strong>Disk Management</strong> - Cuotas y NTFS</li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <h5 style="color: #1e3a5f; margin: 15px 0 10px 0;">ENTREGABLE REQUERIDO</h5>
-                    <table class="deliverables-table">
-                        <thead>
-                            <tr>
-                                <th>Componente</th>
-                                <th>Descripción</th>
-                                <th>Formato</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><strong>PDF del Laboratorio</strong></td>
-                                <td>Documento con los 5 escenarios resueltos, capturas de pantalla, análisis técnico y conclusiones</td>
-                                <td>PDF (máx. 15 páginas)</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="content-box">
-                    <h4>Contenido a Evaluar</h4>
-                    <div class="two-columns">
-                        <ul class="content-list">
-                            <li><strong>Gestión de Memoria:</strong>
-                                <ul>
-                                    <li>Paginación y segmentación</li>
-                                    <li>Memoria virtual</li>
-                                    <li>Tablas de páginas</li>
-                                    <li>TLB (Translation Lookaside Buffer)</li>
-                                </ul>
-                            </li>
-                            <li><strong>Procesos E/S:</strong>
-                                <ul>
-                                    <li>Dispositivos de entrada/salida</li>
-                                    <li>DMA (Direct Memory Access)</li>
-                                    <li>Buffers y caché</li>
-                                </ul>
-                            </li>
-                        </ul>
-                        <ul class="content-list">
-                            <li><strong>Sistema de Archivos (Básico):</strong>
-                                <ul>
-                                    <li>Estructura de archivos y directorios</li>
-                                    <li>Inodos y permisos</li>
-                                    <li>Comparativa EXT4 vs NTFS</li>
-                                    <li style="color: #6b7280; font-style: italic;">(Journaling, RAID, fstab → se evalúan en E5)</li>
-                                </ul>
-                            </li>
-                            <li><strong>Sincronización:</strong>
-                                <ul>
-                                    <li>Semáforos</li>
-                                    <li>Mutex</li>
-                                    <li>Sección crítica</li>
-                                    <li>Deadlock</li>
-                                </ul>
-                            </li>
-                            <li><strong>Comunicación:</strong>
-                                <ul>
-                                    <li>Pipes</li>
-                                    <li>Señales</li>
-                                    <li>Memoria compartida</li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="quick-links">
-                    <strong>Clases relacionadas:</strong>
-                    <a href="clase-04.html" class="quick-link">C04 - Estructura SO</a>
-                    <a href="clase-05.html" class="quick-link">C05 - Procesos Linux</a>
-                    <a href="clase-06.html" class="quick-link">C06 - Procesos Windows</a>
-                    <a href="clase-07.html" class="quick-link">C07 - Hilos</a>
-                    <a href="clase-08.html" class="quick-link">C08 - Memoria</a>
-                    <a href="clase-09.html" class="quick-link">C09 - Paginación</a>
-                    <a href="clase-10.html" class="quick-link">C10 - Memoria Virtual</a>
-                    <a href="rubricas.html" class="quick-link">Ver Rúbrica Completa</a>
-                </div>
-            </div>
-        </section>
-
-        <!-- FASE 4 - Seguridad y Hardening -->
-        <section class="section" id="e4">
-            <div class="eval-card">
-                <div class="eval-header">
-                    <div class="eval-title">
-                        <h3>FASE 4 - Seguridad y Hardening</h3>
-                        <div class="ra">Resultado de Aprendizaje: Evalúa la seguridad de los sistemas operativos</div>
-                    </div>
-                    <div class="eval-meta">
-                        <div class="eval-meta-item">
-                            <div class="label">Porcentaje</div>
-                            <div class="value percentage">15%</div>
-                        </div>
-                        <div class="eval-meta-item">
-                            <div class="label">Tipo</div>
-                            <div class="value">Proyecto</div>
-                        </div>
-                        <div class="eval-meta-item">
-                            <div class="label">Fecha</div>
-                            <div class="value">22 Abr</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="info-box">
-                    <h4>Distribución de la Evaluación</h4>
-                    <div class="distribution-bar">
-                        <div class="distribution-teoria" style="width: 40%;">40% Teoría</div>
-                        <div class="distribution-practica" style="width: 60%;">60% Práctica</div>
-                    </div>
-                </div>
-
-                <div class="success-box">
-                    <h4>Enfoque en Seguridad</h4>
-                    <p>Esta evaluación se enfoca específicamente en <strong>seguridad de sistemas operativos</strong>, aplicando conceptos vistos en las clases 15 y 16. Se evaluarán mecanismos de protección, control de acceso y hardening.</p>
-                </div>
-
-                <div class="two-columns">
-                    <div class="content-box">
-                        <h4>Contenido Teórico (40%)</h4>
-                        <ul class="content-list">
-                            <li><strong>Mecanismos de protección:</strong>
-                                <ul>
-                                    <li>SELinux (Security-Enhanced Linux)</li>
-                                    <li>AppArmor</li>
-                                    <li>UAC (User Account Control) en Windows</li>
-                                    <li>Firewalls básicos (iptables, Windows Firewall)</li>
-                                </ul>
-                            </li>
-                            <li><strong>Control de acceso:</strong>
-                                <ul>
-                                    <li>DAC (Discretionary Access Control)</li>
-                                    <li>MAC (Mandatory Access Control)</li>
-                                    <li>RBAC (Role-Based Access Control)</li>
-                                </ul>
-                            </li>
-                            <li><strong>Amenazas y vulnerabilidades:</strong>
-                                <ul>
-                                    <li>Buffer overflow</li>
-                                    <li>Rootkits y malware</li>
-                                    <li>Escalación de privilegios</li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="content-box">
-                        <h4>Contenido Práctico (60%)</h4>
-                        <ul class="content-list">
-                            <li><strong>Permisos avanzados Linux:</strong>
-                                <ul>
-                                    <li><code>chmod</code>, <code>chown</code> - Permisos básicos</li>
-                                    <li>SUID, SGID, Sticky bit</li>
-                                    <li>ACLs (Access Control Lists) con <code>setfacl/getfacl</code></li>
-                                    <li>Atributos extendidos (<code>chattr</code>, <code>lsattr</code>)</li>
-                                </ul>
-                            </li>
-                            <li><strong>Gestión de usuarios y grupos:</strong>
-                                <ul>
-                                    <li><code>useradd</code>, <code>usermod</code>, <code>userdel</code></li>
-                                    <li><code>groupadd</code>, <code>groupmod</code></li>
-                                    <li>Archivos <code>/etc/passwd</code>, <code>/etc/shadow</code>, <code>/etc/group</code></li>
-                                </ul>
-                            </li>
-                            <li><strong>Hardening y auditoría:</strong>
-                                <ul>
-                                    <li>Desactivar servicios innecesarios</li>
-                                    <li>Configuración de SSH seguro</li>
-                                    <li>Auditoría con <code>auditd</code></li>
-                                    <li>Scripts de verificación de seguridad</li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="content-box">
-                    <h4>🛠️ INSTRUCCIONES DETALLADAS - QUÉ DEBE HACER EL ESTUDIANTE</h4>
-                    <p style="background: #fef3c7; padding: 10px; border-radius: 6px; margin-bottom: 15px;"><strong>Objetivo:</strong> Asegurar el sistema implementando hardening, control de acceso y políticas de seguridad</p>
-                    
-                    <h5 style="color: #1e3a5f; margin: 15px 0 10px 0;">PASO 1: Firewall y Reglas de Red</h5>
-                    <p><strong>En Linux (UFW - Uncomplicated Firewall):</strong></p>
-                    <ol class="content-list">
-                        <li>Verificar estado: <code>sudo ufw status</code></li>
-                        <li>Restablecer reglas: <code>sudo ufw reset</code></li>
-                        <li>Política por defecto DENY: <code>sudo ufw default deny incoming</code></li>
-                        <li>Permitir SSH: <code>sudo ufw allow 22/tcp</code></li>
-                        <li>Permitir HTTP: <code>sudo ufw allow 80/tcp</code></li>
-                        <li>Permitir HTTPS: <code>sudo ufw allow 443/tcp</code></li>
-                        <li>Activar firewall: <code>sudo ufw enable</code></li>
-                        <li>Verificar reglas: <code>sudo ufw status verbose</code></li>
-                    </ol>
-                    <p><strong>En Windows (Firewall):</strong></p>
-                    <ol class="content-list">
-                        <li>Abrir PowerShell como Administrador</li>
-                        <li>Ver perfil activo: <code>Get-NetFirewallProfile</code></li>
-                        <li>Bloquear todo entrante: <code>Set-NetFirewallProfile -Profile Domain,Public,Private -DefaultInboundAction Block</code></li>
-                        <li>Permitir RDP si es necesario: <code>New-NetFirewallRule -DisplayName "Allow RDP" -Direction Inbound -Protocol TCP -LocalPort 3389 -Action Allow</code></li>
-                        <li>Verificar reglas: <code>Get-NetFirewallRule | Where-Object {$_.Enabled -eq 'True'}</code></li>
-                    </ol>
-
-                    <h5 style="color: #1e3a5f; margin: 15px 0 10px 0;">PASO 2: Control de Acceso (ACLs) en Linux</h5>
-                    <ol class="content-list">
-                        <li>Crear estructura de directorios:
-                            <pre style="background: #f5f5f5; padding: 10px; border-radius: 4px; font-size: 0.9em;">
-sudo mkdir -p /datos/compartido
-sudo groupadd desarrolladores
-sudo useradd -G desarrolladores dev1
-sudo useradd -G desarrolladores dev2</pre>
-                        </li>
-                        <li>Configurar ACLs:
-                            <ul>
-                                <li>Dar permisos al grupo: <code>sudo setfacl -m g:desarrolladores:rx /datos/compartido</code></li>
-                                <li>Usuario específico solo lectura: <code>sudo setfacl -m u:dev1:r /datos/compartido</code></li>
-                                <li>Ver ACLs: <code>getfacl /datos/compartido</code></li>
-                            </ul>
-                        </li>
-                        <li>Probar accesos:
-                            <ul>
-                                <li>Iniciar sesión como dev1, intentar crear archivo (debe fallar)</li>
-                                <li>Iniciar sesión como dev2, intentar crear archivo (debe funcionar)</li>
-                            </ul>
-                        </li>
-                        <li>Capturar pantalla de <code>getfacl</code> mostrando las ACLs configuradas</li>
-                    </ol>
-
-                    <h5 style="color: #1e3a5f; margin: 15px 0 10px 0;">PASO 3: Políticas de Seguridad Windows</h5>
-                    <ol class="content-list">
-                        <li>Abrir editor de políticas: <code>secpol.msc</code> (o <code>gpedit.msc</code> en versiones Pro)</li>
-                        <li>Navegar a: Configuración de seguridad → Directivas de cuenta → Directiva de contraseñas</li>
-                        <li>Configurar:
-                            <ul>
-                                <li>Edad máxima de contraseña: 30 días</li>
-                                <li>Longitud mínima: 8 caracteres</li>
-                                <li>Debe cumplir requisitos de complejidad: Habilitado</li>
-                                <li>Historial de contraseñas: Recordar las últimas 5</li>
-                            </ul>
-                        </li>
-                        <li>Capturar pantalla de cada configuración</li>
-                        <li>Verificar con PowerShell: <code>net accounts</code></li>
-                    </ol>
-
-                    <h5 style="color: #1e3a5f; margin: 15px 0 10px 0;">PASO 4: Matriz de Riesgos</h5>
-                    <p>Crear tabla con 8 vulnerabilidades identificadas:</p>
-                    <table style="width: 100%; margin: 10px 0; border-collapse: collapse; font-size: 0.9em;">
-                        <tr style="background: #f0f0f0;">
-                            <th style="border: 1px solid #ddd; padding: 8px;">#</th>
-                            <th style="border: 1px solid #ddd; padding: 8px;">Vulnerabilidad</th>
-                            <th style="border: 1px solid #ddd; padding: 8px;">Impacto</th>
-                            <th style="border: 1px solid #ddd; padding: 8px;">Mitigación Técnica</th>
-                        </tr>
-                        <tr>
-                            <td style="border: 1px solid #ddd; padding: 8px;">1</td>
-                            <td style="border: 1px solid #ddd; padding: 8px;">Acceso root por SSH habilitado</td>
-                            <td style="border: 1px solid #ddd; padding: 8px;">Alto</td>
-                            <td style="border: 1px solid #ddd; padding: 8px;">Editar /etc/ssh/sshd_config → PermitRootLogin no</td>
-                        </tr>
-                        <tr>
-                            <td style="border: 1px solid #ddd; padding: 8px;">2</td>
-                            <td style="border: 1px solid #ddd; padding: 8px;">Sin snapshots de VM</td>
-                            <td style="border: 1px solid #ddd; padding: 8px;">Medio</td>
-                            <td style="border: 1px solid #ddd; padding: 8px;">Crear snapshot antes de cada evaluación</td>
-                        </tr>
-                    </table>
-                    <p><em>Agregar 6 vulnerabilidades más: password débil, servicios innecesarios corriendo, sin actualizaciones, puertos abiertos no necesarios, etc.</em></p>
-
-                    <h5 style="color: #1e3a5f; margin: 15px 0 10px 0;">PASO 5: Script de Auditoría (Bonus)</h5>
-                    <p>Crear script que verifique automáticamente:</p>
-                    <ul class="content-list">
-                        <li>Estado del firewall (Linux: ufw status, Windows: Get-NetFirewallProfile)</li>
-                        <li>Servicios críticos innecesarios corriendo</li>
-                        <li>Intentos de login fallidos: <code>grep "Failed password" /var/log/auth.log | wc -l</code></li>
-                        <li>Generar reporte en <code>/tmp/auditoria_seguridad.txt</code></li>
-                    </ul>
-                </div>
-
-                <div class="content-box">
-                    <h4>Entregables Requeridos</h4>
-                    <table class="deliverables-table">
-                        <thead>
-                            <tr>
-                                <th>Entregable</th>
-                                <th>Contenido Mínimo Obligatorio</th>
-                                <th>Formato</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><strong>Bitácora de Hardening</strong></td>
-                                <td>Listado de reglas de Firewall aplicadas + Evidencia de ACLs configuradas + Matriz de Riesgos (RA4).</td>
-                                <td>PDF (máx. 5 páginas)</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Scripts de Seguridad</strong></td>
-                                <td>Script que automatice la creación de usuarios y asigne los permisos base definidos.</td>
-                                <td>Archivos .sh / .ps1</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Pitch de Seguridad</strong></td>
-                                <td>Presentación ejecutiva explicando por qué su sistema es resistente a ataques básicos de red.</td>
-                                <td>PPTX (máx. 8 diapositivas)</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="quick-links">
-                    <strong>Clases relacionadas:</strong>
-                    <a href="clase-15.html" class="quick-link">C15 - Seguridad Linux</a>
-                    <a href="clase-16.html" class="quick-link">C16 - Seguridad Windows</a>
-                    <a href="rubricas.html" class="quick-link">Ver Rúbrica Completa</a>
-                </div>
-            </div>
-        </section>
-
-        <!-- FASE 5 - Integración de Servicios -->
-        <section class="section" id="e5">
-            <div class="eval-card">
-                <div class="eval-header">
-                    <div class="eval-title">
-                        <h3>FASE 5 - Integración de Servicios (Servidores Web)</h3>
-                        <div class="ra">Resultado de Aprendizaje: comprende la funcionalidad de conceptos fundamentales de la materia tales como: sistema de archivos, procesos e hilos, memoria, comunicación entre procesos</div>
-                    </div>
-                    <div class="eval-meta">
-                        <div class="eval-meta-item">
-                            <div class="label">Porcentaje</div>
-                            <div class="value percentage">15%</div>
-                        </div>
-                        <div class="eval-meta-item">
-                            <div class="label">Tipo</div>
-                            <div class="value">Proyecto</div>
-                        </div>
-                        <div class="eval-meta-item">
-                            <div class="label">Fecha</div>
-                            <div class="value">06 May</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="info-box">
-                    <h4>Distribución de la Evaluación</h4>
-                    <div class="distribution-bar">
-                        <div class="distribution-teoria" style="width: 40%;">40% Teoría</div>
-                        <div class="distribution-practica" style="width: 60%;">60% Práctica</div>
-                    </div>
-                </div>
-
-                <div class="success-box">
-                    <h4>Integración de Conocimientos</h4>
-                    <p>Esta evaluación es <strong>integradora</strong> y requiere aplicar conceptos de <strong>todo el curso</strong>. Se evalúa que los servicios web (Apache e IIS) funcionen bajo las políticas de seguridad y optimización configuradas en las Fases 3 y 4.</p>
-                    <ul>
-                        <li><strong>Coherencia:</strong> ¿Los permisos configurados en E4 permiten que el servidor web funcione correctamente?</li>
-                        <li><strong>Optimización:</strong> ¿El sistema de monitoreo de E2 reporta el impacto del servidor web en la memoria (E3)?</li>
-                    </ul>
-                </div>
-
-                <div class="two-columns">
-                    <div class="content-box">
-                        <h4>Contenido Teórico (40%)</h4>
-                        <ul class="content-list">
-                            <li><strong>Sistema de archivos:</strong>
-                                <ul>
-                                    <li>Estructura y organización (EXT4, NTFS)</li>
-                                    <li>Permisos avanzados y ACLs</li>
-                                    <li>Estrategias de backup y recuperación</li>
-                                </ul>
-                            </li>
-                            <li><strong>Procesos e hilos:</strong>
-                                <ul>
-                                    <li>Gestión avanzada de procesos</li>
-                                    <li>Monitoreo en tiempo real</li>
-                                    <li>Optimización y tuning</li>
-                                </ul>
-                            </li>
-                            <li><strong>Memoria:</strong>
-                                <ul>
-                                    <li>Administración de memoria</li>
-                                    <li>Monitoreo de uso</li>
-                                    <li>Tuning de rendimiento</li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="content-box">
-                        <h4>Contenido Práctico (60%)</h4>
-                        <ul class="content-list">
-                            <li><strong>Scripts Linux requeridos:</strong>
-                                <ul>
-                                    <li><code>monitor_sistema.sh</code> - Monitoreo integral (CPU, memoria, disco, servicios, archivos)</li>
-                                    <li><code>ipc_demo.sh</code> - Comunicación entre procesos</li>
-                                    <li><code>gestion_archivos.sh</code> - Backup y permisos</li>
-                                </ul>
-                            </li>
-                            <li><strong>Scripts Windows requeridos:</strong>
-                                <ul>
-                                    <li><code>gestion_servidores.ps1</code> - Monitoreo de servicios</li>
-                                    <li><code>configurar_tareas.ps1</code> - Tareas programadas</li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="content-box">
-                    <h4>🛠️ INSTRUCCIONES DETALLADAS - QUÉ DEBE HACER EL ESTUDIANTE</h4>
-                    <p style="background: #fef3c7; padding: 10px; border-radius: 6px; margin-bottom: 15px;"><strong>Objetivo:</strong> Poner en producción un sistema web completo con Apache, IIS, almacenamiento persistente y monitoreo integrado</p>
-                    
-                    <h5 style="color: #1e3a5f; margin: 15px 0 10px 0;">PASO 1: Configurar Apache con Virtual Host y HTTPS</h5>
-                    <ol class="content-list">
-                        <li>Instalar Apache:
-                            <pre style="background: #f5f5f5; padding: 10px; border-radius: 4px; font-size: 0.9em;">sudo apt update
-sudo apt install apache2 -y
-sudo systemctl enable apache2
-sudo systemctl start apache2</pre>
-                        </li>
-                        <li>Crear Virtual Host:
-                            <pre style="background: #f5f5f5; padding: 10px; border-radius: 4px; font-size: 0.9em;">sudo mkdir -p /var/www/ucs/html
-sudo chown -R $USER:$USER /var/www/ucs/html
-sudo chmod -R 755 /var/www/ucs</pre>
-                        </li>
-                        <li>Crear archivo de configuración:
-                            <pre style="background: #f5f5f5; padding: 10px; border-radius: 4px; font-size: 0.9em;">sudo nano /etc/apache2/sites-available/ucs.conf
-
-# Contenido:
-&lt;VirtualHost *:80&gt;
-    ServerAdmin webmaster@localhost
-    ServerName ucs.local
-    DocumentRoot /var/www/ucs/html
-    ErrorLog ${APACHE_LOG_DIR}/error.log
-    CustomLog ${APACHE_LOG_DIR}/access.log combined
-&lt;/VirtualHost&gt;</pre>
-                        </li>
-                        <li>Activar sitio y reiniciar:
-                            <pre style="background: #f5f5f5; padding: 10px; border-radius: 4px; font-size: 0.9em;">sudo a2ensite ucs.conf
-sudo a2dissite 000-default.conf
-sudo systemctl restart apache2</pre>
-                        </li>
-                        <li>Crear página index.html con nombres de integrantes</li>
-                        <li>Configurar HTTPS (certificado auto-firmado):
-                            <pre style="background: #f5f5f5; padding: 10px; border-radius: 4px; font-size: 0.9em;">sudo a2enmod ssl
-sudo mkdir /etc/apache2/ssl
-sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
-  -keyout /etc/apache2/ssl/apache.key \
-  -out /etc/apache2/ssl/apache.crt</pre>
-                        </li>
-                    </ol>
-
-                    <h5 style="color: #1e3a5f; margin: 15px 0 10px 0;">PASO 2: Configurar IIS en Windows</h5>
-                    <ol class="content-list">
-                        <li>Instalar rol IIS (como administrador):
-                            <pre style="background: #f5f5f5; padding: 10px; border-radius: 4px; font-size: 0.9em;">Install-WindowsFeature -name Web-Server -IncludeManagementTools</pre>
-                        </li>
-                        <li>Crear sitio web en puerto 8080:
-                            <ul>
-                                <li>Abrir IIS Manager</li>
-                                <li>Clic derecho en Sites → Add Website</li>
-                                <li>Site name: UCS_Web</li>
-                                <li>Physical path: C:\inetpub\wwwroot\ucs</li>
-                                <li>Port: 8080</li>
-                            </ul>
-                        </li>
-                        <li>Crear Application Pool dedicado:
-                            <ul>
-                                <li>Application Pools → Add Application Pool</li>
-                                <li>Name: UCS_Pool</li>
-                                <li>.NET CLR version: No Managed Code</li>
-                                <li>Pipeline: Integrated</li>
-                            </ul>
-                        </li>
-                        <li>Crear index.html con mismo contenido que en Linux</li>
-                        <li>Verificar acceso: <code>http://localhost:8080</code></li>
-                    </ol>
-
-                    <h5 style="color: #1e3a5f; margin: 15px 0 10px 0;">PASO 3: Almacenamiento Profesional Híbrido</h5>
-                    <ol class="content-list">
-                        <li><strong>En Linux (Persistencia):</strong> Agregue un disco de 5GB, formatéelo y asegure el montaje automático editando <code>/etc/fstab</code> usando el <strong>UUID</strong> del dispositivo.</li>
-                        <li><strong>En Windows (Redundancia):</strong> Use <strong>Espacios de Almacenamiento</strong> para crear una unidad lógica de 5GB con resistencia tipo "Reflejo" (Mirror) usando dos discos virtuales pequeños.</li>
-                        <li><strong>Evidencia:</strong> Captura de <code>df -h</code> en Linux tras reinicio y captura del "Grupo de Almacenamiento" en Windows.</li>
-                    </ol>
-
-                    <h5 style="color: #1e3a5f; margin: 15px 0 10px 0;">PASO 4: Dashboard de Integración</h5>
-                    <p>Crear script <code>dashboard_salud.sh</code> que verifique:</p>
-                    <ol class="content-list">
-                        <li>Disponibilidad de servicios:
-                            <pre style="background: #f5f5f5; padding: 10px; border-radius: 4px; font-size: 0.9em;"># Apache corriendo?
-systemctl is-active apache2
-
-# Puerto 80 accesible?
-nc -zv localhost 80
-
-# Puerto 443 accesible?
-nc -zv localhost 443</pre>
-                        </li>
-                        <li>Espacio en disco:
-                            <pre style="background: #f5f5f5; padding: 10px; border-radius: 4px; font-size: 0.9em;">df -h | grep -E '(/dev/sda|/dev/sdb)'</pre>
-                        </li>
-                        <li>Carga de CPU:
-                            <pre style="background: #f5f5f5; padding: 10px; border-radius: 4px; font-size: 0.9em;">top -bn1 | grep "Cpu(s)" | awk '{print $2}' | awk -F% '{print $1}'</pre>
-                        </li>
-                        <li>Generar reporte consolidado en <code>/tmp/reporte_salud.txt</code></li>
-                    </ol>
-
-                    <h5 style="color: #1e3a5f; margin: 15px 0 10px 0;">PASO 5: Video de Funcionamiento</h5>
-                    <p>Grabar video de máximo 5 minutos mostrando:</p>
-                    <ol class="content-list">
-                        <li>Navegador accediendo a sitio Apache por HTTP (puerto 80)</li>
-                        <li>Navegador accediendo a sitio Apache por HTTPS (puerto 443)</li>
-                        <li>Navegador accediendo a sitio IIS en Windows (puerto 8080)</li>
-                        <li>Ejecución del dashboard de salud</li>
-                        <li>Reinicio de VM Linux y verificación de montaje automático de /var/www/html/datos</li>
-                    </ol>
-                </div>
-
-                <div class="content-box">
-                    <h4>Entregables Requeridos</h4>
-                    <table class="deliverables-table">
-                        <thead>
-                            <tr>
-                                <th>Entregable</th>
-                                <th>Contenido Mínimo Obligatorio</th>
-                                <th>Formato</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><strong>Reporte de Integración</strong></td>
-                                <td>Evidencia de sitios web accesibles vía HTTPS + Configuración de <code>fstab</code> + Capturas del Dashboard final.</td>
-                                <td>PDF (máx. 5 páginas)</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Video de Funcionamiento</strong></td>
-                                <td>Demostración de los servidores web respondiendo y reinicio de la VM para probar el montaje automático.</td>
-                                <td>MP4 / Link</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Pitch Técnico Final</strong></td>
-                                <td>Presentación de la arquitectura completa funcionando antes de la sustentación formal.</td>
-                                <td>PPTX (máx. 8 diapositivas)</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="quick-links">
-                    <strong>Relacionados:</strong>
-                    <a href="clase-12.html" class="quick-link">C12 - Sist. Archivos</a>
-                    <a href="clase-13.html" class="quick-link">C13 - Impl. FS</a>
-                    <a href="clase-14.html" class="quick-link">C14 - Servidor IIS</a>
-                    <a href="clase-17.html" class="quick-link">C17 - Servidor Apache</a>
-                    <a href="rubricas.html" class="quick-link">Ver Rúbrica</a>
-                </div>
-            </div>
-        </section>
-
-        <!-- FASE 6 - Entrega Proyecto Final -->
-        <section class="section" id="e6">
-            <div class="eval-card">
-                <div class="eval-header">
-                    <div class="eval-title">
-                        <h3>FASE 6 - Entrega Proyecto Final</h3>
-                        <div class="ra">Resultado de Aprendizaje: Estudia las interfaces que ofrece el Sistema Operativo al usuario y a los programas de aplicación</div>
-                    </div>
-                    <div class="eval-meta">
-                        <div class="eval-meta-item">
-                            <div class="label">Porcentaje</div>
-                            <div class="value percentage">20%</div>
-                        </div>
-                        <div class="eval-meta-item">
-                            <div class="label">Tipo</div>
-                            <div class="value">Proyecto</div>
-                        </div>
-                        <div class="eval-meta-item">
-                            <div class="label">Fecha</div>
-                            <div class="value">27 May</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="success-box">
-                    <h4>🎯 Sustentación Final del Proyecto</h4>
-                    <p>Esta evaluación consiste en la <strong>presentación y demostración en vivo</strong> del proyecto completo desarrollado durante el curso. Se evaluará el funcionamiento integral del sistema implementado.</p>
-                </div>
-
-                <div class="warning-box">
-                    <h4>📋 Información Importante</h4>
-                    <ul class="content-list">
-                        <li><strong>Modalidad:</strong> Grupal (máx. 2 estudiantes)</li>
-                        <li><strong>Duración:</strong> 20-30 minutos de demostración</li>
-                        <li><strong>Formato:</strong> Sustentación con demostración en vivo del sistema funcionando</li>
-                        <li><strong>Cobertura:</strong> Todo el proyecto desarrollado en las fases anteriores</li>
-                        <li><strong>Material:</strong> Máquinas virtuales configuradas y funcionando</li>
-                    </ul>
-                </div>
-
-                <div class="content-box">
-                    <h4>Estructura de la Sustentación</h4>
-                    <table class="deliverables-table">
-                        <thead>
-                            <tr>
-                                <th>Fase</th>
-                                <th>Duración</th>
-                                <th>Actividad</th>
-                                <th>Puntos</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><strong>Presentación</strong></td>
-                                <td>5 min</td>
-                                <td>Introducción al proyecto y arquitectura del sistema</td>
-                                <td>20 pts</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Demo Servidores</strong></td>
-                                <td>10 min</td>
-                                <td>Demostración en vivo de Apache/IIS funcionando</td>
-                                <td>30 pts</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Demo Monitoreo</strong></td>
-                                <td>5 min</td>
-                                <td>Demostración de scripts de monitoreo y alertas</td>
-                                <td>25 pts</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Defensa</strong></td>
-                                <td>10 min</td>
-                                <td>Preguntas y respuestas sobre implementación</td>
-                                <td>25 pts</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="content-box">
-                    <h4>🛠️ INSTRUCCIONES DETALLADAS - QUÉ DEBE HACER EL ESTUDIANTE</h4>
-                    <p style="background: #fef3c7; padding: 10px; border-radius: 6px; margin-bottom: 15px;"><strong>Objetivo:</strong> Demostrar maestría técnica defendiendo el sistema completo en una sustentación en vivo</p>
-                    
-                    <h5 style="color: #1e3a5f; margin: 15px 0 10px 0;">ESTRUCTURA DE LA SUSTENTACIÓN (20-25 minutos)</h5>
-                    <table class="deliverables-table">
-                        <thead>
-                            <tr>
-                                <th>Fase</th>
-                                <th>Tiempo</th>
-                                <th>Qué Debe Hacer</th>
-                                <th>Puntos</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><strong>1. Presentación</strong></td>
-                                <td>3-5 min</td>
-                                <td>Explicar arquitectura del sistema, tecnologías usadas y decisiones técnicas clave</td>
-                                <td>20 pts</td>
-                            </tr>
-                            <tr>
-                                <td><strong>2. Demo Servidores Web</strong></td>
-                                <td>8-10 min</td>
-                                <td>Mostrar Apache e IIS funcionando, acceder desde navegador, demostrar HTTPS</td>
-                                <td>30 pts</td>
-                            </tr>
-                            <tr>
-                                <td><strong>3. Demo Monitoreo</strong></td>
-                                <td>3-5 min</td>
-                                <td>Ejecutar scripts de monitoreo, mostrar bitácoras, dashboard de salud</td>
-                                <td>25 pts</td>
-                            </tr>
-                            <tr>
-                                <td><strong>4. Reto Técnico</strong></td>
-                                <td>5 min</td>
-                                <td>El docente pedirá un cambio en tiempo real (ej: agregar usuario, cambiar permiso)</td>
-                                <td>15 pts</td>
-                            </tr>
-                            <tr>
-                                <td><strong>5. Defensa</strong></td>
-                                <td>3-5 min</td>
-                                <td>Responder preguntas técnicas sobre implementación, seguridad, optimización</td>
-                                <td>10 pts</td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                    <h5 style="color: #1e3a5f; margin: 15px 0 10px 0;">PREPARACIÓN PREVIA (Checklist)</h5>
-                    <ol class="content-list">
-                        <li><strong>Portafolio Ejecutivo:</strong>
-                            <ul>
-                                <li>Compilar Fases 1-5 con correcciones aplicadas</li>
-                                <li>Índice ejecutivo al inicio</li>
-                                <li>Máximo 20 páginas (sin contar portada e índice)</li>
-                                <li>Formato: PDF con portada profesional</li>
-                            </ul>
-                        </li>
-                        <li><strong>Pitch Técnico (8 diapositivas máximo):</strong>
-                            <ul>
-                                <li>Slide 1: Portada (proyecto, integrantes, fecha)</li>
-                                <li>Slide 2: Arquitectura general (diagrama de red)</li>
-                                <li>Slide 3: Stack tecnológico (SO, servicios, herramientas)</li>
-                                <li>Slide 4: Demo Apache + IIS</li>
-                                <li>Slide 5: Demo Monitoreo y Automatización</li>
-                                <li>Slide 6: Seguridad implementada</li>
-                                <li>Slide 7: Lecciones aprendidas</li>
-                                <li>Slide 8: Conclusiones</li>
-                            </ul>
-                        </li>
-                        <li><strong>Manual de Operación (3 páginas):</strong>
-                            <ul>
-                                <li>Comandos esenciales para administrar el sistema</li>
-                                <li>Cómo reiniciar servicios</li>
-                                <li>Cómo monitorear el sistema</li>
-                                <li>Contactos de soporte (simulado)</li>
-                            </ul>
-                        </li>
-                        <li><strong>VMs preparadas:</strong>
-                            <ul>
-                                <li>Snapshot antes de la sustentación</li>
-                                <li>Todo funcionando (Apache, IIS, monitoreo)</li>
-                                <li>Credenciales de acceso anotadas</li>
-                                <li>IPs configuradas y accesibles</li>
-                            </ul>
-                        </li>
-                    </ol>
-
-                    <h5 style="color: #1e3a5f; margin: 15px 0 10px 0;">DEMO EN VIVO - QUÉ MOSTRAR</h5>
-                    <p><strong>Secuencia recomendada:</strong></p>
-                    <ol class="content-list">
-                        <li><strong>Desde su laptop (Host):</strong>
-                            <ul>
-                                <li>Abrir navegador</li>
-                                <li>Navegar a <code>http://[IP_Linux]</code> → mostrar Apache</li>
-                                <li>Navegar a <code>https://[IP_Linux]</code> → mostrar HTTPS funcionando</li>
-                                <li>Navegar a <code>http://[IP_Windows]:8080</code> → mostrar IIS</li>
-                            </ul>
-                        </li>
-                        <li><strong>En Terminal Linux:</strong>
-                            <ul>
-                                <li>Ejecutar: <code>./monitor_procesos.sh</code> (Fase 2)</li>
-                                <li>Mostrar contenido de <code>bitacora_procesos.txt</code></li>
-                                <li>Ejecutar: <code>./dashboard_salud.sh</code> (Fase 5)</li>
-                                <li>Verificar firewall: <code>sudo ufw status</code> (Fase 4)</li>
-                            </ul>
-                        </li>
-                        <li><strong>En PowerShell Windows:</strong>
-                            <ul>
-                                <li>Ejecutar: <code>.\gestionar_servicios.ps1</code> (Fase 2)</li>
-                                <li>Verificar servicios: <code>Get-Service | Where {$_.Status -eq 'Running'}</code></li>
-                            </ul>
-                        </li>
-                    </ol>
-
-                    <h5 style="color: #1e3a5f; margin: 15px 0 10px 0;">POSIBLES RETOS DEL DOCENTE</h5>
-                    <p>El docente puede pedirle que haga algo en tiempo real. Practique estos escenarios:</p>
-                    <ul class="content-list">
-                        <li>"Agregue un nuevo usuario al sistema y asígnele permisos específicos"</li>
-                        <li>"Bloquee el puerto 80 en el firewall y verifique que el sitio ya no responde, luego desbloquéelo"</li>
-                        <li>"Cambie la prioridad de un proceso a 'nice 10' y demuestre el cambio"</li>
-                        <li>"Muestre los últimos 10 intentos de login fallidos en el sistema"</li>
-                        <li>"Cree un nuevo virtual host en Apache para un subdominio"</li>
-                    </ul>
-
-                    <h5 style="color: #1e3a5f; margin: 15px 0 10px 0;">CONSEJOS PARA LA SUSTENTACIÓN</h5>
-                    <ul class="content-list">
-                        <li><strong>Preparación técnica:</strong> Practique todo el flujo al menos 3 veces antes del día de la sustentación</li>
-                        <li><strong>Preparación física:</strong> Tenga todo listo antes de entrar (laptops encendidas, VMs arrancadas)</li>
-                        <li><strong>Comunicación:</strong> Hable claro y técnico, demuestre confianza en lo que hizo</li>
-                        <li><strong>Manejo de errores:</strong> Si algo falla, mantenga la calma y explique cómo lo solucionaría</li>
-                        <li><strong>Documentación:</strong> Tenga copia impresa o digital del portafolio para referencia rápida</li>
-                    </ul>
-                </div>
-
-                <div class="quick-links">
-                    <strong>Todo el curso:</strong>
-                    <a href="index.html" class="quick-link">Ver Todas las Clases</a>
-                    <a href="rubricas.html" class="quick-link">Ver Rúbrica Completa</a>
-                </div>
-            </div>
-        </section>
-
-        <!-- Información Adicional -->
-        <section class="section">
-            <h2>Información General de Evaluaciones</h2>
-            
-            <div class="success-box">
-                <h4>📚 Metodología de Evaluación</h4>
-                <p>Este curso utiliza una metodología <strong>teórico-práctica 40/60</strong>, donde el 40% evalúa comprensión conceptual y el 60% evalúa aplicación práctica en entornos reales Linux y Windows.</p>
-                <p><strong>No hay exámenes de memorización.</strong> Los exámenes incluyen análisis de escenarios prácticos con comandos reales, resolución de problemas y desarrollo de soluciones.</p>
-            </div>
-
-            <div class="info-box">
-                <h4>📋 Políticas de Evaluación</h4>
-                <ul class="content-list">
-                    <li><strong>Entregas:</strong> Se realizarán por la plataforma institucional antes de la fecha y hora límite indicada.</li>
-                    <li><strong>Formato:</strong> Los informes deben seguir la estructura académica formal (portada, índice, desarrollo, conclusiones, referencias).</li>
-                    <li><strong>Originalidad:</strong> Todos los trabajos serán verificados con herramientas de detección de plagio.</li>
-                    <li><strong>Trabajo colaborativo:</strong> Solo cuando se indique explícitamente. Los exámenes son estrictamente individuales.</li>
-                    <li><strong>Recuperaciones:</strong> Según reglamento institucional. Revisar Acta de Concertación.</li>
-                </ul>
-            </div>
-
-            <div class="warning-box">
-                <h4>⚠️ Recomendaciones para el Éxito</h4>
-                <ul class="content-list">
-                    <li><strong>Practica semanalmente</strong> en tus máquinas virtuales (Linux y Windows).</li>
-                    <li><strong>Documenta todo</strong> lo que haces con capturas de pantalla.</li>
-                    <li><strong>Revisa las rúbricas</strong> antes de entregar para autoevaluarte.</li>
-                    <li><strong>Participa en clase</strong> y resuelve tus dudas inmediatamente.</li>
-                    <li><strong>Usa el glosario</strong> para familiarizarte con la terminología técnica.</li>
-                </ul>
-            </div>
-        </section>
+        <div class="nav-footer">
+            <a href="index.html" class="btn btn-white">🏠 Volver al Inicio</a>
+            <a href="cronograma.html" class="btn btn-white">📅 Ver Cronograma</a>
+            <a href="proyecto.html" class="btn btn-white" style="background: var(--accent); color: white;">📘 Guía del Proyecto</a>
+        </div>
 
         <footer>
-            <p><strong>IF0099 - Sistemas Operativos I</strong></p>
-            <p>UNAULA - Ingeniería Informática - 2026-I</p>
-            <p style="margin-top: 15px;">
-                <a href="index.html">Inicio</a> |
-                <a href="cronograma.html">Cronograma</a> |
-                <a href="rubricas.html">Rúbricas</a> |
-                <a href="glosario.html">Glosario</a>
-            </p>
-            <p style="margin-top: 10px; color: #999;">Evaluación Teórico-Práctica 40/60 | Sin exámenes de memorización</p>
+            <p>IF0099 - Sistemas Operativos I | UNAULA 2026-I</p>
         </footer>
     </div>
 </body>
 </html>
-

@@ -171,6 +171,73 @@ sudo tail -f /var/log/apache2/access.log</code></pre>
                 
                 <p><strong>Entregable:</strong> Una captura del comando <code>apache2ctl -S</code> mostrando su sitio HTTPS configurado para la Evaluación E5.</p>
             </div>
+
+            <!-- CASOS LABORALES -->
+            <div class="actividad" style="background: #fff7ed; border-left-color: #ea580c; margin-top: 2rem;">
+                <h3>Casos Reales: Apache en Producción</h3>
+                <div class="card" style="margin: 1rem 0; border-left: 4px solid #dc2626;">
+                    <h4 style="color: #991b1b;">Caso 1: Apache No Inicia tras Cambio de Config</h4>
+                    <p><strong>Escenario:</strong> Después de modificar el archivo de configuración, Apache no quiere iniciar. Muestra "Syntax error".</p>
+                    <p><strong>Diagnóstico:</strong></p>
+                    <pre><code class="language-bash"># Validar sintaxis sin iniciar
+sudo apache2ctl configtest
+
+# Ver error específico
+sudo apachectl -t
+
+# Si hay error en VirtualHost, revisar /var/log/apache2/error.log</code></pre>
+                </div>
+                <div class="card" style="margin: 1rem 0; border-left: 4px solid #059669;">
+                    <h4 style="color: #065f46;">Caso 2: Servidor Lento con Muchas Conexiones</h4>
+                    <p><strong>Escenario:</strong> El servidor responde lento cuando hay más de 100 usuarios simultáneos.</p>
+                    <p><strong>Diagnóstico:</strong></p>
+                    <pre><code class="language-bash"># Ver consumo de memoria por proceso Apache
+ps aux | grep apache2 | awk '{sum+=$6} END {print sum/1024 " MB"}'
+
+# Ver número de conexiones establecidas
+netstat -tun | grep :80 | wc -l
+
+# Cambiar MPM de Prefork a Event para mejor rendimiento
+sudo a2dismod mpm_prefork
+sudo a2enmod mpm_event</code></pre>
+                </div>
+                <div class="card" style="margin: 1rem 0; border-left: 4px solid #2563eb;">
+                    <h4 style="color: #1e40af;">Caso 3: Error 403 Forbidden en Archivo Existente</h4>
+                    <p><strong>Escenario:</strong> Los usuarios ven "403 Forbidden" al acceder a archivos que definitely existen.</p>
+                    <p><strong>Causa:</strong> Permisos incorrectos en la carpeta o archivo .htaccess restrictivo.</p>
+                    <p><strong>Solución:</strong></p>
+                    <pre><code class="language-bash"># Verificar permisos (debe ser al menos 755 en carpetas, 644 en archivos)
+ls -la /var/www/ucs/
+
+# Verificar que Apache tiene permiso de ejecución en toda la ruta
+namei -l /var/www/ucs/index.html
+
+# Si usa .htaccess, verificar que AllowOverride está configurado</code></pre>
+                </div>
+            </div>
+
+            <!-- EJERCICIO ADICIONAL -->
+            <div class="actividad" style="background: #f0fdf4; border-left-color: #16a34a; margin-top: 2rem;">
+                <h3>Ejercicio: Configuración de Balanceo de Carga</h3>
+                <p>Investiga y configura:</p>
+                <ol>
+                    <li>¿Qué es el módulo mod_proxy_balancer y para qué sirve?</li>
+                    <li>¿Cómo configuras Apache como proxy inverso para una aplicación Node.js?</li>
+                    <li>Configura un Virtual Host con redirección automática de HTTP a HTTPS</li>
+                </ol>
+            </div>
+
+            <!-- AUTO-EVALUACIÓN -->
+            <div class="actividad" style="background: #f1f5f9; border-left-color: #6366f1; margin-top: 2rem;">
+                <h3>Auto-Evaluación: Apache</h3>
+                <p>Responde antes de avanzar:</p>
+                <ol>
+                    <li><strong>¿Cuál es la diferencia entre los MPMs Prefork, Worker y Event?</strong></li>
+                    <li><strong>¿Para qué sirve el comando a2ensite?</strong></li>
+                    <li><strong>¿Por qué los permisos de la llave privada SSL deben ser estrictos (600)?</strong></li>
+                    <li><strong>¿Qué comando valida la sintaxis de configuración de Apache?</strong></li>
+                </ol>
+            </div>
         </section>
 
         <nav class="class-nav">

@@ -135,7 +135,7 @@ appcmd start site "UCS_Portal"</code></pre>
             <div class="actividad">
                 <h3>Laboratorio: El Portal Administrativo UCS</h3>
                 <p><strong>Objetivo:</strong> Montar la infraestructura web en el nodo Windows del proyecto.</p>
-                
+
                 <p><strong>Pasos a realizar:</strong></p>
                 <ol>
                     <li>Habilite IIS en su VM de Windows Server.</li>
@@ -149,11 +149,73 @@ appcmd start site "UCS_Portal"</code></pre>
 
                 <p><strong>Entregable:</strong> Una captura de pantalla de su navegador mostrando el mensaje "UCS Windows Node Active" accediendo por el puerto 8080.</p>
             </div>
+
+            <!-- CASOS LABORALES -->
+            <div class="actividad" style="background: #fff7ed; border-left-color: #ea580c; margin-top: 2rem;">
+                <h3>Casos Reales: IIS en Producción</h3>
+                <div class="card" style="margin: 1rem 0; border-left: 4px solid #dc2626;">
+                    <h4 style="color: #991b1b;">Caso 1: IIS No Inicia - Puerto en Uso</h4>
+                    <p><strong>Escenario:</strong> IIS no puede iniciar. Muestra "The process cannot access the file because it is being used by another process".</p>
+                    <p><strong>Diagnóstico:</strong></p>
+                    <pre><code class="language-powershell"># Ver qué proceso usa el puerto 80
+netstat -ano | findstr :80
+
+# Matar el proceso si es innecesario
+Stop-Process -Id [PID] -Force
+
+# Si esSkype/TeamViewer, configurarlos para no usar puertos web</code></pre>
+                </div>
+                <div class="card" style="margin: 1rem 0; border-left: 4px solid #059669;">
+                    <h4 style="color: #065f46;">Caso 2: Application Pool se Detiene Constantemente</h4>
+                    <p><strong>Escenario:</strong> El sitio web funciona 5 minutos y luego muestra error 503.</p>
+                    <p><strong>Causa:</strong> El pool de aplicaciones está colapsando por excepciones no manejadas.</p>
+                    <p><strong>Solución:</strong></p>
+                    <ol>
+                        <li>Revisa el Event Viewer → Windows Logs → Application</li>
+                        <li>Configura "Rapid-Fail Protection" para que no se Deshabilite automáticamente</li>
+                        <li>Revisa el código de la aplicación para excepciones</li>
+                    </ol>
+                </div>
+                <div class="card" style="margin: 1rem 0; border-left: 4px solid #2563eb;">
+                    <h4 style="color: #1e40af;">Caso 3: Error 403 - Forbidden</h4>
+                    <p><strong>Escenario:</strong> Los usuarios ven "403 Forbidden" al acceder al sitio.</p>
+                    <p><strong>Solución:</strong></p>
+                    <ol>
+                        <li>Verifica permisos en la carpeta: IIS_IUSRS necesita lectura</li>
+                        <li>Revisa los permisos de NTFS en la carpeta raíz</li>
+                        <li>Ejecuta: <code>icacls C:\inetpub\wwwroot\ucs /grant "IIS_IUSRS:(OI)(CI)RX"</code></li>
+                    </ol>
+                </div>
+            </div>
+
+            <!-- EJERCICIO ADICIONAL -->
+            <div class="actividad" style="background: #f0fdf4; border-left-color: #16a34a; margin-top: 2rem;">
+                <h3>Ejercicio: Monitoreo de IIS</h3>
+                <p>Investiga y configura:</p>
+                <ol>
+                    <li>¿Cómo habilitar logs de IIS y dónde se almacenan?</li>
+                    <li>¿Qué es el "Failed Request Tracing" y cómo te ayuda a depurar errores?</li>
+                    <li>Configura un health check para que IIS responda con código 200 OK</li>
+                </ol>
+            </div>
+
+            <!-- AUTO-EVALUACIÓN -->
+            <div class="actividad" style="background: #f1f5f9; border-left-color: #6366f1; margin-top: 2rem;">
+                <h3>Auto-Evaluación: IIS</h3>
+                <p>Responde antes de avanzar:</p>
+                <ol>
+                    <li><strong>¿Qué es HTTP.SYS y cuál es su función en IIS?</strong></li>
+                    <li><strong>¿Para qué sirve un Application Pool?</strong></li>
+                    <li><strong>¿Qué diferencia hay entre el usuario "IUSR" e "IIS_IUSRS"?</strong></li>
+                    <li><strong>¿Qué comando reinicia IIS completamente?</strong></li>
+                </ol>
+            </div>
         </section>
 
-        <nav class="class-nav" style="display: flex; justify-content: space-between; gap: 1rem; margin: 2rem 0;">
-            <a href="clase-13.html" style="flex: 1; padding: 1.25rem 1.5rem; background: white; border: 2px solid var(--border); border-radius: 12px; text-decoration: none; color: var(--text-main); transition: all 0.3s;" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border)'">← Clase 13: Implementación de FS</a>
-            <a href="clase-15.html" style="flex: 1; padding: 1.25rem 1.5rem; background: white; border: 2px solid var(--border); border-radius: 12px; text-decoration: none; color: var(--text-main); transition: all 0.3s; text-align: right;" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border)'">Clase 15: Seguridad Linux →</a>
+        <nav class="class-nav">
+            <a href="index.html" class="class-nav-link" style="background: #e0e7ff;">🏠 Índice de Clases</a>
+            <a href="clase-13.html" class="class-nav-link">← Clase 13: Implementación de FS</a>
+            <a href="clase-15.html" class="class-nav-link" style="text-align: right;">Clase 15: Seguridad Linux →</a>
         </nav>
     </div>
 

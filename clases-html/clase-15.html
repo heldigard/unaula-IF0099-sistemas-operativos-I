@@ -119,8 +119,102 @@ setfacl -m u:maria:r-- archivo.txt</code></pre>
             </ul>
         </section>
 
+        <section id="mac">
+            <h2>5. Seguridad Avanzada: SELinux y AppArmor</h2>
+            <p>Además de los permisos tradicionales (UGO), Linux ofrece sistemas de seguridad Mandatory Access Control (MAC) que limitan lo que cada proceso PUEDE hacer, no solo lo que tiene permiso de hacer.</p>
+
+            <div class="comparison">
+                <div class="card">
+                    <h4>SELinux (Security-Enhanced Linux)</h4>
+                    <p>Desarrollado por la NSA. Es el más robusto y complejo. Usa políticas que definen qué procesos pueden acceder a qué archivos.</p>
+                    <pre><code class="language-bash"># Ver estado de SELinux
+getenforce
+
+# Cambiar modo (Enforcing/Permissive)
+sudo setenforce 1
+
+# Ver contexto de seguridad de un archivo
+ls -Z /var/www/html
+
+# Ver contexto de un proceso
+ps -Z | grep apache</code></pre>
+                    <p><strong>Casos de uso:</strong> Servidores gubernamentales, bancarios, infraestructura crítica.</p>
+                </div>
+                <div class="card">
+                    <h4>AppArmor</h4>
+                    <p>Más simple que SELinux. Usa perfiles basados en rutas (path-based). Ubuntu lo usa por defecto.</p>
+                    <pre><code class="language-bash"># Ver estado de AppArmor
+sudo apparmor_status
+
+# Ver perfiles cargados
+ls /etc/apparmor.d/
+
+# Perfil para Apache
+cat /etc/apparmor.d/usr.sbin.apache2
+
+# Modo aprendizaje (generar perfil)
+sudo aa-complain /usr/sbin/apache2</code></pre>
+                    <p><strong>Casos de uso:</strong> Servidores web, aplicaciones desktop, Ubuntu Server.</p>
+                </div>
+            </div>
+
+            <div class="callout warning">
+                <h4>¿Cuál elegir?</h4>
+                <ul>
+                    <li><strong>SELinux</strong>: Máxima seguridad, pero curva de aprendizaje alta. Ideal para RHEL/CentOS/Fedora.</li>
+                    <li><strong>AppArmor</strong>: Más fácil de configurar, suficiente para la mayoría. Ideal para Ubuntu/Debian.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="modelos-control">
+            <h2>6. Modelos de Control de Acceso</h2>
+            <p>Entender estos modelos es fundamental para diseñar políticas de seguridad efectivas.</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Modelo</th>
+                        <th>Descripción</th>
+                        <th>Ejemplo</th>
+                        <th>Uso Profesional</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>DAC</strong><br>(Discretionary)</td>
+                        <td>El propietario del archivo decide quién puede acceder.</td>
+                        <td>Permisos Linux (chmod), NTFS</td>
+                        <td>Servidores generales</td>
+                    </tr>
+                    <tr>
+                        <td><strong>MAC</strong><br>(Mandatory)</td>
+                        <td>El SO define políticas obligatorias. El usuario no puede cambiarlas.</td>
+                        <td>SELinux, AppArmor</td>
+                        <td>Servidores sensibles</td>
+                    </tr>
+                    <tr>
+                        <td><strong>RBAC</strong><br>(Role-Based)</td>
+                        <td>Los permisos se asignan a roles, no a usuarios directamente.</td>
+                        <td>Active Directory, sudo</td>
+                        <td>Empresas medianas/grandes</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="callout info">
+                <h4>Enfoque Profesional: Defense in Depth</h4>
+                <p>Los servidores seguros usan múltiples capas:</p>
+                <ol>
+                    <li><strong>Capa 1:</strong> Permisos DAC (dueño, grupo, otros)</li>
+                    <li><strong>Capa 2:</strong> RBAC (grupos de AD, sudo)</li>
+                    <li><strong>Capa 3:</strong> MAC (SELinux/AppArmor)</li>
+                </ol>
+            </div>
+        </section>
+
         <section id="comandos">
-            <h2>5. Comandos de Auditoría de Seguridad</h2>
+            <h2>7. Comandos de Auditoría de Seguridad</h2>
             
             <div class="comparison">
                 <div class="column-card">
@@ -149,11 +243,11 @@ export HISTTIMEFORMAT="%F %T " && history</code></pre>
         </section>
 
         <section id="practica">
-            <h2>6. Actividad Práctica: Blindaje del Nodo Linux (Insumo E4)</h2>
+            <h2>8. Actividad Práctica: Blindaje del Nodo Linux (Insumo E4)</h2>
             <div class="actividad">
                 <h3>Laboratorio: Asegurando UCS Linux</h3>
                 <p><strong>Objetivo:</strong> Implementar seguridad multicapa en el nodo Linux.</p>
-                
+
                 <p><strong>Tarea 1: ACLs Corporativas</strong></p>
                 <ol>
                     <li>Cree el directorio <code>/srv/ucs_web</code>.</li>
@@ -173,6 +267,60 @@ export HISTTIMEFORMAT="%F %T " && history</code></pre>
                 </ol>
 
                 <p><strong>Entregable:</strong> Una captura del comando <code>getfacl</code> sobre su carpeta de servicios y de <code>ufw status</code> para la Evaluación E4.</p>
+            </div>
+
+            <!-- CASOS LABORALES -->
+            <div class="actividad" style="background: #fff7ed; border-left-color: #ea580c; margin-top: 2rem;">
+                <h3>Casos Reales: Seguridad Linux en Producción</h3>
+                <div class="card" style="margin: 1rem 0; border-left: 4px solid #dc2626;">
+                    <h4 style="color: #991b1b;">Caso 1: Servidor Hackeado vía SSH</h4>
+                    <p><strong>Escenario:</strong> Encuentras un archivo sospechoso llamado <code>.hidden/backdoor.sh</code>. El servidor está enviando tráfico extraño a Internet.</p>
+                    <p><strong>Diagnóstico:</strong></p>
+                    <pre><code class="language-bash"># Ver últimas conexiones
+last | head -20
+
+# Ver procesos sospechosos
+ps auxf
+
+# Ver archivos modificados recientemente
+find / -mtime -1 -type f 2>/dev/null | head -20</code></pre>
+                </div>
+                <div class="card" style="margin: 1rem 0; border-left: 4px solid #059669;">
+                    <h4 style="color: #065f46;">Caso 2: Permisos 777 en Producción</h4>
+                    <p><strong>Escenario:</strong> Un desarrollador puso chmod 777 a todo el proyecto por "facilidad".</p>
+                    <p><strong>Problema:</strong> Cualquier usuario puede leer y modificar archivos sensibles.</p>
+                    <p><strong>Solución:</strong></p>
+                    <pre><code class="language-bash"># Encontrar archivos con permisos incorrectos
+find /var/www -type f -perm 777
+
+# Corregir permisos estándar
+chmod 755 /var/www
+chmod -R 644 /var/www/*.html
+chmod -R 755 /var/www/cgi-bin</code></pre>
+                </div>
+            </div>
+
+            <!-- EJERCICIO ADICIONAL -->
+            <div class="actividad" style="background: #f0fdf4; border-left-color: #16a34a; margin-top: 2rem;">
+                <h3>Ejercicio: Auditoría de Seguridad</h3>
+                <p>Investiga y configura:</p>
+                <ol>
+                    <li>¿Qué es el archivo /etc/shadow y por qué sus permisos deben ser estrictos?</li>
+                    <li>¿Cómo prevenís un ataque de fuerza bruta en SSH?</li>
+                    <li>Configura fail2ban para que bloquee IPs después de 3 intentos fallidos</li>
+                </ol>
+            </div>
+
+            <!-- AUTO-EVALUACIÓN -->
+            <div class="actividad" style="background: #f1f5f9; border-left-color: #6366f1; margin-top: 2rem;">
+                <h3>Auto-Evaluación: Seguridad Linux</h3>
+                <p>Responde antes de avanzar:</p>
+                <ol>
+                    <li><strong>¿Qué es el bit SUID y por qué es peligroso?</strong></li>
+                    <li><strong>¿Cuál es la diferencia entre permisos 755 y 750?</strong></li>
+                    <li><strong>¿Qué hace el comando "ufw limit"?</strong></li>
+                    <li><strong>¿Por qué nunca se debe usar chmod 777 en producción?</strong></li>
+                </ol>
             </div>
         </section>
 
