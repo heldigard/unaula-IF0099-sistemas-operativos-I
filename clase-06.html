@@ -241,6 +241,106 @@ Stop-Process -Id [PID] -Force</code></pre>
             </div>
         </section>
 
+        <section id="practica-laboral" style="background: #f0f9ff; border-left: 5px solid #0284c7; padding: 2rem; margin: 2rem 0; border-radius: 8px;">
+            <h2 style="color: #0369a1; margin-bottom: 1.5rem;">🛠️ Práctica Laboral</h2>
+            
+            <div class="card" style="margin: 1.5rem 0; border-left: 4px solid #7c3aed;">
+                <h3 style="color: #5b21b6; margin-top: 0;">Tabla Comparativa: PowerShell vs Bash</h3>
+                <table style="margin: 1rem 0;">
+                    <thead>
+                        <tr><th>Tarea</th><th>Bash (Linux)</th><th>PowerShell (Windows)</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Listar procesos</td><td><code>ps aux</code></td><td><code>Get-Process</code></td></tr>
+                        <tr><td>Buscar proceso</td><td><code>ps aux | grep nginx</code></td><td><code>Get-Process nginx</code></td></tr>
+                        <tr><td>Matar proceso</td><td><code>kill -9 PID</code></td><td><code>Stop-Process -Id PID -Force</code></td></tr>
+                        <tr><td>Ver uso CPU</td><td><code>top</code></td><td><code>Get-Process | Sort-Object CPU -Desc</code></td></tr>
+                        <tr><td>Ver servicios</td><td><code>systemctl list-units</code></td><td><code>Get-Service</code></td></tr>
+                        <tr><td>Iniciar servicio</td><td><code>systemctl start nginx</code></td><td><code>Start-Service nginx</code></td></tr>
+                        <tr><td>Ver logs</td><td><code>tail -f /var/log/syslog</code></td><td><code>Get-EventLog -LogName System -Newest 10</code></td></tr>
+                        <tr><td>Uso de memoria</td><td><code>free -h</code></td><td><code>Get-CimInstance Win32_PhysicalMemory</code></td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="card" style="margin: 1.5rem 0; border-left: 4px solid #059669;">
+                <h3 style="color: #065f46; margin-top: 0;">Ejercicio: Traduce estos Scripts de Bash a PowerShell</h3>
+                <p><strong>Script 1 - Monitor de Procesos:</strong></p>
+                <pre><code class="language-bash">#!/bin/bash
+# Bash: Muestra procesos que usan más de 500MB
+ps aux | awk '$6 > 512000 {print $2, $11}'</code></pre>
+                <p><em>Tradúcelo a PowerShell usando Get-Process y Where-Object</em></p>
+                
+                <p><strong>Script 2 - Limpieza de Logs:</strong></p>
+                <pre><code class="language-bash">#!/bin/bash
+# Bash: Elimina archivos .log mayores a 100MB
+find /var/log -name "*.log" -size +100M -exec rm {} \;</code></pre>
+                <p><em>Tradúcelo a PowerShell usando Get-ChildItem y Remove-Item</em></p>
+                
+                <p><strong>Script 3 - Backup de Servicio:</strong></p>
+                <pre><code class="language-bash">#!/bin/bash
+# Bash: Verifica si apache está corriendo, si no, lo inicia
+if ! pgrep apache2 > /dev/null; then
+    systemctl start apache2
+    echo "Apache iniciado: $(date)" >> /var/log/apache_monitor.log
+fi</code></pre>
+                <p><em>Tradúcelo a PowerShell usando Get-Service y Start-Service</em></p>
+            </div>
+
+            <div class="card" style="margin: 1.5rem 0; border-left: 4px solid #dc2626;">
+                <h3 style="color: #991b1b; margin-top: 0;">Caso Real: Gestión de Servicios Windows en Entornos Corporativos</h3>
+                <p><strong>Escenario:</strong> Eres administrador de un Data Center con 50 servidores Windows Server 2019/2022. Debes asegurar que los servicios críticos (SQL Server, IIS, Active Directory) estén siempre disponibles.</p>
+                
+                <p><strong>Desafíos:</strong></p>
+                <ul>
+                    <li>Los servicios se detienen después de actualizaciones de Windows</li>
+                    <li>Necesitas monitoreo 24/7 sin intervención manual</li>
+                    <li>Debes generar reportes diarios de disponibilidad</li>
+                </ul>
+                
+                <p><strong>Solución Profesional:</strong></p>
+                <pre><code class="language-powershell"># Script de monitoreo corporativo: service_monitor.ps1
+$serviciosCriticos = @("MSSQLSERVER", "W3SVC", "NTDS")
+$logPath = "C:\Logs\Servicios_$(Get-Date -Format 'yyyyMMdd').log"
+
+foreach ($servicio in $serviciosCriticos) {
+    $estado = Get-Service -Name $servicio -ErrorAction SilentlyContinue
+    if ($estado.Status -ne 'Running') {
+        Start-Service $servicio
+        Add-Content -Path $logPath -Value "[$(Get-Date)] ALERTA: $servicio reiniciado"
+        # Enviar correo al equipo de NOC
+        Send-MailMessage -To "noc@empresa.com" -Subject "Servicio Restaurado" `
+            -Body "El servicio $servicio fue reiniciado en $(hostname)"
+    }
+}</code></pre>
+            </div>
+
+<div class="card" style="margin: 1.5rem 0; border-left: 4px solid #2563eb;">
+                <h3 style="color: #1e40af; margin-top: 0;">Herramienta Pro: Process Explorer (Sysinternals)</h3>
+                
+                <p><strong>¿Qué es?</strong> Process Explorer es el "Administrador de Tareas avanzado" desarrollado por Microsoft (Sysinternals). Es la herramienta estándar para diagnóstico de procesos en entornos profesionales.</p>
+                
+                <p><strong>Características clave para análisis detallado:</strong></p>
+                <ul>
+                    <li><strong>Handle Search:</strong> Encuentra qué proceso tiene bloqueado un archivo o puerto</li>
+                    <li><strong>DLL View:</strong> Lista todas las librerías cargadas por un proceso</li>
+                    <li><strong>CPU/GPU Graphs:</strong> Visualización histórica del uso de recursos</li>
+                    <li><strong>Process Tree:</strong> Jerarquía padre-hijo de procesos</li>
+                    <li><strong>VirusTotal Integration:</strong> Verifica hashes contra base de datos de malware</li>
+                </ul>
+                
+                <p><strong>Ejercicio práctico:</strong></p>
+                <ol>
+                    <li>Descarga Process Explorer desde <a href="https://docs.microsoft.com/en-us/sysinternals/downloads/process-explorer">Sysinternals</a></li>
+                    <li>Identifica el proceso svchost.exe que ejecuta el servicio de Windows Update</li>
+                    <li>Usa "Find Handle or DLL" para ver qué proceso usa el puerto 8080</li>
+                    <li>Analiza la cadena de espera (Wait Chain) de un proceso bloqueado</li>
+                </ol>
+                
+                <p><strong>Tip Laboral:</strong> Si un archivo no se puede eliminar porque "está en uso", usa Process Explorer → Find → Find Handle or DLL → escribe el nombre del archivo. Te dirá exactamente qué proceso lo tiene bloqueado.</p>
+            </div>
+        </section>
+
         <section id="conexion-evaluacion" style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-left: 5px solid #f59e0b; padding: 2rem; margin: 2rem 0; border-radius: 8px;">
             <h2 style="color: #92400e; margin-bottom: 1.5rem;">📋 Conexión con Evaluación</h2>
             

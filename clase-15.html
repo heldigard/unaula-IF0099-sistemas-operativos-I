@@ -326,6 +326,326 @@ chmod -R 755 /var/www/cgi-bin</code></pre>
             </div>
         </section>
 
+        <section id="practica-laboral" style="background: #f0f9ff; border-left: 5px solid #0284c7; padding: 2rem; margin: 2rem 0; border-radius: 8px;">
+            <h2 style="color: #0369a1; margin-bottom: 1.5rem;">🛠️ Práctica Laboral</h2>
+            
+            <div class="card" style="background: #1e293b; color: #e2e8f0; padding: 1.5rem; border-radius: 8px; margin-bottom: 1.5rem; font-family: monospace;">
+                <h3 style="color: #4ade80; margin-top: 0;">📋 Cheat Sheet: Comandos de Auditoría de Seguridad</h3>
+                
+                <pre># === AUTENTICACIÓN Y ACCESO ===
+sudo lastb                    # Intentos de login fallidos
+sudo last                     # Historial de logins exitosos
+sudo faillock --user root     # Bloqueos por fuerza bruta
+sudo who                      # Usuarios conectados
+sudo w                        # Usuarios + actividad
+
+# === PROCESOS Y RED ===
+sudo ss -tulpn                # Puertos abiertos + procesos
+sudo netstat -tulpn           # Alternativa a ss
+sudo lsof -i :22              # Qué proceso usa puerto 22
+sudo ps auxf                  # Árbol de procesos
+
+# === ARCHIVOS Y PERMISOS ===
+find / -perm -4000 -type f 2>/dev/null   # Archivos SUID
+find / -perm -2000 -type f 2>/dev/null   # Archivos SGID
+find /tmp -type f -mtime -1               # Archivos modificados reciente
+stat /etc/shadow                          # Permisos de archivos críticos
+
+# === AUDITORÍA DE SISTEMA ===
+sudo ausearch -ts today       # Eventos de hoy (auditd)
+sudo cat /var/log/auth.log    # Log de autenticación
+sudo journalctl -u ssh        # Logs del servicio SSH
+sudo dmesg | grep -i error    # Errores del kernel</pre>
+            </div>
+
+            <div class="card" style="background: white; padding: 1.5rem; border-radius: 8px; margin-bottom: 1.5rem; border-left: 4px solid #dc2626;">
+                <h3 style="color: #991b1b; margin-top: 0;">✅ Checklist de Hardening: CIS Benchmarks Simplificada</h3>
+                
+                <div style="background: #fef2f2; padding: 1rem; border-radius: 8px; margin-bottom: 1rem; border: 2px solid #fca5a5;">
+                    <h4 style="color: #991b1b;">1. Configuración de SSH</h4>
+                    <pre style="background: #1e293b; color: #e2e8f0;"># Editar /etc/ssh/sshd_config
+PermitRootLogin no
+PasswordAuthentication no  # Usar solo claves
+MaxAuthTries 3
+ClientAliveInterval 300
+ClientAliveCountMax 0
+AllowUsers usuario1 usuario2
+Port 2222  # Cambiar del puerto por defecto</pre>
+                </div>
+                
+                <div style="background: #fff7ed; padding: 1rem; border-radius: 8px; margin-bottom: 1rem; border: 2px solid #fdba74;">
+                    <h4 style="color: #9a3412;">2. Firewall (UFW)</h4>
+                    <pre style="background: #1e293b; color: #e2e8f0;">sudo ufw default deny incoming
+sudo ufw default allow outgoing
+sudo ufw allow 2222/tcp       # Puerto SSH cambiado
+sudo ufw allow 80/tcp
+sudo ufw allow 443/tcp
+sudo ufw limit 2222/tcp       # Protección brute-force
+sudo ufw enable</pre>
+                </div>
+                
+                <div style="background: #fefce8; padding: 1rem; border-radius: 8px; margin-bottom: 1rem; border: 2px solid #fde047;">
+                    <h4 style="color: #854d0e;">3. Actualizaciones Automáticas</h4>
+                    <pre style="background: #1e293b; color: #e2e8f0;">sudo apt install unattended-upgrades
+sudo dpkg-reconfigure unattended-upgrades
+
+# Configurar /etc/apt/apt.conf.d/50unattended-upgrades
+Unattended-Upgrade::Remove-Unused-Dependencies "true";
+Unattended-Upgrade::Remove-Unused-Kernel-Packages "true";</pre>
+                </div>
+                
+                <div style="background: #f0fdf4; padding: 1rem; border-radius: 8px; margin-bottom: 1rem; border: 2px solid #86efac;">
+                    <h4 style="color: #166534;">4. Desactivar Servicios Innecesarios</h4>
+                    <pre style="background: #1e293b; color: #e2e8f0;"># Listar servicios
+systemctl list-unit-files --type=service --state=enabled
+
+# Desactivar servicios comúnmente innecesarios en servers
+sudo systemctl disable bluetooth
+sudo systemctl disable cups      # Impresión
+sudo systemctl disable avahi-daemon  # Zeroconf
+sudo systemctl disable bluetooth
+
+# Ver puertos abiertos
+sudo ss -tulpn</pre>
+                </div>
+                
+                <div style="background: #eff6ff; padding: 1rem; border-radius: 8px; border: 2px solid #93c5fd;">
+                    <h4 style="color: #1e40af;">5. Fail2Ban (Protección Brute-Force)</h4>
+                    <pre style="background: #1e293b; color: #e2e8f0;">sudo apt install fail2ban
+sudo cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.local
+
+# Configurar /etc/fail2ban/jail.local
+[sshd]
+enabled = true
+port = 2222
+filter = sshd
+logpath = /var/log/auth.log
+maxretry = 3
+bantime = 3600
+
+sudo systemctl restart fail2ban
+sudo fail2ban-client status sshd</pre>
+                </div>
+            </div>
+
+            <div class="card" style="background: white; padding: 1.5rem; border-radius: 8px; margin-bottom: 1.5rem; border-left: 4px solid #ea580c;">
+                <h3 style="color: #9a3412; margin-top: 0;">🚨 Casos de Incidentes: Brechas de Seguridad Famosas</h3>
+                
+                <div style="background: #fff7ed; padding: 1rem; border-radius: 8px; margin: 1rem 0; border-left: 4px solid #dc2626;">
+                    <h4 style="color: #991b1b;">Caso 1: Equifax (2017) - 147 millones de registros</h4>
+                    <ul>
+                        <li><strong>Causa:</strong> Apache Struts sin parchear (CVE-2017-5638)</li>
+                        <li><strong>Prevenible con:</strong> Actualizaciones automáticas + WAF</li>
+                        <li><strong>Lección:</strong> <code>unattended-upgrades</code> o sistema de patching</li>
+                    </ul>
+                </div>
+                
+                <div style="background: #fef3c7; padding: 1rem; border-radius: 8px; margin: 1rem 0; border-left: 4px solid #f59e0b;">
+                    <h4 style="color: #92400e;">Caso 2: MongoDB sin Autenticación (2016-2019)</h4>
+                    <ul>
+                        <li><strong>Causa:</strong> Bases de datos MongoDB expuestas a internet sin password</li>
+                        <li><strong>Prevenible con:</strong> UFW + autenticación + bind a localhost</li>
+                        <li><strong>Comandos:</strong> <code>sudo ufw deny 27017</code> + enable auth en mongod.conf</li>
+                    </ul>
+                </div>
+                
+                <div style="background: #fce7f3; padding: 1rem; border-radius: 8px; margin: 1rem 0; border-left: 4px solid #ec4899;">
+                    <h4 style="color: #be185d;">Caso 3: Proxmox CVE-2021-4034 (PwnKit)</h4>
+                    <ul>
+                        <li><strong>Causa:</strong> Escalada de privilegios en polkit</li>
+                        <li><strong>Prevenible con:</strong> SELinux/AppArmor + actualizaciones</li>
+                        <li><strong>Verificación:</strong> <code>getenforce</code> debe retornar "Enforcing"</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card" style="background: white; padding: 1.5rem; border-radius: 8px; margin-bottom: 1.5rem; border-left: 4px solid #7c3aed;">
+                <h3 style="color: #5b21b6; margin-top: 0;">🔬 Laboratorio: Auditoría de Seguridad Automatizada</h3>
+                
+                <pre><code class="language-bash">#!/bin/bash
+# security_audit.sh - Script de auditoría de seguridad básica
+
+echo "=== AUDITORÍA DE SEGURIDAD - $(date) ==="
+
+echo "
+1. Verificando intentos de login fallidos..."
+sudo lastb | head -n 10
+
+echo "
+2. Buscando archivos SUID potencialmente peligrosos..."
+find / -perm -4000 -type f 2>/dev/null | grep -v "bin/su\|bin/sudo\|bin/passwd\|bin/mount"
+
+echo "
+3. Verificando puertos abiertos..."
+sudo ss -tulpn | grep LISTEN
+
+echo "
+4. Usuarios con UID 0 (root)..."
+awk -F: '$3 == 0 {print $1}' /etc/passwd
+
+echo "
+5. Archivos de password sin dueño..."
+find /etc -name "*.conf" -nouser 2>/dev/null
+
+echo "
+6. Verificando estado del firewall..."
+sudo ufw status verbose
+
+echo "
+7. Servicios innecesarios activos..."
+systemctl list-unit-files --state=enabled --type=service | \
+    grep -E "bluetooth|cups|avahi| ModemManager"
+
+echo "
+8. Verificando permisos de /etc/shadow..."
+ls -la /etc/shadow
+
+echo "
+=== FIN DE AUDITORÍA ==="</code></pre>
+                
+                <div style="background: #dbeafe; padding: 1rem; border-radius: 4px; margin-top: 1rem;">
+                    <p style="margin: 0; color: #1e40af;"><strong>📝 Ejercicio:</strong> Ejecuta este script en tu VM y documenta los hallazgos. ¿Qué riesgos encontraste?</p>
+                </div>
+            </div>
+
+            <div class="card" style="background: white; padding: 1.5rem; border-radius: 8px; margin-bottom: 1.5rem; border-left: 4px solid #059669;">
+                <h3 style="color: #065f46; margin-top: 0;">🔥 UFW Avanzado: Configuraciones Específicas</h3>
+                
+                <pre><code class="language-bash"># === CONFIGURACIONES AVANZADAS UFW ===
+
+# 1. Rate limiting específico
+sudo ufw limit log 22/tcp    # Logear intentos SSH
+sudo ufw limit 2222/tcp      # Limitar conexiones SSH alternativo
+
+# 2. Permitir desde IP específica
+sudo ufw allow from 192.168.1.100 to any port 22
+sudo ufw allow from 10.0.0.0/8 to any port 3306  # Solo LAN para MySQL
+
+# 3. Denegar IP específica
+sudo ufw deny from 192.168.1.200
+
+# 4. Permitir rango de puertos
+sudo ufw allow 60000:61000/udp  # Para Mosh
+
+# 5. Bloquear red completa pero permitir una IP
+sudo ufw deny from 192.168.1.0/24
+sudo ufw allow from 192.168.1.50
+
+# 6. Reglas por aplicación
+sudo ufw app list              # Ver aplicaciones disponibles
+sudo ufw allow 'Nginx Full'    # Abre 80 y 443
+
+# 7. Ver reglas numeradas
+sudo ufw status numbered
+
+# 8. Eliminar regla por número
+sudo ufw delete 2</code></pre>
+            </div>
+
+            <div class="card" style="background: white; padding: 1.5rem; border-radius: 8px; margin-bottom: 1.5rem; border-left: 4px solid #2563eb;">
+                <h3 style="color: #1e40af; margin-top: 0;">🛡️ SELinux/AppArmor Básico</h3>
+                
+                <div style="background: #eff6ff; padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                    <h4>SELinux (RHEL/CentOS/Fedora)</h4>
+                    <pre><code class="language-bash"># Ver estado actual
+getenforce                    # Enforcing / Permissive / Disabled
+sestatus                      # Información detallada
+
+# Cambiar modo temporalmente (hasta reinicio)
+sudo setenforce 0             # Modo permisivo (log pero no bloquea)
+sudo setenforce 1             # Modo enforcing (protección activa)
+
+# Ver contexto de archivos
+ls -Z /var/www/html
+
+# Cambiar contexto de archivo
+sudo chcon -t httpd_sys_content_t /var/www/html/archivo.html
+
+# Restaurar contexto por defecto
+sudo restorecon -Rv /var/www/html</code></pre>
+                </div>
+                
+                <div style="background: #f0fdf4; padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                    <h4>AppArmor (Ubuntu/Debian)</h4>
+                    <pre><code class="language-bash"># Ver estado
+sudo apparmor_status
+
+# Ver perfiles cargados
+ls /etc/apparmor.d/
+
+# Cambiar modo de perfil
+sudo aa-complain /usr/sbin/nginx   # Modo permissive (solo log)
+sudo aa-enforce /usr/sbin/nginx    # Modo enforcing (protección activa)
+
+# Generar perfil nuevo
+sudo aa-genprof /usr/bin/miaplicacion
+
+# Recargar todos los perfiles
+sudo service apparmor reload</code></pre>
+                </div>
+            </div>
+
+            <div class="card" style="background: white; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #f59e0b;">
+                <h3 style="color: #92400e; margin-top: 0;">🔐 ACLs Complejos: Escenarios Avanzados</h3>
+                
+                <pre><code class="language-bash"># === ESCENARIO 1: Directorio de proyecto con múltiples roles ===
+
+# Crear estructura
+sudo mkdir -p /srv/proyecto/{docs,codigo,logs}
+
+# Establecer dueño y grupo base
+sudo chown -R root:developers /srv/proyecto
+sudo chmod 750 /srv/proyecto
+
+# ACLs específicas:
+
+# 1. Desarrolladores: Acceso total a docs y codigo
+sudo setfacl -R -m g:developers:rwx /srv/proyecto/docs
+sudo setfacl -R -m g:developers:rwx /srv/proyecto/codigo
+sudo setfacl -R -m g:developers:r-x /srv/proyecto/logs
+
+# 2. Auditores: Solo lectura de docs
+sudo setfacl -R -m g:auditores:r-x /srv/proyecto/docs
+
+# 3. Jefe de proyecto: Acceso total a todo
+sudo setfacl -R -m u:jefe:rwx /srv/proyecto
+
+# 4. Usuario externo: Solo lectura de docs específicos
+sudo setfacl -m u:consultor:r-- /srv/proyecto/docs/resumen.txt
+
+# 5. Default ACLs (herencia para nuevos archivos)
+sudo setfacl -d -R -m g:developers:rwx /srv/proyecto/codigo
+sudo setfacl -d -R -m o::--- /srv/proyecto/codigo
+
+# Verificar configuración
+getfacl /srv/proyecto/codigo
+
+# === ESCENARIO 2: Eliminar ACLs ===
+
+# Eliminar ACL específica
+sudo setfacl -x u:consultor /srv/proyecto/docs/resumen.txt
+
+# Eliminar todas las ACLs y volver a permisos básicos
+sudo setfacl -b /srv/proyecto</code></pre>
+                
+                
+                <div style="background: #fef3c7; padding: 1rem; border-radius: 4px; margin-top: 1rem;">
+                    <p style="margin: 0; color: #92400e;"><strong>🎯 Ejercicio práctico:</strong> Crea un directorio <code>/srv/ucs_secure</code> con las siguientes reglas:</p>
+                    
+                    <ul style="margin-top: 0.5rem;">
+                        <li>Usuario admin: control total</li>
+                        <li>Grupo web: lectura + ejecución (para servir archivos)</li>
+                        <li>Usuario backup: solo lectura (para backups)</li>
+                        <li>Otros usuarios: sin acceso</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div style="background: #fef3c7; border-left: 4px solid #f59e0b; padding: 1rem; margin-top: 1.5rem; border-radius: 0 8px 8px 0;">
+                <p style="margin: 0; color: #92400e;"><strong>💡 Conexión con E4:</strong> Esta sección de Práctica Laboral prepara directamente para la evaluación E4 de Seguridad y Hardening.</p>
+            </div>
+        </section>
+
         <section id="conexion-evaluacion" style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-left: 5px solid #f59e0b; padding: 2rem; margin: 2rem 0; border-radius: 8px;">
             <h2 style="color: #92400e; margin-bottom: 1.5rem;">📋 Conexión con Evaluación</h2>
             

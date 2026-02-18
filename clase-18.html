@@ -239,6 +239,390 @@ Invoke-Expression $netUse
             </div>
         </section>
 
+        <section id="practica-laboral" style="background: #f0f9ff; border-left: 5px solid #0284c7; padding: 2rem; margin: 2rem 0; border-radius: 8px;">
+            <h2 style="color: #0369a1; margin-bottom: 1.5rem;">🛠️ Práctica Laboral</h2>
+            
+            <div class="card" style="margin: 1.5rem 0; border-left: 4px solid #2563eb;">
+                <h3 style="color: #1e40af; margin-top: 0;">Escenarios Empresariales: Migración de Datos entre Linux y Windows</h3>
+                <p><strong>Escenario 1: Migración de Servidor de Archivos Legacy</strong></p>
+                <ul>
+                    <li><strong>Situación:</strong> Empresa migrando de Windows Server 2008 a Ubuntu 22.04 LTS.</li>
+                    <li><strong>Desafío:</strong> Preservar permisos, shares, y políticas de acceso.</li>
+                    <li><strong>Solución:</strong> Usar robocopy para backup, luego Samba para replicar estructura.</li>
+                </ul>
+                <pre><code class="language-bash"># En Windows: Backup de permisos
+robocopy "\\servidor\compartido" "D:\backup" /E /COPYALL /LOG:backup.log
+
+# En Linux: Restaurar con rsync manteniendo permisos
+rsync -av --progress /mnt/backup/ /srv/compartido/</code></pre>
+
+                <p><strong>Escenario 2: Integración de Datos entre Departamentos</strong></p>
+                <ul>
+                    <li><strong>Situación:</strong> Departamento de Finanzas usa Windows, Ingeniería usa Linux.</li>
+                    <li><strong>Desafío:</strong> Compartir datos en tiempo real sin duplicar.</li>
+                    <li><strong>Solución:</strong> Servidor Samba como punto central, accesible desde ambos sistemas.</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin: 1.5rem 0; border-left: 4px solid #7c3aed;">
+                <h3 style="color: #5b21b6; margin-top: 0;">Configuración de Active Directory con Clientes Linux</h3>
+                <p><strong>Pasos para unir Linux a dominio Windows:</strong></p>
+                <pre><code class="language-bash"># 1. Instalar paquetes necesarios
+sudo apt update
+sudo apt install realmd sssd sssd-tools libnss-sss libpam-sss adcli samba-common-bin
+
+# 2. Descubrir el dominio
+realm discover CORPORATIVO.LOCAL
+
+# 3. Unirse al dominio (interactivo)
+sudo realm join CORPORATIVO.LOCAL -U administrador
+
+# 4. Verificar unión
+realm list
+
+# 5. Permitir inicio de sesión con usuarios del dominio
+sudo realm permit -g "Domain Users"
+
+# 6. Configurar SSSD (/etc/sssd/sssd.conf)
+[sssd]
+domains = CORPORATIVO.LOCAL
+config_file_version = 2
+services = nss, pam
+
+[domain/CORPORATIVO.LOCAL]
+default_shell = /bin/bash
+krb5_store_password_if_offline = True
+cache_credentials = True
+id_provider = ad
+auth_provider = ad
+access_provider = ad
+
+# 7. Reiniciar SSSD
+sudo systemctl restart sssd
+
+# 8. Verificar autenticación
+id usuario@CORPORATIVO.LOCAL
+
+# 9. Configurar sudo para usuarios del dominio
+sudo visudo
+# Agregar: %domain\ admins@CORPORATIVO.LOCAL ALL=(ALL:ALL) ALL</code></pre>
+            </div>
+
+            <div class="card" style="margin: 1.5rem 0; border-left: 4px solid #ea580c;">
+                <h3 style="color: #c2410c; margin-top: 0;">Compartir Impresoras en Red Heterogénea</h3>
+                <p><strong>Configuración en Linux (CUPS):</strong></p>
+                <pre><code class="language-bash"># 1. Instalar CUPS
+sudo apt install cups cups-bsd
+
+# 2. Configurar CUPS para compartir (/etc/cups/cupsd.conf)
+# Permitir acceso desde red local
+<Location />
+  Order allow,deny
+  Allow from 192.168.1.0/24
+</Location>
+
+# 3. Habilitar compartir impresoras
+Browsing On
+BrowseLocalProtocols dnssd
+DefaultAuthType Basic
+
+# 4. Reiniciar CUPS
+sudo systemctl restart cups
+
+# 5. Agregar impresora
+sudo lpadmin -p HP_LaserJet -E -v socket://192.168.1.100 -m everywhere
+sudo lpadmin -d HP_LaserJet  # Establecer como predeterminada
+
+# 6. Compartir impresora
+sudo lpadmin -p HP_LaserJet -o printer-is-shared=true
+
+# 7. Verificar estado
+lpstat -p -d</code></pre>
+
+                <p><strong>Acceso desde Windows:</strong></p>
+                <ol>
+                    <li>Ir a Configuración → Impresoras → Agregar impresora.</li>
+                    <li>Seleccionar "La impresora que quiero no está en la lista".</li>
+                    <li>Seleccionar "Seleccionar una impresora compartida por nombre".</li>
+                    <li>URL: <code>http://192.168.1.10:631/printers/HP_LaserJet</code></li>
+                    <li>Instalar driver correspondiente.</li>
+                </ol>
+
+                <p><strong>Acceso desde Linux a impresora Windows:</strong></p>
+                <pre><code class="language-bash"># Usando smbspool
+sudo lpadmin -p Windows_Printer -E -v smb://usuario:password@windows-pc/ImpresoraHP -m raw
+
+# O usando GUI de CUPS
+# http://localhost:631/admin</code></pre>
+            </div>
+
+            <div class="card" style="margin: 1.5rem 0; border-left: 4px solid #059669;">
+                <h3 style="color: #065f46; margin-top: 0;">Ejercicios Prácticos: Configuración Completa de SAMBA</h3>
+                <pre><code class="language-bash"># /etc/samba/smb.conf - Configuración empresarial completa
+
+[global]
+# Nombre del servidor
+workgroup = CORPORATIVO
+server string = Servidor UCS Samba %v
+netbios name = UCS-SERVER
+
+# Seguridad
+security = user
+encrypt passwords = yes
+smb encrypt = required
+min protocol = SMB2
+max protocol = SMB3
+
+# Logs
+log file = /var/log/samba/log.%m
+max log size = 1000
+logging = file
+
+# Rendimiento
+socket options = TCP_NODELAY SO_RCVBUF=131072 SO_SNDBUF=131072
+read raw = yes
+write raw = yes
+
+# Soporte para ACLs
+vfs objects = acl_xattr
+map acl inherit = yes
+store dos attributes = yes
+
+#====================== Recursos Compartidos =====================
+
+[publico]
+comment = Carpeta Pública
+path = /srv/samba/publico
+browsable = yes
+writable = yes
+guest ok = yes
+read only = no
+force user = nobody
+force group = nogroup
+force create mode = 0664
+force directory mode = 0775
+
+[departamentos]
+comment = Carpetas de Departamentos
+path = /srv/samba/departamentos
+browsable = yes
+writable = yes
+guest ok = no
+valid users = @finanzas @ingenieria @ventas
+read only = no
+inherit permissions = yes
+
+[finanzas]
+comment = Departamento de Finanzas
+path = /srv/samba/departamentos/finanzas
+browsable = yes
+writable = yes
+guest ok = no
+valid users = @finanzas
+read only = no
+force group = finanzas
+create mask = 0660
+directory mask = 0770
+
+[ingenieria]
+comment = Departamento de Ingeniería
+path = /srv/samba/departamentos/ingenieria
+browsable = yes
+writable = yes
+guest ok = no
+valid users = @ingenieria
+read only = no
+force group = ingenieria
+create mask = 0660
+directory mask = 0770
+
+[backups]
+comment = Backups del Sistema
+path = /srv/samba/backups
+browsable = no
+writable = yes
+guest ok = no
+valid users = @admin
+read only = no
+create mask = 0600
+directory mask = 0700
+
+[homes]
+comment = Home Directories
+browseable = no
+writable = yes
+guest ok = no
+valid users = %S
+read only = no
+create mask = 0700
+directory mask = 0700</code></pre>
+
+                <p><strong>Script de configuración completa:</strong></p>
+                <pre><code class="language-bash">#!/bin/bash
+# setup-samba.sh - Configuración completa de Samba
+
+# Crear estructura de directorios
+sudo mkdir -p /srv/samba/{publico,departamentos/{finanzas,ingenieria,ventas},backups}
+
+# Crear grupos
+sudo groupadd finanzas
+sudo groupadd ingenieria
+sudo groupadd ventas
+sudo groupadd admin
+
+# Crear usuarios locales y Samba
+sudo useradd -m -G finanzas juan.finanzas
+sudo useradd -m -G ingenieria maria.ingenieria
+sudo useradd -m -G admin admin
+
+# Crear usuarios Samba (contraseñas diferentes a las del sistema)
+sudo smbpasswd -a juan.finanzas
+sudo smbpasswd -a maria.ingenieria
+sudo smbpasswd -a admin
+
+# Establecer permisos
+sudo chown -R nobody:nogroup /srv/samba/publico
+sudo chmod -R 755 /srv/samba/publico
+
+sudo chown root:finanzas /srv/samba/departamentos/finanzas
+sudo chmod 770 /srv/samba/departamentos/finanzas
+
+sudo chown root:ingenieria /srv/samba/departamentos/ingenieria
+sudo chmod 770 /srv/samba/departamentos/ingenieria
+
+sudo chown root:admin /srv/samba/backups
+sudo chmod 700 /srv/samba/backups
+
+# Configurar SELinux/AppArmor si está activo
+sudo setfacl -R -m g:finanzas:rwx /srv/samba/departamentos/finanzas
+sudo setfacl -R -m g:ingenieria:rwx /srv/samba/departamentos/ingenieria
+
+# Reiniciar Samba
+sudo systemctl restart smbd nmbd
+
+# Verificar configuración
+testparm
+
+echo "✅ Configuración de Samba completada exitosamente"</code></pre>
+            </div>
+
+            <div class="card" style="margin: 1.5rem 0; border-left: 4px solid #dc2626;">
+                <h3 style="color: #991b1b; margin-top: 0;">Acceso a Recursos Windows desde Linux y Viceversa</h3>
+                <p><strong>Desde Linux a Windows:</strong></p>
+                <pre><code class="language-bash"># Usando smbclient - Listar recursos compartidos
+smbclient -L //192.168.1.100 -U usuario
+
+# Conectarse a recurso compartido
+smbclient //192.168.1.100/compartido -U usuario
+
+# Montar recurso Windows en Linux
+sudo mount -t cifs //192.168.1.100/compartido /mnt/windows \
+    -o username=usuario,password=contraseña,uid=1000,gid=1000
+
+# Montaje permanente (fstab)
+//192.168.1.100/compartido  /mnt/windows  cifs  credentials=/home/usuario/.smbcredentials,uid=1000,gid=1000,iocharset=utf8,sec=ntlmssp  0  0
+
+# Archivo .smbcredentials
+username=usuario
+password=contraseña
+domain=CORPORATIVO</code></pre>
+
+                <p><strong>Desde Windows a Linux:</strong></p>
+                <pre><code class="language-powershell"># Usando PowerShell - Conectar unidad de red
+New-PSDrive -Name "S" -PSProvider FileSystem -Root "\\192.168.1.10\compartido" -Credential (Get-Credential) -Persist
+
+# Mapeo persistente con net use
+net use S: \\192.168.1.10\compartido /user:usuario contraseña /persistent:yes
+
+# Desconectar
+net use S: /delete</code></pre>
+            </div>
+
+            <div class="card" style="margin: 1.5rem 0; border-left: 4px solid #f59e0b;">
+                <h3 style="color: #b45309; margin-top: 0;">Resolución de Problemas de Permisos en Entornos Mixtos</h3>
+                <p><strong>Problema 1: Permisos de archivos creados desde Windows no se ven desde Linux</strong></p>
+                <ul>
+                    <li><strong>Causa:</strong> Mapeo de permisos NTFS a Unix no está configurado.</li>
+                    <li><strong>Solución:</strong> Configurar <code>create mask</code>, <code>directory mask</code>, y <code>force user/group</code> en smb.conf.</li>
+                </ul>
+
+                <p><strong>Problema 2: Usuario puede escribir desde Windows pero no desde Linux</strong></p>
+                <ul>
+                    <li><strong>Diagnóstico:</strong> Verificar permisos Unix del directorio físico.</li>
+                    <li><strong>Solución:</strong> Asegurar que los permisos Unix permitan escritura al grupo.</li>
+                </ul>
+                <pre><code class="language-bash"># Verificar permisos Unix
+ls -la /srv/samba/compartido/
+
+# Corregir permisos
+sudo chown -R root:sambashare /srv/samba/compartido/
+sudo chmod -R 2770 /srv/samba/compartido/
+# (2 = setgid, nuevo archivo hereda grupo del directorio)</code></pre>
+
+                <p><strong>Problema 3: Archivos con espacios o caracteres especiales</strong></p>
+                <ul>
+                    <li><strong>Solución:</strong> Usar comillas y escape adecuado.</li>
+                </ul>
+                <pre><code class="language-bash"># Ejemplo correcto
+smbclient //servidor/compartido -c "get 'documento importante.pdf'"
+
+# Montar con caracteres especiales
+sudo mount -t cifs //servidor/compartido /mnt/punto -o "iocharset=utf8"</code></pre>
+
+                <p><strong>Problema 4: Autenticación falla aunque credenciales sean correctas</strong></p>
+                <ul>
+                    <li>Verificar que el usuario existe en Samba: <code>sudo pdbedit -L</code></li>
+                    <li>Verificar sincronización de contraseñas: <code>sudo smbpasswd usuario</code></li>
+                    <li>Verificar que no hay conflictos con NTLM: agregar <code>sec=ntlmssp</code> en opciones de montaje.</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin: 1.5rem 0; border-left: 4px solid #2563eb; background: #eff6ff;">
+                <h3 style="color: #1e40af; margin-top: 0;">Caso Real: "Cómo Netflix Maneja la Interoperabilidad"</h3>
+                <p><strong>Arquitectura de Netflix:</strong></p>
+                <ul>
+                    <li><strong>Servidores:</strong> Miles de instancias Linux (Amazon EC2).</li>
+                    <li><strong>Estaciones de trabajo:</strong> Windows y macOS para empleados.</li>
+                    <li><strong>Desafío:</strong> Acceso seguro y eficiente a recursos entre todos los sistemas.</li>
+                </ul>
+
+                <p><strong>Soluciones implementadas:</strong></p>
+                <ol>
+                    <li><strong>Single Sign-On (SSO):</strong> Usan OAuth 2.0 y SAML para autenticación unificada.</li>
+                    <li><strong>Protocolos estándar:</strong> SMB3 con encriptación para compartir archivos.</li>
+                    <li><strong>Contenedores:</strong> Docker corre en Linux, accesible desde Windows vía WSL2.</li>
+                    <li><strong>Infraestructura como Código:</strong> Terraform y Ansible funcionan en Linux, administrados desde cualquier SO.</li>
+                </ol>
+
+                <p><strong>Lecciones aplicables al proyecto UCS:</strong></p>
+                <ul>
+                    <li>Usar protocolos estándar (SMB, NFS, HTTP/HTTPS) en lugar de soluciones propietarias.</li>
+                    <li>Implementar autenticación centralizada (LDAP/AD) si el entorno crece.</li>
+                    <li>Documentar toda la configuración para facilitar el mantenimiento.</li>
+                    <li>Automatizar configuraciones con scripts reutilizables.</li>
+                </ul>
+
+                <div style="background: white; padding: 1rem; border-radius: 6px; margin-top: 1rem;">
+                    <p><strong>🔗 Recursos adicionales:</strong></p>
+                    <ul>
+                        <li><a href="https://netflixtechblog.com/">Netflix Tech Blog</a> - Artículos sobre su infraestructura.</li>
+                        <li>Samba 4 como Controlador de Dominio - Para empresas que quieren reemplazar Windows Server.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div style="background: #fef3c7; border-left: 4px solid #f59e0b; padding: 1.5rem; margin-top: 2rem; border-radius: 8px;">
+                <h3 style="color: #92400e; margin-top: 0;">🎯 Conexión con Evaluación E5</h3>
+                <p>Esta práctica laboral prepara directamente para la <strong>E5: Integración de Servicios</strong>:</p>
+                <ul>
+                    <li>✅ Configuración completa de Samba</li>
+                    <li>✅ Compartir recursos entre Linux y Windows</li>
+                    <li>✅ Resolución de problemas de interoperabilidad</li>
+                    <li>✅ Acceso a recursos cruzado</li>
+                </ul>
+            </div>
+        </section>
+
         <section id="conexion-evaluacion" style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-left: 5px solid #f59e0b; padding: 2rem; margin: 2rem 0; border-radius: 8px;">
             <h2 style="color: #92400e; margin-bottom: 1.5rem;">📋 Conexión con Evaluación</h2>
             

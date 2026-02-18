@@ -248,6 +248,227 @@ resize2fs /dev/mapper/vg-lv</code></pre>
             </div>
         </section>
 
+        <section id="practica-laboral" style="background: #f0f9ff; border-left: 5px solid #0284c7; padding: 2rem; margin: 2rem 0; border-radius: 8px;">
+            <h2 style="color: #0369a1; margin-bottom: 1.5rem;">🛠️ Práctica Laboral</h2>
+            
+            <div class="card" style="background: white; padding: 1.5rem; border-radius: 8px; margin-bottom: 1.5rem; border-left: 4px solid #2563eb;">
+                <h3 style="color: #1e40af; margin-top: 0;">🎯 Simulación de RAID: Visualización de Redundancia</h3>
+                <p><strong>Ejercicio mental/visual:</strong> Imagina que tienes 3 discos de 1TB cada uno:</p>
+                <pre style="background: #1e293b; color: #e2e8f0;">RAID 0 (Striping):     RAID 1 (Mirroring):    RAID 5 (Paridad):
+┌───┬───┬───┐          ┌───┬───┬───┐          ┌───┬───┬───┐
+│ A │ B │ C │          │ A │ A │ A │          │ A │ B │ P1│
+│ D │ E │ F │          │ D │ D │ D │          │ C │ P2│ D │
+└───┴───┴───┘          └───┴───┴───┘          │ P3│ E │ F │
+                                                └───┴───┴───┘
+Capacidad: 3TB         Capacidad: 1TB          Capacidad: 2TB
+Rendimiento: Alto      Rendimiento: Medio      Rendimiento: Alto
+Tolerancia: 0 discos   Tolerancia: 2 discos    Tolerancia: 1 disco</pre>
+                
+                <div style="background: #dbeafe; padding: 1rem; border-radius: 4px; margin-top: 1rem;">
+                    <p style="margin: 0; color: #1e40af;"><strong>📝 Ejercicio:</strong> Dibuja qué pasa en cada nivel RAID cuando falla el Disco 2.</p>
+                </div>
+            </div>
+
+            <div class="card" style="background: white; padding: 1.5rem; border-radius: 8px; margin-bottom: 1.5rem; border-left: 4px solid #059669;">
+                <h3 style="color: #065f46; margin-top: 0;">🎨 Ejercicios de Diseño: "Diseña la Configuración de Almacenamiento"</h3>
+                
+                <div style="background: #f0fdf4; padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                    <h4>Escenario 1: Base de Datos de E-commerce</h4>
+                    <ul>
+                        <li>5,000 transacciones/minuto</li>
+                        <li>Datos críticos, no puede perderse</li>
+                        <li>6 discos SSD de 500GB disponibles</li>
+                    </ul>
+                    <p><strong>Tu propuesta:</strong> RAID ____ + justificación:</p>
+                </div>
+                
+                <div style="background: #fef3c7; padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                    <h4>Escenario 2: Servidor de Archivos de Video</h4>
+                    <ul>
+                        <li>50TB de videos (streaming)</li>
+                        <li>Alta capacidad necesaria</li>
+                        <li>8 discos HDD de 8TB disponibles</li>
+                    </ul>
+                    <p><strong>Tu propuesta:</strong> RAID ____ + justificación:</p>
+                </div>
+                
+                <div style="background: #fce7f3; padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                    <h4>Escenario 3: Sistema de Backup</h4>
+                    <ul>
+                        <li>Archivos comprimidos, secuenciales</li>
+                        <li>Máxima capacidad prioritaria</li>
+                        <li>4 discos HDD de 4TB disponibles</li>
+                    </ul>
+                    <p><strong>Tu propuesta:</strong> RAID ____ + justificación:</p>
+                </div>
+            </div>
+
+            <div class="card" style="background: white; padding: 1.5rem; border-radius: 8px; margin-bottom: 1.5rem; border-left: 4px solid #dc2626;">
+                <h3 style="color: #991b1b; margin-top: 0;">🧮 Cálculo de Capacidad y Tolerancia por Nivel RAID</h3>
+                <table style="width: 100%; margin: 1rem 0;">
+                    <thead>
+                        <tr><th>RAID</th><th>Fórmula Capacidad</th><th>Discos mínimos</th><th>Discos que pueden fallar</th><th>Caso ideal</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>RAID 0</td><td>N × tamaño</td><td>2</td><td>0</td><td>Cache, temp</td></tr>
+                        <tr><td>RAID 1</td><td>1 × tamaño</td><td>2</td><td>N-1</td><td>OS, metadata</td></tr>
+                        <tr><td>RAID 5</td><td>(N-1) × tamaño</td><td>3</td><td>1</td><td>Archivos, BD pequeñas</td></tr>
+                        <tr><td>RAID 6</td><td>(N-2) × tamaño</td><td>4</td><td>2</td><td>Archivos grandes críticos</td></tr>
+                        <tr><td>RAID 10</td><td>(N/2) × tamaño</td><td>4</td><td>1 por mirror</td><td>BD de alta performance</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="card" style="background: white; padding: 1.5rem; border-radius: 8px; margin-bottom: 1.5rem; border-left: 4px solid #ea580c;">
+                <h3 style="color: #9a3412; margin-top: 0;">☁️ Casos Reales: Configuraciones RAID en Cloud</h3>
+                
+                <div style="background: #fff7ed; padding: 1rem; border-radius: 8px; margin: 1rem 0; border-left: 4px solid #f97316;">
+                    <h4 style="color: #c2410c;">AWS EBS</h4>
+                    <ul>
+                        <li><strong>gp3:</strong> SSD de uso general (equivalente RAID 1 en backend)</li>
+                        <li><strong>io2:</strong> Alta durabilidad, multi-AZ (99.999% disponibilidad)</li>
+                        <li><strong>st1/sc1:</strong> HDD fríos (equivalente RAID 6)</li>
+                    </ul>
+                </div>
+                
+                <div style="background: #eff6ff; padding: 1rem; border-radius: 8px; margin: 1rem 0; border-left: 4px solid #3b82f6;">
+                    <h4 style="color: #1e40af;">Azure Managed Disks</h4>
+                    <ul>
+                        <li><strong>Premium SSD v2:</strong> RAID implícito, 99.9% SLA</li>
+                        <li><strong>Ultra Disk:</strong> Sub-10ms latency, RAID 1+0</li>
+                        <li><strong>Standard SSD:</strong> RAID 5 en backend</li>
+                    </ul>
+                </div>
+                
+                <div style="background: #f0fdf4; padding: 1rem; border-radius: 8px; margin: 1rem 0; border-left: 4px solid #22c55e;">
+                    <h4 style="color: #166534;">GCP Persistent Disk</h4>
+                    <ul>
+                        <li><strong>Disco zonal:</strong> RAID implícito, snapshot automáticos</li>
+                        <li><strong>Hyperdisk:</strong> NVMe, RAID 10 en backend</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card" style="background: white; padding: 1.5rem; border-radius: 8px; margin-bottom: 1.5rem; border-left: 4px solid #7c3aed;">
+                <h3 style="color: #5b21b6; margin-top: 0;">🔧 Laboratorio Paso a Paso: RAID Software con mdadm</h3>
+                
+                <div style="background: #faf5ff; padding: 1rem; border-radius: 4px; margin-bottom: 1rem;">
+                    <h4 style="color: #6b21a8;">Paso 1: Preparar discos virtuales</h4>
+                    <pre><code class="language-bash"># Crear 2 archivos de 1GB que simularán discos
+dd if=/dev/zero of=disk1.img bs=1M count=1024
+dd if=/dev/zero of=disk2.img bs=1M count=1024
+
+# Configurar como loop devices
+sudo losetup -fP disk1.img
+sudo losetup -fP disk2.img
+
+# Ver los dispositivos creados
+losetup -a</code></pre>
+                </div>
+                
+                <div style="background: #faf5ff; padding: 1rem; border-radius: 4px; margin-bottom: 1rem;">
+                    <h4 style="color: #6b21a8;">Paso 2: Crear RAID 1</h4>
+                    <pre><code class="language-bash"># Instalar mdadm
+sudo apt install mdadm
+
+# Crear array RAID 1
+sudo mdadm --create /dev/md0 --level=1 --raid-devices=2 /dev/loop0 /dev/loop1
+
+# Ver progreso de sincronización
+cat /proc/mdstat
+watch -n 1 cat /proc/mdstat  # Monitorear en tiempo real</code></pre>
+                </div>
+                
+                <div style="background: #faf5ff; padding: 1rem; border-radius: 4px; margin-bottom: 1rem;">
+                    <h4 style="color: #6b21a8;">Paso 3: Formatear y usar</h4>
+                    <pre><code class="language-bash"># Formatear como ext4
+sudo mkfs.ext4 /dev/md0
+
+# Crear punto de montaje
+sudo mkdir -p /mnt/raid1
+
+# Montar
+sudo mount /dev/md0 /mnt/raid1
+
+# Verificar
+df -h | grep md0</code></pre>
+                </div>
+                
+                <div style="background: #faf5ff; padding: 1rem; border-radius: 4px; margin-bottom: 1rem;">
+                    <h4 style="color: #6b21a8;">Paso 4: Simular fallo de disco</h4>
+                    <pre><code class="language-bash"># Ver estado inicial
+sudo mdadm --detail /dev/md0
+
+# Marcar un disco como fallido
+sudo mdadm --manage /dev/md0 --fail /dev/loop1
+
+# Ver estado (degraded)
+sudo mdadm --detail /dev/md0
+
+# "Reemplazar" el disco (simulado)
+sudo mdadm --manage /dev/md0 --remove /dev/loop1
+sudo mdadm --manage /dev/md0 --add /dev/loop1
+
+# Verificar reconstrucción
+cat /proc/mdstat</code></pre>
+                </div>
+                
+                <div style="background: #fef3c7; padding: 1rem; border-radius: 4px;">
+                    <h4 style="color: #92400e;">Paso 5: Hacer persistente en fstab</h4>
+                    <pre><code class="language-bash"># Obtener UUID del RAID
+sudo blkid /dev/md0
+
+# Añadir a /etc/fstab
+UUID=xxx-xxx-xxx /mnt/raid1 ext4 defaults,noatime 0 2
+
+# Probar configuración
+sudo mount -a
+df -h | grep raid1</code></pre>
+                </div>
+            </div>
+
+            <div class="card" style="background: #eff6ff; padding: 1.5rem; border-radius: 8px; border: 2px solid #3b82f6;">
+                <h3 style="color: #1e40af; margin-top: 0;">📝 Configuración de fstab para Montajes Persistentes</h3>
+                
+                <pre><code class="language-bash"># Estructura de /etc/fstab:
+# <device>    <mount_point>    <fstype>    <options>    <dump>    <pass>
+
+# Ejemplos profesionales:
+
+# 1. Disco estándar
+UUID=a1b2c3d4 /var/www ext4 defaults,noatime,nodiratime 0 2
+
+# 2. RAID para base de datos
+UUID=xyz123 /var/lib/postgresql ext4 defaults,noatime,data=writeback,nobarrier 0 2
+
+# 3. Disco de backup (no montar automáticamente)
+UUID=backup-uuid /mnt/backup ext4 noauto,user,rw 0 0
+
+# 4. Montaje NFS de red
+192.168.1.100:/shared /mnt/nfs nfs defaults,_netdev 0 0
+
+# 5. Tmpfs (RAM) para cache
+none /var/cache tmpfs size=1G,noatime 0 0</code></pre>
+                
+                <table style="width: 100%; margin: 1rem 0;">
+                    <thead>
+                        <tr><th>Opción</th><th>Descripción</th><th>Cuándo usar</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><code>noatime</code></td><td>No actualizar access time</td><td>Servidores web, BD (mejor rendimiento)</td></tr>
+                        <tr><td><code>nodiratime</code></td><td>No actualizar dir access time</td><td>Con noatime para directorios</td></tr>
+                        <tr><td><code>noauto</code></td><td>No montar en boot</td><td>Discos externos, backups</td></tr>
+                        <tr><td><code>_netdev</code></td><td>Esperar red antes de montar</td><td>NFS, SMB, iSCSI</td></tr>
+                        <tr><td><code>rw/ro</code></td><td>Lectura/escritura o solo lectura</td><td>Seguridad, mantenimiento</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div style="background: #fef3c7; border-left: 4px solid #f59e0b; padding: 1rem; margin-top: 1.5rem; border-radius: 0 8px 8px 0;">
+                <p style="margin: 0; color: #92400e;"><strong>💡 Conexión con E5:</strong> Este laboratorio de RAID software y configuración de fstab prepara directamente para la integración de servicios en la evaluación E5.</p>
+            </div>
+        </section>
+
         <section id="conexion-evaluacion" style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-left: 5px solid #f59e0b; padding: 2rem; margin: 2rem 0; border-radius: 8px;">
             <h2 style="color: #92400e; margin-bottom: 1.5rem;">📋 Conexión con Evaluación</h2>
             

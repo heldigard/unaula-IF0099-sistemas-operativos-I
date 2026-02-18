@@ -251,6 +251,214 @@ whoami /priv | Select-String "SeLockMemory"</code></pre>
             </div>
         </section>
 
+        <section id="practica-laboral" style="background: #f0f9ff; border-left: 5px solid #0284c7; padding: 2rem; margin: 2rem 0; border-radius: 8px;">
+            <h2 style="color: #0369a1; margin-bottom: 1.5rem;">🛠️ Práctica Laboral</h2>
+            
+            <div class="card" style="margin: 1.5rem 0; border-left: 4px solid #7c3aed;">
+                <h3 style="color: #5b21b6; margin-top: 0;">Simulación Visual: Traducción de Direcciones Virtuales a Físicas</h3>
+                
+                <p><strong>Ejercicio paso a paso:</strong></p>
+                
+                <div style="background: #f8fafc; padding: 1.5rem; border-radius: 8px; margin: 1rem 0;">
+                    <p><strong>Datos del sistema:</strong></p>
+                    <ul>
+                        <li>Espacio de direcciones virtuales: 32 bits</li>
+                        <li>Tamaño de página: 4 KB (2^12 bytes)</li>
+                        <li>Bits para offset: 12 bits</li>
+                        <li>Bits para número de página: 20 bits</li>
+                    </ul>
+                </div>
+                
+                <p><strong>Paso 1 - Separar la dirección:</strong></p>
+                <pre>Dirección Virtual: 0x00401A3F
+
+Binario: 0000 0000 0100 0000 0001 | 1010 0011 1111
+          └────── 20 bits ──────┘   └─12 bits─┘
+              N° Página              Offset
+              0x00401                 0xA3F</pre>
+                
+                <p><strong>Paso 2 - Consultar tabla de páginas:</strong></p>
+                <pre>Tabla de Páginas:
+┌──────────┬──────────┬───────┬───────┐
+│  Página  │  Marco   │ Validez│ Bits  │
+├──────────┼──────────┼───────┼───────┤
+│  0x00401 │  0x2B    │   V   │  R/W  │
+│  0x00402 │  0x15    │   V   │  R/W  │
+│  0x00403 │    -     │   I   │   -   │  ← Page Fault!
+└──────────┴──────────┴───────┴───────┘</pre>
+                
+                <p><strong>Paso 3 - Construir dirección física:</strong></p>
+                <pre>Dirección Física = (Marco × Tamaño_Página) + Offset
+                  = (0x2B × 4096) + 0xA3F
+                  = 0x2B000 + 0xA3F
+                  = 0x2BA3F</pre>
+                
+                <p><strong>Tu ejercicio:</strong></p>
+                <ul>
+                    <li>Dirección Virtual: 0x00123ABC</li>
+                    <li>Tamaño de página: 4 KB</li>
+                    <li>Marco asignado: 0x45</li>
+                </ul>
+                <p>¿Cuál es la dirección física resultante?</p>
+            </div>
+
+            <div class="card" style="margin: 1.5rem 0; border-left: 4px solid #059669;">
+                <h3 style="color: #065f46; margin-top: 0;">Cálculo Manual: Números de Página y Offset</h3>
+                
+                <p><strong>Fórmulas:</strong></p>
+                <pre>Número de Página = floor(Dirección_Virtual / Tamaño_Página)
+Offset = Dirección_Virtual % Tamaño_Página</pre>
+                
+                <p><strong>Ejercicios:</strong></p>
+                
+                <table>
+                    <thead>
+                        <tr><th>Dirección Virtual</th><th>Tamaño Página</th><th>N° Página</th><th>Offset</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>0x0001A4F0</td><td>4 KB</td><td>?</td><td>?</td></tr>
+                        <tr><td>0x00B3C210</td><td>4 KB</td><td>?</td><td>?</td></tr>
+                        <tr><td>0x7FFF8000</td><td>4 KB</td><td>?</td><td>?</td></tr>
+                        <tr><td>0x00005A5A</td><td>4 KB</td><td>?</td><td>?</td></tr>
+                    </tbody>
+                </table>
+                
+                <p><strong>Solución para el primero:</strong></p>
+                <pre>0x0001A4F0 = 107760 en decimal
+N° Página = floor(107760 / 4096) = floor(26.308) = 26 = 0x1A
+Offset = 107760 % 4096 = 2544 = 0x9F0</pre>
+            </div>
+
+            <div class="card" style="margin: 1.5rem 0; border-left: 4px solid #f59e0b;">
+                <h3 style="color: #92400e; margin-top: 0;">Construcción Manual de Tabla de Páginas</h3>
+                
+                <p><strong>Escenario:</strong> Un proceso tiene 3 páginas lógicas que se mapean a marcos físicos.</p>
+                
+                <pre>Mapa del Proceso:
+Página 0: Código del programa (direcciones 0x0000 - 0x0FFF)
+Página 1: Datos estáticos (direcciones 0x1000 - 0x1FFF)
+Página 2: Heap inicial (direcciones 0x2000 - 0x2FFF)
+
+Asignación física:
+- Página 0 → Marco 5
+- Página 1 → Marco 2
+- Página 2 → Marco 8</pre>
+                
+                <p><strong>Tu tarea:</strong> Construye la tabla de páginas completa:</p>
+                
+                <table>
+                    <thead>
+                        <tr><th>Página</th><th>Marco</th><th>Permisos</th><th>Presente</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>0x000</td><td>?</td><td>R-X</td><td>?</td></tr>
+                        <tr><td>0x001</td><td>?</td><td>RW-</td><td>?</td></tr>
+                        <tr><td>0x002</td><td>?</td><td>RW-</td><td>?</td></tr>
+                    </tbody>
+                </table>
+                
+                <p>Ahora traduce estas direcciones virtuales a físicas:</p>
+                <ul>
+                    <li>0x00001A50 → ¿Dirección física?</li>
+                    <li>0x00011234 → ¿Dirección física?</li>
+                    <li>0x00020F00 → ¿Dirección física?</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin: 1.5rem 0; border-left: 4px solid #dc2626;">
+                <h3 style="color: #991b1b; margin-top: 0;">Caso Real: ¿Por qué 4KB es el Tamaño Estándar de Página?</h3>
+                
+                <p><strong>Factores que determinaron el estándar de 4KB:</strong></p>
+                
+                <ol>
+                    <li><strong>Equilibrio TLB vs Fragmentación:</strong>
+                        <ul>
+                            <li>Páginas más grandes = Menos entradas en tabla = Mejor TLB hit rate</li>
+                            <li>Pero: Mayor fragmentación interna (desperdicio de memoria)</li>
+                            <li>4KB fue el "punto dulce" encontrado empíricamente</li>
+                        </ul>
+                    </li>
+                    <li><strong>Hardware histórico:</strong>
+                        <ul>
+                            <li>Intel 80386 (1985) introdujo paginación con páginas de 4KB</li>
+                            <li>Compatibilidad heredada durante décadas</li>
+                        </ul>
+                    </li>
+                    <li><strong>Trade-offs:</strong>
+                        <ul>
+                            <li><strong>4KB:</strong> Bueno para uso general, sistemas mixtos</li>
+                            <li><strong>2MB (Huge Pages):</strong> Mejor para bases de datos, menos TLB misses</li>
+                            <li><strong>1GB (Gigantic Pages):</strong> Para aplicaciones de memoria masiva (ML, Big Data)</li>
+                        </ul>
+                    </li>
+                </ol>
+                
+                <p><strong>Ejercicio de reflexión:</strong></p>
+                <pre>Una base de datos Oracle usa 128GB de RAM.
+Con páginas de 4KB:  128GB / 4KB = 33,554,432 entradas de página
+Con páginas de 2MB:  128GB / 2MB = 65,536 entradas de página
+Con páginas de 1GB:  128GB / 1GB = 128 entradas de página
+
+TLB típico tiene 512 entradas.
+
+¿Qué pasa cuando la tabla de páginas no cabe en el TLB?</pre>
+            </div>
+
+            <div class="card" style="margin: 1.5rem 0; border-left: 4px solid #2563eb;">
+                <h3 style="color: #1e40af; margin-top: 0;">Troubleshooting: Huge Pages en Bases de Datos</h3>
+                
+                <p><strong>Problema común:</strong> Tu base de datos MySQL/PostgreSQL/Oracle está configurada para usar Huge Pages pero no arranca o no usa la memoria esperada.</p>
+                
+                <h4>Diagnóstico en Linux:</h4>
+                <pre><code class="language-bash"># 1. Verificar soporte de Huge Pages
+cat /proc/cpuinfo | grep -i pdpe1gb  # Soporte 1GB
+
+# 2. Ver configuración actual
+cat /proc/meminfo | grep -i huge
+
+# 3. Verificar límites del usuario
+ulimit -l  # Memoria lockable (KB)
+
+# 4. Verificar uso por proceso
+cat /proc/[PID]/smaps | grep -i huge</code></pre>
+                
+                <h4>Configuración para PostgreSQL:</h4>
+                <pre><code class="language-bash"># 1. Calcular cuántas Huge Pages necesitas
+# PostgreSQL: shared_buffers = 8GB
+# Huge Page size = 2MB
+# Necesitas: 8GB / 2MB = 4096 Huge Pages
+
+# 2. Configurar kernel
+sudo sysctl -w vm.nr_hugepages=4096
+
+# 3. Hacer persistente
+echo "vm.nr_hugepages=4096" >> /etc/sysctl.conf
+
+# 4. Configurar PostgreSQL (postgresql.conf)
+huge_pages = on
+shared_buffers = 8GB
+
+# 5. Configurar límites de usuario (/etc/security/limits.conf)
+postgres soft memlock 8388608
+postgres hard memlock 8388608</code></pre>
+                
+                <p><strong>Verificación:</strong></p>
+                <pre><code class="language-bash"># Verificar que PostgreSQL está usando Huge Pages
+cat /proc/[PID_PGSQL]/smaps | grep "AnonHugePages"
+# Debería mostrar uso de AnonHugePages
+
+# Verificar estadísticas
+cat /proc/vmstat | grep -i thp  # Transparent Huge Pages</code></pre>
+                
+                <p><strong>Problemas comunes:</strong></p>
+                <ul>
+                    <li><strong>ulimit insuficiente:</strong> El usuario no puede lockear memoria suficiente</li>
+                    <li><strong>Fragmentación:</strong> No hay bloques contiguos de 2MB disponibles</li>
+                    <li><strong>Transparent Huge Pages (THP):</strong> Puede causar latencia por compactación</li>
+                </ul>
+            </div>
+        </section>
+
         <section id="conexion-evaluacion" style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-left: 5px solid #f59e0b; padding: 2rem; margin: 2rem 0; border-radius: 8px;">
             <h2 style="color: #92400e; margin-bottom: 1.5rem;">📋 Conexión con Evaluación</h2>
             

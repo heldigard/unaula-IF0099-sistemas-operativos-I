@@ -214,6 +214,296 @@ git push origin main</code></pre>
             </div>
         </section>
 
+        <section id="practica-laboral" style="background: #f0f9ff; border-left: 5px solid #0284c7; padding: 2rem; margin: 2rem 0; border-radius: 8px;">
+            <h2 style="color: #0369a1; margin-bottom: 1.5rem;">🛠️ Práctica Laboral</h2>
+            
+            <div class="card" style="margin: 1.5rem 0; border-left: 4px solid #2563eb;">
+                <h3 style="color: #1e40af; margin-top: 0;">Plantillas Descargables</h3>
+                <p>Descarga y personaliza estas plantillas profesionales para tus proyectos:</p>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-top: 1rem;">
+                    <div style="background: #eff6ff; padding: 1.5rem; border-radius: 8px; border: 1px solid #bfdbfe;">
+                        <h4 style="color: #1e40af; margin-top: 0;">📄 Template de Manual Técnico Profesional</h4>
+                        <p style="font-size: 0.9rem;">Estructura completa con secciones para arquitectura, configuración, y troubleshooting.</p>
+                        <pre style="font-size: 0.8rem; background: #f8fafc; padding: 0.75rem; border-radius: 4px;">manual-tecnico-plantilla.md</pre>
+                    </div>
+                    
+                    <div style="background: #f0fdf4; padding: 1.5rem; border-radius: 8px; border: 1px solid #86efac;">
+                        <h4 style="color: #166534; margin-top: 0;">📋 Template de Runbook de Operaciones</h4>
+                        <p style="font-size: 0.9rem;">Procedimientos paso a paso para operaciones diarias y respuesta a incidentes.</p>
+                        <pre style="font-size: 0.8rem; background: #f8fafc; padding: 0.75rem; border-radius: 4px;">runbook-operaciones-plantilla.md</pre>
+                    </div>
+                    
+                    <div style="background: #faf5ff; padding: 1.5rem; border-radius: 8px; border: 1px solid #d8b4fe;">
+                        <h4 style="color: #7c3aed; margin-top: 0;">🏗️ Template de Documentación de Arquitectura</h4>
+                        <p style="font-size: 0.9rem;">Diagramas, componentes, flujos de datos y decisiones de diseño.</p>
+                        <pre style="font-size: 0.8rem; background: #f8fafc; padding: 0.75rem; border-radius: 4px;">arquitectura-plantilla.md</pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" style="margin: 1.5rem 0; border-left: 4px solid #ea580c;">
+                <h3 style="color: #c2410c; margin-top: 0;">Ejemplos Reales: Documentación de AWS, Google Cloud</h3>
+                
+                <p><strong>AWS Documentation Style:</strong></p>
+                <ul>
+                    <li><strong>Structure:</strong> Task-oriented (cómo hacer X).</li>
+                    <li><strong>Code examples:</strong> Múltiples lenguajes (CLI, Python, Java).</li>
+                    <li><strong>Visual hierarchy:</strong> Uso intensivo de tablas y diagramas.</li>
+                </ul>
+                
+                <div style="background: #fff7ed; padding: 1rem; border-radius: 6px; margin: 1rem 0;">
+                    <p style="margin: 0; font-size: 0.9rem;"><strong>Ejemplo de formato AWS:</strong></p>
+                    <pre style="margin: 0.5rem 0 0 0; font-size: 0.85rem;"><strong>Título:</strong> Crear una instancia EC2
+<strong>Prerrequisitos:</strong> Cuenta AWS, VPC configurada
+<strong>Procedimiento:</strong> 1. Abrir consola → 2. Seleccionar AMI → 3. Configurar...
+<strong>Resultado esperado:</strong> Instancia en estado "running"
+<strong>Siguientes pasos:</strong> Conectarse vía SSH, configurar security groups</pre>
+                </div>
+
+                <p><strong>Google Cloud Documentation:</strong></p>
+                <ul>
+                    <li><strong>Quickstarts:</strong> 5 minutos para "Hello World".</li>
+                    <li><strong>Conceptos:</strong> Explicaciones profundas antes de tutoriales.</li>
+                    <li><strong>Best practices:</strong> Secciones destacadas de recomendaciones.</li>
+                </ul>
+
+                <p><strong>Microsoft Docs:</strong></p>
+                <ul>
+                    <li><strong>Modular:</strong> Cada página es un "learning unit".</li>
+                    <li><strong>Interactive:</strong> Sandbox para probar código.</li>
+                    <li><strong>Version-aware:</strong> Selector de versión del producto.</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin: 1.5rem 0; border-left: 4px solid #059669;">
+                <h3 style="color: #065f46; margin-top: 0;">Ejercicio: Crear Documentación Completa del Proyecto UCS</h3>
+                <p><strong>Entregable final:</strong> Documentación profesional lista para producción.</p>
+                
+                <h4 style="color: #1e3a5f; margin-top: 1.5rem;">Estructura del Repositorio:</h4>
+                <pre style="font-size: 0.85rem;">UCS_Documentation/
+├── README.md                    # Visión general del proyecto
+├── docs/
+│   ├── 01-introduccion.md       # Contexto y objetivos
+│   ├── 02-arquitectura.md       # Diagramas y componentes
+│   ├── 03-instalacion.md        # Guía de instalación paso a paso
+│   ├── 04-configuracion.md      # Configuración detallada
+│   ├── 05-operacion.md          # Runbooks y procedimientos
+│   ├── 06-seguridad.md          # Políticas y hardening
+│   ├── 07-troubleshooting.md    # Problemas comunes y soluciones
+│   └── 08-referencia.md         # Comandos y configuraciones
+├── diagrams/
+│   ├── arquitectura-general.png
+│   ├── red-topologia.png
+│   └── flujo-datos.png
+├── scripts/
+│   ├── install.sh
+│   ├── backup.sh
+│   └── monitor.sh
+├── config/
+│   ├── apache-ucs.conf
+│   ├── samba-smb.conf
+│   └── firewall-rules.sh
+└── evidence/
+    ├── screenshots/
+    └── test-results/</pre>
+
+                <h4 style="color: #1e3a5f; margin-top: 1.5rem;">Contenido mínimo por sección:</h4>
+                <table style="width: 100%; border-collapse: collapse; margin-top: 1rem;">
+                    <thead>
+                        <tr style="background: #e0e7ff;">
+                            <th style="padding: 0.75rem; border: 1px solid #c7d2fe;">Sección</th>
+                            <th style="padding: 0.75rem; border: 1px solid #c7d2fe;">Contenido requerido</th>
+                            <th style="padding: 0.75rem; border: 1px solid #c7d2fe;">Ejemplo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb;">Introducción</td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb;">Qué es, para qué sirve, quién lo usa</td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb;">"UCS es un sistema de gestión de contenidos..."</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb;">Arquitectura</td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb;">Diagrama, componentes, tecnologías</td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb;">2 VMs, Apache, Samba, MySQL...</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb;">Instalación</td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb;">Requisitos, pasos, comandos</td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb;">Paso 1: Instalar Ubuntu...</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb;">Configuración</td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb;">Archivos de config, parámetros</td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb;">/etc/apache2/sites-available/...</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb;">Operación</td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb;">Procedimientos diarios</td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb;">Cómo reiniciar servicios...</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb;">Troubleshooting</td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb;">Problemas + soluciones</td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb;">Error 403: Verificar permisos...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="card" style="margin: 1.5rem 0; border-left: 4px solid #7c3aed;">
+                <h3 style="color: #5b21b6; margin-top: 0;">Herramientas: Markdown y MkDocs</h3>
+                
+                <p><strong>Markdown Básico:</strong></p>
+                <pre style="font-size: 0.85rem;"># Título Principal (H1)
+## Sección (H2)
+### Subsección (H3)
+
+**Texto en negrita**
+*Texto en cursiva*
+`código inline`
+
+```bash
+# Bloque de código
+sudo apt update
+```
+
+- Lista de items
+- Otro item
+  - Sub-item
+
+1. Lista numerada
+2. Segundo paso
+
+[Link a Google](https://google.com)
+![Imagen descriptiva](ruta/imagen.png)
+
+| Columna 1 | Columna 2 |
+|-----------|-----------|
+| Dato 1    | Dato 2    |
+
+> Nota o cita importante</pre>
+
+                <p><strong>MkDocs para Documentación Web:</strong></p>
+                <pre style="font-size: 0.85rem;"># Instalación
+pip install mkdocs mkdocs-material
+
+# Crear proyecto
+mkdocs new ucs-docs
+cd ucs-docs
+
+# Estructura generada
+ucs-docs/
+├── docs/
+│   └── index.md
+└── mkdocs.yml
+
+# Configuración mkdocs.yml
+site_name: Documentación UCS
+site_description: Sistema de Gestión UCS
+site_author: Tu Nombre
+theme: material
+
+nav:
+  - Inicio: index.md
+  - Arquitectura: arquitectura.md
+  - Instalación: instalacion.md
+  - Operación: operacion.md
+
+markdown_extensions:
+  - codehilite
+  - admonition
+  - toc:
+      permalink: true
+
+# Servir localmente
+mkdocs serve
+
+# Construir sitio
+mkdocs build</pre>
+
+                <p><strong>Extensiones útiles de Markdown:</strong></p>
+                <ul>
+                    <li><strong>Admonition:</strong> Cajas de notas, warnings, tips.</li>
+                    <li><strong>Code blocks:</strong> Sintaxis highlight.</li>
+                    <li><strong>Tables:</strong> Datos tabulares.</li>
+                    <li><strong>Emoji:</strong> Iconos visuales :warning: :rocket: :white_check_mark:.</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin: 1.5rem 0; border-left: 4px solid #dc2626;">
+                <h3 style="color: #991b1b; margin-top: 0;">Mejores Prácticas: Cómo Escribir Documentación que Sí Lean</h3>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
+                    <div>
+                        <h4 style="color: #1e40af;">✅ Hacer:</h4>
+                        <ul style="line-height: 1.8;">
+                            <li>Escribir para el lector objetivo (novato vs experto).</li>
+                            <li>Usar ejemplos concretos de comandos.</li>
+                            <li>Incluir screenshots de resultados esperados.</li>
+                            <li>Organizar por tareas, no por features.</li>
+                            <li>Verificar que los comandos funcionan copiando y pegando.</li>
+                            <li>Actualizar cuando cambia el sistema.</li>
+                            <li>Usar lenguaje simple y directo.</li>
+                            <li>Incluir "TL;DR" al inicio de secciones largas.</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 style="color: #dc2626;">❌ Evitar:</h4>
+                        <ul style="line-height: 1.8;">
+                            <li>Jerga técnica innecesaria.</li>
+                            <li>Bloques de texto largos sin formato.</li>
+                            <li>Suponer conocimiento previo no documentado.</li>
+                            <li>Documentación desactualizada.</li>
+                            <li>Duplicar información en múltiples lugares.</li>
+                            <li>Documentar lo obvio.</li>
+                            <li>Usar pronombres ambiguos ("esto", "eso").</li>
+                            <li>Olvidar el contexto del "por qué".</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div style="background: #fef3c7; padding: 1rem; border-radius: 6px; margin-top: 1rem;">
+                    <p style="margin: 0;"><strong>💡 Principio Diátaxis:</strong> Organiza documentación en 4 tipos:</p>
+                    <ol style="margin: 0.5rem 0 0 0;">
+                        <li><strong>Tutoriales:</strong> Aprendizaje guiado paso a paso.</li>
+                        <li><strong>How-to guides:</strong> Resolver problemas específicos.</li>
+                        <li><strong>Referencias:</strong> Información técnica precisa.</li>
+                        <li><strong>Explicaciones:</strong> Entender conceptos y decisiones.</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="card" style="margin: 1.5rem 0; border-left: 4px solid #0369a1; background: #f0f9ff;">
+                <h3 style="color: #0369a1; margin-top: 0;">Checklist de Calidad de Documentación</h3>
+                <p>Antes de entregar, verifica:</p>
+                <ul style="list-style: none; padding-left: 0;">
+                    <li style="margin: 0.5rem 0;"><input type="checkbox" style="margin-right: 0.5rem;"> README.md tiene título, descripción, y requisitos claros</li>
+                    <li style="margin: 0.5rem 0;"><input type="checkbox" style="margin-right: 0.5rem;"> Todos los comandos fueron probados en una VM limpia</li>
+                    <li style="margin: 0.5rem 0;"><input type="checkbox" style="margin-right: 0.5rem;"> Diagramas están actualizados y en alta resolución</li>
+                    <li style="margin: 0.5rem 0;"><input type="checkbox" style="margin-right: 0.5rem;"> Tablas de configuración son completas (IPs, puertos, usuarios)</li>
+                    <li style="margin: 0.5rem 0;"><input type="checkbox" style="margin-right: 0.5rem;"> Troubleshooting cubre al menos 5 problemas comunes</li>
+                    <li style="margin: 0.5rem 0;"><input type="checkbox" style="margin-right: 0.5rem;"> No hay errores de ortografía ni gramática</li>
+                    <li style="margin: 0.5rem 0;"><input type="checkbox" style="margin-right: 0.5rem;"> Formato Markdown es válido (usar linter)</li>
+                    <li style="margin: 0.5rem 0;"><input type="checkbox" style="margin-right: 0.5rem;"> Enlaces externos funcionan correctamente</li>
+                    <li style="margin: 0.5rem 0;"><input type="checkbox" style="margin-right: 0.5rem;"> Imágenes tienen descripciones (alt text)</li>
+                    <li style="margin: 0.5rem 0;"><input type="checkbox" style="margin-right: 0.5rem;"> Documentación está versionada (fecha, versión, autor)</li>
+                </ul>
+            </div>
+
+            <div style="background: #fef3c7; border-left: 4px solid #f59e0b; padding: 1.5rem; margin-top: 2rem; border-radius: 8px;">
+                <h3 style="color: #92400e; margin-top: 0;">🎯 Conexión con Evaluación E6</h3>
+                <p>Esta práctica laboral prepara directamente para la <strong>E6: Sustentación Final</strong>:</p>
+                <ul>
+                    <li>✅ Manual técnico profesional</li>
+                    <li>✅ Documentación de arquitectura</li>
+                    <li>✅ Runbooks de operación</li>
+                    <li>✅ README.md completo</li>
+                </ul>
+            </div>
+        </section>
+
         <section id="conexion-evaluacion" style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-left: 5px solid #f59e0b; padding: 2rem; margin: 2rem 0; border-radius: 8px;">
             <h2 style="color: #92400e; margin-bottom: 1.5rem;">📋 Conexión con Evaluación</h2>
             

@@ -251,6 +251,267 @@ SystemPropertiesPerformance -> Settings -> Change -> Custom size</code></pre>
             </div>
         </section>
 
+        <section id="practica-laboral" style="background: #f0f9ff; border-left: 5px solid #0284c7; padding: 2rem; margin: 2rem 0; border-radius: 8px;">
+            <h2 style="color: #0369a1; margin-bottom: 1.5rem;">🛠️ Práctica Laboral</h2>
+
+            <div class="card" style="margin: 1.5rem 0; border-left: 4px solid #dc2626;">
+                <h3 style="color: #991b1b; margin-top: 0;">Caso de Estudio: "El Colapso de la Aplicación por Thrashing"</h3>
+
+                <p><strong>Escenario real:</strong> Una aplicación web en Java (Spring Boot) desplegada en un servidor con 8GB RAM experimenta caídas repentinas durante horas pico. El monitor muestra:</p>
+
+                <div style="background: #fef2f2; padding: 1rem; border-radius: 4px; margin: 1rem 0;">
+                    <ul style="margin: 0;">
+                        <li>CPU: 15% (extremadamente baja)</li>
+                        <li>Disco: 98% (lecturas/escrituras constantes)</li>
+                        <li>Tiempo de respuesta: 30-60 segundos</li>
+                        <li>Usuarios: timeouts masivos</li>
+                    </ul>
+                </div>
+
+                <p><strong>Análisis del problema:</strong></p>
+                <ol>
+                    <li>La JVM está configurada con heap de 6GB (-Xmx6G)</li>
+                    <li>El sistema operativo + otros servicios usan 2GB</li>
+                    <li>Durante hora pico, el GC (Garbage Collector) trabaja intensivamente</li>
+                    <li>El kernel mueve páginas constantemente entre RAM y swap</li>
+                    <li>Resultado: El sistema pasa más tiempo haciendo swapping que ejecutando código útil</li>
+                </ol>
+
+                <p><strong>Diagnóstico paso a paso:</strong></p>
+                <pre><code class="language-bash"># 1. Verificar estado de swap
+free -h
+
+# 2. Observar actividad de swap en tiempo real
+vmstat 1 10
+# Columnas si (swap in) y so (swap out)
+
+# 3. Identificar procesos que causan swapping
+for file in /proc/*/status; do
+    awk '/VmSwap|Name/{print $2}' $file 2>/dev/null | xargs
+done | sort -k2 -rn | head -10
+
+# 4. Ver page faults del proceso problemático
+ps -o pid,comm,minflt,majflt -p [PID_JAVA]</code></pre>
+
+                <p><strong>Solución implementada:</strong></p>
+                <ol>
+                    <li>Reducir heap de JVM a 4GB (-Xmx4G) para dejar margen al SO</li>
+                    <li>Ajustar swappiness de 60 a 10</li>
+                    <li>Mover swap a SSD NVMe</li>
+                    <li>Implementar G1GC con ajustes para heap de 4GB</li>
+                </ol>
+
+                <p><strong>Resultado:</strong> CPU volvió a 60-70%, tiempos de respuesta < 2 segundos, disco a niveles normales.</p>
+            </div>
+
+            <div class="card" style="margin: 1.5rem 0; border-left: 4px solid #059669;">
+                <h3 style="color: #065f46; margin-top: 0;">Ejercicios de Tuning: Configurar Swappiness Óptimo</h3>
+
+                <p><strong>Entendiendo vm.swappiness:</strong></p>
+                <ul>
+                    <li><strong>0:</strong> No usar swap excepto en emergencias de OOM</li>
+                    <li><strong>1-10:</strong> Recomendado para servidores con mucha RAM (bases de datos)</li>
+                    <li><strong>60:</strong> Valor por defecto en Ubuntu (balanceado)</li>
+                    <li><strong>100:</strong> Agresivo, mueve todo a swap rápidamente</li>
+                </ul>
+
+                <p><strong>Guía por tipo de workload:</strong></p>
+                <table style="margin: 1rem 0;">
+                    <thead>
+                        <tr><th>Tipo de Sistema</th><th>Swappiness Recomendado</th><th>Razón</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Base de datos (PostgreSQL, MySQL)</td><td>1-10</td><td>Evitar latencia de disco en queries</td></tr>
+                        <tr><td>Servidor web (Nginx, Apache)</td><td>10-30</td><td>Balance entre caché y swap</td></tr>
+                        <tr><td>Desktop/Workstation</td><td>60</td><td>Permite swapear apps inactivas</td></tr>
+                        <tr><td>VM/Contenedor con poca RAM</td><td>80-100</td><td>Maximizar RAM disponible</td></tr>
+                    </tbody>
+                </table>
+
+                <p><strong>Práctica guiada:</strong></p>
+                <pre><code class="language-bash"># Ver configuración actual
+cat /proc/sys/vm/swappiness
+
+# Cambiar temporalmente (hasta reinicio)
+sudo sysctl -w vm.swappiness=10
+
+# Verificar cambio
+sysctl vm.swappiness
+
+# Hacer permanente
+echo "vm.swappiness=10" | sudo tee -a /etc/sysctl.conf
+
+# Aplicar configuración
+do sysctl -p</code></pre>
+
+                <p><strong>Ejercicio práctico:</strong></p>
+                <ol>
+                    <li>Configura tu sistema con swappiness=100</li>
+                    <li>Abre varias aplicaciones pesadas hasta que empiece a usar swap</li>
+                    <li>Observa el rendimiento con <code>vmstat 1</code></li>
+                    <li>Cambia a swappiness=10</li>
+                    <li>Repite el test y documenta las diferencias</li>
+                </ol>
+            </div>
+
+            <div class="card" style="margin: 1.5rem 0; border-left: 4px solid #7c3aed;">
+                <h3 style="color: #5b21b6; margin-top: 0;">Laboratorio: Crear y Configurar Swap Files</h3>
+
+                <p><strong>Opción 1: Crear archivo de swap en Linux:</strong></p>
+                <pre><code class="language-bash"># 1. Crear archivo de 2GB
+sudo fallocate -l 2G /swapfile
+# Alternativa sin fallocate:
+# sudo dd if=/dev/zero of=/swapfile bs=1G count=2
+
+# 2. Establecer permisos seguros
+sudo chmod 600 /swapfile
+
+# 3. Formatear como swap
+sudo mkswap /swapfile
+
+# 4. Activar
+sudo swapon /swapfile
+
+# 5. Verificar
+sudo swapon --show
+free -h
+
+# 6. Hacer permanente (fstab)
+echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab</code></pre>
+
+                <p><strong>Opción 2: Configurar swap en Windows:</strong></p>
+                <pre><code class="language-powershell"># Ver configuración actual
+cat /proc/sys/vm/swappiness
+
+# Cambiar temporalmente (hasta reinicio)
+sudo sysctl -w vm.swappiness=10
+
+# Verificar cambio
+sysctl vm.swappiness
+
+# Hacer permanente
+echo "vm.swappiness=10" | sudo tee -a /etc/sysctl.conf
+
+# Aplicar configuración
+sudo sysctl -p</code></pre>
+
+                <p><strong>Swap en SSD vs HDD:</strong></p>
+                <table style="margin: 1rem 0;">
+                    <thead>
+                        <tr><th>Característica</th><th>SSD</th><th>HDD</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Latencia de acceso</td><td>0.1 ms</td><td>10 ms</td></tr>
+                        <tr><td>IOPS</td><td>50,000+</td><td>100-200</td></tr>
+                        <tr><td>Impacto en thrashing</td><td>Menor</td><td>Crítico</td></tr>
+                        <tr><td>Desgaste por escritura</td><td>Sí (limitado)</td><td>No</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="card" style="margin: 1.5rem 0; border-left: 4px solid #f59e0b;">
+                <h3 style="color: #92400e; margin-top: 0;">Análisis de Page Faults con perf</h3>
+
+                <p><strong>perf</strong> es la herramienta de profiling del kernel Linux. Permite analizar page faults a nivel de función.</p>
+
+                <pre><code class="language-bash"># Instalar perf
+sudo apt-get install linux-tools-common linux-tools-generic
+
+# Ver page faults por proceso
+sudo perf stat -e page-faults,major-faults,minor-faults -p [PID]
+
+# Perfil de page faults durante ejecución
+sudo perf record -e page-faults -g -- ./mi_aplicacion
+
+# Generar reporte
+sudo perf report --sort=dso,symbol</code></pre>
+
+                <p><strong>Interpretación de resultados:</strong></p>
+                <ul>
+                    <li><strong>Minor faults:</strong> Página en RAM pero no mapeada (rápido)</li>
+                    <li><strong>Major faults:</strong> Página en disco (lento, requiere I/O)</li>
+                    <li><strong>Alta tasa de major faults:</strong> Posible thrashing o carga lazy</li>
+                </ul>
+
+                <p><strong>Ejercicio: Analizar un programa con perf</strong></p>
+                <pre><code class="language-c">// test_memory.c
+#include <stdlib.h>
+#include <string.h>
+
+int main() {
+    // Reservar 100MB
+    char *mem = malloc(100 * 1024 * 1024);
+
+    // Acceder a toda la memoria (provoca page faults)
+    memset(mem, 0, 100 * 1024 * 1024);
+
+    free(mem);
+    return 0;
+}</code></pre>
+
+                <p>Compila y ejecuta con perf:</p>
+                <pre><code class="language-bash">gcc -o test_memory test_memory.c
+sudo perf stat -e page-faults,major-faults,minor-faults ./test_memory</code></pre>
+            </div>
+
+            <div class="card" style="margin: 1.5rem 0; border-left: 4px solid #2563eb;">
+                <h3 style="color: #1e40af; margin-top: 0;">Best Practices: Cuándo NO Usar Swap</h3>
+
+                <p><strong>Sistemas que deben deshabilitar o minimizar swap:</strong></p>
+
+                <ol>
+                    <li><strong>Bases de datos en memoria (Redis, Memcached):</strong>
+                        <ul>
+                            <li>El rendimiento se degrada catastróficamente si los datos van a swap</li>
+                            <li>Configuración recomendada: swappiness=1 o deshabilitar swap</li>
+                            <li>Redis tiene protección: <code>vm.overcommit_memory=1</code></li>
+                        </ul>
+                    </li>
+                    <li><strong>Aplicaciones de tiempo real (trading, VoIP):</strong>
+                        <ul>
+                            <li>La latencia del swap es inaceptable</li>
+                            <li>Usar <code>mlockall()</code> para evitar que páginas vayan a swap</li>
+                        </ul>
+                    </li>
+                    <li><strong>Clusters de Kubernetes con mucha RAM:</strong>
+                        <ul>
+                            <li>Si los nodos tienen suficiente RAM, swap puede causar problemas de scheduling</li>
+                            <li>Kubernetes 1.22+ puede gestionar swap de forma controlada</li>
+                        </ul>
+                    </li>
+                </ol>
+
+                <p><strong>Cómo deshabilitar swap temporalmente:</strong></p>
+                <pre><code class="language-bash"># Desactivar swap (datos en swap se mueven a RAM)
+sudo swapoff -a
+
+# Verificar
+free -h  # Swap debe mostrar 0
+
+# Reactivar (si es necesario)
+sudo swapon -a</code></pre>
+
+                <p><strong>Locking de memoria con mlock:</strong></p>
+                <pre><code class="language-c">#include <sys/mman.h>
+
+int main() {
+    // Evitar que cualquier memoria del proceso vaya a swap
+    if (mlockall(MCL_CURRENT | MCL_FUTURE) == -1) {
+        perror("mlockall");
+        return 1;
+    }
+
+    // Tu código aquí...
+
+    // Liberar bloqueo (opcional)
+    munlockall();
+    return 0;
+}</code></pre>
+
+                <p><strong>⚠️ Advertencia:</strong> Usar mlockall requiere privilegios (CAP_IPC_LOCK) y puede causar que el sistema se quede sin RAM para otros procesos.</p>
+            </div>
+        </section>
+
         <section id="conexion-evaluacion" style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-left: 5px solid #f59e0b; padding: 2rem; margin: 2rem 0; border-radius: 8px;">
             <h2 style="color: #92400e; margin-bottom: 1.5rem;">📋 Conexión con Evaluación</h2>
             

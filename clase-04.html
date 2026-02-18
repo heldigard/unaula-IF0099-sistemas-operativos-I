@@ -295,6 +295,223 @@ sudo sysctl -w net.ipv4.ip_forward=1</code></pre>
             </div>
         </section>
 
+        <section id="practica-laboral" style="background: #f0f9ff; border-left: 5px solid #0284c7; padding: 2rem; margin: 2rem 0; border-radius: 8px;">
+            <h2 style="color: #0369a1; margin-bottom: 1.5rem;">🛠️ Práctica Laboral</h2>
+            
+            <div class="card" style="margin: 1.5rem 0; border-left: 4px solid #7c3aed;">
+                <h4 style="color: #5b21b6; margin-bottom: 1rem;">🐚 Comparativa de Shells: bash vs zsh vs fish</h4>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Característica</th>
+                            <th>Bash</th>
+                            <th>Zsh</th>
+                            <th>Fish</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Compatibilidad</strong></td>
+                            <td>Universal (default)</td>
+                            <td>Alto (bash-compatible)</td>
+                            <td>Moderado (no POSIX)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Autocompletado</strong></td>
+                            <td>Básico (Tab)</td>
+                            <td>Avanzado (menu)</td>
+                            <td>Inteligente (auto)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Plugins</strong></td>
+                            <td>Limitado</td>
+                            <td>Oh-My-Zsh (rico)</td>
+                            <td>Integrado</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Configuración</strong></td>
+                            <td>.bashrc</td>
+                            <td>.zshrc</td>
+                            <td>Web config</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Velocidad</strong></td>
+                            <td>Rápido</td>
+                            <td>Con plugins: lento</td>
+                            <td>Rápido</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div style="background: #eff6ff; padding: 1rem; border-radius: 6px; margin-top: 1rem;">
+                    <p style="margin: 0;"><strong>¿Cuándo usar cada uno?</strong></p>
+                    <ul style="margin-top: 0.5rem;">
+                        <li><strong>Bash:</strong> Scripts de producción, servidores (siempre disponible)</li>
+                        <li><strong>Zsh:</strong> Desarrollo diario con muchas herramientas (Docker, K8s, Git)</li>
+                        <li><strong>Fish:</strong> Usuarios nuevos que quieren experiencia amigable</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card" style="margin: 1.5rem 0; border-left: 4px solid #059669;">
+                <h4 style="color: #065f46; margin-bottom: 1rem;">⚙️ Ejercicio: Configuración Profesional de .bashrc</h4>
+                <p>Crea un archivo <code>~/.bashrc</code> profesional con estas configuraciones esenciales:</p>
+                
+                <div style="background: #f0fdf4; padding: 1.5rem; border-radius: 8px; margin: 1rem 0;">
+                    <p style="margin: 0;"><strong>1. Aliases Útiles:</strong></p>
+                    <pre style="margin: 0.5rem 0;"><code class="language-bash"># Navegación rápida
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ll='ls -lah'
+alias la='ls -A'
+
+# Gestión de paquetes (Ubuntu/Debian)
+alias update='sudo apt update && sudo apt upgrade -y'
+alias install='sudo apt install'
+
+# Git rápido
+alias gs='git status'
+alias gp='git pull'
+alias gc='git commit -m'
+
+# Seguridad
+alias rm='rm -i'  # Confirmar antes de borrar
+alias cp='cp -i'
+alias mv='mv -i'</code></pre>
+                </div>
+                
+                <div style="background: #eff6ff; padding: 1.5rem; border-radius: 8px; margin: 1rem 0;">
+                    <p style="margin: 0;"><strong>2. Funciones Útiles:</strong></p>
+                    <pre style="margin: 0.5rem 0;"><code class="language-bash"># Extraer cualquier archivo comprimido
+extract() {
+    if [ -f $1 ]; then
+        case $1 in
+            *.tar.bz2) tar xjf $1 ;;
+            *.tar.gz)  tar xzf $1 ;;
+            *.zip)     unzip $1 ;;
+            *.rar)     unrar x $1 ;;
+            *)         echo "No sé cómo extraer '$1'" ;;
+        esac
+    else
+        echo "'$1' no es un archivo válido"
+    fi
+}
+
+# Crear directorio y entrar
+mkcd() {
+    mkdir -p "$1" && cd "$1"
+}
+
+# Buscar proceso y matar
+killproc() {
+    ps aux | grep "$1" | grep -v grep
+    read -p "¿Mat procesos encontrados? (s/n): " resp
+    if [ "$resp" = "s" ]; then
+        pkill -9 "$1"
+    fi
+}</code></pre>
+                </div>
+                
+                <div style="background: #fef3c7; padding: 1.5rem; border-radius: 8px; margin: 1rem 0;">
+                    <p style="margin: 0;"><strong>3. Prompt Profesional:</strong></p>
+                    <pre style="margin: 0.5rem 0;"><code class="language-bash"># Prompt con colores: usuario@host:directorio (git branch)$
+parse_git_branch() {
+    git branch 2>/dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
+}
+
+export PS1="\[\e[32m\]\u@\h\[\e[m\]:\[\e[34m\]\w\[\e[m\] \[\e[33m\]\$(parse_git_branch)\[\e[m\]\$ "</code></pre>
+                    <p style="margin: 0; font-size: 0.9rem;">Resultado: <code style="background: #1e293b; color: #4ade80; padding: 0.2rem 0.5rem;">user@server:/var/www (main)$</code></p>
+                </div>
+            </div>
+
+            <div class="card" style="margin: 1.5rem 0; border-left: 4px solid #dc2626;">
+                <h4 style="color: #991b1b; margin-bottom: 1rem;">🔍 Caso de Estudio: System Calls en Aplicaciones Reales</h4>
+                
+                <div style="background: #fef2f2; padding: 1.5rem; border-radius: 8px;">
+                    <p><strong>Análisis de Apache Web Server:</strong></p>
+                    
+                    <p>Cuando Apache recibe una petición HTTP, ¿qué system calls usa?</p>
+                    
+                    <pre style="margin: 0.5rem 0;"><code class="language-bash"># Ver las system calls de Apache
+sudo strace -p $(pgrep apache2 | head -1) -e trace=network,file 2>&1 | head -20</code></pre>
+                    
+                    <p style="margin-top: 1rem;"><strong>System calls típicas:</strong></p>
+                    <table style="margin-top: 0.5rem;">
+                        <thead>
+                            <tr><th>Syscall</th><th>Función</th><th>Cuándo se usa</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><code>socket()</code></td><td>Crear socket</td><td>Al iniciar, crea socket de escucha</td></tr>
+                            <tr><td><code>bind()</code></td><td>Asignar puerto</td><td>Enlaza al puerto 80/443</td></tr>
+                            <tr><td><code>listen()</code></td><td>Escuchar conexiones</td><td>Prepara para aceptar clientes</td></tr>
+                            <tr><td><code>accept()</code></td><td>Aceptar conexión</td><td>Cuando llega petición HTTP</td></tr>
+                            <tr><td><code>open()</code></td><td>Abrir archivo</td><td>Abre index.html solicitado</td></tr>
+                            <tr><td><code>read()</code></td><td>Leer datos</td><td>Lee contenido del archivo</td></tr>
+                            <tr><td><code>write()</code></td><td>Escribir datos</td><td>Envía respuesta HTTP al cliente</td></tr>
+                            <tr><td><code>close()</code></td><td>Cerrar archivo</td><td>Cierra conexión y archivo</td></tr>
+                        </tbody>
+                    </table>
+                    
+                    <p style="margin-top: 1rem;"><strong>Insight profesional:</strong> Entender estas syscalls te permite:</p>
+                    <ul>
+                        <li>Diagnosticar por qué Apache no inicia (puerto ocupado → <code>bind()</code> falla)</li>
+                        <li>Identificar cuellos de botella en I/O de disco</li>
+                        <li>Optimizar configuraciones de file descriptors</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card" style="margin: 1.5rem 0; border-left: 4px solid #2563eb;">
+                <h4 style="color: #1e40af; margin-bottom: 1rem;">🛠️ Ejercicio: Uso de strace para Ver System Calls</h4>
+                
+                <p>Practica el uso de <code>strace</code> para analizar el comportamiento del sistema:</p>
+                
+                <div style="background: #eff6ff; padding: 1.5rem; border-radius: 8px; margin: 1rem 0;">
+                    <p style="margin: 0;"><strong>Ejercicio 1: Analizar un comando simple</strong></p>
+                    <pre style="margin: 0.5rem 0;"><code class="language-bash"># Ver todas las syscalls de 'ls'
+strace ls /tmp 2>&1 | head -30
+
+# ¿Cuántas syscalls usa solo para listar archivos?</code></pre>
+                </div>
+                
+                <div style="background: #f0fdf4; padding: 1.5rem; border-radius: 8px; margin: 1rem 0;">
+                    <p style="margin: 0;"><strong>Ejercicio 2: Detectar errores</strong></p>
+                    <pre style="margin: 0.5rem 0;"><code class="language-bash"># Buscar errores de archivo no encontrado
+strace -e trace=file ls /no_existe 2>&1 | grep ENOENT
+
+# Ver errores de permisos denegados
+strace -e trace=file cat /etc/shadow 2>&1 | grep EACCES</code></pre>
+                </div>
+                
+                <div style="background: #fef3c7; padding: 1.5rem; border-radius: 8px; margin: 1rem 0;">
+                    <p style="margin: 0;"><strong>Ejercicio 3: Monitorear un proceso en ejecución</strong></p>
+                    <pre style="margin: 0.5rem 0;"><code class="language-bash"># Inicia Apache
+sudo systemctl start apache2
+
+# Encuentra el PID principal
+pgrep apache2
+
+# Monitorear syscalls de red
+sudo strace -p [PID] -e trace=network -f
+
+# Haz una petición curl desde otra terminal
+curl http://localhost
+
+# Observa las syscalls accept(), read(), write()</code></pre>
+                </div>
+                
+                <div style="background: #fef2f2; padding: 1.5rem; border-radius: 8px; margin: 1rem 0;">
+                    <p style="margin: 0;"><strong>Ejercicio 4: Contar syscalls</strong></p>
+                    <pre style="margin: 0.5rem 0;"><code class="language-bash"># Contar cuántas syscalls hace un programa
+strace -c ls /usr/bin 2>&1
+
+# Mira el porcentaje de tiempo en cada syscall
+# ¿Cuál syscall consume más tiempo?</code></pre>
+                </div>
+            </div>
+        </section>
+
         <section id="conexion-evaluacion" style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-left: 5px solid #f59e0b; padding: 2rem; margin: 2rem 0; border-radius: 8px;">
             <h2 style="color: #92400e; margin-bottom: 1.5rem;">📋 Conexión con Evaluación</h2>
             

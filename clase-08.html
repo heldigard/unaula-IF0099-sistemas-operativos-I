@@ -303,6 +303,208 @@ Get-Counter "\Memory\Page Faults/sec"</code></pre>
             </div>
         </section>
 
+        <section id="practica-laboral" style="background: #f0f9ff; border-left: 5px solid #0284c7; padding: 2rem; margin: 2rem 0; border-radius: 8px;">
+            <h2 style="color: #0369a1; margin-bottom: 1.5rem;">🛠️ Práctica Laboral</h2>
+            
+            <div class="card" style="margin: 1.5rem 0; border-left: 4px solid #7c3aed;">
+                <h3 style="color: #5b21b6; margin-top: 0;">Ejercicio de Cálculo: "Calcula el Tiempo de Acceso Total"</h3>
+                
+                <p><strong>Datos:</strong> Un programa necesita acceder a 1000 datos. Analiza diferentes escenarios:</p>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Jerarquía</th>
+                            <th>Hit Rate L1</th>
+                            <th>Hit Rate L2</th>
+                            <th>Tiempo L1</th>
+                            <th>Tiempo L2</th>
+                            <th>Tiempo RAM</th>
+                            <th>Tiempo Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>A</td>
+                            <td>90%</td>
+                            <td>8%</td>
+                            <td>1 ns</td>
+                            <td>10 ns</td>
+                            <td>100 ns</td>
+                            <td>?</td>
+                        </tr>
+                        <tr>
+                            <td>B</td>
+                            <td>70%</td>
+                            <td>20%</td>
+                            <td>1 ns</td>
+                            <td>10 ns</td>
+                            <td>100 ns</td>
+                            <td>?</td>
+                        </tr>
+                        <tr>
+                            <td>C</td>
+                            <td>95%</td>
+                            <td>4%</td>
+                            <td>2 ns</td>
+                            <td>8 ns</td>
+                            <td>80 ns</td>
+                            <td>?</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <p><strong>Fórmula:</strong></p>
+                <pre>Tiempo Total = (Hit_L1 × Time_L1) + (Miss_L1 × Hit_L2 × Time_L2) + (Miss_L1 × Miss_L2 × Time_RAM)</pre>
+                
+                <p><strong>Ejemplo para A:</strong></p>
+                <pre>(0.90 × 1) + (0.10 × 0.80 × 10) + (0.10 × 0.20 × 100)
+= 0.9 + 0.8 + 2.0 = 3.7 ns promedio por acceso
+Para 1000 accesos: 3700 ns = 3.7 μs</pre>
+                
+                <p><strong>Tu tarea:</strong> Calcula el tiempo total para los escenarios B y C. ¿Cuál es más eficiente?</p>
+            </div>
+
+            <div class="card" style="margin: 1.5rem 0; border-left: 4px solid #059669;">
+                <h3 style="color: #065f46; margin-top: 0;">Caso Real: Cómo Google Optimiza el Uso de Memoria en sus Servidores</h3>
+                
+                <p><strong>El desafío:</strong> Google opera millones de servidores. Ahorrar 1GB de RAM por servidor equivale a ahorrar millones en infraestructura.</p>
+                
+                <h4>Técnicas de Optimización:</h4>
+                <ol>
+                    <li><strong>Memory Deduplication (KSM - Kernel Same-page Merging):</strong>
+                        <ul>
+                            <li>Identifica páginas de memoria idénticas entre procesos</li>
+                            <li>Las fusiona en una sola página física (copy-on-write)</li>
+                            <li>En VMs: Ahorra 20-40% de RAM cuando todas corren el mismo SO</li>
+                        </ul>
+                    </li>
+                    <li><strong>Memory Compression (zRAM):</strong>
+                        <ul>
+                            <li>Comprime páginas en RAM antes de enviarlas a swap</li>
+                            <li>Reduce I/O de disco hasta 70%</li>
+                            <li>Trade-off: Usa CPU para descompresión</li>
+                        </ul>
+                    </li>
+                    <li><strong>Huge Pages:</strong>
+                        <ul>
+                            <li>Usa páginas de 2MB en lugar de 4KB</li>
+                            <li>Reduce TLB misses en cargas de trabajo grandes</li>
+                            <li>Mejora rendimiento de bases de datos hasta 15%</li>
+                        </ul>
+                    </li>
+                </ol>
+                
+                <p><strong>Práctica:</strong> Verificar si tu sistema tiene zRAM activado:</p>
+                <pre><code class="language-bash"># Ver estado de zRAM
+swapon -s | grep zram
+
+# Ver estadísticas
+zramctl --output-all
+
+# Ver uso de KSM
+cat /sys/kernel/mm/ksm/pages_shared
+cat /sys/kernel/mm/ksm/pages_sharing</code></pre>
+            </div>
+
+            <div class="card" style="margin: 1.5rem 0; border-left: 4px solid #dc2626;">
+                <h3 style="color: #991b1b; margin-top: 0;">Herramientas: Valgrind y Massif - Profiling de Memoria Básico</h3>
+                
+                <h4>Valgrind: Detección de Memory Leaks</h4>
+                <pre><code class="language-bash"># Instalar
+sudo apt-get install valgrind
+
+# Ejecutar programa con detección de leaks
+valgrind --leak-check=full --show-leak-kinds=all ./mi_programa
+
+# Salida esperada si hay leak:
+# ==1234== LEAK SUMMARY:
+# ==1234==    definitely lost: 1,024 bytes in 1 blocks
+# ==1234==    indirectly lost: 0 bytes in 0 blocks</code></pre>
+                
+                <h4>Massif: Perfilado de Uso de Memoria</h4>
+                <pre><code class="language-bash"># Generar perfil de uso de heap
+valgrind --tool=massif ./mi_programa
+
+# Visualizar resultado
+ms_print massif.out.</PID> | less
+
+# Ver uso de memoria a lo largo del tiempo
+# Útil para encontrar picos de consumo</code></pre>
+                
+                <p><strong>Ejercicio:</strong> Compila y ejecuta este programa con Valgrind:</p>
+                <pre><code class="language-c">#include <stdlib.h>
+#include <stdio.h>
+
+int main() {
+    // Memory leak intencional
+    char *buffer = malloc(1024);
+    buffer[0] = 'H';
+    printf("%c\n", buffer[0]);
+    // Falta: free(buffer);
+    return 0;
+}</code></pre>
+                
+                <p>¿Detecta Valgrind el leak? Arregla el código y verifica que no haya leaks.</p>
+            </div>
+
+            <div class="card" style="margin: 1.5rem 0; border-left: 4px solid #2563eb;">
+                <h3 style="color: #1e40af; margin-top: 0;">Troubleshooting: "Mi Aplicación Consume Toda la RAM"</h3>
+                
+                <h4>Guía de Diagnóstico Paso a Paso:</h4>
+                
+                <p><strong>Paso 1: Identificar el proceso culpable</strong></p>
+                <pre><code class="language-bash"># Ordenar por uso de memoria
+ps aux --sort=-%mem | head -10
+
+# Ver crecimiento en tiempo real
+watch -n 1 'ps aux --sort=-%mem | head -5'
+</code></pre>
+                
+                <p><strong>Paso 2: Analizar el tipo de consumo</strong></p>
+                <pre><code class="language-bash"># Diferenciar RSS vs VSZ
+ps -eo pid,comm,rss,vsz,pmem --sort=-rss | head
+
+# RSS (Resident Set): Memoria física real usada
+# VSZ (Virtual Memory): Espacio de direcciones virtual
+# Si VSZ >> RSS: El proceso reservó mucha memoria pero no la usa</code></pre>
+                
+                <p><strong>Paso 3: Encontrar memory leaks</strong></p>
+                <pre><code class="language-bash"># Monitorear crecimiento de RSS a lo largo del tiempo
+while true; do
+    ps -o pid,rss,comm -p [PID] | tail -1
+    sleep 5
+done
+
+# Si RSS crece indefinidamente → Memory leak</code></pre>
+                
+                <p><strong>Paso 4: Acciones inmediatas</strong></p>
+                <ul>
+                    <li><strong>OOM Killer:</strong> Linux matará procesos automáticamente. Ver log: <code>dmesg | grep -i "killed process"</code></li>
+                    <li><strong>Limitar proceso:</strong> <code>ulimit -v [bytes_maximos]</code></li>
+                    <li><strong>Usar cgroups:</strong> Limitar RAM por proceso/servicio</li>
+                    <li><strong>Reiniciar servicio:</strong> Último recurso si hay memory leak</li>
+                </ul>
+                
+                <p><strong>Ejercicio práctico:</strong> Simula un memory leak y observa cómo responde el sistema:</p>
+                <pre><code class="language-python">#!/usr/bin/env python3
+# memory_stress.py - Simula consumo de memoria
+import time
+
+lista = []
+counter = 0
+while True:
+    # Reservar 10MB cada iteración
+    lista.append("X" * (10 * 1024 * 1024))
+    counter += 1
+    print(f"Reservados: {counter * 10} MB")
+    time.sleep(1)
+</code></pre>
+                
+                <p>En otra terminal, ejecuta <code>watch -n 1 free -h</code> y observa cómo decrece la memoria disponible.</p>
+            </div>
+        </section>
+
         <section id="conexion-evaluacion" style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-left: 5px solid #f59e0b; padding: 2rem; margin: 2rem 0; border-radius: 8px;">
             <h2 style="color: #92400e; margin-bottom: 1.5rem;">📋 Conexión con Evaluación</h2>
             
