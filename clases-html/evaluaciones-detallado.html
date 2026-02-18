@@ -1,0 +1,1472 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía Detallada de Evaluaciones | IF0099 - Sistemas Operativos I</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            line-height: 1.7;
+            color: #374151;
+            background: #f9fafb;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        
+        header {
+            background: linear-gradient(135deg, #1e3a5f 0%, #2d5a87 100%);
+            color: white;
+            border-radius: 12px;
+            padding: 40px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        h1 { font-size: 2.2rem; margin-bottom: 10px; }
+        .subtitle { font-size: 1.1rem; opacity: 0.9; }
+        
+        .nav-bar {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+            border: 1px solid #e5e7eb;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .nav-bar a {
+            padding: 10px 20px;
+            background: #f3f4f6;
+            color: #374151;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        .nav-bar a:hover { background: #e5e7eb; }
+        .nav-bar a.active { background: #1e3a5f; color: white; }
+        
+        .intro-section {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+            border: 1px solid #e5e7eb;
+        }
+        .intro-section h2 {
+            color: #1e3a5f;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e5e7eb;
+        }
+        
+        .eval-container {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+            border: 1px solid #e5e7eb;
+            border-left: 5px solid;
+        }
+        .eval-container.e1 { border-left-color: #10b981; }
+        .eval-container.e2 { border-left-color: #3b82f6; }
+        .eval-container.e3 { border-left-color: #8b5cf6; }
+        .eval-container.e4 { border-left-color: #f59e0b; }
+        .eval-container.e5 { border-left-color: #ef4444; }
+        .eval-container.e6 { border-left-color: #1e3a5f; }
+        
+        .eval-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f3f4f6;
+        }
+        .eval-title {
+            font-size: 1.5rem;
+            color: #111827;
+            font-weight: 600;
+        }
+        .eval-meta {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        .meta-badge {
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        .meta-badge.percentage { background: #dcfce7; color: #166534; }
+        .meta-badge.date { background: #fef3c7; color: #92400e; }
+        .meta-badge.ra { background: #e0e7ff; color: #3730a3; }
+        
+        h3 {
+            color: #1e3a5f;
+            font-size: 1.2rem;
+            margin: 25px 0 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .step-box {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+        }
+        .step-box h4 {
+            color: #374151;
+            font-size: 1rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .step-number {
+            background: #1e3a5f;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        
+        .deliverable-box {
+            background: #f0fdf4;
+            border: 2px solid #86efac;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .deliverable-box h4 {
+            color: #166534;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+        .deliverable-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        .deliverable-list li {
+            padding: 8px 0;
+            padding-left: 28px;
+            position: relative;
+            border-bottom: 1px solid #bbf7d0;
+        }
+        .deliverable-list li:last-child { border-bottom: none; }
+        .deliverable-list li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #16a34a;
+            font-weight: bold;
+        }
+        
+        .checklist-box {
+            background: #eff6ff;
+            border: 2px solid #bfdbfe;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .checklist-box h4 {
+            color: #1e40af;
+            margin-bottom: 15px;
+        }
+        .checklist {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        .checklist li {
+            padding: 6px 0;
+            padding-left: 28px;
+            position: relative;
+        }
+        .checklist li::before {
+            content: "☐";
+            position: absolute;
+            left: 0;
+            color: #3b82f6;
+            font-size: 1.2rem;
+        }
+        
+        .warning-box {
+            background: #fffbeb;
+            border-left: 4px solid #f59e0b;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .warning-box strong { color: #92400e; }
+        
+        .tip-box {
+            background: #f3f4f6;
+            border-left: 4px solid #6b7280;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .tip-box strong { color: #374151; }
+        
+        code {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9em;
+        }
+        
+        .code-block {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 0.95rem;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        th {
+            background: #f9fafb;
+            font-weight: 600;
+            color: #374151;
+        }
+        
+        footer {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            text-align: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+            border: 1px solid #e5e7eb;
+            color: #6b7280;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📋 Guía Detallada de Evaluaciones</h1>
+            <p class="subtitle">IF0099 - Sistemas Operativos I | Proyecto UCS | 2026-I</p>
+        </header>
+
+        <div class="nav-bar">
+            <a href="index.html">🏠 Inicio</a>
+            <a href="cronograma.html">📅 Cronograma</a>
+            <a href="concertacion.html">📋 Concertación</a>
+            <a href="proyecto.html">📘 Guía del Proyecto</a>
+            <a href="rubricas.html">📊 Rúbricas</a>
+        </div>
+
+        <div class="intro-section">
+            <h2>🎯 Sobre las Evaluaciones</h2>
+            <p style="margin-bottom: 15px;">Este curso utiliza un <strong>modelo de evaluación práctica por proyectos</strong>. No hay exámenes teóricos de memorización. Cada evaluación corresponde a una fase del proyecto <strong>UNAULA Cloud Services (UCS)</strong>.</p>
+            
+            <div class="warning-box">
+                <strong>📌 Importante:</strong> Todas las evaluaciones son <strong>prácticas</strong> y requieren que demuestres habilidades reales en sistemas operativos Linux y Windows. Debes trabajar en máquinas virtuales reales, ejecutar comandos, crear scripts y documentar todo el proceso.
+            </div>
+
+            <table style="margin-top: 20px;">
+                <thead>
+                    <tr>
+                        <th>Eval</th>
+                        <th>Fecha</th>
+                        <th>%</th>
+                        <th>Tipo</th>
+                        <th>Resultado de Aprendizaje</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>E1</strong></td>
+                        <td>25 Feb</td>
+                        <td>15%</td>
+                        <td>Informe</td>
+                        <td>RA1: Identifica estructura y tipos de SO</td>
+                    </tr>
+                    <tr>
+                        <td><strong>E2</strong></td>
+                        <td>11 Mar</td>
+                        <td>15%</td>
+                        <td>Software</td>
+                        <td>RA2: Gestiona procesos del SO</td>
+                    </tr>
+                    <tr>
+                        <td><strong>E3</strong></td>
+                        <td>25 Mar</td>
+                        <td>20%</td>
+                        <td>Laboratorio</td>
+                        <td>RA3: Administra memoria, E/S, archivos</td>
+                    </tr>
+                    <tr>
+                        <td><strong>E4</strong></td>
+                        <td>22 Abr</td>
+                        <td>15%</td>
+                        <td>Software</td>
+                        <td>RA4: Evalúa seguridad de SO</td>
+                    </tr>
+                    <tr>
+                        <td><strong>E5</strong></td>
+                        <td>06 May</td>
+                        <td>15%</td>
+                        <td>Software</td>
+                        <td>RA5: Comprende integración de servicios</td>
+                    </tr>
+                    <tr>
+                        <td><strong>E6</strong></td>
+                        <td>27 May</td>
+                        <td>20%</td>
+                        <td>Presentación</td>
+                        <td>RA6: Estudia interfaces del SO</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- E1 -->
+        <div class="eval-container e1" id="e1">
+            <div class="eval-header">
+                <div class="eval-title">🚀 FASE 1: Fundamentos y Arquitectura (E1)</div>
+                <div class="eval-meta">
+                    <span class="meta-badge percentage">15%</span>
+                    <span class="meta-badge date">25 Feb</span>
+                    <span class="meta-badge ra">RA1</span>
+                </div>
+            </div>
+
+            <h3>📋 Descripción</h3>
+            <p>En esta fase establecerás la <strong>base técnica del proyecto UCS</strong>. Debes demostrar que comprendes los fundamentos de sistemas operativos y que puedes configurar un entorno de virtualización profesional donde las máquinas virtuales se vean entre sí.</p>
+
+            <div class="warning-box">
+                <strong>🎯 Objetivo:</strong> Montar tu "oficina de trabajo" para todo el semestre. Al finalizar, tendrás dos VMs (Linux y Windows) comunicándose en red.
+            </div>
+
+            <h3>🛠️ Qué debes hacer (Paso a paso)</h3>
+
+            <div class="step-box">
+                <h4><span class="step-number">1</span> Instalar VirtualBox y descargar ISOs</h4>
+                <ul style="margin-top: 10px; margin-left: 20px;">
+                    <li>Descarga <strong>VirtualBox 7.x</strong> de https://www.virtualbox.org/</li>
+                    <li>Descarga <strong>Ubuntu Server 22.04 LTS</strong> (versión SERVER, no Desktop)</li>
+                    <li>Descarga <strong>Windows 10/11 Pro</strong> (o versión de evaluación)</li>
+                </ul>
+            </div>
+
+            <div class="step-box">
+                <h4><span class="step-number">2</span> Crear las Máquinas Virtuales</h4>
+                <p style="margin: 10px 0;"><strong>VM 1: UCS-Linux (Ubuntu Server)</strong></p>
+                <div class="code-block">
+Nombre: UCS-Linux
+Tipo: Linux → Ubuntu (64-bit)
+RAM: 4GB (mínimo 2GB)
+CPU: 2 núcleos
+Disco: 20GB (dinámico)
+Red: Adaptador Puente (Bridge)</div>
+
+                <p style="margin: 10px 0;"><strong>VM 2: UCS-Windows (Windows Pro)</strong></p>
+                <div class="code-block">
+Nombre: UCS-Windows
+Tipo: Microsoft Windows → Windows 10/11 (64-bit)
+RAM: 6GB (mínimo 4GB)
+CPU: 2 núcleos
+Disco: 40GB (dinámico)
+Red: Adaptador Puente (Bridge)</div>
+            </div>
+
+            <div class="step-box">
+                <h4><span class="step-number">3</span> Configurar Red en Modo Bridge</h4>
+                <p>En VirtualBox: <strong>VM → Configuración → Red → Adaptador 1 → Conectado a: Adaptador Puente</strong></p>
+                <p>Esto permite que las VMs obtengan IPs de tu red local como computadores reales.</p>
+            </div>
+
+            <div class="step-box">
+                <h4><span class="step-number">4</span> Verificar Conectividad</h4>
+                <p><strong>En Linux:</strong></p>
+                <div class="code-block"># Ver tu IP
+ip addr show
+
+# Hacer ping a Windows
+ping 192.168.1.XXX  # (IP de tu VM Windows)</div>
+
+                <p><strong>En Windows:</strong></p>
+                <div class="code-block"># Ver tu IP
+ipconfig
+
+# Hacer ping a Linux
+ping 192.168.1.XXX  # (IP de tu VM Linux)</div>
+            </div>
+
+            <div class="step-box">
+                <h4><span class="step-number">5</span> Recolectar Información del Sistema</h4>
+                <p><strong>En Linux:</strong></p>
+                <div class="code-block">uname -a          # Información del kernel
+lscpu             # Información de CPU
+free -h           # Memoria
+df -h             # Disco</div>
+
+                <p><strong>En Windows:</strong></p>
+                <div class="code-block">systeminfo        # Información completa del sistema</div>
+            </div>
+
+            <div class="step-box">
+                <h4><span class="step-number">6</span> Crear Diagrama de Red</h4>
+                <p>Dibuja un esquema visual que incluya:</p>
+                <ul style="margin-left: 20px;">
+                    <li>Tu computador (Host)</li>
+                    <li>Router/Red local</li>
+                    <li>VM Linux con su IP y recursos</li>
+                    <li>VM Windows con su IP y recursos</li>
+                    <li>Flechas mostrando la comunicación entre VMs</li>
+                </ul>
+                <p style="margin-top: 10px;"><strong>Herramientas:</strong> draw.io, PowerPoint, o incluso papel y lápiz (luego fotografía)</p>
+            </div>
+
+            <h3>📦 Entregables Obligatorios</h3>
+            <div class="deliverable-box">
+                <h4>📄 Archivo PDF único (máximo 10 páginas) con:</h4>
+                <ul class="deliverable-list">
+                    <li><strong>Portada:</strong> Universidad, curso, docente, tu nombre, fecha, título</li>
+                    <li><strong>Diagrama de Red UCS:</strong> Esquema visual con IPs y recursos de cada VM</li>
+                    <li><strong>Inventario Técnico:</strong> Tabla comparativa de recursos asignados con justificación técnica</li>
+                    <li><strong>Tabla Comparativa de SO:</strong> Linux vs Windows vs macOS (kernel, licencia, uso de RAM, etc.)</li>
+                    <li><strong>Evidencias:</strong> Capturas de pantalla de:
+                        <ul style="margin-left: 20px; margin-top: 5px;">
+                            <li>Configuración de red en VirtualBox (ambas VMs)</li>
+                            <li><code>uname -a</code> en Linux</li>
+                            <li><code>systeminfo</code> en Windows</li>
+                            <li>Ping exitoso entre VMs</li>
+                        </ul>
+                    </li>
+                    <li><strong>Reflexión:</strong> ¿Qué aprendiste? ¿Qué desafíos encontraste?</li>
+                </ul>
+            </div>
+
+            <h3>✅ Checklist antes de entregar</h3>
+            <div class="checklist-box">
+                <h4>Verifica que cumples con todo:</h4>
+                <ul class="checklist">
+                    <li>PDF tiene máximo 10 páginas</li>
+                    <li>Portada con todos los datos requeridos</li>
+                    <li>Diagrama de red es claro y legible</li>
+                    <li>Todas las capturas muestran información legible (no borrosa)</li>
+                    <li>IPs están correctamente documentadas</li>
+                    <li>Justificaciones técnicas son coherentes</li>
+                    <li>Sin faltas de ortografía graves</li>
+                    <li>Formato profesional y organizado</li>
+                </ul>
+            </div>
+
+            <div class="warning-box">
+                <strong>⚠️ Errores comunes a evitar:</strong>
+                <ul style="margin-left: 20px; margin-top: 5px;">
+                    <li>Usar Ubuntu Desktop en lugar de Ubuntu Server</li>
+                    <li>Configurar NAT en lugar de Bridge (las VMs no se verán)</li>
+                    <li>Olvidar documentar las IPs asignadas</li>
+                    <li>Capturas de pantalla ilegibles o recortadas</li>
+                    <li>No justificar las decisiones técnicas</li>
+                </ul>
+            </div>
+
+            <div class="tip-box">
+                <strong>💡 Tips para esta fase:</strong>
+                <ul style="margin-left: 20px; margin-top: 5px;">
+                    <li>Instala las VMs con tiempo, no dejes todo para el último día</li>
+                    <li>Guarda las credenciales (usuario/contraseña) de cada VM</li>
+                    <li>Toma capturas durante el proceso, no al final</li>
+                    <li>Haz backup de tus VMs exportándolas en VirtualBox</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- E2 -->
+        <div class="eval-container e2" id="e2">
+            <div class="eval-header">
+                <div class="eval-title">⚙️ FASE 2: Procesos y Monitoreo (E2)</div>
+                <div class="eval-meta">
+                    <span class="meta-badge percentage">15%</span>
+                    <span class="meta-badge date">11 Mar</span>
+                    <span class="meta-badge ra">RA2</span>
+                </div>
+            </div>
+
+            <h3>📋 Descripción</h3>
+            <p>Implementarás <strong>visibilidad operativa</strong> sobre tu sistema UCS. Como ingeniero, no debes entrar a la VM para saber que algo falló; el sistema debe avisarte automáticamente.</p>
+
+            <div class="warning-box">
+                <strong>🎯 Objetivo:</strong> Crear scripts de monitoreo que detecten problemas y envíen alertas. Automatizar la supervisión de procesos y servicios.
+            </div>
+
+            <h3>🛠️ Qué debes hacer (Paso a paso)</h3>
+
+            <div class="step-box">
+                <h4><span class="step-number">1</span> Crear Script de Monitoreo en Linux (monitor.sh)</h4>
+                <p>Este script debe ejecutarse cada N segundos y alertar si el CPU supera el 80%.</p>
+                <div class="code-block">#!/bin/bash
+# monitor.sh - Script de monitoreo UCS
+
+UMBRAL_CPU=80
+INTERVALO=5
+
+while true; do
+    # Obtener uso de CPU
+    USO_CPU=$(top -bn1 | grep "Cpu(s)" | awk '{print $2}' | cut -d'%' -f1)
+    
+    echo "$(date) - Uso de CPU: ${USO_CPU}%"
+    
+    # Verificar si supera umbral
+    if (( $(echo "$USO_CPU > $UMBRAL_CPU" | bc -l) )); then
+        echo "⚠️ ALERTA: Uso de CPU alto: ${USO_CPU}%"
+        # Aquí puedes agregar envío de correo o notificación
+    fi
+    
+    sleep $INTERVALO
+done</div>
+
+                <p style="margin-top: 10px;"><strong>Comandos adicionales a incluir:</strong></p>
+                <div class="code-block"># Ver procesos que más consumen
+ps aux --sort=-%cpu | head -n 5
+
+# Ver uso de memoria
+free -h
+
+# Ver espacio en disco
+df -h</div>
+            </div>
+
+            <div class="step-box">
+                <h4><span class="step-number">2</span> Crear Script de Servicios en Windows (services.ps1)</h4>
+                <p>Este script vigila el servicio "Cola de Impresión" (Spooler) y lo reinicia automáticamente si se detiene.</p>
+                <div class="code-block"># services.ps1 - Monitoreo de servicios Windows
+
+$SERVICIO = "Spooler"
+$INTERVALO = 10
+
+while ($true) {
+    $estado = Get-Service -Name $SERVICIO
+    
+    Write-Host "$(Get-Date) - Estado del servicio $SERVICIO`: $($estado.Status)"
+    
+    if ($estado.Status -eq "Stopped") {
+        Write-Host "⚠️ ALERTA: Servicio detenido. Reiniciando..." -ForegroundColor Red
+        Start-Service -Name $SERVICIO
+        Write-Host "✅ Servicio reiniciado correctamente" -ForegroundColor Green
+    }
+    
+    Start-Sleep -Seconds $INTERVALO
+}</div>
+            </div>
+
+            <div class="step-box">
+                <h4><span class="step-number">3</span> Configurar Ejecución Automática</h4>
+                <p><strong>En Linux (systemd):</strong></p>
+                <div class="code-block"># Crear archivo de servicio
+sudo nano /etc/systemd/system/ucs-monitor.service
+
+# Contenido:
+[Unit]
+Description=UCS Monitor Service
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/ruta/a/monitor.sh
+Restart=always
+User=tu-usuario
+
+[Install]
+WantedBy=multi-user.target
+
+# Activar servicio
+sudo systemctl enable ucs-monitor
+sudo systemctl start ucs-monitor</div>
+
+                <p style="margin-top: 10px;"><strong>En Windows (Tarea Programada):</strong></p>
+                <div class="code-block"># Abrir Task Scheduler (taskschd.msc)
+# Crear nueva tarea:
+# - General: Ejecutar con privilegios más altos
+# - Desencadenadores: Al inicio
+# - Acción: Iniciar PowerShell.exe -File "C:\ruta\services.ps1"</div>
+            </div>
+
+            <div class="step-box">
+                <h4><span class="step-number">4</span> Probar los Scripts</h4>
+                <p><strong>Prueba en Linux:</strong></p>
+                <div class="code-block"># Ejecutar script manualmente
+chmod +x monitor.sh
+./monitor.sh
+
+# En otra terminal, generar carga de CPU:
+stress --cpu 4 --timeout 30
+
+# Verificar que el script detecta el alto uso de CPU</div>
+
+                <p style="margin-top: 10px;"><strong>Prueba en Windows:</strong></p>
+                <div class="code-block"># Ejecutar script
+.\services.ps1
+
+# Detener manualmente el servicio Spooler:
+Stop-Service Spooler
+
+# Verificar que el script lo reinicia automáticamente</div>
+            </div>
+
+            <h3>📦 Entregables Obligatorios</h3>
+            <div class="deliverable-box">
+                <h4>📄 Archivos a entregar:</h4>
+                <ul class="deliverable-list">
+                    <li><strong>Código Fuente:</strong> Archivos <code>monitor.sh</code> (Linux) y <code>services.ps1</code> (Windows) limpios y comentados</li>
+                    <li><strong>Video Técnico (5 min máximo):</strong> Link a video demostrando:
+                        <ul style="margin-left: 20px; margin-top: 5px;">
+                            <li>Ejecución del script de Linux mostrando alerta de CPU</li>
+                            <li>Ejecución del script de Windows reiniciando servicio</li>
+                            <li>Explicación breve del código</li>
+                        </ul>
+                    </li>
+                    <li><strong>Bitácora de Pruebas:</strong> PDF corto documentando errores encontrados y cómo los resolviste</li>
+                    <li><strong>Evidencias de funcionamiento:</strong> Capturas de pantalla de los scripts ejecutándose</li>
+                </ul>
+            </div>
+
+            <h3>✅ Criterios de Evaluación</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Criterio</th>
+                        <th>Peso</th>
+                        <th>Qué se evalúa</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Funcionalidad Script Linux</td>
+                        <td>30%</td>
+                        <td>Monitorea CPU/RAM y genera alertas correctamente</td>
+                    </tr>
+                    <tr>
+                        <td>Funcionalidad Script Windows</td>
+                        <td>30%</td>
+                        <td>Detecta servicios detenidos y reinicia automáticamente</td>
+                    </tr>
+                    <tr>
+                        <td>Calidad del Código</td>
+                        <td>20%</td>
+                        <td>Comentarios, estructura limpia, buenas prácticas</td>
+                    </tr>
+                    <tr>
+                        <td>Video Demostración</td>
+                        <td>10%</td>
+                        <td>Claridad en la explicación, demuestra funcionamiento real</td>
+                    </tr>
+                    <tr>
+                        <td>Documentación</td>
+                        <td>10%</td>
+                        <td>Bitácora de pruebas, instrucciones de uso</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- E3 -->
+        <div class="eval-container e3" id="e3">
+            <div class="eval-header">
+                <div class="eval-title">🔬 FASE 3: Laboratorio de Optimización (E3)</div>
+                <div class="eval-meta">
+                    <span class="meta-badge percentage">20%</span>
+                    <span class="meta-badge date">25 Mar</span>
+                    <span class="meta-badge ra">RA3</span>
+                </div>
+            </div>
+
+            <h3>📋 Descripción</h3>
+            <p>Esta es la <strong>prueba de fuego</strong> de media mitad de semestre. Es un <strong>laboratorio individual</strong> donde resolverás 5 escenarios técnicos reales de optimización. Se evalúa tu capacidad de diagnosticar y resolver problemas de rendimiento bajo presión.</p>
+
+            <div class="warning-box">
+                <strong>⚠️ Importante:</strong> Este es un <strong>checkpoint práctico individual</strong>. Se basa en escenarios proporcionados por el docente el día de la sesión. No es un examen de memorización, sino de aplicación de conceptos.
+            </div>
+
+            <h3>🎯 Contenido a Evaluar</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Tema</th>
+                        <th>Clase</th>
+                        <th>Herramientas</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Cambio de Contexto y Concurrencia</td>
+                        <td>C03, C07</td>
+                        <td>vmstat, ps, htop</td>
+                    </tr>
+                    <tr>
+                        <td>Gestión de Memoria</td>
+                        <td>C08</td>
+                        <td>free, vmstat, /proc/meminfo</td>
+                    </tr>
+                    <tr>
+                        <td>Paginación</td>
+                        <td>C09</td>
+                        <td>pmap, /proc/PID/smaps</td>
+                    </tr>
+                    <tr>
+                        <td>Memoria Virtual y Swapping</td>
+                        <td>C10</td>
+                        <td>vmstat (si/so), swapon</td>
+                    </tr>
+                    <tr>
+                        <td>Discos y E/S</td>
+                        <td>C11</td>
+                        <td>iostat, iotop, df</td>
+                    </tr>
+                    <tr>
+                        <td>Sistemas de Archivos Básico</td>
+                        <td>C12</td>
+                        <td>ls -i, df -i, lsof</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>🔍 Ejemplos de Escenarios que Resolverás</h3>
+
+            <div class="step-box">
+                <h4>📊 Escenario 1: Memory Pressure (Fuga de Memoria)</h4>
+                <p><strong>Situación:</strong> Un proceso tiene un "Memory Leak" (fuga de memoria) y está consumiendo toda la RAM.</p>
+                <p><strong>Tu tarea:</strong></p>
+                <div class="code-block"># 1. Identificar qué proceso consume más memoria
+ps aux --sort=-%mem | head -n 5
+
+# 2. Ver detalles del mapeo de memoria del proceso
+pmap -x PID
+
+# 3. Monitorear uso de swap
+vmstat 1 10
+
+# 4. Documentar hallazgos y solución</div>
+            </div>
+
+            <div class="step-box">
+                <h4>💾 Escenario 2: I/O Bottleneck (Cuello de Botella de Disco)</h4>
+                <p><strong>Situación:</strong> El servidor web está lento. Los usuarios reportan tiempos de respuesta altos.</p>
+                <p><strong>Tu tarea:</strong></p>
+                <div class="code-block"># 1. Ver estadísticas de I/O por disco
+iostat -x 1 10
+
+# Observar columnas:
+# - %util: Porcentaje de utilización (cerca de 100% = problema)
+# - await: Tiempo promedio de espera (alto = lento)
+
+# 2. Ver procesos que más leen/escriben
+iotop
+
+# 3. Analizar y proponer solución</div>
+            </div>
+
+            <div class="step-box">
+                <h4>🔗 Escenario 3: Forense de Archivos (Inodos Huérfanos)</h4>
+                <p><strong>Situación:</strong> El sistema reporta "disco lleno" pero al revisar no hay archivos grandes.</p>
+                <p><strong>Tu tarea:</strong></p>
+                <div class="code-block"># 1. Ver uso de inodos (no solo espacio)
+df -i
+
+# 2. Buscar archivos con inodos huérfanos
+lsof +L1
+
+# 3. Ver archivos borrados pero con procesos abiertos
+lsof | grep deleted
+
+# 4. Encontrar y reparar links simbólicos rotos
+find / -xtype l 2>/dev/null</div>
+            </div>
+
+            <h3>📦 Entregable Obligatorio</h3>
+            <div class="deliverable-box">
+                <h4>📄 PDF de Análisis Forense con 5 escenarios:</h4>
+                <p style="margin-bottom: 15px;"><strong>Estructura por cada escenario:</strong></p>
+                <ol style="margin-left: 20px;">
+                    <li><strong>Problema identificado:</strong> Descripción del diagnóstico</li>
+                    <li><strong>Datos que lo prueban:</strong> Capturas de comandos y salidas</li>
+                    <li><strong>Solución aplicada:</strong> Comandos ejecutados para resolver</li>
+                    <li><strong>Captura del resultado:</strong> Evidencia de que funcionó</li>
+                </ol>
+            </div>
+
+            <h3>✅ Criterios de Evaluación</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Criterio</th>
+                        <th>Peso</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Análisis correcto del escenario (identifica el problema real)</td>
+                        <td>40%</td>
+                    </tr>
+                    <tr>
+                        <td>Uso correcto de herramientas y comandos</td>
+                        <td>30%</td>
+                    </tr>
+                    <tr>
+                        <td>Solución efectiva implementada</td>
+                        <td>20%</td>
+                    </tr>
+                    <tr>
+                        <td>Documentación clara y evidencias</td>
+                        <td>10%</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="warning-box">
+                <strong>📌 Nota:</strong> No incluye temas avanzados de sistemas de archivos (RAID, Journaling, fstab). Esos temas se evalúan en la Fase 5.
+            </div>
+        </div>
+
+        <!-- E4 -->
+        <div class="eval-container e4" id="e4">
+            <div class="eval-header">
+                <div class="eval-title">🔒 FASE 4: Seguridad y Hardening (E4)</div>
+                <div class="eval-meta">
+                    <span class="meta-badge percentage">15%</span>
+                    <span class="meta-badge date">22 Abr</span>
+                    <span class="meta-badge ra">RA4</span>
+                </div>
+            </div>
+
+            <h3>📋 Descripción</h3>
+            <p>Transformarás el sistema UCS de "funcional" a <strong>"seguro y a prueba de ataques"</strong>. Aplicarás técnicas de hardening en ambos sistemas operativos y documentarás las vulnerabilidades mitigadas.</p>
+
+            <h3>🛠️ Qué debes hacer (Paso a paso)</h3>
+
+            <div class="step-box">
+                <h4><span class="step-number">1</span> Hardening en Linux</h4>
+                
+                <p><strong>a) Configurar Firewall (UFW):</strong></p>
+                <div class="code-block"># Ver estado actual
+sudo ufw status verbose
+
+# Política por defecto: denegar todo entrada, permitir salida
+sudo ufw default deny incoming
+sudo ufw default allow outgoing
+
+# Permitir solo SSH (puerto 22) desde tu red
+sudo ufw allow from 192.168.1.0/24 to any port 22
+
+# Si tienes Apache, permitir HTTP/HTTPS
+sudo ufw allow 80/tcp
+sudo ufw allow 443/tcp
+
+# Activar firewall
+sudo ufw enable
+
+# Verificar reglas
+sudo ufw status numbered</div>
+
+                <p style="margin-top: 15px;"><strong>b) Implementar ACLs (Access Control Lists):</strong></p>
+                <div class="code-block"># Crear directorio para datos UCS
+sudo mkdir -p /var/www/ucs
+
+# Establecer propietario www-data
+sudo chown www-data:www-data /var/www/ucs
+
+# Permisos base: solo propietario y grupo
+sudo chmod 750 /var/www/ucs
+
+# ACL granular: usuario específico tiene acceso de lectura
+sudo setfacl -m u:tu-usuario:r /var/www/ucs
+
+# Verificar ACLs
+getfacl /var/www/ucs</div>
+
+                <p style="margin-top: 15px;"><strong>c) Desactivar servicios innecesarios:</strong></p>
+                <div class="code-block"># Ver servicios activos
+sudo systemctl list-units --type=service --state=running
+
+# Desactivar servicios que no necesitas
+sudo systemctl disable [servicio]
+sudo systemctl stop [servicio]
+
+# Ejemplos comunes a desactivar en servidor:
+# - cups (impresión)
+# - bluetooth
+# - avahi-daemon</div>
+            </div>
+
+            <div class="step-box">
+                <h4><span class="step-number">2</span> Hardening en Windows</h4>
+                
+                <p><strong>a) Configurar Políticas de Seguridad Local:</strong></p>
+                <div class="code-block"># Abrir editor de políticas
+secpol.msc
+
+# Configurar:
+# - Políticas de contraseñas:
+#   * Longitud mínima: 8 caracteres
+#   * Complejidad: Habilitada
+#   * Vigencia máxima: 90 días
+#
+# - Políticas de bloqueo de cuenta:
+#   * Umbral de bloqueo: 5 intentos fallidos
+#   * Duración: 30 minutos</div>
+
+                <p style="margin-top: 15px;"><strong>b) Configurar Windows Firewall:</strong></p>
+                <div class="code-block"># Abrir firewall
+wf.msc
+
+# Crear reglas de entrada:
+# 1. Bloquear todo por defecto
+# 2. Permitir solo:
+#    - Puerto 3389 (RDP) - si lo necesitas
+#    - Puerto 80/443 (IIS) - si está activo
+#    - ICMP (ping) - opcional</div>
+
+                <p style="margin-top: 15px;"><strong>c) Auditar eventos de seguridad:</strong></p>
+                <div class="code-block"># Abrir Visor de Eventos
+eventvwr.msc
+
+# Navegar a:
+# Windows Logs → Security
+
+# Ver intentos de inicio de sesión:
+# Event ID 4624 - Inicio exitoso
+# Event ID 4625 - Inicio fallido
+
+# Configurar auditoría adicional en:
+# secpol.msc → Configuración avanzada de auditoría</div>
+            </div>
+
+            <div class="step-box">
+                <h4><span class="step-number">3</span> Crear Matriz de Riesgos</h4>
+                <p>Documenta mínimo <strong>8 vulnerabilidades</strong> identificadas y cómo las mitigaste.</p>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Vulnerabilidad</th>
+                            <th>Riesgo</th>
+                            <th>Mitigación Aplicada</th>
+                            <th>Evidencia</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>Puertos abiertos innecesarios</td>
+                            <td>Alto</td>
+                            <td>Firewall UFW configurado</td>
+                            <td>ufw status</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>Permisos de archivos débiles</td>
+                            <td>Medio</td>
+                            <td>ACLs implementados</td>
+                            <td>getfacl</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>Servicios innecesarios activos</td>
+                            <td>Medio</td>
+                            <td>Servicios desactivados</td>
+                            <td>systemctl</td>
+                        </tr>
+                        <tr>
+                            <td>...</td>
+                            <td>...</td>
+                            <td>...</td>
+                            <td>...</td>
+                            <td>...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3>📦 Entregables Obligatorios</h3>
+            <div class="deliverable-box">
+                <h4>📄 Archivo PDF con:</h4>
+                <ul class="deliverable-list">
+                    <li><strong>Matriz de Riesgos:</strong> Tabla con mínimo 8 vulnerabilidades identificadas, nivel de riesgo y mitigación aplicada</li>
+                    <li><strong>Reporte de Auditoría Linux:</strong>
+                        <ul style="margin-left: 20px; margin-top: 5px;">
+                            <li>Captura de <code>ufw status verbose</code></li>
+                            <li>Captura de <code>getfacl /var/www/ucs</code></li>
+                            <li>Lista de servicios desactivados</li>
+                        </ul>
+                    </li>
+                    <li><strong>Reporte de Auditoría Windows:</strong>
+                        <ul style="margin-left: 20px; margin-top: 5px;">
+                            <li>Capturas de políticas de seguridad configuradas</li>
+                            <li>Captura de reglas de firewall</li>
+                            <li>Captura de eventos de auditoría</li>
+                        </ul>
+                    </li>
+                    <li><strong>Scripts de Seguridad:</strong> Scripts automatizados de hardening (si los desarrollaste)</li>
+                </ul>
+            </div>
+
+            <h3>✅ Checklist de Hardening</h3>
+            <div class="checklist-box">
+                <ul class="checklist">
+                    <li>Firewall Linux (UFW) configurado y activo</li>
+                    <li>Solo puertos necesarios están abiertos</li>
+                    <li>ACLs implementados en directorios críticos</li>
+                    <li>Servicios innecesarios desactivados en Linux</li>
+                    <li>Políticas de contraseñas configuradas en Windows</li>
+                    <li>Windows Firewall configurado</li>
+                    <li>Auditoría de eventos activada</li>
+                    <li>Matriz de riesgos completa (8+ vulnerabilidades)</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- E5 -->
+        <div class="eval-container e5" id="e5">
+            <div class="eval-header">
+                <div class="eval-title">🌐 FASE 5: Integración de Servicios (E5)</div>
+                <div class="eval-meta">
+                    <span class="meta-badge percentage">15%</span>
+                    <span class="meta-badge date">06 May</span>
+                    <span class="meta-badge ra">RA5</span>
+                </div>
+            </div>
+
+            <h3>📋 Descripción</h3>
+            <p><strong>Puesta en marcha definitiva.</strong> Los nodos Linux y Windows deben colaborar para servir la aplicación web UCS. Integrarás servidores web, almacenamiento redundante y monitoreo end-to-end.</p>
+
+            <h3>🛠️ Qué debes hacer (Paso a paso)</h3>
+
+            <div class="step-box">
+                <h4><span class="step-number">1</span> Desplegar Servidor Web Apache (Linux)</h4>
+                
+                <p><strong>a) Instalar y configurar Apache:</strong></p>
+                <div class="code-block"># Instalar Apache
+sudo apt update
+sudo apt install apache2 -y
+
+# Crear Virtual Host para UCS
+sudo nano /etc/apache2/sites-available/ucs.conf
+
+# Contenido:
+&lt;VirtualHost *:80&gt;
+    ServerName ucs.local
+    DocumentRoot /var/www/ucs
+    
+    &lt;Directory /var/www/ucs&gt;
+        AllowOverride All
+        Require all granted
+    &lt;/Directory&gt;
+    
+    ErrorLog ${APACHE_LOG_DIR}/ucs_error.log
+    CustomLog ${APACHE_LOG_DIR}/ucs_access.log combined
+&lt;/VirtualHost&gt;
+
+# Activar sitio
+sudo a2ensite ucs.conf
+sudo a2dissite 000-default.conf
+sudo systemctl reload apache2</div>
+
+                <p style="margin-top: 15px;"><strong>b) Configurar HTTPS (SSL auto-firmado):</strong></p>
+                <div class="code-block"># Generar certificado SSL
+sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+    -keyout /etc/ssl/private/ucs.key \
+    -out /etc/ssl/certs/ucs.crt
+
+# Configurar VirtualHost SSL
+sudo nano /etc/apache2/sites-available/ucs-ssl.conf
+
+# Contenido:
+&lt;VirtualHost *:443&gt;
+    ServerName ucs.local
+    DocumentRoot /var/www/ucs
+    
+    SSLEngine on
+    SSLCertificateFile /etc/ssl/certs/ucs.crt
+    SSLCertificateKeyFile /etc/ssl/private/ucs.key
+    
+    &lt;Directory /var/www/ucs&gt;
+        AllowOverride All
+        Require all granted
+    &lt;/Directory&gt;
+&lt;/VirtualHost&gt;
+
+# Activar módulos SSL y sitio
+sudo a2enmod ssl
+sudo a2ensite ucs-ssl.conf
+sudo systemctl reload apache2</div>
+            </div>
+
+            <div class="step-box">
+                <h4><span class="step-number">2</span> Desplegar Servidor IIS (Windows)</h4>
+                
+                <p><strong>a) Instalar IIS:</strong></p>
+                <div class="code-block"># PowerShell como Administrador
+Install-WindowsFeature -name Web-Server -IncludeManagementTools
+
+# Verificar instalación
+Get-WindowsFeature Web-Server</div>
+
+                <p style="margin-top: 15px;"><strong>b) Configurar Application Pool y Sitio:</strong></p>
+                <div class="code-block"># Crear Application Pool dedicado
+Import-Module WebAdministration
+New-Item -Path IIS:\AppPools\UCS-Pool
+Set-ItemProperty -Path IIS:\AppPools\UCS-Pool -Name "managedRuntimeVersion" -Value "v4.0"
+
+# Crear directorio del sitio
+New-Item -ItemType Directory -Path "C:\inetpub\ucs"
+
+# Crear sitio web
+New-Website -Name "UCS-Windows" -Port 8080 -PhysicalPath "C:\inetpub\ucs" -ApplicationPool "UCS-Pool"
+
+# Verificar sitio creado
+Get-Website</div>
+            </div>
+
+            <div class="step-box">
+                <h4><span class="step-number">3</span> Configurar Almacenamiento Avanzado</h4>
+                
+                <p><strong>a) RAID 1 (Mirroring) en Linux:</strong></p>
+                <div class="code-block"># Instalar mdadm
+sudo apt install mdadm -y
+
+# Crear RAID 1 con dos discos
+sudo mdadm --create /dev/md0 --level=1 --raid-devices=2 /dev/sdb /dev/sdc
+
+# Formatear
+sudo mkfs.ext4 /dev/md0
+
+# Montar
+sudo mkdir /mnt/raid1
+sudo mount /dev/md0 /mnt/raid1
+
+# Configurar fstab para montaje automático
+echo '/dev/md0 /mnt/raid1 ext4 defaults 0 0' | sudo tee -a /etc/fstab
+
+# Verificar estado del RAID
+cat /proc/mdstat
+sudo mdadm --detail /dev/md0</div>
+
+                <p style="margin-top: 15px;"><strong>b) Storage Spaces en Windows:</strong></p>
+                <div class="code-block"># PowerShell como Administrador
+# Ver discos disponibles
+Get-PhysicalDisk | Where-Object {$_.CanPool -eq $true}
+
+# Crear Storage Pool
+$disks = Get-PhysicalDisk | Where-Object {$_.CanPool -eq $true}
+New-StoragePool -FriendlyName "UCS-Pool" -StorageSubsystemFriendlyName "Windows Storage*" -PhysicalDisks $disks
+
+# Crear Virtual Disk con mirroring
+New-VirtualDisk -StoragePoolFriendlyName "UCS-Pool" -FriendlyName "UCS-Disk" -ResiliencySettingName Mirror -Size 20GB
+
+# Inicializar y formatear
+Get-VirtualDisk -FriendlyName "UCS-Disk" | Get-Disk | Initialize-Disk
+Get-VirtualDisk -FriendlyName "UCS-Disk" | Get-Partition | Format-Volume -FileSystem NTFS -NewFileSystemLabel "UCS-Data"</div>
+            </div>
+
+            <div class="step-box">
+                <h4><span class="step-number">4</span> Configurar Interoperabilidad (Samba)</h4>
+                <p>Permitir que Windows acceda a carpetas compartidas de Linux:</p>
+                <div class="code-block"># Instalar Samba
+sudo apt install samba -y
+
+# Crear carpeta compartida
+sudo mkdir -p /srv/samba/ucs-data
+sudo chown nobody:nogroup /srv/samba/ucs-data
+sudo chmod 777 /srv/samba/ucs-data
+
+# Configurar smb.conf
+sudo nano /etc/samba/smb.conf
+
+# Agregar al final:
+[ucs-data]
+   comment = UCS Shared Data
+   path = /srv/samba/ucs-data
+   browsable = yes
+   guest ok = yes
+   read only = no
+   create mask = 0755
+
+# Reiniciar Samba
+sudo systemctl restart smbd
+sudo systemctl restart nmbd
+
+# Verificar estado
+sudo systemctl status smbd</div>
+            </div>
+
+            <div class="step-box">
+                <h4><span class="step-number">5</span> Crear Dashboard de Integración</h4>
+                <p>Crear un script que verifique que todo está funcionando:</p>
+                <div class="code-block">#!/bin/bash
+# dashboard-check.sh
+
+echo "==================================="
+echo "Dashboard de Salud UCS"
+echo "$(date)"
+echo "==================================="
+
+# Verificar Apache
+echo -e "\n🌐 Servidor Web Apache:"
+if systemctl is-active --quiet apache2; then
+    echo "✅ Apache está corriendo"
+    curl -s -o /dev/null -w "%{http_code}" http://localhost
+else
+    echo "❌ Apache está detenido"
+fi
+
+# Verificar RAID
+echo -e "\n💾 Estado RAID:"
+cat /proc/mdstat | grep "md0"
+
+# Verificar Samba
+echo -e "\n📁 Servicio Samba:"
+if systemctl is-active --quiet smbd; then
+    echo "✅ Samba está corriendo"
+else
+    echo "❌ Samba está detenido"
+fi
+
+# Verificar monitoreo
+echo -e "\n⚙️ Script de monitoreo:"
+if pgrep -f "monitor.sh" > /dev/null; then
+    echo "✅ Monitor está activo"
+else
+    echo "❌ Monitor no está corriendo"
+fi
+
+echo -e "\n==================================="</div>
+            </div>
+
+            <h3>📦 Entregables Obligatorios</h3>
+            <div class="deliverable-box">
+                <h4>📄 Archivos y evidencias:</h4>
+                <ul class="deliverable-list">
+                    <li><strong>URLs/IPs de acceso:</strong> Capturas mostrando:
+                        <ul style="margin-left: 20px; margin-top: 5px;">
+                            <li>Portal Apache (http://IP-Linux)</li>
+                            <li>Portal Apache HTTPS (https://IP-Linux)</li>
+                            <li>Portal IIS (http://IP-Windows:8080)</li>
+                        </ul>
+                    </li>
+                    <li><strong>Configuraciones:</strong> Copia de archivos:
+                        <ul style="margin-left: 20px; margin-top: 5px;">
+                            <li><code>/etc/apache2/sites-available/ucs.conf</code></li>
+                            <li><code>/etc/apache2/sites-available/ucs-ssl.conf</code></li>
+                            <li><code>/etc/samba/smb.conf</code></li>
+                            <li><code>/etc/fstab</code></li>
+                        </ul>
+                    </li>
+                    <li><strong>Evidencia de Redundancia:</strong> Video de 2 minutos mostrando que el sistema RAID sigue funcionando tras "fallar" un disco</li>
+                    <li><strong>Dashboard de Integración:</strong> Script <code>dashboard-check.sh</code> funcionando</li>
+                    <li><strong>Video demostración:</strong> Recorrido de todo el sistema funcionando (máximo 5 min)</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- E6 -->
+        <div class="eval-container e6" id="e6">
+            <div class="eval-header">
+                <div class="eval-title">🎓 FASE 6: Sustentación Final (E6)</div>
+                <div class="eval-meta">
+                    <span class="meta-badge percentage">20%</span>
+                    <span class="meta-badge date">27 May</span>
+                    <span class="meta-badge ra">RA6</span>
+                </div>
+            </div>
+
+            <h3>📋 Descripción</h3>
+            <p><strong>Defensa profesional</strong> de la ingeniería realizada durante todo el semestre. Demostrarás dominio del sistema UCS completo ante tus compañeros y el docente.</p>
+
+            <div class="warning-box">
+                <strong>🎯 Objetivo:</strong> Demostrar que eres capaz de operar, mantener y defender técnicamente una infraestructura de servidores híbrida (Linux + Windows).
+            </div>
+
+            <h3>💎 Componentes de la Sustentación</h3>
+
+            <div class="step-box">
+                <h4><span class="step-number">1</span> Portafolio Ejecutivo (Documento PDF)</h4>
+                <p>Un <strong>único documento PDF</strong> (máximo 20 páginas) que consolida todas las fases anteriores con correcciones incorporadas.</p>
+                
+                <p><strong>Estructura sugerida:</strong></p>
+                <ol style="margin-left: 20px;">
+                    <li><strong>Portada</strong> (1 página)</li>
+                    <li><strong>Índice</strong> (1 página)</li>
+                    <li><strong>Resumen Ejecutivo</strong> (1 página)</li>
+                    <li><strong>Fase 1: Arquitectura</strong> (2 páginas) - Diagrama actualizado</li>
+                    <li><strong>Fase 2: Monitoreo</strong> (2 páginas) - Scripts mejorados</li>
+                    <li><strong>Fase 3: Optimización</strong> (3 páginas) - Casos resueltos</li>
+                    <li><strong>Fase 4: Seguridad</strong> (3 páginas) - Matriz de riesgos</li>
+                    <li><strong>Fase 5: Integración</strong> (4 páginas) - Servicios web y RAID</li>
+                    <li><strong>Conclusiones y Lecciones Aprendidas</strong> (1 página)</li>
+                    <li><strong>Anexos</strong> (2 páginas) - Configuraciones clave</li>
+                </ol>
+            </div>
+
+            <div class="step-box">
+                <h4><span class="step-number">2</span> Pitch Técnico (Presentación)</h4>
+                <p>Presentación de <strong>máximo 8 diapositivas</strong> enfocada en:</p>
+                <ul style="margin-left: 20px;">
+                    <li><strong>Diapo 1:</strong> Portada y equipo</li>
+                    <li><strong>Diapo 2:</strong> Arquitectura final del sistema</li>
+                    <li><strong>Diapo 3:</strong> Retos técnicos enfrentados</li>
+                    <li><strong>Diapo 4:</strong> Estrategia de seguridad implementada</li>
+                    <li><strong>Diapo 5:</strong> Demo de monitoreo en vivo</li>
+                    <li><strong>Diapo 6:</strong> Métricas de rendimiento</li>
+                    <li><strong>Diapo 7:</strong> Lecciones aprendidas</li>
+                    <li><strong>Diapo 8:</strong> Próximos pasos / mejoras</li>
+                </ul>
+            </div>
+
+            <div class="step-box">
+                <h4><span class="step-number">3</span> Live Demo (Demostración en Vivo)</h4>
+                <p>El docente pedirá realizar <strong>cambios en tiempo real</strong>. Ejemplos de tareas que podrías tener que realizar:</p>
+                
+                <div class="code-block"># Ejemplo 1: "El servidor Apache se ha caído, revívelo"
+sudo systemctl status apache2
+sudo systemctl restart apache2
+sudo systemctl status apache2
+
+# Ejemplo 2: "Muestra los procesos que más CPU están consumiendo"
+ps aux --sort=-%cpu | head -n 5
+
+# Ejemplo 3: "Cambia el puerto SSH al 2222"
+sudo nano /etc/ssh/sshd_config
+# Cambiar: Port 22 → Port 2222
+sudo systemctl restart sshd
+
+# Ejemplo 4: "Crea un nuevo usuario y asígnale permisos específicos"
+sudo useradd nuevousuario
+sudo passwd nuevousuario
+sudo usermod -aG www-data nuevousuario
+
+# Ejemplo 5: "Verifica el estado del RAID"
+cat /proc/mdstat
+sudo mdadm --detail /dev/md0</div>
+            </div>
+
+            <h3>📦 Entregables Obligatorios</h3>
+            <div class="deliverable-box">
+                <h4>📄 Archivos a entregar antes de la sustentación:</h4>
+                <ul class="deliverable-list">
+                    <li><strong>Portafolio Final:</strong> PDF consolidado (Fases 1-5 corregidas)</li>
+                    <li><strong>Presentación:</strong> Archivo PPTX o PDF del Pitch (máximo 8 diapositivas)</li>
+                    <li><strong>Repositorio Git:</strong> Link a GitHub/GitLab con todo el código organizado:
+                        <ul style="margin-left: 20px; margin-top: 5px;">
+                            <li>Carpeta <code>/scripts</code> - Todos los scripts Bash y PowerShell</li>
+                            <li>Carpeta <code>/configs</code> - Archivos de configuración</li>
+                            <li>Carpeta <code>/docs</code> - Documentación adicional</li>
+                            <li>Archivo <code>README.md</code> con instrucciones de uso</li>
+                        </ul>
+                    </li>
+                    <li><strong>Manual Técnico:</strong> Guía para administrar el sistema (PDF)</li>
+                    <li><strong>Manual de Operación:</strong> Procedimientos rutinarios (PDF)</li>
+                </ul>
+            </div>
+
+            <h3>⏱️ Estructura de la Sustentación (20-25 minutos)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Actividad</th>
+                        <th>Duración</th>
+                        <th>Descripción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Pitch Técnico</td>
+                        <td>5 min</td>
+                        <td>Presentación de diapositivas</td>
+                    </tr>
+                    <tr>
+                        <td>Demo Servidores Web</td>
+                        <td>5 min</td>
+                        <td>Mostrar Apache e IIS funcionando</td>
+                    </tr>
+                    <tr>
+                        <td>Demo Monitoreo</td>
+                        <td>5 min</td>
+                        <td>Ejecutar scripts de monitoreo en vivo</td>
+                    </tr>
+                    <tr>
+                        <td>Tareas en Vivo</td>
+                        <td>5-8 min</td>
+                        <td>Resolver tareas solicitadas por el docente</td>
+                    </tr>
+                    <tr>
+                        <td>Preguntas y Defensa</td>
+                        <td>5 min</td>
+                        <td>Responder preguntas técnicas</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>✅ Checklist para el Día de la Sustentación</h3>
+            <div class="checklist-box">
+                <ul class="checklist">
+                    <li>Portafolio PDF entregado y revisado</li>
+                    <li>Presentación cargada y probada</li>
+                    <li>Repositorio Git actualizado y documentado</li>
+                    <li>Ambas VMs (Linux y Windows) encendidas y funcionando</li>
+                    <li>Servidores web accesibles (Apache e IIS)</li>
+                    <li>Scripts de monitoreo funcionando</li>
+                    <li>RAID configurado y verificado</li>
+                    <li>Conexión de red estable entre VMs</li>
+                    <li>Preparado para tareas en vivo (comandos practicados)</li>
+                </ul>
+            </div>
+
+            <div class="tip-box">
+                <strong>💡 Tips para la sustentación:</strong>
+                <ul style="margin-left: 20px; margin-top: 5px;">
+                    <li>Practica la demo varias veces antes del día D</li>
+                    <li>Ten comandos frecuentes escritos en un "cheat sheet"</li>
+                    <li>Si algo falla durante la demo, mantén la calma y explica qué pasaría en producción</li>
+                    <li>Viste profesionalmente (camisa, no gorras)</li>
+                    <li>Prepara respuestas para preguntas como: "¿Qué harías si...?"</li>
+                </ul>
+            </div>
+        </div>
+
+        <footer>
+            <p><strong>IF0099 - Sistemas Operativos I</strong> | Universidad Autónoma Latinoamericana | 2026</p>
+            <p style="margin-top: 10px; font-size: 0.9rem;">Proyecto UCS - Guía Completa de Evaluaciones</p>
+        </footer>
+    </div>
+</body>
+</html>
