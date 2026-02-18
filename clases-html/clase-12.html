@@ -138,12 +138,12 @@
         </div>
 
         <!-- Próxima Evaluación Alert -->
-        <a href="evaluaciones.html#e5" style="text-decoration: none; display: block;">
+        <a href="evaluaciones.html#e3" style="text-decoration: none; display: block;">
             <div class="eval-alert" style="cursor: pointer; transition: transform 0.2s;">
                 <span class="eval-alert-icon">📌</span>
                 <div class="eval-alert-content">
                     <div class="eval-alert-title">E3: FASE 3 - Checkpoint Optimización (25 Mar)</div>
-                    <div class="eval-alert-text">15% - Servidores web funcionando (comprende conceptos fundamentales integrados)</div>
+                    <div class="eval-alert-text">20% - Checkpoint integral (memoria, E/S, archivos, sincronización)</div>
                 </div>
                 <span class="eval-alert-date">📅 25 Mar</span>
             </div>
@@ -185,6 +185,16 @@
         <section id="inodos">
             <h2>1. Inodos (Index Nodes)</h2>
             
+            <div class="callout success">
+                <h4>💡 Analogía: El Inodo es como una Ficha Médica</h4>
+                <p>Para entender qué es un inodo, imagina el archivo como un <strong>paciente</strong> en un hospital:</p>
+                <ul>
+                    <li><strong>El nombre del paciente</strong> NO está en la ficha médica (inodo), sino en la lista de recepción (directorio).</li>
+                    <li><strong>La Ficha Médica (Inodo)</strong> contiene todo lo demás: fecha de nacimiento (creación), peso (tamaño), quién es su doctor (dueño) y en qué habitaciones (bloques de disco) se encuentran sus pertenencias.</li>
+                    <li><strong>Hard Link:</strong> Es como si el paciente tuviera dos nombres (ej: "Pepe" y "José"). Ambos nombres en la recepción apuntan a la <strong>misma ficha médica única</strong>.</li>
+                </ul>
+            </div>
+
             <div class="callout info">
                 <strong>¿Qué es un inodo?</strong>
                 <p>Estructura de datos que almacena metadatos de un archivo (excepto su nombre). Cada archivo tiene un inodo único.</p>
@@ -383,62 +393,28 @@ MFT (Master File Table):
         </section>
 
         <section id="practica">
-            <h2>6. Práctica en Linux</h2>
+            <h2>6. Práctica de Gestión de Archivos Profesional</h2>
 
-            <div class="info-box" style="margin-bottom: 1.5rem; background: #eff6ff; border-left: 4px solid var(--primary); padding: 1.5rem; border-radius: 8px;">
-                <h3>📋 Laboratorio Complementario</h3>
-                <p>Para profundizar en inodos, enlaces y permisos avanzados, consulta el <strong><a href="../laboratorios-html/lab-05-sistemas-archivos.html" target="_blank">Laboratorio 5: Sistemas de Archivos Avanzados</a></strong>.</p>
-            </div>
-            
-            <h3>Comandos para inodos y permisos:</h3>
-
-            <pre>
-# Ver inodo de un archivo
-ls -i archivo.txt
-
-# Ver información detallada de inodo
-stat archivo.txt
-
-# Listar con permisos
-ls -la
-
-# Cambiar permisos
-chmod 755 archivo
-chmod u+x script.sh
-chmod g-w archivo
-
-# Cambiar propietario
-sudo chown usuario:grupo archivo
-
-# Ver sistema de archivos de cada partición
-df -T
-
-# Ver información de superblock
-sudo dumpe2fs /dev/sda1 | head -30
-
-# Buscar inodos libres
-df -i
-
-# Crear enlace duro (mismo inodo)
-ln archivo.txt enlace_duro.txt
-
-# Crear enlace simbólico
-ln -s archivo.txt enlace_simbolico.txt
-</pre>
-
-            <h3>Ejercicio práctico:</h3>
             <div class="actividad">
-                <h3>Ejercicio: Análisis de Inodos y Permisos</h3>
+                <h3>Ejercicio 1: Inodos y Enlaces en Linux</h3>
                 <ol>
-                    <li>Crear varios archivos y directorios</li>
-                    <li>Ver sus inodos con <code>ls -i</code> y <code>stat</code></li>
-                    <li>Crear un hard link y ver que comparte inodo</li>
-                    <li>Crear un symbolic link y comparar</li>
-                    <li>Configurar diferentes permisos y probar acceso</li>
-                    <li>Ver información del sistema de archivos</li>
+                    <li>Cree un archivo <code>original.txt</code>.</li>
+                    <li>Cree un hard link: <code>ln original.txt duro.txt</code>.</li>
+                    <li>Cree un symbolic link: <code>ln -s original.txt blando.txt</code>.</li>
+                    <li>Ejecute <code>ls -li</code>. ¿Qué observa en la columna de inodos? ¿Por qué <code>duro.txt</code> comparte inodo pero <code>blando.txt</code> no?</li>
                 </ol>
             </div>
-        </section>
+
+            <div class="actividad">
+                <h3>Ejercicio 2: Cuotas y Permisos en Windows NTFS</h3>
+                <ol>
+                    <li>Haga clic derecho en una unidad de disco (ej: D:) → Propiedades → <strong>Cuota</strong>.</li>
+                    <li>Habilite la gestión de cuotas y limite el espacio a 100MB para su usuario.</li>
+                    <li>Cree un archivo grande y observe el mensaje del sistema.</li>
+                    <li>Haga clic derecho en una carpeta → Propiedades → Seguridad → <strong>Opciones Avanzadas</strong>.</li>
+                    <li>Identifique la diferencia entre permisos <strong>Heredados</strong> (vienen del padre) y permisos <strong>Explícitos</strong>.</li>
+                </ol>
+            </div>
 
         <section id="practica-adicional">
             <h2>Práctica Adicional (No Evaluativa)</h2>

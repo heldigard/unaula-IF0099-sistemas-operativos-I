@@ -432,14 +432,14 @@
         </div>
 
         <!-- Próxima Evaluación Alert -->
-        <a href="evaluaciones.html#e2" style="text-decoration: none; display: block;">
+        <a href="evaluaciones.html#e3" style="text-decoration: none; display: block;">
             <div class="eval-alert" style="cursor: pointer; transition: transform 0.2s;">
                 <span class="eval-alert-icon">📌</span>
                 <div class="eval-alert-content">
-                    <div class="eval-alert-title">E2: FASE 2 - Procesos y Monitoreo (11 Mar)</div>
-                    <div class="eval-alert-text">15% - Monitoreo y control de procesos (gestiona procesos en SO)</div>
+                    <div class="eval-alert-title">E3: FASE 3 - Checkpoint Optimización (25 Mar)</div>
+                    <div class="eval-alert-text">20% - Checkpoint integral (memoria, procesos, sincronización)</div>
                 </div>
-                <span class="eval-alert-date">📅 11 Mar</span>
+                <span class="eval-alert-date">📅 25 Mar</span>
             </div>
         </a>
 
@@ -464,7 +464,7 @@
         <!-- Objetivos -->
         <section id="objetivos">
             <h2>Objetivos de Aprendizaje</h2>
-            <p><strong>Resultado de Aprendizaje (RA2):</strong> Gestiona los procesos que se llevan a cabo en los sistemas operativos (Alineado con Evaluación E2).</p>
+            <p><strong>Resultado de Aprendizaje (RA3):</strong> Administra la memoria, los procesos de entrada y salida, la comunicación entre procesos y la sincronización de los mismos (Alineado con Evaluación E3).</p>
             <p>Al finalizar esta clase, serás capaz de:</p>
             <ol>
                 <li><strong>Diferenciar</strong> entre procesos y threads (hilos)</li>
@@ -582,8 +582,18 @@
         <section id="sincronizacion">
             <h2>Sincronización de Threads</h2>
 
+            <div class="callout success">
+                <h4>💡 Analogías para entender la Sincronización</h4>
+                <p>Si los conceptos técnicos te parecen difíciles, piensa en estas situaciones cotidianas:</p>
+                <ul>
+                    <li><strong>Mutex (Exclusión Mutua):</strong> Es como la <strong>llave de un baño único</strong> en un café. Solo una persona puede tener la llave a la vez. Si quieres entrar y la llave no está, debes esperar a que la persona anterior la devuelva.</li>
+                    <li><strong>Semáforo:</strong> Es como un <strong>restaurante con 5 mesas</strong>. El "contador" empieza en 5. Cada vez que llega un grupo, el contador baja. Si llega a 0, los nuevos clientes deben esperar en la puerta hasta que alguien salga y el contador vuelva a subir.</li>
+                    <li><strong>Condición de Carrera:</strong> Es como si dos personas intentan escribir en la <strong>misma hoja de papel</strong> al mismo tiempo. Al final, el mensaje será un garabato ilegible porque ninguno respetó el turno del otro.</li>
+                </ul>
+            </div>
+
             <div class="callout warning">
-                <strong>El problema:</strong> Cuando múltiples threads acceden a datos compartidos simultáneamente
+                <strong>El problema técnico:</strong> Cuando múltiples threads acceden a datos compartidos simultáneamente
             </div>
 
             <h3>Condición de Carrera (Race Condition)</h3>
@@ -972,16 +982,9 @@ lock(Lock1, Lock2) {
             </div>
 
             <div class="ejercicio">
-                <h3>Ejercicio Práctico 4: Identificación de Deadlock Potencial</h3>
-                <p><strong>Tiempo:</strong> 15 minutos | <strong>Recurso:</strong> Webminal</p>
-                <p><strong>Objetivo:</strong> Identificar procesos bloqueados en el sistema</p>
-                <ol>
-                    <li>Busca procesos en estado D (uninterruptible sleep): <code>ps aux | grep ' D '</code></li>
-                    <li>Busca procesos zombie: <code>ps aux | grep ' Z '</code></li>
-                    <li>Identifica procesos con tiempo de CPU cero pero tiempo de ejecución alto: <code>ps -eo pid,comm,cputime,etime | grep -E "00:00:[0-9]{2}.*[0-9]{2}:[0-9]{2}:[0-9]{2}"</code></li>
-                    <li>Para cada proceso encontrado, investiga: ¿Está esperando I/O? ¿Está bloqueado?</li>
-                    <li>Documenta: Lista los procesos que parecen estar bloqueados y por qué</li>
-                </ol>
+                <h3>Ejercicio Práctico 4: Identificación de Bloqueos (Híbrido)</h3>
+                <p><strong>Parte A (Linux):</strong> Busque procesos en estado D (uninterruptible sleep): <code>ps aux | grep ' D '</code>. Esto indica que el proceso está esperando un recurso (normalmente E/S) que no puede ser interrumpido.</p>
+                <p><strong>Parte B (Windows):</strong> Abra el <strong>Monitor de Recursos (resmon)</strong> → Pestaña <strong>CPU</strong>. Si ve un proceso en color rojo, haga clic derecho → <strong>Analizar cadena de espera</strong>. Windows le mostrará exactamente qué proceso está bloqueando a otro.</p>
             </div>
 
             <div class="ejercicio">

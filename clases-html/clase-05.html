@@ -935,9 +935,8 @@ renice +5 -p 1234        # Aumentar nice en 5</code></pre>
  5678  -5   15 jackd</code></pre>
         </section>
 
-        <!-- systemd -->
         <section id="systemd">
-            <h2>systemd y systemctl</h2>
+            <h2>6. systemd y systemctl</h2>
 
             <div class="callout info">
                 <strong>systemd es el sistema de inicialización y gestión de servicios en Linux moderno</strong>
@@ -962,14 +961,6 @@ renice +5 -p 1234        # Aumentar nice en 5</code></pre>
                         <td>Detener servicio</td>
                     </tr>
                     <tr>
-                        <td><code>systemctl restart servicio</code></td>
-                        <td>Reiniciar servicio</td>
-                    </tr>
-                    <tr>
-                        <td><code>systemctl reload servicio</code></td>
-                        <td>Recargar configuración</td>
-                    </tr>
-                    <tr>
                         <td><code>systemctl status servicio</code></td>
                         <td>Ver estado del servicio</td>
                     </tr>
@@ -977,40 +968,34 @@ renice +5 -p 1234        # Aumentar nice en 5</code></pre>
                         <td><code>systemctl enable servicio</code></td>
                         <td>Habilitar al inicio</td>
                     </tr>
-                    <tr>
-                        <td><code>systemctl disable servicio</code></td>
-                        <td>Deshabilitar al inicio</td>
-                    </tr>
-                    <tr>
-                        <td><code>systemctl is-enabled servicio</code></td>
-                        <td>Ver si está habilitado</td>
-                    </tr>
                 </tbody>
             </table>
+        </section>
 
-            <h4>Ejemplos prácticos:</h4>
-            <pre><code class="language-bash"># Ver estado de un servicio
-systemctl status nginx
-
-# Iniciar servicio
-sudo systemctl start nginx
-
-# Habilitar al inicio
-sudo systemctl enable nginx
-
-# Ver todos los servicios
-systemctl list-units --type=service
-
-# Ver servicios fallidos
-systemctl --failed
-
-# Ver logs de un servicio
-journalctl -u nginx -f</code></pre>
+        <section id="comparativa-windows">
+            <h2>7. Equivalencias en el Mundo Windows</h2>
+            <p>Si vienes de administrar servidores Windows, aquí tienes el mapa de herramientas equivalentes:</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Tarea Profesional</th>
+                        <th>Herramienta Linux</th>
+                        <th>Herramienta Windows</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>Matar proceso colgado</td><td><code>kill -9 [PID]</code></td><td><code>taskkill /F /PID [ID]</code></td></tr>
+                    <tr><td>Monitoreo en vivo</td><td><code>htop</code></td><td>Resource Monitor (<code>resmon</code>)</td></tr>
+                    <tr><td>Listar servicios</td><td><code>systemctl list-units</code></td><td><code>Get-Service</code></td></tr>
+                    <tr><td>Ver logs de arranque</td><td><code>journalctl -b</code></td><td>Event Viewer (System Log)</td></tr>
+                    <tr><td>Cambiar prioridad</td><td><code>renice</code></td><td>Task Manager → Details → Set Priority</td></tr>
+                </tbody>
+            </table>
         </section>
 
         <!-- Práctica Guiada -->
         <section id="practica">
-            <h2>Práctica Guiada</h2>
+            <h2>8. Práctica Guiada Híbrida</h2>
 
             <div class="info-box" style="margin-bottom: 1.5rem; background: #eff6ff; border-left: 4px solid var(--primary); padding: 1.5rem; border-radius: 8px;">
                 <h3>📋 Laboratorio Complementario</h3>

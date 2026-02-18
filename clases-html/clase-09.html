@@ -143,7 +143,7 @@
                 <span class="eval-alert-icon">📌</span>
                 <div class="eval-alert-content">
                     <div class="eval-alert-title">E3: FASE 3 - Checkpoint Optimización (25 Mar)</div>
-                    <div class="eval-alert-text">20% - Checkpoint integral (memoria, E/S, archivos, sincronización)</div>
+                    <div class="eval-alert-text">20% - Checkpoint integral (memoria, procesos, sincronización)</div>
                 </div>
                 <span class="eval-alert-date">📅 25 Mar</span>
             </div>
@@ -201,6 +201,17 @@
 
         <section id="paginacion">
             <h2>2. Paginación de Memoria</h2>
+
+            <div class="callout success">
+                <h4>💡 Analogía: La Paginación es como un Libro</h4>
+                <p>Para entender la diferencia entre memoria lógica y física, imagina un <strong>libro de texto</strong>:</p>
+                <ul>
+                    <li><strong>Páginas Lógicas:</strong> Son las páginas numeradas del libro (1, 2, 3...). Tú, como lector, accedes al contenido por número de página.</li>
+                    <li><strong>Marcos Físicos:</strong> Son las <strong>hojas de papel físicas</strong> en las que está impreso el libro.</li>
+                    <li><strong>Tabla de Páginas:</strong> Es como el <strong>Índice</strong> al principio del libro. Te dice que el Capítulo 2 (Página lógica 20) está impreso en la Hoja física 45.</li>
+                    <li><strong>Offset (Desplazamiento):</strong> Es el <strong>renglón específico</strong> dentro de una página. No importa en qué hoja física se imprima la página, la frase que buscas siempre estará en el mismo renglón relativo.</li>
+                </ul>
+            </div>
             
             <h3>Conceptos Clave</h3>
             <table>
@@ -448,19 +459,23 @@ sudo cat /proc/[PID]/pagemap
 
         <!-- Actividad -->
         <section id="actividad">
-            <h2>Actividad Práctica: Paginación</h2>
+            <h2>Actividad Práctica: Paginación Profesional</h2>
 
             <section class="actividad">
-                <h3>Actividad 09: Inspección de Páginas</h3>
-                <p><strong>Tipo:</strong> Preparación para Fase 3 (E3)</p>
-                <p><strong>Objetivo:</strong> Ver cómo el SO reporta el tamaño de página y las estadísticas.</p>
-                <p><strong>Pasos:</strong></p>
+                <h3>Actividad 09: Análisis de Memoria Paginada</h3>
+                <p><strong>Objetivo:</strong> Ver cómo los SO modernos reportan el tamaño de página y las estadísticas de memoria.</p>
+                <p><strong>Parte A (Linux):</strong></p>
                 <ol>
-                    <li>Usa el comando <code>getconf PAGESIZE</code> para ver el tamaño de página en tu sistema</li>
-                    <li>Inspecciona <code>cat /proc/meminfo | grep -i page</code></li>
-                    <li>Calcula cuántas páginas hay en 1GB de RAM basándote en tu PAGESIZE</li>
+                    <li>Use el comando <code>getconf PAGESIZE</code> para identificar el tamaño de página (ej: 4096 bytes).</li>
+                    <li>Inspeccione <code>/proc/meminfo</code> y busque el campo <code>Mapped</code>.</li>
                 </ol>
-                <p><strong>Entregable:</strong> Resolución del cálculo para el Checkpoint E3.</p>
+                <p><strong>Parte B (Windows):</strong></p>
+                <ol>
+                    <li>Abra una consola de PowerShell como Administrador.</li>
+                    <li>Ejecute el comando: <code>Get-WmiObject Win32_PageFileUsage</code></li>
+                    <li>Identifique el archivo <code>pagefile.sys</code> y su tamaño actual. Este archivo es la extensión de la memoria física mediante paginación a disco.</li>
+                </ol>
+                <p><strong>Entregable:</strong> Documentar por qué Windows recomienda que el archivo de paginación sea gestionado por el sistema y no fijado manualmente.</p>
             </section>
         </section>
 

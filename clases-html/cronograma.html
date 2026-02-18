@@ -7,403 +7,436 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
             line-height: 1.6;
-            color: #333;
-            background: linear-gradient(135deg, #1e3a5f 0%, #2d5a87 100%);
+            color: #374151;
+            background: #f9fafb;
             min-height: 100vh;
             padding: 20px;
         }
         .container { max-width: 1400px; margin: 0 auto; }
         header {
             background: white;
-            border-radius: 15px;
+            border-radius: 12px;
             padding: 30px 40px;
-            margin-bottom: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            margin-bottom: 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+            border: 1px solid #e5e7eb;
         }
-        h1 { color: #1e3a5f; font-size: 2em; margin-bottom: 10px; }
-        .subtitle { color: #666; font-size: 1.1em; }
+        h1 {
+            color: #111827;
+            font-size: 1.875rem;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        .subtitle { color: #6b7280; font-size: 1rem; }
         .info-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-top: 20px;
+            gap: 12px;
+            margin-top: 24px;
         }
         .info-card {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 10px;
-            border-left: 4px solid #1e3a5f;
+            background: #f9fafb;
+            padding: 16px;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
         }
-        .info-card strong { color: #1e3a5f; }
+        .info-card strong {
+            color: #374151;
+            font-weight: 500;
+            display: block;
+            margin-bottom: 4px;
+        }
         .section {
             background: white;
-            border-radius: 15px;
+            border-radius: 12px;
             padding: 30px;
-            margin-bottom: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            margin-bottom: 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+            border: 1px solid #e5e7eb;
         }
         .section h2 {
-            color: #1e3a5f;
-            font-size: 1.5em;
+            color: #111827;
+            font-size: 1.25rem;
             margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 3px solid #1e3a5f;
-        }
-        .calendar-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-        .calendar-table th {
-            background: #1e3a5f;
-            color: white;
-            padding: 12px 10px;
-            text-align: left;
-            font-size: 0.9em;
-        }
-        .calendar-table td { padding: 12px 10px; border-bottom: 1px solid #e0e0e0; vertical-align: top; }
-        .calendar-table tr:hover { background: #f8f9fa; }
-        .calendar-table .fecha { font-weight: 600; color: #1e3a5f; white-space: nowrap; }
-        .calendar-table .semana-santa { background: #fef3c7; }
-        .calendar-table .evaluacion { background: #dcfce7; }
-        .badge {
-            display: inline-block;
-            padding: 4px 10px;
-            border-radius: 15px;
-            font-size: 0.75em;
             font-weight: 600;
-            margin-right: 5px;
         }
-        .badge-eval { background: #10b981; color: white; }
-        .badge-clase1 { background: #8b5cf6; color: white; }
-        .badge-clase2 { background: #ec4899; color: white; }
-        .franja-6-8 { background: #f3e8ff; }
-        .franja-8-9 { background: #fce7f3; }
+        .calendar-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-top: 16px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .calendar-table th {
+            background: #f9fafb;
+            color: #374151;
+            padding: 12px 16px;
+            text-align: left;
+            font-size: 0.875rem;
+            font-weight: 500;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .calendar-table td {
+            padding: 14px 16px;
+            border-bottom: 1px solid #e5e7eb;
+            vertical-align: top;
+            font-size: 0.9375rem;
+        }
+        .calendar-table tr:last-child td { border-bottom: none; }
+        .calendar-table tr:hover { background: #f9fafb; }
+        .calendar-table .fecha {
+            font-weight: 500;
+            color: #111827;
+            white-space: nowrap;
+        }
+        .calendar-table .semana-santa { background: #fffbeb; }
+        .calendar-table .semana-santa td { color: #92400e; }
+        .calendar-table .evaluacion { background: #f0fdf4; }
+        .calendar-table .evaluacion td { color: #166534; }
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            margin-right: 4px;
+        }
+        .badge-eval { background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
+        .badge-practica { background: #fed7aa; color: #9a3412; border: 1px solid #fdba74; }
         .alert-box {
-            background: linear-gradient(135deg, #fdf2f2 0%, #fee2e2 100%);
-            border-left: 4px solid #ef4444;
-            padding: 20px;
-            border-radius: 10px;
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            padding: 16px 20px;
+            border-radius: 8px;
             margin-bottom: 20px;
         }
-        .alert-box h3 { color: #991b1b; margin-bottom: 10px; }
+        .alert-box h3 {
+            color: #1e40af;
+            margin-bottom: 8px;
+            font-size: 0.9375rem;
+            font-weight: 500;
+        }
+        .alert-box p { color: #1e40af; font-size: 0.9375rem; }
         .eval-summary {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
+            gap: 16px;
             margin-top: 20px;
         }
         .eval-card {
-            background: #f8f9fa;
-            border-radius: 12px;
-            padding: 20px;
-            border-left: 4px solid #10b981;
-        }
-        .eval-card h4 { color: #1e3a5f; margin-bottom: 10px; }
-        .eval-card .fecha-eval { font-size: 1.2em; font-weight: 700; color: #10b981; margin-bottom: 5px; }
-        .eval-card .porcentaje {
-            display: inline-block;
-            background: #1e3a5f;
-            color: white;
-            padding: 3px 10px;
-            border-radius: 10px;
-            font-size: 0.85em;
-        }
-        .nav-links { display: flex; gap: 15px; margin-top: 20px; }
-        .nav-links a {
-            display: inline-block;
-            padding: 10px 20px;
-            background: #1e3a5f;
-            color: white;
-            text-decoration: none;
+            background: #f9fafb;
             border-radius: 8px;
-            transition: background 0.3s;
+            padding: 20px;
+            border: 1px solid #e5e7eb;
         }
+        .eval-card h4 {
+            color: #374151;
+            margin-bottom: 8px;
+            font-size: 0.9375rem;
+            font-weight: 500;
+        }
+        .eval-card .fecha-eval {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 4px;
+        }
+        .eval-card .porcentaje {
+            display: inline-flex;
+            background: #e0e7ff;
+            color: #3730a3;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        .nav-links { display: flex; gap: 12px; margin-top: 24px; flex-wrap: wrap; }
+        .nav-links a {
+            display: inline-flex;
+            align-items: center;
+            padding: 8px 16px;
+            background: #f3f4f6;
+            color: #374151;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        .nav-links a:hover { background: #e5e7eb; }
         footer {
             background: white;
-            border-radius: 15px;
-            padding: 25px;
+            border-radius: 12px;
+            padding: 24px;
             text-align: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            color: #555;
-            margin-top: 30px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+            border: 1px solid #e5e7eb;
+            color: #6b7280;
+            margin-top: 24px;
+            font-size: 0.875rem;
         }
+        a { color: #2563eb; text-decoration: none; }
+        a:hover { text-decoration: underline; }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
             <h1>Cronograma del Curso</h1>
-            <p class="subtitle">IF0099 - Sistemas Operativos I | 2026-I | Proyecto Incremental</p>
+            <p class="subtitle">IF0099 - Sistemas Operativos I | 2026-I | Proyecto UCS</p>
             <div class="info-grid">
-                <div class="info-card"><strong>Día de clase:</strong><br>Miércoles únicamente</div>
-                <div class="info-card"><strong>Horario:</strong><br>6:00 AM - 9:00 AM</div>
-                <div class="info-card"><strong>Modelo:</strong><br>Proyecto Incremental (6 Fases)</div>
-                <div class="info-card"><strong>Distribución:</strong><br>Dos clases por sesión</div>
+                <div class="info-card"><strong>Día de clase:</strong><br>Miércoles (6:00 AM - 9:00 AM)</div>
+                <div class="info-card"><strong>Modelo:</strong><br>Sesiones Integradas (Teoría + Lab)</div>
+                <div class="info-card"><strong>Carga:</strong><br>60% Práctica / 40% Teoría</div>
+                <div class="info-card"><strong>Ubicación:</strong><br>Laboratorio de Sistemas</div>
             </div>
             <div class="nav-links">
                 <a href="index.html">Inicio</a>
                 <a href="evaluaciones.html">Evaluaciones</a>
-                <a href="proyecto.html">Proyecto</a>
+                <a href="concertacion.html">Concertación</a>
+                <a href="proyecto.html">Guía del Proyecto</a>
             </div>
         </header>
 
         <section class="section">
             <div class="alert-box">
-                <h3>📢 Modelo Pedagógico</h3>
-                <p>Este curso <strong>NO tiene exámenes de memorización</strong>. La evaluación se basa en un <strong>Proyecto Incremental</strong> que se desarrolla en 6 fases a lo largo del semestre.</p>
+                <h3>Estructura Semanal</h3>
+                <p>Cada miércoles trabajaremos en un bloque de 3 horas diseñado para cubrir la teoría necesaria y aplicarla inmediatamente en el proyecto <strong>UNAULA Cloud Services (UCS)</strong>.</p>
             </div>
 
-            <div class="alert-box" style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); border-left-color: #2563eb;">
-                <h3 style="color: #1e40af;">⚠️ Actualización Importante - Febrero 2026</h3>
-                <p style="color: #1e40af;"><strong>Cambios realizados para mejorar la coherencia del curso:</strong></p>
-                <ul style="color: #1e40af; margin-top: 10px;">
-                    <li><strong>E5 (Fase 5):</strong> Se movió del 29/04 al 06/05 para dar más tiempo de práctica después de las clases de seguridad</li>
-                    <li><strong>E3 (Checkpoint):</strong> Se aclaró que evalúa hasta Clase 12 (Sistemas de Archivos introductorio). Los temas avanzados (journaling, RAID) se evalúan en E5</li>
-                    <li><strong>Semana 29/04:</strong> Ahora es práctica dirigida y soporte para Fase 5</li>
-                </ul>
-            </div>
-            
             <table class="calendar-table">
                 <thead>
                     <tr>
-                        <th>Sem</th>
-                        <th>Fecha</th>
-                        <th>Horario</th>
-                        <th>Actividad / Entrega</th>
-                        <th>Evaluación</th>
+                        <th style="width: 40px;">Sem</th>
+                        <th style="width: 100px;">Fecha</th>
+                        <th>Sesión Académica (Teoría + Laboratorio)</th>
+                        <th style="width: 120px;">Evaluación</th>
                     </tr>
                 </thead>
                 <tbody>
                     <!-- FEBRERO -->
-                    <tr class="franja-6-8">
+                    <tr>
                         <td>1</td>
                         <td class="fecha">04 Feb</td>
-                        <td>6:00-8:00</td>
-                        <td><a href="clase-01.html">Clase 01: ¿Qué es un SO?</a></td>
+                        <td>
+                            <strong>Fundamentos y Terminal Linux</strong><br>
+                            <span style="font-size: 0.85rem; color: #4b5563;">Clases 01 y 02: Intro al SO, instalación de VirtualBox y dominio de comandos de navegación.</span>
+                        </td>
                         <td>-</td>
                     </tr>
-                    <tr class="franja-8-9">
-                        <td>1</td>
-                        <td class="fecha">04 Feb</td>
-                        <td>8:00-9:00</td>
-                        <td><a href="clase-02.html">Clase 02: Linux Terminal</a></td>
-                        <td>-</td>
-                    </tr>
-                    <tr class="franja-6-8">
+                    <tr>
                         <td>2</td>
                         <td class="fecha">11 Feb</td>
-                        <td>6:00-8:00</td>
-                        <td><a href="clase-03.html">Clase 03: Cambio de Contexto</a></td>
+                        <td>
+                            <strong>Arquitectura y Cambio de Contexto</strong><br>
+                            <span style="font-size: 0.85rem; color: #4b5563;">Clases 03 y 04: Ciclo de vida del proceso (PCB), estados y estructura del Kernel (System Calls).</span>
+                        </td>
                         <td>-</td>
                     </tr>
-                    <tr class="franja-8-9">
-                        <td>2</td>
-                        <td class="fecha">11 Feb</td>
-                        <td>8:00-9:00</td>
-                        <td><a href="clase-04.html">Clase 04: Estructura del SO</a></td>
-                        <td>-</td>
-                    </tr>
-                    <tr class="franja-6-8">
+                    <tr>
                         <td>3</td>
                         <td class="fecha">18 Feb</td>
-                        <td>6:00-8:00</td>
-                        <td><a href="clase-05.html">Clase 05: Procesos en Linux</a></td>
+                        <td>
+                            <strong>Administración de Procesos</strong><br>
+                            <span style="font-size: 0.85rem; color: #4b5563;">Clases 05 y 06: Monitoreo de servicios en Linux/Windows (systemctl, htop, PowerShell).</span>
+                        </td>
                         <td>-</td>
                     </tr>
-                    <tr class="franja-8-9">
-                        <td>3</td>
-                        <td class="fecha">18 Feb</td>
-                        <td>8:00-9:00</td>
-                        <td><a href="clase-06.html">Clase 06: Procesos en Windows</a></td>
-                        <td>-</td>
-                    </tr>
-                    <tr class="franja-6-8">
+                    <tr class="evaluacion">
                         <td>4</td>
                         <td class="fecha">25 Feb</td>
-                        <td>6:00-8:00</td>
-                        <td><a href="clase-07.html">Clase 07: Hilos y Sincronización</a></td>
-                        <td>-</td>
-                    </tr>
-                    <tr class="evaluacion franja-8-9">
-                        <td>4</td>
-                        <td class="fecha">25 Feb</td>
-                        <td>8:00-9:00</td>
-                        <td><strong>FASE 1: Fundamentos (15%)</strong> - Entrega</td>
-                        <td><span class="badge badge-eval">E1</span></td>
+                        <td>
+                            <strong>Hilos y Sincronización</strong><br>
+                            <span style="font-size: 0.85rem; color: #166534;">Clase 07: Concurrencia, Mutex, Semáforos y condiciones de carrera.</span>
+                        </td>
+                        <td>
+                            <strong style="color: #166534;">Fase 1 (15%)</strong><br>
+                            <span style="font-size: 0.75rem;">Entrega E1</span>
+                        </td>
                     </tr>
                     
                     <!-- MARZO -->
-                    <tr class="franja-6-8">
+                    <tr>
                         <td>5</td>
                         <td class="fecha">04 Mar</td>
-                        <td>6:00-8:00</td>
-                        <td><a href="clase-08.html">Clase 08: Gestión de Memoria</a></td>
+                        <td>
+                            <strong>Gestión de Memoria Híbrida</strong><br>
+                            <span style="font-size: 0.85rem; color: #4b5563;">Clases 08 y 09: Paginación en Linux y análisis de Pagefile en Windows (PerfMon).</span>
+                        </td>
                         <td>-</td>
                     </tr>
-                    <tr class="franja-8-9">
-                        <td>5</td>
-                        <td class="fecha">04 Mar</td>
-                        <td>8:00-9:00</td>
-                        <td><a href="clase-09.html">Clase 09: Paginación</a></td>
-                        <td>-</td>
-                    </tr>
-                    <tr class="franja-6-8">
+                    <tr class="evaluacion">
                         <td>6</td>
                         <td class="fecha">11 Mar</td>
-                        <td>6:00-8:00</td>
-                        <td><a href="clase-10.html">Clase 10: Memoria Virtual</a></td>
-                        <td>-</td>
+                        <td>
+                            <strong>Rendimiento y Memoria Virtual</strong><br>
+                            <span style="font-size: 0.85rem; color: #166534;">Clase 10: Diagnóstico de Swapping (Linux) y Resource Monitor (Windows).</span>
+                        </td>
+                        <td>
+                            <strong style="color: #166534;">Fase 2 (15%)</strong><br>
+                            <span style="font-size: 0.75rem;">Entrega E2</span>
+                        </td>
                     </tr>
-                    <tr class="evaluacion franja-8-9">
+                    <tr class="evaluacion">
                         <td>6</td>
                         <td class="fecha">11 Mar</td>
-                        <td>8:00-9:00</td>
-                        <td><strong>FASE 2: Procesos (15%)</strong> - Entrega</td>
-                        <td><span class="badge badge-eval">E2</span></td>
+                        <td>
+                            <strong>Memoria Virtual y Paging</strong><br>
+                            <span style="font-size: 0.85rem; color: #166534;">Clase 10: Algoritmos de reemplazo, Swapping y monitoreo de rendimiento.</span>
+                        </td>
+                        <td>
+                            <strong style="color: #166534;">Fase 2 (15%)</strong><br>
+                            <span style="font-size: 0.75rem;">Entrega E2</span>
+                        </td>
                     </tr>
-                    <tr class="franja-6-8">
+                    <tr>
                         <td>7</td>
                         <td class="fecha">18 Mar</td>
-                        <td>6:00-8:00</td>
-                        <td><a href="clase-11.html">Clase 11: Discos y E/S</a></td>
-                        <td>-</td>
-                    </tr>
-                    <tr class="franja-8-9">
-                        <td>7</td>
-                        <td class="fecha">18 Mar</td>
-                        <td>8:00-9:00</td>
-                        <td><a href="clase-12.html">Clase 12: Sistemas de Archivos</a></td>
+                        <td>
+                            <strong>Almacenamiento y Sistemas de Archivos</strong><br>
+                            <span style="font-size: 0.85rem; color: #4b5563;">Clases 11 y 12: E/S, Discos, Inodos y permisos Unix (Insumo para E3).</span>
+                        </td>
                         <td>-</td>
                     </tr>
                     <tr class="evaluacion">
                         <td>8</td>
                         <td class="fecha">25 Mar</td>
-                        <td>6:00-9:00</td>
-                        <td><strong>FASE 3: Checkpoint Optimización (20%)</strong></td>
-                        <td><span class="badge badge-eval">E3</span></td>
+                        <td>
+                            <strong>Entrega de Laboratorio de Optimización</strong><br>
+                            <span style="font-size: 0.85rem; color: #166534;">Consolidación de 5 escenarios técnicos (C03, C07-C12).</span>
+                        </td>
+                        <td>
+                            <strong style="color: #166534;">Fase 3 (20%)</strong><br>
+                            <span style="font-size: 0.75rem;">Laboratorio E3</span>
+                        </td>
                     </tr>
                     
-                    <!-- SEMANA SANTA -->
+                    <!-- RECESO -->
                     <tr class="semana-santa">
                         <td>-</td>
                         <td class="fecha">01 Abr</td>
-                        <td>-</td>
-                        <td colspan="2"><span class="badge badge-receso">SEMANA SANTA (29 Mar - 05 Abr, sin clase)</span></td>
+                        <td colspan="2" style="text-align: center; padding: 20px;"><strong>RECESO ACADÉMICO (Semana Santa)</strong></td>
                     </tr>
                     
                     <!-- ABRIL -->
-                    <tr class="franja-6-8">
+                    <tr>
                         <td>9</td>
                         <td class="fecha">08 Abr</td>
-                        <td>6:00-8:00</td>
-                        <td><a href="clase-13.html">Clase 13: Impl. Sistemas de Archivos</a></td>
+                        <td>
+                            <strong>Implementación Avanzada de Archivos</strong><br>
+                            <span style="font-size: 0.85rem; color: #4b5563;">Clase 13: RAID, Journaling y persistencia de montaje (/etc/fstab).</span>
+                        </td>
                         <td>-</td>
                     </tr>
-                    <tr class="franja-8-9">
-                        <td>9</td>
-                        <td class="fecha">08 Abr</td>
-                        <td>8:00-9:00</td>
-                        <td><a href="clase-14.html">Clase 14: Servidor IIS</a></td>
-                        <td>-</td>
-                    </tr>
-                    <tr class="franja-6-8">
+                    <tr>
                         <td>10</td>
                         <td class="fecha">15 Abr</td>
-                        <td>6:00-8:00</td>
-                        <td><a href="clase-15.html">Clase 15: Seguridad Linux</a></td>
+                        <td>
+                            <strong>Seguridad y Hardening</strong><br>
+                            <span style="font-size: 0.85rem; color: #4b5563;">Clases 15 y 16: Aseguramiento Linux/Windows, ACLs y Firewall.</span>
+                        </td>
                         <td>-</td>
                     </tr>
-                    <tr class="franja-8-9">
-                        <td>10</td>
-                        <td class="fecha">15 Abr</td>
-                        <td>8:00-9:00</td>
-                        <td><a href="clase-16.html">Clase 16: Seguridad Windows</a></td>
-                        <td>-</td>
-                    </tr>
-                    <tr class="franja-6-8">
+                    <tr class="evaluacion">
                         <td>11</td>
                         <td class="fecha">22 Abr</td>
-                        <td>6:00-8:00</td>
-                        <td><a href="clase-17.html">Clase 17: Servidor Apache</a></td>
-                        <td>-</td>
+                        <td>
+                            <strong>Servicios Web I: IIS</strong><br>
+                            <span style="font-size: 0.85rem; color: #166534;">Clase 14: Despliegue en Windows Server y Application Pools.</span>
+                        </td>
+                        <td>
+                            <strong style="color: #166534;">Fase 4 (15%)</strong><br>
+                            <span style="font-size: 0.75rem;">Entrega E4</span>
+                        </td>
                     </tr>
-                    <tr class="evaluacion franja-8-9">
-                        <td>11</td>
-                        <td class="fecha">22 Abr</td>
-                        <td>8:00-9:00</td>
-                        <td><strong>FASE 4: Seguridad (15%)</strong> - Entrega</td>
-                        <td><span class="badge badge-eval">E4</span></td>
-                    </tr>
-                    <tr class="franja-6-8">
+                    <tr>
                         <td>12</td>
                         <td class="fecha">29 Abr</td>
-                        <td>6:00-8:00</td>
-                        <td><strong>Práctica Dirigida: Integración de Servicios</strong></td>
+                        <td>
+                            <strong>Servicios Web II: Apache</strong><br>
+                            <span style="font-size: 0.85rem; color: #4b5563;">Clase 17: Virtual Hosts, SSL/HTTPS y certificados auto-firmados en Linux.</span>
+                        </td>
                         <td>-</td>
-                    </tr>
-                    <tr class="franja-8-9" style="background: #fef3c7;">
-                        <td>12</td>
-                        <td class="fecha">29 Abr</td>
-                        <td>8:00-9:00</td>
-                        <td><strong>Soporte y Resolución de Dudas - Fase 5</strong></td>
-                        <td><span class="badge" style="background: #f59e0b;">PRÁCTICA</span></td>
                     </tr>
                     
                     <!-- MAYO -->
-                    <tr class="franja-6-8">
+                    <tr class="evaluacion">
                         <td>13</td>
                         <td class="fecha">06 May</td>
-                        <td>6:00-8:00</td>
-                        <td>Revisión Pre-Entrega Fase 5</td>
-                        <td>-</td>
+                        <td>
+                            <strong>Sesión de Integración Final</strong><br>
+                            <span style="font-size: 0.85rem; color: #166534;">Taller dirigido para la puesta en producción del proyecto UCS.</span>
+                        </td>
+                        <td>
+                            <strong style="color: #166534;">Fase 5 (15%)</strong><br>
+                            <span style="font-size: 0.75rem;">Entrega E5</span>
+                        </td>
                     </tr>
-                    <tr class="evaluacion franja-8-9">
-                        <td>13</td>
-                        <td class="fecha">06 May</td>
-                        <td>8:00-9:00</td>
-                        <td><strong>FASE 5: Integración (15%)</strong> - Entrega</td>
-                        <td><span class="badge badge-eval">E5</span></td>
-                    </tr>
-                    <tr class="franja-6-8">
+                    <tr>
                         <td>14</td>
                         <td class="fecha">13 May</td>
-                        <td>6:00-8:00</td>
-                        <td>Demo Técnica (Pre-sustentación)</td>
+                        <td>
+                            <strong>Simulacro de Sustentación</strong><br>
+                            <span style="font-size: 0.85rem; color: #4b5563;">Feedback técnico sobre portafolios y demo de defensa oral.</span>
+                        </td>
                         <td>-</td>
                     </tr>
-                    <tr class="franja-8-9">
-                        <td>14</td>
-                        <td class="fecha">13 May</td>
-                        <td>8:00-9:00</td>
-                        <td>Ajustes Finales</td>
-                        <td>-</td>
-                    </tr>
-                    <tr class="franja-6-8">
+                    <tr>
                         <td>15</td>
                         <td class="fecha">20 May</td>
-                        <td>6:00-8:00</td>
-                        <td>QA Final Proyecto</td>
-                        <td>-</td>
-                    </tr>
-                    <tr class="franja-8-9">
-                        <td>15</td>
-                        <td class="fecha">20 May</td>
-                        <td>8:00-9:00</td>
-                        <td>Entrega de Documentación Final</td>
+                        <td>
+                            <strong>QA y Repositorios</strong><br>
+                            <span style="font-size: 0.85rem; color: #4b5563;">Control de calidad final, manuales de operación y Pitch técnico.</span>
+                        </td>
                         <td>-</td>
                     </tr>
                     <tr class="evaluacion">
                         <td>16</td>
                         <td class="fecha">27 May</td>
-                        <td>6:00-9:00</td>
-                        <td><strong>FASE 6: SUSTENTACIÓN FINAL (20%)</strong></td>
-                        <td><span class="badge badge-eval">E6</span></td>
+                        <td>
+                            <strong>Sustentación Final UCS</strong><br>
+                            <span style="font-size: 0.85rem; color: #166534;">Defensa oficial del sistema completo ante el grupo.</span>
+                        </td>
+                        <td>
+                            <strong style="color: #166534;">Fase 6 (20%)</strong><br>
+                            <span style="font-size: 0.75rem;">Evaluación E6</span>
+                        </td>
                     </tr>
                 </tbody>
             </table>
         </section>
 
+        <section class="section">
+            <h2>Resumen de Seguimientos Académicos</h2>
+            <div class="eval-summary">
+                <div class="eval-card">
+                    <h4>Primer Seguimiento (50%)</h4>
+                    <div class="fecha-eval">Límite: 27 de Marzo</div>
+                    <p style="font-size: 0.85rem; color: #666; margin: 8px 0;">Incluye Fases 1 (15%), 2 (15%) y 3 (20%).</p>
+                    <span class="porcentaje">E1 + E2 + E3</span>
+                </div>
+                <div class="eval-card">
+                    <h4>Segundo Seguimiento (30%)</h4>
+                    <div class="fecha-eval">Límite: 15 de Mayo</div>
+                    <p style="font-size: 0.85rem; color: #666; margin: 8px 0;">Incluye Fases 4 (15%) y 5 (15%).</p>
+                    <span class="porcentaje">E4 + E5</span>
+                </div>
+                <div class="eval-card">
+                    <h4>Tercer Seguimiento (20%)</h4>
+                    <div class="fecha-eval">Límite: 28 de Mayo</div>
+                    <p style="font-size: 0.85rem; color: #666; margin: 8px 0;">Sustentación Final del Proyecto UCS.</p>
+                    <span class="porcentaje">E6</span>
+                </div>
+            </div>
+        </section>
+
         <footer>
-            <p><strong>IF0099 - Sistemas Operativos I</strong> | UNAULA 2026-I</p>
+            <p>IF0099 - Sistemas Operativos I | Universidad Autónoma Latinoamericana | 2026</p>
         </footer>
     </div>
 </body>

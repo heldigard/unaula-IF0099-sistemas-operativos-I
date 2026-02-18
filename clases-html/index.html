@@ -3,681 +3,268 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IF0099 - Sistemas Operativos I | Plan Práctico v2.0</title>
+    <title>IF0099 - Sistemas Operativos I | Plan Práctico v5.1</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background: linear-gradient(135deg, #1e3a5f 0%, #2d5a87 100%);
-            min-height: 100vh;
-            padding: 20px;
-        }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        header {
-            background: white;
-            border-radius: 15px;
-            padding: 40px;
-            margin-bottom: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            text-align: center;
-        }
-
-        h1 {
-            color: #1e3a5f;
-            font-size: 2.5em;
-            margin-bottom: 10px;
-        }
-
-        h2 {
-            color: #555;
-            font-size: 1.5em;
-            font-weight: normal;
-            margin-bottom: 20px;
-        }
-
-        .course-info {
-            display: inline-block;
-            padding: 15px 30px;
-            background: linear-gradient(135deg, #1e3a5f 0%, #2d5a87 100%);
-            color: white;
-            border-radius: 10px;
-            font-size: 1.1em;
-        }
-
-        .version-badge {
-            display: inline-block;
-            padding: 8px 20px;
-            background: #10b981;
-            color: white;
-            border-radius: 20px;
-            font-size: 0.9em;
-            font-weight: 600;
-            margin-left: 15px;
-        }
-
-        .nav-section {
-            background: white;
-            border-radius: 15px;
-            padding: 20px 30px;
-            margin-bottom: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-
-        .nav-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            padding: 15px 30px;
-            background: linear-gradient(135deg, #1e3a5f 0%, #2d5a87 100%);
-            color: white;
-            text-decoration: none;
-            border-radius: 10px;
-            font-weight: 600;
-            font-size: 1.1em;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(30, 58, 95, 0.3);
-        }
-
-        .nav-link:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(30, 58, 95, 0.4);
-        }
-
-        .nav-link.calendar {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-        }
-
-        .nav-link.rubrics {
-            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
-        }
-
-        .nav-link.lab {
-            background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%);
-        }
-
-        .nav-icon {
-            font-size: 1.3em;
-        }
-
-        .progress-section {
-            background: white;
-            border-radius: 15px;
-            padding: 30px;
-            margin-bottom: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            text-align: center;
-        }
-
-        .progress-bar {
-            width: 100%;
-            height: 50px;
-            background: #e0e0e0;
-            border-radius: 25px;
-            overflow: hidden;
-            margin: 20px 0;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #10b981 0%, #059669 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: 600;
-            font-size: 1.3em;
-            width: 100%;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
-        }
-
-        .stat-card {
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 10px;
-            border-left: 4px solid #10b981;
-        }
-
-        .stat-number {
-            font-size: 2.5em;
-            font-weight: bold;
-            color: #1e3a5f;
-        }
-
-        .stat-label {
-            color: #555;
-            font-size: 0.85em;
-        }
-
-        .units-section {
-            background: white;
-            border-radius: 15px;
-            padding: 30px;
-            margin-bottom: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-        }
-
-        .units-section h2 {
-            color: #1e3a5f;
-            font-size: 2em;
-            margin-bottom: 30px;
-            padding-bottom: 15px;
-            border-bottom: 3px solid #1e3a5f;
-            font-weight: 600;
-        }
-
-        .module-block {
-            margin-bottom: 40px;
-        }
-
-        .module-title {
-            background: linear-gradient(135deg, #1e3a5f 0%, #2d5a87 100%);
-            color: white;
-            padding: 18px 25px;
-            border-radius: 12px;
-            font-size: 1.4em;
-            font-weight: 600;
-            margin-bottom: 15px;
-        }
-
-        .module-subtitle {
-            color: #666;
-            font-size: 0.9em;
-            margin-bottom: 20px;
-            font-style: italic;
-        }
-
-        .class-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-        }
-
-        .class-card {
-            background: #f8f9fa;
-            border-radius: 12px;
-            padding: 22px;
-            transition: all 0.3s ease;
-            border: 2px solid transparent;
-            text-decoration: none;
-            color: inherit;
-            display: block;
-        }
-
-        .class-card:hover {
-            border-color: #1e3a5f;
-            box-shadow: 0 8px 25px rgba(30, 58, 95, 0.2);
-            transform: translateY(-5px);
-            background: white;
-        }
-
-        .class-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 12px;
-        }
-
-        .class-number {
-            background: #1e3a5f;
-            color: white;
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-size: 0.85em;
-            font-weight: 600;
-        }
-
-        .class-title {
-            font-size: 1.15em;
-            font-weight: 600;
-            color: #1e3a5f;
-            margin-bottom: 10px;
-        }
-
-        .class-description {
-            font-size: 0.9em;
-            color: #666;
-        }
-
-        .class-meta {
-            margin-top: 12px;
-            padding-top: 12px;
-            border-top: 1px solid #e0e0e0;
-            font-size: 0.8em;
-            color: #888;
-        }
-
-        .badge-linux {
-            display: inline-block;
-            padding: 3px 10px;
-            background: #fbbf24;
-            color: #92400e;
-            border-radius: 12px;
-            font-size: 0.75em;
-            font-weight: 600;
-            margin-right: 5px;
-        }
-
-        .badge-windows {
-            display: inline-block;
-            padding: 3px 10px;
-            background: #60a5fa;
-            color: #1e40af;
-            border-radius: 12px;
-            font-size: 0.75em;
-            font-weight: 600;
-            margin-right: 5px;
-        }
-
-        .badge-both {
-            display: inline-block;
-            padding: 3px 10px;
-            background: #a78bfa;
-            color: #5b21b6;
-            border-radius: 12px;
-            font-size: 0.75em;
-            font-weight: 600;
-            margin-right: 5px;
-        }
-
-        .badge-practice {
-            display: inline-block;
-            padding: 3px 10px;
-            background: #10b981;
-            color: #065f46;
-            border-radius: 12px;
-            font-size: 0.75em;
-            font-weight: 600;
-        }
-
-        footer {
-            background: white;
-            border-radius: 15px;
-            padding: 25px;
-            text-align: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            color: #555;
-        }
-
-        .highlight-box {
-            background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
-            border-left: 4px solid #10b981;
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 30px;
-        }
-
-        .highlight-box h3 {
-            color: #065f46;
-            margin-bottom: 10px;
-        }
-
-        .highlight-box p {
-            color: #047857;
-            font-size: 0.95em;
-        }
-
-        @media (max-width: 768px) {
-            h1 { font-size: 1.8em; }
-            h2 { font-size: 1.3em; }
-            .class-grid { grid-template-columns: 1fr; }
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; background: linear-gradient(135deg, #1e3a5f 0%, #2d5a87 100%); min-height: 100vh; padding: 20px; }
+        .container { max-width: 1400px; margin: 0 auto; }
+        header { background: white; border-radius: 15px; padding: 40px; margin-bottom: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); text-align: center; }
+        h1 { color: #1e3a5f; font-size: 2.5em; margin-bottom: 10px; }
+        h2 { color: #555; font-size: 1.5em; font-weight: normal; margin-bottom: 20px; }
+        .course-info { display: inline-block; padding: 15px 30px; background: linear-gradient(135deg, #1e3a5f 0%, #2d5a87 100%); color: white; border-radius: 10px; font-size: 1.1em; }
+        .version-badge { display: inline-block; padding: 8px 20px; background: #10b981; color: white; border-radius: 20px; font-size: 0.9em; font-weight: 600; margin-left: 15px; }
+        .nav-section { background: white; border-radius: 15px; padding: 20px 30px; margin-bottom: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
+        .nav-link { display: inline-flex; align-items: center; gap: 10px; padding: 15px 30px; background: linear-gradient(135deg, #1e3a5f 0%, #2d5a87 100%); color: white; text-decoration: none; border-radius: 10px; font-weight: 600; font-size: 1.1em; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(30, 58, 95, 0.3); }
+        .nav-link:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(30, 58, 95, 0.4); }
+        .nav-link.calendar { background: linear-gradient(135deg, #10b981 0%, #059669 100%); }
+        .nav-link.rubrics { background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); }
+        .nav-link.lab { background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%); }
+        .progress-section { background: white; border-radius: 15px; padding: 30px; margin-bottom: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); text-align: center; }
+        .progress-bar { width: 100%; height: 50px; background: #e0e0e0; border-radius: 25px; overflow: hidden; margin: 20px 0; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, #10b981 0%, #059669 100%); display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; font-size: 1.3em; width: 100%; }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px; margin-top: 20px; }
+        .stat-card { background: #f8f9fa; padding: 20px; border-radius: 10px; border-left: 4px solid #10b981; }
+        .stat-number { font-size: 2.5em; font-weight: bold; color: #1e3a5f; }
+        .stat-label { color: #555; font-size: 0.85em; }
+        .units-section { background: white; border-radius: 15px; padding: 30px; margin-bottom: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .units-section h2 { color: #1e3a5f; font-size: 2em; margin-bottom: 30px; padding-bottom: 15px; border-bottom: 3px solid #1e3a5f; font-weight: 600; }
+        .module-block { margin-bottom: 40px; }
+        .module-title { background: linear-gradient(135deg, #1e3a5f 0%, #2d5a87 100%); color: white; padding: 18px 25px; border-radius: 12px; font-size: 1.4em; font-weight: 600; margin-bottom: 15px; }
+        .module-subtitle { color: #666; font-size: 0.9em; margin-bottom: 20px; font-style: italic; }
+        .class-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .class-card { background: #f8f9fa; border-radius: 12px; padding: 22px; transition: all 0.3s ease; border: 2px solid transparent; text-decoration: none; color: inherit; display: block; }
+        .class-card:hover { border-color: #1e3a5f; box-shadow: 0 8px 25px rgba(30, 58, 95, 0.2); transform: translateY(-5px); background: white; }
+        .class-header { display: flex; align-items: center; margin-bottom: 12px; }
+        .class-number { background: #1e3a5f; color: white; padding: 6px 16px; border-radius: 20px; font-size: 0.85em; font-weight: 600; }
+        .class-date { margin-left: auto; font-size: 0.85em; font-weight: 700; color: #1e3a5f; background: #e0e7ff; padding: 4px 12px; border-radius: 12px; }
+        .class-title { font-size: 1.15em; font-weight: 600; color: #1e3a5f; margin-bottom: 10px; }
+        .class-description { font-size: 0.9em; color: #666; }
+        .class-meta { margin-top: 12px; padding-top: 12px; border-top: 1px solid #e0e0e0; font-size: 0.8em; color: #888; }
+        .badge-linux { display: inline-block; padding: 3px 10px; background: #fbbf24; color: #92400e; border-radius: 12px; font-size: 0.75em; font-weight: 600; margin-right: 5px; }
+        .badge-windows { display: inline-block; padding: 3px 10px; background: #60a5fa; color: #1e40af; border-radius: 12px; font-size: 0.75em; font-weight: 600; margin-right: 5px; }
+        .badge-both { display: inline-block; padding: 3px 10px; background: #a78bfa; color: #5b21b6; border-radius: 12px; font-size: 0.75em; font-weight: 600; margin-right: 5px; }
+        .badge-practice { display: inline-block; padding: 3px 10px; background: #10b981; color: #065f46; border-radius: 12px; font-size: 0.75em; font-weight: 600; }
+        .highlight-box { background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%); border-left: 4px solid #10b981; padding: 20px; border-radius: 10px; margin-bottom: 30px; }
+        .highlight-box h3 { color: #065f46; margin-bottom: 10px; }
+        .highlight-box p { color: #047857; font-size: 0.95em; }
+        .nav-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 20px; }
+        .nav-card { background: #f8f9fa; border-radius: 12px; padding: 20px; border-left: 4px solid #6366f1; transition: all 0.3s; }
+        .nav-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); background: white; }
+        .nav-card h3 { color: #1e3a5f; margin-bottom: 10px; font-size: 1.1em; }
+        .nav-card p { font-size: 0.85em; color: #666; }
+        .icon { font-size: 2em; margin-bottom: 10px; }
+        footer { background: white; border-radius: 15px; padding: 25px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.3); color: #555; margin-top: 30px; }
+        @media (max-width: 768px) { h1 { font-size: 1.8em; } h2 { font-size: 1.3em; } .class-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
             <h1>IF0099 - Sistemas Operativos I</h1>
-            <h2>Plan Práctico v2.0 <span class="version-badge">60% Práctica</span></h2>
+            <h2>Plan Práctico v5.1 <span class="version-badge">60% Práctica</span></h2>
             <div class="course-info">
                 <strong>4° Semestre - Ingeniería Informática</strong><br>
                 UNAULA - 2026-I
             </div>
         </header>
 
-        <!-- Navegación Principal -->
         <nav class="nav-section">
-            <a href="cronograma.html" class="nav-link calendar">
-                <span class="nav-icon">📅</span>
-                Cronograma del Curso
-            </a>
-            <a href="concertacion.html" class="nav-link" style="background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);">
-                <span class="nav-icon">📋</span>
-                Acta de Concertación
-            </a>
-            <a href="evaluaciones.html" class="nav-link" style="background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%);">
-                <span class="nav-icon">📝</span>
-                Evaluaciones
-            </a>
-            <a href="proyecto.html" class="nav-link" style="background: linear-gradient(135deg, #059669 0%, #047857 100%);">
-                <span class="nav-icon">📘</span>
-                Guía del Proyecto
-            </a>
-            <a href="rubricas.html" class="nav-link rubrics">
-                <span class="nav-icon">📋</span>
-                Rúbricas de Evaluación
-            </a>
-            <a href="recursos-alternativos.html" class="nav-link" style="background: linear-gradient(135deg, #059669 0%, #047857 100%);">
-                <span class="nav-icon">🌐</span>
-                Recursos Alternativos
-            </a>
-            <a href="glosario.html" class="nav-link" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">
-                <span class="nav-icon">📖</span>
-                Glosario
-            </a>
-            <a href="guia-comandos.html" class="nav-link" style="background: linear-gradient(135deg, #64748b 0%, #334155 100%);">
-                <span class="nav-icon">⌨️</span>
-                Guía de Comandos
-            </a>
-            <a href="../laboratorios-html/index.html" class="nav-link lab">
-                <span class="nav-icon">🧪</span>
-                Laboratorios
-            </a>
+            <a href="cronograma.html" class="nav-link calendar"><span class="nav-icon">📅</span> Cronograma</a>
+            <a href="concertacion.html" class="nav-link" style="background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);"><span class="nav-icon">📋</span> Concertación</a>
+            <a href="evaluaciones.html" class="nav-link" style="background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%);"><span class="nav-icon">📝</span> Evaluaciones</a>
+            <a href="proyecto.html" class="nav-link" style="background: linear-gradient(135deg, #059669 0%, #047857 100%);"><span class="nav-icon">📘</span> Guía del Proyecto</a>
+            <a href="rubricas.html" class="nav-link rubrics"><span class="nav-icon">📋</span> Rúbricas</a>
+            <a href="guia-comandos.html" class="nav-link" style="background: linear-gradient(135deg, #64748b 0%, #334155 100%);"><span class="nav-icon">⌨️</span> Comandos</a>
         </nav>
 
         <section class="progress-section">
-            <h2 style="color: #1e3a5f; font-weight: 600;">Progreso del Curso</h2>
-            <div class="progress-bar">
-                <div class="progress-fill">100% CONTENIDO LISTO ✅</div>
-            </div>
+            <h2 style="color: #1e3a5f; font-weight: 600;">Estado del Semestre</h2>
+            <div class="progress-bar"><div class="progress-fill">100% CONTENIDO TÉCNICO ✅</div></div>
             <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-number">17</div>
-                    <div class="stat-label">Clases Teóricas</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">48h</div>
-                    <div class="stat-label">Intensidad Horaria</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">60%</div>
-                    <div class="stat-label">Práctica Real</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">4</div>
-                    <div class="stat-label">Módulos</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">16</div>
-                    <div class="stat-label">Sesiones efectivas (miércoles)</div>
-                </div>
+                <div class="stat-card"><div class="stat-number">17</div><div class="stat-label">Clases Técnicas</div></div>
+                <div class="stat-card"><div class="stat-number">4</div><div class="stat-label">Guías de Integración</div></div>
+                <div class="stat-card"><div class="stat-number">60%</div><div class="stat-label">Carga Práctica</div></div>
+                <div class="stat-card"><div class="stat-number">16</div><div class="stat-label">Semanas</div></div>
             </div>
         </section>
 
         <div class="highlight-box">
-            <h3>Nuevo Enfoque Teórico-Práctico (40/60)</h3>
-            <p><strong>Sin programación C.</strong> Enfocado en administración real de sistemas: VirtualBox, Ubuntu Server, Windows (10/11 o Server), Apache, IIS y Seguridad. Cada sesión se divide equitativamente entre teoría y laboratorios prácticos.</p>
+            <h3>Fase de Cierre: Integración y Sustentación</h3>
+            <p>Finalizada la teoría, entramos en la fase de soporte técnico intensivo para poner el sistema UCS en producción y preparar la defensa final ante el grupo.</p>
         </div>
 
+        <section class="units-section">
+            <h2>🛠️ Sesiones de Integración y Soporte (Fase Final)</h2>
+            <div class="nav-grid">
+                <a href="guia-integracion-final.html" class="nav-card" style="text-decoration: none; color: inherit; display: block;">
+                    <div class="icon">🔧</div>
+                    <div class="class-number" style="display:inline-block; margin-bottom:10px; background: #6366f1; color: white; padding: 4px 12px; border-radius: 12px; font-size: 0.8em;">29 Abr</div>
+                    <h3>Integración Híbrida (Taller)</h3>
+                    <p>Laboratorio presencial para conectar Apache, IIS y RAID 1 en el proyecto UCS.</p>
+                    <div style="margin-top: 10px; color: #6366f1; font-weight: 600; font-size: 0.85em;">Guía Técnica →</div>
+                </a>
+                <a href="evaluaciones.html#e5" class="nav-card" style="text-decoration: none; color: inherit; display: block;">
+                    <div class="icon">🎯</div>
+                    <div class="class-number" style="display:inline-block; margin-bottom:10px; background: #6366f1; color: white; padding: 4px 12px; border-radius: 12px; font-size: 0.8em;">06 May</div>
+                    <h3>QA y Puesta en Producción</h3>
+                    <p>Validación final de servicios web y Dashboard de salud. Entrega de la Fase 5.</p>
+                    <div style="margin-top: 10px; color: #6366f1; font-weight: 600; font-size: 0.85em;">Ver Requisitos →</div>
+                </a>
+                <a href="guia-sustentacion-final.html" class="nav-card" style="text-decoration: none; color: inherit; display: block;">
+                    <div class="icon">📺</div>
+                    <div class="class-number" style="display:inline-block; margin-bottom:10px; background: #6366f1; color: white; padding: 4px 12px; border-radius: 12px; font-size: 0.8em;">13 May</div>
+                    <h3>Simulacro de Sustentación</h3>
+                    <p>Clínica de oratoria técnica y feedback sobre la calidad de la defensa.</p>
+                    <div style="margin-top: 10px; color: #6366f1; font-weight: 600; font-size: 0.85em;">Preparar Demo →</div>
+                </a>
+                <a href="guia-sustentacion-final.html#portafolio" class="nav-card" style="text-decoration: none; color: inherit; display: block;">
+                    <div class="icon">📝</div>
+                    <div class="class-number" style="display:inline-block; margin-bottom:10px; background: #6366f1; color: white; padding: 4px 12px; border-radius: 12px; font-size: 0.8em;">20 May</div>
+                    <h3>Control de Calidad Final</h3>
+                    <p>Revisión de manuales, repositorios y diseño del Pitch final de 8 diapositivas.</p>
+                    <div style="margin-top: 10px; color: #6366f1; font-weight: 600; font-size: 0.85em;">Guía de QA →</div>
+                </a>
+            </div>
+        </section>
 
         <section class="units-section">
-            <h2>Contenido del Curso</h2>
-
-            <!-- Módulo 1: Fundamentos y Virtualización -->
+            <h2>📚 Contenido de Clases (Teoría y Práctica)</h2>
+            
             <div class="module-block">
-                <div class="module-title">Módulo 1: Fundamentos y Virtualización</div>
-                <div class="module-subtitle">Clases 01-04 | Introducción, Linux Terminal, Cambio de Contexto, Arquitectura del SO</div>
+                <div class="module-title">Módulo 1: Fundamentos</div>
                 <div class="class-grid">
                     <a href="clase-01.html" class="class-card">
-                        <div class="class-header">
-                            <span class="class-number">Clase 01</span>
-                        </div>
-                        <div class="class-title">¿Qué es un Sistema Operativo?</div>
+                        <div class="class-header"><span class="class-number">Clase 01</span><span class="class-date">04 Feb</span></div>
+                        <div class="class-title">¿Qué es un SO?</div>
                         <div class="class-description">Introducción + VirtualBox + Linux/Windows</div>
-                        <div class="class-meta">
-                            <span class="badge-both">Linux/Windows</span>
-                            <span class="badge-practice">60% Práctica</span>
-                        </div>
+                        <div class="class-meta"><span class="badge-both">Linux/Windows</span><span class="badge-practice">60% Práctica</span></div>
                     </a>
-
                     <a href="clase-02.html" class="class-card">
-                        <div class="class-header">
-                            <span class="class-number">Clase 02</span>
-                        </div>
-                        <div class="class-title">Linux Terminal - Comandos Esenciales</div>
-                        <div class="class-description">Navegación, archivos, permisos, comandos básicos</div>
-                        <div class="class-meta">
-                            <span class="badge-linux">Linux</span>
-                            <span class="badge-practice">50% Práctica</span>
-                        </div>
+                        <div class="class-header"><span class="class-number">Clase 02</span><span class="class-date">04 Feb</span></div>
+                        <div class="class-title">Linux Terminal</div>
+                        <div class="class-description">Navegación, archivos y comandos esenciales.</div>
+                        <div class="class-meta"><span class="badge-linux">Linux</span><span class="badge-practice">60% Práctica</span></div>
                     </a>
-
                     <a href="clase-03.html" class="class-card">
-                        <div class="class-header">
-                            <span class="class-number">Clase 03</span>
-                        </div>
-                        <div class="class-title">Cambio de Contexto y Concurrencia</div>
-                        <div class="class-description">PCB, estados de proceso, scheduling, algoritmos</div>
-                        <div class="class-meta">
-                            <span class="badge-linux">Linux</span>
-                            <span class="badge-practice">50% Práctica</span>
-                        </div>
+                        <div class="class-header"><span class="class-number">Clase 03</span><span class="class-date">11 Feb</span></div>
+                        <div class="class-title">Cambio de Contexto</div>
+                        <div class="class-description">PCB, estados de proceso y scheduling.</div>
+                        <div class="class-meta"><span class="badge-linux">Linux</span><span class="badge-practice">60% Práctica</span></div>
                     </a>
-
                     <a href="clase-04.html" class="class-card">
-                        <div class="class-header">
-                            <span class="class-number">Clase 04</span>
-                        </div>
-                        <div class="class-title">Estructura del Sistema Operativo</div>
-                        <div class="class-description">Kernel, Shell, System Calls, Modo Usuario/Kernel</div>
-                        <div class="class-meta">
-                            <span class="badge-linux">Linux</span>
-                            <span class="badge-practice">50% Práctica</span>
-                        </div>
+                        <div class="class-header"><span class="class-number">Clase 04</span><span class="class-date">11 Feb</span></div>
+                        <div class="class-title">Estructura del SO</div>
+                        <div class="class-description">Kernel, Shell y System Calls.</div>
+                        <div class="class-meta"><span class="badge-linux">Linux</span><span class="badge-practice">60% Práctica</span></div>
                     </a>
                 </div>
             </div>
 
-            <!-- Módulo 2: Procesos y Concurrencia -->
             <div class="module-block">
-                <div class="module-title">Módulo 2: Procesos y Concurrencia</div>
-                <div class="module-subtitle">Clases 05-08 | Procesos Linux/Windows, Hilos, Gestión de Memoria</div>
+                <div class="module-title">Módulo 2: Procesos</div>
                 <div class="class-grid">
                     <a href="clase-05.html" class="class-card">
-                        <div class="class-header">
-                            <span class="class-number">Clase 05</span>
-                        </div>
-                        <div class="class-title">Procesos en Linux - Gestión y Monitoreo</div>
-                        <div class="class-description">ps, top, htop, kill, systemctl, servicios</div>
-                        <div class="class-meta">
-                            <span class="badge-linux">Linux</span>
-                            <span class="badge-practice">50% Práctica</span>
-                        </div>
+                        <div class="class-header"><span class="class-number">Clase 05</span><span class="class-date">18 Feb</span></div>
+                        <div class="class-title">Procesos en Linux</div>
+                        <div class="class-description">ps, top, htop y gestión de servicios.</div>
+                        <div class="class-meta"><span class="badge-linux">Linux</span><span class="badge-practice">60% Práctica</span></div>
                     </a>
-
                     <a href="clase-06.html" class="class-card">
-                        <div class="class-header">
-                            <span class="class-number">Clase 06</span>
-                        </div>
-                        <div class="class-title">Procesos en Windows - Gestión y Servicios</div>
-                        <div class="class-description">Task Manager, PowerShell, servicios Windows</div>
-                        <div class="class-meta">
-                            <span class="badge-windows">Windows</span>
-                            <span class="badge-practice">50% Práctica</span>
-                        </div>
+                        <div class="class-header"><span class="class-number">Clase 06</span><span class="class-date">18 Feb</span></div>
+                        <div class="class-title">Procesos en Windows</div>
+                        <div class="class-description">PowerShell y servicios Windows.</div>
+                        <div class="class-meta"><span class="badge-windows">Windows</span><span class="badge-practice">60% Práctica</span></div>
                     </a>
-
                     <a href="clase-07.html" class="class-card">
-                        <div class="class-header">
-                            <span class="class-number">Clase 07</span>
-                        </div>
+                        <div class="class-header"><span class="class-number">Clase 07</span><span class="class-date">25 Feb</span></div>
                         <div class="class-title">Hilos y Sincronización</div>
-                        <div class="class-description">Threads, mutex, semáforos, deadlock (conceptual)</div>
-                        <div class="class-meta">
-                            <span class="badge-both">Teoría</span>
-                            <span class="badge-practice">50% Práctica</span>
-                        </div>
+                        <div class="class-description">Threads, mutex y semáforos.</div>
+                        <div class="class-meta"><span class="badge-both">Teoría</span><span class="badge-practice">60% Práctica</span></div>
                     </a>
-
                     <a href="clase-08.html" class="class-card">
-                        <div class="class-header">
-                            <span class="class-number">Clase 08</span>
-                        </div>
+                        <div class="class-header"><span class="class-number">Clase 08</span><span class="class-date">04 Mar</span></div>
                         <div class="class-title">Gestión de Memoria</div>
-                        <div class="class-description">Jerarquía de memoria, asignación contigua, particiones</div>
-                        <div class="class-meta">
-                            <span class="badge-linux">Linux</span>
-                            <span class="badge-practice">50% Práctica</span>
-                        </div>
+                        <div class="class-description">Jerarquía y asignación contigua.</div>
+                        <div class="class-meta"><span class="badge-both">Linux/Windows</span><span class="badge-practice">60% Práctica</span></div>
                     </a>
                 </div>
             </div>
 
-            <!-- Módulo 3: Memoria y Archivos -->
             <div class="module-block">
-                <div class="module-title">Módulo 3: Memoria y Archivos</div>
-                <div class="module-subtitle">Clases 09-13 | Paginación, Memoria Virtual, Discos, Sistemas de Archivos</div>
+                <div class="module-title">Módulo 3: Almacenamiento</div>
                 <div class="class-grid">
                     <a href="clase-09.html" class="class-card">
-                        <div class="class-header">
-                            <span class="class-number">Clase 09</span>
-                        </div>
+                        <div class="class-header"><span class="class-number">Clase 09</span><span class="class-date">04 Mar</span></div>
                         <div class="class-title">Paginación</div>
-                        <div class="class-description">Paginación, tablas de páginas, TLB, segmentación</div>
-                        <div class="class-meta">
-                            <span class="badge-linux">Linux</span>
-                            <span class="badge-practice">50% Práctica</span>
-                        </div>
+                        <div class="class-description">Tablas de páginas y TLB.</div>
+                        <div class="class-meta"><span class="badge-both">Linux/Windows</span><span class="badge-practice">60% Práctica</span></div>
                     </a>
-
                     <a href="clase-10.html" class="class-card">
-                        <div class="class-header">
-                            <span class="class-number">Clase 10</span>
-                        </div>
+                        <div class="class-header"><span class="class-number">Clase 10</span><span class="class-date">11 Mar</span></div>
                         <div class="class-title">Memoria Virtual</div>
-                        <div class="class-description">Paging, swapping, thrashing, monitoreo</div>
-                        <div class="class-meta">
-                            <span class="badge-linux">Linux</span>
-                            <span class="badge-practice">50% Práctica</span>
-                        </div>
+                        <div class="class-description">Swapping y Thrashing.</div>
+                        <div class="class-meta"><span class="badge-both">Linux/Windows</span><span class="badge-practice">60% Práctica</span></div>
                     </a>
-
                     <a href="clase-11.html" class="class-card">
-                        <div class="class-header">
-                            <span class="class-number">Clase 11</span>
-                        </div>
+                        <div class="class-header"><span class="class-number">Clase 11</span><span class="class-date">18 Mar</span></div>
                         <div class="class-title">Discos y E/S</div>
-                        <div class="class-description">Gestión de discos, particiones, sistemas de archivos básicos</div>
-                        <div class="class-meta">
-                            <span class="badge-linux">Linux</span>
-                            <span class="badge-practice">50% Práctica</span>
-                        </div>
+                        <div class="class-description">Gestión de discos y particiones.</div>
+                        <div class="class-meta"><span class="badge-both">Linux/Windows</span><span class="badge-practice">60% Práctica</span></div>
                     </a>
-
                     <a href="clase-12.html" class="class-card">
-                        <div class="class-header">
-                            <span class="class-number">Clase 12</span>
-                        </div>
+                        <div class="class-header"><span class="class-number">Clase 12</span><span class="class-date">18 Mar</span></div>
                         <div class="class-title">Sistemas de Archivos</div>
-                        <div class="class-description">EXT4, NTFS, inodos, directorios, permisos avanzados</div>
-                        <div class="class-meta">
-                            <span class="badge-linux">Linux</span>
-                            <span class="badge-practice">50% Práctica</span>
-                        </div>
+                        <div class="class-description">Inodos, EXT4 y NTFS. (Insumo E3).</div>
+                        <div class="class-meta"><span class="badge-linux">Linux</span><span class="badge-practice">60% Práctica</span></div>
                     </a>
-
                     <a href="clase-13.html" class="class-card">
-                        <div class="class-header">
-                            <span class="class-number">Clase 13</span>
-                        </div>
-                        <div class="class-title">Implementación de Sistemas de Archivos</div>
-                        <div class="class-description">Estructura interna, journaling, RAID</div>
-                        <div class="class-meta">
-                            <span class="badge-linux">Linux</span>
-                            <span class="badge-practice">50% Práctica</span>
-                        </div>
+                        <div class="class-header"><span class="class-number">Clase 13</span><span class="class-date">08 Abr</span></div>
+                        <div class="class-title">Implementación de FS</div>
+                        <div class="class-description">Journaling y RAID. (Insumo E5).</div>
+                        <div class="class-meta"><span class="badge-linux">Linux</span><span class="badge-practice">60% Práctica</span></div>
                     </a>
                 </div>
             </div>
 
-            <!-- Módulo 4: Seguridad y Servicios -->
             <div class="module-block">
                 <div class="module-title">Módulo 4: Seguridad y Servicios</div>
-                <div class="module-subtitle">Clases 14-17 | Servidor IIS, Permisos, Seguridad Linux/Windows, Apache</div>
                 <div class="class-grid">
-                    <a href="clase-14.html" class="class-card">
-                        <div class="class-header">
-                            <span class="class-number">Clase 14</span>
-                        </div>
-                        <div class="class-title">Servidor Web IIS</div>
-                        <div class="class-description">Application Pools, PowerShell, HTTPS</div>
-                        <div class="class-meta">
-                            <span class="badge-windows">Windows</span>
-                            <span class="badge-practice">50% Práctica</span>
-                        </div>
-                    </a>
-
                     <a href="clase-15.html" class="class-card">
-                        <div class="class-header">
-                            <span class="class-number">Clase 15</span>
-                        </div>
-                        <div class="class-title">Permisos y Seguridad en Linux</div>
-                        <div class="class-description">chmod, chown, ACLs, SUID, SGID, sticky bit</div>
-                        <div class="class-meta">
-                            <span class="badge-linux">Linux</span>
-                            <span class="badge-practice">50% Práctica</span>
-                        </div>
+                        <div class="class-header"><span class="class-number">Clase 15</span><span class="class-date">15 Abr</span></div>
+                        <div class="class-title">Seguridad Linux</div>
+                        <div class="class-description">Hardening y ACLs. (Insumo E4).</div>
+                        <div class="class-meta"><span class="badge-linux">Linux</span><span class="badge-practice">60% Práctica</span></div>
                     </a>
-
                     <a href="clase-16.html" class="class-card">
-                        <div class="class-header">
-                            <span class="class-number">Clase 16</span>
-                        </div>
-                        <div class="class-title">Permisos y Seguridad en Windows</div>
-                        <div class="class-description">NTFS, SMB shares, usuarios, grupos</div>
-                        <div class="class-meta">
-                            <span class="badge-windows">Windows</span>
-                            <span class="badge-practice">50% Práctica</span>
-                        </div>
+                        <div class="class-header"><span class="class-number">Clase 16</span><span class="class-date">15 Abr</span></div>
+                        <div class="class-title">Seguridad Windows</div>
+                        <div class="class-description">NTFS, SMB y auditoría. (Insumo E4).</div>
+                        <div class="class-meta"><span class="badge-windows">Windows</span><span class="badge-practice">60% Práctica</span></div>
                     </a>
-
+                    <a href="clase-14.html" class="class-card">
+                        <div class="class-header"><span class="class-number">Clase 14</span><span class="class-date">22 Abr</span></div>
+                        <div class="class-title">Servidor Web IIS</div>
+                        <div class="class-description">Application Pools y despliegue Windows.</div>
+                        <div class="class-meta"><span class="badge-windows">Windows</span><span class="badge-practice">60% Práctica</span></div>
+                    </a>
                     <a href="clase-17.html" class="class-card">
-                        <div class="class-header">
-                            <span class="class-number">Clase 17</span>
-                        </div>
-                        <div class="class-title">Servidor Web Apache</div>
-                        <div class="class-description">Virtual hosts, HTTPS, certificados SSL</div>
-                        <div class="class-meta">
-                            <span class="badge-linux">Linux</span>
-                            <span class="badge-practice">50% Práctica</span>
-                        </div>
+                        <div class="class-header"><span class="class-number">Clase 17</span><span class="class-date">29 Abr</span></div>
+                        <div class="class-title">Servidor Apache</div>
+                        <div class="class-description">Virtual Hosts y HTTPS. (Insumo E5).</div>
+                        <div class="class-meta"><span class="badge-linux">Linux</span><span class="badge-practice">60% Práctica</span></div>
                     </a>
                 </div>
             </div>
         </section>
 
         <footer>
-            <p><strong>IF0099 - Sistemas Operativos I</strong></p>
-            <p>UNAULA - Ingeniería Informática - 2026-I</p>
+            <p><strong>IF0099 - Sistemas Operativos I</strong> | UNAULA 2026-I</p>
             <p style="margin-top: 15px;">
-                <a href="index.html" style="color: #1e3a5f; text-decoration: none; font-weight: 500;">Inicio</a> |
-                <a href="cronograma.html" style="color: #10b981; text-decoration: none; font-weight: 500;">Cronograma</a> |
-                <a href="concertacion.html" style="color: #dc2626; text-decoration: none; font-weight: 500;">Concertación</a> |
-                <a href="evaluaciones.html" style="color: #8b5cf6; text-decoration: none; font-weight: 500;">Evaluaciones</a> |
-                <a href="rubricas.html" style="color: #3b82f6; text-decoration: none; font-weight: 500;">Rúbricas</a> |
-                <a href="recursos-alternativos.html" style="color: #059669; text-decoration: none; font-weight: 500;">Recursos</a>
+                <a href="index.html" style="color: #1e3a5f; text-decoration: none;">Inicio</a> |
+                <a href="cronograma.html" style="color: #10b981; text-decoration: none;">Cronograma</a> |
+                <a href="evaluaciones.html" style="color: #8b5cf6; text-decoration: none;">Evaluaciones</a> |
+                <a href="proyecto.html" style="color: #059669; text-decoration: none;">Proyecto</a>
             </p>
-            <p style="margin-top: 10px; color: #999;">Plan Práctico v2.0 | 60% Práctica / 40% Teoría | Sin programación C</p>
         </footer>
     </div>
 </body>

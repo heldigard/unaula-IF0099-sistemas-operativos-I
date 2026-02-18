@@ -142,10 +142,10 @@
             <div class="eval-alert" style="cursor: pointer; transition: transform 0.2s;">
                 <span class="eval-alert-icon">📌</span>
                 <div class="eval-alert-content">
-                    <div class="eval-alert-title">E4: FASE 4 - Seguridad y Hardening (22 Abr)</div>
+                    <div class="eval-alert-title">E5: FASE 5 - Integración de Servicios (06 May)</div>
                     <div class="eval-alert-text">15% - Servidores web funcionando (comprende conceptos fundamentales integrados)</div>
                 </div>
-                <span class="eval-alert-date">📅 22 Abr</span>
+                <span class="eval-alert-date">📅 06 May</span>
             </div>
         </a>
 
@@ -239,6 +239,15 @@ Disco particionado con sistema de archivos:
         <section id="journaling">
             <h2>2. Journaling</h2>
             
+            <div class="callout success">
+                <h4>💡 Analogía: El Journal es como una Agenda de Tareas</h4>
+                <p>Imagina que eres un asistente y tu jefe te da 5 tareas. Tienes dos formas de trabajar:</p>
+                <ul>
+                    <li><strong>Sin Journaling:</strong> Empiezas las tareas una por una. Si te desmayas (falla el sistema) a mitad de la tarea 3, cuando despiertes no sabrás qué terminaste y qué no. El escritorio quedará hecho un desastre.</li>
+                    <li><strong>Con Journaling:</strong> Antes de hacer nada, escribes en una <strong>Agenda (Journal)</strong>: "Voy a hacer estas 5 tareas". Si te desmayas, al despertar solo tienes que mirar tu agenda. Si la tarea 3 dice "pendiente", la terminas. Si dice "listo", pasas a la 4. Tu escritorio siempre estará en orden.</li>
+                </ul>
+            </div>
+
             <div class="callout info">
                 <strong>¿Qué es el Journaling?</strong>
                 <p>Técnica que registra cambios pendientes antes de aplicarlos, permitiendo recuperación consistente tras fallos.</p>
@@ -420,53 +429,44 @@ Capacidad: (N-1) × tamaño menor disco
         </section>
 
         <section id="practica">
-            <h2>5. Práctica en Linux</h2>
+            <h2>5. Laboratorio Práctico Híbrido</h2>
             
-            <h3>Comandos para gestión avanzada:</h3>
-            <pre>
-# Ver información del superblock
-sudo dumpe2fs /dev/sda1 | head -50
-
-# Verificar sistema de archivos
-sudo e2fsck -n /dev/sda1    # Solo verificar (no modificar)
-sudo e2fsck -f /dev/sda1    # Forzar verificación
-
-# Cambiar opciones de montaje
-sudo tune2fs -o ^acl /dev/sda1  # Desactivar ACLs
-
-# Ver journal de un FS ext4
-sudo debugfs -R 'stat <12>' /dev/sda1
-
-# Crear sistema de archivos
-sudo mkfs.ext4 -L "MiDisco" /dev/sdb1
-
-# Ver particiones y UUIDs
+            <div class="comparison">
+                <div>
+                    <h4>🛠️ Implementación en Linux</h4>
+                    <p>En Linux, la persistencia se logra mediante el archivo <code>/etc/fstab</code>.</p>
+                    <pre><code># 1. Identificar el UUID del disco
 sudo blkid
-lsblk -f
 
-# Montar por UUID
-sudo mount UUID="abc123" /mnt/punto
+# 2. Crear punto de montaje
+sudo mkdir /mnt/datos
 
-# Crear RAID (con mdadm)
-# RAID 1:
-sudo mdadm --create /dev/md0 --level=1 --raid-devices=2 /dev/sdb1 /dev/sdc1
+# 3. Agregar a fstab
+# [UUID] [punto] [tipo] [opciones] [dump] [pass]
+UUID=... /mnt/datos ext4 defaults 0 2
 
-# Ver estado RAID
-cat /proc/mdstat
+# 4. Crear RAID 1
+sudo mdadm --create /dev/md0 --level=1 --raid-devices=2 /dev/sdb1 /dev/sdc1</code></pre>
+                </div>
+                <div>
+                    <h4>🛠️ Implementación en Windows</h4>
+                    <p>En Windows, se utilizan los <strong>Espacios de Almacenamiento</strong> para redundancia lógica.</p>
+                    <ol>
+                        <li>Vaya a <strong>Panel de Control</strong> → Sistema y Seguridad → Espacios de Almacenamiento.</li>
+                        <li>Seleccione "Crear un nuevo grupo y espacio de almacenamiento".</li>
+                        <li>Elija el tipo de resistencia: <strong>Reflejo (Mirror)</strong> para simular RAID 1.</li>
+                        <li>Observe cómo Windows abstrae el hardware físico en una unidad lógica única.</li>
+                    </ol>
+                </div>
+            </div>
 
-# Guardar configuración RAID
-sudo mdadm --detail --scan >> /etc/mdadm/mdadm.conf
-</pre>
-
-            <h3>Ejercicio práctico:</h3>
             <div class="actividad">
-                <h3>Ejercicio: Análisis de Sistema de Archivos</h3>
+                <h3>Ejercicio Integrador: Resistencia ante Fallos</h3>
                 <ol>
-                    <li>Ver información del superblock con <code>dumpe2fs</code></li>
-                    <li>Examinar el archivo <code>/etc/fstab</code></li>
-                    <li>Listar puntos de montaje actuales con <code>mount</code></li>
-                    <li>Crear un punto de montaje temporal y montar/desmontar</li>
-                    <li>Diseñar un esquema RAID para un caso de uso específico</li>
+                    <li>Configure un RAID 1 (Linux) o un Reflejo (Windows).</li>
+                    <li>Cree un archivo dentro de la unidad redundante.</li>
+                    <li>Simule el fallo: Desconecte uno de los dos discos virtuales en VirtualBox.</li>
+                    <li>Verifique si el archivo sigue siendo accesible. Documente el resultado.</li>
                 </ol>
             </div>
         </section>

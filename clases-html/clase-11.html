@@ -320,45 +320,26 @@ Beneficio: CPU libre durante transferencia
         </section>
 
         <section id="practica">
-            <h2>4. Práctica en Linux</h2>
+            <h2>4. Práctica de Gestión de Almacenamiento</h2>
 
-            <div class="info-box" style="margin-bottom: 1.5rem; background: #eff6ff; border-left: 4px solid var(--primary); padding: 1.5rem; border-radius: 8px;">
-                <h3>📋 Laboratorio Complementario</h3>
-                <p>Para practicar la gestión de discos, particiones y sistemas de archivos, consulta el <strong><a href="../laboratorios-html/lab-05-sistemas-archivos.html" target="_blank">Laboratorio 5: Sistemas de Archivos Avanzados</a></strong>.</p>
+            <div class="actividad">
+                <h3>Ejercicio 1: Exploración de Discos en Linux</h3>
+                <ol>
+                    <li>Liste sus discos actuales con <code>lsblk</code>.</li>
+                    <li>Identifique la partición de montaje raíz (<code>/</code>) y su tamaño.</li>
+                    <li>Use <code>df -h</code> para ver el porcentaje de ocupación.</li>
+                </ol>
             </div>
-            
-            <h3>Comandos para gestión de discos:</h3>
 
-
-            <pre>
-# Listar discos y particiones
-lsblk
-fdisk -l
-
-# Ver uso de disco
-df -h
-
-# Ver información detallada de particiones
-sudo fdisk -l /dev/sda
-
-# Crear particiones (interactivo)
-sudo fdisk /dev/sdb
-
-# Versión moderna con GPT
-sudo gdisk /dev/sdb
-
-# Formatear una partición
-sudo mkfs.ext4 /dev/sdb1
-
-# Ver información de filesystem
-sudo dumpe2fs /dev/sda1 | head -20
-
-# Ver estadísticas de E/S
-iostat -x 1 5
-
-# Ver procesos usando E/S
-iotop
-</pre>
+            <div class="actividad">
+                <h3>Ejercicio 2: Gestión de Discos en Windows</h3>
+                <ol>
+                    <li>Presione <code>Win + X</code> y seleccione <strong>Administración de Discos (diskmgmt.msc)</strong>.</li>
+                    <li>Identifique el "Disco 0" y sus particiones (Reservado para el sistema, C:, Recuperación).</li>
+                    <li>Observe el sistema de archivos (normalmente NTFS).</li>
+                    <li>Simule el concepto de RAID: Investigue qué son los <strong>Espacios de Almacenamiento (Storage Spaces)</strong> en Windows.</li>
+                </ol>
+            </div>
 
             <h3>Ejercicios Prácticos de Almacenamiento:</h3>
             <div class="actividad">
@@ -386,14 +367,10 @@ iotop
             </div>
 
             <div class="actividad">
-                <h3>Ejercicio 3: Análisis de Sectores y Tamaño</h3>
-                <p><strong>Objetivo:</strong> Entender la geometría lógica</p>
-                <ol>
-                    <li>Ejecuta <code>sudo fdisk -l</code></li>
-                    <li>Busca la línea "Units: sectors of 1 * 512 = 512 bytes"</li>
-                    <li>Identifica el sector de inicio y fin de tu partición principal.</li>
-                    <li>Calcula: (Sector Fin - Sector Inicio) * 512 / 1024 / 1024 / 1024. ¿Coincide con los GB reportados?</li>
-                </ol>
+                <h3>Ejercicio 3: Análisis de Colas de Disco (Profesional)</h3>
+                <p><strong>Objetivo:</strong> Identificar por qué un sistema se "congela" debido al almacenamiento.</p>
+                <p><strong>En Windows:</strong> Abra <strong>Performance Monitor</strong> → Agregue el contador <code>PhysicalDisk \ Avg. Disk Queue Length</code>. Si el valor es consistentemente >2 por disco físico, el almacenamiento es el cuello de botella.</p>
+                <p><strong>En Linux:</strong> Use <code>iostat -xz 1</code>. Observe la columna <code>aqu-sz</code> (Average Queue Size) y <code>%util</code>. Un %util cercano a 100 indica saturación.</p>
             </div>
         </section>
 

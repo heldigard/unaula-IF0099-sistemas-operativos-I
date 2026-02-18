@@ -785,21 +785,40 @@ df -h</code></pre>
 
             <p>Sin el gerente (SO), los trabajadores (programas) pelearían por las máquinas (hardware), causando caos y colapsos.</p>
 
-            <h3>Ejemplos de Sistemas Operativos</h3>
+            <h3>Ejemplos de Sistemas Operativos Profesionales</h3>
             <table>
                 <thead>
                     <tr>
-                        <th>Plataforma</th>
-                        <th>Sistemas Operativos</th>
+                        <th>SO</th>
+                        <th>Kernel</th>
+                        <th>Filosofía</th>
+                        <th>Uso Principal</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr><td>Computadoras de escritorio</td><td>Windows, macOS, Linux</td></tr>
-                    <tr><td>Servidores</td><td>Linux (Ubuntu Server, Debian, RHEL)</td></tr>
-                    <tr><td>Celulares</td><td>Android, iOS</td></tr>
-                    <tr><td>Tablets</td><td>iPadOS, Android, Windows</td></tr>
+                    <tr>
+                        <td><strong>Windows 11/Server</strong></td>
+                        <td>Hybrid Kernel (NT)</td>
+                        <td>Cerrado, orientado a GUI y compatibilidad</td>
+                        <td>Corporativo, Directorio Activo, Gaming</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Linux (Ubuntu/RHEL)</strong></td>
+                        <td>Monolithic Kernel</td>
+                        <td>Open Source, "Todo es un archivo"</td>
+                        <td>Servidores Web, Nube, Supercomputación</td>
+                    </tr>
                 </tbody>
             </table>
+
+            <div class="code-block terminal-block">
+                <div class="code-header">Identificación del SO (Vida Real)</div>
+                <pre><code class="language-bash"># En Linux:
+uname -a
+
+# En Windows (PowerShell):
+systeminfo | findstr /B /C:"OS Name" /C:"OS Version"</code></pre>
+            </div>
         </section>
 
         <!-- Sección 2: Funciones Principales -->

@@ -143,7 +143,7 @@
                 <span class="eval-alert-icon">📌</span>
                 <div class="eval-alert-content">
                     <div class="eval-alert-title">E3: FASE 3 - Checkpoint Optimización (25 Mar)</div>
-                    <div class="eval-alert-text">20% - Checkpoint integral (memoria, E/S, archivos, sincronización)</div>
+                    <div class="eval-alert-text">20% - Checkpoint integral (memoria, procesos, sincronización)</div>
                 </div>
                 <span class="eval-alert-date">📅 25 Mar</span>
             </div>
@@ -363,14 +363,20 @@ vmstat 1 5
             <h3>Ejercicios Prácticos Guiados:</h3>
             
             <div class="actividad">
-                <h3>Ejercicio 1: Análisis de Uso de Memoria</h3>
-                <p><strong>Tiempo:</strong> 15 minutos</p>
+                <h3>Ejercicio 1: Análisis de Uso de Memoria (Híbrido)</h3>
+                <p><strong>Parte A: Linux</strong></p>
                 <ol>
                     <li>Verificar memoria total disponible con <code>free -h</code></li>
                     <li>Identificar los 5 procesos que más memoria usan: <code>ps aux --sort=-%mem | head -6</code></li>
-                    <li>Calcular porcentaje de uso de memoria: <code>free | grep Mem | awk '{print ($3/$2)*100}'</code></li>
-                    <li>Verificar si hay uso de swap: <code>swapon -s</code> o <code>free -h | grep Swap</code></li>
-                    <li>Documentar en tabla comparativa con todas las métricas</li>
+                </ol>
+                <p><strong>Parte B: Windows</strong></p>
+                <ol>
+                    <li>Presione <code>Win + R</code> y escriba <code>resmon</code> (Monitor de Recursos).</li>
+                    <li>Vaya a la pestaña <strong>Memoria</strong>. Identifique qué significan los colores: 
+                        <span style="color: #3b82f6;">Azul (Modificada)</span>, 
+                        <span style="color: #ef4444;">Naranja (En uso)</span>, 
+                        <span style="color: #10b981;">Verde (Standby)</span>.</li>
+                    <li>Compare el valor de "Memoria Física Disponible" en Windows con el "MemAvailable" de Linux.</li>
                 </ol>
             </div>
 
@@ -402,13 +408,20 @@ vmstat 1 5
             </div>
 
             <div class="actividad">
-                <h3>Ejercicio 4: Fragmentación Interna (Particiones Fijas)</h3>
-                <p><strong>Tiempo:</strong> 15 minutos</p>
-                
-                <div class="callout info" style="margin-bottom: 1rem;">
-                    <strong>¿Qué es fragmentación interna?</strong><br>
-                    Es el espacio DESPERDICIADO DENTRO de una partición cuando el proceso es más pequeño que el espacio asignado.
-                </div>
+                <h3>Ejercicio 4: Diagnóstico de "Memory Pressure" (Híbrido)</h3>
+                <p><strong>Escenario:</strong> Un servidor web responde lento. ¿Es falta de RAM o fragmentación?</p>
+                <p><strong>En Linux:</strong> Revise <code>sar -B 1 5</code> para ver la tasa de fallos de página. Un valor alto de <code>pgscand/s</code> indica que el sistema está escaneando páginas desesperadamente para liberar RAM.</p>
+                <p><strong>En Windows:</strong> Abra <strong>Performance Monitor</strong> y agregue el contador <code>Memory \ Pages/sec</code>. Un valor >100 constante indica que el sistema está haciendo Swapping excesivo.</p>
+            </div>
+
+            <div class="actividad">
+                <h3>Ejercicio 5: Gestión de Swap y Pagefile</h3>
+                <p><strong>Objetivo:</strong> Configurar la extensión de RAM en disco.</p>
+                <ol>
+                    <li><strong>Linux:</strong> Use <code>swapon --show</code>. ¿Qué prioridad tiene el archivo de swap?</li>
+                    <li><strong>Windows:</strong> <code>SystemPropertiesPerformance.exe</code> → Avanzado → Memoria Virtual. Identifique dónde se ubica el <code>pagefile.sys</code> y si su tamaño es fijo o dinámico.</li>
+                </ol>
+            </div>
                 
                 <p><strong>Situación práctica:</strong> Imagina que tienes tres cajas (particiones) de 200KB cada una. Llegan tres paquetes (procesos): uno de 150KB, otro de 180KB y otro de 50KB. Cada paquete va en una caja.</p>
                 

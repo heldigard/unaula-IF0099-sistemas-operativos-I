@@ -719,39 +719,19 @@
                 <li><strong>Algoritmo de reemplazo:</strong> Cuando el SO necesita liberar marcos</li>
             </ul>
 
-            <h3>Algoritmos de Reemplazo de Páginas</h3>
-
-            <table>
-                <thead>
-                    <tr>
-                        <th>Algoritmo</th>
-                        <th>Descripción</th>
-                        <th>Uso Real</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>FIFO</strong></td>
-                        <td>First In, First Out - Reemplaza la página más antigua</td>
-                        <td>Raramente usado (muy simple)</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Óptimo</strong></td>
-                        <td>Reemplaza la página que se usará más tarde</td>
-                        <td>Teórico, imposible de implementar</td>
-                    </tr>
-                    <tr>
-                        <td><strong>LRU</strong></td>
-                        <td>Least Recently Used - Reemplaza la menos usada recientemente</td>
-                        <td>Común, aproximado en hardware</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Clock</strong></td>
-                        <td>Approximación de LRU con bit de referencia</td>
-                        <td>Muy usado en Linux</td>
-                    </tr>
-                </tbody>
-            </table>
+            <h3>¿Cómo lo vemos en la vida real? (Monitorización de Page Faults)</h3>
+            <p>En lugar de calcular algoritmos teóricos, los administradores de sistemas monitorean la tasa de fallos de página para detectar falta de RAM:</p>
+            
+            <div class="card-grid">
+                <div class="card">
+                    <h4>🛠️ Análisis en Linux</h4>
+                    <p>Use <code>vmstat 1</code> y observe las columnas <strong>si</strong> (swap-in) y <strong>so</strong> (swap-out). Si estos valores son altos de forma constante, el sistema tiene "Thrashing".</p>
+                </div>
+                <div class="card">
+                    <h4>🛠️ Análisis en Windows</h4>
+                    <p>Abra <strong>PerfMon</strong> → Agregue el contador <code>Memory \ Pages/sec</code>. Este valor indica la tasa de fallos de página que requieren acceso a disco. Un valor >100 de forma sostenida indica que necesita más RAM física.</p>
+                </div>
+            </div>
 
             <h3>Swap Space en Linux</h3>
 

@@ -356,7 +356,7 @@
     <main class="container">
         <section id="objetivos">
             <h2>Objetivos de Aprendizaje</h2>
-            <p><strong>Resultado de Aprendizaje (RA1):</strong> Identifica la estructura y los tipos de los sistemas operativos (Alineado con Evaluación E1).</p>
+            <p><strong>Resultado de Aprendizaje (RA3):</strong> Administra la memoria, los procesos de entrada y salida, la comunicación entre procesos y la sincronización de los mismos (Alineado con Evaluación E3).</p>
             <ul>
                 <li>Comprender el concepto de <strong>cambio de contexto</strong> y su importancia en el rendimiento</li>
                 <li>Identificar la estructura del <strong>PCB (Process Control Block)</strong> y su rol en la gestión de recursos</li>
@@ -671,39 +671,22 @@
                 </tbody>
             </table>
 
-            <h3>FCFS - First Come, First Served</h3>
-            <p>El proceso que llega primero se ejecuta primero. Es el algoritmo más simple.</p>
-            <pre><code class="language-text">Proceso | Tiempo de ráfaga | Tiempo de espera
---------|------------------|-----------------
-  P1    |       24        |        0
-  P2    |        3        |       24
-  P3    |        3        |       27
+            <h3>¿Cómo lo vemos en la vida real? (Laboratorio Híbrido)</h3>
+            <p>Los sistemas modernos (Windows/Linux) usan algoritmos de <strong>Prioridad Dinámica</strong>. No calculamos tiempos de espera a mano, usamos herramientas de monitoreo profesional:</p>
+            
+            <div class="card-grid">
+                <div class="card">
+                    <h4>🛠️ Análisis en Linux</h4>
+                    <p>Use <code>htop</code> para ver la prioridad (PRI) y el valor de cortesía (NI). Los procesos con menor NI tienen mayor prioridad en el scheduler.</p>
+                    <pre><code class="language-bash">ps -eo pid,ni,pri,pcpu,cmd --sort=-pcpu</code></pre>
+                </div>
+                <div class="card">
+                    <h4>🛠️ Análisis en Windows</h4>
+                    <p>En el <strong>Administrador de Tareas</strong> (Pestaña Detalles), haga clic derecho en un proceso → "Establecer prioridad". Observe cómo Windows categoriza en: Tiempo Real, Alta, Por encima de lo normal, Normal, etc.</p>
+                </div>
+            </div>
 
-Tiempo de espera promedio: (0 + 24 + 27) / 3 = 17 ms</code></pre>
 
-            <h3>SJF - Shortest Job First</h3>
-            <p>Selecciona el proceso con menor tiempo de ráfaga de CPU.</p>
-            <pre><code class="language-text">Proceso | Tiempo de ráfaga | Tiempo de espera
---------|------------------|-----------------
-  P1    |        6        |        3
-  P2    |        8        |        9
-  P3    |        7        |        0
-  P4    |        3        |        7
-
-Tiempo de espera promedio: (3 + 9 + 0 + 7) / 4 = 4.75 ms
-(Mínimo posible)</code></pre>
-
-            <h3>RR - Round Robin</h3>
-            <p>Cada proceso obtiene un <strong>quantum</strong> de tiempo fijo. Si no termina, vuelve a la cola.</p>
-            <pre><code class="language-text">Quantum = 4 ms
-
-Proceso | Tiempo de ráfaga | Tiempo de espera
---------|------------------|-----------------
-  P1    |       10        |        0
-  P2    |        5        |        4
-  P3    |        8        |        7
-
-Secuencia: P1(4) → P2(4) → P3(4) → P1(4) → P2(1) → P3(4) → P1(2)</code></pre>
 
             <div class="success">
                 <strong>Ejemplo Interactivo:</strong> Ejecuta el siguiente comando para ver los procesos en estado "listos" y sus prioridades en Linux:
@@ -904,20 +887,25 @@ ps aux | grep Z
 
         <!-- Actividad -->
         <section id="actividad">
-            <h2>Actividad Práctica: Estados de Procesos</h2>
+            <h2>Actividad Práctica: Análisis de PCB Híbrido</h2>
 
             <section class="actividad">
-                <h3>Actividad 03: Análisis de PCB y Estados</h3>
-                <p><strong>Tipo:</strong> Avance para Fase 1 (E1)</p>
-                <p><strong>Objetivo:</strong> Identificar la información que el SO guarda de un proceso.</p>
-                <p><strong>Pasos:</strong></p>
+                <h3>Actividad 03: Exploración Profesional de Procesos</h3>
+                <p><strong>Objetivo:</strong> Identificar la información técnica que el SO guarda de un proceso activo en entornos empresariales.</p>
+                <p><strong>Parte A (Linux):</strong></p>
                 <ol>
-                    <li>Usa el comando <code>ps -eo pid,ppid,state,comm</code> para ver los procesos y su estado actual</li>
-                    <li>Identifica un proceso en estado 'S' (Interruptible sleep) y uno en 'R' (Running)</li>
-                    <li>Explora el directorio <code>/proc/[PID]</code> de un proceso activo y lista su contenido</li>
+                    <li>Explore el directorio <code>/proc/[PID]/</code> de un proceso activo.</li>
+                    <li>Documente qué información técnica relevante encuentra en el archivo <code>status</code> (ej: Memory usage, Threads, context switches).</li>
                 </ol>
-                <p><strong>Entregable:</strong> Documentar en tu informe de Fase 1 qué información encontraste en <code>/proc/[PID]/status</code>.</p>
+                <p><strong>Parte B (Windows):</strong></p>
+                <ol>
+                    <li>Descargue y ejecute <strong>Process Explorer</strong> (Sysinternals).</li>
+                    <li>Haga doble clic en un proceso y explore la pestaña <strong>Performance</strong>.</li>
+                    <li>Identifique el número de "Context Switches" acumulados por el proceso.</li>
+                </ol>
+                <p><strong>Entregable:</strong> Documentar en su bitácora cómo varían los cambios de contexto en un proceso de alta carga (ej: un navegador) vs uno de baja carga (ej: notepad).</p>
             </section>
+        </section>
         </section>
 
         <section id="resumen">
@@ -954,14 +942,14 @@ ps aux | grep Z
         </section>
 
         <!-- Próxima Evaluación Alert -->
-        <a href="evaluaciones.html#e1" style="text-decoration: none; display: block; margin-top: 2rem;">
+        <a href="evaluaciones.html#e3" style="text-decoration: none; display: block; margin-top: 2rem;">
             <div class="eval-alert" style="cursor: pointer; transition: transform 0.2s;">
                 <span class="eval-alert-icon">📌</span>
                 <div class="eval-alert-content">
-                    <div class="eval-alert-title">E1: FASE 1 - Fundamentos y Arquitectura (25 Feb)</div>
-                    <div class="eval-alert-text">15% - Configuración inicial del proyecto (identifica estructura y tipos de SO)</div>
+                    <div class="eval-alert-title">E3: FASE 3 - Checkpoint Optimización (25 Mar)</div>
+                    <div class="eval-alert-text">20% - Checkpoint integral (memoria, procesos, sincronización)</div>
                 </div>
-                <span class="eval-alert-date">📅 25 Feb</span>
+                <span class="eval-alert-date">📅 25 Mar</span>
             </div>
         </a>
 

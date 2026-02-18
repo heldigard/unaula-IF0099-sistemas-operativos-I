@@ -144,7 +144,7 @@
             color: #10b981;
         }
 
-        .summary-table .exam-percentage {
+        .summary-table .percentage-lab {
             color: #3b82f6;
         }
 
@@ -195,7 +195,7 @@
             border-left: 5px solid #10b981;
         }
 
-        .eval-card.examen {
+        .eval-card.laboratorio {
             border-left-color: #3b82f6;
         }
 
@@ -256,7 +256,7 @@
             color: #10b981;
         }
 
-        .eval-card.examen .eval-meta-item .value.percentage {
+        .eval-card.laboratorio .eval-meta-item .value.percentage {
             color: #3b82f6;
         }
 
@@ -636,15 +636,15 @@
                         <td><span class="badge badge-informe">Fase 2</span></td>
                         <td>Gestiona los procesos que se llevan a cabo en los sistemas operativos</td>
                         <td class="date">11/03/2026</td>
-                        <td><a href="clase-05.html">C5</a>, <a href="clase-06.html">C6</a>, <a href="clase-07.html">C7</a></td>
+                        <td><a href="clase-05.html">C5</a>, <a href="clase-06.html">C6</a></td>
                     </tr>
                     <tr style="background: #eff6ff;">
                         <td class="eval-code">E3</td>
-                        <td class="percentage">20%</td>
-                        <td><span class="badge badge-examen">Fase 3</span></td>
-                        <td>Administra la memoria, E/S, archivos, comunicación, sincronización (Checkpoint Práctico)</td>
+                        <td class="percentage percentage-lab">20%</td>
+                        <td><span class="badge badge-laboratorio">Fase 3</span></td>
+                        <td>Rendimiento, optimización y concurrencia</td>
                         <td class="date">25/03/2026</td>
-                        <td><a href="clase-04.html">C4</a> a <a href="clase-12.html">C12</a></td>
+                        <td><a href="clase-03.html">C03</a>, <a href="clase-07.html">C07</a> a <a href="clase-12.html">C12</a></td>
                     </tr>
                     <tr>
                         <td class="eval-code">E4</td>
@@ -652,7 +652,7 @@
                         <td><span class="badge badge-reporte">Fase 4</span></td>
                         <td>Evalúa la seguridad de los sistemas operativos</td>
                         <td class="date">22/04/2026</td>
-                        <td><a href="clase-15.html">C15</a>, <a href="clase-16.html">C16</a>, <a href="clase-17.html">C17</a></td>
+                        <td><a href="clase-15.html">C15</a>, <a href="clase-16.html">C16</a></td>
                     </tr>
                     <tr>
                         <td class="eval-code">E5</td>
@@ -660,7 +660,7 @@
                         <td><span class="badge badge-proyecto">Fase 5</span></td>
                         <td>Comprende conceptos fundamentales (integración de servicios)</td>
                         <td class="date">06/05/2026</td>
-                        <td><a href="clase-12.html">C12</a>, <a href="clase-13.html">C13</a>, <a href="clase-14.html">C14</a> + Integración</td>
+                        <td><a href="clase-13.html">C13</a>, <a href="clase-14.html">C14</a>, <a href="clase-17.html">C17</a></td>
                     </tr>
                     <tr style="background: #f5f3ff;">
                         <td class="eval-code">E6</td>
@@ -701,8 +701,8 @@
                     <tr>
                         <td class="eval-code">E3</td>
                         <td>Resolución técnica de escenarios de rendimiento y concurrencia.</td>
-                        <td>Analizar casos de memoria, E/S, sincronización y FS básico (hasta C12).</td>
-                        <td>Soluciones justificadas con comandos y resultados observados.</td>
+                        <td>Resolver 5 escenarios prácticos de memoria, E/S, sincronización y FS básico en su VM.</td>
+                        <td>PDF con capturas, comandos ejecutados y análisis técnico de cada escenario.</td>
                     </tr>
                     <tr>
                         <td class="eval-code">E4</td>
@@ -848,13 +848,99 @@
                 </div>
 
                 <div class="content-box">
-                    <h4>🛠️ Especificaciones Técnicas (¿Qué hacer?)</h4>
-                    <p>Para cumplir con el <strong>RA1 (Identificar estructura y tipos de SO)</strong>, usted debe realizar lo siguiente:</p>
+                    <h4>🛠️ INSTRUCCIONES DETALLADAS - QUÉ DEBE HACER EL ESTUDIANTE</h4>
+                    <p style="background: #fef3c7; padding: 10px; border-radius: 6px; margin-bottom: 15px;"><strong>Objetivo:</strong> Diseñar y documentar la arquitectura base del sistema UCS (UNAULA Cloud Services)</p>
+                    
+                    <h5 style="color: #1e3a5f; margin: 15px 0 10px 0;">PASO 1: Crear las Máquinas Virtuales</h5>
                     <ol class="content-list">
-                        <li><strong>Instalación Base:</strong> Crear las dos VMs (Ubuntu Server y Windows). Documentar con capturas los comandos <code>uname -a</code> (Linux) y <code>systeminfo</code> (Windows).</li>
-                        <li><strong>Análisis Arquitectónico:</strong> Investigar y escribir una comparativa de 2 páginas sobre por qué Linux es considerado Monolítico y Windows Híbrido, citando componentes vistos en la Clase 04.</li>
-                        <li><strong>Mapeo de Hardware:</strong> Crear una tabla que muestre cómo VirtualBox abstrae el hardware real (CPU, RAM, Disco) para sus VMs del proyecto.</li>
-                        <li><strong>Diagrama de Red:</strong> Dibujar el mapa de conexión entre su computadora (Host) y las VMs (Guest), indicando las IPs asignadas por DHCP o estáticas.</li>
+                        <li><strong>VM Linux (Ubuntu Server 22.04 LTS):</strong>
+                            <ul>
+                                <li>RAM: 2GB mínimo (recomendado 4GB)</li>
+                                <li>CPU: 2 cores</li>
+                                <li>Disco: 20GB dinámico</li>
+                                <li>Red: Adaptador Puente (Bridge)</li>
+                                <li>NO instalar interfaz gráfica (modo consola)</li>
+                            </ul>
+                        </li>
+                        <li><strong>VM Windows (Windows 10/11 Pro o Server 2022):</strong>
+                            <ul>
+                                <li>RAM: 4GB mínimo</li>
+                                <li>CPU: 2 cores</li>
+                                <li>Disco: 40GB dinámico</li>
+                                <li>Red: Adaptador Puente (Bridge)</li>
+                            </ul>
+                        </li>
+                        <li><strong>Configurar IPs estáticas en ambas VMs</strong> (ej: Linux 192.168.1.100, Windows 192.168.1.101)</li>
+                    </ol>
+
+                    <h5 style="color: #1e3a5f; margin: 15px 0 10px 0;">PASO 2: Documentar la Instalación</h5>
+                    <ol class="content-list">
+                        <li>En Linux, ejecutar y capturar pantalla de:
+                            <ul>
+                                <li><code>uname -a</code> (muestra kernel y arquitectura)</li>
+                                <li><code>lsb_release -a</code> (versión Ubuntu)</li>
+                                <li><code>lscpu</code> (información CPU)</li>
+                                <li><code>free -h</code> (memoria RAM)</li>
+                            </ul>
+                        </li>
+                        <li>En Windows, ejecutar y capturar pantalla de:
+                            <ul>
+                                <li><code>systeminfo</code> (información completa)</li>
+                                <li><code>winver</code> (versión Windows)</li>
+                                <li><code>Get-ComputerInfo</code> (PowerShell)</li>
+                            </ul>
+                        </li>
+                    </ol>
+
+                    <h5 style="color: #1e3a5f; margin: 15px 0 10px 0;">PASO 3: Análisis Arquitectónico</h5>
+                    <ol class="content-list">
+                        <li>Investigar y escribir comparativa técnica (mínimo 2 páginas):
+                            <ul>
+                                <li>¿Por qué Linux es monolítico? (kernel + drivers en modo kernel)</li>
+                                <li>¿Por qué Windows es híbrido? (kernel + subsistemas en user mode)</li>
+                                <li>Citar componentes: Kernel, HAL, Shell, Subsistemas</li>
+                                <li>Incluir diagrama de estructura de ambos SO</li>
+                            </ul>
+                        </li>
+                    </ol>
+
+                    <h5 style="color: #1e3a5f; margin: 15px 0 10px 0;">PASO 4: Diagrama de Red</h5>
+                    <ol class="content-list">
+                        <li>Crear diagrama de red que incluya:
+                            <ul>
+                                <li>Su computadora (Host) con IP de su red local</li>
+                                <li>VM Linux con IP estática asignada</li>
+                                <li>VM Windows con IP estática asignada</li>
+                                <li>VirtualBox como capa de abstracción</li>
+                                <li>Flechas indicando conectividad (ping entre todas)</li>
+                            </ul>
+                        </li>
+                    </ol>
+
+                    <h5 style="color: #1e3a5f; margin: 15px 0 10px 0;">PASO 5: Matriz de Hardware Virtualizado</h5>
+                    <ol class="content-list">
+                        <li>Crear tabla comparativa:
+                            <table style="width: 100%; margin: 10px 0; border-collapse: collapse;">
+                                <tr style="background: #f0f0f0;">
+                                    <th style="border: 1px solid #ddd; padding: 8px;">Recurso</th>
+                                    <th style="border: 1px solid #ddd; padding: 8px;">Hardware Real (Host)</th>
+                                    <th style="border: 1px solid #ddd; padding: 8px;">Hardware Virtual (VM Linux)</th>
+                                    <th style="border: 1px solid #ddd; padding: 8px;">Hardware Virtual (VM Windows)</th>
+                                </tr>
+                                <tr>
+                                    <td style="border: 1px solid #ddd; padding: 8px;">CPU</td>
+                                    <td style="border: 1px solid #ddd; padding: 8px;">[Modelo real]</td>
+                                    <td style="border: 1px solid #ddd; padding: 8px;">[2 cores virtualizados]</td>
+                                    <td style="border: 1px solid #ddd; padding: 8px;">[2 cores virtualizados]</td>
+                                </tr>
+                                <tr>
+                                    <td style="border: 1px solid #ddd; padding: 8px;">RAM</td>
+                                    <td style="border: 1px solid #ddd; padding: 8px;">[Total real]</td>
+                                    <td style="border: 1px solid #ddd; padding: 8px;">[2GB asignados]</td>
+                                    <td style="border: 1px solid #ddd; padding: 8px;">[4GB asignados]</td>
+                                </tr>
+                            </table>
+                        </li>
                     </ol>
                 </div>
 
@@ -960,13 +1046,105 @@
                 </div>
 
                 <div class="content-box">
-                    <h4>🛠️ Especificaciones Técnicas (¿Qué hacer?)</h4>
-                    <p>Para cumplir con el <strong>RA2 (Gestión de Procesos)</strong>, usted debe desarrollar y probar las siguientes herramientas:</p>
+                    <h4>🛠️ INSTRUCCIONES DETALLADAS - QUÉ DEBE HACER EL ESTUDIANTE</h4>
+                    <p style="background: #fef3c7; padding: 10px; border-radius: 6px; margin-bottom: 15px;"><strong>Objetivo:</strong> Implementar monitoreo automatizado de procesos y servicios en ambos sistemas operativos</p>
+                    
+                    <h5 style="color: #1e3a5f; margin: 15px 0 10px 0;">PASO 1: Script de Monitoreo en Linux (Bash)</h5>
+                    <p><strong>Crear archivo:</strong> <code>monitor_procesos.sh</code></p>
+                    <p><strong>El script DEBE hacer:</strong></p>
                     <ol class="content-list">
-                        <li><strong>Monitor Bash (Linux):</strong> Un script que liste los 5 procesos que más RAM consumen, ordene la salida y la guarde en un archivo <code>bitacora_procesos.txt</code> con la fecha y hora de ejecución.</li>
-                        <li><strong>Monitor PowerShell (Windows):</strong> Un script que verifique si el servicio "Spooler" (Cola de impresión) está detenido. Si está detenido, debe intentar iniciarlo y mostrar un mensaje de alerta.</li>
-                        <li><strong>Análisis de Estados:</strong> Ejecutar <code>ps aux</code> y capturar ejemplos de procesos en estado Running (R), Sleep (S) y Zombie (Z) si es posible, explicando qué significa cada estado según lo visto en la Clase 03.</li>
-                        <li><strong>Control de Prioridades:</strong> Lanzar un proceso <code>sleep</code>, cambiar su valor 'nice' a 15 y demostrar el cambio con el comando <code>top</code> o <code>htop</code>.</li>
+                        <li>Listar los 5 procesos que más RAM consumen usando <code>ps aux --sort=-%mem | head -6</code></li>
+                        <li>Obtener uso de CPU total con <code>top -bn1 | grep "Cpu(s)"</code></li>
+                        <li>Obtener uso de memoria con <code>free -h</code></li>
+                        <li>Guardar toda la información en <code>bitacora_procesos.txt</code> con timestamp</li>
+                        <li>Mostrar alerta si algún proceso usa más de 50% de CPU</li>
+                    </ol>
+                    <p><strong>Ejemplo de salida esperada en bitacora_procesos.txt:</strong></p>
+                    <pre style="background: #f5f5f5; padding: 10px; border-radius: 4px; font-size: 0.9em;">
+=== Reporte de Sistema ===
+Fecha: 2026-03-11 08:30:15
+
+Top 5 procesos por memoria:
+USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+mysql     1234  2.5 15.2 892340 15432 ?        Ssl  08:00   0:25 mysqld
+apache    5678  1.2  8.5 234567  8654 ?        S    08:00   0:15 httpd
+...
+
+Uso de CPU: 15.3%
+Uso de Memoria: 2.3G / 4.0G (57%)
+
+ALERTA: Proceso mysql consumiendo >50% CPU
+                    </pre>
+
+                    <h5 style="color: #1e3a5f; margin: 15px 0 10px 0;">PASO 2: Script de Servicios en Windows (PowerShell)</h5>
+                    <p><strong>Crear archivo:</strong> <code>gestionar_servicios.ps1</code></p>
+                    <p><strong>El script DEBE hacer:</strong></p>
+                    <ol class="content-list">
+                        <li>Verificar estado del servicio "Spooler" (cola de impresión):
+                            <ul>
+                                <li>Comando: <code>Get-Service -Name Spooler</code></li>
+                            </ul>
+                        </li>
+                        <li>Si está detenido (Stopped):
+                            <ul>
+                                <li>Intentar iniciarlo: <code>Start-Service -Name Spooler</code></li>
+                                <li>Mostrar mensaje: "ALERTA: Servicio Spooler iniciado automáticamente"</li>
+                            </ul>
+                        </li>
+                        <li>Verificar servicios críticos adicionales:
+                            <ul>
+                                <li>Windows Update (wuauserv)</li>
+                                <li>Firewall (MpsSvc)</li>
+                                <li>Antivirus (Windows Defender)</li>
+                            </ul>
+                        </li>
+                        <li>Generar reporte en <code>C:\Reportes\servicios_estado.txt</code></li>
+                    </ol>
+
+                    <h5 style="color: #1e3a5f; margin: 15px 0 10px 0;">PASO 3: Análisis de Estados de Procesos</h5>
+                    <ol class="content-list">
+                        <li>Ejecutar <code>ps aux</code> y encontrar ejemplos de cada estado:
+                            <ul>
+                                <li><strong>R (Running):</strong> Proceso ejecutándose activamente</li>
+                                <li><strong>S (Sleeping):</strong> Proceso esperando evento (interrumpible)</li>
+                                <li><strong>Z (Zombie):</strong> Proceso hijo terminado pero no reclamado por padre</li>
+                            </ul>
+                        </li>
+                        <li>Capturar pantalla mostrando al menos 3 procesos en cada estado</li>
+                        <li>Escribir explicación técnica de qué significa cada estado (1 párrafo cada uno)</li>
+                    </ol>
+
+                    <h5 style="color: #1e3a5f; margin: 15px 0 10px 0;">PASO 4: Control de Prioridades (Nice)</h5>
+                    <ol class="content-list">
+                        <li>Abrir terminal y ejecutar:
+                            <ul>
+                                <li><code>sleep 300 &</code> (ejecuta en background por 5 min)</li>
+                                <li>Obtener PID: <code>echo $!</code></li>
+                            </ul>
+                        </li>
+                        <li>Cambiar prioridad a 15 (menor prioridad):
+                            <ul>
+                                <li><code>sudo renice 15 -p [PID]</code></li>
+                            </ul>
+                        </li>
+                        <li>Verificar cambio con:
+                            <ul>
+                                <li><code>top -p [PID]</code> o <code>htop</code></li>
+                                <li>Columna NI debe mostrar 15</li>
+                            </ul>
+                        </li>
+                        <li>Capturar pantalla antes y después del cambio</li>
+                        <li>Escribir explicación de cómo afecta el valor nice al scheduling del CPU</li>
+                    </ol>
+
+                    <h5 style="color: #1e3a5f; margin: 15px 0 10px 0;">PASO 5: Documentar Bitácora de Pruebas</h5>
+                    <p>Crear PDF con:</p>
+                    <ol class="content-list">
+                        <li>Código fuente completo de ambos scripts (con comentarios explicativos)</li>
+                        <li>Screenshots de ejecución de cada script</li>
+                        <li>Archivos de salida generados (bitacora_procesos.txt y servicios_estado.txt)</li>
+                        <li>Análisis de estados de procesos con evidencias</li>
+                        <li>Explicación del cambio de prioridades nice</li>
                     </ol>
                 </div>
 
@@ -1010,12 +1188,12 @@
             </div>
         </section>
 
-        <!-- FASE 3 - Checkpoint Optimización -->
+        <!-- FASE 3 - Laboratorio de Optimización -->
         <section class="section" id="e3">
-            <div class="eval-card examen">
+            <div class="eval-card laboratorio">
                 <div class="eval-header">
                     <div class="eval-title">
-                        <h3>FASE 3 - Checkpoint Optimización (Memoria, E/S, Sincronización)</h3>
+                        <h3>FASE 3 - Laboratorio de Optimización (Memoria, E/S, Sincronización)</h3>
                         <div class="ra">Resultado de Aprendizaje: Administra la memoria, los procesos de entrada y salida, la comunicación entre procesos y la sincronización de los mismos (hasta Clase 12 - Sistemas de Archivos introductorio)</div>
                     </div>
                     <div class="eval-meta">
@@ -1025,7 +1203,7 @@
                         </div>
                         <div class="eval-meta-item">
                             <div class="label">Tipo</div>
-                            <div class="value">Checkpoint Práctico</div>
+                            <div class="value">Laboratorio</div>
                         </div>
                         <div class="eval-meta-item">
                             <div class="label">Fecha</div>
@@ -1034,20 +1212,20 @@
                     </div>
                 </div>
 
-                <div class="warning-box">
-                    <h4>📋 Información Importante - Checkpoint Práctico</h4>
+                <div class="info-box">
+                    <h4>📋 Información Importante - Laboratorio Individual</h4>
                     <ul class="content-list">
-                        <li><strong>Modalidad:</strong> Individual, presencial con acceso a VM</li>
-                        <li><strong>Duración:</strong> 2 horas 30 minutos</li>
-                        <li><strong>Distribución:</strong> 40% Análisis / 60% Práctica (resolución de problemas reales)</li>
-                        <li><strong>Material permitido:</strong> <span style="color: #10b981; font-weight: bold;">TODO: Documentación, apuntes, y acceso a la VM del proyecto</span></li>
-                        <li><strong style="color: #dc2626;">🚫 PROHIBIDO:</strong> Memorización de conceptos teóricos sin aplicación práctica</li>
+                        <li><strong>Modalidad:</strong> Individual, se trabaja en casa con su VM</li>
+                        <li><strong>Tiempo disponible:</strong> 1 semana (publicación 18 Mar → entrega 25 Mar)</li>
+                        <li><strong>Distribución:</strong> 40% Análisis / 60% Práctica (resolución de problemas reales en VM)</li>
+                        <li><strong>Material permitido:</strong> <span style="color: #10b981; font-weight: bold;">TODO: Documentación, apuntes, acceso a VM, Internet para consulta técnica</span></li>
+                        <li><strong style="color: #dc2626;">🚫 PROHIBIDO:</strong> Copia entre estudiantes, uso de IA para generar respuestas</li>
                     </ul>
                 </div>
 
-                <div class="info-box" style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); border-left-color: #2563eb;">
-                    <h4 style="color: #1e40af;">📚 Alcance del Checkpoint - IMPORTANTE</h4>
-                    <p style="margin-bottom: 10px;">Este checkpoint evalúa el contenido visto <strong>hasta la Clase 12 (18 de Marzo)</strong>:</p>
+                <div class="warning-box" style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); border-left-color: #2563eb;">
+                    <h4 style="color: #1e40af;">📚 Alcance del Laboratorio - IMPORTANTE</h4>
+                    <p style="margin-bottom: 10px;">Este laboratorio evalúa el contenido visto <strong>hasta la Clase 12 (18 de Marzo)</strong>:</p>
                     <ul class="content-list">
                         <li>✅ <strong>C08-C11:</strong> Memoria, Paginación, Memoria Virtual, Discos y E/S</li>
                         <li>✅ <strong>C12:</strong> Sistemas de Archivos (conceptos introductorios: inodos, permisos, ext4/NTFS)</li>
@@ -1058,46 +1236,115 @@
                 </div>
 
                 <div class="content-box">
-                    <h4>Estructura del Checkpoint Práctico</h4>
+                    <h4>🛠️ INSTRUCCIONES DETALLADAS - QUÉ DEBE HACER EL ESTUDIANTE</h4>
+                    <p style="background: #fef3c7; padding: 10px; border-radius: 6px; margin-bottom: 15px;"><strong>Objetivo:</strong> Resolver 5 escenarios prácticos de optimización en entornos Linux y Windows, documentando cada paso con capturas y análisis técnico.</p>
+                    
+                    <h5 style="color: #1e3a5f; margin: 15px 0 10px 0;">ESTRUCTURA DEL LABORATORIO (5 Escenarios Profesionales Híbridos)</h5>
                     <table class="deliverables-table">
                         <thead>
                             <tr>
-                                <th>Sección</th>
-                                <th>Tipo</th>
-                                <th>Puntos</th>
-                                <th>Contenido</th>
+                                <th>#</th>
+                                <th>Escenario</th>
+                                <th>Herramientas Real-World</th>
+                                <th>Qué Debe Hacer el Estudiante</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td><strong>Sección A</strong></td>
-                                <td>Análisis de escenarios</td>
-                                <td>20 pts</td>
-                                <td>Resolver problemas de gestión de memoria en casos reales</td>
+                                <td><strong>1</strong></td>
+                                <td>Gestión de RAM Critica</td>
+                                <td><code>free</code>, <code>vmstat</code> (LX) / <strong>Resource Monitor</strong> (WN)</td>
+                                <td>Identificar fuga de memoria en un servicio. Comparar cómo Linux usa el Cache vs cómo Windows gestiona la memoria "Standby". Proponer ajustes de Swap/Pagefile.</td>
                             </tr>
                             <tr>
-                                <td><strong>Sección B</strong></td>
-                                <td>Verdadero/Falso con justificación práctica</td>
-                                <td>15 pts</td>
-                                <td>Analizar configuraciones y justificar decisiones técnicas</td>
+                                <td><strong>2</strong></td>
+                                <td>Diagnóstico de Almacenamiento</td>
+                                <td><code>iostat</code>, <code>df</code> (LX) / <strong>PerfMon - Disk Queue</strong> (WN)</td>
+                                <td>Detectar latencia de disco. En Windows, monitorear la "Cola de espera de lectura/escritura". En Linux, analizar el %util. Identificar el disco saturado.</td>
                             </tr>
                             <tr>
-                                <td><strong>Sección C</strong></td>
-                                <td>Preguntas de aplicación</td>
-                                <td>25 pts</td>
-                                <td>Proponer soluciones para problemas de sincronización/E/S</td>
+                                <td><strong>3</strong></td>
+                                <td>Sincronización y Bloqueos</td>
+                                <td><code>lsof</code>, <code>fuser</code> (LX) / <strong>Wait Chain Traversal</strong> (WN)</td>
+                                <td>Resolver un archivo bloqueado. Identificar qué proceso impide el acceso al recurso. Usar el "Analizar cadena de espera" en Windows para detectar Deadlocks reales.</td>
                             </tr>
                             <tr>
-                                <td><strong>Sección D</strong></td>
-                                <td>Problemas de planificación</td>
-                                <td>20 pts</td>
-                                <td>Calcular y comparar algoritmos FCFS, SJF, RR en escenarios prácticos</td>
+                                <td><strong>4</strong></td>
+                                <td>Rendimiento de CPU</td>
+                                <td><code>htop</code>, <code>nice</code> (LX) / <strong>Process Explorer (Sysinternals)</strong> (WN)</td>
+                                <td>Optimizar un servidor bajo carga. Cambiar prioridades de hilos en tiempo real y observar el impacto en el consumo de ciclos de reloj. (Cero cálculos, solo monitoreo).</td>
                             </tr>
                             <tr>
-                                <td><strong>Sección E</strong></td>
-                                <td>Ejercicio práctico en VM</td>
-                                <td>20 pts</td>
-                                <td>Optimizar configuración de memoria y E/S en la VM del proyecto</td>
+                                <td><strong>5</strong></td>
+                                <td>Estructura de Archivos</td>
+                                <td><code>ls -li</code>, inodos (LX) / <strong>NTFS Advanced Permissions</strong> (WN)</td>
+                                <td>Configurar cuotas de disco en Windows para evitar llenado de logs. En Linux, demostrar cómo un enlace duro (Hard Link) ahorra inodos pero no espacio extra.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h5 style="color: #1e3a5f; margin: 15px 0 10px 0;">PASO A PASO - CÓMO REALIZAR EL LABORATORIO</h5>
+                    <ol class="content-list">
+                        <li><strong>Descargar la guía:</strong> El 18 de Marzo se publica el PDF con los 5 escenarios detallados</li>
+                        <li><strong>Trabajar en su VM:</strong> Ejecute los comandos en su Ubuntu Server del proyecto</li>
+                        <li><strong>Capturar evidencias:</strong> Cada escenario requiere screenshots de comandos ejecutados</li>
+                        <li><strong>Escribir análisis:</strong> Para cada escenario, explique QUÉ hizo, POR QUÉ lo hizo y QUÉ resultado obtuvo</li>
+                        <li><strong>Generar PDF:</strong> Compile todo en un PDF con: Portada, Índice, 5 escenarios (cada uno con: problema, comandos, capturas, análisis), Conclusiones</li>
+                        <li><strong>Entregar:</strong> Subir a la plataforma antes del 25 de Marzo a las 8:00 AM</li>
+                    </ol>
+
+                    <h5 style="color: #1e3a5f; margin: 15px 0 10px 0;">COMANDOS A DOMINAR</h5>
+                    <div class="two-columns">
+                        <ul class="content-list">
+                            <li><strong>Memoria:</strong>
+                                <ul>
+                                    <li><code>free -h</code> - Ver uso de memoria</li>
+                                    <li><code>vmstat 1 5</code> - Estadísticas de memoria virtual</li>
+                                    <li><code>swapon --show</code> - Ver configuración swap</li>
+                                    <li><code>top</code> o <code>htop</code> - Procesos en tiempo real</li>
+                                </ul>
+                            </li>
+                            <li><strong>E/S:</strong>
+                                <ul>
+                                    <li><code>iostat -x 1 5</code> - Estadísticas de E/S</li>
+                                    <li><code>df -h</code> - Uso de disco</li>
+                                    <li><code>du -sh *</code> - Tamaño de directorios</li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <ul class="content-list">
+                            <li><strong>Archivos:</strong>
+                                <ul>
+                                    <li><code>ls -li</code> - Ver inodos</li>
+                                    <li><code>chmod 750 dir/</code> - Permisos</li>
+                                    <li><code>ln</code> vs <code>ln -s</code> - Enlaces</li>
+                                    <li><code>stat archivo</code> - Información completa</li>
+                                </ul>
+                            </li>
+                            <li><strong>Procesos:</strong>
+                                <ul>
+                                    <li><code>ps aux --sort=-%mem</code> - Top por memoria</li>
+                                    <li><code>nice -n 10 comando</code> - Cambiar prioridad</li>
+                                    <li><code>kill -9 PID</code> - Matar proceso</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <h5 style="color: #1e3a5f; margin: 15px 0 10px 0;">ENTREGABLE REQUERIDO</h5>
+                    <table class="deliverables-table">
+                        <thead>
+                            <tr>
+                                <th>Componente</th>
+                                <th>Descripción</th>
+                                <th>Formato</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>PDF del Laboratorio</strong></td>
+                                <td>Documento con los 5 escenarios resueltos, capturas de pantalla, análisis técnico y conclusiones</td>
+                                <td>PDF (máx. 15 páginas)</td>
                             </tr>
                         </tbody>
                     </table>
@@ -1199,7 +1446,7 @@
 
                 <div class="success-box">
                     <h4>Enfoque en Seguridad</h4>
-                    <p>Esta evaluación se enfoca específicamente en <strong>seguridad de sistemas operativos</strong>, aplicando conceptos vistos en las clases 15, 16 y 17. Se evaluarán mecanismos de protección, control de acceso y hardening.</p>
+                    <p>Esta evaluación se enfoca específicamente en <strong>seguridad de sistemas operativos</strong>, aplicando conceptos vistos en las clases 15 y 16. Se evaluarán mecanismos de protección, control de acceso y hardening.</p>
                 </div>
 
                 <div class="two-columns">
@@ -1261,14 +1508,103 @@
                 </div>
 
                 <div class="content-box">
-                    <h4>🛠️ Especificaciones Técnicas (¿Qué hacer?)</h4>
-                    <p>Para cumplir con el <strong>RA4 (Evaluar seguridad de SO)</strong>, usted debe asegurar su infraestructura:</p>
+                    <h4>🛠️ INSTRUCCIONES DETALLADAS - QUÉ DEBE HACER EL ESTUDIANTE</h4>
+                    <p style="background: #fef3c7; padding: 10px; border-radius: 6px; margin-bottom: 15px;"><strong>Objetivo:</strong> Asegurar el sistema implementando hardening, control de acceso y políticas de seguridad</p>
+                    
+                    <h5 style="color: #1e3a5f; margin: 15px 0 10px 0;">PASO 1: Firewall y Reglas de Red</h5>
+                    <p><strong>En Linux (UFW - Uncomplicated Firewall):</strong></p>
                     <ol class="content-list">
-                        <li><strong>Hardening de Red (Firewall):</strong> Configurar el Firewall (UFW en Linux y Advanced Firewall en Windows) para bloquear todo el tráfico entrante, permitiendo ÚNICAMENTE SSH (puerto 22) y HTTP (puerto 80).</li>
-                        <li><strong>Control de Acceso Linux (ACLs):</strong> Crear un directorio <code>/datos/compartido</code>. Configurar una ACL para que un usuario específico pueda leer, pero no borrar los archivos de otros, demostrando el comando <code>getfacl</code>.</li>
-                        <li><strong>Políticas de Contraseñas (Windows):</strong> Configurar vía <code>secpol.msc</code> una política que obligue a cambiar la contraseña cada 30 días y exija complejidad mínima.</li>
-                        <li><strong>Matriz de Riesgos:</strong> Identificar 8 vulnerabilidades potenciales de su configuración de VirtualBox (ej: falta de snapshots, acceso root por SSH) y proponer la mitigación técnica.</li>
+                        <li>Verificar estado: <code>sudo ufw status</code></li>
+                        <li>Restablecer reglas: <code>sudo ufw reset</code></li>
+                        <li>Política por defecto DENY: <code>sudo ufw default deny incoming</code></li>
+                        <li>Permitir SSH: <code>sudo ufw allow 22/tcp</code></li>
+                        <li>Permitir HTTP: <code>sudo ufw allow 80/tcp</code></li>
+                        <li>Permitir HTTPS: <code>sudo ufw allow 443/tcp</code></li>
+                        <li>Activar firewall: <code>sudo ufw enable</code></li>
+                        <li>Verificar reglas: <code>sudo ufw status verbose</code></li>
                     </ol>
+                    <p><strong>En Windows (Firewall):</strong></p>
+                    <ol class="content-list">
+                        <li>Abrir PowerShell como Administrador</li>
+                        <li>Ver perfil activo: <code>Get-NetFirewallProfile</code></li>
+                        <li>Bloquear todo entrante: <code>Set-NetFirewallProfile -Profile Domain,Public,Private -DefaultInboundAction Block</code></li>
+                        <li>Permitir RDP si es necesario: <code>New-NetFirewallRule -DisplayName "Allow RDP" -Direction Inbound -Protocol TCP -LocalPort 3389 -Action Allow</code></li>
+                        <li>Verificar reglas: <code>Get-NetFirewallRule | Where-Object {$_.Enabled -eq 'True'}</code></li>
+                    </ol>
+
+                    <h5 style="color: #1e3a5f; margin: 15px 0 10px 0;">PASO 2: Control de Acceso (ACLs) en Linux</h5>
+                    <ol class="content-list">
+                        <li>Crear estructura de directorios:
+                            <pre style="background: #f5f5f5; padding: 10px; border-radius: 4px; font-size: 0.9em;">
+sudo mkdir -p /datos/compartido
+sudo groupadd desarrolladores
+sudo useradd -G desarrolladores dev1
+sudo useradd -G desarrolladores dev2</pre>
+                        </li>
+                        <li>Configurar ACLs:
+                            <ul>
+                                <li>Dar permisos al grupo: <code>sudo setfacl -m g:desarrolladores:rx /datos/compartido</code></li>
+                                <li>Usuario específico solo lectura: <code>sudo setfacl -m u:dev1:r /datos/compartido</code></li>
+                                <li>Ver ACLs: <code>getfacl /datos/compartido</code></li>
+                            </ul>
+                        </li>
+                        <li>Probar accesos:
+                            <ul>
+                                <li>Iniciar sesión como dev1, intentar crear archivo (debe fallar)</li>
+                                <li>Iniciar sesión como dev2, intentar crear archivo (debe funcionar)</li>
+                            </ul>
+                        </li>
+                        <li>Capturar pantalla de <code>getfacl</code> mostrando las ACLs configuradas</li>
+                    </ol>
+
+                    <h5 style="color: #1e3a5f; margin: 15px 0 10px 0;">PASO 3: Políticas de Seguridad Windows</h5>
+                    <ol class="content-list">
+                        <li>Abrir editor de políticas: <code>secpol.msc</code> (o <code>gpedit.msc</code> en versiones Pro)</li>
+                        <li>Navegar a: Configuración de seguridad → Directivas de cuenta → Directiva de contraseñas</li>
+                        <li>Configurar:
+                            <ul>
+                                <li>Edad máxima de contraseña: 30 días</li>
+                                <li>Longitud mínima: 8 caracteres</li>
+                                <li>Debe cumplir requisitos de complejidad: Habilitado</li>
+                                <li>Historial de contraseñas: Recordar las últimas 5</li>
+                            </ul>
+                        </li>
+                        <li>Capturar pantalla de cada configuración</li>
+                        <li>Verificar con PowerShell: <code>net accounts</code></li>
+                    </ol>
+
+                    <h5 style="color: #1e3a5f; margin: 15px 0 10px 0;">PASO 4: Matriz de Riesgos</h5>
+                    <p>Crear tabla con 8 vulnerabilidades identificadas:</p>
+                    <table style="width: 100%; margin: 10px 0; border-collapse: collapse; font-size: 0.9em;">
+                        <tr style="background: #f0f0f0;">
+                            <th style="border: 1px solid #ddd; padding: 8px;">#</th>
+                            <th style="border: 1px solid #ddd; padding: 8px;">Vulnerabilidad</th>
+                            <th style="border: 1px solid #ddd; padding: 8px;">Impacto</th>
+                            <th style="border: 1px solid #ddd; padding: 8px;">Mitigación Técnica</th>
+                        </tr>
+                        <tr>
+                            <td style="border: 1px solid #ddd; padding: 8px;">1</td>
+                            <td style="border: 1px solid #ddd; padding: 8px;">Acceso root por SSH habilitado</td>
+                            <td style="border: 1px solid #ddd; padding: 8px;">Alto</td>
+                            <td style="border: 1px solid #ddd; padding: 8px;">Editar /etc/ssh/sshd_config → PermitRootLogin no</td>
+                        </tr>
+                        <tr>
+                            <td style="border: 1px solid #ddd; padding: 8px;">2</td>
+                            <td style="border: 1px solid #ddd; padding: 8px;">Sin snapshots de VM</td>
+                            <td style="border: 1px solid #ddd; padding: 8px;">Medio</td>
+                            <td style="border: 1px solid #ddd; padding: 8px;">Crear snapshot antes de cada evaluación</td>
+                        </tr>
+                    </table>
+                    <p><em>Agregar 6 vulnerabilidades más: password débil, servicios innecesarios corriendo, sin actualizaciones, puertos abiertos no necesarios, etc.</em></p>
+
+                    <h5 style="color: #1e3a5f; margin: 15px 0 10px 0;">PASO 5: Script de Auditoría (Bonus)</h5>
+                    <p>Crear script que verifique automáticamente:</p>
+                    <ul class="content-list">
+                        <li>Estado del firewall (Linux: ufw status, Windows: Get-NetFirewallProfile)</li>
+                        <li>Servicios críticos innecesarios corriendo</li>
+                        <li>Intentos de login fallidos: <code>grep "Failed password" /var/log/auth.log | wc -l</code></li>
+                        <li>Generar reporte en <code>/tmp/auditoria_seguridad.txt</code></li>
+                    </ul>
                 </div>
 
                 <div class="content-box">
@@ -1305,7 +1641,6 @@
                     <strong>Clases relacionadas:</strong>
                     <a href="clase-15.html" class="quick-link">C15 - Seguridad Linux</a>
                     <a href="clase-16.html" class="quick-link">C16 - Seguridad Windows</a>
-                    <a href="clase-17.html" class="quick-link">C17 - Servidor Apache</a>
                     <a href="rubricas.html" class="quick-link">Ver Rúbrica Completa</a>
                 </div>
             </div>
@@ -1400,13 +1735,139 @@
                 </div>
 
                 <div class="content-box">
-                    <h4>🛠️ Especificaciones Técnicas (¿Qué hacer?)</h4>
-                    <p>Para cumplir con el <strong>RA5 (Conceptos integrados)</strong>, usted debe poner en producción su sistema:</p>
+                    <h4>🛠️ INSTRUCCIONES DETALLADAS - QUÉ DEBE HACER EL ESTUDIANTE</h4>
+                    <p style="background: #fef3c7; padding: 10px; border-radius: 6px; margin-bottom: 15px;"><strong>Objetivo:</strong> Poner en producción un sistema web completo con Apache, IIS, almacenamiento persistente y monitoreo integrado</p>
+                    
+                    <h5 style="color: #1e3a5f; margin: 15px 0 10px 0;">PASO 1: Configurar Apache con Virtual Host y HTTPS</h5>
                     <ol class="content-list">
-                        <li><strong>Servicio Linux (Apache):</strong> Configurar un Virtual Host que sirva una página <code>index.html</code> personalizada con los nombres de los integrantes. Habilitar HTTPS con un certificado auto-firmado.</li>
-                        <li><strong>Servicio Windows (IIS):</strong> Instalar el rol de servidor web y publicar el mismo sitio web en el puerto 8080.</li>
-                        <li><strong>Almacenamiento Persistente:</strong> Agregar un segundo disco virtual en VirtualBox a la VM Linux. Formatearlo como EXT4 y configurar el archivo <code>/etc/fstab</code> para que se monte automáticamente en <code>/var/www/html/datos</code> al reiniciar.</li>
-                        <li><strong>Dashboard de Salud:</strong> Un script integrador que verifique: disponibilidad de los puertos 80/443, espacio libre en disco y carga de CPU, generando un reporte final consolidado.</li>
+                        <li>Instalar Apache:
+                            <pre style="background: #f5f5f5; padding: 10px; border-radius: 4px; font-size: 0.9em;">sudo apt update
+sudo apt install apache2 -y
+sudo systemctl enable apache2
+sudo systemctl start apache2</pre>
+                        </li>
+                        <li>Crear Virtual Host:
+                            <pre style="background: #f5f5f5; padding: 10px; border-radius: 4px; font-size: 0.9em;">sudo mkdir -p /var/www/ucs/html
+sudo chown -R $USER:$USER /var/www/ucs/html
+sudo chmod -R 755 /var/www/ucs</pre>
+                        </li>
+                        <li>Crear archivo de configuración:
+                            <pre style="background: #f5f5f5; padding: 10px; border-radius: 4px; font-size: 0.9em;">sudo nano /etc/apache2/sites-available/ucs.conf
+
+# Contenido:
+&lt;VirtualHost *:80&gt;
+    ServerAdmin webmaster@localhost
+    ServerName ucs.local
+    DocumentRoot /var/www/ucs/html
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+&lt;/VirtualHost&gt;</pre>
+                        </li>
+                        <li>Activar sitio y reiniciar:
+                            <pre style="background: #f5f5f5; padding: 10px; border-radius: 4px; font-size: 0.9em;">sudo a2ensite ucs.conf
+sudo a2dissite 000-default.conf
+sudo systemctl restart apache2</pre>
+                        </li>
+                        <li>Crear página index.html con nombres de integrantes</li>
+                        <li>Configurar HTTPS (certificado auto-firmado):
+                            <pre style="background: #f5f5f5; padding: 10px; border-radius: 4px; font-size: 0.9em;">sudo a2enmod ssl
+sudo mkdir /etc/apache2/ssl
+sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+  -keyout /etc/apache2/ssl/apache.key \
+  -out /etc/apache2/ssl/apache.crt</pre>
+                        </li>
+                    </ol>
+
+                    <h5 style="color: #1e3a5f; margin: 15px 0 10px 0;">PASO 2: Configurar IIS en Windows</h5>
+                    <ol class="content-list">
+                        <li>Instalar rol IIS (como administrador):
+                            <pre style="background: #f5f5f5; padding: 10px; border-radius: 4px; font-size: 0.9em;">Install-WindowsFeature -name Web-Server -IncludeManagementTools</pre>
+                        </li>
+                        <li>Crear sitio web en puerto 8080:
+                            <ul>
+                                <li>Abrir IIS Manager</li>
+                                <li>Clic derecho en Sites → Add Website</li>
+                                <li>Site name: UCS_Web</li>
+                                <li>Physical path: C:\inetpub\wwwroot\ucs</li>
+                                <li>Port: 8080</li>
+                            </ul>
+                        </li>
+                        <li>Crear Application Pool dedicado:
+                            <ul>
+                                <li>Application Pools → Add Application Pool</li>
+                                <li>Name: UCS_Pool</li>
+                                <li>.NET CLR version: No Managed Code</li>
+                                <li>Pipeline: Integrated</li>
+                            </ul>
+                        </li>
+                        <li>Crear index.html con mismo contenido que en Linux</li>
+                        <li>Verificar acceso: <code>http://localhost:8080</code></li>
+                    </ol>
+
+                    <h5 style="color: #1e3a5f; margin: 15px 0 10px 0;">PASO 3: Almacenamiento Persistente (fstab)</h5>
+                    <ol class="content-list">
+                        <li>Agregar segundo disco en VirtualBox:
+                            <ul>
+                                <li>Apagar VM Linux</li>
+                                <li>Configuración → Almacenamiento → Agregar disco duro</li>
+                                <li>Tamaño: 10GB, tipo VDI, dinámico</li>
+                            </ul>
+                        </li>
+                        <li>Identificar disco nuevo:
+                            <pre style="background: #f5f5f5; padding: 10px; border-radius: 4px; font-size: 0.9em;">sudo fdisk -l
+# Buscar algo como /dev/sdb</pre>
+                        </li>
+                        <li>Formatear como EXT4:
+                            <pre style="background: #f5f5f5; padding: 10px; border-radius: 4px; font-size: 0.9em;">sudo mkfs.ext4 /dev/sdb
+sudo mkdir -p /var/www/html/datos</pre>
+                        </li>
+                        <li>Obtener UUID:
+                            <pre style="background: #f5f5f5; padding: 10px; border-radius: 4px; font-size: 0.9em;">sudo blkid /dev/sdb</pre>
+                        </li>
+                        <li>Editar fstab:
+                            <pre style="background: #f5f5f5; padding: 10px; border-radius: 4px; font-size: 0.9em;">sudo nano /etc/fstab
+
+# Agregar línea:
+UUID=[UUID_obtenido] /var/www/html/datos ext4 defaults 0 2</pre>
+                        </li>
+                        <li>Probar montaje:
+                            <pre style="background: #f5f5f5; padding: 10px; border-radius: 4px; font-size: 0.9em;">sudo mount -a
+df -h
+# Debe mostrar /dev/sdb montado en /var/www/html/datos</pre>
+                        </li>
+                        <li>Reiniciar VM y verificar que se monta automáticamente</li>
+                    </ol>
+
+                    <h5 style="color: #1e3a5f; margin: 15px 0 10px 0;">PASO 4: Dashboard de Integración</h5>
+                    <p>Crear script <code>dashboard_salud.sh</code> que verifique:</p>
+                    <ol class="content-list">
+                        <li>Disponibilidad de servicios:
+                            <pre style="background: #f5f5f5; padding: 10px; border-radius: 4px; font-size: 0.9em;"># Apache corriendo?
+systemctl is-active apache2
+
+# Puerto 80 accesible?
+nc -zv localhost 80
+
+# Puerto 443 accesible?
+nc -zv localhost 443</pre>
+                        </li>
+                        <li>Espacio en disco:
+                            <pre style="background: #f5f5f5; padding: 10px; border-radius: 4px; font-size: 0.9em;">df -h | grep -E '(/dev/sda|/dev/sdb)'</pre>
+                        </li>
+                        <li>Carga de CPU:
+                            <pre style="background: #f5f5f5; padding: 10px; border-radius: 4px; font-size: 0.9em;">top -bn1 | grep "Cpu(s)" | awk '{print $2}' | awk -F% '{print $1}'</pre>
+                        </li>
+                        <li>Generar reporte consolidado en <code>/tmp/reporte_salud.txt</code></li>
+                    </ol>
+
+                    <h5 style="color: #1e3a5f; margin: 15px 0 10px 0;">PASO 5: Video de Funcionamiento</h5>
+                    <p>Grabar video de máximo 5 minutos mostrando:</p>
+                    <ol class="content-list">
+                        <li>Navegador accediendo a sitio Apache por HTTP (puerto 80)</li>
+                        <li>Navegador accediendo a sitio Apache por HTTPS (puerto 443)</li>
+                        <li>Navegador accediendo a sitio IIS en Windows (puerto 8080)</li>
+                        <li>Ejecución del dashboard de salud</li>
+                        <li>Reinicio de VM Linux y verificación de montaje automático de /var/www/html/datos</li>
                     </ol>
                 </div>
 
@@ -1441,12 +1902,12 @@
                 </div>
 
                 <div class="quick-links">
-                    <strong>Todo el curso:</strong>
-                    <a href="index.html" class="quick-link">Ver Todas las Clases</a>
-                    <a href="clase-12.html" class="quick-link">C12 - Sistemas de Archivos</a>
-                    <a href="clase-13.html" class="quick-link">C13 - Implementación FS</a>
+                    <strong>Relacionados:</strong>
+                    <a href="clase-12.html" class="quick-link">C12 - Sist. Archivos</a>
+                    <a href="clase-13.html" class="quick-link">C13 - Impl. FS</a>
                     <a href="clase-14.html" class="quick-link">C14 - Servidor IIS</a>
-                    <a href="rubricas.html" class="quick-link">Ver Rúbrica Completa</a>
+                    <a href="clase-17.html" class="quick-link">C17 - Servidor Apache</a>
+                    <a href="rubricas.html" class="quick-link">Ver Rúbrica</a>
                 </div>
             </div>
         </section>
@@ -1532,38 +1993,138 @@
                 </div>
 
                 <div class="content-box">
-                    <h4>Entregables Finales</h4>
+                    <h4>🛠️ INSTRUCCIONES DETALLADAS - QUÉ DEBE HACER EL ESTUDIANTE</h4>
+                    <p style="background: #fef3c7; padding: 10px; border-radius: 6px; margin-bottom: 15px;"><strong>Objetivo:</strong> Demostrar maestría técnica defendiendo el sistema completo en una sustentación en vivo</p>
+                    
+                    <h5 style="color: #1e3a5f; margin: 15px 0 10px 0;">ESTRUCTURA DE LA SUSTENTACIÓN (20-25 minutos)</h5>
                     <table class="deliverables-table">
                         <thead>
                             <tr>
-                                <th>Entregable</th>
-                                <th>Descripción</th>
-                                <th>Formato</th>
+                                <th>Fase</th>
+                                <th>Tiempo</th>
+                                <th>Qué Debe Hacer</th>
+                                <th>Puntos</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td><strong>Portafolio Ejecutivo</strong></td>
-                                <td>Recopilación corregida de las Fases 1 a 5</td>
-                                <td>PDF (máx. 20 páginas)</td>
+                                <td><strong>1. Presentación</strong></td>
+                                <td>3-5 min</td>
+                                <td>Explicar arquitectura del sistema, tecnologías usadas y decisiones técnicas clave</td>
+                                <td>20 pts</td>
                             </tr>
                             <tr>
-                                <td><strong>Pitch Final</strong></td>
-                                <td>Sustentación ejecutiva del sistema completo</td>
-                                <td>PPTX (máx. 8 diapositivas)</td>
+                                <td><strong>2. Demo Servidores Web</strong></td>
+                                <td>8-10 min</td>
+                                <td>Mostrar Apache e IIS funcionando, acceder desde navegador, demostrar HTTPS</td>
+                                <td>30 pts</td>
                             </tr>
                             <tr>
-                                <td><strong>Manual de Operación</strong></td>
-                                <td>Instrucciones breves de administración</td>
-                                <td>PDF (máx. 3 páginas)</td>
+                                <td><strong>3. Demo Monitoreo</strong></td>
+                                <td>3-5 min</td>
+                                <td>Ejecutar scripts de monitoreo, mostrar bitácoras, dashboard de salud</td>
+                                <td>25 pts</td>
                             </tr>
                             <tr>
-                                <td><strong>Sustentación</strong></td>
-                                <td>Defensa técnica y demo en vivo</td>
-                                <td>Presencial</td>
+                                <td><strong>4. Reto Técnico</strong></td>
+                                <td>5 min</td>
+                                <td>El docente pedirá un cambio en tiempo real (ej: agregar usuario, cambiar permiso)</td>
+                                <td>15 pts</td>
+                            </tr>
+                            <tr>
+                                <td><strong>5. Defensa</strong></td>
+                                <td>3-5 min</td>
+                                <td>Responder preguntas técnicas sobre implementación, seguridad, optimización</td>
+                                <td>10 pts</td>
                             </tr>
                         </tbody>
                     </table>
+
+                    <h5 style="color: #1e3a5f; margin: 15px 0 10px 0;">PREPARACIÓN PREVIA (Checklist)</h5>
+                    <ol class="content-list">
+                        <li><strong>Portafolio Ejecutivo:</strong>
+                            <ul>
+                                <li>Compilar Fases 1-5 con correcciones aplicadas</li>
+                                <li>Índice ejecutivo al inicio</li>
+                                <li>Máximo 20 páginas (sin contar portada e índice)</li>
+                                <li>Formato: PDF con portada profesional</li>
+                            </ul>
+                        </li>
+                        <li><strong>Pitch Técnico (8 diapositivas máximo):</strong>
+                            <ul>
+                                <li>Slide 1: Portada (proyecto, integrantes, fecha)</li>
+                                <li>Slide 2: Arquitectura general (diagrama de red)</li>
+                                <li>Slide 3: Stack tecnológico (SO, servicios, herramientas)</li>
+                                <li>Slide 4: Demo Apache + IIS</li>
+                                <li>Slide 5: Demo Monitoreo y Automatización</li>
+                                <li>Slide 6: Seguridad implementada</li>
+                                <li>Slide 7: Lecciones aprendidas</li>
+                                <li>Slide 8: Conclusiones</li>
+                            </ul>
+                        </li>
+                        <li><strong>Manual de Operación (3 páginas):</strong>
+                            <ul>
+                                <li>Comandos esenciales para administrar el sistema</li>
+                                <li>Cómo reiniciar servicios</li>
+                                <li>Cómo monitorear el sistema</li>
+                                <li>Contactos de soporte (simulado)</li>
+                            </ul>
+                        </li>
+                        <li><strong>VMs preparadas:</strong>
+                            <ul>
+                                <li>Snapshot antes de la sustentación</li>
+                                <li>Todo funcionando (Apache, IIS, monitoreo)</li>
+                                <li>Credenciales de acceso anotadas</li>
+                                <li>IPs configuradas y accesibles</li>
+                            </ul>
+                        </li>
+                    </ol>
+
+                    <h5 style="color: #1e3a5f; margin: 15px 0 10px 0;">DEMO EN VIVO - QUÉ MOSTRAR</h5>
+                    <p><strong>Secuencia recomendada:</strong></p>
+                    <ol class="content-list">
+                        <li><strong>Desde su laptop (Host):</strong>
+                            <ul>
+                                <li>Abrir navegador</li>
+                                <li>Navegar a <code>http://[IP_Linux]</code> → mostrar Apache</li>
+                                <li>Navegar a <code>https://[IP_Linux]</code> → mostrar HTTPS funcionando</li>
+                                <li>Navegar a <code>http://[IP_Windows]:8080</code> → mostrar IIS</li>
+                            </ul>
+                        </li>
+                        <li><strong>En Terminal Linux:</strong>
+                            <ul>
+                                <li>Ejecutar: <code>./monitor_procesos.sh</code> (Fase 2)</li>
+                                <li>Mostrar contenido de <code>bitacora_procesos.txt</code></li>
+                                <li>Ejecutar: <code>./dashboard_salud.sh</code> (Fase 5)</li>
+                                <li>Verificar firewall: <code>sudo ufw status</code> (Fase 4)</li>
+                            </ul>
+                        </li>
+                        <li><strong>En PowerShell Windows:</strong>
+                            <ul>
+                                <li>Ejecutar: <code>.\gestionar_servicios.ps1</code> (Fase 2)</li>
+                                <li>Verificar servicios: <code>Get-Service | Where {$_.Status -eq 'Running'}</code></li>
+                            </ul>
+                        </li>
+                    </ol>
+
+                    <h5 style="color: #1e3a5f; margin: 15px 0 10px 0;">POSIBLES RETOS DEL DOCENTE</h5>
+                    <p>El docente puede pedirle que haga algo en tiempo real. Practique estos escenarios:</p>
+                    <ul class="content-list">
+                        <li>"Agregue un nuevo usuario al sistema y asígnele permisos específicos"</li>
+                        <li>"Bloquee el puerto 80 en el firewall y verifique que el sitio ya no responde, luego desbloquéelo"</li>
+                        <li>"Cambie la prioridad de un proceso a 'nice 10' y demuestre el cambio"</li>
+                        <li>"Muestre los últimos 10 intentos de login fallidos en el sistema"</li>
+                        <li>"Cree un nuevo virtual host en Apache para un subdominio"</li>
+                    </ul>
+
+                    <h5 style="color: #1e3a5f; margin: 15px 0 10px 0;">CONSEJOS PARA LA SUSTENTACIÓN</h5>
+                    <ul class="content-list">
+                        <li><strong>Preparación técnica:</strong> Practique todo el flujo al menos 3 veces antes del día de la sustentación</li>
+                        <li><strong>Preparación física:</strong> Tenga todo listo antes de entrar (laptops encendidas, VMs arrancadas)</li>
+                        <li><strong>Comunicación:</strong> Hable claro y técnico, demuestre confianza en lo que hizo</li>
+                        <li><strong>Manejo de errores:</strong> Si algo falla, mantenga la calma y explique cómo lo solucionaría</li>
+                        <li><strong>Documentación:</strong> Tenga copia impresa o digital del portafolio para referencia rápida</li>
+                    </ul>
                 </div>
 
                 <div class="quick-links">

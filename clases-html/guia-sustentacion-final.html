@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía de Sustentación Final | IF0099 - Sistemas Operativos I</title>
+    <style>
+        :root {
+            --primary: #8b5cf6;
+            --secondary: #6d28d9;
+            --accent: #f59e0b;
+            --bg-light: #f8fafc;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.7; color: var(--text-main); background: var(--bg-light); font-size: 16px; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        header { background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); color: white; padding: 3rem 0; margin-bottom: 2rem; }
+        header h1 { font-size: 2.2rem; margin-bottom: 0.5rem; font-weight: 700; }
+        header .subtitle { font-size: 1.1rem; opacity: 0.9; }
+        nav { background: white; padding: 1.5rem 0; margin-bottom: 2rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        nav ul { list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 0.5rem; padding: 0 20px; }
+        nav a { color: var(--primary); text-decoration: none; padding: 0.5rem; display: block; border-radius: 4px; transition: background 0.2s; }
+        nav a:hover { background: var(--bg-light); }
+        section { background: white; padding: 2rem; margin-bottom: 2rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        section h2 { color: var(--primary); font-size: 1.8rem; margin-bottom: 1.5rem; padding-bottom: 0.5rem; border-bottom: 3px solid var(--accent); }
+        h3 { color: var(--secondary); margin: 1.5rem 0 1rem; }
+        .component-card { background: #f1f5f9; padding: 1.5rem; border-radius: 12px; margin-bottom: 1.5rem; border-left: 6px solid var(--primary); }
+        .component-card h4 { color: var(--secondary); margin-bottom: 0.5rem; }
+        .badge { display: inline-block; padding: 4px 12px; background: var(--accent); color: white; border-radius: 12px; font-size: 0.8rem; font-weight: 600; margin-bottom: 10px; }
+        ul, ol { margin-left: 1.5rem; margin-bottom: 1rem; }
+        li { margin-bottom: 0.5rem; }
+        footer { background: var(--text-main); color: white; padding: 2rem 0; text-align: center; margin-top: 3rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>🎓 Guía de Sustentación Final (Fase 6)</h1>
+            <p class="subtitle">IF0099 - Sistemas Operativos I | Semanas 14, 15 y 16</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <nav>
+            <ul>
+                <li><a href="#portafolio">1. Portafolio Ejecutivo</a></li>
+                <li><a href="#pitch">2. Pitch Técnico (Diapositivas)</a></li>
+                <li><a href="#demo">3. Demostración en Vivo</a></li>
+                <li><a href="#repositorio">4. Repositorio y Manuales</a></li>
+                <li><a href="#rubrica">5. Criterios de Evaluación E6</a></li>
+            </ul>
+        </nav>
+
+        <section id="portafolio">
+            <h2>1. Portafolio Ejecutivo Consolidado</h2>
+            <p>Es el documento maestro que recopila todo el trabajo del semestre. No es una simple unión de archivos, sino un informe profesional corregido.</p>
+            <div class="component-card">
+                <span class="badge">REQUISITO OBLIGATORIO</span>
+                <h4>Contenido del PDF (Máx 20 páginas):</h4>
+                <ul>
+                    <li><strong>Fase 1:</strong> Arquitectura y diseño final.</li>
+                    <li><strong>Fase 2:</strong> Scripts de monitoreo optimizados.</li>
+                    <li><strong>Fase 4:</strong> Matriz de riesgos y configuraciones de seguridad aplicadas.</li>
+                    <li><strong>Fase 5:</strong> Detalles técnicos de la integración Apache/IIS y RAID.</li>
+                    <li><strong>Conclusiones:</strong> Lecciones aprendidas sobre la gestión de SO.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="#pitch">
+            <h2>2. Pitch Técnico (Presentación)</h2>
+            <p>Tienes <strong>20 minutos</strong> totales. No gastes tiempo leyendo conceptos; enfócate en el valor técnico de tu solución UCS.</p>
+            <h3>Estructura Recomendada (8 Diapositivas):</h3>
+            <ol>
+                <li>Portada y Equipo.</li>
+                <li>El Problema: Caso UCS y requerimientos.</li>
+                <li>Arquitectura Híbrida: Diagrama de red y VMs.</li>
+                <li>Monitoreo y Automatización: Qué scripts crearon y por qué.</li>
+                <li>Seguridad (Hardening): Cómo protegieron los datos.</li>
+                <li>Integración Final: Servicios web y almacenamiento.</li>
+                <li>Resultados: El sistema funcionando.</li>
+                <li>Conclusiones técnicas.</li>
+            </ol>
+        </section>
+
+        <section id="demo">
+            <h2>3. Demostración en Vivo (Live Demo)</h2>
+            <p>Es la parte más importante. El docente solicitará pruebas en tiempo real sobre tus máquinas virtuales.</p>
+            <div style="background: #fffbeb; border: 1px solid #fde68a; padding: 1.5rem; border-radius: 8px;">
+                <h4>Posibles retos durante la demo:</h4>
+                <ul>
+                    <li>"Detén un servicio en Windows y muéstrame cómo el script de Linux lo detecta".</li>
+                    <li>"Reinicia el servidor Linux y demuestra que el RAID sigue montado".</li>
+                    <li>"Cambia el puerto de Apache y actualiza el Firewall en vivo".</li>
+                    <li>"Crea un archivo y demuestra que los permisos ACL funcionan para un usuario específico".</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="repositorio">
+            <h2>4. Repositorio y Manuales</h2>
+            <p>UCS debe ser entregado como un producto listo para ser operado por otros ingenieros.</p>
+            <ul>
+                <li><strong>Manual Técnico:</strong> Guía de instalación y configuración de las VMs (para quien quiera replicar el proyecto).</li>
+                <li><strong>Manual de Operación:</strong> Cómo usar los scripts de monitoreo y cómo reiniciar servicios básicos.</li>
+                <li><strong>Scripts Limpios:</strong> Todo el código debe estar comentado y organizado en carpetas.</li>
+            </ul>
+        </section>
+
+        <section id="rubrica">
+            <h2>5. Criterios de Evaluación E6 (27 Mayo)</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 1rem;">
+                <div style="background: white; border: 1px solid var(--border); padding: 1rem; border-radius: 8px; text-align: center;">
+                    <div style="font-size: 1.5rem; font-weight: bold; color: var(--primary);">60%</div>
+                    <div style="font-size: 0.9rem; color: var(--text-muted);">Demostración Funcional</div>
+                </div>
+                <div style="background: white; border: 1px solid var(--border); padding: 1rem; border-radius: 8px; text-align: center;">
+                    <div style="font-size: 1.5rem; font-weight: bold; color: var(--primary);">20%</div>
+                    <div style="font-size: 0.9rem; color: var(--text-muted);">Defensa Técnica Oral</div>
+                </div>
+                <div style="background: white; border: 1px solid var(--border); padding: 1rem; border-radius: 8px; text-align: center;">
+                    <div style="font-size: 1.5rem; font-weight: bold; color: var(--primary);">20%</div>
+                    <div style="font-size: 0.9rem; color: var(--text-muted);">Calidad del Portafolio</div>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <div class="container">
+                <p>IF0099 - Sistemas Operativos I | UNAULA 2026</p>
+                <p><a href="index.html">Volver al Inicio</a> | <a href="evaluaciones.html">Detalle de Evaluaciones</a></p>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>
