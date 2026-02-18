@@ -184,6 +184,21 @@
                 </p>
             </div>
             
+            <div style="background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); border: 3px solid #22c55e; border-radius: 1rem; padding: 1.5rem; margin-top: 1.5rem;">
+                <h3 style="color: #15803d; margin-top: 0; font-size: 1.2rem;">📚 ¿Dónde encuentro toda la información?</h3>
+                <p style="color: #166534; margin: 0.75rem 0;">
+                    Esta página tiene el <strong>resumen ejecutivo</strong> de cada evaluación (fechas, formatos, entregables principales).
+                </p>
+                <p style="color: #166534; margin: 0.5rem 0;">
+                    Para ver el <strong>contexto completo del proyecto UCS</strong>, casos de negocio, checklists detallados y requisitos específicos:
+                </p>
+                <div style="margin-top: 1rem;">
+                    <a href="proyecto.html" style="display: inline-block; background: #16a34a; color: white; padding: 0.75rem 1.5rem; border-radius: 0.5rem; text-decoration: none; font-weight: 600;">
+                        📘 Ver Guía Completa del Proyecto UCS →
+                    </a>
+                </div>
+            </div>
+
             <div style="background: #eff6ff; border: 2px solid #3b82f6; border-radius: 1rem; padding: 1.5rem; margin-top: 1.5rem;">
                 <h3 style="color: #1e40af; margin-top: 0;">📅 Calendario de Entregas</h3>
                 <table style="width: 100%; margin-top: 1rem; font-size: 0.95rem;">
@@ -231,21 +246,29 @@
                 </div>
 
                 <ol style="margin-left: 1.5rem; line-height: 1.8;">
-                    <li><strong>Diagrama de Red UCS:</strong> Esquema visual de las 2 VMs con IPs estáticas, máscara de subred, gateway y modo de red (Adaptador Puente)</li>
-                    <li><strong>Evidencia Forense:</strong> 
+                    <li><strong>Bitácora Técnica (PDF):</strong>
                         <ul>
-                            <li>Captura de <code>uname -a</code> en Ubuntu con explicación de cada campo</li>
-                            <li>Captura de <code>systeminfo</code> en Windows (resumen)</li>
-                            <li>Identificar versión del Kernel Linux y Build de Windows</li>
+                            <li>Diagrama de Red UCS: Esquema visual de las 2 VMs con IPs estáticas, máscara de subred, gateway y modo de red (Adaptador Puente)</li>
+                            <li>Comparativa de Arquitecturas: Análisis técnico de Linux (Monolítico) vs Windows (Híbrido), citando componentes (Kernel, HAL, Shell)</li>
+                            <li>Evidencia Forense: Capturas de <code>uname -a</code>, <code>systeminfo</code>, <code>lscpu</code>, <code>free -h</code> con explicaciones</li>
+                            <li>Tabla de Hardware: Comparativa de hardware REAL del host vs VIRTUAL asignado (CPU, RAM, Disco) con justificación técnica</li>
                         </ul>
                     </li>
-                    <li><strong>Tabla de Hardware:</strong> Comparativa de hardware REAL del host vs VIRTUAL asignado (CPU, RAM, Disco) con justificación técnica</li>
+                    <li><strong>Pitch Técnico (PowerPoint - máx 8 diapositivas):</strong>
+                        <ul>
+                            <li>Portada, Arquitectura UCS, Tecnologías usadas, Justificación técnica, Conclusiones</li>
+                        </ul>
+                    </li>
                 </ol>
 
                 <div style="background: #eff6ff; border-left: 4px solid #3b82f6; padding: 1rem; border-radius: 6px; margin-top: 1.5rem;">
-                    <p style="margin: 0; color: #1e40af;">
+                    <p style="margin: 0 0 0.5rem 0; color: #1e40af;">
                         <strong>📋 Rúbrica de Evaluación:</strong> 
                         <a href="rubricas.html#e1" style="color: #2563eb; text-decoration: underline; font-weight: 600;">Ver criterios completos aquí</a>
+                    </p>
+                    <p style="margin: 0; color: #1e40af; font-size: 0.95rem;">
+                        <strong>📘 Contexto del Proyecto:</strong> 
+                        <a href="proyecto.html#e1" style="color: #2563eb; text-decoration: underline;">Ver caso de negocio UCS y checklist detallado</a>
                     </p>
                 </div>
             </div>
@@ -271,6 +294,17 @@
                     <li><strong>Video Técnico (Link):</strong> Video de máximo 5 min demostrando la ejecución de los scripts y la reacción ante una caída simulada.</li>
                     <li><strong>Bitácora de Pruebas:</strong> PDF corto con la tabla de errores encontrados durante el desarrollo.</li>
                 </ul>
+                
+                <div style="background: #eff6ff; border-left: 4px solid #3b82f6; padding: 1rem; border-radius: 6px; margin-top: 1.5rem;">
+                    <p style="margin: 0 0 0.5rem 0; color: #1e40af;">
+                        <strong>📋 Rúbrica de Evaluación:</strong> 
+                        <a href="rubricas.html#e2" style="color: #2563eb; text-decoration: underline; font-weight: 600;">Ver criterios completos aquí</a>
+                    </p>
+                    <p style="margin: 0; color: #1e40af; font-size: 0.95rem;">
+                        <strong>📘 Contexto del Proyecto:</strong> 
+                        <a href="proyecto.html#e2" style="color: #2563eb; text-decoration: underline;">Ver caso de negocio UCS y checklist detallado</a>
+                    </p>
+                </div>
             </div>
         </section>
 
@@ -296,6 +330,17 @@
                 <ul class="deliverable-list">
                     <li><strong>PDF de Análisis (Forense):</strong> Por cada escenario: Problema identificado + Datos que lo prueban + Solución aplicada + Captura del comando final.</li>
                 </ul>
+                
+                <div style="background: #eff6ff; border-left: 4px solid #3b82f6; padding: 1rem; border-radius: 6px; margin-top: 1.5rem;">
+                    <p style="margin: 0 0 0.5rem 0; color: #1e40af;">
+                        <strong>📋 Rúbrica de Evaluación:</strong> 
+                        <a href="rubricas.html#e3" style="color: #2563eb; text-decoration: underline; font-weight: 600;">Ver criterios completos aquí</a>
+                    </p>
+                    <p style="margin: 0; color: #1e40af; font-size: 0.95rem;">
+                        <strong>📘 Contexto del Proyecto:</strong> 
+                        <a href="proyecto.html#e3" style="color: #2563eb; text-decoration: underline;">Ver caso de negocio UCS y escenarios de práctica</a>
+                    </p>
+                </div>
             </div>
         </section>
 
@@ -318,6 +363,17 @@
                     <li><strong>Matriz de Riesgos:</strong> Identificación de 8 vulnerabilidades y su mitigación técnica.</li>
                     <li><strong>Reporte de Auditoría:</strong> Capturas de <code>ufw status</code>, <code>getfacl</code> y las políticas locales de Windows aplicadas.</li>
                 </ul>
+                
+                <div style="background: #eff6ff; border-left: 4px solid #3b82f6; padding: 1rem; border-radius: 6px; margin-top: 1.5rem;">
+                    <p style="margin: 0 0 0.5rem 0; color: #1e40af;">
+                        <strong>📋 Rúbrica de Evaluación:</strong> 
+                        <a href="rubricas.html#e4" style="color: #2563eb; text-decoration: underline; font-weight: 600;">Ver criterios completos aquí</a>
+                    </p>
+                    <p style="margin: 0; color: #1e40af; font-size: 0.95rem;">
+                        <strong>📘 Contexto del Proyecto:</strong> 
+                        <a href="proyecto.html#e4" style="color: #2563eb; text-decoration: underline;">Ver caso de negocio UCS y checklist de hardening</a>
+                    </p>
+                </div>
             </div>
         </section>
 
@@ -327,20 +383,63 @@
                 <h2 class="phase-title">Fase 5: Integración y Producción</h2>
                 <span class="phase-badge">VALOR: 15%</span>
             </div>
-            <p>Puesta en marcha definitiva. Los nodos deben colaborar para servir la aplicación corporativa.</p>
+            <p>Puesta en marcha definitiva. Los nodos deben colaborar para servir la aplicación corporativa con alta disponibilidad.</p>
             
             <h3>🛠️ Paso a Paso:</h3>
-            <div class="step-card"><span class="step-num">1</span> Despliegue <strong>Apache (Linux)</strong> con HTTPS y <strong>IIS (Windows)</strong> en puerto 8080. Ambos deben mostrar el portal UCS.</div>
-            <div class="step-card"><span class="step-num">2</span> Configure <strong>RAID 1 (Mirroring)</strong> en Linux y <strong>Storage Spaces</strong> en Windows para los datos del portal.</div>
-            <div class="step-card"><span class="step-num">3</span> Configure interoperabilidad: El Nodo Windows debe montar una carpeta compartida del Nodo Linux vía <strong>Samba</strong>.</div>
+            <div class="step-card"><span class="step-num">1</span> <strong>Servidor Web Linux:</strong> Configure Apache con VirtualHost y HTTPS (certificado SSL auto-firmado). El sitio debe ser accesible por HTTPS.</div>
+            <div class="step-card"><span class="step-num">2</span> <strong>Servidor Web Windows:</strong> Instale IIS, cree un sitio en puerto 8080 con Application Pool dedicado.</div>
+            <div class="step-card"><span class="step-num">3</span> <strong>Almacenamiento Redundante:</strong> Configure RAID 1 (mirror) en Linux usando <code>mdadm</code> con dos discos virtuales. Demuestre que tolera fallo de un disco.</div>
+            <div class="step-card"><span class="step-num">4</span> <strong>Persistencia:</strong> Configure <code>/etc/fstab</code> para que el RAID se monte automáticamente al reiniciar.</div>
 
             <div class="deliverable-box">
                 <h4>📦 Qué debe entregar:</h4>
-                <ul class="deliverable-list">
-                    <li><strong>URL/IPs del Sistema:</strong> Acceso funcional a los portales web (comprobado en clase).</li>
-                    <li><strong>Configuraciones Finales:</strong> Copia de los archivos <code>.conf</code> de Apache, <code>smb.conf</code> y <code>/etc/fstab</code>.</li>
-                    <li><strong>Evidencia de Redundancia:</strong> Video de 2 min mostrando que el sistema sigue vivo tras apagar un disco del RAID.</li>
-                </ul>
+                
+                <div style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); padding: 1rem; border-radius: 6px; margin-bottom: 1rem; border-left: 4px solid #f59e0b;">
+                    <p style="margin: 0; font-weight: 700; color: #92400e; font-size: 1.1rem;">📅 Fecha límite: 06 de Mayo, 2026 | ⏰ 11:59 PM</p>
+                    <p style="margin: 0.5rem 0 0 0; font-size: 0.95rem; color: #78350f;">
+                        📤 Formato: <strong>Video + Configuraciones</strong>
+                    </p>
+                </div>
+
+                <ol style="margin-left: 1.5rem; line-height: 1.8;">
+                    <li><strong>Video Técnico (máx 5 minutos):</strong>
+                        <ul>
+                            <li>Demostración de Apache funcionando con HTTPS</li>
+                            <li>Demostración de IIS funcionando en puerto 8080</li>
+                            <li>Prueba de RAID: Muestre el estado con <code>cat /proc/mdstat</code>, simule fallo de un disco, verifique que sigue funcionando</li>
+                            <li>Reinicio de la VM Linux y verificación de que el RAID se monta automáticamente</li>
+                        </ul>
+                    </li>
+                    <li><strong>Archivos de Configuración:</strong>
+                        <ul>
+                            <li>VirtualHost de Apache (<code>ucs.conf</code>)</li>
+                            <li>Configuración del RAID (<code>/etc/mdadm/mdadm.conf</code> o similar)</li>
+                            <li><code>/etc/fstab</code> con el montaje persistente</li>
+                        </ul>
+                    </li>
+                    <li><strong>URLs de Acceso:</strong> Liste las IPs y puertos donde se accede a cada servidor web</li>
+                </ol>
+
+                <div style="background: #f0fdf4; border: 2px solid #86efac; padding: 1rem; border-radius: 6px; margin-top: 1.5rem;">
+                    <h4 style="color: #166534; margin: 0 0 0.5rem 0; font-size: 1rem;">💡 Consejos para el Video</h4>
+                    <ul style="margin: 0; color: #166534; font-size: 0.95rem;">
+                        <li>No necesita mostrar toda la instalación paso a paso, solo el resultado funcionando</li>
+                        <li>Para el RAID: Muestre claramente el estado antes, durante y después del "fallo"</li>
+                        <li>Use un timer visible o indique los timestamps importantes</li>
+                        <li>Suba el video a YouTube (no listado) o Google Drive y comparta el link</li>
+                    </ul>
+                </div>
+
+                <div style="background: #eff6ff; border-left: 4px solid #3b82f6; padding: 1rem; border-radius: 6px; margin-top: 1.5rem;">
+                    <p style="margin: 0 0 0.5rem 0; color: #1e40af;">
+                        <strong>📋 Rúbrica de Evaluación:</strong>
+                        <a href="rubricas.html#e5" style="color: #2563eb; text-decoration: underline; font-weight: 600;">Ver criterios completos aquí</a>
+                    </p>
+                    <p style="margin: 0; color: #1e40af; font-size: 0.95rem;">
+                        <strong>📘 Contexto del Proyecto:</strong>
+                        <a href="proyecto.html#e5" style="color: #2563eb; text-decoration: underline;">Ver caso de negocio UCS y requisitos de integración</a>
+                    </p>
+                </div>
             </div>
         </section>
 
@@ -364,6 +463,17 @@
                     <li><strong>Presentación:</strong> Archivo PPTX o PDF del Pitch.</li>
                     <li><strong>Link al Repositorio:</strong> GitHub/GitLab con todo el código del semestre organizado.</li>
                 </ul>
+
+                <div style="background: #eff6ff; border-left: 4px solid #3b82f6; padding: 1rem; border-radius: 6px; margin-top: 1.5rem;">
+                    <p style="margin: 0 0 0.5rem 0; color: #1e40af;">
+                        <strong>📋 Rúbrica de Evaluación:</strong>
+                        <a href="rubricas.html#e6" style="color: #2563eb; text-decoration: underline; font-weight: 600;">Ver criterios completos aquí</a>
+                    </p>
+                    <p style="margin: 0; color: #1e40af; font-size: 0.95rem;">
+                        <strong>📘 Contexto del Proyecto:</strong>
+                        <a href="proyecto.html#e6" style="color: #2563eb; text-decoration: underline;">Ver estructura de la sustentación y guía del pitch</a>
+                    </p>
+                </div>
             </div>
         </section>
 

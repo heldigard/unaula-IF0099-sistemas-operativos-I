@@ -170,9 +170,101 @@
             <h2>4. Deadlock: El Abrazo de la Muerte</h2>
             <p>Es el estado donde un grupo de hilos están bloqueados esperando recursos que otros hilos del mismo grupo poseen. <strong>Nadie avanza nunca.</strong></p>
             
-            <div class="callout warning">
-                <h4>Las 4 Condiciones de Coffman</h4>
-                <p>Para que ocurra un Deadlock deben cumplirse simultáneamente: Exclusión mutua, Retener y esperar, Sin apropiación y Espera circular. Rompiendo una de estas (ej: pidiendo recursos en orden), evitas el bloqueo.</p>
+            <div class="callout info" style="margin: 1.5rem 0;">
+                <h4>🎭 Analogía del Puente Estrecho</h4>
+                <p>Dos coches llegan a un puente de un solo carril desde direcciones opuestas. El coche A tiene la llave de la entrada norte, el coche B tiene la llave de la entrada sur. Ambos esperan que el otro retroceda, pero ninguno lo hace. <strong>Eso es un deadlock.</strong></p>
+            </div>
+
+            <h3>4.1 Las 4 Condiciones de Coffman (Todas deben cumplirse)</h3>
+            
+            <div style="display: grid; gap: 1rem; margin: 1.5rem 0;">
+                <div style="background: linear-gradient(90deg, #fee2e2 0%, #fecaca 100%); padding: 1rem; border-radius: 8px; border-left: 5px solid #ef4444;">
+                    <h4 style="color: #991b1b; margin-bottom: 0.5rem;">1️⃣ Exclusión Mutua</h4>
+                    <p style="margin-bottom: 0.5rem;"><strong>¿Qué significa?</strong> Los recursos no son compartibles. Solo un hilo puede usar el recurso a la vez.</p>
+                    <p style="background: white; padding: 0.5rem; border-radius: 4px; font-size: 0.9rem;">
+                        <strong>Ejemplo:</strong> Una impresora solo puede imprimir un documento a la vez.
+                    </p>
+                </div>
+
+                <div style="background: linear-gradient(90deg, #fef3c7 0%, #fde68a 100%); padding: 1rem; border-radius: 8px; border-left: 5px solid #f59e0b;">
+                    <h4 style="color: #92400e; margin-bottom: 0.5rem;">2️⃣ Retener y Esperar</h4>
+                    <p style="margin-bottom: 0.5rem;"><strong>¿Qué significa?</strong> Un hilo que tiene recursos puede pedir más recursos sin soltar los que ya tiene.</p>
+                    <p style="background: white; padding: 0.5rem; border-radius: 4px; font-size: 0.9rem;">
+                        <strong>Ejemplo:</strong> El hilo A tiene el archivo X y pide el archivo Y. No suelta X mientras espera.
+                    </p>
+                </div>
+
+                <div style="background: linear-gradient(90deg, #dbeafe 0%, #bfdbfe 100%); padding: 1rem; border-radius: 8px; border-left: 5px solid #3b82f6;">
+                    <h4 style="color: #1e40af; margin-bottom: 0.5rem;">3️⃣ Sin Apropiación</h4>
+                    <p style="margin-bottom: 0.5rem;"><strong>¿Qué significa?</strong> Un recurso no puede ser quitado por la fuerza. Solo se libera voluntariamente por el hilo que lo posee.</p>
+                    <p style="background: white; padding: 0.5rem; border-radius: 4px; font-size: 0.9rem;">
+                        <strong>Ejemplo:</strong> El SO no puede "robarle" la impresora a un hilo. Debe esperar a que termine.
+                    </p>
+                </div>
+
+                <div style="background: linear-gradient(90deg, #dcfce7 0%, #bbf7d0 100%); padding: 1rem; border-radius: 8px; border-left: 5px solid #10b981;">
+                    <h4 style="color: #065f46; margin-bottom: 0.5rem;">4️⃣ Espera Circular</h4>
+                    <p style="margin-bottom: 0.5rem;"><strong>¿Qué significa?</strong> Existe una cadena circular de hilos donde cada uno espera un recurso que posee el siguiente.</p>
+                    <p style="background: white; padding: 0.5rem; border-radius: 4px; font-size: 0.9rem;">
+                        <strong>Ejemplo:</strong> A espera recurso de B → B espera recurso de C → C espera recurso de A
+                    </p>
+                </div>
+            </div>
+
+            <div class="callout success" style="margin-top: 1.5rem;">
+                <h4>✅ Solución: Romper al menos UNA condición</h4>
+                <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                    <li><strong>Exclusión mutua:</strong> Hacer recursos compartibles (ej: spooling de impresión)</li>
+                    <li><strong>Retener y esperar:</strong> Pedir todos los recursos al inicio o soltar antes de pedir nuevos</li>
+                    <li><strong>Sin apropiación:</strong> Permitir que el SO "robe" recursos (difícil de implementar)</li>
+                    <li><strong>Espera circular:</strong> <strong>ORDENAR LOS RECURSOS</strong> - pedir siempre en el mismo orden (ej: siempre primero A, luego B)</li>
+                </ul>
+                <p style="margin-top: 1rem; font-weight: 600; color: #065f46;">💡 La más usada en la práctica: Ordenar los recursos jerárquicamente</p>
+            </div>
+
+            <h3 style="margin-top: 2rem;">4.2 Ejemplo Práctico de Deadlock en Código</h3>
+            <div style="background: #1e293b; color: #e2e8f0; padding: 1.5rem; border-radius: 8px; font-family: monospace; font-size: 0.9rem; overflow-x: auto; margin: 1rem 0;">
+                <p style="color: #fbbf24; font-weight: bold;">// DOS HILOS - DOS MUTEX</p>
+                <p>pthread_mutex_t mutex_A;  <span style="color: #64748b;">// Recurso A</span></p>
+                <p>pthread_mutex_t mutex_B;  <span style="color: #64748b;">// Recurso B</span></p>
+                <p>&nbsp;</p>
+                <p><span style="color: #fbbf24;">// HILO 1</span></p>
+                <p>void* hilo_1(void* arg) {</p>
+                <p>&nbsp;&nbsp;pthread_mutex_lock(&mutex_A);  <span style="color: #4ade80;">// ✅ Obtiene A</span></p>
+                <p>&nbsp;&nbsp;sleep(1);  <span style="color: #64748b;">// Simula trabajo</span></p>
+                <p>&nbsp;&nbsp;pthread_mutex_lock(&mutex_B);  <span style="color: #ef4444;">// ⏳ Espera B...</span></p>
+                <p>&nbsp;&nbsp;<span style="color: #64748b;">// NUNCA LLEGA AQUÍ</span></p>
+                <p>}</p>
+                <p>&nbsp;</p>
+                <p><span style="color: #fbbf24;">// HILO 2</span></p>
+                <p>void* hilo_2(void* arg) {</p>
+                <p>&nbsp;&nbsp;pthread_mutex_lock(&mutex_B);  <span style="color: #4ade80;">// ✅ Obtiene B</span></p>
+                <p>&nbsp;&nbsp;sleep(1);  <span style="color: #64748b;">// Simula trabajo</span></p>
+                <p>&nbsp;&nbsp;pthread_mutex_lock(&mutex_A);  <span style="color: #ef4444;">// ⏳ Espera A...</span></p>
+                <p>&nbsp;&nbsp;<span style="color: #64748b;">// NUNCA LLEGA AQUÍ</span></p>
+                <p>}</p>
+                <p>&nbsp;</p>
+                <p style="color: #ef4444; font-weight: bold;">// RESULTADO: DEADLOCK - Ambos hilos esperan forever</p>
+            </div>
+
+            <div class="callout info" style="margin-top: 1rem;">
+                <h4>🔧 Cómo evitarlo en el ejemplo anterior</h4>
+                <p><strong>Solución:</strong> Ambos hilos deben pedir los mutex EN EL MISMO ORDEN:</p>
+                <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                    <li>Siempre primero A, luego B (nunca B primero)</li>
+                    <li>O pedir ambos al inicio con pthread_mutex_lock de forma atómica</li>
+                </ul>
+            </div>
+
+            <div class="callout warning" style="margin-top: 1.5rem;">
+                <h4>⚠️ Síntomas de Deadlock en Producción</h4>
+                <ul style="margin-left: 1.5rem;">
+                    <li>La aplicación "se congela" pero no consume CPU</li>
+                    <li>Los logs dejan de actualizarse en puntos específicos</li>
+                    <li>Timeout en operaciones que deberían ser rápidas</li>
+                    <li>En logs: hilos esperando mutex que nunca se liberan</li>
+                </ul>
+                <p style="margin-top: 0.5rem;"><strong>Herramientas de diagnóstico:</strong> <code>jstack</code> (Java), <code>pstack</code> (Linux), <code>kill -3</code> (genera thread dump)</p>
             </div>
         </section>
 

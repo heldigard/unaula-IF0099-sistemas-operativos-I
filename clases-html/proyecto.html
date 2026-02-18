@@ -232,6 +232,21 @@
                 <a href="cronograma.html">Cronograma</a>
                 <a href="rubricas.html">Rúbricas</a>
             </div>
+
+            <div style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border: 3px solid #f59e0b; border-radius: 12px; padding: 20px; margin-top: 25px; text-align: center;">
+                <h3 style="color: #92400e; margin-top: 0; font-size: 1.1rem;">⚡ Información Rápida</h3>
+                <p style="color: #78350f; margin: 10px 0;">
+                    <strong>¿Buscas fechas, formatos y requisitos rápidos?</strong> 
+                    Ve a <a href="evaluaciones.html" style="color: #b45309; text-decoration: underline; font-weight: 600;">Evaluaciones</a> para el resumen ejecutivo.
+                </p>
+                <p style="color: #78350f; margin: 5px 0; font-size: 0.95rem;">
+                    <strong>¿Buscas rúbricas de calificación?</strong> 
+                    Ve a <a href="rubricas.html" style="color: #b45309; text-decoration: underline;">Rúbricas</a> para los criterios de evaluación.
+                </p>
+                <p style="color: #92400e; margin: 10px 0 0 0; font-size: 0.9rem;">
+                    📍 Esta página tiene el contexto completo del proyecto, casos de negocio y checklists detallados.
+                </p>
+            </div>
         </header>
 
         <section class="section">
@@ -309,6 +324,11 @@
                         <li>Instalación base documentada con captura de <code>uname -a</code> y <code>systeminfo</code></li>
                         <li>Evidencia de conectividad (ping entre VMs funcionando)</li>
                     </ul>
+                </div>
+                <div style="background: #e0f2fe; padding: 12px 15px; border-radius: 6px; margin-top: 15px; border-left: 4px solid #0284c7;">
+                    <strong style="color: #0369a1;">🔗 Recursos:</strong>
+                    <a href="evaluaciones.html#e1" style="color: #0369a1; text-decoration: underline; margin-left: 10px;">Ver resumen ejecutivo →</a>
+                    <a href="rubricas.html#e1" style="color: #0369a1; text-decoration: underline; margin-left: 15px;">Ver rúbrica →</a>
                 </div>
             </div>
 
@@ -415,14 +435,16 @@
                 <div class="entregable">
                     <strong>📋 Entregables Checklist:</strong>
                     <ul>
-                        <li>Servidor Apache (Linux) con Virtual Host y HTTPS (certificado SSL auto-firmado)</li>
-                        <li>Servidor IIS (Windows) con Application Pool dedicado y sitio funcional</li>
-                        <li>Almacenamiento redundante: <strong>RAID 1</strong> configurado en Linux + <strong>Storage Spaces</strong> en Windows</li>
-                        <li>Persistencia de montaje: Configuración de <code>/etc/fstab</code> para montajes automáticos</li>
-                        <li>Interoperabilidad: Compartición de recursos entre Linux y Windows (Samba/SMB)</li>
-                        <li>Dashboard de integración: Script que verifique que todo funciona</li>
-                        <li>Video de redundancia: Demostración de que el sistema sigue funcionando tras "fallar" un disco del RAID</li>
+                        <li><strong>Video Técnico (máx 5 min):</strong> Demostración de Apache HTTPS, IIS, RAID tolerando fallo, y reinicio con montaje automático.</li>
+                        <li>Servidor Apache (Linux) con VirtualHost y HTTPS (certificado SSL auto-firmado).</li>
+                        <li>Servidor IIS (Windows) con Application Pool dedicado en puerto 8080.</li>
+                        <li>Almacenamiento redundante: <strong>RAID 1</strong> configurado en Linux con mdadm (2 discos, tolerancia a fallo demostrada).</li>
+                        <li>Persistencia: Configuración de <code>/etc/fstab</code> para montaje automático del RAID al reiniciar.</li>
+                        <li>Archivos de configuración: VirtualHost Apache, configuración RAID, y fstab.</li>
                     </ul>
+                    <p style="margin-top: 10px; color: #065f46; font-size: 0.95rem;">
+                        <strong>💡 Simplificación:</strong> No es necesario configurar Storage Spaces en Windows ni Dashboard de salud (conceptos ya demostrados en evaluaciones anteriores).
+                    </p>
                 </div>
             </div>
 
