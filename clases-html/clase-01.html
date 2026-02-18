@@ -67,8 +67,9 @@
                 <li><a href="#arquitectura">2. Capas del Sistema</a></li>
                 <li><a href="#kernel">3. El Corazón: El Kernel</a></li>
                 <li><a href="#hibrido">4. El Proyecto UCS</a></li>
-                <li><a href="#comandos">5. Comandos de Auditoría</a></li>
-                <li><a href="#practica">6. Laboratorio Inicial</a></li>
+                <li><a href="#ejemplos-practicos">5. Ejemplos Linux vs Win</a></li>
+                <li><a href="#comandos">6. Comandos de Auditoría</a></li>
+                <li><a href="#practica">7. Laboratorio Inicial</a></li>
             </ul>
         </nav>
 
@@ -162,54 +163,285 @@
             </div>
         </section>
 
+        <!-- NUEVA SECCIÓN: Ejemplos Prácticos Comparativos -->
+        <section id="ejemplos-practicos" style="background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);">
+            <h2>5. Ejemplos Prácticos: Linux vs Windows</h2>
+            <p>Compara cómo se hacen las mismas tareas en ambos sistemas. Esto te ayudará a entender las diferencias prácticas.</p>
+            
+            <div class="callout info" style="background: white;">
+                <h4>📊 Ejemplo 1: Ver información del sistema</h4>
+                <div class="comparison">
+                    <div class="card">
+                        <h5>Linux (Ubuntu)</h5>
+                        <pre><code class="language-bash"># Ver información del sistema
+uname -a
+# Salida: Linux ubuntu-server 5.15.0...
+
+# Ver versión de Ubuntu
+lsb_release -a
+# Salida: Ubuntu 22.04.3 LTS
+
+# Ver arquitectura
+dpkg --print-architecture
+# Salida: amd64</code></pre>
+                    </div>
+                    <div class="card">
+                        <h5>Windows (PowerShell)</h5>
+                        <pre><code class="language-powershell"># Ver información del sistema
+systeminfo | findstr /B /C:"OS Name" /C:"OS Version"
+# Salida: OS Name: Microsoft Windows 11 Pro
+
+# Ver versión de Windows
+Get-ComputerInfo | Select OsName, OsVersion
+# Salida: Microsoft Windows 11 Pro | 10.0.22621
+
+# Ver arquitectura
+(Get-WmiObject -Class Win32_Processor).Architecture
+# Salida: 9 (x64)</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="callout success" style="background: white;">
+                <h4>💾 Ejemplo 2: Ver uso de disco</h4>
+                <div class="comparison">
+                    <div class="card">
+                        <h5>Linux</h5>
+                        <pre><code class="language-bash"># Ver espacio en disco
+df -h
+# Muestra: Filesystem Size Used Avail Use%
+#          /dev/sda1  20G  8G   11G  42%
+
+# Ver tamaño de carpetas
+du -sh /var/log
+# Salida: 2.1G /var/log</code></pre>
+                    </div>
+                    <div class="card">
+                        <h5>Windows</h5>
+                        <pre><code class="language-powershell"># Ver espacio en disco
+Get-Volume | Select DriveLetter, Size, SizeRemaining
+# Muestra: C | 256GB | 180GB
+
+# Ver tamaño de carpetas
+(Get-ChildItem C:\Windows -Recurse | 
+    Measure-Object -Property Length -Sum).Sum / 1GB
+# Salida: 15.23 GB</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="callout warning" style="background: white;">
+                <h4>⚡ Ejemplo 3: Ver procesos activos</h4>
+                <div class="comparison">
+                    <div class="card">
+                        <h5>Linux</h5>
+                        <pre><code class="language-bash"># Ver procesos (simplificado)
+ps aux | head -5
+# Muestra: USER PID %CPU %MEM COMMAND
+
+# Ver en tiempo real
+top
+# Interfaz interactiva</code></pre>
+                    </div>
+                    <div class="card">
+                        <h5>Windows</h5>
+                        <pre><code class="language-powershell"># Ver procesos
+Get-Process | Select-Object -First 5
+# Muestra: Name, Id, CPU, WorkingSet
+
+# Ver en tiempo real
+Get-Process | Sort-Object CPU -Descending | 
+    Select-Object -First 10</code></pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <section id="comandos">
-            <h2>5. Comandos Profesionales de Auditoría de Hardware</h2>
-            <p>Un ingeniero debe conocer el silicio que gestiona antes de instalar cualquier software.</p>
+            <h2>6. Comandos Profesionales de Auditoría de Hardware</h2>
+            <p>Un ingeniero debe conocer el silicio que gestiona antes de instalar cualquier software. Aquí tienes la <strong>cheat sheet completa</strong> para auditoría en ambos sistemas.</p>
             
             <div class="comparison">
                 <div class="column-card">
-                    <h4>Inspección en Linux (Bash)</h4>
-                    <pre><code class="language-bash"># Datos del Kernel y Hostname
-uname -a
+                    <h4>🔍 Inspección Completa en Linux (Bash)</h4>
+                    <pre><code class="language-bash"># ═══════════════════════════════════════
+# INFORMACIÓN GENERAL DEL SISTEMA
+# ═══════════════════════════════════════
+uname -a                    # Kernel + hostname
+hostnamectl                 # Info detallada del host
+cat /etc/os-release         # Versión de distribución
+uptime                      # Tiempo encendido
 
-# Ver detalles de la CPU (Cores, Cache)
-lscpu
+# ═══════════════════════════════════════
+# INFORMACIÓN DE HARDWARE
+# ═══════════════════════════════════════
+lscpu                       # CPU: cores, threads, cache
+free -h                     # RAM: total, usada, libre
+lsblk                       # Discos y particiones
+df -h                       # Espacio en disco usado
+lspci                       # Dispositivos PCI (GPU, etc.)
+lsusb                       # Dispositivos USB
 
-# Ver memoria RAM física y usada
-free -h
-
-# Listar discos y particiones
-lsblk</code></pre>
+# ═══════════════════════════════════════
+# INFORMACIÓN DE RED
+# ═══════════════════════════════════════
+ip addr                     # Interfaces de red
+ip route                    # Tabla de enrutamiento
+ss -tuln                    # Puertos en escucha</code></pre>
                 </div>
                 <div class="column-card">
-                    <h4>Inspección en Windows (PowerShell)</h4>
-                    <pre><code class="language-powershell"># Reporte técnico completo
-systeminfo
+                    <h4>🔍 Inspección Completa en Windows (PowerShell)</h4>
+                    <pre><code class="language-powershell"># ═══════════════════════════════════════
+# INFORMACIÓN GENERAL DEL SISTEMA
+# ═══════════════════════════════════════
+systeminfo                  # Reporte completo
+Get-ComputerInfo            # Info del sistema
+Get-Date                    # Fecha y hora actual
 
-# Ver BIOS y Manufacturador
-Get-CimInstance Win32_BIOS
+# ═══════════════════════════════════════
+# INFORMACIÓN DE HARDWARE
+# ═══════════════════════════════════════
+Get-CimInstance Win32_Processor
+# CPU: cores, threads, velocidad
 
-# Ver procesadores lógicos
-Get-CimInstance Win32_Processor | Select-Object Name, NumberOfCores
+Get-CimInstance Win32_PhysicalMemory | 
+    Measure-Object Capacity -Sum
+# RAM total en bytes
 
-# Info de placa base
-wmic baseboard get product</code></pre>
+Get-PhysicalDisk            # Discos físicos
+Get-Volume                  # Volúmenes y espacio
+Get-CimInstance Win32_VideoController
+# Info de GPU
+
+# ═══════════════════════════════════════
+# INFORMACIÓN DE RED
+# ═══════════════════════════════════════
+Get-NetIPAddress            # Interfaces de red
+Get-NetRoute                # Tabla de enrutamiento
+Get-NetTCPConnection        # Conexiones TCP activas</code></pre>
+                    
+                    <div style="background: #fef3c7; padding: 1rem; border-radius: 6px; margin-top: 1rem;">
+                        <p style="margin: 0; font-size: 0.9rem;"><strong>💡 Tip:</strong> En Windows, también puedes usar <code>msinfo32</code> para una interfaz gráfica completa de información del sistema.</p>
+                    </div>
                 </div>
             </div>
         </section>
 
         <section id="practica">
-            <h2>6. Laboratorio 01: Despliegue de Infraestructura (Insumo E1)</h2>
+            <h2>7. Laboratorio 01: Despliegue de Infraestructura (Insumo E1)</h2>
             <div class="actividad">
-                <h3>Actividad Técnica: El Cimiento del Proyecto UCS</h3>
-                <p><strong>Objetivo:</strong> Configurar el entorno de virtualización profesional.</p>
+                <h3>🎯 Guía Paso a Paso para el Estudiante</h3>
+                
+                <div style="background: #fef3c7; padding: 1rem; border-radius: 6px; margin-bottom: 1.5rem;">
+                    <p style="margin: 0; font-weight: 600; color: #92400e;">⏱️ Tiempo estimado: 90 minutos | 📝 Dificultad: Básica</p>
+                </div>
+
+                <h4 style="color: #1e40af; margin-top: 1.5rem;">📥 Paso 1: Descargar e Instalar VirtualBox</h4>
                 <ol>
-                    <li>Instale <strong>VirtualBox 7.x</strong> en su equipo personal.</li>
-                    <li>Cree su primer Nodo: Instale <strong>Ubuntu Server 22.04 LTS</strong> (Sin interfaz gráfica).</li>
-                    <li><strong>Auditoría Inicial</strong>: Ejecute <code>uname -a</code> en su VM y <code>systeminfo</code> en su Windows host.</li>
-                    <li>Identifique: ¿Qué versión de Kernel usa Ubuntu? ¿Qué Service Pack o Build tiene su Windows?</li>
+                    <li>Visita: <code>https://www.virtualbox.org/wiki/Downloads</code></li>
+                    <li>Descarga la versión 7.x para tu sistema operativo (Windows/Mac/Linux)</li>
+                    <li>Ejecuta el instalador y acepta la configuración por defecto</li>
+                    <li><strong>Verificación:</strong> Abre VirtualBox y confirma que ves la interfaz principal</li>
                 </ol>
-                <p><strong>Entregable:</strong> Documento PDF con capturas de ambos comandos para su informe de la Fase 1.</p>
+
+                <h4 style="color: #1e40af; margin-top: 1.5rem;">💿 Paso 2: Descargar ISOs de Sistemas Operativos</h4>
+                <ol>
+                    <li><strong>Ubuntu Server 22.04 LTS:</strong>
+                        <ul>
+                            <li>Visita: <code>https://ubuntu.com/download/server</code></li>
+                            <li>Descarga: "Ubuntu Server 22.04.3 LTS" (~2 GB)</li>
+                            <li>IMPORTANTE: Selecciona la versión SIN interfaz gráfica</li>
+                        </ul>
+                    </li>
+                    <li><strong>Windows Server 2022 / Windows 10/11 Pro:</strong>
+                        <ul>
+                            <li>Visita: Centro de Evaluación de Microsoft</li>
+                            <li>Descarga la ISO correspondiente (~4-5 GB)</li>
+                        </ul>
+                    </li>
+                </ol>
+
+                <h4 style="color: #1e40af; margin-top: 1.5rem;">⚙️ Paso 3: Crear la Máquina Virtual Ubuntu</h4>
+                <ol>
+                    <li>En VirtualBox, clic en "Nueva"</li>
+                    <li>Configuración:
+                        <ul>
+                            <li><strong>Nombre:</strong> UCS-Linux-Node</li>
+                            <li><strong>Tipo:</strong> Linux | <strong>Versión:</strong> Ubuntu (64-bit)</li>
+                            <li><strong>RAM:</strong> 2048 MB (2 GB) mínimo</li>
+                            <li><strong>Disco:</strong> 20 GB, tipo VDI, dinámicamente asignado</li>
+                        </ul>
+                    </li>
+                    <li>Inicia la VM y selecciona la ISO de Ubuntu Server</li>
+                    <li>Sigue el asistente de instalación (selecciona idioma, teclado, usuario)</li>
+                </ol>
+
+                <h4 style="color: #1e40af; margin-top: 1.5rem;">🔍 Paso 4: Auditoría Inicial (Comandos)</h4>
+                <div class="comparison">
+                    <div class="card">
+                        <h5>En Ubuntu Server (Terminal):</h5>
+                        <pre><code class="language-bash"># Comando 1: Información del kernel
+uname -a
+# Guarda la salida: toma captura de pantalla
+
+# Comando 2: Ver versión del SO
+lsb_release -a
+# Debe mostrar: Ubuntu 22.04.3 LTS</code></pre>
+                    </div>
+                    <div class="card">
+                        <h5>En Windows Host (PowerShell):</h5>
+                        <pre><code class="language-powershell"># Comando: Información completa
+systeminfo | findstr /B /C:"OS" /C:"Processor"
+# Guarda la salida: toma captura de pantalla</code></pre>
+                    </div>
+                </div>
+
+                <h4 style="color: #1e40af; margin-top: 1.5rem;">📋 Paso 5: Documentación para Entrega</h4>
+                <p>Crea un documento PDF que incluya:</p>
+                <ol>
+                    <li><strong>Portada:</strong> Nombre, ID, Fecha, Curso IF0099</li>
+                    <li><strong>Sección 1:</strong> Captura de pantalla de VirtualBox con la VM creada</li>
+                    <li><strong>Sección 2:</strong> Captura de <code>uname -a</code> en Ubuntu con explicación de cada campo</li>
+                    <li><strong>Sección 3:</strong> Captura de <code>systeminfo</code> en Windows con explicación</li>
+                    <li><strong>Sección 4:</strong> Tabla comparativa con especificaciones de tu hardware real vs virtual</li>
+                </ol>
+
+                <div style="background: #f0fdf4; border: 2px solid #86efac; padding: 1.5rem; border-radius: 8px; margin-top: 1.5rem;">
+                    <h4 style="color: #166534; margin-top: 0;">✅ Criterios de Evaluación (Rúbrica E1)</h4>
+                    <table style="width: 100%; margin-top: 0.5rem;">
+                        <thead>
+                            <tr>
+                                <th style="text-align: left;">Criterio</th>
+                                <th style="text-align: center;">Puntos</th>
+                                <th style="text-align: left;">¿Qué se evalúa?</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Instalación VirtualBox</td>
+                                <td style="text-align: center;">20%</td>
+                                <td>VM creada correctamente</td>
+                            </tr>
+                            <tr>
+                                <td>Configuración Ubuntu</td>
+                                <td style="text-align: center;">30%</td>
+                                <td>Servidor instalado y funcionando</td>
+                            </tr>
+                            <tr>
+                                <td>Comandos de Auditoría</td>
+                                <td style="text-align: center;">30%</td>
+                                <td>Capturas con explicaciones</td>
+                            </tr>
+                            <tr>
+                                <td>Documentación</td>
+                                <td style="text-align: center;">20%</td>
+                                <td>PDF profesional y organizado</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <p style="margin-top: 1.5rem;"><strong>📤 Entregable Final:</strong> Archivo PDF con el formato "E1_ApellidoNombre.pdf" subido a la plataforma antes del 25 de Febrero, 11:59 PM.</p>
             </div>
 
             <!-- ENFOQUE LABORAL -->
