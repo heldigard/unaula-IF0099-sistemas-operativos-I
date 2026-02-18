@@ -106,7 +106,7 @@ pstree -p</code></pre>
                 <tbody>
                     <tr><td><strong>SIGTERM</strong></td><td>15</td><td>Cierre amable. El proceso guarda datos y libera memoria. Es el default de <code>kill</code>.</td></tr>
                     <tr><td><strong>SIGKILL</strong></td><td>9</td><td>Cierre forzado. El kernel borra el proceso de RAM sin aviso. ¡Usar solo en bloqueos!</td></tr>
-                    <tr><td><strong>SIGHUP</strong></td><td>1</td><td>Reload. Servidores (Apache/Nginx) recargan su config sin detenerse.</td></tr>
+                    <tr><td><strong>SIGHUP</strong></td><td>1</td><td>Reload. Servidores y aplicaciones recargan su configuración sin detenerse.</td></tr>
                     <tr><td><strong>SIGSTOP</strong></td><td>19</td><td>Congelar. Detiene la ejecución sin borrarlo de la memoria.</td></tr>
                 </tbody>
             </table>
@@ -120,7 +120,7 @@ pstree -p</code></pre>
                 <li><strong>19</strong>: Prioridad Mínima. El proceso solo corre si nadie más necesita la CPU.</li>
             </ul>
             <pre><code class="language-bash"># Lanzar un backup pesado con prioridad mínima
-nice -n 19 tar -czf backup.tar.gz /var/www/html
+nice -n 19 tar -czf backup.tar.gz /home/usuario/documentos
 
 # Bajar la prioridad de un proceso que ya está corriendo
 sudo renice -n 10 -p [PID]</code></pre>

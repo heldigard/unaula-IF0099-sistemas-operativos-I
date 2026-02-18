@@ -63,6 +63,7 @@
                 <li><a href="#automatizacion">3. Automatización (PowerShell)</a></li>
                 <li><a href="#comandos">4. Comandos de Diagnóstico</a></li>
                 <li><a href="#practica">5. Laboratorio de Puesta en Marcha</a></li>
+                <li><a href="#seguridad">6. Seguridad y Rate Limiting</a></li>
             </ul>
         </nav>
 
@@ -268,36 +269,68 @@ icacls C:\inetpub\wwwroot\miapp
 Invoke-WebRequest http://localhost -UseBasicParsing</code></pre>
             </div>
 
-            <div class="card" style="background: white; padding: 1.5rem; border-radius: 8px; margin-bottom: 1.5rem; border-left: 4px solid #059669;">
+            <div id="seguridad" class="card" style="background: white; padding: 1.5rem; border-radius: 8px; margin-bottom: 1.5rem; border-left: 4px solid #059669;">
                 <h3 style="color: #065f46; margin-top: 0;">🔒 Seguridad: Configuración de Headers y Rate Limiting</h3>
-                
+
+                <p><strong>¿Por qué es importante?</strong> Los headers de seguridad protegen tu servidor web contra ataques comunes como XSS, Clickjacking y MIME sniffing. Rate Limiting previene ataques de fuerza bruta y DDoS.</p>
+
                 <div style="background: #f0fdf4; padding: 1rem; border-radius: 4px; margin-bottom: 1rem;">
-                    <h4 style="color: #166534;">Headers de Seguridad Esenciales</h4>
-                    <pre><code class="language-xml"><!-- En web.config -->
-<system.webServer>
-  <httpProtocol>
-    <customHeaders>
-      <add name="X-Frame-Options" value="SAMEORIGIN" />
-      <add name="X-Content-Type-Options" value="nosniff" />
-      <add name="X-XSS-Protection" value="1; mode=block" />
-      <add name="Strict-Transport-Security" value="max-age=31536000" />
-      <add name="Content-Security-Policy" value="default-src 'self'" />
-    </customHeaders>
-  </httpProtocol>
-</system.webServer></code></pre>
+                    <h4 style="color: #166534;">Paso 1: Headers de Seguridad Esenciales</h4>
+                    <p>Crea o edita el archivo <code>C:\inetpub\wwwroot\ucs_admin\web.config</code>:</p>
+                    <pre><code class="language-xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;configuration&gt;
+  &lt;system.webServer&gt;
+    &lt;httpProtocol&gt;
+      &lt;customHeaders&gt;
+        &lt;!-- Evita Clickjacking --&gt;
+        &lt;add name="X-Frame-Options" value="SAMEORIGIN" /&gt;
+        &lt;!-- Evita MIME sniffing --&gt;
+        &lt;add name="X-Content-Type-Options" value="nosniff" /&gt;
+        &lt;!-- Activa filtro XSS del navegador --&gt;
+        &lt;add name="X-XSS-Protection" value="1; mode=block" /&gt;
+        &lt;!-- Fuerza HTTPS por 1 año --&gt;
+        &lt;add name="Strict-Transport-Security" value="max-age=31536000" /&gt;
+        &lt;!-- Restringe fuentes de contenido --&gt;
+        &lt;add name="Content-Security-Policy" value="default-src 'self'" /&gt;
+      &lt;/customHeaders&gt;
+    &lt;/httpProtocol&gt;
+  &lt;/system.webServer&gt;
+&lt;/configuration&gt;</code></pre>
+                    <p><strong>Verificar que funcionan:</strong></p>
+                    <pre><code class="language-powershell"># Ver headers con PowerShell
+Invoke-WebRequest http://localhost:8080 | Select-Object -ExpandProperty Headers</code></pre>
                 </div>
-                
-                <div style="background: #fef3c7; padding: 1rem; border-radius: 4px;">
-                    <h4 style="color: #92400e;">Rate Limiting (Limitar peticiones)</h4>
-                    <pre><code class="language-xml"><!-- Dynamic IP Restrictions -->
-<system.webServer>
-  <security>
-    <dynamicIpSecurity>
-      <denyByConcurrentRequests enabled="true" maxConcurrentRequests="10" />
-      <denyByRequestRate enabled="true" maxRequests="100" requestIntervalInMilliseconds="1000" />
-    </dynamicIpSecurity>
-  </security>
-</system.webServer></code></pre>
+
+                <div style="background: #fef3c7; padding: 1rem; border-radius: 4px; margin-bottom: 1rem;">
+                    <h4 style="color: #92400e;">Paso 2: Rate Limiting (Limitar peticiones por IP)</h4>
+                    <p><strong>¿Qué hace?</strong> Bloquea IPs que hacen más de X peticiones por segundo (previene ataques DDoS).</p>
+                    <pre><code class="language-xml">&lt;!-- Agregar dentro de &lt;system.webServer&gt; en web.config --&gt;
+&lt;security&gt;
+  &lt;dynamicIpSecurity&gt;
+    &lt;!-- Máximo 10 conexiones simultáneas por IP --&gt;
+    &lt;denyByConcurrentRequests enabled="true" maxConcurrentRequests="10" /&gt;
+    &lt;!-- Máximo 100 peticiones por segundo por IP --&gt;
+    &lt;denyByRequestRate enabled="true" maxRequests="100" requestIntervalInMilliseconds="1000" /&gt;
+  &lt;/dynamicIpSecurity&gt;
+&lt;/security&gt;</code></pre>
+                    <p><strong>Nota:</strong> Requiere instalar "IP and Domain Restrictions" en IIS:</p>
+                    <pre><code class="language-powershell">Install-WindowsFeature Web-IP-Security</code></pre>
+                </div>
+
+                <div style="background: #eff6ff; padding: 1rem; border-radius: 4px;">
+                    <h4 style="color: #1e40af;">Explicación de cada Header</h4>
+                    <table style="width: 100%; margin: 0.5rem 0;">
+                        <thead>
+                            <tr><th>Header</th><th>Protege contra</th><th>Explicación</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><code>X-Frame-Options</code></td><td>Clickjacking</td><td>Impide que tu sitio sea embebido en iframes de otros sitios</td></tr>
+                            <tr><td><code>X-Content-Type-Options</code></td><td>MIME Sniffing</td><td>Fuerza al navegador a respetar el tipo de contenido declarado</td></tr>
+                            <tr><td><code>X-XSS-Protection</code></td><td>XSS Reflejado</td><td>Activa el filtro XSS integrado del navegador</td></tr>
+                            <tr><td><code>HSTS</code></td><td>Man-in-the-Middle</td><td>Fuerza conexiones HTTPS durante 1 año</td></tr>
+                            <tr><td><code>Content-Security-Policy</code></td><td>XSS, Inyección</td><td>Define qué fuentes de contenido son permitidas</td></tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
 

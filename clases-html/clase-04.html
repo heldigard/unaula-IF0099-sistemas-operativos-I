@@ -629,39 +629,41 @@ export PS1="\[\e[32m\]\u@\h\[\e[m\]:\[\e[34m\]\w\[\e[m\] \[\e[33m\]\$(parse_git_
             </div>
 
             <div class="card" style="margin: 1.5rem 0; border-left: 4px solid #dc2626;">
-                <h4 style="color: #991b1b; margin-bottom: 1rem;">🔍 Caso de Estudio: System Calls en Aplicaciones Reales</h4>
+                <h4 style="color: #991b1b; margin-bottom: 1rem;">🔍 Caso de Estudio: System Calls en Acciones Cotidianas</h4>
                 
                 <div style="background: #fef2f2; padding: 1.5rem; border-radius: 8px;">
-                    <p><strong>Análisis de Apache Web Server:</strong></p>
+                    <p><strong>Análisis: ¿Qué pasa cuando copias un archivo?</strong></p>
                     
-                    <p>Cuando Apache recibe una petición HTTP, ¿qué system calls usa?</p>
+                    <p>Cuando ejecutas <code>cp documento.txt /tmp/</code>, el sistema realiza estas system calls:</p>
                     
-                    <pre style="margin: 0.5rem 0;"><code class="language-bash"># Ver las system calls de Apache
-sudo strace -p $(pgrep apache2 | head -1) -e trace=network,file 2>&1 | head -20</code></pre>
+                    <pre style="margin: 0.5rem 0;"><code class="language-bash"># Ver las system calls del comando cp
+strace cp documento.txt /tmp/ 2>&1 | grep -E "open|read|write|close"</code></pre>
                     
-                    <p style="margin-top: 1rem;"><strong>System calls típicas:</strong></p>
+                    <p style="margin-top: 1rem;"><strong>System calls involucradas:</strong></p>
                     <table style="margin-top: 0.5rem;">
                         <thead>
-                            <tr><th>Syscall</th><th>Función</th><th>Cuándo se usa</th></tr>
+                            <tr><th>Orden</th><th>Syscall</th><th>Función</th><th>Analogía</th></tr>
                         </thead>
                         <tbody>
-                            <tr><td><code>socket()</code></td><td>Crear socket</td><td>Al iniciar, crea socket de escucha</td></tr>
-                            <tr><td><code>bind()</code></td><td>Asignar puerto</td><td>Enlaza al puerto 80/443</td></tr>
-                            <tr><td><code>listen()</code></td><td>Escuchar conexiones</td><td>Prepara para aceptar clientes</td></tr>
-                            <tr><td><code>accept()</code></td><td>Aceptar conexión</td><td>Cuando llega petición HTTP</td></tr>
-                            <tr><td><code>open()</code></td><td>Abrir archivo</td><td>Abre index.html solicitado</td></tr>
-                            <tr><td><code>read()</code></td><td>Leer datos</td><td>Lee contenido del archivo</td></tr>
-                            <tr><td><code>write()</code></td><td>Escribir datos</td><td>Envía respuesta HTTP al cliente</td></tr>
-                            <tr><td><code>close()</code></td><td>Cerrar archivo</td><td>Cierra conexión y archivo</td></tr>
+                            <tr><td>1</td><td><code>open()</code></td><td>Abrir archivo origen</td><td>Abrir el libro que vas a copiar</td></tr>
+                            <tr><td>2</td><td><code>open()</code></td><td>Crear archivo destino</td><td>Preparar hojas en blanco</td></tr>
+                            <tr><td>3</td><td><code>read()</code></td><td>Leer datos del origen</td><td>Leer una página del libro</td></tr>
+                            <tr><td>4</td><td><code>write()</code></td><td>Escribir en destino</td><td>Escribir en la hoja en blanco</td></tr>
+                            <tr><td>5-...</td><td><code>read/write</code></td><td>Repetir hasta terminar</td><td>Seguir copiando página por página</td></tr>
+                            <tr><td>Final</td><td><code>close()</code></td><td>Cerrar ambos archivos</td><td>Cerrar el libro y las hojas</td></tr>
                         </tbody>
                     </table>
                     
-                    <p style="margin-top: 1rem;"><strong>Insight profesional:</strong> Entender estas syscalls te permite:</p>
+                    <p style="margin-top: 1rem;"><strong>💡 Insight profesional:</strong> Entender estas syscalls te permite:</p>
                     <ul>
-                        <li>Diagnosticar por qué Apache no inicia (puerto ocupado → <code>bind()</code> falla)</li>
-                        <li>Identificar cuellos de botella en I/O de disco</li>
-                        <li>Optimizar configuraciones de file descriptors</li>
+                        <li>Diagnosticar por qué un programa no puede abrir un archivo (permisos → <code>open()</code> falla)</li>
+                        <li>Identificar cuellos de botella en operaciones de disco</li>
+                        <li>Entender mensajes de error como "Permission denied" o "File not found"</li>
                     </ul>
+                    
+                    <div style="background: white; padding: 1rem; border-radius: 6px; margin-top: 1rem;">
+                        <p style="margin: 0; color: #92400e;"><strong>🎯 Ejercicio mental:</strong> ¿Qué crees que pasa si intentas copiar un archivo que no existe? ¿Qué syscall fallaría y con qué error?</p>
+                    </div>
                 </div>
             </div>
 
