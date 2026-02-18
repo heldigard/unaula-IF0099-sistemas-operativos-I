@@ -244,6 +244,116 @@ id nombre_usuario</code></pre>
             </div>
         </section>
 
+        <section id="practica-laboral" style="background: #f0f9ff; border-left: 5px solid #0284c7; padding: 2rem; margin: 2rem 0; border-radius: 8px;">
+            <h2 style="color: #0369a1; margin-bottom: 1.5rem;">🛠️ Práctica Laboral</h2>
+            
+            <div class="card" style="background: white; padding: 1.5rem; border-radius: 8px; margin-bottom: 1.5rem; border-left: 4px solid #dc2626;">
+                <h3 style="color: #991b1b; margin-top: 0;">🔗 Ejercicios: Crear y Manipular Enlaces</h3>
+                <pre><code class="language-bash"># Ejercicio 1: Hard Link vs Symbolic Link
+# Crear archivo original
+echo "Contenido de prueba" > original.txt
+
+# Crear Hard Link (mismo inodo)
+ln original.txt hard_link.txt
+
+# Crear Symbolic Link (nuevo inodo, apunta a ruta)
+ln -s original.txt sym_link.txt
+
+# Verificar inodos
+ls -li
+
+# Probar qué pasa al borrar el original
+rm original.txt
+cat hard_link.txt    # ✅ Funciona
+cat sym_link.txt     # ❌ Broken link</code></pre>
+            </div>
+
+            <div class="card" style="background: white; padding: 1.5rem; border-radius: 8px; margin-bottom: 1.5rem; border-left: 4px solid #f59e0b;">
+                <h3 style="color: #92400e; margin-top: 0;">📊 Análisis de Inodes: Escenarios "Disco Lleno"</h3>
+                <p><strong>Caso común:</strong> El sistema dice "No space left on device" pero <code>df -h</code> muestra espacio disponible.</p>
+                <pre><code class="language-bash"># Verificar uso de inodos
+df -i
+
+# Si IUse% > 90%, se agotaron los inodos
+# Causa típica: millones de archivos pequeños
+
+# Encontrar directorios con muchos archivos
+find / -xdev -type d -exec sh -c 'echo "$(find "{}" -maxdepth 1 -type f | wc -l) {}"' \; 2>/dev/null | sort -rn | head -20
+
+# Limpiar archivos temporales
+find /tmp -type f -atime +7 -delete
+find /var/log -name "*.log.*" -mtime +30 -delete</code></pre>
+                <div style="background: #fef3c7; padding: 1rem; border-radius: 4px; margin-top: 1rem;">
+                    <p style="margin: 0; color: #92400e;"><strong>🎯 Objetivo RA3:</strong> Diagnosticar problemas de sistema de archivos en la evaluación E3.</p>
+                </div>
+            </div>
+
+            <div class="card" style="background: white; padding: 1.5rem; border-radius: 8px; margin-bottom: 1.5rem; border-left: 4px solid #059669;">
+                <h3 style="color: #065f46; margin-top: 0;">⚡ Comparativa de Rendimiento: ext4 vs XFS vs NTFS</h3>
+                <table style="width: 100%; margin: 1rem 0;">
+                    <thead>
+                        <tr><th>Filesystem</th><th>Ventajas</th><th>Mejor Uso</th><th>Empresa Real</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><strong>ext4</strong></td><td>Estable, universal, buen rendimiento general</td><td>Servidores generales</td><td>Mayoría de VPS</td></tr>
+                        <tr><td><strong>XFS</strong></td><td>Excelente con archivos grandes, paralelismo</td><td>Media, grandes archivos</td><td>Instagram, Netflix</td></tr>
+                        <tr><td><strong>btrfs</strong></td><td>Copy-on-write, snapshots, compresión</td><td>Workstations, backups</td><td>Fedora, Synology</td></tr>
+                        <tr><td><strong>NTFS</strong></td><td>ACLs detalladas, compresión, encriptación</td><td>Entornos Windows</td><td>Windows Server</td></tr>
+                        <tr><td><strong>ZFS</strong></td><td>Integridad de datos, pools, deduplicación</td><td>Storage enterprise</td><td>FreeNAS, Oracle</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="card" style="background: white; padding: 1.5rem; border-radius: 8px; margin-bottom: 1.5rem; border-left: 4px solid #2563eb;">
+                <h3 style="color: #1e40af; margin-top: 0;">🏢 Caso Empresarial: "Por qué Instagram usa XFS"</h3>
+                <p><strong>Contexto:</strong> Instagram almacena millones de fotos de alta resolución.</p>
+                <ul>
+                    <li><strong>Problema:</strong> ext4 tiene limitaciones con archivos muy grandes (>16TB)</li>
+                    <li><strong>Solución XFS:</strong> Soporta archivos hasta 8 exabytes</li>
+                    <li><strong>Ventajas de XFS para Instagram:</strong>
+                        <ul style="margin-top: 0.5rem;">
+                            <li>Alta concurrencia de I/O</li>
+                            <li>Excelente rendimiento en paralelismo</li>
+                            <li>Recuperación rápida tras crash</li>
+                            <li>Mejor gestión de metadatos con muchos archivos</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="card" style="background: white; padding: 1.5rem; border-radius: 8px; margin-bottom: 1.5rem; border-left: 4px solid #7c3aed;">
+                <h3 style="color: #5b21b6; margin-top: 0;">🔬 Laboratorio: Recuperación de Archivos Borrados Básica</h3>
+                <pre><code class="language-bash"># Paso 1: Preparación (IMPORTANTE: no escribir en el disco afectado)
+# Crear un archivo de prueba
+echo "Datos importantes" > /tmp/test_recovery.txt
+ls -li /tmp/test_recovery.txt  # Anotar número de inodo
+
+# Paso 2: "Borrar" el archivo
+rm /tmp/test_recovery.txt
+
+# Paso 3: Recuperación con debugfs (ext4)
+# Primero desmontar el sistema de archivos si es posible
+sudo debugfs /dev/sda1
+
+# En el prompt de debugfs:
+# lsdel  # Lista inodos borrados recientemente
+# dump <inum> /tmp/recuperado.txt  # Recuperar por número de inodo
+# quit
+
+# Herramientas alternativas para recuperación avanzada:
+# - extundelete (ext3/ext4)
+# - testdisk (múltiples filesystems)
+# - photorec (recuperación por firma de archivo)</code></pre>
+                <div style="background: #fee2e2; padding: 1rem; border-radius: 4px; margin-top: 1rem; border-left: 4px solid #dc2626;">
+                    <p style="margin: 0; color: #991b1b;"><strong>⚠️ Importante:</strong> La recuperación es más probable inmediatamente después del borrado. Cada escritura reduce las posibilidades de recuperación.</p>
+                </div>
+            </div>
+
+            <div style="background: #fef3c7; border-left: 4px solid #f59e0b; padding: 1rem; margin-top: 1.5rem; border-radius: 0 8px 8px 0;">
+                <p style="margin: 0; color: #92400e;"><strong>💡 Conexión con E3:</strong> El análisis forense de inodos y estructuras del filesystem es parte fundamental de la evaluación E3.</p>
+            </div>
+        </section>
+
         <section id="conexion-evaluacion" style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-left: 5px solid #f59e0b; padding: 2rem; margin: 2rem 0; border-radius: 8px;">
             <h2 style="color: #92400e; margin-bottom: 1.5rem;">📋 Conexión con Evaluación</h2>
             

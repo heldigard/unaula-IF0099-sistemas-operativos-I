@@ -240,6 +240,325 @@ namei -l /var/www/ucs/index.html
             </div>
         </section>
 
+        <section id="practica-laboral" style="background: #f0f9ff; border-left: 5px solid #0284c7; padding: 2rem; margin: 2rem 0; border-radius: 8px;">
+            <h2 style="color: #0369a1; margin-bottom: 1.5rem;">🛠️ Práctica Laboral</h2>
+            
+            <div class="card" style="margin: 1.5rem 0; border-left: 4px solid #dc2626;">
+                <h3 style="color: #991b1b; margin-top: 0;">Troubleshooting SSL: Errores Comunes de Certificados</h3>
+                <p><strong>Error 1: ERR_CERT_AUTHORITY_INVALID</strong></p>
+                <ul>
+                    <li><strong>Causa:</strong> Certificado auto-firmado o CA no confiable.</li>
+                    <li><strong>Solución:</strong> En desarrollo: <code>curl -k https://localhost</code>. En producción: Usar certificado de Let's Encrypt o CA reconocida.</li>
+                </ul>
+                <p><strong>Error 2: ERR_CERT_DATE_INVALID</strong></p>
+                <ul>
+                    <li><strong>Causa:</strong> Certificado expirado o fecha del sistema incorrecta.</li>
+                    <li><strong>Solución:</strong> Verificar fecha: <code>date</code>. Renovación: <code>sudo certbot renew</code> (Let's Encrypt).</li>
+                </ul>
+                <p><strong>Error 3: SSL_ERROR_RX_RECORD_TOO_LONG</strong></p>
+                <ul>
+                    <li><strong>Causa:</strong> Puerto 443 sirviendo HTTP en lugar de HTTPS.</li>
+                    <li><strong>Solución:</strong> Verificar VirtualHost en <code>/etc/apache2/sites-available/default-ssl.conf</code>.</li>
+                </ul>
+                <p><strong>Error 4: SSL_ERROR_HANDSHAKE_FAILURE</strong></p>
+                <ul>
+                    <li><strong>Causa:</strong> Incompatibilidad de protocolos TLS (cliente vs servidor).</li>
+                    <li><strong>Solución:</strong> Configurar protocolos TLS 1.2+ en Apache.</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin: 1.5rem 0; border-left: 4px solid #059669;">
+                <h3 style="color: #065f46; margin-top: 0;">Análisis con OpenSSL s_client para Diagnosticar Problemas</h3>
+                <pre><code class="language-bash"># 1. Verificar conexión SSL básica
+openssl s_client -connect localhost:443 -servername ucs.local
+
+# 2. Verificar certificado y cadena de confianza
+openssl s_client -connect localhost:443 -showcerts </dev/null
+
+# 3. Verificar qué protocolos y cifrados soporta el servidor
+openssl s_client -connect localhost:443 -tls1_2 </dev/null
+openssl s_client -connect localhost:443 -tls1_3 </dev/null
+
+# 4. Verificar vencimiento del certificado
+echo | openssl s_client -servername ucs.local -connect localhost:443 2>/dev/null | 
+    openssl x509 -noout -dates
+
+# 5. Extraer información completa del certificado
+echo | openssl s_client -connect localhost:443 2>/dev/null | 
+    openssl x509 -noout -subject -issuer -dates -fingerprint
+
+# 6. Verificar vulnerabilidades conocidas (Heartbleed, etc.)
+nmap --script ssl-heartbleed,ssl-poodle,ssl-dh-params -p 443 localhost
+
+# 7. Test de configuración SSL con SSL Labs (desde otra máquina)
+# https://www.ssllabs.com/ssltest/</code></pre>
+            </div>
+
+            <div class="card" style="margin: 1.5rem 0; border-left: 4px solid #2563eb;">
+                <h3 style="color: #1e40af; margin-top: 0;">Optimización: Configuración de Apache para Alto Rendimiento</h3>
+                <p><strong>MPM Event (Recomendado para producción):</strong></p>
+                <pre><code class="language-apache"># /etc/apache2/mods-available/mpm_event.conf
+<IfModule mpm_event_module>
+    StartServers             3
+    MinSpareThreads         25
+    MaxSpareThreads         75
+    ThreadLimit             64
+    ThreadsPerChild         25
+    MaxRequestWorkers      400
+    MaxConnectionsPerChild   0
+</IfModule></code></pre>
+                
+                <p><strong>Configuración de Caching:</strong></p>
+                <pre><code class="language-apache"># Habilitar módulos
+sudo a2enmod expires
+sudo a2enmod headers
+
+# /etc/apache2/conf-available/performance.conf
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType image/jpeg "access plus 1 month"
+    ExpiresByType image/png "access plus 1 month"
+    ExpiresByType text/css "access plus 1 week"
+    ExpiresByType application/javascript "access plus 1 week"
+</IfModule>
+
+<IfModule mod_headers.c>
+    # Habilitar compresión Gzip
+    <IfModule mod_deflate.c>
+        AddOutputFilterByType DEFLATE text/html text/plain text/css application/javascript
+    </IfModule>
+    
+    # Headers de caché
+    <filesMatch "\.(ico|jpg|jpeg|png|gif|css|js)$">
+        Header set Cache-Control "max-age=2592000, public"
+    </filesMatch>
+</IfModule></code></pre>
+
+                <p><strong>Keep-Alive y Timeouts:</strong></p>
+                <pre><code class="language-apache"># /etc/apache2/apache2.conf
+KeepAlive On
+MaxKeepAliveRequests 100
+KeepAliveTimeout 5
+
+# Timeouts
+Timeout 300
+RequestReadTimeout header=20-40,MinRate=500 body=20,MinRate=500</code></pre>
+            </div>
+
+            <div class="card" style="margin: 1.5rem 0; border-left: 4px solid #7c3aed;">
+                <h3 style="color: #5b21b6; margin-top: 0;">Seguridad: Headers de Seguridad HTTP</h3>
+                <pre><code class="language-apache"># /etc/apache2/conf-available/security-headers.conf
+<IfModule mod_headers.c>
+    # Prevenir clickjacking
+    Header always set X-Frame-Options "SAMEORIGIN"
+    
+    # Prevenir MIME sniffing
+    Header always set X-Content-Type-Options "nosniff"
+    
+    # Habilitar protección XSS del navegador
+    Header always set X-XSS-Protection "1; mode=block"
+    
+    # Política de Referrer
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    
+    # Content Security Policy (CSP)
+    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline';"
+    
+    # HTTPS Strict Transport Security (HSTS)
+    Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+    
+    # Ocultar versión de Apache
+    ServerTokens Prod
+    ServerSignature Off
+</IfModule></code></pre>
+            </div>
+
+            <div class="card" style="margin: 1.5rem 0; border-left: 4px solid #ea580c;">
+                <h3 style="color: #c2410c; margin-top: 0;">Protección contra Ataques Comunes</h3>
+                <p><strong>Protección contra DDoS básica con mod_evasive:</strong></p>
+                <pre><code class="language-apache"># Instalación: sudo apt install libapache2-mod-evasive
+
+# /etc/apache2/mods-available/evasive.conf
+<IfModule mod_evasive24.c>
+    DOSHashTableSize    3097
+    DOSPageCount        2
+    DOSSiteCount        50
+    DOSPageInterval     1
+    DOSSiteInterval     1
+    DOSBlockingPeriod   600
+    
+    DOSEmailNotify      admin@ucs.local
+    DOSLogDir           "/var/log/mod_evasive"
+</IfModule></code></pre>
+
+                <p><strong>Protección contra fuerza bruta con mod_security:</strong></p>
+                <pre><code class="language-apache"># Instalación: sudo apt install libapache2-mod-security2
+
+# /etc/modsecurity/modsecurity.conf
+SecRuleEngine On
+SecRequestBodyAccess On
+SecResponseBodyAccess On
+
+# Limitar tamaño de requests
+SecRequestBodyLimit 13107200
+SecRequestBodyNoFilesLimit 131072
+
+# Prevenir SQL Injection básico
+SecRule REQUEST_COOKIES|REQUEST_COOKIES_NAMES|REQUEST_FILENAME|ARGS_NAMES|ARGS|XML:/* \
+    "@rx (?i:(select\s*\*\s*from|union\s*select|insert\s*into|delete\s*from|drop\s*table))" \
+    "id:942100,phase:2,deny,status:403,msg:'SQL Injection Attack Detected'"</code></pre>
+            </div>
+
+            <div class="card" style="margin: 1.5rem 0; border-left: 4px solid #059669;">
+                <h3 style="color: #065f46; margin-top: 0;">Casos Reales: Configuraciones de Servidores Web en Empresas</h3>
+                <p><strong>Caso 1: Configuración de Netflix (High Traffic)</strong></p>
+                <ul>
+                    <li>Balanceo de carga con múltiples instancias de Apache.</li>
+                    <li>Caching agresivo con Varnish delante de Apache.</li>
+                    <li>HTTP/2 habilitado para multiplexar conexiones.</li>
+                </ul>
+                <pre><code class="language-bash"># Habilitar HTTP/2
+sudo a2enmod http2
+
+# En VirtualHost
+Protocols h2 http/1.1</code></pre>
+
+                <p><strong>Caso 2: Configuración de WordPress.com (Shared Hosting)</strong></p>
+                <ul>
+                    <li>Separación de PHP-FPM para aislamiento de usuarios.</li>
+                    <li>Limitación de recursos por VirtualHost.</li>
+                    <li>Monitoreo en tiempo real con mod_status.</li>
+                </ul>
+                <pre><code class="language-apache"># Monitoreo de Apache
+<Location "/server-status">
+    SetHandler server-status
+    Require host localhost
+</Location></code></pre>
+
+                <p><strong>Caso 3: Configuración de GitHub (Static Assets)</strong></p>
+                <ul>
+                    <li>CDN para contenido estático.</li>
+                    <li>Compresión Brotli además de Gzip.</li>
+                    <li>Long-term caching para assets versionados.</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin: 1.5rem 0; border-left: 4px solid #0369a1; background: #f0f9ff;">
+                <h3 style="color: #0369a1; margin-top: 0;">Ejercicio: Configuración Completa de Virtual Hosts con SSL</h3>
+                <p><strong>Objetivo:</strong> Crear una configuración empresarial completa con redirección HTTP→HTTPS, SSL, y optimizaciones.</p>
+                
+                <pre><code class="language-apache"># 1. Virtual Host HTTP - Redirección a HTTPS
+# /etc/apache2/sites-available/ucs-http.conf
+<VirtualHost *:80>
+    ServerName ucs.local
+    ServerAlias www.ucs.local
+    
+    # Redirección permanente a HTTPS
+    RewriteEngine On
+    RewriteCond %{HTTPS} off
+    RewriteRule ^(.*)$ https://%{HTTP_HOST}$1 [R=301,L]
+    
+    # O alternativa:
+    # Redirect permanent / https://ucs.local/
+</VirtualHost>
+
+# 2. Virtual Host HTTPS - Configuración completa
+# /etc/apache2/sites-available/ucs-ssl.conf
+<IfModule mod_ssl.c>
+<VirtualHost *:443>
+    ServerName ucs.local
+    ServerAlias www.ucs.local
+    ServerAdmin admin@ucs.local
+    
+    # Document Root
+    DocumentRoot /var/www/ucs/html
+    
+    # Logs separados
+    ErrorLog ${APACHE_LOG_DIR}/ucs_error.log
+    CustomLog ${APACHE_LOG_DIR}/ucs_access.log combined
+    
+    # SSL Configuration
+    SSLEngine on
+    SSLCertificateFile      /etc/ssl/certs/ucs.crt
+    SSLCertificateKeyFile   /etc/ssl/private/ucs.key
+    
+    # Protocolos y Cifrados seguros
+    SSLProtocol all -SSLv3 -TLSv1 -TLSv1.1
+    SSLCipherSuite ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256
+    SSLHonorCipherOrder on
+    SSLCompression off
+    
+    # Opciones SSL adicionales
+    SSLOptions +StrictRequire
+    
+    # Directorios
+    <Directory /var/www/ucs/html>
+        Options -Indexes +FollowSymLinks
+        AllowOverride All
+        Require all granted
+        
+        # Proteger archivos sensibles
+        <FilesMatch "^\.">
+            Require all denied
+        </FilesMatch>
+        
+        <FilesMatch "\.(ini|log|sh|sql)$">
+            Require all denied
+        </FilesMatch>
+    </Directory>
+    
+    # Proteger directorios específicos
+    <Directory /var/www/ucs/html/admin>
+        AuthType Basic
+        AuthName "Admin Area"
+        AuthUserFile /etc/apache2/.htpasswd
+        Require valid-user
+    </Directory>
+    
+    # Performance
+    EnableSendfile On
+    EnableMMAP On
+    
+</VirtualHost>
+</IfModule></code></pre>
+
+                <p><strong>Comandos de activación:</strong></p>
+                <pre><code class="language-bash"># Activar módulos necesarios
+sudo a2enmod ssl
+sudo a2enmod rewrite
+sudo a2enmod headers
+sudo a2enmod expires
+sudo a2enmod deflate
+
+# Desactivar sitio default
+sudo a2dissite 000-default.conf
+
+# Activar sitios
+sudo a2ensite ucs-http.conf
+sudo a2ensite ucs-ssl.conf
+
+# Crear archivo de contraseñas para área admin
+sudo htpasswd -c /etc/apache2/.htpasswd admin
+
+# Verificar configuración
+sudo apache2ctl configtest
+
+# Reiniciar Apache
+sudo systemctl restart apache2</code></pre>
+            </div>
+
+            <div style="background: #fef3c7; border-left: 4px solid #f59e0b; padding: 1.5rem; margin-top: 2rem; border-radius: 8px;">
+                <h3 style="color: #92400e; margin-top: 0;">🎯 Conexión con Evaluación E5</h3>
+                <p>Esta práctica laboral prepara directamente para la <strong>E5: Integración de Servicios</strong>:</p>
+                <ul>
+                    <li>✅ Configuración completa de Apache con SSL</li>
+                    <li>✅ Troubleshooting de certificados</li>
+                    <li>✅ Optimización para rendimiento</li>
+                    <li>✅ Headers de seguridad HTTP</li>
+                </ul>
+            </div>
+        </section>
+
         <section id="conexion-evaluacion" style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-left: 5px solid #f59e0b; padding: 2rem; margin: 2rem 0; border-radius: 8px;">
             <h2 style="color: #92400e; margin-bottom: 1.5rem;">📋 Conexión con Evaluación</h2>
             

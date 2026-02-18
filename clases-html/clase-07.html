@@ -302,6 +302,172 @@ flock -u 200</code></pre>
             </div>
         </section>
 
+        <section id="practica-laboral" style="background: #f0f9ff; border-left: 5px solid #0284c7; padding: 2rem; margin: 2rem 0; border-radius: 8px;">
+            <h2 style="color: #0369a1; margin-bottom: 1.5rem;">🛠️ Práctica Laboral</h2>
+            
+            <div class="card" style="margin: 1.5rem 0; border-left: 4px solid #f59e0b;">
+                <h3 style="color: #92400e; margin-top: 0;">Analogía: "El Restaurante Multihilo"</h3>
+                
+                <p><strong>El escenario:</strong> Imagina un restaurante con múltiples meseros (hilos), cocineros (procesadores) y una cocina compartida (memoria).</p>
+                
+                <div class="ascii-diagram" style="background: #fef3c7; color: #78350f;">
+┌─────────────────────────────────────────────────────────────┐
+│                    RESTAURANTE UCS                          │
+├─────────────────────────────────────────────────────────────┤
+│  MESERO 1    MESERO 2    MESERO 3     ← Hilos (threads)     │
+│     ↓           ↓           ↓                               │
+│  ┌──────┐    ┌──────┐    ┌──────┐                          │
+│  │Pedido│    │Pedido│    │Pedido│  ← Cada uno lleva orden   │
+│  └──┬───┘    └──┬───┘    └──┬───┘                          │
+│     └───────────┼───────────┘                               │
+│                 ↓                                           │
+│  ╔═══════════════════════════════════════════════════════╗  │
+│  ║              COCINA COMPARTIDA                        ║  │
+│  ║  ┌──────────┐  ┌──────────┐  ┌──────────┐            ║  │
+│  ║  │ Chef CPU │  │ Chef CPU │  │   HORNO  │ ← Recursos ║  │
+│  ║  └──────────┘  └──────────┘  └──────────┘            ║  │
+│  ║                                                      ║  │
+│  ║  [🔒 Mutex: Solo 1 chef usa el horno a la vez]       ║  │
+│  ╚═══════════════════════════════════════════════════════╝  │
+└─────────────────────────────────────────────────────────────┘
+                </div>
+                
+                <p><strong>La sincronización:</strong></p>
+                <ul>
+                    <li><strong>Sin sincronización:</strong> Dos meseros intentan usar la misma estufa → comida quemada (race condition)</li>
+                    <li><strong>Con Mutex:</strong> Solo un chef cocina a la vez → ordenado pero lento</li>
+                    <li><strong>Con Semáforo (3 permisos):</strong> Tres chefs cocinan simultáneamente → eficiente</li>
+                    <li><strong>Deadlock:</strong> Chef A tiene el cuchillo y espera el tablero; Chef B tiene el tablero y espera el cuchillo</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin: 1.5rem 0; border-left: 4px solid #7c3aed;">
+                <h3 style="color: #5b21b6; margin-top: 0;">Ejercicio Práctico: Resolver Condiciones de Carrera</h3>
+                
+                <p><strong>Problema:</strong> Un contador compartido entre hilos produce resultados inconsistentes.</p>
+                
+                <pre><code class="language-python"># Sin sincronización (PROBLEMA)
+contador = 0
+
+def incrementar():
+    global contador
+    for _ in range(100000):
+        # Race condition aquí!
+        valor = contador
+        contador = valor + 1
+
+# Dos hilos ejecutan incrementar() simultáneamente
+# Resultado esperado: 200000
+# Resultado real: < 200000 (pérdida de actualizaciones)</code></pre>
+                
+                <p><strong>Tu tarea:</strong> Implementa la solución usando threading.Lock()</p>
+                
+                <pre><code class="language-python"># TU SOLUCIÓN AQUÍ
+import threading
+
+contador = 0
+# TODO: Crear el lock
+
+def incrementar_seguro():
+    global contador
+    for _ in range(100000):
+        # TODO: Usar lock para proteger sección crítica
+        pass
+
+# Verifica que el resultado sea exactamente 200000</code></pre>
+            </div>
+
+            <div class="card" style="margin: 1.5rem 0; border-left: 4px solid #dc2626;">
+                <h3 style="color: #991b1b; margin-top: 0;">Identificar Deadlock: 3 Ejemplos</h3>
+                
+                <p><strong>Ejemplo 1 - Orden de bloqueos incorrecto:</strong></p>
+                <pre><code class="language-c">// Hilo A: lock(mutex1) → lock(mutex2) → unlock → unlock
+// Hilo B: lock(mutex2) → lock(mutex1) → unlock → unlock
+// 
+// ¿Por qué causa deadlock? Los hilos bloquean en orden inverso</code></pre>
+                
+                <p><strong>Ejemplo 2 - Recursión con lock no reentrante:</strong></p>
+                <pre><code class="language-c">void funcionA() {
+    lock(mutex);
+    funcionB();  // Intenta adquirir el mismo mutex
+    unlock(mutex);
+}
+
+void funcionB() {
+    lock(mutex);  // DEADLOCK: Ya está bloqueado!
+    // ...
+    unlock(mutex);
+}</code></pre>
+                
+                <p><strong>Ejemplo 3 - Productor-Consumidor mal implementado:</strong></p>
+                <pre><code class="language-c">// Productor: llena buffer → espera consumidor
+// Consumidor: espera buffer lleno → consume
+//
+// Deadlock si: Productor espera señal del consumidor
+//              pero el consumidor nunca fue iniciado</code></pre>
+                
+                <p><strong>Pregunta:</strong> ¿Cómo evitarías cada uno de estos deadlocks?</p>
+            </div>
+
+            <div class="card" style="margin: 1.5rem 0; border-left: 4px solid #059669;">
+                <h3 style="color: #065f46; margin-top: 0;">Casos Reales: Deadlock en Producción</h3>
+                
+                <h4>Caso 1: Deadlock en Base de Datos</h4>
+                <p><strong>Escenario:</strong> Transacción A bloquea el registro 1 y espera el 2. Transacción B bloquea el 2 y espera el 1.</p>
+                <pre><code class="language-sql">-- Transacción A
+BEGIN;
+UPDATE cuenta SET saldo = saldo - 100 WHERE id = 1;  -- Lock en 1
+-- Espera...
+UPDATE cuenta SET saldo = saldo + 100 WHERE id = 2;  -- Espera lock en 2
+
+-- Transacción B  
+BEGIN;
+UPDATE cuenta SET saldo = saldo - 50 WHERE id = 2;   -- Lock en 2
+-- Espera...
+UPDATE cuenta SET saldo = saldo + 50 WHERE id = 1;   -- Espera lock en 1
+-- ¡DEADLOCK!</code></pre>
+                <p><strong>Solución:</strong> Acceder a los recursos SIEMPRE en el mismo orden (1 → 2).</p>
+                
+                <h4>Caso 2: Bloqueo en Sistema de Archivos</h4>
+                <p><strong>Escenario:</strong> Un proceso de backup bloquea archivos mientras otro intenta leerlos.</p>
+                <p><strong>Diagnóstico en Linux:</strong></p>
+                <pre><code class="language-bash"># Ver procesos bloqueados en I/O
+ps aux | awk '$8=="D"'
+
+# Ver qué archivos tiene bloqueados un proceso
+lsof -p [PID]
+
+# Matar proceso bloqueado (último recurso)
+kill -9 [PID]</code></pre>
+            </div>
+
+            <div class="card" style="margin: 1.5rem 0; border-left: 4px solid #2563eb;">
+                <h3 style="color: #1e40af; margin-top: 0;">Ejercicio: Implementar Semáforos Básicos</h3>
+                
+                <p><strong>Problema:</strong> Controlar acceso a un pool de 3 impresoras compartidas.</p>
+                
+                <pre><code class="language-python">import threading
+import time
+
+class PoolImpresoras:
+    def __init__(self, num_impresoras=3):
+        # TODO: Inicializar semáforo con contador = num_impresoras
+        pass
+    
+    def adquirir_impresora(self, hilo_id):
+        # TODO: Adquirir semáforo
+        print(f"Hilo {hilo_id}: Impresora asignada")
+        time.sleep(2)  # Simular impresión
+        print(f"Hilo {hilo_id}: Impresión completada")
+        # TODO: Liberar semáforo
+    
+# Crear 5 hilos que intenten imprimir simultáneamente
+# Solo 3 deberían poder imprimir a la vez</code></pre>
+                
+                <p><strong>Actividad:</strong> Completa el código e implementa la sincronización correcta.</p>
+            </div>
+        </section>
+
         <section id="conexion-evaluacion" style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-left: 5px solid #f59e0b; padding: 2rem; margin: 2rem 0; border-radius: 8px;">
             <h2 style="color: #92400e; margin-bottom: 1.5rem;">📋 Conexión con Evaluación</h2>
             

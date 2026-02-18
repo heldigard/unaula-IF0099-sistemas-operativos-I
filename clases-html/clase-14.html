@@ -215,6 +215,227 @@ Stop-Process -Id [PID] -Force
             </div>
         </section>
 
+        <section id="practica-laboral" style="background: #f0f9ff; border-left: 5px solid #0284c7; padding: 2rem; margin: 2rem 0; border-radius: 8px;">
+            <h2 style="color: #0369a1; margin-bottom: 1.5rem;">🛠️ Práctica Laboral</h2>
+            
+            <div class="card" style="background: white; padding: 1.5rem; border-radius: 8px; margin-bottom: 1.5rem; border-left: 4px solid #dc2626;">
+                <h3 style="color: #991b1b; margin-top: 0;">🐛 Troubleshooting: Errores Comunes 500, 502, 503</h3>
+                
+                <table style="width: 100%; margin: 1rem 0;">
+                    <thead>
+                        <tr><th>Código</th><th>Significado</th><th>Causas Comunes</th><th>Solución</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>500</strong></td>
+                            <td>Internal Server Error</td>
+                            <td>Error en código de la app, permisos incorrectos</td>
+                            <td>Revisar logs de aplicación, permisos de carpeta</td>
+                        </tr>
+                        <tr>
+                            <td><strong>502</strong></td>
+                            <td>Bad Gateway</td>
+                            <td>Backend no responde (PHP, ASP.NET caído)</td>
+                            <td>Verificar Application Pool iniciado, reiniciar pool</td>
+                        </tr>
+                        <tr>
+                            <td><strong>503</strong></td>
+                            <td>Service Unavailable</td>
+                            <td>Pool detenido, Rapid-Fail Protection activado</td>
+                            <td>Iniciar pool manualmente, revisar Event Viewer</td>
+                        </tr>
+                        <tr>
+                            <td><strong>403</strong></td>
+                            <td>Forbidden</td>
+                            <td>Permisos NTFS incorrectos</td>
+                            <td>icacls para corregir permisos IIS_IUSRS</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <pre><code class="language-powershell"># Diagnóstico paso a paso:
+
+# 1. Verificar estado de pools
+Get-WebAppPoolState | Where-Object { $_.Value -eq "Stopped" }
+
+# 2. Ver logs de errores
+Get-EventLog -LogName Application -Source "IIS*" -Newest 10
+
+# 3. Verificar permisos
+icacls C:\inetpub\wwwroot\miapp
+
+# 4. Test de conectividad local
+Invoke-WebRequest http://localhost -UseBasicParsing</code></pre>
+            </div>
+
+            <div class="card" style="background: white; padding: 1.5rem; border-radius: 8px; margin-bottom: 1.5rem; border-left: 4px solid #059669;">
+                <h3 style="color: #065f46; margin-top: 0;">🔒 Seguridad: Configuración de Headers y Rate Limiting</h3>
+                
+                <div style="background: #f0fdf4; padding: 1rem; border-radius: 4px; margin-bottom: 1rem;">
+                    <h4 style="color: #166534;">Headers de Seguridad Esenciales</h4>
+                    <pre><code class="language-xml"><!-- En web.config -->
+<system.webServer>
+  <httpProtocol>
+    <customHeaders>
+      <add name="X-Frame-Options" value="SAMEORIGIN" />
+      <add name="X-Content-Type-Options" value="nosniff" />
+      <add name="X-XSS-Protection" value="1; mode=block" />
+      <add name="Strict-Transport-Security" value="max-age=31536000" />
+      <add name="Content-Security-Policy" value="default-src 'self'" />
+    </customHeaders>
+  </httpProtocol>
+</system.webServer></code></pre>
+                </div>
+                
+                <div style="background: #fef3c7; padding: 1rem; border-radius: 4px;">
+                    <h4 style="color: #92400e;">Rate Limiting (Limitar peticiones)</h4>
+                    <pre><code class="language-xml"><!-- Dynamic IP Restrictions -->
+<system.webServer>
+  <security>
+    <dynamicIpSecurity>
+      <denyByConcurrentRequests enabled="true" maxConcurrentRequests="10" />
+      <denyByRequestRate enabled="true" maxRequests="100" requestIntervalInMilliseconds="1000" />
+    </dynamicIpSecurity>
+  </security>
+</system.webServer></code></pre>
+                </div>
+            </div>
+
+            <div class="card" style="background: white; padding: 1.5rem; border-radius: 8px; margin-bottom: 1.5rem; border-left: 4px solid #2563eb;">
+                <h3 style="color: #1e40af; margin-top: 0;">📊 Monitoreo: Integración con Performance Monitor</h3>
+                
+                <p><strong>Contadores clave de IIS:</strong></p>
+                <ul>
+                    <li><code>\ASP.NET Applications(>)\Requests/Sec</code> - Rendimiento de la app</li>
+                    <li><code>\W3SVC_W3WP(*)\Active Requests</code> - Peticiones activas</li>
+                    <li><code>\Process(w3wp)\Private Bytes</code> - Memoria del worker process</li>
+                    <li><code>\Web Service(*)\Current Connections</code> - Conexiones activas</li>
+                </ul>
+                
+                <pre><code class="language-powershell"># Crear Data Collector Set en PowerShell
+$collectorName = "IIS_Performance"
+New-PerfCounterDataCollectorSet -Name $collectorName -Counters @(
+    "\ASP.NET Applications(*)\Requests/Sec",
+    "\W3SVC_W3WP(*)\Active Requests",
+    "\Process(w3wp)\Private Bytes"
+) -SampleInterval 5 -MaxSize 100MB
+
+# Iniciar colección
+Start-PerfCounterDataCollectorSet -Name $collectorName</code></pre>
+            </div>
+
+            <div class="card" style="background: white; padding: 1.5rem; border-radius: 8px; margin-bottom: 1.5rem; border-left: 4px solid #ea580c;">
+                <h3 style="color: #9a3412; margin-top: 0;">⚖️ Comparativa: IIS vs Apache vs Nginx</h3>
+                
+                <table style="width: 100%; margin: 1rem 0;">
+                    <thead>
+                        <tr><th>Característica</th><th>IIS</th><th>Apache</th><th>Nginx</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Sistema</strong></td>
+                            <td>Windows</td>
+                            <td>Multiplataforma</td>
+                            <td>Multiplataforma</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Modelo</strong></td>
+                            <td>Process-based (HTTP.SYS)</td>
+                            <td>Process/Thread-based</td>
+                            <td>Event-driven (asíncrono)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Memoria</strong></td>
+                            <td>Alta (cada app pool)</td>
+                            <td>Media-Alta</td>
+                            <td>Baja (eficiente)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Concurrentes</strong></td>
+                            <td>~5,000-10,000</td>
+                            <td>~10,000</td>
+                            <td>~50,000-100,000</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Configuración</strong></td>
+                            <td>GUI + XML</td>
+                            <td>Archivos de texto</td>
+                            <td>Archivos de texto</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Módulos</strong></td>
+                            <td>Propietarios (.NET)</td>
+                            <td>Gran variedad</td>
+                            <td>Módulos esenciales</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div style="background: #eff6ff; padding: 1rem; border-radius: 4px; margin-top: 1rem;">
+                    <p style="margin: 0; color: #1e40af;"><strong>💡 Cuándo usar cada uno:</strong></p>
+                    <ul style="margin-top: 0.5rem;">
+                        <li><strong>IIS:</strong> Entornos Windows, aplicaciones .NET/ASP.NET, integración con AD</li>
+                        <li><strong>Apache:</strong> Flexibilidad máxima, .htaccess, módulos variados</li>
+                        <li><strong>Nginx:</strong> Alto tráfico, reverse proxy, static content, microservicios</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card" style="background: white; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #7c3aed;">
+                <h3 style="color: #5b21b6; margin-top: 0;">⚙️ Ejercicio: Configuración Completa de Application Pools</h3>
+                
+                <pre><code class="language-powershell"># Crear Application Pool avanzado con PowerShell
+
+# 1. Crear pool con configuración específica
+New-WebAppPool -Name "UCS_Production_Pool"
+
+# 2. Configurar versión de .NET (si aplica)
+Set-ItemProperty IIS:\AppPools\UCS_Production_Pool managedRuntimeVersion "v4.0"
+
+# 3. Configurar modo de pipeline (Integrated = moderno)
+Set-ItemProperty IIS:\AppPools\UCS_Production_Pool managedPipelineMode "Integrated"
+
+# 4. Configurar identidad (mejor seguridad)
+Set-ItemProperty IIS:\AppPools\UCS_Production_Pool processModel.identityType "ApplicationPoolIdentity"
+
+# 5. Configurar reciclaje automático
+Set-ItemProperty IIS:\AppPools\UCS_Production_Pool recycling.periodicRestart.time "02:00:00"
+Set-ItemProperty IIS:\AppPools\UCS_Production_Pool recycling.periodicRestart.requests 10000
+
+# 6. Límites de memoria (evitar fugas)
+Set-ItemProperty IIS:\AppPools\UCS_Production_Pool recycling.periodicRestart.privateMemory 1048576 # 1GB
+
+# 7. Configurar Rapid-Fail Protection
+Set-ItemProperty IIS:\AppPools\UCS_Production_Pool failure.rapidFailProtection "True"
+Set-ItemProperty IIS:\AppPools\UCS_Production_Pool failure.rapidFailProtectionInterval "00:05:00"
+Set-ItemProperty IIS:\AppPools\UCS_Production_Pool failure.rapidFailProtectionMaxCrashes 5
+
+# 8. Asignar pool al sitio
+Set-ItemProperty IIS:\Sites\UCS_Portal -Name applicationPool -Value "UCS_Production_Pool"
+
+# 9. Iniciar el pool
+Start-WebAppPool -Name "UCS_Production_Pool"
+
+# Verificar configuración
+Get-ItemProperty IIS:\AppPools\UCS_Production_Pool | Select-Object *</code></pre>
+                
+                <div style="background: #f0fdf4; padding: 1rem; border-radius: 4px; margin-top: 1rem;">
+                    <p style="margin: 0; color: #166534;"><strong>✅ Checklist de Application Pool seguro:</strong></p>
+                    <ul style="margin-top: 0.5rem;">
+                        <li>Identidad: ApplicationPoolIdentity (no NetworkService)</li>
+                        <li>Reciclaje: Cada 24h o X peticiones</li>
+                        <li>Límite de memoria: Según capacidad del servidor</li>
+                        <li>Rapid-Fail: Activado con 5 fallos máximo</li>
+                        <li>Pipeline: Integrated (para apps modernas)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div style="background: #fef3c7; border-left: 4px solid #f59e0b; padding: 1rem; margin-top: 1.5rem; border-radius: 0 8px 8px 0;">
+                <p style="margin: 0; color: #92400e;"><strong>💡 Conexión con E5:</strong> Esta configuración de IIS y Application Pools es parte esencial del despliegue en la evaluación E5.</p>
+            </div>
+        </section>
+
         <section id="conexion-evaluacion" style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-left: 5px solid #f59e0b; padding: 2rem; margin: 2rem 0; border-radius: 8px;">
             <h2 style="color: #92400e; margin-bottom: 1.5rem;">📋 Conexión con Evaluación</h2>
             

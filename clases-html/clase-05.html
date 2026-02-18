@@ -237,6 +237,237 @@ journalctl -u ssh -f           # Ver errores del servicio en tiempo real</code><
             </div>
         </section>
 
+        <section id="practica-laboral" style="background: #f0f9ff; border-left: 5px solid #0284c7; padding: 2rem; margin: 2rem 0; border-radius: 8px;">
+            <h2 style="color: #0369a1; margin-bottom: 1.5rem;">🛠️ Práctica Laboral</h2>
+            
+            <div class="card" style="margin: 1.5rem 0; border-left: 4px solid #dc2626;">
+                <h4 style="color: #991b1b; margin-bottom: 1rem;">🚨 Troubleshooting Guide: "Mi proceso se colgó"</h4>
+                
+                <div style="background: #1e293b; color: #e2e8f0; padding: 1.5rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; line-height: 1.8;">
+                    <p style="color: #fbbf24; font-weight: bold;">¿El proceso no responde?</p>
+                    <p>   ├─▶ ¿Está corriendo? → <span style="color: #4ade80;">ps aux | grep nombre</span></p>
+                    <p>   │      ├─▶ Sí → ¿Está en estado D (Uninterruptible Sleep)?</p>
+                    <p>   │      │      ├─▶ Sí → <span style="color: #f87171;">Proceso bloqueado en I/O</span> → Revisar disco/red</p>
+                    <p>   │      │      └─▶ No → Continuar</p>
+                    <p>   │      └─▶ No → El proceso terminó o nunca inició</p>
+                    <p>   │</p>
+                    <p>   ├─▶ ¿Cuánto CPU usa? → <span style="color: #4ade80;">top -p PID</span></p>
+                    <p>   │      ├─▶ 0% CPU → Puede estar esperando I/O o deadlocked</p>
+                    <p>   │      ├─▶ 100% CPU → Loop infinito o procesamiento intensivo</p>
+                    <p>   │      └─▶ Normal → Revisar logs</p>
+                    <p>   │</p>
+                    <p>   ├─▶ ¿Qué archivos tiene abiertos? → <span style="color: #4ade80;">lsof -p PID</span></p>
+                    <p>   │      └─▶ ¿Alguno bloqueado o en NFS caído?</p>
+                    <p>   │</p>
+                    <p>   ├─▶ ¿En qué está trabajando? → <span style="color: #4ade80;">strace -p PID</span></p>
+                    <p>   │      └─▶ ¿Repetiendo la misma syscall?</p>
+                    <p>   │</p>
+                    <p>   ├─▶ ¿Logs de error? → <span style="color: #4ade80;">journalctl -u servicio -n 50</span></p>
+                    <p>   │      └─▶ ¿Out of memory? ¿Segmentation fault?</p>
+                    <p>   │</p>
+                    <p>   └─▶ Intentar recuperación:</p>
+                    <p>          ├─▶ <span style="color: #60a5fa;">kill -15 PID</span> (SIGTERM - cierre amable)</p>
+                    <p>          ├─▶ Esperar 10-30 segundos</p>
+                    <p>          ├─▶ ¿Sigues vivo? → <span style="color: #f87171;">kill -9 PID</span> (SIGKILL - forzar)</p>
+                    <p>          └─▶ ¿No muere? → <span style="color: #f87171;">Proceso zombie/defunct</span> → Requiere reinicio</p>
+                </div>
+            </div>
+
+            <div class="card" style="margin: 1.5rem 0; border-left: 4px solid #059669;">
+                <h4 style="color: #065f46; margin-bottom: 1rem;">🔍 Ejercicios de Filtrado Avanzado con ps, grep, awk</h4>
+                
+                <div style="background: #f0fdf4; padding: 1.5rem; border-radius: 8px; margin: 1rem 0;">
+                    <p style="margin: 0;"><strong>Ejercicio 1: Procesos por usuario y ordenados por memoria</strong></p>
+                    <pre style="margin: 0.5rem 0;"><code class="language-bash"># Encuentra los 5 procesos que más RAM consumen de un usuario específico
+ps aux --sort=-%mem | grep "^usuario" | head -n 5
+
+# Versión más elegante con awk
+ps aux | awk '$1 == "usuario" {print $0}' | sort -k4 -nr | head -n 5</code></pre>
+                </div>
+                
+                <div style="background: #eff6ff; padding: 1.5rem; border-radius: 8px; margin: 1rem 0;">
+                    <p style="margin: 0;"><strong>Ejercicio 2: Encontrar procesos huérfanos</strong></p>
+                    <pre style="margin: 0.5rem 0;"><code class="language-bash"># Procesos cuyo padre (PPID) es 1 (init/systemd)
+ps aux | awk '$3 == 1 {print $2, $11}' | head -10
+
+# Contar cuántos procesos huérfanos hay
+echo "Procesos huérfanos: $(ps aux | awk '$3 == 1' | wc -l)"</code></pre>
+                </div>
+                
+                <div style="background: #fef3c7; padding: 1.5rem; border-radius: 8px; margin: 1rem 0;">
+                    <p style="margin: 0;"><strong>Ejercicio 3: Procesos que más tiempo de CPU han acumulado</strong></p>
+                    <pre style="margin: 0.5rem 0;"><code class="language-bash"># Ordenar por tiempo total de CPU (columna 10)
+ps aux --sort=-time | head -n 10
+
+# Mostrar solo PID, usuario, %CPU, tiempo y comando
+ps aux --sort=-time | awk '{printf "%-8s %-10s %6s %10s %s\n", $2, $1, $3, $10, $11}' | head -n 10</code></pre>
+                </div>
+                
+                <div style="background: #fef2f2; padding: 1.5rem; border-radius: 8px; margin: 1rem 0;">
+                    <p style="margin: 0;"><strong>Ejercicio 4: Script de auditoría completo</strong></p>
+                    <pre style="margin: 0.5rem 0;"><code class="language-bash">#!/bin/bash
+# audit_procesos.sh - Reporte de procesos críticos
+
+echo "=== REPORTE DE PROCESOS - $(date) ==="
+echo ""
+echo "🔴 Top 5 por CPU:"
+ps aux --sort=-%cpu | head -n 6 | tail -n 5 | awk '{printf "%-10s %6s %s\n", $1, $3, $11}'
+
+echo ""
+echo "🔴 Top 5 por Memoria:"
+ps aux --sort=-%mem | head -n 6 | tail -n 5 | awk '{printf "%-10s %6s %s\n", $1, $4, $11}'
+
+echo ""
+echo "🔴 Procesos Zombies:"
+ps aux | awk '$8 ~ /^Z/ {print $0}'
+if [ $? -ne 0 ]; then
+    echo "No hay procesos zombie ✓"
+fi
+
+echo ""
+echo "🔴 Procesos con más de 100 hilos:"
+ps aux | awk '$6 > 100 {print $2, $6, $11}'</code></pre>
+                </div>
+            </div>
+
+            <div class="card" style="margin: 1.5rem 0; border-left: 4px solid #7c3aed;">
+                <h4 style="color: #5b21b6; margin-bottom: 1rem;">📖 Caso de Incidente Real: El Proceso Zombie que Colapsó el Servidor</h4>
+                
+                <div style="background: #f5f3ff; padding: 1.5rem; border-radius: 8px;">
+                    <p><strong>🕐 Hora 0 - Todo normal</strong></p>
+                    <p>Un servidor de aplicaciones Java con Tomcat procesa 500 requests/segundo normalmente.</p>
+                    
+                    <p style="margin-top: 1rem;"><strong>🕒 Hora 4 - Alerta de monitoreo</strong></p>
+                    <p>El sistema de monitoreo (Nagios) alerta: "Cannot fork: Resource temporarily unavailable"</p>
+                    <pre style="margin: 0.5rem 0;"><code class="language-bash"># Ver procesos del sistema
+ps aux | wc -l
+# Resultado: 32768 procesos (!!!)</code></pre>
+                    
+                    <p style="margin-top: 1rem;"><strong>🕓 Hora 4:15 - Diagnóstico</strong></p>
+                    <pre style="margin: 0.5rem 0;"><code class="language-bash"># Buscar zombies
+ps aux | grep "^Z"
+# Cientos de procesos en estado Z
+
+# ¿Quién es el padre?
+ps aux | grep "^Z" | awk '{print $3}' | sort | uniq -c | sort -nr | head
+# El padre es el proceso Java principal</code></pre>
+                    
+                    <p style="margin-top: 1rem;"><strong>🔍 Causa Raíz:</strong></p>
+                    <ul>
+                        <li>La aplicación Java lanzaba procesos externos para generar reportes PDF</li>
+                        <li>El código Java NO llamaba <code>wait()</code> para recolectar los procesos hijos</li>
+                        <li>Cada reporte generado dejaba un proceso zombie</li>
+                        <li>Después de 4 horas, la tabla de procesos se llenó (max 32768)</li>
+                        <li>El kernel no pudo crear más procesos → "Cannot fork"</li>
+                    </ul>
+                    
+                    <p style="margin-top: 1rem;"><strong>💊 Solución:</strong></p>
+                    <ol>
+                        <li>Reinicio de emergencia del servicio Tomcat (mató al padre, recolectó zombies)</li>
+                        <li>Fix del código Java: agregar <code>process.waitFor()</code> después de cada exec()</li>
+                        <li>Monitoreo preventivo: alerta si el conteo de procesos supera 5000</li>
+                    </ol>
+                    
+                    <div style="background: #fef3c7; padding: 1rem; border-radius: 6px; margin-top: 1rem;">
+                        <p style="margin: 0;"><strong>📊 Métricas después del fix:</strong></p>
+                        <ul style="margin-top: 0.5rem;">
+                            <li>Tiempo de vida de proceso hijo: &lt; 5 segundos (antes: infinito)</li>
+                            <li>Procesos totales en el sistema: ~200 (antes: 32768)</li>
+                            <li>Uptime del servidor: 99.99% (después del fix)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" style="margin: 1.5rem 0; border-left: 4px solid #2563eb;">
+                <h4 style="color: #1e40af; margin-bottom: 1rem;">🎯 Mejores Prácticas SRE para Monitoreo de Procesos</h4>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Métrica</th>
+                            <th>Comando/Tool</th>
+                            <th>Umbral de Alerta</th>
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Load Average</strong></td>
+                            <td><code>uptime</code></td>
+                            <td>> número de cores</td>
+                            <td>Investigar procesos que consumen CPU</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Context Switches</strong></td>
+                            <td><code>vmstat 1</code></td>
+                            <td>> 50,000/seg</td>
+                            <td>Posible thrashing, revisar número de procesos</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Procesos Zombie</strong></td>
+                            <td><code>ps aux | grep ^Z</code></td>
+                            <td>> 10</td>
+                            <td>Identificar y reiniciar proceso padre</td>
+                        </tr>
+                        <tr>
+                            <td><strong>File Descriptors</strong></td>
+                            <td><code>lsof -p PID | wc -l</code></td>
+                            <td>> 80% del límite</td>
+                            <td>Aumentar límite o fix memory leak</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Hilos por Proceso</strong></td>
+                            <td><code>ps -eLf | grep PID | wc -l</code></td>
+                            <td>> 500</td>
+                            <td>Revisar thread pool configuration</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Swap Usage</strong></td>
+                            <td><code>free -h</code></td>
+                            <td>> 20%</td>
+                            <td>Aumentar RAM o investigar memory leak</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Tiempo de CPU Acumulado</strong></td>
+                            <td><code>ps aux --sort=-time</code></td>
+                            <td>Anomalías</td>
+                            <td>Identificar procesos runaway</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div style="background: #eff6ff; padding: 1rem; border-radius: 6px; margin-top: 1rem;">
+                    <p style="margin: 0;"><strong>🛠️ Script de monitoreo SRE básico:</strong></p>
+                    <pre style="margin: 0.5rem 0;"><code class="language-bash">#!/bin/bash
+# sre_health_check.sh
+
+ALERT_FILE="/var/log/sre_alerts.log"
+
+# Check 1: Load Average
+LOAD=$(uptime | awk -F'load average:' '{print $2}' | awk '{print $1}' | tr -d ',')
+CORES=$(nproc)
+if (( $(echo "$LOAD > $CORES" | bc -l) )); then
+    echo "$(date): ALERTA - Load average $LOAD supera cores ($CORES)" >> $ALERT_FILE
+fi
+
+# Check 2: Procesos Zombie
+ZOMBIES=$(ps aux | grep -c "^Z")
+if [ $ZOMBIES -gt 10 ]; then
+    echo "$(date): ALERTA - $ZOMBIES procesos zombie detectados" >> $ALERT_FILE
+fi
+
+# Check 3: Context Switches (usar vmstat en bucle)
+CS=$(vmstat 1 2 | tail -1 | awk '{print $12}')
+if [ $CS -gt 50000 ]; then
+    echo "$(date): ALERTA - Context switches alto: $CS/seg" >> $ALERT_FILE
+fi
+
+echo "$(date): Health check completado" >> /var/log/sre_health.log</code></pre>
+                </div>
+            </div>
+        </section>
+
         <section id="conexion-evaluacion" style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-left: 5px solid #f59e0b; padding: 2rem; margin: 2rem 0; border-radius: 8px;">
             <h2 style="color: #92400e; margin-bottom: 1.5rem;">📋 Conexión con Evaluación</h2>
             

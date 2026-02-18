@@ -271,6 +271,62 @@ wmic baseboard get product</code></pre>
             </div>
         </section>
 
+        <section id="practica-laboral" style="background: #f0f9ff; border-left: 5px solid #0284c7; padding: 2rem; margin: 2rem 0; border-radius: 8px;">
+            <h2 style="color: #0369a1; margin-bottom: 1.5rem;">🛠️ Práctica Laboral</h2>
+            
+            <div class="card" style="margin: 1.5rem 0; border-left: 4px solid #dc2626;">
+                <h4 style="color: #991b1b; margin-bottom: 1rem;">📊 Caso de Estudio: ¿Por qué Netflix usa Linux?</h4>
+                <p><strong>Contexto:</strong> Netflix procesa más de 450 millones de horas de video semanalmente a través de su plataforma de streaming.</p>
+                <p><strong>Decisión de Arquitectura:</strong> Netflix migró de sistemas propietarios a <strong>Linux en servidores bare-metal</strong> con arquitectura de microservicios.</p>
+                
+                <div style="background: #fef2f2; padding: 1rem; border-radius: 6px; margin: 1rem 0;">
+                    <p style="margin: 0;"><strong>Factores decisivos:</strong></p>
+                    <ul style="margin-top: 0.5rem;">
+                        <li><strong>Costo:</strong> Eliminar licencias de Windows Server ahorra millones anuales</li>
+                        <li><strong>Personalización:</strong> Kernel tuneado específicamente para throughput de video</li>
+                        <li><strong>Escalabilidad:</strong> FreeBSD + NGINX para CDN (Open Connect)</li>
+                        <li><strong>Comunidad:</strong> Acceso a herramientas open-source de monitoreo</li>
+                    </ul>
+                </div>
+                
+                <p><strong>Pregunta de análisis:</strong> ¿Por qué crees que Netflix NO usa Windows Server para sus servidores de streaming, a pesar de tener los recursos para pagar las licencias?</p>
+            </div>
+
+            <div class="card" style="margin: 1.5rem 0; border-left: 4px solid #059669;">
+                <h4 style="color: #065f46; margin-bottom: 1rem;">🎯 Ejercicio: Selecciona el SO Adecuado</h4>
+                <p>Analiza los siguientes 3 escenarios empresariales y selecciona el sistema operativo más adecuado, justificando tu respuesta:</p>
+                
+                <div style="background: #f0fdf4; padding: 1rem; border-radius: 6px; margin: 1rem 0;">
+                    <p style="margin: 0;"><strong>Escenario 1 - Banco Financiero:</strong></p>
+                    <p style="margin: 0.5rem 0;">Necesitan servidores para procesar transacciones bancarias 24/7 con máxima seguridad y soporte certificado. El presupuesto es alto pero el riesgo de fallo es crítico.</p>
+                    <p style="margin: 0; font-style: italic; color: #065f46;">Tu recomendación: ____________</p>
+                </div>
+                
+                <div style="background: #eff6ff; padding: 1rem; border-radius: 6px; margin: 1rem 0;">
+                    <p style="margin: 0;"><strong>Escenario 2 - Startup de E-commerce:</strong></p>
+                    <p style="margin: 0.5rem 0;">Necesitan desplegar 50 servidores web rápidamente con presupuesto limitado. Requieren flexibilidad para escalar y automatizar deployments.</p>
+                    <p style="margin: 0; font-style: italic; color: #1e40af;">Tu recomendación: ____________</p>
+                </div>
+                
+                <div style="background: #fef3c7; padding: 1rem; border-radius: 6px; margin: 1rem 0;">
+                    <p style="margin: 0;"><strong>Escenario 3 - Hospital con Equipos Médicos:</strong></p>
+                    <p style="margin: 0.5rem 0;">Necesitan estaciones de trabajo para el personal administrativo que se integren con Active Directory y software médico especializado.</p>
+                    <p style="margin: 0; font-style: italic; color: #92400e;">Tu recomendación: ____________</p>
+                </div>
+            </div>
+
+            <div class="card" style="margin: 1.5rem 0; border-left: 4px solid #2563eb;">
+                <h4 style="color: #1e40af; margin-bottom: 1rem;">📺 Recurso Recomendado</h4>
+                <p><strong>Video:</strong> "Introduction to Operating Systems" - CS162 Berkeley</p>
+                <p>Este video universitario explica los fundamentos de sistemas operativos de manera clara y profesional.</p>
+                <div style="background: #eff6ff; padding: 1rem; border-radius: 6px; margin-top: 1rem;">
+                    <p style="margin: 0;"><strong>🔗 Búsqueda sugerida:</strong></p>
+                    <code style="background: #1e293b; color: #e2e8f0; padding: 0.5rem 1rem; display: inline-block; margin-top: 0.5rem; border-radius: 4px;">YouTube: "Introduction to Operating Systems CS162"</code>
+                    <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; color: #64748b;">Busca el canal oficial de UC Berkeley Electrical Engineering & Computer Sciences</p>
+                </div>
+            </div>
+        </section>
+
         <section id="conexion-evaluacion" style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-left: 5px solid #f59e0b; padding: 2rem; margin: 2rem 0; border-radius: 8px;">
             <h2 style="color: #92400e; margin-bottom: 1.5rem;">📋 Conexión con Evaluación</h2>
             

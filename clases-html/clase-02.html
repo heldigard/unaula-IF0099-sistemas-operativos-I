@@ -209,8 +209,111 @@ Get-Service | Select-Object Name, Status</code></pre>
                     <li><strong>¿Cuál es la diferencia entre el shell Bash y el PowerShell?</strong></li>
                     <li><strong>¿Para qué sirve el comando "grep" y cómo se combina con pipes?</strong></li>
                     <li><strong>¿Qué significa el operador "|" en la línea de comandos?</strong></li>
-                    <li><strong>¿Cómo.redirectirías la salida de un comando a un archivo?</strong></li>
+                    <li><strong>¿Cómo redirectirías la salida de un comando a un archivo?</strong></li>
                 </ol>
+            </div>
+        </section>
+
+        <section id="practica-laboral" style="background: #f0f9ff; border-left: 5px solid #0284c7; padding: 2rem; margin: 2rem 0; border-radius: 8px;">
+            <h2 style="color: #0369a1; margin-bottom: 1.5rem;">🛠️ Práctica Laboral</h2>
+            
+            <div class="card" style="margin: 1.5rem 0; border-left: 4px solid #7c3aed;">
+                <h4 style="color: #5b21b6; margin-bottom: 1rem;">🧩 Anatomía del Comando Linux</h4>
+                <p>Entender la estructura de un comando es fundamental para trabajar eficientemente en la terminal:</p>
+                
+                <div style="background: #1e293b; color: #e2e8f0; padding: 1.5rem; border-radius: 8px; margin: 1rem 0; font-family: monospace;">
+                    <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                        <span style="background: #059669; color: white; padding: 0.25rem 0.5rem; border-radius: 4px; font-weight: bold;">COMANDO</span>
+                        <span style="background: #dc2626; color: white; padding: 0.25rem 0.5rem; border-radius: 4px; font-weight: bold;">OPCIONES</span>
+                        <span style="background: #2563eb; color: white; padding: 0.25rem 0.5rem; border-radius: 4px; font-weight: bold;">ARGUMENTOS</span>
+                        <span style="background: #f59e0b; color: white; padding: 0.25rem 0.5rem; border-radius: 4px; font-weight: bold;">| PIPE</span>
+                        <span style="background: #7c3aed; color: white; padding: 0.25rem 0.5rem; border-radius: 4px; font-weight: bold;">SIGUIENTE</span>
+                    </div>
+                    <div style="font-size: 1.1rem; letter-spacing: 1px;">
+                        ls <span style="color: #f87171;">-la</span> <span style="color: #60a5fa;">/var/log</span> <span style="color: #fbbf24;">|</span> <span style="color: #c084fc;">grep "error"</span>
+                    </div>
+                </div>
+                
+                <table style="margin-top: 1rem;">
+                    <thead>
+                        <tr><th>Componente</th><th>Función</th><th>Ejemplo</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><strong>Comando</strong></td><td>La acción a ejecutar</td><td>ls, cat, grep, find</td></tr>
+                        <tr><td><strong>Opciones</strong></td><td>Modifican el comportamiento (-l, -a)</td><td>-la (listado largo + ocultos)</td></tr>
+                        <tr><td><strong>Argumentos</strong></td><td>Objetivo de la acción</td><td>/var/log, archivo.txt</td></tr>
+                        <tr><td><strong>Pipe (|)</strong></td><td>Envía salida a otro comando</td><td>cat file | grep "texto"</td></tr>
+                        <tr><td><strong>Redirección</strong></td><td>Guarda salida en archivo</td><td>echo "hola" > saludo.txt</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="card" style="margin: 1.5rem 0; border-left: 4px solid #059669;">
+                <h4 style="color: #065f46; margin-bottom: 1rem;">🏆 Pipeline Challenge</h4>
+                <p>Completa los siguientes 3 ejercicios combinando comandos con pipes:</p>
+                
+                <div style="background: #f0fdf4; padding: 1rem; border-radius: 6px; margin: 1rem 0;">
+                    <p style="margin: 0;"><strong>Ejercicio 1:</strong> Encuentra los 10 archivos más grandes en /var/log y muéstralos ordenados por tamaño.</p>
+                    <div style="background: #1e293b; color: #64748b; padding: 0.5rem; margin-top: 0.5rem; border-radius: 4px; font-family: monospace;">
+                        find /var/log -type f -exec ls -lh {} \; | ____________ | head -n 10
+                    </div>
+                </div>
+                
+                <div style="background: #eff6ff; padding: 1rem; border-radius: 6px; margin: 1rem 0;">
+                    <p style="margin: 0;"><strong>Ejercicio 2:</strong> Cuenta cuántos usuarios únicos están conectados al sistema.</p>
+                    <div style="background: #1e293b; color: #64748b; padding: 0.5rem; margin-top: 0.5rem; border-radius: 4px; font-family: monospace;">
+                        who | ____________ | ____________
+                    </div>
+                </div>
+                
+                <div style="background: #fef3c7; padding: 1rem; border-radius: 6px; margin: 1rem 0;">
+                    <p style="margin: 0;"><strong>Ejercicio 3:</strong> Encuentra todas las líneas que contengan "ERROR" en /var/log/syslog, muestra las últimas 20, y guarda el resultado en errores.txt.</p>
+                    <div style="background: #1e293b; color: #64748b; padding: 0.5rem; margin-top: 0.5rem; border-radius: 4px; font-family: monospace;">
+                        cat /var/log/syslog | ____________ | ____________ > errores.txt
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" style="margin: 1.5rem 0; border-left: 4px solid #dc2626;">
+                <h4 style="color: #991b1b; margin-bottom: 1rem;">📋 Cheat Sheet: 15 Comandos Esenciales</h4>
+                <table>
+                    <thead>
+                        <tr><th>Comando</th><th>Descripción</th><th>Ejemplo Práctico</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><code>ls -la</code></td><td>Listar archivos con permisos</td><td>ls -la /home</td></tr>
+                        <tr><td><code>cd</code></td><td>Cambiar directorio</td><td>cd /var/www/html</td></tr>
+                        <tr><td><code>pwd</code></td><td>Mostrar ruta actual</td><td>pwd</td></tr>
+                        <tr><td><code>cat</code></td><td>Ver contenido de archivo</td><td>cat /etc/os-release</td></tr>
+                        <tr><td><code>grep</code></td><td>Buscar patrones</td><td>grep "error" /var/log/syslog</td></tr>
+                        <tr><td><code>ps aux</code></td><td>Listar procesos</td><td>ps aux | grep apache</td></tr>
+                        <tr><td><code>top</code></td><td>Monitor de recursos</td><td>top -u usuario</td></tr>
+                        <tr><td><code>df -h</code></td><td>Espacio en disco</td><td>df -h /var</td></tr>
+                        <tr><td><code>du -sh</code></td><td>Tamaño de directorio</td><td>du -sh /var/log</td></tr>
+                        <tr><td><code>chmod</code></td><td>Cambiar permisos</td><td>chmod 755 script.sh</td></tr>
+                        <tr><td><code>chown</code></td><td>Cambiar propietario</td><td>chown user:group file</td></tr>
+                        <tr><td><code>tar</code></td><td>Comprimir/descomprimir</td><td>tar -czf backup.tar.gz dir/</td></tr>
+                        <tr><td><code>curl</code></td><td>Transferir datos</td><td>curl -I https://google.com</td></tr>
+                        <tr><td><code>ssh</code></td><td>Conexión remota</td><td>ssh user@192.168.1.1</td></tr>
+                        <tr><td><code>systemctl</code></td><td>Controlar servicios</td><td>systemctl restart nginx</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="card" style="margin: 1.5rem 0; border-left: 4px solid #f59e0b;">
+                <h4 style="color: #92400e; margin-bottom: 1rem;">🔧 Troubleshooting: "Mi comando no funciona"</h4>
+                <div style="background: #1e293b; color: #e2e8f0; padding: 1.5rem; border-radius: 8px; font-family: monospace; font-size: 0.9rem; line-height: 1.8;">
+                    <p style="color: #fbbf24; font-weight: bold;">¿El comando no existe?</p>
+                    <p>   └─> ¿Está instalado? → <span style="color: #4ade80;">which comando</span> o <span style="color: #4ade80;">sudo apt install paquete</span></p>
+                    <p style="color: #fbbf24; font-weight: bold; margin-top: 1rem;">¿Permiso denegado?</p>
+                    <p>   └─> ¿Necesitas sudo? → <span style="color: #4ade80;">sudo comando</span></p>
+                    <p style="color: #fbbf24; font-weight: bold; margin-top: 1rem;">¿Archivo no encontrado?</p>
+                    <p>   ├─> ¿Estás en el directorio correcto? → <span style="color: #4ade80;">pwd</span></p>
+                    <p>   └─> ¿El archivo existe? → <span style="color: #4ade80;">ls -la</span></p>
+                    <p style="color: #fbbf24; font-weight: bold; margin-top: 1rem;">¿Sintaxis incorrecta?</p>
+                    <p>   ├─> Revisa las comillas y espacios</p>
+                    <p>   └─> Consulta la ayuda → <span style="color: #4ade80;">comando --help</span> o <span style="color: #4ade80;">man comando</span></p>
+                </div>
             </div>
         </section>
 

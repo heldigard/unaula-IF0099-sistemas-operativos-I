@@ -35,6 +35,36 @@
         }
         h1 { color: var(--primary); font-size: 2.5rem; margin-bottom: 0.5rem; }
         .subtitle { color: #64748b; font-size: 1.2rem; }
+        
+        .cta-box {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border: 3px solid #f59e0b;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            text-align: center;
+        }
+        .cta-box h2 {
+            color: #92400e;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+        }
+        .cta-button {
+            display: inline-block;
+            background: #f59e0b;
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 0.75rem;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+        .cta-button:hover {
+            background: #d97706;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+        }
 
         .phase-section {
             background: white;
@@ -142,6 +172,17 @@
         <header>
             <h1>Guía de Entregables UCS</h1>
             <p class="subtitle">Detalle Paso a Paso de las 6 Fases Evaluativas | UNAULA 2026</p>
+            
+            <div class="cta-box">
+                <h2>📚 ¿Necesitas instrucciones más detalladas?</h2>
+                <p style="color: #78350f; margin-bottom: 1rem;">
+                    Accede al <strong>Manual Completo de Evaluaciones</strong> con explicaciones paso a paso, 
+                    comandos exactos, ejemplos de código y checklists detallados para cada fase.
+                </p>
+                <a href="evaluaciones-completo.html" class="cta-button">
+                    📖 Ver Manual Completo →
+                </a>
+            </div>
         </header>
 
         <!-- E1 -->

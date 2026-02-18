@@ -264,6 +264,220 @@ Select-Object DisplayName, Action</code></pre>
             </div>
         </section>
 
+        <section id="practica-laboral" style="background: #f0f9ff; border-left: 5px solid #0284c7; padding: 2rem; margin: 2rem 0; border-radius: 8px;">
+            <h2 style="color: #0369a1; margin-bottom: 1.5rem;">🛠️ Práctica Laboral</h2>
+            
+            <div class="card" style="margin: 1.5rem 0; border-left: 4px solid #0369a1;">
+                <h3 style="color: #0369a1; margin-top: 0;">Checklist de Hardening: Windows Server CIS Benchmarks Simplificado</h3>
+                <p>Aplica estos controles básicos de seguridad en entornos corporativos:</p>
+                <ul style="line-height: 1.8;">
+                    <li><strong>Políticas de contraseñas:</strong> Mínimo 12 caracteres, complejidad habilitada, historial de 12 contraseñas.</li>
+                    <li><strong>Bloqueo de cuentas:</strong> 5 intentos fallidos, bloqueo de 30 minutos, restablecimiento automático.</li>
+                    <li><strong>UAC:</strong> Configurar en nivel máximo - "Notificar siempre".</li>
+                    <li><strong>Windows Defender:</strong> Habilitar protección en tiempo real y escaneos programados.</li>
+                    <li><strong>Firewall:</strong> Perfil de dominio activo, bloquear conexiones entrantes no solicitadas.</li>
+                    <li><strong>Auditoría:</strong> Habilitar logs para eventos de inicio de sesión, cambios de privilegios y acceso a archivos sensibles.</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin: 1.5rem 0; border-left: 4px solid #7c3aed;">
+                <h3 style="color: #5b21b6; margin-top: 0;">Herramientas: Microsoft Baseline Security Analyzer</h3>
+                <p>Microsoft ofrece herramientas nativas para evaluar la seguridad del sistema:</p>
+                <pre><code class="language-powershell"># Microsoft Baseline Security Analyzer (MBSA) - Reemplazado por
+# Security Compliance Toolkit actualmente
+
+# Verificar configuraciones de seguridad con PowerShell
+Get-ChildItem -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies" -Recurse | 
+    Where-Object { $_.Property -eq "EnableLUA" }
+
+# Auditar directivas de seguridad locales
+secedit /export /cfg C:\security_audit.txt
+Get-Content C:\security_audit.txt | Select-String -Pattern "Password|Lockout|Audit"</code></pre>
+                <p><strong>Security Compliance Toolkit:</strong> Descarga plantillas de seguridad pre-configuradas de Microsoft para Windows Server 2022.</p>
+            </div>
+
+            <div class="card" style="margin: 1.5rem 0; border-left: 4px solid #dc2626;">
+                <h3 style="color: #991b1b; margin-top: 0;">Casos Reales: Análisis de Vulnerabilidades Críticas de Windows</h3>
+                <p><strong>Caso 1: EternalBlue (MS17-010)</strong></p>
+                <ul>
+                    <li>Vulnerabilidad en SMBv1 explotada por WannaCry (2017).</li>
+                    <li><strong>Mitigación:</strong> Deshabilitar SMBv1, aplicar parches KB4013389.</li>
+                </ul>
+                <p><strong>Caso 2: PrintNightmare (CVE-2021-34527)</strong></p>
+                <ul>
+                    <li>Escalación de privilegios a través del servicio de impresión.</li>
+                    <li><strong>Mitigación:</strong> Deshabilitar servicio Print Spooler si no es necesario.</li>
+                </ul>
+                <p><strong>Caso 3: Zerologon (CVE-2020-1472)</strong></p>
+                <ul>
+                    <li>Ataque al protocolo Netlogon en controladores de dominio.</li>
+                    <li><strong>Mitigación:</strong> Aplicar KB4565349, habilitar modo de aplicación.</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin: 1.5rem 0; border-left: 4px solid #059669;">
+                <h3 style="color: #065f46; margin-top: 0;">Laboratorio: Script de Auditoría de Seguridad en PowerShell</h3>
+                <pre><code class="language-powershell"># Script: SecurityAudit.ps1 - Auditoría completa de seguridad
+# Autor: [Tu nombre]
+# Fecha: $(Get-Date)
+
+# Crear carpeta de resultados
+$AuditPath = "C:\SecurityAudit_$(Get-Date -Format 'yyyyMMdd')"
+New-Item -ItemType Directory -Path $AuditPath -Force
+
+# 1. Verificar usuarios con contraseñas que nunca expiran
+Write-Host "=== Usuarios con contraseñas que nunca expiran ===" -ForegroundColor Yellow
+$NeverExpires = Get-LocalUser | Where-Object { $_.PasswordNeverExpires -eq $true -and $_.Enabled -eq $true }
+$NeverExpires | Select-Object Name, LastLogonDate | Export-Csv "$AuditPath\PasswordNeverExpires.csv" -NoTypeInformation
+$NeverExpires | Format-Table Name, LastLogonDate
+
+# 2. Verificar intentos de inicio de sesión fallidos
+Write-Host "=== Eventos de inicio de sesión fallidos (últimas 24h) ===" -ForegroundColor Yellow
+Get-WinEvent -FilterHashtable @{LogName='Security'; ID=4625; StartTime=(Get-Date).AddDays(-1)} -ErrorAction SilentlyContinue |
+    Select-Object TimeCreated, Message | Export-Csv "$AuditPath\FailedLogins.csv" -NoTypeInformation
+
+# 3. Verificar puertos abiertos y procesos asociados
+Write-Host "=== Puertos abiertos y procesos ===" -ForegroundColor Yellow
+Get-NetTCPConnection -State Listen | 
+    Select-Object LocalAddress, LocalPort, @{Name="ProcessName";Expression={(Get-Process -Id $_.OwningProcess).ProcessName}} |
+    Export-Csv "$AuditPath\OpenPorts.csv" -NoTypeInformation
+
+# 4. Verificar servicios innecesarios en ejecución
+Write-Host "=== Servicios potencialmente innecesarios ===" -ForegroundColor Yellow
+$RiskyServices = @("Telnet", "FTP", "SMB1", "RemoteRegistry")
+Get-Service | Where-Object { $RiskyServices -contains $_.Name -and $_.Status -eq "Running" } |
+    Export-Csv "$AuditPath\RiskyServices.csv" -NoTypeInformation
+
+# 5. Verificar Firewall habilitado
+Write-Host "=== Estado del Firewall ===" -ForegroundColor Yellow
+Get-NetFirewallProfile | Select-Object Name, Enabled | Export-Csv "$AuditPath\FirewallStatus.csv" -NoTypeInformation
+
+Write-Host "`n✅ Auditoría completada. Resultados guardados en: $AuditPath" -ForegroundColor Green</code></pre>
+            </div>
+
+            <div class="card" style="margin: 1.5rem 0; border-left: 4px solid #ea580c;">
+                <h3 style="color: #c2410c; margin-top: 0;">Ejercicios: secpol.msc Avanzado</h3>
+                <p><strong>Ejercicio 1: Configurar políticas de bloqueo avanzadas</strong></p>
+                <ol>
+                    <li>Abrir <code>secpol.msc</code> → Políticas de cuenta → Política de bloqueo de cuenta.</li>
+                    <li>Configurar: Umbral de bloqueo = 3 intentos, Duración = 30 min, Restablecer = 30 min.</li>
+                    <li>Configurar umbral de bloqueo de cuenta = 3 intentos inválidos.</li>
+                </ol>
+                <p><strong>Ejercicio 2: Asignación de derechos de usuario</strong></p>
+                <ol>
+                    <li>Configurar "Derechos de usuario" → "Denegar inicio de sesión localmente" para el grupo Invitados.</li>
+                    <li>Configurar "Permitir inicio de sesión a través de Terminal Services" solo para Administradores.</li>
+                </ol>
+                <p><strong>Ejercicio 3: Opciones de seguridad</strong></p>
+                <ol>
+                    <li>Deshabilitar cuenta de administrador local (Rename).</li>
+                    <li>Configurar "No mostrar último nombre de usuario en pantalla de inicio".</li>
+                    <li>Habilitar "Requerir CTRL+ALT+DEL antes de iniciar sesión".</li>
+                </ol>
+            </div>
+
+            <div class="card" style="margin: 1.5rem 0; border-left: 4px solid #2563eb;">
+                <h3 style="color: #1e40af; margin-top: 0;">Auditoría de Eventos: Event IDs Críticos a Monitorear</h3>
+                <table style="width: 100%; border-collapse: collapse; margin-top: 1rem;">
+                    <thead>
+                        <tr style="background: #e0e7ff;">
+                            <th style="padding: 0.75rem; border: 1px solid #c7d2fe;">Event ID</th>
+                            <th style="padding: 0.75rem; border: 1px solid #c7d2fe;">Descripción</th>
+                            <th style="padding: 0.75rem; border: 1px solid #c7d2fe;">Nivel de Alerta</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb;"><strong>4625</strong></td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb;">Fallo de inicio de sesión (fuerza bruta)</td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb; color: #dc2626;">🔴 Crítico</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb;"><strong>4624</strong></td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb;">Inicio de sesión exitoso</td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb; color: #059669;">🟢 Informativo</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb;"><strong>4648</strong></td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb;">Intento de inicio de sesión explícito</td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb; color: #f59e0b;">🟡 Medio</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb;"><strong>4672</strong></td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb;">Privilegios especiales asignados a nuevo inicio</td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb; color: #f59e0b;">🟡 Medio</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb;"><strong>4720</strong></td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb;">Cuenta de usuario creada</td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb; color: #ea580c;">🟠 Alto</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb;"><strong>4726</strong></td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb;">Cuenta de usuario eliminada</td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb; color: #ea580c;">🟠 Alto</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb;"><strong>4732</strong></td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb;">Miembro agregado a grupo con privilegios</td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb; color: #dc2626;">🔴 Crítico</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb;"><strong>4740</strong></td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb;">Cuenta de usuario bloqueada</td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb; color: #f59e0b;">🟡 Medio</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb;"><strong>4768</strong></td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb;">Solicitud de ticket Kerberos (TGT)</td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb; color: #059669;">🟢 Informativo</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb;"><strong>4776</strong></td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb;">Validación de credenciales fallida</td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb; color: #f59e0b;">🟡 Medio</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="card" style="margin: 1.5rem 0; border-left: 4px solid #7c3aed; background: #faf5ff;">
+                <h3 style="color: #5b21b6; margin-top: 0;">Laboratorio Práctico: Firewall con Reglas Complejas</h3>
+                <pre><code class="language-powershell"># Configurar reglas de firewall avanzadas con PowerShell
+
+# 1. Bloquear todo el tráfico entrante por defecto
+New-NetFirewallRule -DisplayName "Block_All_Inbound" -Direction Inbound -Action Block -Profile Any
+
+# 2. Permitir solo conexiones SSH desde subnet específica
+New-NetFirewallRule -DisplayName "Allow_SSH_Subnet" -Direction Inbound -Protocol TCP -LocalPort 22 -RemoteAddress "192.168.1.0/24" -Action Allow
+
+# 3. Permitir HTTP/HTTPS desde cualquier origen
+New-NetFirewallRule -DisplayName "Allow_HTTP" -Direction Inbound -Protocol TCP -LocalPort 80 -Action Allow
+New-NetFirewallRule -DisplayName "Allow_HTTPS" -Direction Inbound -Protocol TCP -LocalPort 443 -Action Allow
+
+# 4. Bloquear RDP desde internet, permitir solo desde LAN
+New-NetFirewallRule -DisplayName "Block_RDP_Internet" -Direction Inbound -Protocol TCP -LocalPort 3389 -RemoteAddress Internet -Action Block
+New-NetFirewallRule -DisplayName "Allow_RDP_LAN" -Direction Inbound -Protocol TCP -LocalPort 3389 -RemoteAddress LocalSubnet -Action Allow
+
+# 5. Regla para SMB solo en red privada
+New-NetFirewallRule -DisplayName "Allow_SMB_Private" -Direction Inbound -Protocol TCP -LocalPort 445 -Profile Private -Action Allow
+
+# Verificar reglas aplicadas
+Get-NetFirewallRule -Enabled True | Select-Object DisplayName, Direction, Action | Format-Table -AutoSize</code></pre>
+            </div>
+
+            <div style="background: #fef3c7; border-left: 4px solid #f59e0b; padding: 1.5rem; margin-top: 2rem; border-radius: 8px;">
+                <h3 style="color: #92400e; margin-top: 0;">🎯 Conexión con Evaluación E4</h3>
+                <p>Esta práctica laboral prepara directamente para la <strong>E4: Seguridad y Hardening</strong>:</p>
+                <ul>
+                    <li>✅ Configuración de políticas de contraseñas</li>
+                    <li>✅ Auditoría de eventos de seguridad</li>
+                    <li>✅ Análisis de permisos NTFS</li>
+                    <li>✅ Hardening del sistema Windows</li>
+                </ul>
+            </div>
+        </section>
+
         <section id="conexion-evaluacion" style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-left: 5px solid #f59e0b; padding: 2rem; margin: 2rem 0; border-radius: 8px;">
             <h2 style="color: #92400e; margin-bottom: 1.5rem;">📋 Conexión con Evaluación</h2>
             

@@ -235,6 +235,363 @@ aspnet_regiis -i</code></pre>
             </div>
         </section>
 
+        <section id="practica-laboral" style="background: #f0f9ff; border-left: 5px solid #0284c7; padding: 2rem; margin: 2rem 0; border-radius: 8px;">
+            <h2 style="color: #0369a1; margin-bottom: 1.5rem;">🛠️ Práctica Laboral</h2>
+            
+            <div class="card" style="margin: 1.5rem 0; border-left: 4px solid #2563eb;">
+                <h3 style="color: #1e40af; margin-top: 0;">Ejercicios de Estimación: Cálculo de SLAs, SLOs, SLIs para el Proyecto UCS</h3>
+                
+                <div style="background: #eff6ff; padding: 1.5rem; border-radius: 8px; margin: 1rem 0;">
+                    <h4 style="color: #1e40af; margin-top: 0;">Definiciones Clave:</h4>
+                    <ul>
+                        <li><strong>SLA (Service Level Agreement):</strong> Compromiso con el cliente/usuario. Ej: "99.9% de uptime mensual".</li>
+                        <li><strong>SLO (Service Level Objective):</strong> Meta interna del equipo. Ej: "99.95% de uptime" (más estricto que SLA).</li>
+                        <li><strong>SLI (Service Level Indicator):</strong> Métrica medible. Ej: "Tiempo de respuesta del servidor web &lt; 200ms".</li>
+                    </ul>
+                </div>
+
+                <h4 style="color: #1e3a5f; margin-top: 1.5rem;">Ejercicio 1: Definir SLIs para UCS</h4>
+                <table style="width: 100%; border-collapse: collapse; margin-top: 1rem;">
+                    <thead>
+                        <tr style="background: #e0e7ff;">
+                            <th style="padding: 0.75rem; border: 1px solid #c7d2fe;">Componente</th>
+                            <th style="padding: 0.75rem; border: 1px solid #c7d2fe;">SLI</th>
+                            <th style="padding: 0.75rem; border: 1px solid #c7d2fe;">Método de Medición</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb;">Servidor Web Apache</td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb;">Latencia &lt; 200ms (p95)</td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb;">Apache Bench: <code>ab -n 1000 -c 10</code></td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb;">Disponibilidad</td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb;">Uptime &gt; 99.5%</td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb;">Monitoreo con ping/script</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb;">Share Samba</td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb;">Tiempo de respuesta &lt; 500ms</td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb;">smbclient time command</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb;">Tasa de Error</td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb;">HTTP 5xx &lt; 0.1%</td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb;">Logs de Apache/IIS</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h4 style="color: #1e3a5f; margin-top: 1.5rem;">Ejercicio 2: Calcular Presupuesto de Error</h4>
+                <pre style="font-size: 0.85rem;"># Presupuesto de Error = 1 - SLO
+# Ejemplo: SLO de 99.9% = 0.1% de error permitido
+
+# Cálculo para UCS con SLO 99.5%:
+- Tiempo mensual: 30 días × 24 horas × 60 minutos = 43,200 minutos
+- Presupuesto de error: 0.5% de 43,200 = 216 minutos/mes
+- Equivalente a: 3.6 horas de downtime permitido al mes
+
+# Distribución del presupuesto:
+- Mantenimiento planificado: 120 minutos
+- Fallos inesperados: 60 minutos
+- Buffer de emergencia: 36 minutos
+
+# Si excedemos el presupuesto:
+- Priorizar estabilidad sobre nuevas features
+- Realizar post-mortem
+- Implementar mejoras preventivas</pre>
+
+                <h4 style="color: #1e3a5f; margin-top: 1.5rem;">Ejercicio 3: Definir Alertas</h4>
+                <pre style="font-size: 0.85rem;"># Sistema de alertas simple con scripts
+
+#!/bin/bash
+# monitor-ucs.sh
+
+# 1. Verificar Apache
+if ! systemctl is-active --quiet apache2; then
+    echo "[ALERTA] Apache caído - $(date)" | mail -s "UCS Alert" admin@ucs.local
+fi
+
+# 2. Verificar latencia
+LATENCIA=$(curl -o /dev/null -s -w "%{time_total}" http://localhost)
+if (( $(echo "$LATENCIA > 0.5" | bc -l) )); then
+    echo "[ALERTA] Latencia alta: ${LATENCIA}s" | mail -s "UCS Performance" admin@ucs.local
+fi
+
+# 3. Verificar espacio en disco
+USO_DISCO=$(df / | tail -1 | awk '{print $5}' | sed 's/%//')
+if [ $USO_DISCO -gt 85 ]; then
+    echo "[ALERTA] Disco al ${USO_DISCO}%" | mail -s "UCS Storage" admin@ucs.local
+fi
+
+# Agregar a cron cada 5 minutos
+# */5 * * * * /opt/ucs/monitor-ucs.sh</pre>
+            </div>
+
+            <div class="card" style="margin: 1.5rem 0; border-left: 4px solid #dc2626;">
+                <h3 style="color: #991b1b; margin-top: 0;">Casos de Estudio: Post-mortems Famosos (GitHub, AWS, Google) - Qué Aprender</h3>
+                
+                <div style="background: #fef2f2; padding: 1.5rem; border-radius: 8px; margin: 1rem 0; border-left: 4px solid #dc2626;">
+                    <h4 style="color: #991b1b; margin-top: 0;">Caso 1: GitHub - Outage de 24 horas (2018)</h4>
+                    <p><strong>Qué pasó:</strong> Fallo de orchestrator (MySQL) causó pérdida de datos de 43 segundos.</p>
+                    <p><strong>Lecciones:</strong></p>
+                    <ul>
+                        <li>✅ Simular escenarios de failover antes de producción.</li>
+                        <li>✅ Tener planes de rollback claros.</li>
+                        <li>✅ Comunicación transparente con usuarios durante incidentes.</li>
+                    </ul>
+                    <p><em>Ver reporte completo: github.com/blog/github-outage-2018</em></p>
+                </div>
+
+                <div style="background: #fff7ed; padding: 1.5rem; border-radius: 8px; margin: 1rem 0; border-left: 4px solid #ea580c;">
+                    <h4 style="color: #c2410c; margin-top: 0;">Caso 2: AWS S3 - Outage de 4 horas (2017)</h4>
+                    <p><strong>Qué pasó:</strong> Error humano en comando de mantenimiento desactivó más servidores de lo previsto.</p>
+                    <p><strong>Lecciones:</strong></p>
+                    <ul>
+                        <li>✅ Validación de comandos destructivos con "dry-run".</li>
+                        <li>✅ Rate limiting en operaciones de mantenimiento.</li>
+                        <li>✅ Separación de ambientes críticos.</li>
+                        <li>✅ Dashboards de status independientes de la infraestructura afectada.</li>
+                    </ul>
+                </div>
+
+                <div style="background: #fefce8; padding: 1.5rem; border-radius: 8px; margin: 1rem 0; border-left: 4px solid #eab308;">
+                    <h4 style="color: #a16207; margin-top: 0;">Caso 3: Google Cloud - Packet Loss (2019)</h4>
+                    <p><strong>Qué pasó:</strong> Cambio de configuración de red causó pérdida de paquetes del 5%.</p>
+                    <p><strong>Lecciones:</strong></p>
+                    <ul>
+                        <li>✅ Rollback automático si métricas degradan.</li>
+                        <li>✅ Testing en producción con tráfico canario (pequeño %).</li>
+                        <li>✅ Documentar dependencias entre servicios.</li>
+                    </ul>
+                </div>
+
+                <div style="background: #f0fdf4; padding: 1.5rem; border-radius: 8px; margin: 1rem 0; border-left: 4px solid #16a34a;">
+                    <h4 style="color: #166534; margin-top: 0;">Estructura de un Post-mortem Profesional:</h4>
+                    <ol>
+                        <li><strong>Resumen ejecutivo:</strong> Qué pasó, impacto, duración.</li>
+                        <li><strong>Timeline:</strong> Minuto a minuto del incidente.</li>
+                        <li><strong>Root cause:</strong> Causa raíz identificada (5 Whys).</li>
+                        <li><strong>Impacto:</strong> Usuarios afectados, datos perdidos, costo.</li>
+                        <li><strong>Detección:</strong> Cómo se detectó el problema.</li>
+                        <li><strong>Respuesta:</strong> Acciones tomadas para mitigar.</li>
+                        <li><strong>Lecciones aprendidas:</strong> Qué funcionó, qué no.</li>
+                        <li><strong>Acciones correctivas:</strong> Tareas específicas con owners y deadlines.</li>
+                    </ol>
+                    <p><strong>⚠️ Cultura de Blameless:</strong> El post-mortem busca mejorar procesos, no culpar personas.</p>
+                </div>
+            </div>
+
+            <div class="card" style="margin: 1.5rem 0; border-left: 4px solid #7c3aed;">
+                <h3 style="color: #5b21b6; margin-top: 0;">Preparación para Sustentación</h3>
+                
+                <h4 style="color: #1e3a5f; margin-top: 1.5rem;">1. Guía de Oratoria Técnica</h4>
+                <ul>
+                    <li><strong>Estructura:</strong> 1) Hook (30 seg), 2) Problema (1 min), 3) Solución (2 min), 4) Demo (10 min), 5) Cierre (1 min).</li>
+                    <li><strong>Regla del 10-20-30:</strong> Máximo 10 slides, 20 minutos, fuente mínimo 30 puntos.</li>
+                    <li><strong>Lenguaje corporal:</strong> Postura abierta, contacto visual, gestos naturales.</li>
+                    <li><strong>Voz:</strong> Volumen adecuado, pausas estratégicas, variación de tono.</li>
+                    <li><strong>Práctica:</strong> Grabarse, presentar frente a espejo, ensayar con amigos.</li>
+                </ul>
+
+                <h4 style="color: #1e3a5f; margin-top: 1.5rem;">2. Tips para Demostraciones en Vivo</h4>
+                <div style="background: #faf5ff; padding: 1rem; border-radius: 6px;">
+                    <p><strong>Antes de la demo:</strong></p>
+                    <ul>
+                        <li>☐ VMs encendidas y probadas</li>
+                        <li>☐ Plan B si algo falla (screenshots, videos)</li>
+                        <li>☐ Comandos copiados en notepad (no tipear en vivo)</li>
+                        <li>☐ Cronómetro para no exceder tiempo</li>
+                    </ul>
+                    <p><strong>Durante la demo:</strong></p>
+                    <ul>
+                        <li>☐ Narrar lo que estás haciendo</li>
+                        <li>☐ Mostrar solo lo importante (no detalles técnicos aburridos)</li>
+                        <li>☐ Si hay error, mantener calma: "Veamos esto como oportunidad de troubleshooting"</li>
+                    </ul>
+                </div>
+
+                <h4 style="color: #1e3a5f; margin-top: 1.5rem;">3. Preguntas Frecuentes y Cómo Responderlas</h4>
+                <table style="width: 100%; border-collapse: collapse; margin-top: 1rem;">
+                    <thead>
+                        <tr style="background: #e0e7ff;">
+                            <th style="padding: 0.75rem; border: 1px solid #c7d2fe; width: 40%;">Pregunta</th>
+                            <th style="padding: 0.75rem; border: 1px solid #c7d2fe;">Cómo responder</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb;">"¿Por qué eligieron X sobre Y?"</td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb;">Mencionar requisitos, trade-offs evaluados, y decisión fundamentada.</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb;">"¿Qué harían diferente?"</td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb;">Mostrar autocrítica constructiva y aprendizajes.</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb;">"¿Cómo escalaría esto?"</td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb;">Mencionar load balancers, clusters, CDN, etc.</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb;">"¿Qué pasa si falla X?"</td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb;">Describir redundancia, backups, y plan de recuperación.</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb;">"¿Cuánto costaría en producción?"</td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb;">Tener estimados de AWS/Azure: VMs, storage, bandwidth.</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h4 style="color: #1e3a5f; margin-top: 1.5rem;">4. Checklist Final de Preparación</h4>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+                    <div style="background: #f0fdf4; padding: 1rem; border-radius: 6px;">
+                        <strong>Material</strong>
+                        <ul style="margin: 0.5rem 0 0 0; padding-left: 1.2rem;">
+                            <li>Presentación lista</li>
+                            <li>Demo ensayada 3x</li>
+                            <li>Documentación impresa</li>
+                            <li>Backup en USB</li>
+                        </ul>
+                    </div>
+                    <div style="background: #eff6ff; padding: 1rem; border-radius: 6px;">
+                        <strong>Técnico</strong>
+                        <ul style="margin: 0.5rem 0 0 0; padding-left: 1.2rem;">
+                            <li>VMs funcionando</li>
+                            <li>Conectividad probada</li>
+                            <li>Baterías cargadas</li>
+                            <li>Adaptador HDMI/DisplayPort</li>
+                        </ul>
+                    </div>
+                    <div style="background: #fef3c7; padding: 1rem; border-radius: 6px;">
+                        <strong>Personal</strong>
+                        <ul style="margin: 0.5rem 0 0 0; padding-left: 1.2rem;">
+                            <li>Ropa apropiada</li>
+                            <li>Llegar 15 min antes</li>
+                            <li>Hidratación</li>
+                            <li>Respiración calmada</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" style="margin: 1.5rem 0; border-left: 4px solid #059669;">
+                <h3 style="color: #065f46; margin-top: 0;">Recursos Post-Curso: Próximos Pasos, Rutas de Aprendizaje</h3>
+                
+                <h4 style="color: #1e3a5f; margin-top: 1.5rem;">Certificaciones Recomendadas:</h4>
+                <ul>
+                    <li><strong>Linux:</strong> CompTIA Linux+, LPIC-1, Red Hat Certified System Administrator (RHCSA)</li>
+                    <li><strong>Cloud:</strong> AWS Certified Solutions Architect, Azure Administrator, Google Cloud Associate</li>
+                    <li><strong>Seguridad:</strong> CompTIA Security+, Certified Ethical Hacker (CEH)</li>
+                    <li><strong>DevOps:</strong> Docker Certified Associate, Kubernetes Administrator (CKA)</li>
+                </ul>
+
+                <h4 style="color: #1e3a5f; margin-top: 1.5rem;">Rutas de Especialización:</h4>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; margin-top: 1rem;">
+                    <div style="background: #f0f9ff; padding: 1rem; border-radius: 6px; border: 1px solid #7dd3fc;">
+                        <strong>🖥️ SysAdmin Tradicional</strong>
+                        <p style="font-size: 0.9rem; margin: 0.5rem 0;">Bash scripting, automatización con Ansible, monitoreo con Prometheus/Grafana</p>
+                    </div>
+                    <div style="background: #faf5ff; padding: 1rem; border-radius: 6px; border: 1px solid #d8b4fe;">
+                        <strong>☁️ Cloud Engineer</strong>
+                        <p style="font-size: 0.9rem; margin: 0.5rem 0;">Infraestructura como Código (Terraform), containers, Kubernetes, serverless</p>
+                    </div>
+                    <div style="background: #fef2f2; padding: 1rem; border-radius: 6px; border: 1px solid #fca5a5;">
+                        <strong>🔒 Cybersecurity</strong>
+                        <p style="font-size: 0.9rem; margin: 0.5rem 0;">Hardening, ethical hacking, SIEM, compliance (ISO 27001, SOC2)</p>
+                    </div>
+                    <div style="background: #f0fdf4; padding: 1rem; border-radius: 6px; border: 1px solid #86efac;">
+                        <strong>🚀 SRE / DevOps</strong>
+                        <p style="font-size: 0.9rem; margin: 0.5rem 0;">CI/CD pipelines, GitOps, observabilidad, chaos engineering</p>
+                    </div>
+                </div>
+
+                <h4 style="color: #1e3a5f; margin-top: 1.5rem;">Recursos de Aprendizaje Continuo:</h4>
+                <ul>
+                    <li><strong>Libros:</strong> "The Phoenix Project", "Site Reliability Engineering" (Google), "UNIX and Linux System Administration Handbook"</li>
+                    <li><strong>Plataformas:</strong> Linux Academy / A Cloud Guru, Pluralsight, Coursera (Google IT Support)</li>
+                    <li><strong>Comunidades:</strong> r/sysadmin, r/devops, r/linuxadmin, Discord servers (Homelab, Sysadmin)</li>
+                    <li><strong>Práctica:</strong> Proxmox homelab, Raspberry Pi cluster, AWS free tier</li>
+                </ul>
+
+                <div style="background: #fef3c7; padding: 1rem; border-radius: 6px; margin-top: 1rem;">
+                    <p style="margin: 0;"><strong>💡 Consejo Final:</strong> Documenta todo lo que aprendes en un blog personal. Enseñar es la mejor forma de aprender, y te ayuda a construir tu marca personal.</p>
+                </div>
+            </div>
+
+            <div class="card" style="margin: 1.5rem 0; border-left: 4px solid #ea580c; background: #fff7ed;">
+                <h3 style="color: #c2410c; margin-top: 0;">Ejercicio: Preparar Pitch Técnico de 5 Minutos</h3>
+                
+                <p><strong>Objetivo:</strong> Vender tu proyecto UCS como solución profesional.</p>
+                
+                <h4 style="color: #1e3a5f; margin-top: 1rem;">Estructura del Pitch (5 minutos):</h4>
+                <table style="width: 100%; border-collapse: collapse; margin-top: 1rem;">
+                    <thead>
+                        <tr style="background: #ffedd5;">
+                            <th style="padding: 0.75rem; border: 1px solid #fed7aa; width: 15%;">Tiempo</th>
+                            <th style="padding: 0.75rem; border: 1px solid #fed7aa; width: 25%;">Sección</th>
+                            <th style="padding: 0.75rem; border: 1px solid #fed7aa;">Qué decir</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb;">0:00-0:30</td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb;"><strong>Hook</strong></td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb;">"Imaginen una empresa donde los empleados pierden 2 horas diarias buscando archivos..."</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb;">0:30-1:00</td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb;"><strong>Problema</strong></td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb;">"La falta de un sistema centralizado de gestión de contenidos causa..."</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb;">1:00-2:30</td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb;"><strong>Solución (Demo)</strong></td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb;">Mostrar: login, subir archivo, acceder desde Windows, panel de admin</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb;">2:30-3:30</td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb;"><strong>Tecnología</strong></td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb;">"Usamos Linux para robustez, Windows para integración empresarial, Apache para web..."</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb;">3:30-4:30</td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb;"><strong>Beneficios</strong></td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb;">"Reducimos tiempo de búsqueda en 80%, mejoramos seguridad con auditoría..."</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb;">4:30-5:00</td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb;"><strong>Cierre</strong></td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb;">"UCS está listo para producción. ¿Preguntas?"</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div style="background: white; padding: 1rem; border-radius: 6px; margin-top: 1rem;">
+                    <h4 style="color: #1e40af; margin-top: 0;">Tips para el Pitch:</h4>
+                    <ul>
+                        <li>Empieza con un problema que todos entiendan.</li>
+                        <li>Usa números concretos ("2 horas", "80%").</li>
+                        <li>Anticipa objeciones: costo, complejidad, escalabilidad.</li>
+                        <li>Término con call-to-action claro.</li>
+                        <li>Practica hasta que suene natural, no memorizado.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div style="background: #fef3c7; border-left: 4px solid #f59e0b; padding: 1.5rem; margin-top: 2rem; border-radius: 8px;">
+                <h3 style="color: #92400e; margin-top: 0;">🎯 Conexión con Evaluación E6</h3>
+                <p>Esta práctica laboral prepara directamente para la <strong>E6: Sustentación Final</strong>:</p>
+                <ul>
+                    <li>✅ Cálculo de métricas SRE (SLA/SLO/SLI)</li>
+                    <li>✅ Preparación para demostración en vivo</li>
+                    <li>✅ Pitch técnico profesional</li>
+                    <li>✅ Post-mortem y análisis de fallos</li>
+                </ul>
+            </div>
+        </section>
+
         <section id="conexion-evaluacion" style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-left: 5px solid #f59e0b; padding: 2rem; margin: 2rem 0; border-radius: 8px;">
             <h2 style="color: #92400e; margin-bottom: 1.5rem;">📋 Conexión con Evaluación</h2>
             

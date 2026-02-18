@@ -335,6 +335,143 @@ Get-Process -IncludeUserName | Select-Object Name, UserName -First 10</code></pr
             </div>
         </section>
 
+        <section id="practica-laboral" style="background: #f0f9ff; border-left: 5px solid #0284c7; padding: 2rem; margin: 2rem 0; border-radius: 8px;">
+            <h2 style="color: #0369a1; margin-bottom: 1.5rem;">🛠️ Práctica Laboral</h2>
+            
+            <div class="card" style="margin: 1.5rem 0; border-left: 4px solid #f59e0b;">
+                <h4 style="color: #92400e; margin-bottom: 1rem;">👨‍🍳 Analogía Visual: El Chef y sus Recetas</h4>
+                <p>Imagina un restaurante para entender el cambio de contexto:</p>
+                
+                <div style="background: #fef3c7; padding: 1.5rem; border-radius: 8px; margin: 1rem 0;">
+                    <p style="margin: 0;"><strong>El Chef (CPU)</strong> solo puede preparar un plato a la vez.</p>
+                    <p style="margin: 0.5rem 0;"><strong>Cada Receta (Proceso)</strong> tiene sus ingredientes (datos) y pasos (instrucciones) guardados en su propia estación.</p>
+                    <p style="margin: 0.5rem 0;"><strong>Cambio de Contexto:</strong> Cuando el Chef cambia de receta, debe:</p>
+                    <ol style="margin-top: 0.5rem;">
+                        <li>Guardar el progreso de la receta actual (guardar registros)</li>
+                        <li>Limpiar su mesa de trabajo (flush caché)</li>
+                        <li>Traer los ingredientes de la nueva receta (cargar PCB)</li>
+                        <li>Empezar a cocinar (ejecutar nuevo proceso)</li>
+                    </ol>
+                </div>
+                
+                <p><strong>Overhead:</strong> El tiempo que el Chef gasta cambiando entre recetas NO es tiempo de cocina productivo. Si tiene que cambiar cada 5 segundos, ¡cocinará muy poco!</p>
+            </div>
+
+            <div class="card" style="margin: 1.5rem 0; border-left: 4px solid #059669;">
+                <h4 style="color: #065f46; margin-bottom: 1rem;">📊 Ejercicio Práctico: Medir Overhead con vmstat</h4>
+                <p>Sigue este paso a paso para medir el overhead de cambio de contexto en tu sistema:</p>
+                
+                <div style="background: #f0fdf4; padding: 1.5rem; border-radius: 8px; margin: 1rem 0;">
+                    <p style="margin: 0;"><strong>Paso 1:</strong> Abre una terminal y ejecuta:</p>
+                    <pre style="margin: 0.5rem 0;"><code class="language-bash">vmstat 1 10</code></pre>
+                    <p style="margin: 0; font-size: 0.9rem; color: #64748b;">Esto muestra estadísticas cada 1 segundo, 10 veces. Mira la columna "cs" (context switches).</p>
+                </div>
+                
+                <div style="background: #eff6ff; padding: 1.5rem; border-radius: 8px; margin: 1rem 0;">
+                    <p style="margin: 0;"><strong>Paso 2:</strong> En otra terminal, genera carga:</p>
+                    <pre style="margin: 0.5rem 0;"><code class="language-bash">for i in {1..1000}; do echo $i; done &</code></pre>
+                    <p style="margin: 0; font-size: 0.9rem; color: #64748b;">Esto crea procesos intensivos en cambios de contexto.</p>
+                </div>
+                
+                <div style="background: #fef3c7; padding: 1.5rem; border-radius: 8px; margin: 1rem 0;">
+                    <p style="margin: 0;"><strong>Paso 3:</strong> Observa cómo cambia el valor de "cs":</p>
+                    <ul style="margin-top: 0.5rem;">
+                        <li><strong>cs < 1000:</strong> Sistema saludable, bajo overhead</li>
+                        <li><strong>cs 1000-5000:</strong> Carga normal, aceptable</li>
+                        <li><strong>cs > 10000:</strong> Alto overhead, posible thrashing</li>
+                    </ul>
+                </div>
+                
+                <div style="background: #fef2f2; padding: 1.5rem; border-radius: 8px; margin: 1rem 0;">
+                    <p style="margin: 0;"><strong>Paso 4:</strong> Calcula el overhead:</p>
+                    <pre style="margin: 0.5rem 0;"><code class="language-bash"># Mira el tiempo de CPU usado por el kernel vs usuario
+vmstat 1 5 | tail -n 1
+# Columnas: us (usuario), sy (sistema), id (idle)</code></pre>
+                    <p style="margin: 0;">Si <strong>sy (system) > 20%</strong>, el kernel está ocupado en cambios de contexto.</p>
+                </div>
+            </div>
+
+            <div class="card" style="margin: 1.5rem 0; border-left: 4px solid #dc2626;">
+                <h4 style="color: #991b1b; margin-bottom: 1rem;">⚠️ Caso Real: Cuando el Cambio de Contexto Mata el Rendimiento</h4>
+                
+                <div style="background: #fef2f2; padding: 1.5rem; border-radius: 8px;">
+                    <p><strong>El Incidente:</strong> Un servidor de base de datos PostgreSQL con 64 cores mostraba 40% de CPU de usuario pero los queries tardaban 10x más de lo normal.</p>
+                    
+                    <p style="margin-top: 1rem;"><strong>Diagnóstico:</strong></p>
+                    <pre style="margin: 0.5rem 0;"><code class="language-bash">vmstat 1
+# cs (context switches) = 150,000 por segundo</code></pre>
+                    
+                    <p style="margin-top: 1rem;"><strong>Causa Raíz:</strong></p>
+                    <ul>
+                        <li>La aplicación tenía un pool de conexiones configurado para 1000 conexiones</li>
+                        <li>El servidor solo ejecutaba 100 queries concurrentes</li>
+                        <li>900 procesos estaban competiendo por CPU innecesariamente</li>
+                    </ul>
+                    
+                    <p style="margin-top: 1rem;"><strong>Solución:</strong></p>
+                    <ul>
+                        <li>Reducir el pool de conexiones a 150</li>
+                        <li>Implementar pgBouncer para manejar la multiplexación</li>
+                        <li>Context switches bajaron a 5,000/segundo</li>
+                        <li>Tiempo de respuesta volvió a la normalidad</li>
+                    </ul>
+                    
+                    <p style="margin-top: 1rem; color: #991b1b;"><strong>Lección:</strong> Más procesos ≠ Más rendimiento. El overhead de cambio de contexto puede destruir el performance.</p>
+                </div>
+            </div>
+
+            <div class="card" style="margin: 1.5rem 0; border-left: 4px solid #2563eb;">
+                <h4 style="color: #1e40af; margin-bottom: 1rem;">🔄 Diagrama: Estados de un Proceso con Transiciones Visuales</h4>
+                
+                <div style="background: #1e293b; color: #e2e8f0; padding: 1.5rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; line-height: 1.6;">
+<pre style="background: transparent; margin: 0; padding: 0;">
+    ┌─────────────┐
+    │   NUEVO     │  ← fork() crea el proceso
+    └──────┬──────┘
+           │ admitido
+           ▼
+    ┌─────────────┐     ┌─────────────┐
+    │   LISTO     │←────│  EJECUCIÓN  │  ← CPU ejecutando
+    │  (Ready)    │     │  (Running)  │     instrucciones
+    └──────┬──────┘     └──────┬──────┘
+           │                   │
+   despacho│                   │interrupción
+   (CPU    │                   │(quantum
+   libre)  │                   │ expirado)
+           │                   │
+           └─────────┬─────────┘
+                     │
+         I/O iniciada│
+                     ▼
+              ┌─────────────┐
+              │  BLOQUEADO  │  ← Esperando I/O
+              │   (Wait)    │     (disco, red,
+              └──────┬──────┘     usuario)
+                     │
+         I/O         │
+         completada  │
+                     ▼
+              ┌─────────────┐
+              │  TERMINADO  │  ← exit() llamado
+              │   (Zombie)  │     o kill recibido
+              └─────────────┘
+</pre>
+                </div>
+                
+                <div style="background: #eff6ff; padding: 1rem; border-radius: 6px; margin-top: 1rem;">
+                    <p style="margin: 0;"><strong>Transiciones clave:</strong></p>
+                    <ul style="margin-top: 0.5rem;">
+                        <li><strong>NUEVO → LISTO:</strong> El SO asigna PCB y recursos</li>
+                        <li><strong>LISTO → EJECUCIÓN:</strong> El scheduler selecciona el proceso</li>
+                        <li><strong>EJECUCIÓN → BLOQUEADO:</strong> El proceso solicita I/O</li>
+                        <li><strong>BLOQUEADO → LISTO:</strong> La I/O se completa</li>
+                        <li><strong>EJECUCIÓN → LISTO:</strong> El quantum expira (Round Robin)</li>
+                        <li><strong>EJECUCIÓN → TERMINADO:</strong> El proceso finaliza</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
         <section id="conexion-evaluacion" style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-left: 5px solid #f59e0b; padding: 2rem; margin: 2rem 0; border-radius: 8px;">
             <h2 style="color: #92400e; margin-bottom: 1.5rem;">📋 Conexión con Evaluación</h2>
             
