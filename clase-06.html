@@ -510,7 +510,7 @@
                 <li><a href="#powershell-servicios">PowerShell para Servicios</a></li>
                 <li><a href="#sc-exe">sc.exe - Crear Servicios</a></li>
                 <li><a href="#practica">Práctica Guiada</a></li>
-                <li><a href="#entregable">Entregable</a></li>
+                
                 <li><a href="#resumen">Resumen</a></li>
             </ul>
         </nav>
@@ -1049,113 +1049,44 @@ start= disabled - Deshabilitado</code></pre>
             </div>
         </section>
 
-        <!-- Entregable -->
-        <section id="entregable">
-            <h2>Entregable de la Clase</h2>
-
-            <div class="actividad">
-                <h3>Script: gestion_procesos.ps1</h3>
-                <p><strong>Descripción:</strong> Script en PowerShell que muestra información de procesos y servicios</p>
-                <p><strong>Requisitos:</strong></p>
-                <ul>
-                    <li>Mostrar top 5 procesos por CPU</li>
-                    <li>Mostrar top 5 procesos por memoria</li>
-                    <li>Mostrar fecha y hora del reporte</li>
-                    <li>Mostrar servicios que están ejecutándose</li>
-                    <li>Guardar reporte en archivo con timestamp</li>
-                </ul>
-
-                <h4>Estructura sugerida:</h4>
-                <pre><code class="language-powershell"># gestion_procesos.ps1
-# Script de gestión de procesos y servicios en Windows
-
-# Fecha y hora
-$fecha = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
-$archivo = "reporte_$(Get-Date -Format 'yyyyMMdd_HHmmss').txt"
-
-# Crear reporte
-$contenido = @"
-=== REPORTE DE PROCESOS Y SERVICIOS ===
-Fecha: $fecha
-========================================
-
-=== TOP 5 PROCESOS POR CPU ===
-"@
-
-$procesosCPU = Get-Process | Sort-Object CPU -Descending | Select-Object -First 5
-foreach ($proc in $procesosCPU) {
-    $contenido += "$($proc.Name.PadRight(20)) CPU: $($proc.CPU.ToString('F2'))`n"
-}
-
-$contenido += "`n=== TOP 5 PROCESOS POR MEMORIA ===`n"
-$procesosMem = Get-Process | Sort-Object WorkingSet -Descending | Select-Object -First 5
-foreach ($proc in $procesosMem) {
-    $memMB = [math]::Round($proc.WorkingSet / 1MB, 2)
-    $contenido += "$($proc.Name.PadRight(20)) Memoria: ${memMB} MB`n"
-}
-
-$contenido += "`n=== SERVICIOS EJECUTÁNDOSE ===`n"
-$servicios = Get-Service | Where-Object Status -eq "Running"
-foreach ($serv in $servicios) {
-    $contenido += "$($serv.Name.PadRight(30)) Estado: $($serv.Status)`n"
-}
-
-# Mostrar y guardar
-Write-Host $contenido
-$contenido | Out-File -FilePath $archivo -Encoding UTF8
-Write-Host "`nReporte guardado en: $archivo"</code></pre>
-
-                <p><strong>Instrucciones de entrega:</strong></p>
-                <ol>
-                    <li>Guardar el script como <code>gestion_procesos.ps1</code></li>
-                    <li>Ejecutar el script: <code>powershell -ExecutionPolicy Bypass -File gestion_procesos.ps1</code></li>
-                    <li>Capturar la salida del script</li>
-                    <li>Entregar: script + captura de ejecución</li>
-                </ol>
+        <!-- Práctica Adicional -->
+        <section id="practica-adicional">
+            <h2>Práctica Adicional (No Evaluativa)</h2>
+            
+            <div class="callout info" style="margin-bottom: 1.5rem;">
+                <strong>Esta sección es para practicar por tu cuenta.</strong> No es un entregable ni cuenta para la nota. ¡Úsala para reforzar lo aprendido!
             </div>
 
-            <h3>Rúbrica de Evaluación</h3>
-            <table class="rubrica-table">
-                <thead>
-                    <tr>
-                        <th>Criterio</th>
-                        <th class="level-excelente">Excelente (4)</th>
-                        <th class="level-bueno">Bueno (3)</th>
-                        <th class="level-satisfactorio">Satisfactorio (2)</th>
-                        <th class="level-insuficiente">Insuficiente (1)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Funcionalidad del Script</strong></td>
-                        <td>Script funciona correctamente, muestra top 5 CPU y memoria, servicios y guarda en archivo</td>
-                        <td>Script funciona pero falta uno de los requisitos</td>
-                        <td>Script parcial, funciona parcialmente</td>
-                        <td>Script no funciona o incompleto</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Uso de cmdlets PowerShell</strong></td>
-                        <td>Usa correctamente Get-Process, Get-Service y otros cmdlets relevantes</td>
-                        <td>Usa la mayoría de cmdlets correctamente</td>
-                        <td>Cmdlets básicos funcionan</td>
-                        <td>Cmdlets incorrectos o mal usados</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Gestión de Servicios</strong></td>
-                        <td>Muestra servicios correctamente y entiende su funcionamiento</td>
-                        <td>Muestra servicios con algunos errores</td>
-                        <td>Muestra solo procesos</td>
-                        <td>No diferencia procesos de servicios</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Ejecución y Captura</strong></td>
-                        <td>Captura de pantalla clara del script ejecutándose en Windows</td>
-                        <td>Captura presente pero incompleta</td>
-                        <td>Captura mínima</td>
-                        <td>Sin captura de ejecución</td>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="actividad">
+                <h3>Ejercicio de Refuerzo: Script en PowerShell</h3>
+                <p><strong>Objetivo:</strong> Crear un script en PowerShell que muestre información del sistema.</p>
+                
+                <p><strong>Actividad sugerida:</strong></p>
+                <ol>
+                    <li>Abre PowerShell en tu computadora</li>
+                    <li>Crea un archivo llamado <code>mi_reporte.ps1</code></li>
+                    <li>Intenta incluir comandos que muestren:
+                        <ul>
+                            <li>La fecha y hora actual</li>
+                            <li>Los 5 procesos con mayor uso de CPU</li>
+                            <li>Los 5 procesos con mayor uso de memoria</li>
+                            <li>Lista de servicios que están ejecutándose</li>
+                        </ul>
+                    </li>
+                    <li>Prueba ejecutar el script y observa los resultados</li>
+                </ol>
+
+                <p><strong>Comandos útiles para empezar:</strong></p>
+                <ul>
+                    <li><code>Get-Date</code> - Muestra fecha y hora</li>
+                    <li><code>Get-Process</code> - Lista procesos</li>
+                    <li><code>Get-Service</code> - Lista servicios</li>
+                </ul>
+
+                <div class="callout success">
+                    <strong>Consejo:</strong> PowerShell puede ser intimidante al principio. Empieza con un solo comando y ve agregando más. No necesitas que sea perfecto, la idea es experimentar.
+                </div>
+            </div>
         </section>
 
         <!-- Resumen -->

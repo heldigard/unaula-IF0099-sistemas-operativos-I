@@ -158,7 +158,7 @@
                 <li><a href="#sistemas">Sistemas de Archivos Básicos</a></li>
                 <li><a href="#es">Gestión de E/S</a></li>
                 <li><a href="#practica">Práctica en Linux</a></li>
-                <li><a href="#entregable">Entregable</a></li>
+                
             </ul>
         </nav>
 
@@ -444,31 +444,45 @@ iotop
             </div>
         </section>
 
-        <section id="entregable">
-            <h2>6. Entregable de la Clase</h2>
+        <section id="practica-adicional">
+            <h2>Práctica Adicional (No Evaluativa)</h2>
+            
+            <div class="callout info" style="margin-bottom: 1.5rem;">
+                <strong>Esta sección es para practicar por tu cuenta.</strong> No es un entregable ni cuenta para la nota. ¡Úsala para reforzar lo aprendido!
+            </div>
             
             <div class="actividad">
-                <h3>Análisis de Almacenamiento</h3>
-                <p><strong>Descripción:</strong> Documento técnico sobre discos y E/S en tu VM Ubuntu</p>
+                <h3>Ejercicio de Refuerzo: Explorando Discos</h3>
+                <p><strong>Objetivo:</strong> Ver la información de discos y particiones en tu sistema.</p>
                 
-                <h4>Requisitos:</h4>
+                <h4>Actividades sugeridas:</h4>
                 <ol>
-                    <li>Captura de <code>lsblk</code> con explicación de cada columna</li>
-                    <li>Captura de <code>fdisk -l</code> mostrando particiones</li>
-                    <li>Tabla comparativa: MBR vs GPT</li>
-                    <li>Diagrama de componentes de un disco HDD</li>
-                    <li>Comparación de tiempos de acceso: HDD vs SSD</li>
+                    <li><strong>Lista tus discos:</strong>
+                        <ul>
+                            <li>Ejecuta <code>lsblk</code></li>
+                            <li>Verás todos los discos conectados (HDD, SSD, USB)</li>
+                            <li>Identifica cuál es tu disco principal (suele ser el más grande)</li>
+                        </ul>
+                    </li>
+                    <li><strong>Observa las particiones:</strong>
+                        <ul>
+                            <li>Ejecuta <code>sudo fdisk -l</code></li>
+                            <li>Verás información detallada de cada partición</li>
+                            <li>¿Cuántas particiones tiene tu disco?</li>
+                        </ul>
+                    </li>
+                    <li><strong>Compara tecnologías:</strong>
+                        <ul>
+                            <li>Busca en internet: "HDD vs SSD diferencias"</li>
+                            <li>Crea una tabla con 3 diferencias principales</li>
+                            <li>¿Cuál prefieres para tu sistema operativo? ¿Por qué?</li>
+                        </ul>
+                    </li>
                 </ol>
 
-                <h4>Rúbrica:</h4>
-                <table>
-                    <tr><th>Criterio</th><th>Puntaje</th></tr>
-                    <tr><td>Capturas con comandos correctos</td><td>25%</td></tr>
-                    <tr><td>Explicación técnica de salidas</td><td>25%</td></tr>
-                    <tr><td>Comparativa MBR vs GPT completa</td><td>20%</td></tr>
-                    <tr><td>Diagrama claro de componentes</td><td>15%</td></tr>
-                    <tr><td>Comparación HDD vs SSD</td><td>15%</td></tr>
-                </table>
+                <div class="callout success">
+                    <strong>Consejo:</strong> Entender cómo funcionan los discos te ayuda a tomar mejores decisiones al comprar hardware o configurar sistemas.
+                </div>
             </div>
         </section>
 

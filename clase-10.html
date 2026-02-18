@@ -470,7 +470,7 @@
                 <li><a href="#monitoreo">6. Monitoreo de Memoria</a></li>
                 <li><a href="#linux-windows">7. Comparación Linux vs Windows</a></li>
                 <li><a href="#practica">8. Actividad Práctica</a></li>
-                <li><a href="#entregable">Entregable</a></li>
+                
                 <li><a href="#resumen">Resumen</a></li>
             </ul>
         </nav>
@@ -1151,81 +1151,46 @@ Get-Process | Sort-Object WorkingSet -Descending |
             <p><strong>Tiempo estimado:</strong> 60 minutos</p>
         </section>
 
-        <section id="entregable">
-            <h2>Entregable de la Clase</h2>
-
-            <h3>Requisitos:</h3>
-
-            <ol>
-                <li><strong>Script de monitoreo</strong> de memoria en Linux
-                    <ul>
-                        <li>Alerta cuando umbral es superado</li>
-                        <li>Registra eventos en log</li>
-                        <li>Envía notificación (opcional)</li>
-                    </ul>
-                </li>
-                <li><strong>Informe comparativo</strong> Linux vs Windows
-                    <ul>
-                        <li>Capturas de pantalla de herramientas</li>
-                        <li>Análisis de diferencias en gestión de memoria</li>
-                        <li>Tabla comparativa de políticas y algoritmos</li>
-                    </ul>
-                </li>
-                <li><strong>Análisis de thrashing:</strong>
-                    <ul>
-                        <li>Descripción del fenómeno</li>
-                        <li>Cómo detectarlo</li>
-                        <li>Estrategias para prevenirlo</li>
-                    </ul>
-                </li>
-            </ol>
-
-            <div class="callout success">
-                <strong>Formato de entrega:</strong> Script en bash (.sh) + informe en PDF con capturas y análisis comparativo.
+        <section id="practica-adicional">
+            <h2>Práctica Adicional (No Evaluativa)</h2>
+            
+            <div class="callout info" style="margin-bottom: 1.5rem;">
+                <strong>Esta sección es para practicar por tu cuenta.</strong> No es un entregable ni cuenta para la nota. ¡Úsala para reforzar lo aprendido!
             </div>
+            
+            <div class="actividad">
+                <h3>Ejercicio de Refuerzo: Explorando Memoria Virtual</h3>
+                <p><strong>Objetivo:</strong> Observar cómo tu sistema gestiona la memoria virtual.</p>
+                
+                <h4>Actividades sugeridas:</h4>
+                <ol>
+                    <li><strong>Monitorea tu memoria:</strong>
+                        <ul>
+                            <li>Ejecuta <code>free -h</code> en tu terminal</li>
+                            <li>¿Cuánta RAM total tienes? ¿Cuánta está libre?</li>
+                            <li>¿Estás usando swap (memoria en disco)?</li>
+                        </ul>
+                    </li>
+                    <li><strong>Observa procesos:</strong>
+                        <ul>
+                            <li>Ejecuta <code>top</code> y ordena por uso de memoria (presiona <code>Shift+M</code>)</li>
+                            <li>¿Qué proceso consume más memoria?</li>
+                            <li>Presiona <code>q</code> para salir</li>
+                        </ul>
+                    </li>
+                    <li><strong>Investiga el swap:</strong>
+                        <ul>
+                            <li>Ejecuta <code>swapon -s</code></li>
+                            <li>Si hay swap configurado, verás su tamaño</li>
+                            <li>El swap es como "extender" tu RAM usando el disco duro</li>
+                        </ul>
+                    </li>
+                </ol>
 
-            <h3>Rúbrica de Evaluación</h3>
-            <table class="rubrica-table">
-                <thead>
-                    <tr>
-                        <th>Criterio</th>
-                        <th class="level-excelente">Excelente (4)</th>
-                        <th class="level-bueno">Bueno (3)</th>
-                        <th class="level-satisfactorio">Satisfactorio (2)</th>
-                        <th class="level-insuficiente">Insuficiente (1)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Conceptos de Memoria Virtual</strong></td>
-                        <td>Explica claramente paginación, swapping, thrashing con ejemplos</td>
-                        <td>Conoce los conceptos principales</td>
-                        <td>Solo conoce términos</td>
-                        <td>No conoce memoria virtual</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Monitoreo en Linux</strong></td>
-                        <td>Usa free, vmstat, top para analizar memoria</td>
-                        <td>Usa free y top</td>
-                        <td>Usa solo un comando</td>
-                        <td>No sabe monitorear memoria</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Monitoreo en Windows</strong></td>
-                        <td>Usa Performance Monitor, Task Manager, PowerShell</td>
-                        <td>Usa Task Manager</td>
-                        <td>Solo observa memoria</td>
-                        <td>No sabe monitorear</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Análisis Comparativo</strong></td>
-                        <td>Compara correctamente gestión de memoria Linux vs Windows</td>
-                        <td>Hace comparación básica</td>
-                        <td>Mención superficial</td>
-                        <td>No hace comparación</td>
-                    </tr>
-                </tbody>
-            </table>
+                <div class="callout success">
+                    <strong>Consejo:</strong> La memoria virtual permite que tu computadora ejecute más programas de los que cabrían en la RAM física. Es como tener un escritorio pequeño pero usar el piso como espacio adicional.
+                </div>
+            </div>
         </section>
 
         <section id="resumen">

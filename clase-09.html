@@ -159,7 +159,7 @@
                 <li><a href="#tlb">TLB y Traducción</a></li>
                 <li><a href="#segmentacion">Segmentación</a></li>
                 <li><a href="#practica">Práctica en Linux</a></li>
-                <li><a href="#entregable">Entregable</a></li>
+                <li><a href="#practica-adicional">Práctica Adicional</a></li>
             </ul>
         </nav>
 
@@ -409,31 +409,45 @@ sudo cat /proc/[PID]/pagemap
             </div>
         </section>
 
-        <section id="entregable">
-            <h2>7. Entregable de la Clase</h2>
+        <section id="practica-adicional">
+            <h2>Práctica Adicional (No Evaluativa)</h2>
+            
+            <div class="callout info" style="margin-bottom: 1.5rem;">
+                <strong>Esta sección es para practicar por tu cuenta.</strong> No es un entregable ni cuenta para la nota. ¡Úsala para reforzar lo aprendido!
+            </div>
             
             <div class="actividad">
-                <h3>Análisis de Paginación y Memoria</h3>
-                <p><strong>Descripción:</strong> Documento técnico sobre paginación en tu VM Ubuntu</p>
+                <h3>Ejercicio de Refuerzo: Explorando Paginación</h3>
+                <p><strong>Objetivo:</strong> Ver cómo funciona la paginación en tu sistema.</p>
                 
-                <h4>Requisitos:</h4>
+                <h4>Actividades sugeridas:</h4>
                 <ol>
-                    <li>Captura de <code>getconf PAGE_SIZE</code> y explicación</li>
-                    <li>Mapa de memoria de un proceso (<code>/proc/[PID]/maps</code>)</li>
-                    <li>Diagrama de traducción dirección lógica → física</li>
-                    <li>Comparación tabla: paginación vs segmentación</li>
-                    <li>Ejemplo numérico de traducción de dirección</li>
+                    <li><strong>Descubre el tamaño de página:</strong>
+                        <ul>
+                            <li>Ejecuta: <code>getconf PAGE_SIZE</code></li>
+                            <li>El resultado suele ser 4096 (bytes) = 4KB</li>
+                            <li>Este es el tamaño de cada "página" de memoria en tu sistema</li>
+                        </ul>
+                    </li>
+                    <li><strong>Observa el mapa de memoria:</strong>
+                        <ul>
+                            <li>Abre una terminal y ejecuta: <code>cat /proc/self/maps</code></li>
+                            <li>Verás direcciones de memoria asignadas a tu propia terminal</li>
+                            <li>Cada línea representa una región de memoria</li>
+                        </ul>
+                    </li>
+                    <li><strong>Dibuja la traducción:</strong>
+                        <ul>
+                            <li>En una hoja de papel, dibuja: Dirección Lógica → Tabla de Páginas → Dirección Física</li>
+                            <li>Divide la dirección lógica en "Número de Página" y "Offset"</li>
+                            <li>No tiene que ser perfecto, solo para entender el flujo</li>
+                        </ul>
+                    </li>
                 </ol>
 
-                <h4>Rúbrica:</h4>
-                <table>
-                    <tr><th>Criterio</th><th>Puntaje</th></tr>
-                    <tr><td>Capturas con comandos correctos</td><td>25%</td></tr>
-                    <tr><td>Mapa de memoria analizado</td><td>25%</td></tr>
-                    <tr><td>Diagrama de traducción claro</td><td>20%</td></tr>
-                    <tr><td>Comparación técnica completa</td><td>20%</td></tr>
-                    <tr><td>Ejemplo numérico correcto</td><td>10%</td></tr>
-                </table>
+                <div class="callout success">
+                    <strong>Consejo:</strong> La paginación puede parecer compleja, pero es solo una forma de organizar la memoria. La práctica la hace más clara.
+                </div>
             </div>
         </section>
 

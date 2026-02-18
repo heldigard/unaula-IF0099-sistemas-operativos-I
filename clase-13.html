@@ -158,7 +158,7 @@
                 <li><a href="#montaje">Montaje y Desmontaje</a></li>
                 <li><a href="#raid">RAID Básico</a></li>
                 <li><a href="#practica">Práctica en Linux</a></li>
-                <li><a href="#entregable">Entregable</a></li>
+                
             </ul>
         </nav>
 
@@ -456,31 +456,52 @@ sudo mdadm --detail --scan >> /etc/mdadm/mdadm.conf
             </div>
         </section>
 
-        <section id="entregable">
-            <h2>6. Entregable de la Clase</h2>
+        <section id="practica-adicional">
+            <h2>Práctica Adicional (No Evaluativa)</h2>
+            
+            <div class="callout info" style="margin-bottom: 1.5rem;">
+                <strong>Esta sección es para practicar por tu cuenta.</strong> No es un entregable ni cuenta para la nota. ¡Úsala para reforzar lo aprendido!
+            </div>
             
             <div class="actividad">
-                <h3>Implementación de Almacenamiento</h3>
-                <p><strong>Descripción:</strong> Documento técnico sobre implementación de sistemas de archivos</p>
+                <h3>Ejercicio de Refuerzo: Explorando Sistemas de Archivos Avanzados</h3>
+                <p><strong>Objetivo:</strong> Entender conceptos avanzados de sistemas de archivos.</p>
                 
-                <h4>Requisitos:</h4>
+                <h4>Actividades sugeridas:</h4>
                 <ol>
-                    <li>Captura de <code>dumpe2fs</code> explicando 5 campos importantes</li>
-                    <li>Diagrama de la estructura de un sistema de archivos</li>
-                    <li>Explicación del proceso de journaling con diagrama</li>
-                    <li>Tabla de <code>/etc/fstab</code> explicando cada columna</li>
-                    <li>Comparativa RAID: escoger nivel para un escenario real y justificar</li>
+                    <li><strong>Explora el superblock:</strong>
+                        <ul>
+                            <li>Si tienes acceso root: <code>sudo dumpe2fs /dev/sda1 | head -20</code></li>
+                            <li>OBS: Este comando muestra metadatos internos del sistema de archivos</li>
+                            <li>Busca: tamaño de bloque, número de inodos, UUID</li>
+                        </ul>
+                    </li>
+                    <li><strong>Entiende el journaling:</strong>
+                        <ul>
+                            <li>Investiga: "¿Qué es journaling en sistemas de archivos?"</li>
+                            <li>Es como un "diario" donde se anotan los cambios antes de hacerlos</li>
+                            <li>¿Por qué es importante si se corta la luz?</li>
+                        </ul>
+                    </li>
+                    <li><strong>Revisa tus montajes:</strong>
+                        <ul>
+                            <li>Ejecuta <code>cat /etc/fstab</code></li>
+                            <li>Cada línea representa un disco o partición que se monta al iniciar</li>
+                            <li>Identifica cuál es tu disco principal</li>
+                        </ul>
+                    </li>
+                    <li><strong>Aprende sobre RAID:</strong>
+                        <ul>
+                            <li>Busca: "RAID 0 vs RAID 1 vs RAID 5"</li>
+                            <li>Crea una tabla comparando velocidad y seguridad</li>
+                            <li>¿Cuál usarías para guardar fotos familiares?</li>
+                        </ul>
+                    </li>
                 </ol>
 
-                <h4>Rúbrica:</h4>
-                <table>
-                    <tr><th>Criterio</th><th>Puntaje</th></tr>
-                    <tr><td>Análisis de superblock</td><td>20%</td></tr>
-                    <tr><td>Diagrama estructura FS</td><td>20%</td></tr>
-                    <tr><td>Explicación journaling</td><td>20%</td></tr>
-                    <tr><td>Análisis fstab</td><td>20%</td></tr>
-                    <tr><td>Justificación RAID</td><td>20%</td></tr>
-                </table>
+                <div class="callout success">
+                    <strong>Consejo:</strong> Estos conceptos avanzados son fundamentales si algún día trabajas con servidores o administración de sistemas. Tómate tu tiempo para entenderlos.
+                </div>
             </div>
         </section>
 

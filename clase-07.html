@@ -456,7 +456,7 @@
                 <li><a href="#condiciones">Condiciones de Deadlock</a></li>
                 <li><a href="#prevencion">Prevención y Evitación</a></li>
                 <li><a href="#ejercicios">Ejercicios Conceptuales</a></li>
-                <li><a href="#entregable">Entregable</a></li>
+                
                 <li><a href="#resumen">Resumen</a></li>
             </ul>
         </nav>
@@ -1045,111 +1045,48 @@ lock(Lock1, Lock2) {
             </div>
         </section>
 
-        <!-- Entregable -->
-        <section id="entregable">
-            <h2>Entregable de la Clase</h2>
+        <!-- Práctica Adicional -->
+        <section id="practica-adicional">
+            <h2>Práctica Adicional (No Evaluativa)</h2>
+            
+            <div class="callout info" style="margin-bottom: 1.5rem;">
+                <strong>Esta sección es para practicar por tu cuenta.</strong> No es un entregable ni cuenta para la nota. ¡Úsala para reforzar lo aprendido!
+            </div>
 
-            <div class="callout info" style="margin-bottom: 2rem;">
-                <h3 style="margin-top: 0;">📋 Estructura del Entregable</h3>
-                <p>El entregable tiene <strong>dos partes obligatorias</strong>:</p>
+            <div class="actividad">
+                <h3>Ejercicio de Refuerzo: Explorando Hilos y Sincronización</h3>
+                <p><strong>Objetivo:</strong> Familiarizarte con conceptos de hilos y sincronización mediante ejemplos prácticos.</p>
+                
+                <p><strong>Actividades sugeridas:</strong></p>
                 <ol>
-                    <li><strong>Parte Práctica (50%):</strong> Capturas y análisis de los 5 ejercicios prácticos</li>
-                    <li><strong>Parte Conceptual (50%):</strong> Respuestas a los 3 ejercicios conceptuales</li>
+                    <li><strong>Observa los hilos de un proceso:</strong>
+                        <ul>
+                            <li>Abre una terminal y ejecuta: <code>ps -eLf | grep bash</code></li>
+                            <li>¿Cuántas columnas "LWP" (hilos) ves?</li>
+                            <li>Esto muestra que hasta un simple shell usa múltiples hilos</li>
+                        </ul>
+                    </li>
+                    <li><strong>Entiende la condición de carrera:</strong>
+                        <ul>
+                            <li>Imagina que tú y un compañero intentan editar el mismo archivo de Word al mismo tiempo</li>
+                            <li>¿Qué problemas podrían ocurrir?</li>
+                            <li>¿Cómo los prevenirías? (pista: un solo usuario a la vez)</li>
+                        </ul>
+                    </li>
+                    <li><strong>Piensa en deadlock:</strong>
+                        <ul>
+                            <li>Dos personas entran a una habitación con dos puertas</li>
+                            <li>Persona A bloquea puerta 1 y espera puerta 2</li>
+                            <li>Persona B bloquea puerta 2 y espera puerta 1</li>
+                            <li>¿Pueden salir? ¿Cómo evitarías esto?</li>
+                        </ul>
+                    </li>
                 </ol>
+
+                <div class="callout success">
+                    <strong>Consejo:</strong> Estos conceptos pueden parecer abstractos al principio. La clave es relacionarlos con situaciones de la vida real. No te preocupes si no los dominas de inmediato.
+                </div>
             </div>
-
-            <div class="ejercicio">
-                <h3>Parte 1: Documentación de Ejercicios Prácticos (50%)</h3>
-                <p><strong>Descripción:</strong> Documenta la ejecución de los 5 ejercicios prácticos</p>
-                <p><strong>Requisitos:</strong></p>
-                <ul>
-                    <li>Captura de pantalla de cada ejercicio práctico ejecutado</li>
-                    <li>Comandos utilizados visibles en las capturas</li>
-                    <li>Breve análisis (2-3 líneas) de lo observado en cada ejercicio</li>
-                    <li>Ejercicio 1: Conteo de threads observados</li>
-                    <li>Ejercicio 2: Lista de threads de tu shell</li>
-                    <li>Ejercicio 3: Valor final del archivo y explicación de race condition</li>
-                    <li>Ejercicio 4: Lista de procesos bloqueados encontrados</li>
-                    <li>Ejercicio 5: Explicación del mecanismo flock observado</li>
-                </ul>
-            </div>
-
-            <div class="ejercicio">
-                <h3>Parte 2: Respuestas a Ejercicios Conceptuales (50%)</h3>
-                <p><strong>Descripción:</strong> Responde los 3 ejercicios conceptuales planteados</p>
-                <p><strong>Requisitos:</strong></p>
-                <ul>
-                    <li>Responde cada ejercicio en 1-2 párrafos</li>
-                    <li>Incluye diagramas si ayuda a explicar (dibujados a mano o ASCII)</li>
-                    <li>Explica claramente el mecanismo de sincronización que usarías</li>
-                    <li>Identifica posibles casos de deadlock en cada problema</li>
-                    <li>Explica cómo los prevenirías</li>
-                </ul>
-
-                <h4>Formato de entrega:</h4>
-                <ul>
-                    <li>Documento PDF único que combine ambas partes</li>
-                    <li>Incluye nombre, fecha y secciones claramente marcadas</li>
-                    <li>Parte 1: "Ejercicios Prácticos" con capturas</li>
-                    <li>Parte 2: "Ejercicios Conceptuales" con respuestas</li>
-                </ul>
-            </div>
-
-            <h3>Rúbrica de Evaluación (100 puntos)</h3>
-            <table class="rubrica-table">
-                <thead>
-                    <tr>
-                        <th>Criterio</th>
-                        <th class="level-excelente">Excelente (4)</th>
-                        <th class="level-bueno">Bueno (3)</th>
-                        <th class="level-satisfactorio">Satisfactorio (2)</th>
-                        <th class="level-insuficiente">Insuficiente (1)</th>
-                        <th>Peso</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Ejercicios Prácticos - Completitud</strong></td>
-                        <td>Los 5 ejercicios prácticos completos con capturas y análisis</td>
-                        <td>4 ejercicios prácticos completos</td>
-                        <td>2-3 ejercicios prácticos completos</td>
-                        <td>Menos de 2 ejercicios o sin capturas</td>
-                        <td>25%</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Ejercicios Prácticos - Análisis</strong></td>
-                        <td>Análisis profundo de cada observación, conexión clara con teoría</td>
-                        <td>Análisis correcto de la mayoría de ejercicios</td>
-                        <td>Análisis superficial o incompleto</td>
-                        <td>Sin análisis o solo capturas sin explicación</td>
-                        <td>25%</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Comprensión de Conceptos</strong></td>
-                        <td>Explica claramente mutex, semáforos, monitores con ejemplos precisos</td>
-                        <td>Explica los conceptos con algunas imprecisiones</td>
-                        <td>Explicaciones básicas con errores</td>
-                        <td>No entiende los conceptos</td>
-                        <td>20%</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Análisis de Deadlock</strong></td>
-                        <td>Identifica correctamente las 4 condiciones de deadlock y propone soluciones</td>
-                        <td>Identifica deadlock pero no todas las condiciones</td>
-                        <td>Reconoce deadlock pero no sabe cómo resolverlo</td>
-                        <td>No identifica deadlock</td>
-                        <td>15%</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Calidad de Explicación</strong></td>
-                        <td>Explicaciones claras, bien estructuradas, con diagramas si aplica</td>
-                        <td>Explicaciones claras sin diagramas</td>
-                        <td>Explicaciones confusas</td>
-                        <td>Sin explicaciones o Copiadas</td>
-                        <td>15%</td>
-                    </tr>
-                </tbody>
-            </table>
         </section>
 
         <!-- Resumen -->
