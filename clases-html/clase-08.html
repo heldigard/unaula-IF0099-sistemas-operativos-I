@@ -159,7 +159,7 @@
                 <li><a href="#particiones">Particiones Fijas vs Dinámicas</a></li>
                 <li><a href="#fragmentacion">Fragmentación</a></li>
                 <li><a href="#practica">Práctica en Linux</a></li>
-                <li><a href="#entregable">Entregable</a></li>
+                <li><a href="#practica-adicional">Práctica Adicional</a></li>
             </ul>
         </nav>
 
@@ -397,93 +397,213 @@ vmstat 1 5
             </div>
 
             <div class="actividad">
-                <h3>Ejercicio 4: Simulación de Asignación de Memoria</h3>
-                <p><strong>Tiempo:</strong> 20 minutos</p>
-                <p><strong>Escenario:</strong> Memoria de 1000KB con particiones fijas de 200KB cada una</p>
+                <h3>Ejercicio 4: Fragmentación Interna (Particiones Fijas)</h3>
+                <p><strong>Tiempo:</strong> 15 minutos</p>
+                
+                <div class="callout info" style="margin-bottom: 1rem;">
+                    <strong>¿Qué es fragmentación interna?</strong><br>
+                    Es el espacio DESPERDICIADO DENTRO de una partición cuando el proceso es más pequeño que el espacio asignado.
+                </div>
+                
+                <p><strong>Situación práctica:</strong> Imagina que tienes tres cajas (particiones) de 200KB cada una. Llegan tres paquetes (procesos): uno de 150KB, otro de 180KB y otro de 50KB. Cada paquete va en una caja.</p>
+                
+                <p><strong>Pregunta:</strong> ¿Cuánto espacio sobra (se desperdicia) en cada caja?</p>
+                
+                <p><strong>Calcula paso a paso:</strong></p>
                 <ol>
-                    <li>Proceso A llega y necesita 150KB → ¿En qué partición va?</li>
-                    <li>Proceso B llega y necesita 180KB → ¿En qué partición va?</li>
-                    <li>Proceso C llega y necesita 50KB → ¿En qué partición va?</li>
-                    <li>Calcula: ¿Cuánta memoria se desperdicia en cada partición (fragmentación interna)?</li>
-                    <li>Total: ¿Cuánta memoria total se desperdicia?</li>
+                    <li>Caja 1 tiene 200KB, paquete ocupa 150KB → Espacio libre dentro de la caja: <code>200 - 150 =</code> _____ KB</li>
+                    <li>Caja 2 tiene 200KB, paquete ocupa 180KB → Espacio libre dentro de la caja: <code>200 - 180 =</code> _____ KB</li>
+                    <li>Caja 3 tiene 200KB, paquete ocupa 50KB → Espacio libre dentro de la caja: <code>200 - 50 =</code> _____ KB</li>
                 </ol>
+                
+                <p><strong>Total desperdiciado:</strong> Suma los tres espacios libres = _____ KB</p>
+                
                 <div class="callout warning">
-                    <strong>Respuesta esperada:</strong> Fragmentación interna total = (200-150) + (200-180) + (200-50) = 50 + 20 + 150 = 220KB desperdiciados
+                    <strong>Reflexión:</strong> Aunque hay espacio libre dentro de las cajas, NO se puede usar para otros paquetes porque cada caja está asignada a un solo paquete. ¡Ese espacio se pierde!
                 </div>
             </div>
 
             <div class="actividad">
-                <h3>Ejercicio 5: Simulación de Fragmentación Externa</h3>
-                <p><strong>Tiempo:</strong> 20 minutos</p>
-                <p><strong>Escenario:</strong> Memoria de 1000KB usando particiones dinámicas</p>
-                <ol>
-                    <li>Estado inicial: Memoria vacía [1000KB libre]</li>
-                    <li>Proceso A (300KB) llega → [A:300KB][libre:700KB]</li>
-                    <li>Proceso B (200KB) llega → [A:300KB][B:200KB][libre:500KB]</li>
-                    <li>Proceso C (400KB) llega → [A:300KB][B:200KB][C:400KB][libre:100KB]</li>
-                    <li>Proceso B termina → [A:300KB][libre:200KB][C:400KB][libre:100KB]</li>
-                    <li>Proceso D (250KB) intenta llegar → ¿Puede entrar?</li>
-                    <li>Calcula: ¿Cuánta memoria libre hay? ¿Por qué no entra el proceso D?</li>
-                </ol>
-                <div class="callout danger">
-                    <strong>Análisis:</strong> Hay 300KB libres (200+100) pero no contiguos. El proceso D necesita 250KB contiguos → No puede entrar aunque haya suficiente memoria total. ¡Esto es fragmentación externa!
-                </div>
-            </div>
-
-            <div class="actividad">
-                <h3>Ejercicio 6: Cálculo de Direcciones Físicas (Base-Límite)</h3>
+                <h3>Ejercicio 5: Fragmentación Externa (Particiones Dinámicas)</h3>
                 <p><strong>Tiempo:</strong> 15 minutos</p>
-                <p><strong>Datos:</strong> Proceso con Base = 2000, Límite = 1000</p>
+                
+                <div class="callout info" style="margin-bottom: 1rem;">
+                    <strong>¿Qué es fragmentación externa?</strong><br>
+                    Es cuando hay suficiente memoria libre en TOTAL, pero está dividida en pedazos pequeños y separados (no contiguos), por lo que no sirve para procesos grandes.
+                </div>
+                
+                <p><strong>Situación práctica:</strong> Imagina una estantería donde hay libros ocupando espacio. Entre los libros hay huecos:</p>
+                
+                <pre style="background: #f0f9ff; padding: 1rem; border-left: 4px solid #3b82f6;">
+[Libro A: ocupa 300KB] [Hueco: 200KB libre] [Libro C: ocupa 400KB] [Hueco: 100KB libre]
+                </pre>
+                
+                <p><strong>Llega un nuevo libro (Proceso D) que necesita 250KB de espacio.</strong></p>
+                
+                <p><strong>Analicemos juntos:</strong></p>
                 <ol>
-                    <li>Dirección lógica 0 → ¿Física? _______</li>
-                    <li>Dirección lógica 500 → ¿Física? _______</li>
-                    <li>Dirección lógica 999 → ¿Física? _______</li>
-                    <li>Dirección lógica 1000 → ¿Válida? _______</li>
-                    <li>Dirección lógica 1500 → ¿Válida? _______</li>
+                    <li>¿Cuánto espacio libre hay en TOTAL? Suma los huecos: <code>200 + 100 =</code> _____ KB</li>
+                    <li>¿Hay 250KB libres en total? _____ (Sí/No)</li>
+                    <li>¿El hueco de 200KB es suficiente para el libro de 250KB? _____ (Sí/No)</li>
+                    <li>¿El hueco de 100KB es suficiente para el libro de 250KB? _____ (Sí/No)</li>
+                    <li>¿Puede entrar el libro de 250KB? _____ (Sí/No)</li>
                 </ol>
+                
                 <div class="callout success">
-                    <strong>Fórmula:</strong> Dirección Física = Dirección Lógica + Base (solo si DL &lt; Límite)
+                    <strong>Conclusión:</strong> Aunque hay 300KB libres en total (más que los 250KB necesarios), el libro NO cabe porque los huecos están separados. Esto es <strong>fragmentación externa</strong>: tenemos memoria suficiente, pero no en un solo bloque continuo.
                 </div>
             </div>
 
             <div class="actividad">
-                <h3>Ejercicio 7: Comparación de Estrategias de Ubicación</h3>
-                <p><strong>Tiempo:</strong> 15 minutos</p>
-                <p><strong>Escenario:</strong> Huecos de memoria disponibles: [100KB, 500KB, 200KB, 300KB, 50KB]</p>
+                <h3>Ejercicio 6: Cálculo Base-Límite (Traducción de Direcciones)</h3>
+                <p><strong>Tiempo:</strong> 10 minutos</p>
+                
+                <div class="callout info" style="margin-bottom: 1rem;">
+                    <strong>¿Qué es Base-Límite?</strong><br>
+                    Es un mecanismo de protección de memoria. Cada proceso tiene una dirección "Base" (dónde empieza en memoria física) y un "Límite" (cuánto puede crecer).
+                </div>
+                
+                <p><strong>Analogía:</strong> Imagina que alquilas un apartamento en un edificio:</p>
+                <ul>
+                    <li><strong>Base = 2000</strong> → Tu apartamento empieza en el piso 2000</li>
+                    <li><strong>Límite = 1000</strong> → Tu apartamento tiene 1000 unidades de espacio (del 0 al 999)</li>
+                </ul>
+                
+                <p><strong>Dentro de tu apartamento</strong> (dirección lógica), tú ves posiciones del 0 al 999.<br>
+                <strong>En el edificio real</strong> (dirección física), tu apartamento ocupa desde el 2000 hasta el 2999.</p>
+                
+                <p><strong>Fórmula mágica:</strong> <code>Dirección Física = Dirección Lógica + Base</code></p>
+                <p><strong>Regla de seguridad:</strong> Si tu dirección lógica es ≥ 1000, ¡te saliste de tu apartamento! → ERROR</p>
+                
+                <p><strong>Completa la tabla:</strong></p>
+                <table style="border-collapse: collapse; width: 100%; margin: 1rem 0;">
+                    <tr style="background: #e0e7ff;">
+                        <th style="padding: 10px; border: 1px solid #ccc;">Dirección Lógica<br>(dentro del apto)</th>
+                        <th style="padding: 10px; border: 1px solid #ccc;">¿Está dentro del límite?<br>(¿es &lt; 1000?)</th>
+                        <th style="padding: 10px; border: 1px solid #ccc;">Cálculo</th>
+                        <th style="padding: 10px; border: 1px solid #ccc;">Dirección Física<br>(en el edificio)</th>
+                    </tr>
+                    <tr>
+                        <td style="padding: 10px; border: 1px solid #ccc; text-align: center;">0</td>
+                        <td style="padding: 10px; border: 1px solid #ccc; text-align: center; color: green;">Sí ✓</td>
+                        <td style="padding: 10px; border: 1px solid #ccc; text-align: center;">2000 + 0</td>
+                        <td style="padding: 10px; border: 1px solid #ccc; text-align: center; font-weight: bold;">2000</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 10px; border: 1px solid #ccc; text-align: center;">500</td>
+                        <td style="padding: 10px; border: 1px solid #ccc; text-align: center;">_____</td>
+                        <td style="padding: 10px; border: 1px solid #ccc; text-align: center;">2000 + 500</td>
+                        <td style="padding: 10px; border: 1px solid #ccc; text-align: center; font-weight: bold;">_____</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 10px; border: 1px solid #ccc; text-align: center;">999</td>
+                        <td style="padding: 10px; border: 1px solid #ccc; text-align: center;">_____</td>
+                        <td style="padding: 10px; border: 1px solid #ccc; text-align: center;">2000 + 999</td>
+                        <td style="padding: 10px; border: 1px solid #ccc; text-align: center; font-weight: bold;">_____</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 10px; border: 1px solid #ccc; text-align: center;">1000</td>
+                        <td style="padding: 10px; border: 1px solid #ccc; text-align: center; color: red;">No ✗</td>
+                        <td style="padding: 10px; border: 1px solid #ccc; text-align: center;">-</td>
+                        <td style="padding: 10px; border: 1px solid #ccc; text-align: center; color: red;">ERROR<br>(fuera de límite)</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 10px; border: 1px solid #ccc; text-align: center;">1500</td>
+                        <td style="padding: 10px; border: 1px solid #ccc; text-align: center;">_____</td>
+                        <td style="padding: 10px; border: 1px solid #ccc; text-align: center;">-</td>
+                        <td style="padding: 10px; border: 1px solid #ccc; text-align: center; color: red;">_____</td>
+                    </tr>
+                </table>
+                
+                <div class="callout success">
+                    <strong>¿Por qué es importante?</strong> Esto protege que un proceso no acceda a la memoria de otro proceso. Si intentas acceder a una dirección fuera de tu límite, el SO te detiene.
+                </div>
+            </div>
+
+            <div class="actividad">
+                <h3>Ejercicio 7: Estrategias de Ubicación (First Fit, Best Fit, Worst Fit)</h3>
+                <p><strong>Tiempo:</strong> 10 minutos</p>
+                
+                <div class="callout info" style="margin-bottom: 1rem;">
+                    <strong>¿Cuándo se usan estas estrategias?</strong><br>
+                    Cuando hay varios "huecos" de memoria libre y llega un nuevo proceso, ¿cuál hueco elegimos? Cada estrategia tiene una filosofía diferente.
+                </div>
+                
+                <p><strong>Situación:</strong> Necesitas guardar un proceso de 250KB. Los huecos disponibles en memoria son:</p>
+                
+                <pre style="background: #f0fdf4; padding: 1rem; border-left: 4px solid #22c55e;">
+Hueco 1: 100KB (muy pequeño, no sirve)
+Hueco 2: 500KB (sí sirve)
+Hueco 3: 200KB (muy pequeño, no sirve)  
+Hueco 4: 300KB (sí sirve)
+                </pre>
+                
+                <p><strong>Solo los huecos de 500KB y 300KB pueden albergar el proceso de 250KB.</strong></p>
+                
+                <p><strong>Analicemos cada estrategia:</strong></p>
+                
+                <table style="border-collapse: collapse; width: 100%; margin: 1rem 0;">
+                    <tr style="background: #e0e7ff;">
+                        <th style="padding: 12px; border: 1px solid #ccc;">Estrategia</th>
+                        <th style="padding: 12px; border: 1px solid #ccc;">¿Qué busca?</th>
+                        <th style="padding: 12px; border: 1px solid #ccc;">¿Qué hueco usa?</th>
+                        <th style="padding: 12px; border: 1px solid #ccc;">Espacio que sobra<br>(desperdicio)</th>
+                    </tr>
+                    <tr>
+                        <td style="padding: 12px; border: 1px solid #ccc;"><strong>First Fit</strong><br>(Primero que sirva)</td>
+                        <td style="padding: 12px; border: 1px solid #ccc;">El PRIMER hueco que sea suficiente (más rápido)</td>
+                        <td style="padding: 12px; border: 1px solid #ccc; text-align: center;">_____ KB</td>
+                        <td style="padding: 12px; border: 1px solid #ccc; text-align: center;">_____ KB</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 12px; border: 1px solid #ccc;"><strong>Best Fit</strong><br>(Mejor ajuste)</td>
+                        <td style="padding: 12px; border: 1px solid #ccc;">El hueco MÁS PEQUEÑO que sea suficiente (menos desperdicio)</td>
+                        <td style="padding: 12px; border: 1px solid #ccc; text-align: center;">_____ KB</td>
+                        <td style="padding: 12px; border: 1px solid #ccc; text-align: center;">_____ KB</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 12px; border: 1px solid #ccc;"><strong>Worst Fit</strong><br>(Peor ajuste)</td>
+                        <td style="padding: 12px; border: 1px solid #ccc;">El hueco MÁS GRANDE (deja el mayor remanente)</td>
+                        <td style="padding: 12px; border: 1px solid #ccc; text-align: center;">_____ KB</td>
+                        <td style="padding: 12px; border: 1px solid #ccc; text-align: center;">_____ KB</td>
+                    </tr>
+                </table>
+                
+                <p><strong>Preguntas de reflexión:</strong></p>
                 <ol>
-                    <li>Proceso de 250KB llega:</li>
-                    <li>Con First Fit: ¿Qué hueco usa? _______</li>
-                    <li>Con Best Fit: ¿Qué hueco usa? _______</li>
-                    <li>Con Worst Fit: ¿Qué hueco usa? _______</li>
-                    <li>¿Cuál estrategia deja el mayor desperdicio?</li>
-                    <li>¿Cuál estrategia es más rápida de calcular?</li>
+                    <li>¿Cuál estrategia desperdicia menos espacio en este caso? _____</li>
+                    <li>¿Cuál es más rápida de calcular (no necesita revisar todos los huecos)? _____</li>
+                    <li>¿Cuál deja el mayor hueco libre después de asignar? _____</li>
                 </ol>
+                
+                <div class="callout warning">
+                    <strong>Consejo:</strong> En la práctica, First Fit es más rápido y funciona bien. Best Fit minimiza el desperdicio pero puede dejar muchos huecos pequeños inútiles.
+                </div>
             </div>
         </section>
 
-        <section id="entregable">
-            <h2>7. Entregable de la Clase</h2>
+        <section id="practica-adicional">
+            <h2>7. Práctica Adicional (No Evaluativa)</h2>
+            
+            <div class="callout info" style="margin-bottom: 1.5rem;">
+                <strong>Esta sección es para practicar por tu cuenta.</strong> No es un entregable ni cuenta para la nota. ¡Úsala para reforzar lo aprendido!
+            </div>
             
             <div class="actividad">
-                <h3>Análisis de Gestión de Memoria</h3>
-                <p><strong>Descripción:</strong> Documento con análisis de memoria en tu VM Ubuntu</p>
+                <h3>Ejercicio de Refuerzo: Análisis de Memoria en tu Máquina</h3>
+                <p><strong>Objetivo:</strong> Aplicar los comandos vistos en tu propio entorno (Linux, WSL, o terminal en línea).</p>
                 
-                <h4>Requisitos:</h4>
+                <h4>Actividades sugeridas:</h4>
                 <ol>
-                    <li>Captura de <code>free -h</code> con explicación</li>
-                    <li>Tabla de los 5 procesos principales por uso de memoria</li>
-                    <li>Ejemplo dibujado de particiones fijas vs dinámicas</li>
-                    <li>Explicación de fragmentación con ejemplos</li>
+                    <li><strong>Explora tu memoria:</strong> Ejecuta <code>free -h</code> y escribe qué significan los valores que ves</li>
+                    <li><strong>Inventa tu propio ejemplo:</strong> Crea un escenario de fragmentación interna con números diferentes (ej: particiones de 500KB y procesos de 300KB, 400KB, etc.)</li>
+                    <li><strong>Dibuja un mapa:</strong> Representa gráficamente cómo quedaría la memoria con particiones fijas vs dinámicas</li>
+                    <li><strong>Crea un cálculo Base-Límite:</strong> Usa tus propios números (Base=5000, Límite=2000, etc.) y calcula 3 direcciones físicas</li>
                 </ol>
 
-                <h4>Rúbrica:</h4>
-                <table>
-                    <tr><th>Criterio</th><th>Puntaje</th></tr>
-                    <tr><td>Capturas con comandos correctos</td><td>30%</td></tr>
-                    <tr><td>Análisis de procesos y memoria</td><td>25%</td></tr>
-                    <tr><td>Ejemplos de particiones claros</td><td>25%</td></tr>
-                    <tr><td>Explicación de fragmentación</td><td>20%</td></tr>
-                </table>
+                <div class="callout success">
+                    <strong>Consejo:</strong> Si no tienes Linux instalado, puedes usar <a href="https://www.webminal.org" target="_blank">Webminal</a> o <a href="https://bellard.org/jslinux/" target="_blank">JSLinux</a> para practicar los comandos.
+                </div>
             </div>
         </section>
 

@@ -159,7 +159,7 @@
                 <li><a href="#ext4">Sistema EXT4</a></li>
                 <li><a href="#ntfs">Sistema NTFS</a></li>
                 <li><a href="#practica">Práctica en Linux</a></li>
-                <li><a href="#entregable">Entregable</a></li>
+                
             </ul>
         </nav>
 
@@ -445,31 +445,49 @@ ln -s archivo.txt enlace_simbolico.txt
             </div>
         </section>
 
-        <section id="entregable">
-            <h2>7. Entregable de la Clase</h2>
+        <section id="practica-adicional">
+            <h2>Práctica Adicional (No Evaluativa)</h2>
+            
+            <div class="callout info" style="margin-bottom: 1.5rem;">
+                <strong>Esta sección es para practicar por tu cuenta.</strong> No es un entregable ni cuenta para la nota. ¡Úsala para reforzar lo aprendido!
+            </div>
             
             <div class="actividad">
-                <h3>Análisis de Sistemas de Archivos</h3>
-                <p><strong>Descripción:</strong> Documento técnico sobre inodos, directorios y permisos</p>
+                <h3>Ejercicio de Refuerzo: Explorando Archivos y Permisos</h3>
+                <p><strong>Objetivo:</strong> Entender cómo Linux organiza y protege los archivos.</p>
                 
-                <h4>Requisitos:</h4>
+                <h4>Actividades sugeridas:</h4>
                 <ol>
-                    <li>Salida de <code>stat</code> para 3 archivos diferentes con explicación</li>
-                    <li>Diagrama de la estructura de un inodo</li>
-                    <li>Ejemplo práctico de hard link vs symbolic link</li>
-                    <li>Tabla de permisos configurados y verificación</li>
-                    <li>Comparativa EXT4 vs NTFS (mínimo 5 puntos)</li>
+                    <li><strong>Observa los metadatos:</strong>
+                        <ul>
+                            <li>Crea un archivo: <code>touch miarchivo.txt</code></li>
+                            <li>Ejecuta: <code>stat miarchivo.txt</code></li>
+                            <li>Mira la información: tamaño, permisos, fechas, inodo</li>
+                            <li>El inodo es como la "ficha" del archivo en el sistema</li>
+                        </ul>
+                    </li>
+                    <li><strong>Experimenta con enlaces:</strong>
+                        <ul>
+                            <li>Crea un hard link: <code>ln miarchivo.txt micopia.txt</code></li>
+                            <li>Verifica con <code>ls -li</code> (ambos tienen el mismo número de inodo)</li>
+                            <li>Crea un symbolic link: <code>ln -s miarchivo.txt milink.txt</code></li>
+                            <li>¿Cuál es la diferencia entre ambos tipos de enlaces?</li>
+                        </ul>
+                    </li>
+                    <li><strong>Juega con permisos:</strong>
+                        <ul>
+                            <li>Cambia permisos: <code>chmod 755 miarchivo.txt</code></li>
+                            <li>Verifica con <code>ls -l</code></li>
+                            <li>Intenta quitar permisos de lectura: <code>chmod 000 miarchivo.txt</code></li>
+                            <li>¿Puedes leer el archivo ahora?</li>
+                            <li>Devuelve los permisos: <code>chmod 644 miarchivo.txt</code></li>
+                        </ul>
+                    </li>
                 </ol>
 
-                <h4>Rúbrica:</h4>
-                <table>
-                    <tr><th>Criterio</th><th>Puntaje</th></tr>
-                    <tr><td>Análisis de inodos con stat</td><td>25%</td></tr>
-                    <tr><td>Diagrama de estructura inodo</td><td>20%</td></tr>
-                    <tr><td>Ejemplo de enlaces completo</td><td>20%</td></tr>
-                    <tr><td>Configuración de permisos</td><td>20%</td></tr>
-                    <tr><td>Comparativa sistemas de archivos</td><td>15%</td></tr>
-                </table>
+                <div class="callout success">
+                    <strong>Consejo:</strong> Los permisos son fundamentales para la seguridad. Practica en archivos de prueba, nunca en archivos importantes del sistema.
+                </div>
             </div>
         </section>
 

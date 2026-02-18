@@ -918,196 +918,149 @@ Get-Service | Where-Object {$_.Status -eq "Running"} | Select-Object -First 10</
                 <p>Estos comandos te permiten ver la estructura interna del SO en acción. Úsalos para completar tu entregable.</p>
             </div>
 
-            <h3>1.7 Laboratorio Práctico: System Calls en Acción (20 min)</h3>
+            <h3>1.7 Laboratorio Práctico: Explorando el Sistema Operativo (20 min)</h3>
             
-            <div class="actividad">
-                <h4>🎯 Objetivo del Laboratorio</h4>
-                <p>Visualizar cómo los programas hacen System Calls para interactuar con el Kernel, y experimentar con la transición entre Modo Usuario y Modo Kernel.</p>
+            <div class="callout info" style="margin-bottom: 1.5rem;">
+                <strong>Objetivo:</strong> Ver en acción los componentes del SO que acabamos de aprender. No te preocupes si no entiendes todo de inmediato.
             </div>
 
-            <h4>Ejercicio 1: Rastreando System Calls con strace</h4>
-            <p>El comando <code>strace</code> muestra todas las System Calls que un programa hace al Kernel:</p>
+            <div class="callout success" style="margin: 1.5rem 0;">
+                <strong>Antes de empezar:</strong> Solo necesitas una terminal Linux. Puedes usar tu VM, Webminal, o JSLinux. Todos los comandos son seguros de ejecutar.
+            </div>
+
+            <h4>Ejercicio 1: Conociendo al Kernel (5 min)</h4>
+            <p>Vamos a ver qué kernel está corriendo tu sistema:</p>
+            
             <div class="code-block terminal-block">
-                <div class="code-header">Terminal - Rastreando System Calls</div>
-                <pre><code class="language-bash"># Ejercicio 1.1: Ver System Calls de un comando simple
-strace -c ls /tmp
+                <div class="code-header">Terminal - Información del Kernel</div>
+                <pre><code class="language-bash"># Ver información del kernel
+uname -a
 
-# El flag -c muestra estadísticas al final
-# Observa cuántas veces se llamó a cada syscall
-
-# Ejercicio 1.2: Ver el flujo detallado de open()
-strace -e open,openat ls /tmp 2>&1 | head -20
-
-# Esto muestra solo las llamadas a open/openat
-# Cada vez que se abre un archivo, el programa
-# hace una System Call al Kernel
-
-# Ejercicio 1.3: Contar System Calls de un cat
-strace -c cat /etc/hostname
-# Observa: read(), write(), open(), close(), etc.</code></pre>
-            </div>
-
-            <div class="callout success">
-                <p class="callout-title">📊 Análisis</p>
-                <p>En el resultado de <code>strace -c</code>, fíjate en:</p>
-                <ul>
-                    <li><strong>openat:</strong> Abrir archivos (acceso al sistema de archivos)</li>
-                    <li><strong>read/write:</strong> Lectura/escritura de datos</li>
-                    <li><strong>mmap:</strong> Asignación de memoria</li>
-                    <li><strong>close:</strong> Cerrar archivos</li>
-                </ul>
-                <p>¡Estas son las "puertas" entre Modo Usuario y Modo Kernel!</p>
-            </div>
-
-            <h4>Ejercicio 2: Creando un Programa con System Calls</h4>
-            <p>Crearemos un script que explícitamente use System Calls:</p>
-            <div class="code-block terminal-block">
-                <div class="code-header">Crear archivo: explora_syscall.sh</div>
-                <pre><code class="language-bash"># Crear el script
-cat > ~/explora_syscall.sh << 'EOF'
-#!/bin/bash
-# Script para explorar System Calls
-
-echo "=== Explorando System Calls ==="
-echo "PID del proceso actual: $$"
-echo "Usuario actual: $(whoami)"
-echo ""
-
-# System Call implícita: open() y read()
-echo "1. Leyendo archivo (open, read):"
-cat /etc/os-release | head -1
-
-# System Call implícita: getuid()
-echo ""
-echo "2. ID de usuario (getuid):"
-id -u
-
-# System Call implícita: uname()
-echo ""
-echo "3. Información del sistema (uname):"
+# Ver solo la versión
 uname -r
 
-# System Call implícita: getpid()
-echo ""
-echo "4. Listando archivos (getdents):"
-ls /tmp | wc -l
-echo ""
+# Ver el tipo de sistema
+uname -m
 
-echo "=== Fin de exploración ==="
-EOF
-
-# Hacer ejecutable
-chmod +x ~/explora_syscall.sh
-
-# Ejecutar y rastrear
-strace -c ~/explora_syscall.sh</code></pre>
+# ¿Qué ves?
+# Linux = El kernel
+# 5.x.x = La versión
+# x86_64 = Arquitectura de 64 bits</code></pre>
             </div>
 
-            <h4>Ejercicio 3: Comparar Linux vs Windows (Práctica Guiada)</h4>
-            <p>Si tienes acceso a Windows (o puedes usar tu máquina host), compara:</p>
-            <div class="code-block terminal-block">
-                <div class="code-header">Comparativa Práctica</div>
-                <pre><code class="language-bash"># En Linux (Ubuntu Server):
-uname -a                    # Kernel info
-ls /bin | wc -l          # Número de binarios
-ps aux | wc -l           # Número de procesos
-cat /proc/version        # Versión del kernel
-
-# En Windows PowerShell (si aplica):
-# Get-ComputerInfo | Select OsName, WindowsVersion
-# Get-Process | Measure-Object
-# Get-ChildItem C:\Windows\System32 | Measure-Object</code></pre>
+            <div class="callout success" style="margin: 1rem 0;">
+                <strong>¿Qué significa esto?</strong><br>
+                Estos comandos preguntan al kernel "¿quién eres?" y "¿qué versión eres?". Es como revisar la placa de un carro para saber el modelo y año.
             </div>
 
-            <h4>Ejercicio 4: Explorando Módulos del Kernel</h4>
+            <h4>Ejercicio 2: Ver las System Calls en acción (5 min)</h4>
+            <p>Vamos a espiar qué le pide un programa al kernel cuando corre:</p>
+            
             <div class="code-block terminal-block">
-                <div class="code-header">Explorar Drivers/Módulos</div>
-                <pre><code class="language-bash"># Ver módulos cargados
-lsmod
+                <div class="code-header">Terminal - Rastreando System Calls</div>
+                <pre><code class="language-bash"># Ejecutar strace (espía de system calls) con ls
+# El comando "-c" cuenta cuántas veces se llamó cada función
+strace -c ls /tmp
 
-# Contar cuántos módulos hay
+# Observa la tabla que aparece al final
+# Las columnas son: 
+# - % time = tiempo gastado en esa llamada
+# - seconds = segundos totales
+# - usecs/call = microsegundos por llamada
+# - calls = número de veces que se llamó
+# - syscall = nombre de la función</code></pre>
+            </div>
+
+            <div class="callout info" style="margin: 1rem 0;">
+                <strong>Analogía:</strong> Imagina que <code>ls</code> es un cliente en un restaurante y el kernel es la cocina. <code>strace</code> es como tener un micrófono que graba cada vez que el cliente pide algo al mesero. "Por favor, abra la puerta del refrigerador" (open), "Muéstrame el menú" (read), "Cierre la puerta" (close).
+            </div>
+
+            <h4>Ejercicio 3: Ver los módulos del kernel (5 min)</h4>
+            <p>Linux carga "módulos" (drivers) según necesita. Vamos a verlos:</p>
+            
+            <div class="code-block terminal-block">
+                <div class="code-header">Terminal - Explorando Módulos</div>
+                <pre><code class="language-bash"># Ver módulos cargados (solo los primeros 10 para no saturar)
+lsmod | head -10
+
+# Contar cuántos módulos hay en total
 lsmod | wc -l
 
-# Ver información de un módulo específico
-modinfo ext4 2>/dev/null || echo "ext4 es parte del kernel monolítico"
+# Ver módulos relacionados con red (conexión internet)
+lsmod | grep net | head -5
 
-# Ver módulos relacionados con red
-lsmod | grep -E "net|wifi|ethernet"
-
-# Ver módulos de almacenamiento
-lsmod | grep -E "scsi|sata|nvme"</code></pre>
+# Ver módulos de almacenamiento (discos duros)
+lsmod | grep -E "scsi|sata|nvme" | head -5</code></pre>
             </div>
 
-            <div class="callout warning">
-                <p class="callout-title">🔍 Reflexión</p>
-                <p>¿Notas que Linux tiene muchos módulos cargados? Esto es característico de la arquitectura <strong>monolítica</strong> que mencionamos. Windows Server también tiene drivers, pero su arquitectura híbrida los organiza de forma diferente.</p>
+            <div class="callout success" style="margin: 1rem 0;">
+                <strong>¿Qué son estos módulos?</strong><br>
+                Son como "apps" que el kernel instala para hablar con el hardware. Por ejemplo, un módulo para tu tarjeta de red, otro para tu disco duro, otro para el sonido, etc. Linux tiene muchos módulos porque puede correr en muchos tipos diferentes de computadoras.
+            </div>
+
+            <h4>Ejercicio 4: Comparar comandos Linux vs Windows (5 min)</h4>
+            <p>Si tienes acceso a una computadora Windows (tu máquina host, una tablet, o pregunta a un compañero), prueba esto:</p>
+            
+            <div class="code-block terminal-block">
+                <div class="code-header">Comparativa Sencilla</div>
+                <pre><code class="language-bash"># === EN LINUX ===
+uname -a              # Info del sistema
+ls                    # Listar archivos
+pwd                   # Ver directorio actual
+cat /etc/os-release   # Ver distro Linux
+
+# === EN WINDOWS (PowerShell) ===
+systeminfo            # Info del sistema
+dir                   # Listar archivos
+cd                    # Ver directorio actual
+Get-ComputerInfo | Select OsName  # Ver versión Windows</code></pre>
+            </div>
+
+            <div class="callout warning" style="margin: 1rem 0;">
+                <strong>Observación:</strong> Aunque los comandos son diferentes, hacen lo mismo. Los dos sistemas tienen un kernel, shell, y system calls. La diferencia es cómo están organizados internamente y cómo los comandos se escriben.
+            </div>
+
+            <div class="callout info" style="margin: 1.5rem 0;">
+                <strong>Esta sección es para practicar por tu cuenta.</strong> No es un entregable ni cuenta para la nota. ¡Elige una actividad que te interese y explora!
             </div>
 
             <div class="actividad">
-                <h3>📋 Actividad de la Clase 04</h3>
-                <p><strong>Fecha de entrega:</strong> Próxima clase</p>
-                <p><strong>Tiempo estimado:</strong> 60 minutos</p>
-                <p>Para esta práctica, utilizaremos la máquina virtual configurada en el <strong><a href="../laboratorios-html/lab-00-introduccion-simuladores.html" target="_blank">Laboratorio 0: VirtualBox + Ubuntu Server</a></strong>.</p>
+                <h3>📋 Práctica Adicional (No Evaluativa)</h3>
+                <p><strong>Tiempo sugerido:</strong> 30-60 minutos</p>
+                <p>Puedes usar tu máquina virtual de Ubuntu Server o cualquier terminal Linux disponible.</p>
                 
-                <h4>Entregables (Elige 2 de 3 opciones):</h4>
+                <h4>Elige una opción que te llame la atención:</h4>
 
                 <ol>
-                    <li><strong>Opción A - Análisis de System Calls:</strong>
+                    <li><strong>Opción A - Explorar System Calls:</strong>
                         <ul>
-                            <li>Ejecuta <code>strace -c ls /tmp</code> y captura la salida</li>
-                            <li>Identifica las 5 System Calls más usadas</li>
-                            <li>Explica brevemente qué hace cada una (openat, read, write, close, mmap)</li>
-                            <li>Incluye captura de <code>lsmod | head -10</code></li>
+                            <li>Ejecuta <code>strace -c ls /tmp</code> y observa la salida</li>
+                            <li>¿Cuáles son las 5 operaciones más frecuentes?</li>
+                            <li>Investiga qué hace cada una (puedes usar <code>man openat</code>, etc.)</li>
+                            <li>Bonus: Ejecuta <code>lsmod | head -10</code> y revisa qué módulos tiene tu sistema</li>
                         </ul>
                     </li>
-                    <li><strong>Opción B - Diagrama Visual:</strong>
+                    <li><strong>Opción B - Dibuja la Arquitectura:</strong>
                         <ul>
-                            <li>Crea un diagrama mostrando la arquitectura en capas (Hardware → Kernel → Shell → Aplicaciones)</li>
-                            <li>Indica dónde ocurren las System Calls</li>
-                            <li>Diferencia Modo Usuario vs Modo Kernel con colores</li>
-                            <li>Puede ser a mano (foto) o digital</li>
+                            <li>En una hoja de papel (o herramienta digital), dibuja las capas: Hardware → Kernel → Shell → Aplicaciones</li>
+                            <li>Marca con colores dónde está el Modo Usuario y el Modo Kernel</li>
+                            <li>Indica en qué punto ocurren las System Calls</li>
+                            <li>No tiene que ser perfecto, la idea es que visualices el concepto</li>
                         </ul>
                     </li>
-                    <li><strong>Opción C - Cuadro Comparativo:</strong>
+                    <li><strong>Opción C - Compara Sistemas:</strong>
                         <ul>
-                            <li>Compara Linux vs Windows Server en 5 aspectos:</li>
-                            <li>Kernel, Shell, Comandos básicos, Arquitectura, System Calls</li>
-                            <li>Incluye captura de <code>uname -a</code> y breve explicación</li>
+                            <li>Si tienes acceso a Windows, compara 3 aspectos con Linux:</li>
+                            <li>¿Cómo se abre una terminal en cada uno?</li>
+                            <li>¿Qué comando muestra información del sistema? (<code>uname -a</code> vs <code>systeminfo</code>)</li>
+                            <li>¿Cómo se listan archivos? (<code>ls</code> vs <code>dir</code>)</li>
                         </ul>
                     </li>
                 </ol>
 
-                <h4>Rúbrica:</h4>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Criterio</th>
-                            <th>Excelente (100%)</th>
-                            <th>Bueno (75%)</th>
-                            <th>Suficiente (50%)</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><strong>Complejidad técnica</strong></td>
-                            <td>Muestra comprensión profunda con ejemplos específicos</td>
-                            <td>Muestra comprensión correcta con ejemplos</td>
-                            <td>Muestra comprensión básica</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Capturas/Evidencias</strong></td>
-                            <td>Capturas claras con anotaciones explicativas</td>
-                            <td>Capturas claras con breve explicación</td>
-                            <td>Capturas sin explicación</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Presentación</strong></td>
-                            <td>Documento bien organizado y profesional</td>
-                            <td>Documento organizado</td>
-                            <td>Documento desorganizado pero completo</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="callout success">
+                    <strong>Recuerda:</strong> Esto es para tu aprendizaje. No hay nota ni fecha límite. ¡Explora a tu ritmo!
+                </div>
             </div>
         </section>
 

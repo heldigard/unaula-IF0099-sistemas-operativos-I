@@ -453,7 +453,7 @@
                 <li><a href="#usuarios-grupos">6. Usuarios y Grupos</a></li>
                 <li><a href="#acls">7. ACLs (Listas de Control de Acceso)</a></li>
                 <li><a href="#practica">8. Actividad Práctica</a></li>
-                <li><a href="#entregable">9. Entregable</a></li>
+                
                 <li><a href="#resumen">Resumen</a></li>
             </ul>
         </nav>
@@ -880,93 +880,53 @@ getfacl confidencial.txt</code></pre>
 
         </section>
 
-        <section id="entregable">
-            <h2>9. Entregable</h2>
-
-            <div class="callout info">
-                <h3>Esquema de Permisos para Empresa Ficticia</h3>
-                <p><strong>Empresa:</strong> TechSolutions S.A.S.</p>
-                <p><strong>Departamentos:</strong> Desarrollo, Gerencia, Contabilidad</p>
+        <section id="practica-adicional">
+            <h2>Práctica Adicional (No Evaluativa)</h2>
+            
+            <div class="callout info" style="margin-bottom: 1.5rem;">
+                <strong>Esta sección es para practicar por tu cuenta.</strong> No es un entregable ni cuenta para la nota. ¡Úsala para reforzar lo aprendido!
             </div>
+            
+            <div class="actividad">
+                <h3>Ejercicio de Refuerzo: Esquema de Permisos</h3>
+                <p><strong>Objetivo:</strong> Practicar la configuración de permisos en Linux.</p>
+                
+                <h4>Escenario:</h4>
+                <p>Imagina que estás configurando una carpeta compartida para un proyecto:</p>
+                <ul>
+                    <li>Carpeta <code>/tmp/proyecto</code></li>
+                    <li>Un grupo llamado "equipo" debe poder leer y escribir</li>
+                    <li>Otros usuarios solo pueden leer</li>
+                </ul>
+                
+                <h4>Actividades sugeridas:</h4>
+                <ol>
+                    <li><strong>Crea la estructura:</strong>
+                        <ul>
+                            <li><code>sudo mkdir -p /tmp/proyecto</code></li>
+                            <li><code>sudo groupadd equipo</code> (crea el grupo)</li>
+                        </ul>
+                    </li>
+                    <li><strong>Configura los permisos:</strong>
+                        <ul>
+                            <li><code>sudo chown :equipo /tmp/proyecto</code></li>
+                            <li><code>sudo chmod 775 /tmp/proyecto</code></li>
+                            <li>Verifica con <code>ls -ld /tmp/proyecto</code></li>
+                        </ul>
+                    </li>
+                    <li><strong>Experimenta:</strong>
+                        <ul>
+                            <li>Crea archivos dentro de la carpeta</li>
+                            <li>Intenta acceder desde diferentes usuarios (si tienes)</li>
+                            <li>Prueba quitar permisos y ver qué pasa</li>
+                        </ul>
+                    </li>
+                </ol>
 
-            <h3>Requisitos:</h3>
-            <ol>
-                <li><strong>Directorio /proyectos/compartido:</strong>
-                    <ul>
-                        <li>Equipo de desarrollo: lectura y escritura</li>
-                        <li>Gerencia: solo lectura</li>
-                        <li>Resto de usuarios: sin acceso</li>
-                    </ul>
-                </li>
-                <li><strong>Directorio /proyectos/confidencial:</strong>
-                    <ul>
-                        <li>Solo gerencia: acceso completo</li>
-                        <li>Resto de usuarios: sin acceso</li>
-                    </ul>
-                </li>
-                <li><strong>Script de configuración:</strong>
-                    <ul>
-                        <li>Automatizar la creación de estructura</li>
-                        <li>Configurar permisos apropiados</li>
-                        <li>Crear usuarios y grupos necesarios</li>
-                    </ul>
-                </li>
-            </ol>
-
-            <h3>Formato de Entrega:</h3>
-            <ul>
-                <li>Diagrama de la estructura de directorios</li>
-                <li>Tabla de permisos (quién puede acceder a qué)</li>
-                <li>Script bash funcional con comentarios</li>
-                <li>Documentación explicando cada permiso</li>
-            </ul>
-
-            <div class="callout warning">
-                <strong>Fecha de entrega:</strong> Consultar plataforma virtual
+                <div class="callout success">
+                    <strong>Consejo:</strong> Los permisos son fundamentales para la seguridad. Practica en <code>/tmp</code> que es temporal y seguro para experimentar.
+                </div>
             </div>
-
-            <h3>Rúbrica de Evaluación</h3>
-            <table class="rubrica-table">
-                <thead>
-                    <tr>
-                        <th>Criterio</th>
-                        <th class="level-excelente">Excelente (4)</th>
-                        <th class="level-bueno">Bueno (3)</th>
-                        <th class="level-satisfactorio">Satisfactorio (2)</th>
-                        <th class="level-insuficiente">Insuficiente (1)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Configuración de Permisos</strong></td>
-                        <td>Usa correctamente chmod, chown con notación octal y simbólica</td>
-                        <td>Usa chmod y chown correctamente</td>
-                        <td>Usa solo uno de los comandos</td>
-                        <td>No sabe usar los comandos</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Usuarios y Grupos</strong></td>
-                        <td>Crea usuarios, grupos y los associa correctamente</td>
-                        <td>Crea usuarios y grupos</td>
-                        <td>Crea solo usuarios</td>
-                        <td>No crea usuarios/grupos</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Permisos Especiales</strong></td>
-                        <td>Explica y usa SUID, SGID, Sticky bit correctamente</td>
-                        <td>Conoce permisos especiales</td>
-                        <td>Los menciona pero no los usa</td>
-                        <td>No conoce permisos especiales</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Script y Documentación</strong></td>
-                        <td>Script funcional con comentarios claros y documentación completa</td>
-                        <td>Script funcional con algunos comentarios</td>
-                        <td>Script funciona sin comentarios</td>
-                        <td>Script no funciona</td>
-                    </tr>
-                </tbody>
-            </table>
         </section>
 
         <section id="resumen">

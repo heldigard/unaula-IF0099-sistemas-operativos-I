@@ -386,6 +386,11 @@
                 <strong>Analogía:</strong> Imagina un professor con múltiples estudiantes preguntando. El professor atiende a un estudiante (proceso en ejecución), anota dónde se quedó (guarda estado), y atiende al siguiente (cambio de contexto). Cuando vuelve al primer estudiante, continúa desde donde lo dejó.
             </div>
 
+            <div class="callout success" style="margin: 1.5rem 0;">
+                <strong>¿Por qué esto importa?</strong><br>
+                Sin cambio de contexto, tu computadora solo podría hacer UNA cosa a la vez. No podrías tener el navegador abierto mientras escuchas música y descargas un archivo. El cambio de contexto hace que todo parezca suceder "al mismo tiempo".
+            </div>
+
             <h3>Componentes del Cambio de Contexto</h3>
             <ul>
                 <li><strong>Salvado del estado:</strong> Guardar registros, contador de programa, puntero de pila</li>
@@ -712,234 +717,184 @@ Secuencia: P1(4) → P2(4) → P3(4) → P1(4) → P2(1) → P3(4) → P1(2)</co
         </section>
 
         <section id="practica">
-            <h2>Práctica Guiada: Análisis de Procesos en Linux (30 min)</h2>
+            <h2>Práctica Guiada: Jugando con Procesos (30 min)</h2>
             
-            <div class="info">
-                <strong>Objetivo:</strong> Visualizar en tiempo real los conceptos teóricos: cambio de contexto, estados de proceso y PCB.
+            <div class="callout info" style="margin-bottom: 1.5rem;">
+                <strong>Objetivo:</strong> Ver los conceptos teóricos en acción. No te preocupes si no entiendes todo de inmediato, la idea es familiarizarte con los comandos.
             </div>
 
-            <h3>Ejercicio 1: Explorando el PCB con ps (5 min)</h3>
-            <p>El PCB contiene información de identificación, CPU y estado. Vamos a verlo en vivo:</p>
-            <pre><code class="language-bash"># Ver campos del PCB de procesos en ejecución
-ps -eo pid,ppid,stat,pri,ni,pcpu,pmem,cmd --sort=-pcpu | head -10
-
-# Explicación de columnas:
-# PID  = Process ID (identificador único)
-# PPID = Parent PID (identificador del padre)
-# STAT = Estado del proceso (R, S, D, Z, T)
-# PRI  = Prioridad del proceso
-# NI   = Nice value (valor de prioridad ajustable)
-# %CPU = Uso de CPU
-# %MEM = Uso de memoria
-# CMD  = Comando ejecutado
-
-# Ejemplo de salida:
-#  PID  PPID STAT PRI  NI %CPU %MEM CMD
-# 1234     1 S    20   0  5.2  2.1 apache2
-# 5678  1234 S    20   0  3.1  1.8 mysql</code></pre>
-
-            <div class="success">
-                <strong>Pregunta de análisis:</strong> ¿Qué relación ves entre PPID y PID? ¿Cuál es el proceso padre de tus procesos de terminal?
+            <div class="callout success" style="margin: 1.5rem 0;">
+                <strong>Consejo antes de empezar:</strong> Abre DOS terminales. En una ejecutarás comandos y en la otra observarás los resultados. Esto hará todo más fácil de entender.
             </div>
 
-            <h3>Ejercicio 2: Simulando Estados de Proceso (10 min)</h3>
-            <p>Crearemos procesos en diferentes estados y los observaremos:</p>
+            <h3>Ejercicio 1: Ver procesos corriendo (5 min)</h3>
+            <p>Vamos a ver qué procesos están ejecutándose en tu sistema ahora mismo:</p>
             
-            <h4>Paso 1: Proceso en Ejecución (Estado R)</h4>
-            <pre><code class="language-bash"># Terminal 1: Ejecutar un proceso que consuma CPU
-yes > /dev/null &
-# Guarda el PID que aparece (ej: [1] 1234)
+            <pre><code class="language-bash"># Ver los procesos principales (solo los 10 que más CPU usan)
+ps aux --sort=-%cpu | head -10
 
-# Terminal 2: Verificar estado
-ps -eo pid,stat,cmd | grep yes
-# Deberías ver: 1234 R yes</code></pre>
+# Ver procesos de tu usuario
+ps aux | grep $USER | head -10</code></pre>
 
-            <h4>Paso 2: Proceso Dormido (Estado S)</h4>
-            <pre><code class="language-bash"># Ejecutar sleep (espera sin consumir CPU)
+            <div class="callout success" style="margin: 1rem 0;">
+                <strong>¿Qué ves?</strong> Cada línea es un proceso. Busca:<br>
+                - <strong>PID</strong>: El número de identificación (como una cédula)<br>
+                - <strong>%CPU</strong>: Cuánto procesador está usando<br>
+                - <strong>COMMAND</strong>: Qué programa es
+            </div>
+
+            <h3>Ejercicio 2: Crear y observar un proceso (5 min)</h3>
+            <p>Vamos a crear un proceso simple y ver cómo cambia de estado:</p>
+            
+            <h4>Paso 1: Crear un proceso "dormilón"</h4>
+            <pre><code class="language-bash"># Ejecutar sleep (duerme por 300 segundos = 5 minutos)
 sleep 300 &
-# Guarda el PID
 
-# Verificar estado
-ps -eo pid,stat,cmd | grep sleep
-# Deberías ver: [PID] S sleep</code></pre>
+# Verás algo como: [1] 1234
+# [1] = número del trabajo
+# 1234 = PID del proceso
 
-            <h4>Paso 3: Proceso Detenido (Estado T)</h4>
-            <pre><code class="language-bash"># Detener el proceso sleep con SIGSTOP
-kill -STOP [PID_del_sleep]
+# Guarda ese número (tu PID será diferente)</code></pre>
 
-# Verificar estado
-ps -eo pid,stat,cmd | grep sleep
-# Deberías ver: [PID] Tl sleep (T = Stopped)</code></pre>
+            <h4>Paso 2: Verificar que existe</h4>
+            <pre><code class="language-bash"># Buscar tu proceso sleep
+ps aux | grep sleep
 
-            <h4>Paso 4: Reanudar Proceso (Vuelve a S)</h4>
-            <pre><code class="language-bash"># Reanudar con SIGCONT
-kill -CONT [PID_del_sleep]
+# Deberías ver algo como:
+# usuario  1234  0.0  0.0   7200   800 pts/0    S    10:00   0:00 sleep 300
+# 
+# La "S" significa que está "Sleeping" (dormido, esperando)</code></pre>
 
-# Verificar que vuelve a estado S
-ps -eo pid,stat,cmd | grep sleep</code></pre>
+            <h4>Paso 3: Detener el proceso (como pausar un video)</h4>
+            <pre><code class="language-bash"># Detener el proceso (usa tu número de PID)
+kill -STOP 1234
 
-            <h4>Paso 5: Terminar Procesos</h4>
-            <pre><code class="language-bash"># Matar ambos procesos
-kill %1  # Mata el job 1 (yes)
-kill [PID_del_sleep]  # Mata el sleep
+# Verificar que está detenido
+ps aux | grep sleep
 
-# Verificar que desaparecieron
-ps -eo pid,stat,cmd | grep -E "yes|sleep"</code></pre>
+# Ahora debería mostrar "T" (Stopped) en lugar de "S"
+# usuario  1234  0.0  0.0   7200   800 pts/0    T    10:00   0:00 sleep 300</code></pre>
 
-            <div class="note">
-                <strong>Registra en tu cuaderno:</strong> Capturas de cada estado (R, S, T) con sus respectivos PIDs.
+            <h4>Paso 4: Reanudar el proceso (como darle play)</h4>
+            <pre><code class="language-bash"># Reanudar el proceso
+kill -CONT 1234
+
+# Verificar que volvió a "S" (sleeping)
+ps aux | grep sleep</code></pre>
+
+            <h4>Paso 5: Terminar el proceso</h4>
+            <pre><code class="language-bash"># Matar el proceso
+kill 1234
+
+# Verificar que desapareció
+ps aux | grep sleep
+# Solo debería mostrar el propio comando "grep"</code></pre>
+
+            <div class="callout warning" style="margin: 1rem 0;">
+                <strong>¿Lo lograste?</strong> Si el proceso no aparece o los comandos no funcionan, no te preocupes. Pregunta al profesor o intenta de nuevo.
             </div>
 
-            <h3>Ejercicio 3: Visualizando Cambios de Contexto con top (5 min)</h3>
-            <pre><code class="language-bash"># Ver cambios de contexto en tiempo real
+            <h3>Ejercicio 3: Observar el administrador de tareas (5 min)</h3>
+            <pre><code class="language-bash"># Ejecutar top (el administrador de tareas de Linux)
 top
 
-# Dentro de top, presiona:
-# 'c' - Mostrar línea de comandos completa
-# 'k' - Matar proceso (pide PID)
-# 'r' - Cambiar nice (prioridad)
-# 'q' - Salir
+# Verás una pantalla que se actualiza cada pocos segundos
+# Muestra qué procesos están usando más CPU y memoria
 
-# Observa:
-# - %CPU cambiando entre procesos (cambio de contexto)
-# - Estados cambiando entre R y S
-# - Prioridades (PR y NI)</code></pre>
+# Dentro de top, prueba estas teclas:
+# 'q' - Salir de top
+# 'M' - Ordenar por uso de memoria
+# 'P' - Ordenar por uso de CPU (vuelve al orden normal)
 
-            <h3>Ejercicio 4: Jerarquía de Procesos Padre-Hijo (5 min)</h3>
-            <pre><code class="language-bash"># Ver árbol de procesos desde init (PID 1)
-pstree -p | head -20
+# Observa cómo los números cambian - eso es el cambio de contexto en acción</code></pre>
 
-# Ver procesos de tu usuario con jerarquía
-pstree -p [tu_usuario]
+            <h3>Ejercicio 4: Ver árbol de procesos (5 min)</h3>
+            <p>Los procesos tienen "familias". Vamos a ver la jerarquía:</p>
+            
+            <pre><code class="language-bash"># Ver árbol de procesos (versión simple)
+pstree | head -20
 
-# Crear proceso hijo desde tu shell
-bash
-# Ahora estás en un sub-shell (hijo)
-echo $$
-# Muestra el PID del shell actual
+# Esto muestra qué procesos iniciaron otros procesos
+# Por ejemplo: systemd (el abuelo) → sshd (el padre) → bash (el hijo)
 
-# Ver relación padre-hijo
-ps -eo pid,ppid,cmd | grep $$
-# El PPID debería ser el PID de tu shell anterior</code></pre>
+# Ver tu shell actual y su familia
+echo "Mi PID es: $$"
+pstree -p | grep $$
 
-            <h3>Ejercicio 5: Simulación de Algoritmos (5 min)</h3>
-            <p>Vamos a simular cómo el scheduler asigna CPU:</p>
-            <pre><code class="language-bash"># Crear 3 procesos que consuman CPU
-yes > /dev/null &  # Proceso A
-yes > /dev/null &  # Proceso B  
-yes > /dev/null &  # Proceso C
+# Busca tu PID en la salida y mira quién está "arriba" de ti</code></pre>
 
-# Ver distribución de CPU
-top
+            <div class="callout info" style="margin: 1rem 0;">
+                <strong>Analogía familiar:</strong> Igual que tú tienes padres, abuelos y bisabuelos, los procesos también tienen una familia. El proceso más antiguo suele ser <code>init</code> o <code>systemd</code> (PID 1).
+            </div>
 
-# Observa:
-# - Los 3 procesos compiten por CPU (~33% cada uno en Round Robin)
-# - Si cambias la prioridad de uno, cambia la distribución
+            <h3>Ejercicio 5: Limpieza (2 min)</h3>
+            <p>Si creaste procesos que siguen corriendo, vamos a limpiar:</p>
+            
+            <pre><code class="language-bash"># Matar todos los procesos sleep que puedas tener
+killall sleep 2>/dev/null
 
-# Cambiar prioridad (nice) de uno
-sudo renice -10 [PID_proceso_A]
+# Verificar que no quedaron procesos zombies
+ps aux | grep Z
+# No debería mostrar nada (o solo el grep mismo)</code></pre>
 
-# En top, observa cómo ese proceso recibe más CPU
-# Esto simula el algoritmo de Prioridad</code></pre>
+            <div class="success" style="margin: 1.5rem 0;">
+                <strong>¡Felicitaciones!</strong> Has practicado:<br>
+                ✅ Ver procesos con <code>ps</code><br>
+                ✅ Crear y controlar procesos con <code>kill</code><br>
+                ✅ Observar estados de proceso (S, T)<br>
+                ✅ Usar <code>top</code> como administrador de tareas<br>
+                ✅ Ver jerarquía de procesos con <code>pstree</code>
+            </div>
 
-            <h3>Ejercicio 6: Limpieza y Conclusión</h3>
-            <pre><code class="language-bash"># Matar todos los procesos yes
-killall yes
-
-# Verificar que no queden procesos zombies
-ps aux | grep -w Z
-# No debería mostrar nada (o solo el grep)</code></pre>
-
-            <div class="success">
-                <strong>Conclusión práctica:</strong> Has visto en vivo:
-                <ul>
-                    <li>✅ PCB: Información de PID, PPID, estado, prioridad</li>
-                    <li>✅ Estados: R (running), S (sleeping), T (stopped)</li>
-                    <li>✅ Cambio de contexto: Procesos alternando CPU en top</li>
-                    <li>✅ Jerarquía: Procesos padre-hijo con pstree</li>
-                    <li>✅ Scheduling: Distribución de CPU entre procesos</li>
-                </ul>
+            <div class="callout warning" style="margin: 1rem 0;">
+                <strong>No te preocupes si...</strong><br>
+                - Algunos comandos no te funcionaron<br>
+                - No entiendes todo todavía<br>
+                - Los números de PID eran diferentes<br><br>
+                Esto es normal. La práctica hace al maestro, y estos conceptos los veremos varias veces durante el curso.
             </div>
         </section>
 
-        <section id="actividad-entregable">
-            <h2>Actividad de Laboratorio: Entregable</h2>
-            <div class="warning">
-                <strong>Fecha de entrega:</strong> Próxima clase | <strong>Tiempo estimado:</strong> 45 minutos
+        <section id="practica-adicional">
+            <h2>Práctica Adicional (No Evaluativa)</h2>
+            
+            <div class="callout info" style="margin-bottom: 1.5rem;">
+                <strong>Esta sección es para practicar por tu cuenta.</strong> No es un entregable ni cuenta para la nota. ¡Úsala para reforzar lo aprendido!
             </div>
             
-            <h3>Instrucciones</h3>
-            <ol>
-                <li><strong>Crear procesos (15 min):</strong>
-                    <ul>
-                        <li>Crea 3 procesos: uno consumiendo CPU (yes), uno en espera (sleep), y uno ejecutando un script</li>
-                        <li>Captura pantalla de <code>ps -eo pid,ppid,stat,cmd</code> mostrando los 3 estados</li>
-                    </ul>
-                </li>
-                <li><strong>Árbol de procesos (10 min):</strong>
-                    <ul>
-                        <li>Ejecuta <code>pstree -p</code> y encuentra la jerarquía de tu shell actual</li>
-                        <li>Identifica: ¿Quién es el abuelo de tu shell?</li>
-                        <li>Captura pantalla mostrando la línea de tu shell con su padre y abuelo</li>
-                    </ul>
-                </li>
-                <li><strong>Análisis de scheduling (15 min):</strong>
-                    <ul>
-                        <li>Ejecuta <code>top</code> y observa durante 2 minutos</li>
-                        <li>Anota 5 procesos diferentes que veas en ejecución (estado R)</li>
-                        <li>Captura pantalla mostrando la distribución de CPU</li>
-                    </ul>
-                </li>
-                <li><strong>Documento de análisis (5 min):</strong>
-                    <ul>
-                        <li>Crea un documento con las 3 capturas</li>
-                        <li>Escribe 2-3 líneas explicando qué muestra cada captura</li>
-                    </ul>
-                </li>
-            </ol>
+            <div class="actividad">
+                <h3>Ejercicio de Refuerzo: Explorando Procesos</h3>
+                <p><strong>Objetivo:</strong> Observar procesos en tu sistema y entender su jerarquía.</p>
+                
+                <p><strong>Actividades sugeridas:</strong></p>
+                <ol>
+                    <li><strong>Crear diferentes procesos:</strong>
+                        <ul>
+                            <li>Abre una terminal y ejecuta: <code>yes > /dev/null &</code> (consume CPU)</li>
+                            <li>En otra terminal ejecuta: <code>sleep 300 &</code> (está en espera)</li>
+                            <li>Observa ambos con: <code>ps -eo pid,ppid,stat,cmd | grep -E "yes|sleep"</code></li>
+                        </ul>
+                    </li>
+                    <li><strong>Descubre la jerarquía:</strong>
+                        <ul>
+                            <li>Ejecuta <code>pstree -p</code> y busca tu shell actual</li>
+                            <li>¿Qué proceso inició tu shell? (hint: revisa la columna PPID)</li>
+                            <li>¿Y quién inició ese proceso?</li>
+                        </ul>
+                    </li>
+                    <li><strong>Observa el administrador de tareas:</strong>
+                        <ul>
+                            <li>Ejecuta <code>top</code> y observa qué procesos usan más CPU</li>
+                            <li>Presiona <code>q</code> para salir</li>
+                            <li>¿Reconoces algún proceso?</li>
+                        </ul>
+                    </li>
+                </ol>
 
-            <h3>Rúbrica de Evaluación</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Criterio</th>
-                        <th>Excelente (100%)</th>
-                        <th>Bueno (75%)</th>
-                        <th>Suficiente (50%)</th>
-                        <th>Insuficiente (0%)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Captura de estados de proceso</td>
-                        <td>Muestra claramente 3 estados diferentes (R, S, otro)</td>
-                        <td>Muestra 2 estados diferentes</td>
-                        <td>Muestra 1 estado correctamente</td>
-                        <td>No hay captura o incorrecta</td>
-                    </tr>
-                    <tr>
-                        <td>Árbol de procesos</td>
-                        <td>Identifica correctamente padre y abuelo del shell</td>
-                        <td>Identifica el padre correctamente</td>
-                        <td>Captura de pstree sin análisis</td>
-                        <td>No hay captura</td>
-                    </tr>
-                    <tr>
-                        <td>Análisis de top</td>
-                        <td>5 procesos identificados con sus estados</td>
-                        <td>3-4 procesos identificados</td>
-                        <td>1-2 procesos identificados</td>
-                        <td>No hay análisis</td>
-                    </tr>
-                    <tr>
-                        <td>Documento organizado</td>
-                        <td>Capturas ordenadas con explicaciones claras</td>
-                        <td>Capturas con breves explicaciones</td>
-                        <td>Solo capturas sin texto</td>
-                        <td>Documento incompleto</td>
-                    </tr>
-                </tbody>
-            </table>
+                <div class="callout success">
+                    <strong>Consejo:</strong> No te preocupes si no entiendes todo de inmediato. La idea es familiarizarte con los comandos. Puedes detener los procesos de prueba con <code>kill [PID]</code> cuando termines.
+                </div>
+            </div>
         </section>
 
         <section id="resumen">

@@ -452,7 +452,7 @@
                 <li><a href="#smb">5. Compartir Archivos (SMB)</a></li>
                 <li><a href="#usuarios">6. Usuarios y Grupos</a></li>
                 <li><a href="#practica">7. Actividad Práctica</a></li>
-                <li><a href="#entregable">8. Entregable</a></li>
+                
                 <li><a href="#resumen">Resumen</a></li>
             </ul>
         </nav>
@@ -905,85 +905,46 @@ smbclient //IP_DEL_SERVIDOR/Confidencial -U usuario1</code></pre>
             <p><strong>Tiempo estimado:</strong> 60 minutos</p>
         </section>
 
-        <section id="entregable">
-            <h2>8. Entregable</h2>
-
-            <div class="callout info">
-                <h3>Servidor de Archivos Configurado</h3>
-                <p><strong>Requisitos:</strong></p>
+        <section id="practica-adicional">
+            <h2>Práctica Adicional (No Evaluativa)</h2>
+            
+            <div class="callout info" style="margin-bottom: 1.5rem;">
+                <strong>Esta sección es para practicar por tu cuenta.</strong> No es un entregable ni cuenta para la nota. ¡Úsala para reforzar lo aprendido!
             </div>
+            
+            <div class="actividad">
+                <h3>Ejercicio de Refuerzo: Permisos en Windows</h3>
+                <p><strong>Objetivo:</strong> Familiarizarte con permisos NTFS y compartición de archivos.</p>
+                
+                <h4>Actividades sugeridas:</h4>
+                <ol>
+                    <li><strong>Explora permisos en tu computadora:</strong>
+                        <ul>
+                            <li>Abre el Explorador de Archivos</li>
+                            <li>Clic derecho en cualquier carpeta → Propiedades → Seguridad</li>
+                            <li>Mira quién tiene acceso y qué permisos tiene</li>
+                        </ul>
+                    </li>
+                    <li><strong>Crea una carpeta compartida:</strong>
+                        <ul>
+                            <li>Crea una nueva carpeta</li>
+                            <li>Clic derecho → Compartir → Personas específicas</li>
+                            <li>Agrega tu usuario y prueba acceder desde otra cuenta (si tienes)</li>
+                        </ul>
+                    </li>
+                    <li><strong>Prueba PowerShell:</strong>
+                        <ul>
+                            <li>Abre PowerShell como administrador</li>
+                            <li>Ejecuta: <code>Get-LocalUser</code> para ver usuarios</li>
+                            <li>Ejecuta: <code>Get-Process | Select-Object -First 5</code></li>
+                        </ul>
+                    </li>
+                </ol>
 
-            <ol>
-                <li><strong>Servidor Windows Server con:</strong>
-                    <ul>
-                        <li>3 usuarios de prueba creados</li>
-                        <li>3 grupos: Lectores, Editores, Administradores</li>
-                        <li>Estructura de directorios compartidos</li>
-                    </ul>
-                </li>
-                <li><strong>Permisos configurados:</strong>
-                    <ul>
-                        <li>carpeta Pública: todos pueden leer/escribir</li>
-                        <li>carpeta Proyectos: Editores pueden modificar, Lectores solo leer</li>
-                        <li>carpeta Confidencial: solo Administradores</li>
-                    </ul>
-                </li>
-                <li><strong>Evidencias:</strong>
-                    <ul>
-                        <li>Capturas de pantalla de permisos NTFS</li>
-                        <li>Capturas de SMB shares configurados</li>
-                        <li>Prueba de acceso desde cliente (smbclient)</li>
-                        <li>Script PowerShell de configuración</li>
-                    </ul>
-                </li>
-            </ol>
-
-            <div class="callout warning">
-                <strong>Fecha de entrega:</strong> Consultar plataforma virtual
+                <div class="callout success">
+                    <strong>Consejo:</strong> Si no tienes Windows Server, puedes practicar estos conceptos en Windows 10/11. Los permisos NTFS funcionan igual en ambos.
+                </div>
             </div>
-
-            <h3>Rúbrica de Evaluación</h3>
-            <table class="rubrica-table">
-                <thead>
-                    <tr>
-                        <th>Criterio</th>
-                        <th class="level-excelente">Excelente (4)</th>
-                        <th class="level-bueno">Bueno (3)</th>
-                        <th class="level-satisfactorio">Satisfactorio (2)</th>
-                        <th class="level-insuficiente">Insuficiente (1)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Permisos NTFS</strong></td>
-                        <td>Configura permisos NTFS correctamente (Read, Write, Modify, Full Control)</td>
-                        <td>Configura permisos básicos</td>
-                        <td>Solo entiende permisos</td>
-                        <td>No conoce permisos NTFS</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Gestión con PowerShell</strong></td>
-                        <td>Usa cmdlets de permisos (Get-Acl, Set-Acl) correctamente</td>
-                        <td>Usa cmdlets básicos</td>
-                        <td>Usa UI graphical</td>
-                        <td>No sabe usar PowerShell</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Usuarios y Grupos Windows</strong></td>
-                        <td>Crea usuarios, grupos y los configura correctamente</td>
-                        <td>Crea usuarios y grupos</td>
-                        <td>Crea solo usuarios</td>
-                        <td>No sabe crear usuarios</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Compartir Archivos (SMB)</strong></td>
-                        <td>Configura compartición SMB con permisos correctos</td>
-                        <td>Configura compartición básica</td>
-                        <td>Solo crea carpeta</td>
-                        <td>No configura compartición</td>
-                    </tr>
-                </tbody>
-            </table>
         </section>
 
         <section id="resumen">
