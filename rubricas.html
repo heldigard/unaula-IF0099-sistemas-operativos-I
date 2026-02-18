@@ -756,8 +756,8 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td class="criterio">Apache Linux</td>
-                        <td>VirtualHost configurado, HTTPS funcionando con cert auto-firmado, sitio personalizado accesible desde navegador.</td>
+                        <td class="criterio">Apache Linux (HTTPS)</td>
+                        <td>VirtualHost configurado, HTTPS funcionando con cert auto-firmado, sitio accesible desde navegador.</td>
                         <td>Apache funciona en HTTP pero HTTPS tiene errores o certificado no válido.</td>
                         <td>Apache instalado pero no accesible o sin VirtualHost.</td>
                         <td>Apache no instalado o no funciona.</td>
@@ -772,25 +772,25 @@
                         <td class="peso">20%</td>
                     </tr>
                     <tr>
-                        <td class="criterio">Persistencia (fstab)</td>
-                        <td>Segundo disco montado automáticamente tras reinicio, configuración correcta en /etc/fstab.</td>
-                        <td>Disco montado pero requiere comando manual mount -a tras reinicio.</td>
-                        <td>Disco formateado pero no montado o fstab con errores.</td>
-                        <td>No implementa segundo disco.</td>
+                        <td class="criterio">RAID 1 Linux (mdadm)</td>
+                        <td>RAID 1 configurado con mdadm, 2 discos sincronizados, estado limpio verificado con cat /proc/mdstat, tolerancia a fallo demostrada.</td>
+                        <td>RAID configurado pero no tolera fallo de disco o sincronización incompleta.</td>
+                        <td>RAID configurado pero con errores o solo 1 disco funcional.</td>
+                        <td>Sin RAID configurado.</td>
                         <td class="peso">25%</td>
                     </tr>
                     <tr>
-                        <td class="criterio">Dashboard de Salud</td>
-                        <td>Script funcional que reporta: disponibilidad puertos 80/443, CPU, RAM, espacio disco.</td>
-                        <td>Script funciona pero no verifica todos los servicios o reporte incompleto.</td>
-                        <td>Script con errores de ejecución o verifica solo 1-2 aspectos.</td>
-                        <td>Sin dashboard o no funciona.</td>
+                        <td class="criterio">Persistencia (fstab)</td>
+                        <td>RAID montado automáticamente tras reinicio, configuración correcta en /etc/fstab con UUID.</td>
+                        <td>Disco montado pero requiere comando manual mount -a tras reinicio.</td>
+                        <td>Disco formateado pero no montado o fstab con errores.</td>
+                        <td>No implementa montaje persistente.</td>
                         <td class="peso">20%</td>
                     </tr>
                     <tr>
                         <td class="criterio">Video Demostración</td>
-                        <td>Video claro de máx 5 min mostrando todo funcionando y prueba de reinicio con montaje automático.</td>
-                        <td>Video muestra servicios pero no incluye prueba de reinicio o fstab.</td>
+                        <td>Video claro de máx 5 min mostrando: Apache HTTPS, IIS, RAID tolerando fallo, reinicio con montaje automático.</td>
+                        <td>Video muestra servicios pero falta prueba de RAID o reinicio.</td>
                         <td>Video incompleto o excede tiempo, muestra solo parte del sistema.</td>
                         <td>Sin video o calidad deficiente.</td>
                         <td class="peso">10%</td>

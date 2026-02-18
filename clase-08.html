@@ -137,37 +137,230 @@
 
         <section id="asignacion">
             <h2>3. Estrategias de Asignación Contigua</h2>
-            <p>¿Cómo decide el SO dónde poner un nuevo proceso en la RAM?</p>
+            <p>¿Cómo decide el SO dónde poner un nuevo proceso en la RAM? Imagina que estás estacionando un carro en un parqueo con espacios de diferentes tamaños.</p>
             
-            <table>
-                <thead>
-                    <tr><th>Estrategia</th><th>Descripción Profesional</th><th>Impacto</th></tr>
-                </thead>
-                <tbody>
-                    <tr><td><strong>First Fit</strong></td><td>Usa el primer hueco que sea suficientemente grande.</td><td>El más rápido de calcular.</td></tr>
-                    <tr><td><strong>Best Fit</strong></td><td>Busca el hueco que más se ajuste al tamaño exacto.</td><td>Minimiza desperdicio, pero es lento.</td></tr>
-                    <tr><td><strong>Worst Fit</strong></td><td>Usa el hueco más grande disponible.</td><td>Deja huecos grandes útiles para el futuro.</td></tr>
-                </tbody>
-            </table>
+            <div class="callout info" style="margin: 1.5rem 0;">
+                <h4>🚗 Analogía del Parqueo</h4>
+                <p>Tienes un carro que ocupa 2 espacios. El parqueo tiene varios huecos disponibles de diferentes tamaños. ¿Dónde lo estacionas?</p>
+            </div>
+
+            <div style="display: grid; gap: 1rem; margin: 1.5rem 0;">
+                <div style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); padding: 1.5rem; border-radius: 8px; border-left: 5px solid #3b82f6;">
+                    <h4 style="color: #1e40af; margin-bottom: 0.75rem;">🚀 First Fit (Primer Ajuste)</h4>
+                    <p style="margin-bottom: 0.75rem;"><strong>¿Qué hace?</strong> Recorre la memoria desde el inicio y usa el <strong>primer hueco</strong> que sea suficientemente grande.</p>
+                    
+                    <div style="background: white; padding: 1rem; border-radius: 6px; margin: 1rem 0;">
+                        <p style="font-weight: 600; color: #065f46; margin-bottom: 0.5rem;">✅ Ventajas:</p>
+                        <ul style="margin-left: 1.5rem;">
+                            <li>El más rápido (no busca todos los huecos)</li>
+                            <li>Simple de implementar</li>
+                            <li>Tiende a usar huecos al inicio de la memoria</li>
+                        </ul>
+                    </div>
+                    
+                    <div style="background: white; padding: 1rem; border-radius: 6px;">
+                        <p style="font-weight: 600; color: #991b1b; margin-bottom: 0.5rem;">❌ Desventajas:</p>
+                        <ul style="margin-left: 1.5rem;">
+                            <li>Puede dejar muchos huecos pequeños al inicio</li>
+                            <li>No optimiza el uso del espacio</li>
+                        </ul>
+                    </div>
+                    
+                    <p style="margin-top: 1rem; font-style: italic; color: #92400e;">🚗 <strong>Ejemplo:</strong> Tu carro entra en el primer hueco que veas, sin importar si queda mucho espacio sobrante.</p>
+                </div>
+
+                <div style="background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%); padding: 1.5rem; border-radius: 8px; border-left: 5px solid #10b981;">
+                    <h4 style="color: #065f46; margin-bottom: 0.75rem;">🎯 Best Fit (Mejor Ajuste)</h4>
+                    <p style="margin-bottom: 0.75rem;"><strong>¿Qué hace?</strong> Busca en TODA la memoria y elige el hueco que más se ajuste al tamaño exacto del proceso (el más pequeño que sirva).</p>
+                    
+                    <div style="background: white; padding: 1rem; border-radius: 6px; margin: 1rem 0;">
+                        <p style="font-weight: 600; color: #065f46; margin-bottom: 0.5rem;">✅ Ventajas:</p>
+                        <ul style="margin-left: 1.5rem;">
+                            <li>Minimiza el desperdicio de memoria</li>
+                            <li>Deja huecos grandes intactos para procesos grandes</li>
+                            <li>Óptimo en teoría</li>
+                        </ul>
+                    </div>
+                    
+                    <div style="background: white; padding: 1rem; border-radius: 6px;">
+                        <p style="font-weight: 600; color: #991b1b; margin-bottom: 0.5rem;">❌ Desventajas:</p>
+                        <ul style="margin-left: 1.5rem;">
+                            <li>Muy lento (debe recorrer toda la memoria)</li>
+                            <li>Crea muchos huecos diminutos inservibles</li>
+                            <li>Peor fragmentación externa</li>
+                        </ul>
+                    </div>
+                    
+                    <p style="margin-top: 1rem; font-style: italic; color: #92400e;">🚗 <strong>Ejemplo:</strong> Tu carro de 2 espacios busca el hueco más justo, aunque sea de 2.5 espacios, dejando solo 0.5 desperdiciado.</p>
+                </div>
+
+                <div style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); padding: 1.5rem; border-radius: 8px; border-left: 5px solid #f59e0b;">
+                    <h4 style="color: #92400e; margin-bottom: 0.75rem;">📏 Worst Fit (Peor Ajuste)</h4>
+                    <p style="margin-bottom: 0.75rem;"><strong>¿Qué hace?</strong> Busca el hueco MÁS GRANDE disponible y lo usa, dejando el remanente grande.</p>
+                    
+                    <div style="background: white; padding: 1rem; border-radius: 6px; margin: 1rem 0;">
+                        <p style="font-weight: 600; color: #065f46; margin-bottom: 0.5rem;">✅ Ventajas:</p>
+                        <ul style="margin-left: 1.5rem;">
+                            <li>Deja huecos grandes después de asignar</li>
+                            <li>Útil si llegarán más procesos grandes</li>
+                        </ul>
+                    </div>
+                    
+                    <div style="background: white; padding: 1rem; border-radius: 6px;">
+                        <p style="font-weight: 600; color: #991b1b; margin-bottom: 0.5rem;">❌ Desventajas:</p>
+                        <ul style="margin-left: 1.5rem;">
+                            <li>Desperdicia los huecos grandes rápidamente</li>
+                            <li>Lento (debe buscar el máximo)</li>
+                            <li>Peor rendimiento en la práctica</li>
+                        </ul>
+                    </div>
+                    
+                    <p style="margin-top: 1rem; font-style: italic; color: #92400e;">🚗 <strong>Ejemplo:</strong> Tu carro de 2 espacios ocupa el hueco de 10 espacios, dejando 8 espacios libres (que pueden servir para otro carro grande).</p>
+                </div>
+            </div>
+
+            <div class="callout warning" style="margin-top: 1.5rem;">
+                <h4>⚠️ Comparativa Rápida</h4>
+                <table style="width: 100%; margin-top: 0.5rem;">
+                    <thead>
+                        <tr style="background: #f1f5f9;">
+                            <th style="padding: 0.75rem; text-align: left;">Estrategia</th>
+                            <th style="padding: 0.75rem; text-align: center;">Velocidad</th>
+                            <th style="padding: 0.75rem; text-align: center;">Desperdicio</th>
+                            <th style="padding: 0.75rem; text-align: center;">Uso Real</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="padding: 0.75rem;"><strong>First Fit</strong></td>
+                            <td style="padding: 0.75rem; text-align: center;">⚡⚡⚡ Rápido</td>
+                            <td style="padding: 0.75rem; text-align: center;">Medio</td>
+                            <td style="padding: 0.75rem; text-align: center;">✅ Más usado</td>
+                        </tr>
+                        <tr style="background: #f8fafc;">
+                            <td style="padding: 0.75rem;"><strong>Best Fit</strong></td>
+                            <td style="padding: 0.75rem; text-align: center;">🐌 Lento</td>
+                            <td style="padding: 0.75rem; text-align: center;">Mínimo</td>
+                            <td style="padding: 0.75rem; text-align: center;">Sistemas embebidos</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 0.75rem;"><strong>Worst Fit</strong></td>
+                            <td style="padding: 0.75rem; text-align: center;">🐌 Lento</td>
+                            <td style="padding: 0.75rem; text-align: center;">Alto</td>
+                            <td style="padding: 0.75rem; text-align: center;">❌ Raramente usado</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="callout info" style="margin-top: 1.5rem;">
+                <h4>💡 En la Práctica: ¿Cuál usar?</h4>
+                <p><strong>First Fit</strong> es la estrategia más común en sistemas modernos porque:</p>
+                <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                    <li>Es suficientemente buena en la mayoría de casos</li>
+                    <li>La velocidad es crítica en asignación de memoria</li>
+                    <li>La paginación (que veremos después) reduce la fragmentación</li>
+                </ul>
+            </div>
         </section>
 
         <section id="fragmentacion">
             <h2>4. Fragmentación: El Desperdicio de RAM</h2>
             
-            <div class="comparison">
-                <div class="card">
-                    <h4>Fragmentación Interna</h4>
-                    <p>Ocurre en Particiones Fijas. El proceso no llena todo el bloque asignado. El espacio sobrante se pierde.</p>
+            <div class="callout info" style="margin: 1.5rem 0;">
+                <h4>🏠 Analogía: Muebles en una Sala</h4>
+                <p>Imagina que estás organizando muebles en una sala de estar. Cada mueble es un proceso y el espacio libre entre muebles es la memoria disponible.</p>
+            </div>
+
+            <div style="display: grid; gap: 1.5rem; margin: 1.5rem 0;">
+                <div style="background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%); padding: 1.5rem; border-radius: 8px; border-left: 5px solid #ef4444;">
+                    <h4 style="color: #991b1b; margin-bottom: 0.75rem;">🧩 Fragmentación Interna</h4>
+                    <p style="margin-bottom: 0.75rem;"><strong>¿Qué es?</strong> Ocurre en <strong>particiones fijas</strong>. El proceso es más pequeño que el bloque asignado, desperdiciando espacio DENTRO del bloque.</p>
+                    
+                    <div style="background: white; padding: 1rem; border-radius: 6px; margin: 1rem 0;">
+                        <p style="font-weight: 600; color: #92400e; margin-bottom: 0.5rem;">Ejemplo visual:</p>
+                        <div style="font-family: monospace; line-height: 1.8;">
+                            <div>📦 Bloque asignado: 100 MB</div>
+                            <div>📄 Proceso real: 65 MB</div>
+                            <div style="color: #ef4444;">❌ Desperdicio: 35 MB (fragmentación interna)</div>
+                        </div>
+                    </div>
+                    
+                    <p style="font-style: italic; color: #7f1d1d;">🏠 <strong>Analogía:</strong> Tienes una caja de 100 litros pero solo guardas 65 litros de ropa. Los 35 litros restantes de la caja están desperdiciados.</p>
                 </div>
-                <div class="card">
-                    <h4>Fragmentación Externa</h4>
-                    <p>Ocurre en Particiones Dinámicas. Hay mucha RAM libre total, pero está dividida en pedazos tan pequeños que nada cabe.</p>
+
+                <div style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); padding: 1.5rem; border-radius: 8px; border-left: 5px solid #f59e0b;">
+                    <h4 style="color: #92400e; margin-bottom: 0.75rem;">🧩 Fragmentación Externa</h4>
+                    <p style="margin-bottom: 0.75rem;"><strong>¿Qué es?</strong> Ocurre en <strong>particiones dinámicas</strong>. Hay suficiente memoria libre TOTAL, pero está dividida en pedazos pequeños dispersos que ningún proceso puede usar.</p>
+                    
+                    <div style="background: white; padding: 1rem; border-radius: 6px; margin: 1rem 0;">
+                        <p style="font-weight: 600; color: #92400e; margin-bottom: 0.5rem;">Ejemplo visual:</p>
+                        <div style="font-family: monospace; line-height: 1.8;">
+                            <div>RAM Total Libre: 150 MB (suma de todos los huecos)</div>
+                            <div>🕳️ Hueco 1: 30 MB | 🕳️ Hueco 2: 50 MB | 🕳️ Hueco 3: 70 MB</div>
+                            <div>📄 Proceso a cargar: 100 MB</div>
+                            <div style="color: #ef4444;">❌ Resultado: No cabe aunque hay 150 MB libres</div>
+                        </div>
+                    </div>
+                    
+                    <p style="font-style: italic; color: #7f1d1d;">🏠 <strong>Analogía:</strong> Tienes una sala con varios espacios libres pequeños entre muebles, pero ninguno es lo suficientemente grande para el nuevo sofá que quieres poner.</p>
                 </div>
             </div>
 
-            <div class="callout success">
-                <h4>Compactación (Defrag de RAM)</h4>
-                <p>El SO mueve los procesos para unir los huecos. Es costoso en CPU pero necesario en sistemas sin paginación.</p>
+            <div class="callout success" style="margin-top: 1.5rem;">
+                <h4>🔧 Solución: Compactación (Defrag de RAM)</h4>
+                <p><strong>¿Qué hace?</strong> El SO mueve los procesos en memoria para juntar todos los huecos pequeños en uno grande.</p>
+                
+                <div style="background: white; padding: 1rem; border-radius: 6px; margin-top: 1rem;">
+                    <p style="font-weight: 600; color: #065f46; margin-bottom: 0.5rem;">Antes de compactar:</p>
+                    <div style="font-family: monospace; margin-bottom: 1rem;">
+                        [P1][🕳️30][P2][🕳️50][P3][🕳️70] → Huecos dispersos
+                    </div>
+                    
+                    <p style="font-weight: 600; color: #065f46; margin-bottom: 0.5rem;">Después de compactar:</p>
+                    <div style="font-family: monospace;">
+                        [P1][P2][P3][🕳️🕳️🕳️150] → Un hueco grande de 150MB
+                    </div>
+                </div>
+                
+                <div style="background: #fef3c7; padding: 1rem; border-radius: 6px; margin-top: 1rem;">
+                    <p style="font-weight: 600; color: #92400e; margin-bottom: 0.5rem;">⚠️ Costo de la compactación:</p>
+                    <ul style="margin-left: 1.5rem;">
+                        <li>Es muy costosa en CPU (mover procesos en memoria)</li>
+                        <li>Requiere pausar los procesos mientras se mueven</li>
+                        <li>En sistemas modernos se evita usando paginación</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="callout warning" style="margin-top: 1.5rem;">
+                <h4>📊 Comparativa Visual</h4>
+                <table style="width: 100%; margin-top: 0.5rem;">
+                    <thead>
+                        <tr style="background: #f1f5f9;">
+                            <th style="padding: 0.75rem; text-align: left;">Característica</th>
+                            <th style="padding: 0.75rem; text-align: center;">Interna</th>
+                            <th style="padding: 0.75rem; text-align: center;">Externa</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="padding: 0.75rem;"><strong>Tipo de partición</strong></td>
+                            <td style="padding: 0.75rem; text-align: center;">Fijas</td>
+                            <td style="padding: 0.75rem; text-align: center;">Dinámicas</td>
+                        </tr>
+                        <tr style="background: #f8fafc;">
+                            <td style="padding: 0.75rem;"><strong>Ubicación del desperdicio</strong></td>
+                            <td style="padding: 0.75rem; text-align: center;">Dentro del bloque</td>
+                            <td style="padding: 0.75rem; text-align: center;">Entre bloques</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 0.75rem;"><strong>Solución</strong></td>
+                            <td style="padding: 0.75rem; text-align: center;">Reducir tamaño de bloques</td>
+                            <td style="padding: 0.75rem; text-align: center;">Compactación o paginación</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </section>
 
