@@ -141,9 +141,9 @@
             <h2>3. El Acelerador: TLB (Translation Lookaside Buffer)</h2>
             <p>Consultar la tabla de páginas en RAM cada vez que la CPU quiere un dato es demasiado lento (~100 ciclos de reloj). La CPU tiene una caché ultra-rápida llamada <strong>TLB</strong> que guarda las últimas traducciones.</p>
             
-            <div class="callout warning">
-                <h4>Huge Pages en Servidores de Datos</h4>
-                <p>Para aplicaciones que manejan Terabytes de RAM (ej: Oracle, SQL Server, SAP), una página de 4KB genera tablas de páginas gigantes que no caben en el TLB. Los ingenieros habilitan <strong>Huge Pages</strong> (2MB o 1GB) para reducir los "TLB Misses" y ganar hasta un 20% de rendimiento.</p>
+                <div class="callout warning">
+                <h4>Huge Pages en Aplicaciones Intensivas en Memoria</h4>
+                <p>Para aplicaciones que manejan Terabytes de RAM (ej: sistemas de procesamiento de datos, análisis científico, ML), una página de 4KB genera tablas de páginas gigantes que no caben en el TLB. Los ingenieros habilitan <strong>Huge Pages</strong> (2MB o 1GB) para reducir los "TLB Misses" y ganar hasta un 20% de rendimiento.</p>
             </div>
         </section>
 
@@ -194,7 +194,7 @@ whoami /priv | Select-String "SeLockMemory"</code></pre>
                 <p><strong>Tarea 1: El tamaño de página (Linux)</strong></p>
                 <ol>
                     <li>Ejecute <code>getconf PAGESIZE</code>. El estándar es 4096 bytes.</li>
-                    <li>Calcule: Si su servidor web Apache ocupa 24MB de RAM real, ¿cuántas páginas de 4KB está gestionando el kernel para ese proceso?</li>
+                    <li>Calcule: Si su servicio web ocupa 24MB de RAM real, ¿cuántas páginas de 4KB está gestionando el kernel para ese proceso?</li>
                 </ol>
 
                 <p><strong>Tarea 2: El archivo de Paginación (Windows)</strong></p>
@@ -220,8 +220,8 @@ whoami /priv | Select-String "SeLockMemory"</code></pre>
                     </ol>
                 </div>
                 <div class="card" style="margin: 1rem 0; border-left: 4px solid #059669;">
-                    <h4 style="color: #065f46;">Caso 2: Huge Pages en Bases de Datos Oracle</h4>
-                    <p><strong>Escenario:</strong> Una base de datos Oracle de 128GB de RAM corre lenta. Al habilitar Huge Pages de 2MB, el rendimiento sube un 15%.</p>
+                    <h4 style="color: #065f46;">Caso 2: Huge Pages en Procesamiento de Datos</h4>
+                    <p><strong>Escenario:</strong> Una aplicación de procesamiento de datos de 128GB de RAM corre lenta. Al habilitar Huge Pages de 2MB, el rendimiento sube un 15%.</p>
                     <p><strong>Explicación:</strong> Con páginas de 4KB, la tabla de páginas tenía 32 millones de entradas. Con 2MB, solo tiene 64,000 entradas, lo que reduce drásticamente los TLB Misses.</p>
                 </div>
             </div>
@@ -394,7 +394,7 @@ Asignación física:
                 </ol>
                 
                 <p><strong>Ejercicio de reflexión:</strong></p>
-                <pre>Una base de datos Oracle usa 128GB de RAM.
+                <pre>Una aplicación de procesamiento de datos usa 128GB de RAM.
 Con páginas de 4KB:  128GB / 4KB = 33,554,432 entradas de página
 Con páginas de 2MB:  128GB / 2MB = 65,536 entradas de página
 Con páginas de 1GB:  128GB / 1GB = 128 entradas de página
@@ -407,7 +407,7 @@ TLB típico tiene 512 entradas.
             <div class="card" style="margin: 1.5rem 0; border-left: 4px solid #2563eb;">
                 <h3 style="color: #1e40af; margin-top: 0;">Troubleshooting: Huge Pages en Bases de Datos</h3>
                 
-                <p><strong>Problema común:</strong> Tu base de datos MySQL/PostgreSQL/Oracle está configurada para usar Huge Pages pero no arranca o no usa la memoria esperada.</p>
+                <p><strong>Problema común:</strong> Tu aplicación está configurada para usar Huge Pages pero no arranca o no usa la memoria esperada.</p>
                 
                 <h4>Diagnóstico en Linux:</h4>
                 <pre><code class="language-bash"># 1. Verificar soporte de Huge Pages
@@ -422,9 +422,9 @@ ulimit -l  # Memoria lockable (KB)
 # 4. Verificar uso por proceso
 cat /proc/[PID]/smaps | grep -i huge</code></pre>
                 
-                <h4>Configuración para PostgreSQL:</h4>
+                <h4>Configuración para Aplicaciones Intensivas:</h4>
                 <pre><code class="language-bash"># 1. Calcular cuántas Huge Pages necesitas
-# PostgreSQL: shared_buffers = 8GB
+# Aplicación: memoria_compartida = 8GB
 # Huge Page size = 2MB
 # Necesitas: 8GB / 2MB = 4096 Huge Pages
 
@@ -434,17 +434,17 @@ sudo sysctl -w vm.nr_hugepages=4096
 # 3. Hacer persistente
 echo "vm.nr_hugepages=4096" >> /etc/sysctl.conf
 
-# 4. Configurar PostgreSQL (postgresql.conf)
+# 4. Configurar la aplicación
 huge_pages = on
-shared_buffers = 8GB
+memoria_compartida = 8GB
 
 # 5. Configurar límites de usuario (/etc/security/limits.conf)
-postgres soft memlock 8388608
-postgres hard memlock 8388608</code></pre>
+aplicacion soft memlock 8388608
+aplicacion hard memlock 8388608</code></pre>
                 
                 <p><strong>Verificación:</strong></p>
-                <pre><code class="language-bash"># Verificar que PostgreSQL está usando Huge Pages
-cat /proc/[PID_PGSQL]/smaps | grep "AnonHugePages"
+                <pre><code class="language-bash"># Verificar que la aplicación está usando Huge Pages
+cat /proc/[PID_APLICACION]/smaps | grep "AnonHugePages"
 # Debería mostrar uso de AnonHugePages
 
 # Verificar estadísticas

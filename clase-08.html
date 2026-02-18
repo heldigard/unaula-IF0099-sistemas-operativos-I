@@ -422,15 +422,15 @@ Get-Counter "\Memory\Page Faults/sec"</code></pre>
             <div class="actividad" style="background: #fff7ed; border-left-color: #ea580c; margin-top: 2rem;">
                 <h3>Casos Reales: Memoria en Producción</h3>
                 <div class="card" style="margin: 1rem 0; border-left: 4px solid #dc2626;">
-                    <h4 style="color: #991b1b;">Caso 1: OutOfMemory en Servidor de Base de Datos</h4>
-                    <p><strong>Escenario:</strong> Tu servidor PostgreSQL comenzó a fallar con errores "out of memory: cannot allocate memory". Al revisar con <code>free -h</code> ves que solo quedan 200MB disponibles de 16GB.</p>
+                    <h4 style="color: #991b1b;">Caso 1: OutOfMemory en Aplicación Intensiva en Memoria</h4>
+                    <p><strong>Escenario:</strong> Tu aplicación comenzó a fallar con errores "out of memory: cannot allocate memory". Al revisar con <code>free -h</code> ves que solo quedan 200MB disponibles de 16GB.</p>
                     <p><strong>Diagnóstico:</strong></p>
                     <ol>
-                        <li>¿Qué parámetros de PostgreSQL controlan la memoria por conexión?</li>
-                        <li>Si tienes 100 conexiones y <code>work_mem = 256MB</code>, ¿cuánta memoria solo para work_mem se necesita?</li>
+                        <li>¿Qué parámetros de la aplicación controlan la memoria por proceso?</li>
+                        <li>Si tienes 100 procesos y cada uno usa <code>memoria_proceso = 256MB</code>, ¿cuánta memoria total se necesita?</li>
                         <li>¿Qué ajustes harías para evitar el OOM?</li>
                     </ol>
-                    <p><strong>Solución:</strong> Reducir <code>max_connections</code> y usar un pooler de conexiones como pgBouncer.</p>
+                    <p><strong>Solución:</strong> Reducir el número de procesos concurrentes y usar un pool de procesos.</p>
                 </div>
                 <div class="card" style="margin: 1rem 0; border-left: 4px solid #059669;">
                     <h4 style="color: #065f46;">Caso 2: Servidor Linux Sin Swap y Alta Presión</h4>
@@ -459,7 +459,7 @@ Get-Counter "\Memory\Page Faults/sec"</code></pre>
             <!-- EJERCICIO DE ANÁLISIS -->
             <div class="actividad" style="background: #f0fdf4; border-left-color: #16a34a; margin-top: 2rem;">
                 <h3>Ejercicio de Análisis: Calculando Memoria para tu Proyecto UCS</h3>
-                <p><strong>Contexto:</strong> Tu servidor UCS debe correr Apache, PostgreSQL y un script de monitoreo. Calcula la memoria necesaria.</p>
+                <p><strong>Contexto:</strong> Tu servidor UCS debe correr un servicio web, una aplicación intensiva en memoria y un script de monitoreo. Calcula la memoria necesaria.</p>
 
                 <table>
                     <thead>
@@ -467,8 +467,8 @@ Get-Counter "\Memory\Page Faults/sec"</code></pre>
                     </thead>
                     <tbody>
                         <tr><td>SO Base</td><td>Ubuntu Server 22.04</td><td>1-2 GB</td></tr>
-                        <tr><td>Apache (10 hijos)</td><td>prefork MPM, 150MB por proceso</td><td>?</td></tr>
-                        <tr><td>PostgreSQL</td><td>shared_buffers=256MB, work_mem=64MB</td><td>?</td></tr>
+                        <tr><td>Servicio Web (10 procesos)</td><td>150MB por proceso</td><td>?</td></tr>
+                        <tr><td>Aplicación Intensiva</td><td>shared_buffers=256MB, work_mem=64MB</td><td>?</td></tr>
                         <tr><td>Monitor Script</td><td>Proceso Bash + Python</td><td>100-200 MB</td></tr>
                         <tr><td>Sistema + Cache</td><td>Buffer del kernel</td><td>1-2 GB</td></tr>
                         <tr><td><strong>TOTAL</strong></td><td></td><td><strong>?</strong></td></tr>
@@ -479,7 +479,7 @@ Get-Counter "\Memory\Page Faults/sec"</code></pre>
                     <li>Calcula la memoria total necesaria</li>
                     <li>¿Cuánta RAM recomiendas para este servidor?</li>
                     <li>¿Cuánto swap adicionarías?</li>
-                    <li>¿Qué parámetros de Apache reducirías si solo tienes 8GB de RAM?</li>
+                    <li>¿Qué parámetros del servicio web reducirías si solo tienes 8GB de RAM?</li>
                 </ol>
             </div>
 

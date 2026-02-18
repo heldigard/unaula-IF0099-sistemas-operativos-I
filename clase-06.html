@@ -252,11 +252,11 @@ Stop-Process -Id [PID] -Force</code></pre>
                     </thead>
                     <tbody>
                         <tr><td>Listar procesos</td><td><code>ps aux</code></td><td><code>Get-Process</code></td></tr>
-                        <tr><td>Buscar proceso</td><td><code>ps aux | grep nginx</code></td><td><code>Get-Process nginx</code></td></tr>
-                        <tr><td>Matar proceso</td><td><code>kill -9 PID</code></td><td><code>Stop-Process -Id PID -Force</code></td></tr>
-                        <tr><td>Ver uso CPU</td><td><code>top</code></td><td><code>Get-Process | Sort-Object CPU -Desc</code></td></tr>
-                        <tr><td>Ver servicios</td><td><code>systemctl list-units</code></td><td><code>Get-Service</code></td></tr>
-                        <tr><td>Iniciar servicio</td><td><code>systemctl start nginx</code></td><td><code>Start-Service nginx</code></td></tr>
+                    <tr><td>Buscar proceso</td><td><code>ps aux | grep sshd</code></td><td><code>Get-Process sshd</code></td></tr>
+                    <tr><td>Matar proceso</td><td><code>kill -9 PID</code></td><td><code>Stop-Process -Id PID -Force</code></td></tr>
+                    <tr><td>Ver uso CPU</td><td><code>top</code></td><td><code>Get-Process | Sort-Object CPU -Desc</code></td></tr>
+                    <tr><td>Ver servicios</td><td><code>systemctl list-units</code></td><td><code>Get-Service</code></td></tr>
+                    <tr><td>Iniciar servicio</td><td><code>systemctl start ssh</code></td><td><code>Start-Service sshd</code></td></tr>
                         <tr><td>Ver logs</td><td><code>tail -f /var/log/syslog</code></td><td><code>Get-EventLog -LogName System -Newest 10</code></td></tr>
                         <tr><td>Uso de memoria</td><td><code>free -h</code></td><td><code>Get-CimInstance Win32_PhysicalMemory</code></td></tr>
                     </tbody>
@@ -279,10 +279,10 @@ find /var/log -name "*.log" -size +100M -exec rm {} \;</code></pre>
                 
                 <p><strong>Script 3 - Backup de Servicio:</strong></p>
                 <pre><code class="language-bash">#!/bin/bash
-# Bash: Verifica si apache está corriendo, si no, lo inicia
-if ! pgrep apache2 > /dev/null; then
-    systemctl start apache2
-    echo "Apache iniciado: $(date)" >> /var/log/apache_monitor.log
+# Bash: Verifica si el servicio SSH está corriendo, si no, lo inicia
+if ! pgrep sshd > /dev/null; then
+    systemctl start ssh
+    echo "Servicio SSH iniciado: $(date)" >> /var/log/ssh_monitor.log
 fi</code></pre>
                 <p><em>Tradúcelo a PowerShell usando Get-Service y Start-Service</em></p>
             </div>

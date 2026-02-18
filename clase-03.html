@@ -221,13 +221,33 @@
                 </div>
             </div>
 
-            <div class="callout warning" style="margin-top: 1.5rem;">
-                <h4>⚠️ Problemas Comunes con la Memoria</h4>
-                <ul style="margin-left: 1.5rem;">
-                    <li><strong>Stack Overflow:</strong> Cuando el Stack crece tanto que choca con el Heap (ej: recursión infinita)</li>
-                    <li><strong>Memory Leak:</strong> Cuando pides memoria en el Heap pero olvidas liberarla</li>
-                    <li><strong>Segmentation Fault:</strong> Cuando intentas acceder a memoria que no te pertenece</li>
-                </ul>
+                <div class="callout warning" style="margin-top: 1.5rem;">
+                <h4>⚠️ Caso Real: Cuando el Cambio de Contexto Mata el Rendimiento</h4>
+                
+                <div style="background: #fef2f2; padding: 1.5rem; border-radius: 8px;">
+                    <p><strong>El Incidente:</strong> Una aplicación que consume mucha memoria con 64 cores mostraba 40% de CPU de usuario pero las operaciones tardaban 10x más de lo normal.</p>
+                    
+                    <p style="margin-top: 1rem;"><strong>Diagnóstico:</strong></p>
+                    <pre style="margin: 0.5rem 0;"><code class="language-bash">vmstat 1
+# cs (context switches) = 150,000 por segundo</code></pre>
+                    
+                    <p style="margin-top: 1rem;"><strong>Causa Raíz:</strong></p>
+                    <ul>
+                        <li>La aplicación tenía un pool de procesos configurado para 1000 procesos</li>
+                        <li>El servidor solo ejecutaba 100 operaciones concurrentes</li>
+                        <li>900 procesos estaban competiendo por CPU innecesariamente</li>
+                    </ul>
+                    
+                    <p style="margin-top: 1rem;"><strong>Solución:</strong></p>
+                    <ul>
+                        <li>Reducir el pool de procesos a 150</li>
+                        <li>Implementar un pool de procesos para manejar la multiplexación</li>
+                        <li>Context switches bajaron a 5,000/segundo</li>
+                        <li>Tiempo de respuesta volvió a la normalidad</li>
+                    </ul>
+                    
+                    <p style="margin-top: 1rem; color: #991b1b;"><strong>Lección:</strong> Más procesos ≠ Más rendimiento. El overhead de cambio de contexto puede destruir el performance.</p>
+                </div>
             </div>
         </section>
 
@@ -368,14 +388,14 @@ Get-Process -IncludeUserName | Select-Object Name, UserName -First 10</code></pr
 
                 <div class="card" style="margin: 1rem 0; border-left: 4px solid #059669;">
                     <h4 style="color: #065f46;">Caso 1: El Servidor "Lento" (High Context Switching)</h4>
-                    <p><strong>Escenario:</strong> Un servidor de base de datos PostgreSQL muestra 50% de uso de CPU pero las aplicaciones que lo consultan responden extremadamene lento. Al revisar con <code>vmstat 1</code> observas 15,000 cambios de contexto por segundo.</p>
+                    <p><strong>Escenario:</strong> Una aplicación intensiva en memoria muestra 50% de uso de CPU pero las aplicaciones que la consultan responden extremadamene lento. Al revisar con <code>vmstat 1</code> observas 15,000 cambios de contexto por segundo.</p>
                     <p><strong>Tu análisis como administrador:</strong></p>
                     <ol>
                         <li>¿Qué indica una tasa alta de context switch combinada con CPU baja?</li>
                         <li>¿Cómo verificarías si hay demasiados procesos pequeños competiendo por CPU?</li>
                         <li>¿Qué comando usarías para ver los procesos con más hilos?</li>
                     </ol>
-                    <p><strong>Solución sugerida:</strong> Reducir el número de conexiones usando un pool de conexiones (pgBouncer) o aumentar el valor de "nice" para procesos batch.</p>
+                    <p><strong>Solución sugerida:</strong> Reducir el número de procesos concurrentes usando un pool de procesos o aumentar el valor de "nice" para procesos batch.</p>
                 </div>
 
                 <div class="card" style="margin: 1rem 0; border-left: 4px solid #dc2626;">

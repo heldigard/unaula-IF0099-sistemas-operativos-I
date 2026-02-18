@@ -334,13 +334,13 @@ Select-Object -ExpandProperty Threads
             <div class="actividad" style="background: #fff7ed; border-left-color: #ea580c; margin-top: 2rem;">
                 <h3>Casos Reales: Hilos y Concurrencia en Producción</h3>
                 <div class="card" style="margin: 1rem 0; border-left: 4px solid #dc2626;">
-                    <h4 style="color: #991b1b;">Caso 1: Base de Datos Bloqueada por Demasiadas Conexiones</h4>
-                    <p><strong>Escenario:</strong> Tu aplicación web no responde. Los usuarios ven "Service Unavailable". Al revisar, hay cientos de hilos intentando escribir a la vez en la base de datos.</p>
+                    <h4 style="color: #991b1b;">Caso 1: Aplicación Bloqueada por Demasiados Hilos</h4>
+                    <p><strong>Escenario:</strong> Tu aplicación web no responde. Los usuarios ven "Service Unavailable". Al revisar, hay cientos de hilos intentando escribir a la vez en una aplicación con múltiples hilos.</p>
                     <p><strong>Diagnóstico y Solución:</strong></p>
                     <ol>
-                        <li>En Linux: <code>ps -eLf | grep mysql | wc -l</code> para contar hilos</li>
-                        <li>En Windows: <code>(Get-Process -Name mysql).Threads.Count</code></li>
-                        <li>Implementa un pool de conexiones con límite (ej: máximo 20 conexiones simultáneas)</li>
+                        <li>En Linux: <code>ps -eLf | grep aplicacion | wc -l</code> para contar hilos</li>
+                        <li>En Windows: <code>(Get-Process -Name aplicacion).Threads.Count</code></li>
+                        <li>Implementa un pool de procesos con límite (ej: máximo 20 procesos simultáneos)</li>
                         <li>Usa Mutex o Semáforo para proteger la sección crítica de escritura</li>
                     </ol>
                 </div>
@@ -504,20 +504,18 @@ void funcionB() {
             <div class="card" style="margin: 1.5rem 0; border-left: 4px solid #059669;">
                 <h3 style="color: #065f46; margin-top: 0;">Casos Reales: Deadlock en Producción</h3>
                 
-                <h4>Caso 1: Deadlock en Base de Datos</h4>
-                <p><strong>Escenario:</strong> Transacción A bloquea el registro 1 y espera el 2. Transacción B bloquea el 2 y espera el 1.</p>
-                <pre><code class="language-sql">-- Transacción A
-BEGIN;
-UPDATE cuenta SET saldo = saldo - 100 WHERE id = 1;  -- Lock en 1
--- Espera...
-UPDATE cuenta SET saldo = saldo + 100 WHERE id = 2;  -- Espera lock en 2
+                <h4>Caso 1: Deadlock en Recursos Compartidos</h4>
+                <p><strong>Escenario:</strong> Proceso A bloquea el recurso 1 y espera el 2. Proceso B bloquea el 2 y espera el 1.</p>
+                <pre><code class="language-c">// Proceso A
+lock(mutex1);  // Bloquea recurso 1
+// Espera...
+lock(mutex2);  // Espera lock en recurso 2
 
--- Transacción B  
-BEGIN;
-UPDATE cuenta SET saldo = saldo - 50 WHERE id = 2;   -- Lock en 2
--- Espera...
-UPDATE cuenta SET saldo = saldo + 50 WHERE id = 1;   -- Espera lock en 1
--- ¡DEADLOCK!</code></pre>
+// Proceso B  
+lock(mutex2);  // Bloquea recurso 2
+// Espera...
+lock(mutex1);  // Espera lock en recurso 1
+// ¡DEADLOCK!</code></pre>
                 <p><strong>Solución:</strong> Acceder a los recursos SIEMPRE en el mismo orden (1 → 2).</p>
                 
                 <h4>Caso 2: Bloqueo en Sistema de Archivos</h4>
