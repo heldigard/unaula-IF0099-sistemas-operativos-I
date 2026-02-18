@@ -548,17 +548,18 @@ curl -k https://site1.local</code></pre>
             <section id="actividad">
                 <h2>Actividad Práctica: Integración Final</h2>
 
-                <section class="actividad">
-                    <h3>Actividad 17: Servidor Apache Multi-sitio (Fase 5 - E5)</h3>
-                    <p><strong>Objetivo:</strong> Desplegar el servidor web principal del proyecto integrador.</p>
-                    <p><strong>Pasos:</strong></p>
-                    <ol>
-                        <li>Instala Apache: <code>sudo apt install apache2</code></li>
-                        <li>Configura un Virtual Host apuntando a un directorio propio</li>
-                        <li>Asegura el sitio habilitando el módulo <code>ssl</code> y configurando un certificado auto-firmado</li>
-                    </ol>
-                    <p><strong>Entregable:</strong> URL local del servidor funcionando y video demostrativo para la Fase 5 (06 de May).</p>
-                </section>
+            <section class="actividad">
+                <h3>Actividad 17: Insumo para Evaluación E5</h3>
+                <p><strong>Objetivo:</strong> Desplegar el servidor web seguro en Linux.</p>
+                <p><strong>Tarea:</strong></p>
+                <ol>
+                    <li>Instala Apache: <code>sudo apt install apache2</code>.</li>
+                    <li>Habilita el módulo SSL: <code>sudo a2enmod ssl</code>.</li>
+                    <li>Crea un certificado auto-firmado: <code>sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048...</code></li>
+                    <li>Configura el Virtual Host por defecto para usar el puerto 443 y tu certificado.</li>
+                </ol>
+                <p><strong>Importante:</strong> Esta configuración es el corazón de tu Reporte de Integración de la Fase 5 (E5).</p>
+            </section>
             </section>
 
             <section id="resumen">

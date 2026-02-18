@@ -957,16 +957,16 @@ smbclient //IP_DEL_SERVIDOR/Confidencial -U usuario1</code></pre>
             <h2>Actividad Práctica: Seguridad en Windows</h2>
 
             <section class="actividad">
-                <h3>Actividad 16: Directivas y Firewall</h3>
-                <p><strong>Tipo:</strong> Cierre para Fase 4 (E4)</p>
-                <p><strong>Objetivo:</strong> Asegurar el acceso a los servicios de red.</p>
-                <p><strong>Pasos:</strong></p>
+                <h3>Actividad 16: Insumo para Evaluación E4</h3>
+                <p><strong>Objetivo:</strong> Configurar políticas de seguridad locales en Windows.</p>
+                <p><strong>Tarea:</strong></p>
                 <ol>
-                    <li>Usa <code>wf.msc</code> para abrir el Firewall con seguridad avanzada</li>
-                    <li>Crea una regla de entrada para permitir solo el puerto 80 (HTTP)</li>
-                    <li>Configura una directiva de contraseñas complejas usando <code>secpol.msc</code></li>
+                    <li>Ejecuta <code>secpol.msc</code> en tu VM de Windows.</li>
+                    <li>Navega a "Directivas de cuenta" -> "Directiva de contraseñas".</li>
+                    <li>Configura "La contraseña debe cumplir los requisitos de complejidad" como Habilitada.</li>
+                    <li>Cambia la "Vigencia máxima de la contraseña" a 30 días.</li>
                 </ol>
-                <p><strong>Entregable:</strong> Documentar las reglas de firewall aplicadas en tu informe de Fase 4 (22 de Abr).</p>
+                <p><strong>Importante:</strong> Toma capturas de estas configuraciones para tu Bitácora de Hardening de la Fase 4 (E4).</p>
             </section>
         </section>
 

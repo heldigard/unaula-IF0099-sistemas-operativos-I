@@ -848,35 +848,36 @@
                 </div>
 
                 <div class="content-box">
+                    <h4>🛠️ Especificaciones Técnicas (¿Qué hacer?)</h4>
+                    <p>Para cumplir con el <strong>RA1 (Identificar estructura y tipos de SO)</strong>, usted debe realizar lo siguiente:</p>
+                    <ol class="content-list">
+                        <li><strong>Instalación Base:</strong> Crear las dos VMs (Ubuntu Server y Windows). Documentar con capturas los comandos <code>uname -a</code> (Linux) y <code>systeminfo</code> (Windows).</li>
+                        <li><strong>Análisis Arquitectónico:</strong> Investigar y escribir una comparativa de 2 páginas sobre por qué Linux es considerado Monolítico y Windows Híbrido, citando componentes vistos en la Clase 04.</li>
+                        <li><strong>Mapeo de Hardware:</strong> Crear una tabla que muestre cómo VirtualBox abstrae el hardware real (CPU, RAM, Disco) para sus VMs del proyecto.</li>
+                        <li><strong>Diagrama de Red:</strong> Dibujar el mapa de conexión entre su computadora (Host) y las VMs (Guest), indicando las IPs asignadas por DHCP o estáticas.</li>
+                    </ol>
+                </div>
+
+                <div class="content-box">
                     <h4>Entregables Requeridos</h4>
                     <table class="deliverables-table">
                         <thead>
                             <tr>
                                 <th>Entregable</th>
-                                <th>Descripción</th>
+                                <th>Contenido Mínimo Obligatorio</th>
                                 <th>Formato</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td><strong>Documento PDF</strong></td>
-                                <td>Análisis comparativo de arquitecturas SO</td>
-                                <td>PDF (máx. 15 páginas)</td>
+                                <td><strong>Bitácora Técnica</strong></td>
+                                <td>Comparativa de arquitecturas (RA1) + Capturas de instalación + Tabla de Hardware.</td>
+                                <td>PDF (máx. 5 páginas)</td>
                             </tr>
                             <tr>
-                                <td><strong>Presentación</strong></td>
-                                <td>PowerPoint de sustentación</td>
-                                <td>PPTX (10-15 diapositivas)</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Evidencias</strong></td>
-                                <td>Capturas de pantalla de comandos ejecutados</td>
-                                <td>Imágenes o PDF anexo</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Scripts</strong></td>
-                                <td>Scripts de shell básicos desarrollados</td>
-                                <td>Archivos .sh</td>
+                                <td><strong>Pitch de Diseño</strong></td>
+                                <td>Explicación visual de por qué eligió esas versiones de SO y cómo planea conectarlas.</td>
+                                <td>PPTX (máx. 8 diapositivas)</td>
                             </tr>
                         </tbody>
                     </table>
@@ -959,40 +960,41 @@
                 </div>
 
                 <div class="content-box">
+                    <h4>🛠️ Especificaciones Técnicas (¿Qué hacer?)</h4>
+                    <p>Para cumplir con el <strong>RA2 (Gestión de Procesos)</strong>, usted debe desarrollar y probar las siguientes herramientas:</p>
+                    <ol class="content-list">
+                        <li><strong>Monitor Bash (Linux):</strong> Un script que liste los 5 procesos que más RAM consumen, ordene la salida y la guarde en un archivo <code>bitacora_procesos.txt</code> con la fecha y hora de ejecución.</li>
+                        <li><strong>Monitor PowerShell (Windows):</strong> Un script que verifique si el servicio "Spooler" (Cola de impresión) está detenido. Si está detenido, debe intentar iniciarlo y mostrar un mensaje de alerta.</li>
+                        <li><strong>Análisis de Estados:</strong> Ejecutar <code>ps aux</code> y capturar ejemplos de procesos en estado Running (R), Sleep (S) y Zombie (Z) si es posible, explicando qué significa cada estado según lo visto en la Clase 03.</li>
+                        <li><strong>Control de Prioridades:</strong> Lanzar un proceso <code>sleep</code>, cambiar su valor 'nice' a 15 y demostrar el cambio con el comando <code>top</code> o <code>htop</code>.</li>
+                    </ol>
+                </div>
+
+                <div class="content-box">
                     <h4>Entregables Requeridos</h4>
                     <table class="deliverables-table">
                         <thead>
                             <tr>
                                 <th>Entregable</th>
-                                <th>Descripción</th>
+                                <th>Contenido Mínimo Obligatorio</th>
                                 <th>Formato</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td><strong>Informe Técnico</strong></td>
-                                <td>Documento PDF con análisis completo</td>
-                                <td>PDF (máx. 20 páginas)</td>
+                                <td><strong>Scripts de Automatización</strong></td>
+                                <td>Archivo <code>monitor.sh</code> y <code>servicios.ps1</code> funcionales y comentados línea por línea.</td>
+                                <td>ZIP / Repositorio</td>
                             </tr>
                             <tr>
-                                <td><strong>Script Bash</strong></td>
-                                <td><code>monitor_procesos.sh</code> funcional</td>
-                                <td>Archivo .sh con comentarios</td>
+                                <td><strong>Bitácora de Pruebas</strong></td>
+                                <td>Reporte de ejecución de los scripts (salidas obtenidas) + Explicación de estados de procesos (RA2).</td>
+                                <td>PDF (máx. 5 páginas)</td>
                             </tr>
                             <tr>
-                                <td><strong>Script PowerShell</strong></td>
-                                <td><code>gestionar_servicios.ps1</code> funcional</td>
-                                <td>Archivo .ps1 con comentarios</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Video Demostración</strong></td>
-                                <td>Ejecución de scripts (5-10 minutos)</td>
-                                <td>MP4 (720p mínimo)</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Evidencias</strong></td>
-                                <td>Capturas de pantalla de comandos ejecutados</td>
-                                <td>Imágenes o PDF anexo</td>
+                                <td><strong>Video Demo</strong></td>
+                                <td>Screencast de máximo 5 min mostrando los scripts funcionando y el cambio de prioridad 'nice'.</td>
+                                <td>MP4 / Link Video</td>
                             </tr>
                         </tbody>
                     </table>
@@ -1259,40 +1261,41 @@
                 </div>
 
                 <div class="content-box">
+                    <h4>🛠️ Especificaciones Técnicas (¿Qué hacer?)</h4>
+                    <p>Para cumplir con el <strong>RA4 (Evaluar seguridad de SO)</strong>, usted debe asegurar su infraestructura:</p>
+                    <ol class="content-list">
+                        <li><strong>Hardening de Red (Firewall):</strong> Configurar el Firewall (UFW en Linux y Advanced Firewall en Windows) para bloquear todo el tráfico entrante, permitiendo ÚNICAMENTE SSH (puerto 22) y HTTP (puerto 80).</li>
+                        <li><strong>Control de Acceso Linux (ACLs):</strong> Crear un directorio <code>/datos/compartido</code>. Configurar una ACL para que un usuario específico pueda leer, pero no borrar los archivos de otros, demostrando el comando <code>getfacl</code>.</li>
+                        <li><strong>Políticas de Contraseñas (Windows):</strong> Configurar vía <code>secpol.msc</code> una política que obligue a cambiar la contraseña cada 30 días y exija complejidad mínima.</li>
+                        <li><strong>Matriz de Riesgos:</strong> Identificar 8 vulnerabilidades potenciales de su configuración de VirtualBox (ej: falta de snapshots, acceso root por SSH) y proponer la mitigación técnica.</li>
+                    </ol>
+                </div>
+
+                <div class="content-box">
                     <h4>Entregables Requeridos</h4>
                     <table class="deliverables-table">
                         <thead>
                             <tr>
                                 <th>Entregable</th>
-                                <th>Descripción</th>
-                                <th>Requisitos</th>
+                                <th>Contenido Mínimo Obligatorio</th>
+                                <th>Formato</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td><strong>Informe Técnico</strong></td>
-                                <td>Análisis de seguridad del sistema, configuraciones aplicadas y recomendaciones</td>
-                                <td>PDF (máx. 20 páginas)</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Matriz de Riesgos</strong></td>
-                                <td>Identificación y evaluación de riesgos de seguridad</td>
-                                <td>Mínimo 8 riesgos identificados</td>
+                                <td><strong>Bitácora de Hardening</strong></td>
+                                <td>Listado de reglas de Firewall aplicadas + Evidencia de ACLs configuradas + Matriz de Riesgos (RA4).</td>
+                                <td>PDF (máx. 5 páginas)</td>
                             </tr>
                             <tr>
                                 <td><strong>Scripts de Seguridad</strong></td>
-                                <td>Scripts de hardening y auditoría</td>
-                                <td>Bash: 2 scripts mínimo</td>
+                                <td>Script que automatice la creación de usuarios y asigne los permisos base definidos.</td>
+                                <td>Archivos .sh / .ps1</td>
                             </tr>
                             <tr>
-                                <td><strong>Video Demostración</strong></td>
-                                <td>Demostración de configuraciones de seguridad aplicadas</td>
-                                <td>MP4 (5-10 minutos, 720p mínimo)</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Evidencias</strong></td>
-                                <td>Capturas de configuraciones, permisos y auditoría</td>
-                                <td>Imágenes o PDF</td>
+                                <td><strong>Pitch de Seguridad</strong></td>
+                                <td>Presentación ejecutiva explicando por qué su sistema es resistente a ataques básicos de red.</td>
+                                <td>PPTX (máx. 8 diapositivas)</td>
                             </tr>
                         </tbody>
                     </table>
@@ -1397,40 +1400,41 @@
                 </div>
 
                 <div class="content-box">
+                    <h4>🛠️ Especificaciones Técnicas (¿Qué hacer?)</h4>
+                    <p>Para cumplir con el <strong>RA5 (Conceptos integrados)</strong>, usted debe poner en producción su sistema:</p>
+                    <ol class="content-list">
+                        <li><strong>Servicio Linux (Apache):</strong> Configurar un Virtual Host que sirva una página <code>index.html</code> personalizada con los nombres de los integrantes. Habilitar HTTPS con un certificado auto-firmado.</li>
+                        <li><strong>Servicio Windows (IIS):</strong> Instalar el rol de servidor web y publicar el mismo sitio web en el puerto 8080.</li>
+                        <li><strong>Almacenamiento Persistente:</strong> Agregar un segundo disco virtual en VirtualBox a la VM Linux. Formatearlo como EXT4 y configurar el archivo <code>/etc/fstab</code> para que se monte automáticamente en <code>/var/www/html/datos</code> al reiniciar.</li>
+                        <li><strong>Dashboard de Salud:</strong> Un script integrador que verifique: disponibilidad de los puertos 80/443, espacio libre en disco y carga de CPU, generando un reporte final consolidado.</li>
+                    </ol>
+                </div>
+
+                <div class="content-box">
                     <h4>Entregables Requeridos</h4>
                     <table class="deliverables-table">
                         <thead>
                             <tr>
                                 <th>Entregable</th>
-                                <th>Descripción</th>
+                                <th>Contenido Mínimo Obligatorio</th>
                                 <th>Formato</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td><strong>Informe Técnico</strong></td>
-                                <td>Documento con arquitectura de la solución, análisis de comandos, comparación Linux vs Windows</td>
-                                <td>PDF (máx. 25 páginas)</td>
+                                <td><strong>Reporte de Integración</strong></td>
+                                <td>Evidencia de sitios web accesibles vía HTTPS + Configuración de <code>fstab</code> + Capturas del Dashboard final.</td>
+                                <td>PDF (máx. 5 páginas)</td>
                             </tr>
                             <tr>
-                                <td><strong>Scripts Linux</strong></td>
-                                <td>3 scripts funcionales documentados</td>
-                                <td>Archivos .sh</td>
+                                <td><strong>Video de Funcionamiento</strong></td>
+                                <td>Demostración de los servidores web respondiendo y reinicio de la VM para probar el montaje automático.</td>
+                                <td>MP4 / Link</td>
                             </tr>
                             <tr>
-                                <td><strong>Scripts Windows</strong></td>
-                                <td>2 scripts funcionales documentados</td>
-                                <td>Archivos .ps1</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Video Demostración</strong></td>
-                                <td>Ejecución completa de todos los scripts</td>
-                                <td>MP4 (8-12 minutos, 720p mínimo)</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Reportes HTML</strong></td>
-                                <td>Capturas de reportes generados por los scripts</td>
-                                <td>Imágenes o PDF</td>
+                                <td><strong>Pitch Técnico Final</strong></td>
+                                <td>Presentación de la arquitectura completa funcionando antes de la sustentación formal.</td>
+                                <td>PPTX (máx. 8 diapositivas)</td>
                             </tr>
                         </tbody>
                     </table>
@@ -1528,35 +1532,38 @@
                 </div>
 
                 <div class="content-box">
-                    <h4>Entregables para la Sustentación</h4>
-                    <div class="two-columns">
-                        <ul class="content-list">
-                            <li><strong>Pre-sustentación:</strong>
-                                <ul>
-                                    <li>Documentación técnica actualizada</li>
-                                    <li>Repositorio con todos los scripts</li>
-                                    <li>Manual de usuario</li>
-                                </ul>
-                            </li>
-                            <li><strong>Demostración en vivo:</strong>
-                                <ul>
-                                    <li>Servidor web accesible</li>
-                                    <li>Scripts de monitoreo ejecutándose</li>
-                                    <li>Sistema de alertas funcionando</li>
-                                </ul>
-                            </li>
-                        </ul>
-                        <ul class="content-list">
-                            <li><strong>Criterios evaluados:</strong>
-                                <ul>
-                                    <li>Funcionamiento correcto del sistema</li>
-                                    <li>Integración de componentes</li>
-                                    <li>Calidad de la presentación</li>
-                                    <li>Respuestas a preguntas técnicas</li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
+                    <h4>Entregables Finales</h4>
+                    <table class="deliverables-table">
+                        <thead>
+                            <tr>
+                                <th>Entregable</th>
+                                <th>Descripción</th>
+                                <th>Formato</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Portafolio Ejecutivo</strong></td>
+                                <td>Recopilación corregida de las Fases 1 a 5</td>
+                                <td>PDF (máx. 20 páginas)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Pitch Final</strong></td>
+                                <td>Sustentación ejecutiva del sistema completo</td>
+                                <td>PPTX (máx. 8 diapositivas)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Manual de Operación</strong></td>
+                                <td>Instrucciones breves de administración</td>
+                                <td>PDF (máx. 3 páginas)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Sustentación</strong></td>
+                                <td>Defensa técnica y demo en vivo</td>
+                                <td>Presencial</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
 
                 <div class="quick-links">

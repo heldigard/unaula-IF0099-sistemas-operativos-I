@@ -939,16 +939,16 @@ getfacl confidencial.txt</code></pre>
             <h2>Actividad Práctica: Hardening de Permisos</h2>
 
             <section class="actividad">
-                <h3>Actividad 15: Listas de Control de Acceso (ACL)</h3>
-                <p><strong>Tipo:</strong> Avance para Fase 4 (E4)</p>
-                <p><strong>Objetivo:</strong> Aplicar permisos granulares que el modelo UGO estándar no permite.</p>
-                <p><strong>Pasos:</strong></p>
+                <h3>Actividad 15: Insumo para Evaluación E4</h3>
+                <p><strong>Objetivo:</strong> Implementar Control de Acceso Granular (ACL).</p>
+                <p><strong>Tarea:</strong></p>
                 <ol>
-                    <li>Crea un archivo <code>proyecto_secreto.txt</code></li>
-                    <li>Dale permisos de lectura a un segundo usuario (que no sea el dueño ni del grupo) usando <code>setfacl -m u:nombre_usuario:r proyecto_secreto.txt</code></li>
-                    <li>Verifica con <code>getfacl proyecto_secreto.txt</code></li>
+                    <li>Crea el directorio <code>/datos/compartido</code> como root.</li>
+                    <li>Crea un archivo <code>confidencial.txt</code> dentro.</li>
+                    <li>Usa <code>setfacl -m u:nombre_estudiante:r-- confidencial.txt</code> para dar permiso de solo lectura a un usuario específico que no sea el dueño.</li>
+                    <li>Verifica el resultado con <code>getfacl confidencial.txt</code>.</li>
                 </ol>
-                <p><strong>Entregable:</strong> Evidencia de la ACL configurada para tu informe de seguridad de la Fase 4 (22 de Abr).</p>
+                <p><strong>Importante:</strong> Esta evidencia es obligatoria para tu Bitácora de Hardening en la Fase 4 (E4).</p>
             </section>
         </section>
 
