@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laboratorio 1: Comandos Básicos de Linux | IF0099 - Sistemas Operativos I</title>
+    <!-- Prism.js CSS para syntax highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #1e40af;
+            --accent: #059669;
+            --bg-light: #f8fafc;
+            --bg-code: #1e293b;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --warning: #f59e0b;
+            --danger: #dc2626;
+            --info: #0891b2;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.7;
+            color: var(--text-main);
+            background: var(--bg-light);
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 3rem 0;
+            margin-bottom: 2rem;
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        header .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        header .meta {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .warning-box {
+            background: #fffbeb;
+            border-left: 4px solid var(--warning);
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 8px;
+        }
+
+        .warning-box h3 {
+            color: #92400e;
+            margin-bottom: 0.5rem;
+        }
+
+        .success-box {
+            background: #f0fdf4;
+            border-left: 4px solid var(--accent);
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 8px;
+        }
+
+        .info-box {
+            background: #ecfeff;
+            border-left: 4px solid var(--info);
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 8px;
+        }
+
+        section {
+            background: white;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        section h2 {
+            color: var(--primary);
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid var(--accent);
+        }
+
+        section h3 {
+            color: var(--secondary);
+            font-size: 1.4rem;
+            margin: 2rem 0 1rem;
+        }
+
+        section h4 {
+            color: var(--text-main);
+            font-size: 1.1rem;
+            margin: 1.5rem 0 0.75rem;
+            font-weight: 600;
+        }
+
+        .command-box {
+            background: var(--bg-code);
+            color: #e2e8f0;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            overflow-x: auto;
+        }
+
+        .command {
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .command-prompt {
+            color: #4ade80;
+        }
+
+        .command-input {
+            color: #60a5fa;
+        }
+
+        .command-output {
+            color: #94a3b8;
+            margin: 0.5rem 0;
+            padding-left: 1rem;
+        }
+
+        .step {
+            background: var(--bg-light);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 6px;
+            border-left: 3px solid var(--primary);
+        }
+
+        .step-number {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }
+
+        .exercise {
+            background: #eff6ff;
+            border-left: 4px solid var(--primary);
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 8px;
+        }
+
+        .exercise h4 {
+            color: var(--primary);
+            margin-top: 0;
+        }
+
+        .command-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+        }
+
+        .command-table th,
+        .command-table td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .command-table th {
+            background: var(--bg-light);
+            font-weight: 600;
+            color: var(--secondary);
+        }
+
+        .command-table code {
+            background: var(--bg-code);
+            color: #60a5fa;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .lab-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: stretch;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .lab-nav-link {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1.25rem 1.5rem;
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            text-decoration: none;
+            color: var(--text-main);
+            transition: all 0.3s ease;
+        }
+
+        .lab-nav-link:hover {
+            border-color: var(--primary);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .lab-nav-link.prev {
+            border-left: 4px solid var(--primary);
+        }
+
+        .lab-nav-link.next {
+            border-right: 4px solid var(--accent);
+            text-align: right;
+            margin-left: auto;
+        }
+
+        .lab-nav-link .nav-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            margin-bottom: 0.25rem;
+        }
+
+        .lab-nav-link .nav-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .lab-nav-link.next .nav-title {
+            color: var(--accent);
+        }
+
+        .lab-nav-icon {
+            font-size: 1.5rem;
+            line-height: 1;
+        }
+
+        .lab-nav-placeholder {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.25rem;
+            background: var(--bg-light);
+            border: 2px dashed var(--border);
+            border-radius: 12px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .nav-btn {
+            background: var(--primary);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .nav-btn:hover {
+            background: var(--secondary);
+        }
+
+        .footer {
+            text-align: center;
+            padding: 2rem 0;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .tips {
+            background: #fef3c7;
+            border-left: 4px solid var(--warning);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 6px;
+        }
+
+        .tips strong {
+            color: #92400e;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Laboratorio 1: Comandos Básicos de Linux</h1>
+            <p class="subtitle">IF0099 - Sistemas Operativos I | 2026-I</p>
+            <p class="meta">Duración: 60 minutos | Nivel: Introductorio | Prerrequisito: Lab 0 completado</p>
+
+        </div>
+    </header>
+
+    
+        <!-- Quick Navigation Bar -->
+        <div class="quick-nav" style="background: white; padding: 1rem; margin-bottom: 2rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <a href="../clases-html/index.html" style="color: var(--primary); text-decoration: none; font-weight: 500;">Inicio</a>
+                <span style="color: var(--text-muted);">|</span>
+                <span style="color: var(--text-main); font-weight: 600;">Lab 1: Comandos Basicos de Linux</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <a href="../clases-html/cronograma.html" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: #10b981; color: white; text-decoration: none; border-radius: 6px; font-weight: 500;">Cronograma</a>
+                <a href="../clases-html/rubricas.html" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: #3b82f6; color: white; text-decoration: none; border-radius: 6px; font-weight: 500;">Rubricas</a>
+            </div>
+        </div>
+
+        <div class="container">
+        <div class="success-box">
+            <h3>Entorno de Laboratorio</h3>
+            <p>Este laboratorio utiliza tu <strong>máquina virtual de Ubuntu Server</strong> creada en el Laboratorio 0. Conéctate via SSH a tu VM antes de comenzar los ejercicios.</p>
+        </div>
+
+        <div class="warning-box">
+            <h3>Antes de comenzar</h3>
+            <p>Asegúrate de haber completado el <strong>Laboratorio 0</strong> y tener tu VM de Ubuntu Server funcionando con acceso SSH. Si aún no lo has hecho, visita el Laboratorio 0 primero.</p>
+        </div>
+
+        <section>
+            <h2>Objetivos del Laboratorio</h2>
+            <ul>
+                <li>Aprender los comandos básicos para navegar el sistema de archivos</li>
+                <li>Comprender la estructura de directorios de Linux</li>
+                <li>Crear, modificar y eliminar archivos y directorios</li>
+                <li>Ver y entender permisos de archivos</li>
+                <li>Utilizar comandos de ayuda y documentación</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>La Estructura de Directorios de Linux</h2>
+            <p>Linux utiliza una estructura jerárquica de archivos que comienza en el directorio raíz (<code>/</code>). A diferencia de Windows, no hay unidades como C:, D:, etc.</p>
+
+            <div class="info-box">
+                <h4>Directorios Importantes</h4>
+                <ul style="margin-top: 1rem;">
+                    <li><code>/</code> - Directorio raíz (root)</li>
+                    <li><code>/home</code> - Directorios home de los usuarios</li>
+                    <li><code>/bin</code> - Binarios esenciales (comandos básicos)</li>
+                    <li><code>/etc</code> - Archivos de configuración del sistema</li>
+                    <li><code>/var</code> - Archivos variables (logs, spool, etc.)</li>
+                    <li><code>/tmp</code> - Archivos temporales</li>
+                    <li><code>/usr</code> - Programas y archivos de usuario</li>
+                </ul>
+            </div>
+        </section>
+
+        <section>
+            <h2>1. Comandos de Navegación</h2>
+
+            <h3>pwd - Print Working Directory</h3>
+            <p>Muestra el directorio actual donde te encuentras.</p>
+            <p>Muestra el directorio actual donde te encuentras.</p>
+            <pre><code class="language-bash">pwd</code></pre>
+            <p style="font-size: 0.9rem; color: var(--text-muted);">Salida: /home/tu_usuario</p>
+
+            <h3>ls - List</h3>
+            <p>Lista el contenido del directorio actual.</p>
+            <pre><code class="language-bash">ls</code></pre>
+            <p style="font-size: 0.9rem; color: var(--text-muted);">Salida: Documents  Downloads  Pictures  archivo.txt</p>
+
+            <div class="tips">
+                <strong>💡 Tip:</strong> Usa <code>ls -la</code> para ver archivos ocultos y detalles adicionales.
+            </div>
+
+            <h3>cd - Change Directory</h3>
+            <p>Cambia el directorio actual.</p>
+            <pre><code class="language-bash">cd /tmp
+pwd</code></pre>
+            <p style="font-size: 0.9rem; color: var(--text-muted);">Salida:</p>
+            <pre><code class="language-bash">/tmp</code></pre>
+
+            <table class="command-table">
+                <thead>
+                    <tr>
+                        <th>Comando</th>
+                        <th>Descripción</th>
+                        <th>Ejemplo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>cd ..</code></td>
+                        <td>Ir al directorio padre</td>
+                        <td>Sube un nivel en la jerarquía</td>
+                    </tr>
+                    <tr>
+                        <td><code>cd ~</code></td>
+                        <td>Ir al directorio home</td>
+                        <td>Te lleva a tu directorio personal</td>
+                    </tr>
+                    <tr>
+                        <td><code>cd /</code></td>
+                        <td>Ir al directorio raíz</td>
+                        <td>Te lleva al inicio del sistema</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section>
+            <h2>2. Comandos de Creación y Edición</h2>
+
+            <h3>touch - Crear Archivo Vacío</h3>
+            <pre><code class="language-bash">touch mi_archivo.txt
+ls</code></pre>
+            <p style="font-size: 0.9rem; color: var(--text-muted);">Salida:</p>
+            <pre><code class="language-bash">mi_archivo.txt</code></pre>
+
+            <h3>mkdir - Make Directory</h3>
+            <p>Crea un nuevo directorio.</p>
+            <pre><code class="language-bash">mkdir mi_carpeta
+ls</code></pre>
+            <p style="font-size: 0.9rem; color: var(--text-muted);">Salida:</p>
+            <pre><code class="language-bash">mi_archivo.txt  mi_carpeta</code></pre>
+
+            <div class="tips">
+                <strong>💡 Tip:</strong> Usa <code>mkdir -p ruta/a/nueva/carpeta</code> para crear directorios anidados.
+            </div>
+
+            <h3>echo - Escribir en Archivos</h3>
+            <p>Escribe texto en un archivo (sobrescribe o añade).</p>
+            <pre><code class="language-bash">echo "Hola IF0099" > mi_archivo.txt
+echo "Segunda línea" >> mi_archivo.txt
+cat mi_archivo.txt</code></pre>
+            <p style="font-size: 0.9rem; color: var(--text-muted);">Salida:</p>
+            <pre><code class="language-bash">Hola IF0099
+Segunda línea</code></pre>
+
+            <table class="command-table">
+                <thead>
+                    <tr>
+                        <th>Operador</th>
+                        <th>Función</th>
+                        <th>Ejemplo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>></code></td>
+                        <td>Sobrescribe el archivo</td>
+                        <td><code>echo "texto" > archivo.txt</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>>></code></td>
+                        <td>Añade al final del archivo</td>
+                        <td><code>echo "más" >> archivo.txt</code></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section>
+            <h2>3. Comandos de Visualización</h2>
+
+            <h3>cat - Concatenate and Display</h3>
+            <p>Muestra el contenido completo de un archivo.</p>
+            <div class="command-box">
+                <div class="command">
+                    <span class="command-prompt">~ $</span> <span class="command-input">cat mi_archivo.txt</span><br>
+                    <span class="command-output">Hola IF0099<br>Segunda línea</span>
+                </div>
+            </div>
+
+            <h3>less - Visualizador Paginado</h3>
+            <p>Muestra el contenido página por página.</p>
+            <pre><code class="language-bash">less mi_archivo.txt</code></pre>
+            <p style="font-size: 0.9rem; color: var(--text-muted);">Nota: Usa flechas para navegar, 'q' para salir</p>
+
+            <h3>head y tail - Ver Inicio/Final</h3>
+            <pre><code class="language-bash">head -5 mi_archivo.txt</code></pre>
+            <p style="font-size: 0.9rem; color: var(--text-muted);">Nota: Muestra las primeras 5 líneas</p>
+        </section>
+
+        <section>
+            <h2>4. Comandos de Eliminación</h2>
+
+            <div class="warning-box">
+                <h3>⚠️ ADVERTENCIA</h3>
+                <p>Los comandos de eliminación en Linux NO tienen papelera de reciclaje. Una vez eliminado, el archivo se pierde permanentemente.</p>
+            </div>
+
+            <h3>rm - Remove</h3>
+            <p>Elimina archivos.</p>
+            <pre><code class="language-bash">rm mi_archivo.txt
+rm *.txt</code></pre>
+            <p style="font-size: 0.9rem; color: var(--text-muted);">Nota: El segundo comando elimina todos los archivos .txt</p>
+
+            <div class="tips">
+                <strong>💡 Tip:</strong> Usa <code>rm -i archivo.txt</code> para pedir confirmación antes de eliminar.
+            </div>
+
+            <h3>rmdir - Remove Directory</h3>
+            <p>Elimina directorios vacíos.</p>
+            <pre><code class="language-bash">rmdir mi_carpeta</code></pre>
+
+            <div class="tips">
+                <strong>💡 Tip:</strong> Usa <code>rm -r mi_carpeta</code> para eliminar directorios con contenido.
+            </div>
+        </section>
+
+        <section>
+            <h2>5. Comandos de Ayuda</h2>
+
+            <h3>man - Manual</h3>
+            <p>Muestra el manual completo de un comando.</p>
+            <pre><code class="language-bash">man ls</code></pre>
+            <p style="font-size: 0.9rem; color: var(--text-muted);">Nota: Presiona 'q' para salir del manual</p>
+
+            <h3>--help</h3>
+            <p>Muestra ayuda resumida del comando.</p>
+            <pre><code class="language-bash">ls --help</code></pre>
+            <p style="font-size: 0.9rem; color: var(--text-muted);">Nota: Muestra opciones disponibles de ls</p>
+        </section>
+
+        <section>
+            <h2>Actividad Práctica</h2>
+
+            <div class="exercise">
+                <h4>Ejercicio 1: Navegación Básica</h4>
+                <p>En tu VM de Ubuntu Server, completa los siguientes pasos:</p>
+
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <strong>Ver directorio actual:</strong>
+                    <pre><code>pwd</code></pre>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <strong>Listar archivos:</strong>
+                    <pre><code>ls -la</code></pre>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <strong>Ir al directorio /tmp:</strong>
+                    <pre><code>cd /tmp</code></pre>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <strong>Verificar ubicación:</strong>
+                    <pre><code>pwd</code></pre>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">5</span>
+                    <strong>Volver al home:</strong>
+                    <pre><code>cd ~</code></pre>
+                </div>
+            </div>
+
+            <div class="exercise">
+                <h4>Ejercicio 2: Creación de Archivos y Directorios</h4>
+
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <strong>Crear directorio para el curso:</strong>
+                    <pre><code>mkdir if0099</code></pre>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <strong>Entrar al directorio:</strong>
+                    <pre><code>cd if0099</code></pre>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <strong>Crear subdirectorios:</strong>
+                    <pre><code>mkdir labs tareas proyectos</code></pre>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <strong>Verificar estructura:</strong>
+                    <pre><code>ls -la</code></pre>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">5</span>
+                    <strong>Crear archivo de notas:</strong>
+                    <pre><code>echo "Laboratorio 1 - $(date)" > labs/lab01-notas.txt</code></pre>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">6</span>
+                    <strong>Ver contenido:</strong>
+                    <pre><code>cat labs/lab01-notas.txt</code></pre>
+                </div>
+            </div>
+
+            <div class="exercise">
+                <h4>Ejercicio 3: Exploración del Sistema</h4>
+
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <strong>Explorar /etc:</strong>
+                    <pre><code>cd /etc
+ls | head -20</code></pre>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <strong>Ver archivos de configuración:</strong>
+                    <pre><code>cat os-release</code></pre>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <strong>Explorar /bin:</strong>
+                    <pre><code>cd /bin
+ls | head -20</code></pre>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <strong>Contar comandos disponibles:</strong>
+                    <pre><code>ls | wc -l</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>Desafío Adicional</h2>
+
+            <div class="exercise">
+                <h4>🎯 Desafío: Organización de Archivos</h4>
+                <p>Crea una estructura de directorios para organizar tus materiales del curso:</p>
+
+                <pre style="background: var(--bg-code); color: #e2e8f0; padding: 1rem; border-radius: 8px;">
+if0099/
+├── clases/
+│   ├── unidad01/
+│   ├── unidad02/
+│   └── unidad03/
+├── laboratorios/
+│   ├── lab01/
+│   ├── lab02/
+│   └── lab03/
+├── proyectos/
+│   └── proyecto01/
+└── notas/
+    ├── README.md
+    └── registro.txt
+                </pre>
+
+                <p style="margin-top: 1rem;">Usa los comandos <code>mkdir</code> y <code>touch</code> para crear esta estructura. En el archivo <code>registro.txt</code>, escribe tu nombre y la fecha de hoy.</p>
+            </div>
+        </section>
+
+        <section>
+            <h2>Preguntas de Reflexión</h2>
+            <ol>
+                <li>¿Por qué Linux no utiliza letras de unidad como Windows?</li>
+                <li>¿Qué ventaja tiene la estructura jerárquica única de Linux?</li>
+                <li>¿Cuál es la diferencia entre usar <code>></code> y <code>>></code> con echo?</li>
+                <li>¿Por qué es importante tener cuidado con el comando <code>rm</code>?</li>
+            </ol>
+        </section>
+
+        <section>
+            <h2>Preparación para el Próximo Laboratorio</h2>
+            <p>Para el próximo laboratorio, necesitarás:</p>
+            <ul>
+                <li>✅ Haber completado exitosamente todos los ejercicios</li>
+                <li>✅ Tener creada la estructura de directorios <code>if0099</code></li>
+                <li>✅ Entender la diferencia entre ruta absoluta y relativa</li>
+                <li>✅ Sentirte cómodo navegando en la terminal</li>
+            </ul>
+        </section>
+
+        <!-- Enhanced navigation between labs -->
+        <nav class="lab-nav" aria-label="Navegación entre laboratorios">
+            <a href="lab-00-introduccion-simuladores.html" class="lab-nav-link prev">
+                <span class="lab-nav-icon">←</span>
+                <div>
+                    <div class="nav-label">Laboratorio Anterior</div>
+                    <div class="nav-title">VirtualBox + Ubuntu Server</div>
+
+                </div>
+            </a>
+            <a href="lab-02-permisos-usuarios.html" class="lab-nav-link next">
+                <div>
+                    <div class="nav-label">Siguiente Laboratorio</div>
+                    <div class="nav-title">Permisos y Usuarios →</div>
+                </div>
+                <span class="lab-nav-icon">→</span>
+            </a>
+        </nav>
+
+        <div class="footer">
+            <p>IF0099 - Sistemas Operativos I | 2026-I | Ing. Eldigardo Evelio Camacho Cespedes</p>
+
+            <p>Laboratorio 1: Comandos Básicos de Linux</p>
+        </div>
+    </div>
+
+    <!-- Prism.js para syntax highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            Prism.highlightAll();
+        });
+    </script>
+</body>
+</html>

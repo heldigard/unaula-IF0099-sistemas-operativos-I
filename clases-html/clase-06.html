@@ -1,0 +1,1238 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clase 06: Procesos en Windows | IF0099 - Sistemas Operativos I</title>
+    <!-- Prism.js CSS para syntax highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #1e40af;
+            --accent: #059669;
+            --bg-light: #f8fafc;
+            --bg-code: #1e293b;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.7;
+            color: var(--text-main);
+            background: var(--bg-light);
+            font-size: 16px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 3rem 0;
+            margin-bottom: 2rem;
+        }
+        header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+        header .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        header .meta {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        nav {
+            background: white;
+            padding: 1.5rem 0;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        nav h2 {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            padding: 0 20px;
+        }
+        nav ul {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 0.5rem;
+            padding: 0 20px;
+        }
+        nav a {
+            color: var(--primary);
+            text-decoration: none;
+            padding: 0.5rem;
+            display: block;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+        nav a:hover {
+            background: var(--bg-light);
+        }
+
+        section {
+            background: white;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        section h2 {
+            color: var(--primary);
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid var(--accent);
+        }
+        section h3 {
+            color: var(--secondary);
+            font-size: 1.4rem;
+            margin: 2rem 0 1rem;
+        }
+        section h4 {
+            color: var(--text-main);
+            font-size: 1.1rem;
+            margin: 1.5rem 0 0.75rem;
+            font-weight: 600;
+        }
+        p {
+            margin-bottom: 1rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.95rem;
+        }
+        th, td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+        th {
+            background: var(--bg-light);
+            font-weight: 600;
+            color: var(--secondary);
+        }
+        tr:hover {
+            background: var(--bg-light);
+        }
+
+        pre {
+            background: var(--bg-code);
+            color: #e2e8f0;
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        code {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+        }
+        p code, li code, td code {
+            background: var(--bg-light);
+            color: var(--primary);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+        pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+        }
+
+        ul, ol {
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        .callout {
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            border-left: 4px solid;
+        }
+        .callout.info {
+            background: #eff6ff;
+            border-left-color: var(--primary);
+        }
+        .callout.warning {
+            background: #fef3c7;
+            border-left-color: #f59e0b;
+        }
+        .callout.success {
+            background: #d1fae5;
+            border-left-color: var(--accent);
+        }
+        .callout.danger {
+            background: #fee2e2;
+            border-left-color: #ef4444;
+        }
+
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        .comparison > div {
+            background: var(--bg-light);
+            padding: 1.5rem;
+            border-radius: 8px;
+        }
+
+        .actividad {
+            background: var(--bg-light);
+            border-left: 5px solid var(--accent);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+        .actividad h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        .actividad p {
+            margin-bottom: 0.75rem;
+        }
+        .actividad strong {
+            color: var(--secondary);
+        }
+
+        footer {
+            background: var(--text-main);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            margin-top: 3rem;
+        }
+        footer a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        /* Navigation between classes */
+        .class-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: stretch;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .class-nav-link {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1.25rem 1.5rem;
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            text-decoration: none;
+            color: var(--text-main);
+            transition: all 0.3s ease;
+        }
+
+        .class-nav-link:hover {
+            border-color: var(--primary);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .class-nav-link.prev {
+            border-left: 4px solid var(--primary);
+        }
+
+        .class-nav-link.next {
+            border-right: 4px solid var(--accent);
+            text-align: right;
+            margin-left: auto;
+        }
+
+        .class-nav-link .nav-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            margin-bottom: 0.25rem;
+        }
+
+        .class-nav-link .nav-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .class-nav-link.next .nav-title {
+            color: var(--accent);
+        }
+
+        .class-nav-icon {
+            font-size: 1.5rem;
+            line-height: 1;
+        }
+
+        .class-nav-placeholder {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.25rem;
+            background: var(--bg-light);
+            border: 2px dashed var(--border);
+            border-radius: 12px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .scroll-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--primary);
+            color: white;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.3s;
+            text-decoration: none;
+            font-size: 1.5rem;
+        }
+        .scroll-top.visible {
+            opacity: 1;
+        }
+        .scroll-top:hover {
+            background: var(--secondary);
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.6rem;
+            }
+            section {
+                padding: 1.5rem;
+            }
+            nav ul {
+                grid-template-columns: 1fr;
+            }
+            .comparison {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Code blocks with syntax highlighting */
+        pre {
+            background: #1e1e1e !important;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            overflow-x: auto;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        pre code {
+            font-family: 'Fira Code', 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: #d4d4d4;
+        }
+
+        /* Inline code */
+        code:not(pre code) {
+            background: #e2e8f0;
+            color: #c026d3;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-family: 'Fira Code', 'Consolas', 'Monaco', monospace;
+            font-size: 0.9em;
+        }
+
+        .code-header {
+            background: #2d2d2d;
+            color: #9cdcfe;
+            padding: 0.5rem 1rem;
+            border-radius: 8px 8px 0 0;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+        }
+
+        .code-block {
+            border-radius: 8px;
+            overflow: hidden;
+            margin: 1.5rem 0;
+        }
+
+        .code-block pre {
+            margin: 0;
+            border-radius: 0;
+        }
+
+        .terminal-block pre {
+            background: #0c0c0c !important;
+            border: 1px solid #333;
+        }
+
+        .terminal-block .code-header {
+            background: #1a1a1a;
+            color: #22c55e;
+        }
+
+        .eval-alert {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-left: 4px solid #f59e0b;
+            padding: 1.25rem 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .eval-alert-icon {
+            font-size: 1.75rem;
+            line-height: 1;
+        }
+
+        .eval-alert-content {
+            flex: 1;
+        }
+
+        .eval-alert-title {
+            font-weight: 700;
+            color: #92400e;
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .eval-alert-text {
+            color: #78350f;
+            font-size: 0.9rem;
+        }
+
+        .eval-alert-date {
+            background: #f59e0b;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+
+        .class-nav-date {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        .class-nav-link:hover .nav-title {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Clase 06: Procesos en Windows - Gestión y Servicios</h1>
+            <p class="subtitle">IF0099 - Sistemas Operativos I | Unidad 3 - Procesos</p>
+            <p class="subtitle">Task Manager, Process Explorer y PowerShell</p>
+            <p class="meta">📅 18 de Febrero 2026 | Sesion Miercoles: 8:00-9:00 AM | Teoria: 30 min + Practica: 30 min</p>
+        </div>
+    </header>
+
+
+    <div class="container">
+
+        <!-- Quick Navigation Bar -->
+        <div class="quick-nav" style="background: white; padding: 1rem; margin-bottom: 2rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <a href="index.html" style="color: var(--primary); text-decoration: none; font-weight: 500;">Inicio</a>
+                <span style="color: var(--text-muted);">|</span>
+                <span style="color: var(--text-main); font-weight: 600;">Procesos en Windows</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <a href="cronograma.html" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: #10b981; color: white; text-decoration: none; border-radius: 6px; font-weight: 500;">Cronograma</a>
+                <a href="rubricas.html" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: #3b82f6; color: white; text-decoration: none; border-radius: 6px; font-weight: 500;">Rubricas</a>
+            </div>
+        </div>
+
+        <!-- Próxima Evaluación Alert -->
+        <a href="evaluaciones.html#e2" style="text-decoration: none; display: block;">
+            <div class="eval-alert" style="cursor: pointer; transition: transform 0.2s;">
+                <span class="eval-alert-icon">📌</span>
+                <div class="eval-alert-content">
+                    <div class="eval-alert-title">E2: FASE 2 - Procesos y Monitoreo (11 Mar)</div>
+                    <div class="eval-alert-text">15% - Monitoreo y control de procesos (gestiona procesos en SO)</div>
+                </div>
+                <span class="eval-alert-date">📅 11 Mar</span>
+            </div>
+        </a>
+
+        <nav>
+            <h2>Contenido de la Clase</h2>
+            <ul>
+                <li><a href="#objetivos">Objetivos de Aprendizaje</a></li>
+                <li><a href="#task-manager">Task Manager</a></li>
+                <li><a href="#process-explorer">Process Explorer</a></li>
+                <li><a href="#powershell">PowerShell para Procesos</a></li>
+                <li><a href="#powershell-servicios">PowerShell para Servicios</a></li>
+                <li><a href="#sc-exe">sc.exe - Crear Servicios</a></li>
+                <li><a href="#practica">Práctica Guiada</a></li>
+                
+                <li><a href="#resumen">Resumen</a></li>
+            </ul>
+        </nav>
+
+        <!-- Objetivos -->
+        <section id="objetivos">
+            <h2>Objetivos de Aprendizaje</h2>
+            <p><strong>Resultado de Aprendizaje (RA2):</strong> Gestiona los procesos que se llevan a cabo en los sistemas operativos (Alineado con Evaluación E2).</p>
+            <p>Al finalizar esta clase, serás capaz de:</p>
+            <ol>
+                <li><strong>Monitorear</strong> procesos en <strong>Windows 10/11</strong> (tu computadora o VM en VirtualBox)</li>
+                <li><strong>Utilizar</strong> Process Explorer para análisis forense de procesos</li>
+                <li><strong>Gestionar</strong> procesos y servicios mediante PowerShell</li>
+                <li><strong>Automatizar</strong> tareas de servicios con <code>sc.exe</code></li>
+            </ol>
+
+            <div class="callout success">
+                <p class="callout-title">🖥️ Laboratorio Windows</p>
+                <p>Para esta clase, usaremos <strong>Windows 10/11</strong> en tu computadora o una VM en VirtualBox. Practicaremos la gestión de procesos con Task Manager, Process Explorer y PowerShell local.</p>
+            </div>
+        </section>
+
+
+        <!-- Task Manager -->
+        <section id="task-manager">
+            <h2>Task Manager (Administrador de Tareas)</h2>
+
+            <div class="callout info">
+                <strong>Task Manager es la herramienta básica para monitorear procesos en Windows</strong>
+            </div>
+
+            <h4>Cómo abrir Task Manager:</h4>
+            <ul>
+                <li><strong>Ctrl + Shift + Esc</strong> - Atajo directo</li>
+                <li><strong>Ctrl + Alt + Del</strong> → Task Manager</li>
+                <li>Clic derecho en barra de tareas → Task Manager</li>
+                <li><code>taskmgr</code> en Ejecutar (Win + R)</li>
+            </ul>
+
+            <h3>Pestañas principales de Task Manager</h3>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Pestaña</th>
+                        <th>Descripción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Processes</strong></td>
+                        <td>Lista de procesos en ejecución con PID, CPU, memoria</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Performance</strong></td>
+                        <td>Gráficos de CPU, memoria, disco, red</td>
+                    </tr>
+                    <tr>
+                        <td><strong>App history</strong></td>
+                        <td>Historial de uso de recursos por aplicación</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Startup</strong></td>
+                        <td>Programas que se inician con Windows</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Users</strong></td>
+                        <td>Usuarios conectados y sus procesos</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Details</strong></td>
+                        <td>Vista detallada con PID y más columnas</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Services</strong></td>
+                        <td>Servicios del sistema con estado</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>Operaciones comunes:</h4>
+            <ul>
+                <li><strong>End Task:</strong> Terminar proceso seleccionado</li>
+                <li><strong>End Process Tree:</strong> Terminar proceso y sus hijos</li>
+                <li><strong>Set Priority:</strong> Cambiar prioridad (Realtime, High, Normal, Low)</li>
+                <li><strong>Analyze Wait Chain:</strong> Ver procesos que están esperando</li>
+                <li><strong>Create Dump File:</strong> Crear volcado de memoria del proceso</li>
+            </ul>
+
+            <div class="callout warning">
+                <strong>⚠️ Precaución:</strong>
+                <ul>
+                    <li>No termines procesos del sistema (System, csrss.exe, wininit.exe)</li>
+                    <li>Terminar procesos críticos puede causar inestabilidad</li>
+                    <li>Usa "End Task" solo cuando sea necesario</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Process Explorer -->
+        <section id="process-explorer">
+            <h2>Process Explorer - Herramienta Avanzada</h2>
+
+            <div class="callout info">
+                <strong>Process Explorer es una herramienta de Sysinternals que ofrece más detalles que Task Manager</strong>
+            </div>
+
+            <h3>Características de Process Explorer:</h3>
+
+            <div class="comparison">
+                <div>
+                    <h4>Ventajas sobre Task Manager</h4>
+                    <ul>
+                        <li>Árbol de procesos padre-hijo</li>
+                        <li>Manejadores (handles) abiertos</li>
+                        <li>DLLs cargadas por proceso</li>
+                        <li>Información de threads</li>
+                        <li>Propiedades detalladas</li>
+                        <li>Búsqueda en línea de procesos</li>
+                        <li>Verificar firma de archivos</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Funciones útiles</h4>
+                    <ul>
+                        <li><strong>Find Handle:</strong> Buscar qué archivo/DLL tiene abierto</li>
+                        <li><strong>Suspend/Resume:</strong> Pausar/reanudar proceso</li>
+                        <li><strong>Restart:</strong> Reiniciar proceso (como Explorer)</li>
+                        <li><strong>Run as:</strong> Ejecutar como otro usuario</li>
+                        <li><strong>Properties:</strong> Ver propiedades detalladas</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h4>Descargar Process Explorer:</h4>
+            <ul>
+                <li>Sitio: <a href="https://learn.microsoft.com/en-us/sysinternals/downloads/process-explorer" target="_blank">Microsoft Docs - Process Explorer</a></li>
+                <li>Portátil: No requiere instalación</li>
+                <li>Integración: Puede reemplazar Task Manager</li>
+            </ul>
+
+            <div class="callout success">
+                <strong>Tip:</strong> Para reemplazar Task Manager con Process Explorer:
+                <pre><code class="language-powershell">Options → Replace Task Manager</code></pre>
+            </div>
+        </section>
+
+        <!-- PowerShell para Procesos -->
+        <section id="powershell">
+            <h2>PowerShell para Gestión de Procesos</h2>
+
+            <div class="callout info">
+                <strong>PowerShell proporciona cmdlets potentes para gestionar procesos</strong>
+            </div>
+
+            <h3>Cmdlets principales de procesos:</h3>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Cmdlet</th>
+                        <th>Descripción</th>
+                        <th>Ejemplo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Get-Process</strong></td>
+                        <td>Listar procesos</td>
+                        <td><code>Get-Process</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Stop-Process</strong></td>
+                        <td>Terminar proceso</td>
+                        <td><code>Stop-Process -Id 1234</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Start-Process</strong></td>
+                        <td>Iniciar proceso</td>
+                        <td><code>Start-Process notepad.exe</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Wait-Process</strong></td>
+                        <td>Esperar a que termine</td>
+                        <td><code>Wait-Process -Id 1234</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Debug-Process</strong></td>
+                        <td>Adjuntar depurador</td>
+                        <td><code>Debug-Process -Id 1234</code></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>Ver procesos con Get-Process:</h4>
+            <pre><code class="language-powershell"># Listar todos los procesos
+Get-Process
+
+# Ver proceso específico por ID
+Get-Process -Id 1234
+
+# Ver proceso por nombre
+Get-Process -Name notepad
+
+# Filtrar por nombre con comodín
+Get-Process -Name "*fire*"
+
+# Ordenar por uso de CPU
+Get-Process | Sort-Object CPU -Descending | Select-Object -First 10
+
+# Ordenar por uso de memoria
+Get-Process | Sort-Object WorkingSet -Descending | Select-Object -First 10</code></pre>
+
+            <h4>Terminar procesos con Stop-Process:</h4>
+            <pre><code class="language-powershell"># Terminar por ID
+Stop-Process -Id 1234
+
+# Terminar por nombre
+Stop-Process -Name notepad
+
+# Forzar terminación
+Stop-Process -Id 1234 -Force
+
+# Terminar múltiples procesos
+Get-Process -Name "*temp*" | Stop-Process</code></pre>
+
+            <h4>Propiedades útiles de Process:</h4>
+            <pre><code class="language-powershell"># Ver propiedades de un proceso
+Get-Process -Name notepad | Format-List *
+
+# Propiedades comunes
+Get-Process | Select-Object Id, Name, CPU, WorkingSet, Path
+
+# Formatear salida como tabla
+Get-Process | Format-Table Name, Id, CPU, WorkingSet -AutoSize</code></pre>
+        </section>
+
+        <!-- PowerShell para Servicios -->
+        <section id="powershell-servicios">
+            <h2>PowerShell para Gestión de Servicios</h2>
+
+            <div class="callout info">
+                <strong>PowerShell permite administrar servicios de forma eficiente</strong>
+            </div>
+
+            <h3>Cmdlets principales de servicios:</h3>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Cmdlet</th>
+                        <th>Descripción</th>
+                        <th>Ejemplo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Get-Service</strong></td>
+                        <td>Listar servicios</td>
+                        <td><code>Get-Service</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Start-Service</strong></td>
+                        <td>Iniciar servicio</td>
+                        <td><code>Start-Service Spooler</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Stop-Service</strong></td>
+                        <td>Detener servicio</td>
+                        <td><code>Stop-Service Spooler</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Restart-Service</strong></td>
+                        <td>Reiniciar servicio</td>
+                        <td><code>Restart-Service Spooler</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Suspend-Service</strong></td>
+                        <td>Pausar servicio</td>
+                        <td><code>Suspend-Service Winmgmt</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Resume-Service</strong></td>
+                        <td>Reanudar servicio</td>
+                        <td><code>Resume-Service Winmgmt</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Set-Service</strong></td>
+                        <td>Configurar servicio</td>
+                        <td><code>Set-Service Spooler -StartupType Automatic</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>New-Service</strong></td>
+                        <td>Crear servicio</td>
+                        <td><code>New-Service -Name "MiServicio" ...</code></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>Ejemplos de gestión de servicios:</h4>
+            <pre><code class="language-powershell"># Listar todos los servicios
+Get-Service
+
+# Ver servicio específico
+Get-Service -Name Spooler
+
+# Ver servicios ejecutándose
+Get-Service | Where-Object Status -eq "Running"
+
+# Ver servicios detenidos
+Get-Service | Where-Object Status -eq "Stopped"
+
+# Iniciar un servicio
+Start-Service -Name Spooler
+
+# Detener un servicio
+Stop-Service -Name Spooler
+
+# Reiniciar un servicio
+Restart-Service -Name Spooler
+
+# Ver propiedades de servicio
+Get-Service Spooler | Format-List *</code></pre>
+
+            <h4>Tipos de inicio (StartupType):</h4>
+            <pre><code class="language-powershell"># Automatic - Inicio automático
+Set-Service -Name Spooler -StartupType Automatic
+
+# Manual - Inicio manual
+Set-Service -Name Spooler -StartupType Manual
+
+# Disabled - Deshabilitado
+Set-Service -Name Spooler -StartupType Disabled
+
+# AutomaticDelayedStart - Automático con retraso
+Set-Service -Name Spooler -StartupType AutomaticDelayedStart</code></pre>
+        </section>
+
+        <!-- sc.exe -->
+        <section id="sc-exe">
+            <h2>sc.exe - Crear y Gestionar Servicios</h2>
+
+            <div class="callout info">
+                <strong>sc.exe es una herramienta de línea de comandos para gestionar servicios</strong>
+            </div>
+
+            <h4>Diferencia entre sc.exe y cmdlet de PowerShell:</h4>
+            <ul>
+                <li><strong>sc.exe:</strong> Herramienta nativa de Windows, más compatible con scripts antiguos</li>
+                <li><strong>PowerShell:</strong> Más moderno, orientado a objetos, mejor para scripts nuevos</li>
+            </ul>
+
+            <h3>Comandos sc.exe principales:</h3>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Comando</th>
+                        <th>Descripción</th>
+                        <th>Ejemplo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>sc query</strong></td>
+                        <td>Consultar estado de servicio</td>
+                        <td><code>sc query Spooler</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>sc start</strong></td>
+                        <td>Iniciar servicio</td>
+                        <td><code>sc start Spooler</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>sc stop</strong></td>
+                        <td>Detener servicio</td>
+                        <td><code>sc stop Spooler</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>sc create</strong></td>
+                        <td>Crear nuevo servicio</td>
+                        <td><code>sc create MiServicio ...</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>sc delete</strong></td>
+                        <td>Eliminar servicio</td>
+                        <td><code>sc delete MiServicio</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>sc config</strong></td>
+                        <td>Configurar servicio</td>
+                        <td><code>sc config Spooler start=auto</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>sc qc</strong></td>
+                        <td>Query configuration</td>
+                        <td><code>sc qc Spooler</code></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>Crear un servicio simple con sc.exe:</h4>
+            <pre><code class="language-powershell"># Sintaxis básica
+sc create [nombre] binPath= "[ruta-ejecutable]" [opciones]
+
+# Ejemplo: Crear servicio para una aplicación
+sc create MiServicio binPath= "C:\MiApp\app.exe" start= auto
+
+# Ejemplo: Servicio con descripción
+sc create MiServicio ^
+    binPath= "C:\MiApp\app.exe" ^
+    start= auto ^
+    DisplayName= "Mi Servicio Personalizado" ^
+    depend= Tcpip
+
+# Configurar tipo de inicio
+sc config MiServicio start= demand
+
+# Iniciar el servicio
+sc start MiServicio
+
+# Verificar estado
+sc query MiServicio
+
+# Eliminar servicio (debe estar detenido)
+sc stop MiServicio
+sc delete MiServicio</code></pre>
+
+            <div class="callout warning">
+                <strong>⚠️ Nota importante sobre sc.exe:</strong>
+                <ul>
+                    <li>En sc.exe, el espacio después del signo igual es OBLIGATORIO: <code>binPath= "..."</code></li>
+                    <li>Servicios necesitan ejecutable con formato de servicio válido</li>
+                    <li>No todos los executables pueden funcionar como servicio</li>
+                    <li>Para aplicaciones normales, usar NSSM (Non-Sucking Service Manager)</li>
+                </ul>
+            </div>
+
+            <h4>Tipos de inicio con sc.exe:</h4>
+            <pre><code class="language-powershell">start= boot     - Controladores de inicio
+start= system   - Controladores de sistema
+start= auto     - Automático
+start= demand   - Manual
+start= disabled - Deshabilitado</code></pre>
+        </section>
+
+        <!-- Práctica Guiada -->
+        <section id="practica">
+            <h2>Práctica Guiada</h2>
+
+            <div class="actividad">
+                <h3>Actividad 1: Explorar Task Manager</h3>
+                <p><strong>Tiempo:</strong> 10 minutos</p>
+                <ol>
+                    <li>Abre Task Manager (Ctrl + Shift + Esc)</li>
+                    <li>Ve a la pestaña "Processes"</li>
+                    <li>Identifica el proceso con mayor uso de CPU</li>
+                    <li>Identifica el proceso con mayor uso de memoria</li>
+                    <li>Ve a la pestaña "Performance" y observa los gráficos</li>
+                    <li>Ve a "Details" y agrega la columna "PID"</li>
+                </ol>
+            </div>
+
+            <div class="actividad">
+                <h3>Actividad 2: PowerShell - Listar y filtrar procesos</h3>
+                <p><strong>Tiempo:</strong> 15 minutos</p>
+                <ol>
+                    <li>Abre PowerShell como administrador</li>
+                    <li>Lista todos los procesos: <code>Get-Process</code></li>
+                    <li>Busca un proceso específico: <code>Get-Process -Name explorer</code></li>
+                    <li>Ordena por CPU: <code>Get-Process | Sort-Object CPU -Descending | Select-Object -First 10</code></li>
+                    <li>Ordena por memoria: <code>Get-Process | Sort-Object WorkingSet -Descending | Select-Object -First 10</code></li>
+                    <li>Ver propiedades de un proceso: <code>Get-Process -Id [PID] | Format-List *</code></li>
+                </ol>
+            </div>
+
+            <div class="actividad">
+                <h3>Actividad 3: PowerShell - Gestión de servicios</h3>
+                <p><strong>Tiempo:</strong> 15 minutos</p>
+                <ol>
+                    <li>Ver todos los servicios: <code>Get-Service</code></li>
+                    <li>Ver servicios ejecutándose: <code>Get-Service | Where-Object Status -eq "Running"</code></li>
+                    <li>Ver detalles del servicio Spooler: <code>Get-Service Spooler | Format-List *</code></li>
+                    <li>Ver el tipo de inicio: <code>Get-Service Spooler | Select-Object StartType</code></li>
+                    <li>Ver si Print Spooler está habilitado: <code>Get-Service Spooler | Select-Object Status, StartType</code></li>
+                </ol>
+            </div>
+
+            <div class="actividad">
+                <h3>Actividad 4: sc.exe - Crear un servicio simple</h3>
+                <p><strong>Tiempo:</strong> 15 minutos</p>
+                <ol>
+                    <li>Abre CMD o PowerShell como administrador</li>
+                    <li>Verifica un servicio existente: <code>sc query Spooler</code></li>
+                    <li>Ver configuración: <code>sc qc Spooler</code></li>
+                    <li>Intenta crear un servicio de prueba: <code>sc create Prueba binPath= "C:\Windows\System32\calc.exe" start= demand</code></li>
+                    <li>Intenta iniciarlo: <code>sc start Prueba</code></li>
+                    <li>Observa el resultado (es normal que falle)</li>
+                    <li>Elimina el servicio: <code>sc delete Prueba</code></li>
+                </ol>
+                <p><strong>Nota:</strong> Calc.exe no está diseñado como servicio, por lo que fallará. El propósito es practicar los comandos.</p>
+            </div>
+        </section>
+
+        <!-- Práctica Adicional -->
+        <section id="practica-adicional">
+            <h2>Práctica Adicional (No Evaluativa)</h2>
+            
+            <div class="callout info" style="margin-bottom: 1.5rem;">
+                <strong>Esta sección es para practicar por tu cuenta.</strong> No es un entregable ni cuenta para la nota. ¡Úsala para reforzar lo aprendido!
+            </div>
+
+            <div class="actividad">
+                <h3>Ejercicio de Refuerzo: Script en PowerShell</h3>
+                <p><strong>Objetivo:</strong> Crear un script en PowerShell que muestre información del sistema.</p>
+                
+                <p><strong>Actividad sugerida:</strong></p>
+                <ol>
+                    <li>Abre PowerShell en tu computadora</li>
+                    <li>Crea un archivo llamado <code>mi_reporte.ps1</code></li>
+                    <li>Intenta incluir comandos que muestren:
+                        <ul>
+                            <li>La fecha y hora actual</li>
+                            <li>Los 5 procesos con mayor uso de CPU</li>
+                            <li>Los 5 procesos con mayor uso de memoria</li>
+                            <li>Lista de servicios que están ejecutándose</li>
+                        </ul>
+                    </li>
+                    <li>Prueba ejecutar el script y observa los resultados</li>
+                </ol>
+
+                <p><strong>Comandos útiles para empezar:</strong></p>
+                <ul>
+                    <li><code>Get-Date</code> - Muestra fecha y hora</li>
+                    <li><code>Get-Process</code> - Lista procesos</li>
+                    <li><code>Get-Service</code> - Lista servicios</li>
+                </ul>
+
+                <div class="callout success">
+                    <strong>Consejo:</strong> PowerShell puede ser intimidante al principio. Empieza con un solo comando y ve agregando más. No necesitas que sea perfecto, la idea es experimentar.
+                </div>
+            </div>
+        </section>
+
+        <!-- Resumen -->
+        <!-- Actividad -->
+        <section id="actividad">
+            <h2>Actividad Práctica: Gestión de Procesos Windows</h2>
+
+            <section class="actividad">
+                <h3>Actividad 06: Servicios y PowerShell</h3>
+                <p><strong>Tipo:</strong> Avance para Fase 2 (E2)</p>
+                <p><strong>Objetivo:</strong> Gestionar servicios de Windows desde la línea de comandos.</p>
+                <p><strong>Pasos:</strong></p>
+                <ol>
+                    <li>Abre PowerShell como Administrador</li>
+                    <li>Usa <code>Get-Service</code> para listar los servicios detenidos</li>
+                    <li>Intenta iniciar y detener el servicio de Cola de Impresión (Spooler): <code>Stop-Service Spooler</code></li>
+                    <li>Usa <code>Get-Process | Sort-Object CPU -Descending | Select-Object -First 5</code></li>
+                </ol>
+                <p><strong>Entregable:</strong> Captura de los comandos de PowerShell para tu informe de la Fase 2.</p>
+            </section>
+        </section>
+
+        <section id="resumen">
+            <h2>Resumen de la Clase</h2>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Herramienta</th>
+                        <th>Uso principal</th>
+                        <th>Comando/Acceso</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Task Manager</strong></td>
+                        <td>Monitoreo básico de procesos</td>
+                        <td>Ctrl + Shift + Esc</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Process Explorer</strong></td>
+                        <td>Análisis avanzado de procesos</td>
+                        <td>Descargar de Sysinternals</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Get-Process</strong></td>
+                        <td>Listar procesos en PowerShell</td>
+                        <td><code>Get-Process</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Stop-Process</strong></td>
+                        <td>Terminar proceso</td>
+                        <td><code>Stop-Process -Id 1234</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Get-Service</strong></td>
+                        <td>Listar servicios</td>
+                        <td><code>Get-Service</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Start/Stop-Service</strong></td>
+                        <td>Gestionar servicios</td>
+                        <td><code>Start-Service Spooler</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>sc.exe</strong></td>
+                        <td>Crear servicios nativos</td>
+                        <td><code>sc create ...</code></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Próxima Clase</h3>
+            <p><strong>Clase 07: Hilos y Sincronización</strong></p>
+            <ul>
+                <li>Diferencia entre procesos y threads</li>
+                <li>Mutex, semáforos y monitores</li>
+                <li>Problemas de sincronización</li>
+                <li>Ejercicios conceptuales</li>
+            </ul>
+        </section>
+
+        <!-- Videos Recomendados -->
+        <section id="videos">
+            <h2>Videos Recomendados</h2>
+
+            <div class="callout info">
+                <h3>📹 Video 1: Gestión de Procesos en Windows con PowerShell</h3>
+                <p><strong>Task Manager, PowerShell Get-Process</strong></p>
+                <p>Duración: ~25 minutos | Nivel: Intermedio | Idioma: Español</p>
+                <p>Gestión de procesos en Windows usando Task Manager y PowerShell.</p>
+                <p><a href="https://www.youtube.com/watch?v=x863Rv3U9_Q" target="_blank">📺 Ver en YouTube</a></p>
+            </div>
+
+            <div class="callout info">
+                <h3>📹 Video 2: Administración de Servicios en Windows Server</h3>
+                <p><strong>PowerShell para gestionar servicios</strong></p>
+                <p>Duración: ~20 minutos | Nivel: Intermedio | Idioma: Español</p>
+                <p>Cómo gestionar servicios de Windows usando PowerShell.</p>
+                <p><a href="https://www.youtube.com/watch?v=hf3j81eSt7M" target="_blank">📺 Ver en YouTube</a></p>
+            </div>
+        </section>
+
+        <!-- Navigation between classes -->
+        <nav class="class-nav" aria-label="Navegación entre clases">
+            <a href="clase-05.html" class="class-nav-link prev">
+                <span class="class-nav-icon">←</span>
+                <div>
+                    <div class="nav-label">Clase Anterior</div>
+                    <div class="nav-title">Procesos en Linux</div>
+                    <div class="class-nav-date">📅 18 Feb 2026</div>
+                </div>
+            </a>
+            <a href="clase-07.html" class="class-nav-link next">
+                <div>
+                    <div class="nav-label">Siguiente Clase</div>
+                    <div class="nav-title">Hilos y Sincronización</div>
+                    <div class="class-nav-date">📅 25 Feb 2026</div>
+                </div>
+                <span class="class-nav-icon">→</span>
+            </a>
+        </nav>
+    </div>
+
+    
+    
+    <footer>
+        <div class="container">
+            <p>📅 18 de Febrero 2026 | Sesion Miercoles: 8:00-9:00 AM | Teoria: 30 min + Practica: 30 min</p>
+
+            <p style="margin-top: 10px;">
+                <a href="index.html" style="color: #10b981;">Inicio</a> |
+                <a href="cronograma.html" style="color: #10b981;">Cronograma</a> |
+                <a href="evaluaciones.html" style="color: #8b5cf6;">Evaluaciones</a> |
+                <a href="rubricas.html" style="color: #3b82f6;">Rubricas</a>
+            </p>
+        </div>
+    </footer>
+
+
+
+    <a href="#" class="scroll-top" id="scrollTop">↑</a>
+
+    <script>
+        // Scroll to top button
+        const scrollTopBtn = document.getElementById('scrollTop');
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                scrollTopBtn.classList.add('visible');
+            } else {
+                scrollTopBtn.classList.remove('visible');
+            }
+        });
+        scrollTopBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href !== '#' && href.length > 1) {
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                }
+            });
+        });
+    </script>
+
+    <!-- Prism.js para syntax highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-powershell.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            Prism.highlightAll();
+        });
+    </script>
+</body>
+</html>

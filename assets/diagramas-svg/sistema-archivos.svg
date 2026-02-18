@@ -1,0 +1,145 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" style="background: #f8fafc; font-family: Arial, sans-serif;">
+  <!-- Título -->
+  <text x="600" y="30" text-anchor="middle" font-size="24" font-weight="bold" fill="#1e293b">Estructura de Inodos (Linux/Unix)</text>
+
+  <!-- Subtítulo -->
+  <text x="600" y="55" text-anchor="middle" font-size="13" fill="#64748b">Cómo Unix organiza archivos en disco usando inodos</text>
+
+  <!-- Comparación de Sistemas de Archivos -->
+  <g id="comparacion-fs">
+    <rect x="50" y="80" width="1100" height="50" rx="8" fill="#fef9c3" stroke="#ca8a04" stroke-width="2"/>
+    <text x="600" y="100" text-anchor="middle" font-size="13" font-weight="bold" fill="#854d0e">Comparación: FAT32 vs NTFS vs ext4</text>
+    <text x="280" y="120" text-anchor="middle" font-size="11" fill="#92400e">FAT32: Tabla de asignación simple</text>
+    <text x="550" y="120" text-anchor="middle" font-size="11" fill="#92400e">NTFS: Journaling, ACLs, compresión</text>
+    <text x="850" y="120" text-anchor="middle" font-size="11" fill="#92400e">ext4: Journaling, extents, inodos</text>
+  </g>
+
+  <!-- Estructura de Inodo -->
+  <g id="inodo-estructura">
+    <text x="250" y="175" text-anchor="middle" font-size="15" font-weight="bold" fill="#1e293b">Estructura de un Inodo</text>
+
+    <!-- Inodo -->
+    <rect x="50" y="195" width="400" height="230" rx="5" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+
+    <!-- Campos del inodo -->
+    <g id="campos-inodo">
+      <rect x="70" y="215" width="150" height="28" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+      <text x="145" y="233" text-anchor="middle" font-size="10" fill="#64748b">Tipo de archivo</text>
+      <rect x="250" y="215" width="180" height="28" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+      <text x="340" y="233" text-anchor="middle" font-size="10" fill="#1e40af">- (regular, dir, symlink)</text>
+
+      <rect x="70" y="253" width="150" height="28" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+      <text x="145" y="271" text-anchor="middle" font-size="10" fill="#64748b">Permisos</text>
+      <rect x="250" y="253" width="180" height="28" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+      <text x="340" y="271" text-anchor="middle" font-size="10" fill="#1e40af">rwxrwxrwx (9 bits)</text>
+
+      <rect x="70" y="291" width="150" height="28" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+      <text x="145" y="309" text-anchor="middle" font-size="10" fill="#64748b">UID del dueño</text>
+      <rect x="250" y="291" width="180" height="28" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+      <text x="340" y="309" text-anchor="middle" font-size="10" fill="#1e40af">32 bits (0-4294967295)</text>
+
+      <rect x="70" y="329" width="150" height="28" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+      <text x="145" y="347" text-anchor="middle" font-size="10" fill="#64748b">GID del grupo</text>
+      <rect x="250" y="329" width="180" height="28" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+      <text x="340" y="347" text-anchor="middle" font-size="10" fill="#1e40af">32 bits</text>
+
+      <rect x="70" y="367" width="150" height="28" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+      <text x="145" y="385" text-anchor="middle" font-size="10" fill="#64748b">Tamaño (bytes)</text>
+      <rect x="250" y="367" width="180" height="28" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+      <text x="340" y="385" text-anchor="middle" font-size="10" fill="#1e40af">64 bits (hasta 16TB)</text>
+
+      <rect x="70" y="405" width="360" height="28" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+      <text x="145" y="423" text-anchor="middle" font-size="10" fill="#64748b">Timestamps</text>
+      <text x="340" y="423" text-anchor="middle" font-size="10" fill="#1e40af">mtime, atime, ctime</text>
+    </g>
+  </g>
+
+  <!-- Punteros a Bloques -->
+  <g id="punteros-bloques">
+    <text x="825" y="175" text-anchor="middle" font-size="15" font-weight="bold" fill="#1e293b">Punteros a Bloques de Datos</text>
+
+    <rect x="500" y="195" width="650" height="230" rx="5" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+
+    <!-- Punteros directos -->
+    <g id="directos">
+      <rect x="520" y="215" width="120" height="24" fill="#22c55e" opacity="0.8"/>
+      <text x="580" y="231" text-anchor="middle" font-size="10" fill="white">i_block[0]</text>
+      <rect x="680" y="215" width="220" height="24" fill="#fef9c3" stroke="#ca8a04" stroke-width="1"/>
+      <text x="790" y="231" text-anchor="middle" font-size="10" fill="#92400e">Bloque 0 (4KB)</text>
+
+      <rect x="520" y="244" width="120" height="24" fill="#22c55e" opacity="0.8"/>
+      <text x="580" y="260" text-anchor="middle" font-size="10" fill="white">i_block[1]</text>
+      <rect x="680" y="244" width="220" height="24" fill="#fef9c3" stroke="#ca8a04" stroke-width="1"/>
+      <text x="790" y="260" text-anchor="middle" font-size="10" fill="#92400e">Bloque 1 (4KB)</text>
+
+      <rect x="520" y="273" width="120" height="24" fill="#22c55e" opacity="0.8"/>
+      <text x="580" y="289" text-anchor="middle" font-size="10" fill="white">...</text>
+      <rect x="680" y="273" width="220" height="24" fill="#fef9c3" stroke="#ca8a04" stroke-width="1"/>
+      <text x="790" y="289" text-anchor="middle" font-size="10" fill="#92400e">...</text>
+
+      <rect x="520" y="302" width="120" height="24" fill="#22c55e" opacity="0.8"/>
+      <text x="580" y="318" text-anchor="middle" font-size="10" fill="white">i_block[11]</text>
+      <rect x="680" y="302" width="220" height="24" fill="#fef9c3" stroke="#ca8a04" stroke-width="1"/>
+      <text x="790" y="318" text-anchor="middle" font-size="10" fill="#92400e">Bloque 11 (4KB)</text>
+      <text x="990" y="318" text-anchor="start" font-size="9" fill="#16a34a">48KB max</text>
+    </g>
+
+    <!-- Indirecto simple -->
+    <g id="indirecto-simple">
+      <rect x="520" y="336" width="120" height="24" fill="#f59e0b" opacity="0.8"/>
+      <text x="580" y="352" text-anchor="middle" font-size="10" fill="white">i_block[12]</text>
+      <rect x="680" y="336" width="220" height="24" fill="#fef3c7" stroke="#ca8a04" stroke-width="1"/>
+      <text x="790" y="352" text-anchor="middle" font-size="10" fill="#9a3412">Indirecto simple</text>
+      <text x="990" y="352" text-anchor="start" font-size="9" fill="#16a34a">→ 4MB más</text>
+    </g>
+
+    <!-- Indirecto doble -->
+    <g id="indirecto-doble">
+      <rect x="520" y="370" width="120" height="24" fill="#ef4444" opacity="0.8"/>
+      <text x="580" y="386" text-anchor="middle" font-size="10" fill="white">i_block[13]</text>
+      <rect x="680" y="370" width="220" height="24" fill="#fee2e2" stroke="#dc2626" stroke-width="1"/>
+      <text x="790" y="386" text-anchor="middle" font-size="10" fill="#991b1b">Indirecto doble</text>
+      <text x="990" y="386" text-anchor="start" font-size="9" fill="#dc2626">→ 4GB más</text>
+    </g>
+
+    <!-- Indirecto triple -->
+    <g id="indirecto-triple">
+      <rect x="520" y="404" width="120" height="24" fill="#8b5cf6" opacity="0.8"/>
+      <text x="580" y="420" text-anchor="middle" font-size="10" fill="white">i_block[14]</text>
+      <rect x="680" y="404" width="220" height="24" fill="#f3e8ff" stroke="#9333ea" stroke-width="1"/>
+      <text x="790" y="420" text-anchor="middle" font-size="10" fill="#6b21a8">Indirecto triple</text>
+      <text x="990" y="420" text-anchor="start" font-size="9" fill="#6b21a8">→ 4TB más</text>
+    </g>
+  </g>
+
+  <!-- Ventajas de Inodos -->
+  <g id="ventajas-inodos">
+    <rect x="50" y="450" width="550" height="150" rx="5" fill="#e0e7ff" stroke="#4f46e5" stroke-width="2"/>
+    <text x="325" y="470" text-anchor="middle" font-size="13" font-weight="bold" fill="#3730a3">Ventajas del Sistema de Inodos</text>
+
+    <text x="70" y="495" font-size="10" fill="#4f46e5"><tspan font-weight="bold">1. Acceso rápido:</tspan> Directorios solo tienen nombres + inodo #</text>
+    <text x="70" y="515" font-size="10" fill="#4f46e5"><tspan font-weight="bold">2. Archivos rápidos:</tspan> stat no requiere abrir archivo</text>
+    <text x="70" y="535" font-size="10" fill="#4f46e5"><tspan font-weight="bold">3. Links físicos:</tspan> Nombres pueden apuntar al mismo inodo</text>
+    <text x="70" y="555" font-size="10" fill="#4f46e5"><tspan font-weight="bold">4. Estructura flexible:</tspan> Extents en ext4 son eficientes</text>
+    <text x="70" y="575" font-size="10" fill="#4f46e5"><tspan font-weight="bold">5. Journaling:</tspan> Recuperación rápida tras caídas</text>
+  </g>
+
+  <!-- Notas importantes -->
+  <g id="notas">
+    <rect x="620" y="450" width="530" height="150" rx="5" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+    <text x="885" y="470" text-anchor="middle" font-size="13" font-weight="bold" fill="#1e293b">Conceptos Clave</text>
+
+    <text x="640" y="495" font-size="10" fill="#64748b"><tspan font-weight="bold">Inodo #:</tspan> Identificador único (como número de seguro social)</text>
+    <text x="640" y="515" font-size="10" fill="#64748b"><tspan font-weight="bold">Links:</tspan> Contador de nombres que apuntan al inodo (nlink)</text>
+    <text x="640" y="535" font-size="10" fill="#64748b"><tspan font-weight="bold">Extents:</tspan> Bloques consecutivos mejoran rendimiento</text>
+    <text x="640" y="555" font-size="10" fill="#dc2626"><tspan font-weight="bold">Sin inodos:</tspan> No puedes borrar archivo abierto (en uso)</text>
+    <text x="640" y="575" font-size="10" fill="#16a34a"><tspan font-weight="bold">df -i:</tspan> Ver inodos disponibles</text>
+  </g>
+
+  <!-- Comandos útiles -->
+  <g id="comandos">
+    <rect x="50" y="620" width="1100" height="60" rx="5" fill="#fef3c7" stroke="#ca8a04" stroke-width="2"/>
+    <text x="600" y="645" text-anchor="middle" font-size="12" font-weight="bold" fill="#9a3412">Comandos útiles</text>
+    <text x="600" y="665" text-anchor="middle" font-size="11" fill="#92400e">ls -li (ver inodos) • df -i (inodos libres) • stat archivo (info completa) • ln archivo1 archivo2 (hard link)</text>
+  </g>
+</svg>

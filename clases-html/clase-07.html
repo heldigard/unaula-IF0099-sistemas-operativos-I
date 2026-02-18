@@ -1,0 +1,1250 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clase 07: Hilos y Sincronización | IF0099 - Sistemas Operativos I</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #1e40af;
+            --accent: #059669;
+            --bg-light: #f8fafc;
+            --bg-code: #1e293b;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.7;
+            color: var(--text-main);
+            background: var(--bg-light);
+            font-size: 16px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 3rem 0;
+            margin-bottom: 2rem;
+        }
+        header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+        header .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        header .meta {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        nav {
+            background: white;
+            padding: 1.5rem 0;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        nav h2 {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            padding: 0 20px;
+        }
+        nav ul {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 0.5rem;
+            padding: 0 20px;
+        }
+        nav a {
+            color: var(--primary);
+            text-decoration: none;
+            padding: 0.5rem;
+            display: block;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+        nav a:hover {
+            background: var(--bg-light);
+        }
+
+        section {
+            background: white;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        section h2 {
+            color: var(--primary);
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid var(--accent);
+        }
+        section h3 {
+            color: var(--secondary);
+            font-size: 1.4rem;
+            margin: 2rem 0 1rem;
+        }
+        section h4 {
+            color: var(--text-main);
+            font-size: 1.1rem;
+            margin: 1.5rem 0 0.75rem;
+            font-weight: 600;
+        }
+        p {
+            margin-bottom: 1rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.95rem;
+        }
+        th, td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+        th {
+            background: var(--bg-light);
+            font-weight: 600;
+            color: var(--secondary);
+        }
+        tr:hover {
+            background: var(--bg-light);
+        }
+
+        pre {
+            background: var(--bg-code);
+            color: #e2e8f0;
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        code {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+        }
+        p code, li code, td code {
+            background: var(--bg-light);
+            color: var(--primary);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+        pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+        }
+
+        ul, ol {
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        .callout {
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            border-left: 4px solid;
+        }
+        .callout.info {
+            background: #eff6ff;
+            border-left-color: var(--primary);
+        }
+        .callout.warning {
+            background: #fef3c7;
+            border-left-color: #f59e0b;
+        }
+        .callout.success {
+            background: #d1fae5;
+            border-left-color: var(--accent);
+        }
+        .callout.danger {
+            background: #fee2e2;
+            border-left-color: #ef4444;
+        }
+
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        .comparison > div {
+            background: var(--bg-light);
+            padding: 1.5rem;
+            border-radius: 8px;
+        }
+
+        .diagram-box {
+            border: 2px solid var(--secondary);
+            padding: 1.5rem;
+            border-radius: 8px;
+            background: var(--bg-light);
+            margin: 1.5rem 0;
+        }
+
+        .ejercicio {
+            background: #fffbeb;
+            border-left: 5px solid #f59e0b;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+        .ejercicio h3 {
+            color: #b45309;
+            margin-bottom: 1rem;
+        }
+
+        footer {
+            background: var(--text-main);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            margin-top: 3rem;
+        }
+        footer a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        /* Navigation between classes */
+        .class-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: stretch;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .class-nav-link {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1.25rem 1.5rem;
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            text-decoration: none;
+            color: var(--text-main);
+            transition: all 0.3s ease;
+        }
+
+        .class-nav-link:hover {
+            border-color: var(--primary);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .class-nav-link.prev {
+            border-left: 4px solid var(--primary);
+        }
+
+        .class-nav-link.next {
+            border-right: 4px solid var(--accent);
+            text-align: right;
+            margin-left: auto;
+        }
+
+        .class-nav-link .nav-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            margin-bottom: 0.25rem;
+        }
+
+        .class-nav-link .nav-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .class-nav-link.next .nav-title {
+            color: var(--accent);
+        }
+
+        .class-nav-icon {
+            font-size: 1.5rem;
+            line-height: 1;
+        }
+
+        .class-nav-placeholder {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.25rem;
+            background: var(--bg-light);
+            border: 2px dashed var(--border);
+            border-radius: 12px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .scroll-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--primary);
+            color: white;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.3s;
+            text-decoration: none;
+            font-size: 1.5rem;
+        }
+        .scroll-top.visible {
+            opacity: 1;
+        }
+        .scroll-top:hover {
+            background: var(--secondary);
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.6rem;
+            }
+            section {
+                padding: 1.5rem;
+            }
+            nav ul {
+                grid-template-columns: 1fr;
+            }
+            .comparison {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .eval-alert {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-left: 4px solid #f59e0b;
+            padding: 1.25rem 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .eval-alert-icon {
+            font-size: 1.75rem;
+            line-height: 1;
+        }
+
+        .eval-alert-content {
+            flex: 1;
+        }
+
+        .eval-alert-title {
+            font-weight: 700;
+            color: #92400e;
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .eval-alert-text {
+            color: #78350f;
+            font-size: 0.9rem;
+        }
+
+        .eval-alert-date {
+            background: #f59e0b;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+
+        .class-nav-date {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        .class-nav-link:hover .nav-title {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Clase 07: Hilos y Sincronización</h1>
+            <p class="subtitle">IF0099 - Sistemas Operativos I | Unidad 4 - Concurrencia</p>
+            <p class="subtitle">Threads, Mutex, Semáforos, Deadlock y Problemas Clásicos</p>
+            <p class="meta">📅 25 de Febrero 2026 | Sesion Miercoles: 6:00-8:00 AM | Teoria: 60 min + Practica: 60 min</p>
+        </div>
+    </header>
+
+
+    <div class="container">
+
+        <!-- Quick Navigation Bar -->
+        <div class="quick-nav" style="background: white; padding: 1rem; margin-bottom: 2rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <a href="index.html" style="color: var(--primary); text-decoration: none; font-weight: 500;">Inicio</a>
+                <span style="color: var(--text-muted);">|</span>
+                <span style="color: var(--text-main); font-weight: 600;">Hilos y Sincronización</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <a href="cronograma.html" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: #10b981; color: white; text-decoration: none; border-radius: 6px; font-weight: 500;">Cronograma</a>
+                <a href="rubricas.html" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: #3b82f6; color: white; text-decoration: none; border-radius: 6px; font-weight: 500;">Rubricas</a>
+            </div>
+        </div>
+
+        <!-- Próxima Evaluación Alert -->
+        <a href="evaluaciones.html#e2" style="text-decoration: none; display: block;">
+            <div class="eval-alert" style="cursor: pointer; transition: transform 0.2s;">
+                <span class="eval-alert-icon">📌</span>
+                <div class="eval-alert-content">
+                    <div class="eval-alert-title">E2: FASE 2 - Procesos y Monitoreo (11 Mar)</div>
+                    <div class="eval-alert-text">15% - Monitoreo y control de procesos (gestiona procesos en SO)</div>
+                </div>
+                <span class="eval-alert-date">📅 11 Mar</span>
+            </div>
+        </a>
+
+        <nav>
+            <h2>Contenido de la Clase</h2>
+            <ul>
+                <li><a href="#objetivos">Objetivos de Aprendizaje</a></li>
+                <li><a href="#proceso-thread">Proceso vs Thread</a></li>
+                <li><a href="#sincronizacion">Sincronización</a></li>
+                <li><a href="#mutex">Mutex</a></li>
+                <li><a href="#semaforos">Semáforos</a></li>
+                <li><a href="#monitores">Monitores</a></li>
+                <li><a href="#deadlock">Deadlock</a></li>
+                <li><a href="#condiciones">Condiciones de Deadlock</a></li>
+                <li><a href="#prevencion">Prevención y Evitación</a></li>
+                <li><a href="#ejercicios">Ejercicios Conceptuales</a></li>
+                
+                <li><a href="#resumen">Resumen</a></li>
+            </ul>
+        </nav>
+
+        <!-- Objetivos -->
+        <section id="objetivos">
+            <h2>Objetivos de Aprendizaje</h2>
+            <p><strong>Resultado de Aprendizaje (RA2):</strong> Gestiona los procesos que se llevan a cabo en los sistemas operativos (Alineado con Evaluación E2).</p>
+            <p>Al finalizar esta clase, serás capaz de:</p>
+            <ol>
+                <li><strong>Diferenciar</strong> entre procesos y threads (hilos)</li>
+                <li><strong>Entender</strong> los mecanismos de sincronización</li>
+                <li><strong>Explicar</strong> el problema de deadlock</li>
+                <li><strong>Resolver</strong> problemas clásicos de sincronización</li>
+                <li><strong>Analizar</strong> situaciones de bloqueo mutuo</li>
+            </ol>
+
+            <div class="callout info">
+                <p class="callout-title">Abreviaciones de Concurrencia</p>
+                <ul>
+                    <li><strong>IPC (Inter-Process Communication):</strong> Comunicación entre procesos independientes.</li>
+                    <li><strong>Race Condition:</strong> Condición de carrera, fallo que ocurre cuando dos hilos acceden a un recurso al mismo tiempo.</li>
+                    <li><strong>FIFO (First-In, First-Out):</strong> El primero en entrar es el primero en salir.</li>
+                    <li><strong>LIFO (Last-In, First-Out):</strong> El último en entrar es el primero en salir (pilas).</li>
+                </ul>
+            </div>
+
+            <div class="callout success">
+                <p class="callout-title">🖥️ Laboratorio VirtualBox</p>
+                <p>Para esta clase, utilizaremos tu máquina virtual en <strong>VirtualBox</strong> para observar cómo se comportan los hilos y los bloqueos mutuos en un entorno real.</p>
+            </div>
+        </section>
+
+
+        <!-- Proceso vs Thread -->
+        <section id="proceso-thread">
+            <h2>Proceso vs Thread (Hilo)</h2>
+
+            <div class="callout info">
+                <strong>Un hilo (thread) es la unidad básica de ejecución dentro de un proceso</strong>
+            </div>
+
+            <h3>Comparación Proceso vs Thread</h3>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Característica</th>
+                        <th>Proceso</th>
+                        <th>Thread</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Espacio de direcciones</strong></td>
+                        <td>Independiente y aislado</td>
+                        <td>Compartido entre threads</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Recursos</strong></td>
+                        <td>Propios (archivos, memoria)</td>
+                        <td>Compartidos del proceso</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Comunicación</strong></td>
+                        <td>IPC complejo (pipes, shared memory)</td>
+                        <td>Directa (memoria compartida)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Contexto</strong></td>
+                        <td>Pesado ( PCB completo)</td>
+                        <td>Ligero (registros, stack)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Cambio de contexto</strong></td>
+                        <td>Lento (miles de ciclos)</td>
+                        <td>Rápido (cientos de ciclos)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Creación</strong></td>
+                        <td>Lenta y costosa</td>
+                        <td>Rápida y económica</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>Ejemplo de múltiples threads en un proceso:</h4>
+            <div class="diagram-box">
+                <pre class="ascii-diagram">┌─────────────────────────────────────────────────────┐
+│                   PROCESO (ej. Chrome)               │
+│  Espacio de memoria: código, datos, heap compartido │
+├─────────────┬─────────────┬─────────────┬─────────────┤
+│  Thread 1   │  Thread 2   │  Thread 3   │  Thread 4   │
+│  (Pestaña)  │  (Pestaña)  │  (Renderer) │  (Network)  │
+├─────────────┼─────────────┼─────────────┼─────────────┤
+│ Stack       │ Stack       │ Stack       │ Stack       │
+│ independiente│ independiente│ independiente│ independiente│
+├─────────────┴─────────────┴─────────────┴─────────────┤
+│   Código, datos, archivos, sockets (compartidos)     │
+└─────────────────────────────────────────────────────┘</pre>
+            </div>
+
+            <h4>Ventajas de usar threads:</h4>
+            <ul>
+                <li><strong>Responsividad:</strong> UI permanece activa mientras se procesa en background</li>
+                <li><strong>Economía:</strong> Menos recursos que crear procesos</li>
+                <li><strong>Compartición:</strong> Fácil acceso a recursos compartidos</li>
+                <li><strong>Paralelismo:</strong> Aprovechar múltiples CPUs</li>
+            </ul>
+        </section>
+
+        <!-- Sincronización -->
+        <section id="sincronizacion">
+            <h2>Sincronización de Threads</h2>
+
+            <div class="callout warning">
+                <strong>El problema:</strong> Cuando múltiples threads acceden a datos compartidos simultáneamente
+            </div>
+
+            <h3>Condición de Carrera (Race Condition)</h3>
+
+            <pre class="ascii-diagram">Tiempo    Thread A              Memoria          Thread B
+────────────────────────────────────────────────────────────────
+  t1      lee saldo (1000)      [saldo=1000]
+  t2                            [saldo=1000]     lee saldo (1000)
+  t3      suma 100 (local=1100)
+  t4                                             resta 50 (local=950)
+  t5      escribe 1100          [saldo=1100]
+  t6                            [saldo=950]      escribe 950
+────────────────────────────────────────────────────────────────
+                                 RESULTADO: $950 (¡incorrecto!)</pre>
+
+            <div class="callout danger">
+                <strong>Una condición de carrera ocurre cuando el resultado depende del orden de ejecución</strong>
+            </div>
+        </section>
+
+        <!-- Mutex -->
+        <section id="mutex">
+            <h2>Mutex (Mutual Exclusion)</h2>
+
+            <div class="callout info">
+                <strong>Mutex es un lock que permite solo un thread a la vez en una sección crítica</strong>
+            </div>
+
+            <h3>Características del Mutex:</h3>
+            <ul>
+                <li><strong>Propiedad:</strong> El thread que lo adquiere es el único que puede liberarlo</li>
+                <li><strong>Exclusión:</strong> Solo un thread puede tener el mutex a la vez</li>
+                <li><strong>Bloqueo:</strong> Si el mutex está ocupado, el thread espera</li>
+                <li><strong>Sección crítica:</strong> Código que accede a recursos compartidos</li>
+            </ul>
+
+            <h4>Operaciones básicas:</h4>
+            <pre class="ascii-diagram">┌─────────────────────────────────────────────────┐
+│  Thread 1                │  Thread 2          │
+├─────────────────────────────────────────────────┤
+│  lock(mutex)             │                    │
+│  // Sección crítica      │  lock(mutex)       │
+│  modificar_compartido()  │  // Espera...      │
+│  unlock(mutex)           │  // Espera...      │
+│                          │  // Se libera...   │
+│                          │  // Sección crítica│
+│                          │  modificar_compartido()│
+│                          │  unlock(mutex)     │
+└─────────────────────────────────────────────────┘</pre>
+
+            <h4>Ejemplo conceptual (sin código):</h4>
+            <div class="diagram-box">
+                <p><strong>Escenario:</strong> Dos cajeros acceden a la misma cuenta bancaria</p>
+                <ul>
+                    <li><strong>Sin mutex:</strong> Ambos leen al mismo tiempo → resultado inconsistente</li>
+                    <li><strong>Con mutex:</strong> Uno accede primero, termina, luego el otro → resultado correcto</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Semáforos -->
+        <section id="semaforos">
+            <h2>Semáforos</h2>
+
+            <div class="callout info">
+                <strong>Un semáforo es un contador entero que controla el acceso a recursos</strong>
+            </div>
+
+            <h3>Tipos de Semáforos:</h3>
+
+            <div class="comparison">
+                <div>
+                    <h4>Semáforo Binario (0 o 1)</h4>
+                    <ul>
+                        <li>Similar a un mutex</li>
+                        <li>Un solo recurso disponible</li>
+                        <li>Usado para exclusión mutua</li>
+                        <li>S = 1: recurso libre</li>
+                        <li>S = 0: recurso ocupado</li>
+                    </ul>
+
+                    <pre><code>wait(S):  // Adquirir
+  while S == 0;  // Espera si está ocupado
+  S = 0;
+
+signal(S):  // Liberar
+  S = 1;</code></pre>
+                </div>
+                <div>
+                    <h4>Semáforo Contador (0 a N)</h4>
+                    <ul>
+                        <li>N recursos idénticos</li>
+                        <li>Hasta N threads pueden acceder</li>
+                        <li>Usado para pool de recursos</li>
+                        <li>S = N: N recursos libres</li>
+                        <li>S = 0: todos ocupados</li>
+                    </ul>
+
+                    <pre><code>wait(S):  // Adquirir
+  while S == 0;  // Espera si no hay recursos
+  S = S - 1;
+
+signal(S):  // Liberar
+  S = S + 1;</code></pre>
+                </div>
+            </div>
+
+            <h4>Ejemplo de uso - Pool de conexiones:</h4>
+            <div class="diagram-box">
+                <p><strong>Semáforo con valor inicial = 5</strong> (5 conexiones disponibles)</p>
+                <ul>
+                    <li>Thread A hace wait(): semáforo = 4</li>
+                    <li>Thread B hace wait(): semáforo = 3</li>
+                    <li>Thread C hace wait(): semáforo = 2</li>
+                    <li>Thread A termina y hace signal(): semáforo = 3</li>
+                    <li>Thread D hace wait(): semáforo = 2</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Monitores -->
+        <section id="monitores">
+            <h2>Monitores</h2>
+
+            <div class="callout info">
+                <strong>Un monitor es una estructura de alto nivel que encapsula datos y métodos de sincronización</strong>
+            </div>
+
+            <h3>Características de los Monitores:</h3>
+            <ul>
+                <li><strong>Encapsulamiento:</strong> Datos y métodos sincronizados en una unidad</li>
+                <li><strong>Exclusión automática:</strong> Solo un thread puede estar activo en el monitor</li>
+                <li><strong>Colas de espera:</strong> Threads esperan en variables de condición</li>
+                <li><strong>Menor error humano:</strong> El compilador/runtime maneja la sincronización</li>
+            </ul>
+
+            <h4>Esquema de un Monitor:</h4>
+            <pre class="ascii-diagram">┌──────────────────────────────────────────────┐
+│              MONITOR                          │
+│  Datos compartidos (privados)               │
+├──────────────────────────────────────────────┤
+│  ┌────────────────────────────────────────┐ │
+│  │  Cola de entrada                       │ │
+│  │  Threads esperan para entrar           │ │
+│  └────────────────────────────────────────┘ │
+├──────────────────────────────────────────────┤
+│  procedimiento_sincronizado1() {            │
+│    // Solo un thread ejecuta a la vez       │
+│  }                                          │
+│  procedimiento_sincronizado2() {            │
+│    // Exclusión mutua garantizada           │
+│  }                                          │
+├──────────────────────────────────────────────┤
+│  Variables de condición:                    │
+│    - no_lleno.wait() / signal()             │
+│    - no_vacio.wait() / signal()             │
+└──────────────────────────────────────────────┘</pre>
+
+            <h4>Operaciones sobre variables de condición:</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Operación</th>
+                        <th>Descripción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>wait()</strong></td>
+                        <td>Suspende el thread hasta que se haga signal()</td>
+                    </tr>
+                    <tr>
+                        <td><strong>signal()</strong></td>
+                        <td>Despierta un thread en espera (si hay)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>broadcast()</strong></td>
+                        <td>Despierta TODOS los threads en espera</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Deadlock -->
+        <section id="deadlock">
+            <h2>Deadlock (Bloqueo Mutuo)</h2>
+
+            <div class="callout danger">
+                <strong>Deadlock: Situación donde dos o más threads se esperan mutuamente de forma indefinida</strong>
+            </div>
+
+            <h3>Ejemplo clásico de Deadlock:</h3>
+
+            <pre class="ascii-diagram">┌─────────────────────────────────────────────────┐
+│  Thread A                                    │
+├─────────────────────────────────────────────────┤
+│  1. Adquiere Recurso 1 (Lock1)                │
+│  2. Intenta adquirir Recurso 2 (Lock2)        │
+│     ¡Lock2 está con Thread B! ESPERA...        │
+│  3. (esperando indefinidamente)               │
+└─────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────┐
+│  Thread B                                    │
+├─────────────────────────────────────────────────┤
+│  1. Adquiere Recurso 2 (Lock2)                │
+│  2. Intenta adquirir Recurso 1 (Lock1)        │
+│     ¡Lock1 está con Thread A! ESPERA...        │
+│  3. (esperando indefinidamente)               │
+└─────────────────────────────────────────────────┘
+
+RESULTADO: ¡Nadie avanza! Deadlock circular.</pre>
+
+            <h4>Ejemplo real:</h4>
+            <div class="diagram-box">
+                <p><strong>Escenario del puente:</strong></p>
+                <ul>
+                    <li>Coche A entra al puente de norte a sur</li>
+                    <li>Coche B entra al puente de sur a norte</li>
+                    <li>Ambos se encuentran en el medio</li>
+                    <li>Ninguno puede avanzar sin que el otro retroceda</li>
+                    <li>Si nadie retrocede → Deadlock</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Condiciones de Deadlock -->
+        <section id="condiciones">
+            <h2>Condiciones Necesarias para Deadlock</h2>
+
+            <div class="callout warning">
+                <strong>Coffman: 4 condiciones que DEBEN ocurrir simultáneamente para deadlock</strong>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Condición</th>
+                        <th>Descripción</th>
+                        <th>Ejemplo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Exclusión Mutua</strong></td>
+                        <td>Recurso solo puede usar un thread a la vez</td>
+                        <td>Una impresora, un lock</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Retener y Esperar</strong></td>
+                        <td>Thread mantiene recursos mientras espera otros</td>
+                        <td>Tiene Lock1, espera Lock2</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Sin Apropiación</strong></td>
+                        <td>Los recursos no pueden ser quitados por la fuerza</td>
+                        <td>No se puede quitar Lock1 a Thread A</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Espera Circular</strong></td>
+                        <td>Cadena circular de threads esperándose mutuamente</td>
+                        <td>A espera B, B espera A</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="callout success">
+                <strong>Para prevenir deadlock, basta romper UNA de estas condiciones</strong>
+            </div>
+
+            <h4>Estrategias de prevención:</h4>
+            <ul>
+                <li><strong>Romper exclusión mutua:</strong> Usar recursos compartidos cuando sea posible</li>
+                <li><strong>Romper retener y esperar:</strong> Adquirir todos los recursos de una vez</li>
+                <li><strong>Permitir apropiación:</strong> El SO puede quitar recursos (difícil de implementar)</li>
+                <li><strong>Romper espera circular:</strong> Jerarquía de recursos (adquirir en orden)</li>
+            </ul>
+        </section>
+
+        <!-- Prevención y Evitación -->
+        <section id="prevencion">
+            <h2>Prevención y Evitación de Deadlock</h2>
+
+            <h3>Prevención de Deadlock</h3>
+            <p>Romper una de las 4 condiciones:</p>
+
+            <div class="comparison">
+                <div>
+                    <h4>Estrategia: Adquisición Ordenada</h4>
+                    <p><strong>Regla:</strong> Siempre adquirir locks en el mismo orden</p>
+                    <pre><code>// Todos los threads adquieren:
+Lock1 → Lock2 → Lock3
+
+// Si Thread A tiene Lock1 y quiere Lock2
+// Y Thread B tiene Lock2 y quiere Lock3
+// NO hay deadlock porque B no quiere Lock1</code></pre>
+                    <p><strong>Ventaja:</strong> Simple de implementar</p>
+                    <p><strong>Desventaja:</strong> Requiere disciplina</p>
+                </div>
+                <div>
+                    <h4>Estrategia: Adquisición Atómica</h4>
+                    <p><strong>Regla:</strong> Adquirir todos los recursos juntos</p>
+                    <pre><code>// Adquirir Lock1 Y Lock2 juntos
+lock(Lock1, Lock2) {
+  // O adquiere ambos, o ninguno
+}
+
+// Si falla, liberar y reintentar</code></pre>
+                    <p><strong>Ventaja:</strong> Garantiza sin deadlock</p>
+                    <p><strong>Desventaja:</strong> Menor paralelismo</p>
+                </div>
+            </div>
+
+            <h3>Detección y Recuperación</h3>
+            <ul>
+                <li><strong>Detección:</strong> El SO detecta ciclos en el grafo de recursos</li>
+                <li><strong>Recuperación:</strong> Terminar uno de los threads involucrados</li>
+                <li><strong>Costo:</strong> Sobrecarga del sistema</li>
+            </ul>
+        </section>
+
+        <!-- Ejercicios Prácticos -->
+        <section id="ejercicios">
+            <h2>Ejercicios Prácticos y Conceptuales</h2>
+
+            <div class="callout success" style="background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%); border-left-color: #059669; margin-bottom: 2rem;">
+                <p class="callout-title" style="font-size: 1.1rem; color: #065f46;">📋 Instrucciones para los Ejercicios Prácticos</p>
+                <p>Para realizar los ejercicios prácticos necesitas acceso a una terminal Linux. Usa uno de estos recursos gratuitos:</p>
+                <ul style="margin-top: 0.5rem;">
+                    <li><strong><a href="https://www.webminal.org" target="_blank">Webminal</a></strong> - Terminal Linux real (requiere registro gratuito)</li>
+                    <li><strong><a href="https://bellard.org/jslinux/" target="_blank">JSLinux</a></strong> - Emulador Linux sin registro</li>
+                </ul>
+            </div>
+
+            <h3 style="color: var(--primary); border-bottom: 2px solid var(--accent); padding-bottom: 0.5rem; margin-top: 2rem;">🔧 Ejercicios Prácticos (Parte 1)</h3>
+
+            <div class="ejercicio">
+                <h3>Ejercicio Práctico 1: Observación de Threads en Linux</h3>
+                <p><strong>Tiempo:</strong> 15 minutos | <strong>Recurso:</strong> Webminal o JSLinux</p>
+                <p><strong>Objetivo:</strong> Observar threads reales de procesos en ejecución</p>
+                <ol>
+                    <li>Abre una terminal Linux</li>
+                    <li>Ejecuta: <code>ps -eLf | head -20</code> (muestra procesos y threads)</li>
+                    <li>Identifica la columna LWP (Light Weight Process = Thread ID)</li>
+                    <li>Busca un proceso con múltiples threads: <code>ps -eLf | grep firefox</code> (si está instalado) o <code>ps -eLf | grep bash</code></li>
+                    <li>Cuenta: ¿Cuántos threads tiene el proceso systemd (PID 1)?</li>
+                    <li>Compara: <code>ps aux | wc -l</code> vs <code>ps -eLf | wc -l</code>. ¿Por qué la diferencia?</li>
+                </ol>
+                <div class="callout info">
+                    <strong>Explicación:</strong> El comando <code>ps -eLf</code> muestra cada thread en una línea separada, mientras que <code>ps aux</code> agrupa por proceso. La diferencia en el conteo te dice cuántos threads hay en el sistema.
+                </div>
+            </div>
+
+            <div class="ejercicio">
+                <h3>Ejercicio Práctico 2: Análisis de /proc para Threads</h3>
+                <p><strong>Tiempo:</strong> 15 minutos | <strong>Recurso:</strong> Webminal o JSLinux</p>
+                <p><strong>Objetivo:</strong> Explorar la información de threads en el sistema de archivos /proc</p>
+                <ol>
+                    <li>Encuentra tu shell actual: <code>echo $$</code> (muestra el PID)</li>
+                    <li>Lista los threads de tu shell: <code>ls /proc/$$/task/</code></li>
+                    <li>Observa: Cada número en ese directorio es un Thread ID (TID)</li>
+                    <li>Entra a un thread: <code>cd /proc/$$/task/[primer número]</code></li>
+                    <li>Mira su estado: <code>cat status | grep State</code></li>
+                    <li>Documenta: ¿Cuántos threads tiene tu shell? ¿En qué estado están?</li>
+                </ol>
+                <div class="callout success">
+                    <strong>Descubrimiento:</strong> Incluso procesos simples como bash pueden tener múltiples threads para manejar señales, jobs en background, etc.
+                </div>
+            </div>
+
+            <div class="ejercicio">
+                <h3>Ejercicio Práctico 3: Simulación de Condición de Carrera</h3>
+                <p><strong>Tiempo:</strong> 20 minutos | <strong>Recurso:</strong> Webminal</p>
+                <p><strong>Objetivo:</strong> Entender cómo ocurre una race condition</p>
+                <ol>
+                    <li>Crea un archivo compartido: <code>echo 100 > /tmp/saldo.txt</code></li>
+                    <li>Abre dos terminales (o dos sesiones en Webminal)</li>
+                    <li>En Terminal 1, ejecuta repetidamente: <code>saldo=$(cat /tmp/saldo.txt); echo $((saldo + 10)) > /tmp/saldo.txt</code></li>
+                    <li>En Terminal 2, ejecuta repetidamente: <code>saldo=$(cat /tmp/saldo.txt); echo $((saldo - 5)) > /tmp/saldo.txt</code></li>
+                    <li>Después de 10 segundos en ambas, verifica: <code>cat /tmp/saldo.txt</code></li>
+                    <li>Pregunta: ¿El resultado es 150 (100 + 10*10 - 5*10)? ¿Por qué sí o por qué no?</li>
+                </ol>
+                <div class="callout warning">
+                    <strong>Análisis:</strong> Si el resultado no es 150, es porque ocurrió una race condition. Ambos procesos leyeron el mismo valor, modificaron, y el último en escribir "ganó", perdiendo la actualización del otro.
+                </div>
+            </div>
+
+            <div class="ejercicio">
+                <h3>Ejercicio Práctico 4: Identificación de Deadlock Potencial</h3>
+                <p><strong>Tiempo:</strong> 15 minutos | <strong>Recurso:</strong> Webminal</p>
+                <p><strong>Objetivo:</strong> Identificar procesos bloqueados en el sistema</p>
+                <ol>
+                    <li>Busca procesos en estado D (uninterruptible sleep): <code>ps aux | grep ' D '</code></li>
+                    <li>Busca procesos zombie: <code>ps aux | grep ' Z '</code></li>
+                    <li>Identifica procesos con tiempo de CPU cero pero tiempo de ejecución alto: <code>ps -eo pid,comm,cputime,etime | grep -E "00:00:[0-9]{2}.*[0-9]{2}:[0-9]{2}:[0-9]{2}"</code></li>
+                    <li>Para cada proceso encontrado, investiga: ¿Está esperando I/O? ¿Está bloqueado?</li>
+                    <li>Documenta: Lista los procesos que parecen estar bloqueados y por qué</li>
+                </ol>
+            </div>
+
+            <div class="ejercicio">
+                <h3>Ejercicio Práctico 5: Análisis de Archivos Bloqueados</h3>
+                <p><strong>Tiempo:</strong> 15 minutos | <strong>Recurso:</strong> Webminal</p>
+                <p><strong>Objetivo:</strong> Entender cómo los archivos pueden causar bloqueos</p>
+                <ol>
+                    <li>Crea un archivo de bloqueo: <code>touch /tmp/mi_bloqueo.lock</code></li>
+                    <li>Abre el archivo en modo exclusivo (terminal 1): <code>exec 200>/tmp/mi_bloqueo.lock; flock -x 200</code></li>
+                    <li>Intenta abrirlo en otra terminal: <code>flock -x /tmp/mi_bloqueo.lock -c "echo Hola"</code></li>
+                    <li>Observa: El segundo comando espera hasta que el primero libere el lock</li>
+                    <li>Libera el lock (terminal 1): Presiona Ctrl+C o cierra la terminal</li>
+                    <li>Documenta: ¿Qué mecanismo de sincronización estás observando?</li>
+                </ol>
+                <div class="callout info">
+                    <strong>Conexión:</strong> Esto es similar a un mutex a nivel de sistema de archivos. El comando <code>flock</code> implementa un lock exclusivo (como un mutex binario).
+                </div>
+            </div>
+
+            <h3 style="color: var(--primary); border-bottom: 2px solid var(--accent); padding-bottom: 0.5rem; margin-top: 3rem;">📝 Ejercicios Conceptuales (Parte 2)</h3>
+
+            <div class="ejercicio">
+                <h3>Ejercicio Conceptual 1: Productor-Consumidor</h3>
+                <p><strong>Problema:</strong> Un productor coloca items en un buffer finito. Un consumidor los retira. Si el buffer está lleno, el productor espera. Si está vacío, el consumidor espera.</p>
+                <p><strong>Preguntas:</strong></p>
+                <ol>
+                    <li>¿Qué mecanismo de sincronización usarías?</li>
+                    <li>¿Cuántas variables de condición necesitas?</li>
+                    <li>¿Qué pasa si hay múltiples productores y consumidores?</li>
+                </ol>
+                <p><strong>Discusión:</strong></p>
+                <ul>
+                    <li>Mecanismo: Semáforos o Monitores</li>
+                    <li>Variables: 2 (buffer_no_lleno, buffer_no_vacio)</li>
+                    <li>Múltiples: Mismo mecanismo funciona con N threads</li>
+                </ul>
+            </div>
+
+            <div class="ejercicio">
+                <h3>Ejercicio Conceptual 2: Filósofos Comensales</h3>
+                <p><strong>Problema:</strong> 5 filósofos alrededor de una mesa. Cada uno tiene un palillo a izquierda y derecha. Para comer, necesita AMBOS palillos.</p>
+                <p><strong>Preguntas:</strong></p>
+                <ol>
+                    <li>¿En qué situación ocurre deadlock?</li>
+                    <li>¿Cómo se puede prevenir?</li>
+                    <li>¿Todos los filósofos comen eventualmente?</li>
+                </ol>
+                <p><strong>Discusión:</strong></p>
+                <ul>
+                    <li>Deadlock: Todos toman el palillo izquierdo simultáneamente</li>
+                    <li>Prevención: Un filósofo toma primero palillos ordenados</li>
+                    <li>Inanición: Posible si algunos filósofos comen siempre</li>
+                </ul>
+            </div>
+
+            <div class="ejercicio">
+                <h3>Ejercicio Conceptual 3: Análisis de Deadlock en Sistemas Reales</h3>
+                <p><strong>Escenario:</strong> En tu ejercicio práctico 4, encontraste procesos bloqueados.</p>
+                <p><strong>Preguntas:</strong></p>
+                <ol>
+                    <li>¿Cuáles de las 4 condiciones de Coffman se cumplían en cada caso?</li>
+                    <li>¿Era un deadlock real o solo un proceso esperando I/O?</li>
+                    <li>Si hubiera sido deadlock, ¿qué estrategia usarías para recuperarte?</li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- Práctica Adicional -->
+        <section id="practica-adicional">
+            <h2>Práctica Adicional (No Evaluativa)</h2>
+            
+            <div class="callout info" style="margin-bottom: 1.5rem;">
+                <strong>Esta sección es para practicar por tu cuenta.</strong> No es un entregable ni cuenta para la nota. ¡Úsala para reforzar lo aprendido!
+            </div>
+
+            <div class="actividad">
+                <h3>Ejercicio de Refuerzo: Explorando Hilos y Sincronización</h3>
+                <p><strong>Objetivo:</strong> Familiarizarte con conceptos de hilos y sincronización mediante ejemplos prácticos.</p>
+                
+                <p><strong>Actividades sugeridas:</strong></p>
+                <ol>
+                    <li><strong>Observa los hilos de un proceso:</strong>
+                        <ul>
+                            <li>Abre una terminal y ejecuta: <code>ps -eLf | grep bash</code></li>
+                            <li>¿Cuántas columnas "LWP" (hilos) ves?</li>
+                            <li>Esto muestra que hasta un simple shell usa múltiples hilos</li>
+                        </ul>
+                    </li>
+                    <li><strong>Entiende la condición de carrera:</strong>
+                        <ul>
+                            <li>Imagina que tú y un compañero intentan editar el mismo archivo de Word al mismo tiempo</li>
+                            <li>¿Qué problemas podrían ocurrir?</li>
+                            <li>¿Cómo los prevenirías? (pista: un solo usuario a la vez)</li>
+                        </ul>
+                    </li>
+                    <li><strong>Piensa en deadlock:</strong>
+                        <ul>
+                            <li>Dos personas entran a una habitación con dos puertas</li>
+                            <li>Persona A bloquea puerta 1 y espera puerta 2</li>
+                            <li>Persona B bloquea puerta 2 y espera puerta 1</li>
+                            <li>¿Pueden salir? ¿Cómo evitarías esto?</li>
+                        </ul>
+                    </li>
+                </ol>
+
+                <div class="callout success">
+                    <strong>Consejo:</strong> Estos conceptos pueden parecer abstractos al principio. La clave es relacionarlos con situaciones de la vida real. No te preocupes si no los dominas de inmediato.
+                </div>
+            </div>
+        </section>
+
+        <!-- Resumen -->
+        <!-- Actividad -->
+        <section id="actividad">
+            <h2>Actividad Práctica: Hilos y Concurrencia</h2>
+
+            <section class="actividad">
+                <h3>Actividad 07: Visualización de Hilos</h3>
+                <p><strong>Tipo:</strong> Cierre de Fase 2 (E2)</p>
+                <p><strong>Objetivo:</strong> Identificar procesos multihilo en el sistema operativo.</p>
+                <p><strong>Pasos:</strong></p>
+                <ol>
+                    <li>En tu VM Linux, abre <code>htop</code></li>
+                    <li>Presiona <code>F2</code> -> Setup -> Display options -> Selecciona "Tree view" y "Show custom thread names"</li>
+                    <li>Identifica un proceso que tenga múltiples hilos (ej: <code>systemd</code> o <code>ssh</code>)</li>
+                    <li>Usa <code>ps -eLf</code> para ver el conteo de hilos (LWP)</li>
+                </ol>
+                <p><strong>Entregable:</strong> Captura de pantalla evidenciando los hilos de un proceso para tu entrega de la Fase 2 (11 de Mar).</p>
+            </section>
+        </section>
+
+        <section id="resumen">
+            <h2>Resumen de la Clase</h2>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Concepto</th>
+                        <th>Descripción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Thread</strong></td>
+                        <td>Unidad de ejecución dentro de un proceso</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Race Condition</strong></td>
+                        <td>Resultado depende del orden de ejecución</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Mutex</strong></td>
+                        <td>Lock para exclusión mutua (solo un thread)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Semáforo</strong></td>
+                        <td>Contador para controlar acceso (N threads)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Monitor</strong></td>
+                        <td>Estructura de alto nivel con sincronización automática</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Deadlock</strong></td>
+                        <td>Bloqueo circular entre threads</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Condiciones de Coffman</strong></td>
+                        <td>4 condiciones necesarias para deadlock</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Próxima Clase</h3>
+            <p><strong>Clase 08: Gestión de Memoria</strong></p>
+
+            <ul>
+                <li>Conceptos de Memoria RAM</li>
+                <li>Jerarquía de memoria</li>
+                <li>Asignación contigua</li>
+                <li>Particiones fijas y dinámicas</li>
+
+            </ul>
+        </section>
+
+        <!-- Videos Recomendados -->
+        <section id="videos">
+            <h2>Videos Recomendados</h2>
+
+            <div class="callout info">
+                <h3>📹 Video 1: Sincronización en Sistemas Operativos | Semáforos, Monitores y más</h3>
+                <p><strong>Explicación sencilla de los mecanismos de sincronización</strong></p>
+                <p>Duración: ~20 minutos | Nivel: Universitario | Idioma: Español</p>
+                <p>Explicación clara de semáforos, monitores, mutex y otros mecanismos de sincronización en sistemas operativos.</p>
+                <p><a href="https://www.youtube.com/watch?v=K1Ph7uX3gSg" target="_blank">📺 Ver en YouTube</a></p>
+            </div>
+
+            <div class="callout info">
+                <h3>📹 Video 2: Mutex. Sincronización de hilos. Programar en C, Linux</h3>
+                <p><strong>WhileTrueThenDream</strong></p>
+                <p>Duración: ~15 minutos | Nivel: Intermedio | Idioma: Español</p>
+                <p>Problema de dos hilos accediendo a variable global y explicación de mutex para sincronización.</p>
+                <p><a href="https://www.youtube.com/watch?v=faZEhIHdJx8" target="_blank">📺 Ver en YouTube</a></p>
+            </div>
+        </section>
+
+        <!-- Navigation between classes -->
+        <nav class="class-nav" aria-label="Navegación entre clases">
+            <a href="clase-06.html" class="class-nav-link prev">
+                <span class="class-nav-icon">←</span>
+                <div>
+                    <div class="nav-label">Clase Anterior</div>
+                    <div class="nav-title">Procesos en Windows</div>
+                    <div class="class-nav-date">📅 18 Feb 2026</div>
+                </div>
+            </a>
+            <a href="clase-08.html" class="class-nav-link next">
+                <div>
+                    <div class="nav-label">Siguiente Clase</div>
+                    <div class="nav-title">Gestión de Memoria</div>
+                    <div class="class-nav-date">📅 04 Mar 2026</div>
+                </div>
+                <span class="class-nav-icon">→</span>
+            </a>
+        </nav>
+    </div>
+
+    
+    
+    <footer>
+        <div class="container">
+            <p>📅 25 de Febrero 2026 | Sesion Miercoles: 6:00-8:00 AM | Teoria: 60 min + Practica: 60 min</p>
+
+            <p style="margin-top: 10px;">
+                <a href="index.html" style="color: #10b981;">Inicio</a> |
+                <a href="cronograma.html" style="color: #10b981;">Cronograma</a> |
+                <a href="rubricas.html" style="color: #3b82f6;">Rubricas</a>
+            </p>
+        </div>
+    </footer>
+
+
+
+    <a href="#" class="scroll-top" id="scrollTop">↑</a>
+
+    <script>
+        // Scroll to top button
+        const scrollTopBtn = document.getElementById('scrollTop');
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                scrollTopBtn.classList.add('visible');
+            } else {
+                scrollTopBtn.classList.remove('visible');
+            }
+        });
+        scrollTopBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href !== '#' && href.length > 1) {
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

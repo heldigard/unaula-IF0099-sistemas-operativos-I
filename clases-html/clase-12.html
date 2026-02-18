@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clase 12: Sistemas de Archivos | IF0099 - Sistemas Operativos I</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #1e40af;
+            --accent: #059669;
+            --bg-light: #f8fafc;
+            --bg-code: #1e293b;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.7; color: var(--text-main); background: var(--bg-light); font-size: 16px; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        header { background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); color: white; padding: 3rem 0; margin-bottom: 2rem; }
+        header h1 { font-size: 2.2rem; margin-bottom: 0.5rem; font-weight: 700; }
+        header .subtitle { font-size: 1.1rem; opacity: 0.9; }
+        header .meta { margin-top: 1rem; font-size: 0.9rem; opacity: 0.8; }
+        nav { background: white; padding: 1.5rem 0; margin-bottom: 2rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        nav h2 { font-size: 1.1rem; color: var(--text-muted); margin-bottom: 1rem; padding: 0 20px; }
+        nav ul { list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.5rem; padding: 0 20px; }
+        nav a { color: var(--primary); text-decoration: none; padding: 0.5rem; display: block; border-radius: 4px; transition: background 0.2s; }
+        nav a:hover { background: var(--bg-light); }
+        section { background: white; padding: 2rem; margin-bottom: 2rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        section h2 { color: var(--primary); font-size: 1.8rem; margin-bottom: 1.5rem; padding-bottom: 0.5rem; border-bottom: 3px solid var(--accent); }
+        section h3 { color: var(--secondary); font-size: 1.4rem; margin: 2rem 0 1rem; }
+        p { margin-bottom: 1rem; }
+        pre { background: var(--bg-code); color: #e2e8f0; padding: 1.5rem; border-radius: 8px; overflow-x: auto; margin: 1.5rem 0; font-size: 0.9rem; line-height: 1.5; }
+        code { font-family: 'Consolas', 'Monaco', 'Courier New', monospace; background: var(--bg-light); color: var(--primary); padding: 0.2rem 0.4rem; border-radius: 4px; font-size: 0.9em; }
+        pre code { background: none; padding: 0; color: inherit; }
+        ul, ol { margin-left: 1.5rem; margin-bottom: 1rem; }
+        li { margin-bottom: 0.5rem; }
+        .callout { padding: 1.5rem; border-radius: 8px; margin: 1.5rem 0; border-left: 4px solid; }
+        .callout.info { background: #eff6ff; border-left-color: var(--primary); }
+        .callout.warning { background: #fef3c7; border-left-color: #f59e0b; }
+        .callout.success { background: #d1fae5; border-left-color: var(--accent); }
+        table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.95rem; }
+        th, td { padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid var(--border); }
+        th { background: var(--bg-light); font-weight: 600; color: var(--secondary); }
+        .actividad { background: var(--bg-light); border-left: 5px solid var(--accent); padding: 1.5rem; margin: 1.5rem 0; border-radius: 4px; }
+        .actividad h3 { color: var(--primary); margin-bottom: 1rem; }
+        .class-nav { display: flex; justify-content: space-between; align-items: stretch; gap: 1rem; margin: 2rem 0; }
+        .class-nav-link { flex: 1; display: flex; align-items: center; gap: 0.75rem; padding: 1.25rem 1.5rem; background: white; border: 2px solid var(--border); border-radius: 12px; text-decoration: none; color: var(--text-main); transition: all 0.3s ease; }
+        .class-nav-link:hover { border-color: var(--primary); box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15); transform: translateY(-2px); }
+        .class-nav-link.prev { border-left: 4px solid var(--primary); }
+        .class-nav-link.next { border-right: 4px solid var(--accent); text-align: right; margin-left: auto; }
+        .class-nav-link .nav-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); margin-bottom: 0.25rem; }
+        .class-nav-link .nav-title { font-size: 1rem; font-weight: 600; color: var(--primary); }
+        .class-nav-link.next .nav-title { color: var(--accent); }
+        .class-nav-icon { font-size: 1.5rem; line-height: 1; }
+        footer { background: var(--text-main); color: white; padding: 2rem 0; text-align: center; margin-top: 3rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        @media (max-width: 768px) { header h1 { font-size: 1.6rem; } section { padding: 1.5rem; } nav ul { grid-template-columns: 1fr; } }
+
+        .eval-alert {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-left: 4px solid #f59e0b;
+            padding: 1.25rem 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .eval-alert-icon {
+            font-size: 1.75rem;
+            line-height: 1;
+        }
+
+        .eval-alert-content {
+            flex: 1;
+        }
+
+        .eval-alert-title {
+            font-weight: 700;
+            color: #92400e;
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .eval-alert-text {
+            color: #78350f;
+            font-size: 0.9rem;
+        }
+
+        .eval-alert-date {
+            background: #f59e0b;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+
+        .class-nav-date {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        .class-nav-link:hover .nav-title {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Clase 12: Sistemas de Archivos</h1>
+            <p class="subtitle">IF0099 - Sistemas Operativos I | Unidad 7 - Sistemas de Archivos</p>
+            <p class="subtitle">Sistemas de archivos (ext4, NTFS), inodos, directorios, permisos</p>
+            <p class="meta">📅 18 de Marzo 2026 | Sesion Miercoles: 8:00-9:00 AM | Teoria: 30 min + Practica: 30 min</p>
+        </div>
+    </header>
+
+
+    <div class="container">
+
+        <!-- Quick Navigation Bar -->
+        <div class="quick-nav" style="background: white; padding: 1rem; margin-bottom: 2rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <a href="index.html" style="color: var(--primary); text-decoration: none; font-weight: 500;">Inicio</a>
+                <span style="color: var(--text-muted);">|</span>
+                <span style="color: var(--text-main); font-weight: 600;">Sistemas de Archivos</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <a href="cronograma.html" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: #10b981; color: white; text-decoration: none; border-radius: 6px; font-weight: 500;">Cronograma</a>
+                <a href="rubricas.html" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: #3b82f6; color: white; text-decoration: none; border-radius: 6px; font-weight: 500;">Rubricas</a>
+            </div>
+        </div>
+
+        <!-- Próxima Evaluación Alert -->
+        <a href="evaluaciones.html#e5" style="text-decoration: none; display: block;">
+            <div class="eval-alert" style="cursor: pointer; transition: transform 0.2s;">
+                <span class="eval-alert-icon">📌</span>
+                <div class="eval-alert-content">
+                    <div class="eval-alert-title">E3: FASE 3 - Checkpoint Optimización (25 Mar)</div>
+                    <div class="eval-alert-text">15% - Servidores web funcionando (comprende conceptos fundamentales integrados)</div>
+                </div>
+                <span class="eval-alert-date">📅 25 Mar</span>
+            </div>
+        </a>
+
+        <nav>
+            <h2>Contenido de la Clase</h2>
+            <ul>
+                <li><a href="#objetivos">Objetivos de Aprendizaje</a></li>
+                <li><a href="#inodos">Inodos</a></li>
+                <li><a href="#directorios">Directorios</a></li>
+                <li><a href="#permisos">Permisos</a></li>
+                <li><a href="#ext4">Sistema EXT4</a></li>
+                <li><a href="#ntfs">Sistema NTFS</a></li>
+                <li><a href="#practica">Práctica en Linux</a></li>
+                
+            </ul>
+        </nav>
+
+        <section id="objetivos">
+            <h2>Objetivos de Aprendizaje</h2>
+            <p><strong>Resultado de Aprendizaje (RA3):</strong> Administra la memoria, los procesos de entrada y salida, la comunicación entre procesos y la sincronización de los mismos, aplicando fundamentos de sistemas de archivos (Alineado con Evaluación E3).</p>
+            <p>Al finalizar esta clase, serás capaz de:</p>
+            <ol>
+                <li><strong>Comprender</strong> la estructura de inodos en sistemas Unix</li>
+                <li><strong>Explicar</strong> la organización jerárquica de directorios</li>
+                <li><strong>Gestionar</strong> permisos de archivos en Linux</li>
+                <li><strong>Diferenciar</strong> entre EXT4 y NTFS</li>
+                <li><strong>Analizar</strong> el contenido de inodos</li>
+            </ol>
+
+            <div class="callout success">
+                <p class="callout-title">🖥️ Laboratorio VirtualBox</p>
+                <p>Para esta clase, utilizaremos tu servidor en <strong>VirtualBox</strong> para crear, montar y desmontar particiones de disco reales.</p>
+            </div>
+        </section>
+
+
+        <section id="inodos">
+            <h2>1. Inodos (Index Nodes)</h2>
+            
+            <div class="callout info">
+                <strong>¿Qué es un inodo?</strong>
+                <p>Estructura de datos que almacena metadatos de un archivo (excepto su nombre). Cada archivo tiene un inodo único.</p>
+            </div>
+
+            <h3>Estructura de un Inodo</h3>
+            <pre>
+Inodo (128 bytes en ext4):
+┌─────────────────────────────────────────────┐
+│ Modo/Tipo          (2 bytes)               │
+│ Número de enlaces  (2 bytes)               │
+│ UID del propietario (2 bytes)              │
+│ GID del grupo       (2 bytes)              │
+│ Tamaño del archivo  (8 bytes)              │
+│ Timestamps (3):                           │
+│   - Último acceso (atime)                  │
+│   - Última modificación (mtime)            │
+│   - Último cambio de inodo (ctime)         │
+│ Bloques directos (12) × 4 bytes = 48 bytes │
+│ Bloque indirecto simple  (4 bytes)         │
+│ Bloque indirecto doble   (4 bytes)         │
+│ Bloque indirecto triple  (4 bytes)         │
+└─────────────────────────────────────────────┘
+</pre>
+
+            <h3>Punteros a Bloques</h3>
+            <table>
+                <tr><th>Tipo</th><th>Número</th><th>Bloques apuntados</th><th>Tamaño máx (4KB)</th></tr>
+                <tr><td>Directos</td><td>12</td><td>12 bloques</td><td>48 KB</td></tr>
+                <tr><td>Indirecto simple</td><td>1</td><td>1024 bloques</td><td>4 MB</td></tr>
+                <tr><td>Indirecto doble</td><td>1</td><td>1024² bloques</td><td>4 GB</td></tr>
+                <tr><td>Indirecto triple</td><td>1</td><td>1024³ bloques</td><td>4 TB</td></tr>
+            </table>
+
+            <div class="callout success">
+                <strong>Extents en EXT4:</strong> Modernamente se usan extents (rango de bloques contiguos) en lugar de lista de bloques individuales para archivos grandes, mejorando rendimiento y reduciendo fragmentación.
+            </div>
+        </section>
+
+        <section id="directorios">
+            <h2>2. Directorios</h2>
+            
+            <h3>Estructura de un Directorio</h3>
+            <p>Un directorio es un archivo especial que contiene una tabla de nombres e inodos:</p>
+            <pre>
+Contenido de un directorio:
+┌──────────────────┬──────────────────┐
+│ Nombre de archivo│ Número de inodo  │
+├──────────────────┼──────────────────┤
+│ .                │ 2341 (self)      │
+│ ..               │ 1200 (parent)    │
+│ archivo.txt      │ 4523             │
+│ subdir/          │ 3891             │
+│ enlace.lnk       │ 4523 (hard link) │
+└──────────────────┴──────────────────┘
+</pre>
+
+            <h3>Jerarquía de Archivos en Linux (FHS)</h3>
+            <table>
+                <tr><th>Directorio</th><th>Contenido</th></tr>
+                <tr><td><strong>/</strong></td><td>Raíz del sistema</td></tr>
+                <tr><td><strong>/bin</strong></td><td>Binarios esenciales del sistema</td></tr>
+                <tr><td><strong>/etc</strong></td><td>Archivos de configuración</td></tr>
+                <tr><td><strong>/home</strong></td><td>Directorios de usuarios</td></tr>
+                <tr><td><strong>/var</strong></td><td>Datos variables (logs, correo)</td></tr>
+                <tr><td><strong>/tmp</strong></td><td>Archivos temporales</td></tr>
+                <tr><td><strong>/usr</strong></td><td>Programas y bibliotecas</td></tr>
+                <tr><td><strong>/dev</strong></td><td>Dispositivos del sistema</td></tr>
+                <tr><td><strong>/proc</strong></td><td>Información de procesos (virtual)</td></tr>
+            </table>
+
+            <h3>Tipos de Archivos</h3>
+            <ul>
+                <li><strong>-</strong> Archivo regular</li>
+                <li><strong>d</strong> Directorio</li>
+                <li><strong>l</strong> Enlace simbólico</li>
+                <li><strong>c</strong> Dispositivo de caracteres</li>
+                <li><strong>b</strong> Dispositivo de bloques</li>
+                <li><strong>p</strong> Pipe (tubería con nombre)</li>
+                <li><strong>s</strong> Socket</li>
+            </ul>
+        </section>
+
+        <section id="permisos">
+            <h2>3. Permisos de Archivos</h2>
+            
+            <h3>Modelo de Permisos Unix</h3>
+            <pre>
+Notación simbólica: -rwxr-xr-x
+                    │└┬┘└┬┘└┬┘
+                    │ │  │  └── Otros (others)
+                    │ │  └───── Grupo (group)
+                    │ └──────── Usuario (owner)
+                    └────────── Tipo (- = archivo, d = directorio)
+
+Bits de permiso:
+r = read (4)     - Leer contenido
+w = write (2)    - Modificar contenido  
+x = execute (1)  - Ejecutar como programa
+</pre>
+
+            <h3>Permisos en Directorios</h3>
+            <table>
+                <tr><th>Permiso</th><th>Efecto en directorios</th></tr>
+                <tr><td>r</td><td>Listar contenido (ls)</td></tr>
+                <tr><td>w</td><td>Crear/borrar archivos</td></tr>
+                <tr><td>x</td><td>Acceder al directorio (cd)</td></tr>
+            </table>
+
+            <h3>Permisos Especiales</h3>
+            <table>
+                <tr><th>Permiso</th><th>Valor</th><th>Efecto</th></tr>
+                <tr><td><strong>SUID</strong></td><td>4000 (u+s)</td><td>Ejecutar con permisos del propietario</td></tr>
+                <tr><td><strong>SGID</strong></td><td>2000 (g+s)</td><td>Ejecutar con permisos del grupo</td></tr>
+                <tr><td><strong>Sticky</strong></td><td>1000 (+t)</td><td>Solo propietario puede borrar</td></tr>
+            </table>
+
+            <div class="callout warning">
+                <strong>Ejemplo de Sticky bit:</strong> /tmp tiene permisos drwxrwxrwt. Cualquiera puede escribir, pero solo puedes borrar tus propios archivos.
+            </div>
+        </section>
+
+        <section id="ext4">
+            <h2>4. Sistema de Archivos EXT4</h2>
+            
+            <h3>Características Principales</h3>
+            <ul>
+                <li><strong>Extents:</strong> Almacenan rangos de bloques contiguos</li>
+                <li><strong>Journaling:</strong> Registro de cambios para recuperación</li>
+                <li><strong>Backward compatible:</strong> Puede montar EXT2/EXT3</li>
+                <li><strong>Delayed allocation:</strong> Mejora asignación de bloques</li>
+                <li><strong>Defragmentación online:</strong> Sin desmontar</li>
+            </ul>
+
+            <h3>Modos de Journaling</h3>
+            <table>
+                <tr><th>Modo</th><th>Descripción</th><th>Rendimiento vs Seguridad</th></tr>
+                <tr><td>journal</td><td>Journaling de datos y metadatos</td><td>Seguro, más lento</td></tr>
+                <tr><td>ordered</td><td>Journaling de metadatos + datos antes</td><td>Balance (default)</td></tr>
+                <tr><td>writeback</td><td>Solo metadatos</td><td>Rápido, menos seguro</td></tr>
+            </table>
+
+            <h3>Comandos de Mantenimiento EXT4</h3>
+            <pre>
+# Verificar sistema de archivos
+e2fsck /dev/sda1
+
+# Ver información del superblock
+tune2fs -l /dev/sda1
+
+# Cambiar modo de journaling
+tune2fs -o journal_data /dev/sda1
+
+# Defragmentar (si es necesario)
+e4defrag /ruta/al/archivo
+</pre>
+        </section>
+
+        <section id="ntfs">
+            <h2>5. Sistema de Archivos NTFS</h2>
+            
+            <h3>Características de NTFS</h3>
+            <table>
+                <tr><th>Característica</th><th>Descripción</th></tr>
+                <tr><td>Journaling</td><td>$LogFile para recuperación</td></tr>
+                <tr><td>ACLs</td><td>Listas de control de acceso detalladas</td></tr>
+                <tr><td>Compresión</td><td>Compresión a nivel de archivo</td></tr>
+                <tr><td>Encriptación</td><td>EFS (Encrypting File System)</td></tr>
+                <tr><td>Streams alternativos</td><td>Múltiples flujos de datos por archivo</td></tr>
+                <tr><td>Quotes</td><td>Límites de espacio por usuario</td></tr>
+            </table>
+
+            <h3>Estructura NTFS</h3>
+            <pre>
+Estructura básica:
+┌──────────────┬──────────────┬──────────────┬──────────────┐
+│ Boot Sector  │ Master File  │ System Files │ User Data    │
+│              │ Table (MFT)  │ (Metadata)   │              │
+└──────────────┴──────────────┴──────────────┴──────────────┘
+
+MFT (Master File Table):
+- Cada archivo/directorio tiene entrada en MFT (1KB típico)
+- Contiene atributos: nombre, fechas, permisos, datos
+- Archivos pequeños pueden estar residentes en MFT
+</pre>
+
+            <h3>Comparación EXT4 vs NTFS</h3>
+            <table>
+                <tr><th>Aspecto</th><th>EXT4</th><th>NTFS</th></tr>
+                <tr><td>Sistema principal</td><td>Linux</td><td>Windows</td></tr>
+                <tr><td>Permisos</td><td>Unix (rwx)</td><td>ACLs complejas</td></tr>
+                <tr><td>Sensibilidad a mayúsculas</td><td>Sí</td><td>No (preserva)</td></tr>
+                <tr><td>Enlaces</td><td>Hard y symbolic links</td><td>Hard links, junctions</td></tr>
+                <tr><td>Soporte Linux</td><td>Nativo</td><td>Via ntfs-3g</td></tr>
+            </table>
+        </section>
+
+        <section id="practica">
+            <h2>6. Práctica en Linux</h2>
+
+            <div class="info-box" style="margin-bottom: 1.5rem; background: #eff6ff; border-left: 4px solid var(--primary); padding: 1.5rem; border-radius: 8px;">
+                <h3>📋 Laboratorio Complementario</h3>
+                <p>Para profundizar en inodos, enlaces y permisos avanzados, consulta el <strong><a href="../laboratorios-html/lab-05-sistemas-archivos.html" target="_blank">Laboratorio 5: Sistemas de Archivos Avanzados</a></strong>.</p>
+            </div>
+            
+            <h3>Comandos para inodos y permisos:</h3>
+
+            <pre>
+# Ver inodo de un archivo
+ls -i archivo.txt
+
+# Ver información detallada de inodo
+stat archivo.txt
+
+# Listar con permisos
+ls -la
+
+# Cambiar permisos
+chmod 755 archivo
+chmod u+x script.sh
+chmod g-w archivo
+
+# Cambiar propietario
+sudo chown usuario:grupo archivo
+
+# Ver sistema de archivos de cada partición
+df -T
+
+# Ver información de superblock
+sudo dumpe2fs /dev/sda1 | head -30
+
+# Buscar inodos libres
+df -i
+
+# Crear enlace duro (mismo inodo)
+ln archivo.txt enlace_duro.txt
+
+# Crear enlace simbólico
+ln -s archivo.txt enlace_simbolico.txt
+</pre>
+
+            <h3>Ejercicio práctico:</h3>
+            <div class="actividad">
+                <h3>Ejercicio: Análisis de Inodos y Permisos</h3>
+                <ol>
+                    <li>Crear varios archivos y directorios</li>
+                    <li>Ver sus inodos con <code>ls -i</code> y <code>stat</code></li>
+                    <li>Crear un hard link y ver que comparte inodo</li>
+                    <li>Crear un symbolic link y comparar</li>
+                    <li>Configurar diferentes permisos y probar acceso</li>
+                    <li>Ver información del sistema de archivos</li>
+                </ol>
+            </div>
+        </section>
+
+        <section id="practica-adicional">
+            <h2>Práctica Adicional (No Evaluativa)</h2>
+            
+            <div class="callout info" style="margin-bottom: 1.5rem;">
+                <strong>Esta sección es para practicar por tu cuenta.</strong> No es un entregable ni cuenta para la nota. ¡Úsala para reforzar lo aprendido!
+            </div>
+            
+            <div class="actividad">
+                <h3>Ejercicio de Refuerzo: Explorando Archivos y Permisos</h3>
+                <p><strong>Objetivo:</strong> Entender cómo Linux organiza y protege los archivos.</p>
+                
+                <h4>Actividades sugeridas:</h4>
+                <ol>
+                    <li><strong>Observa los metadatos:</strong>
+                        <ul>
+                            <li>Crea un archivo: <code>touch miarchivo.txt</code></li>
+                            <li>Ejecuta: <code>stat miarchivo.txt</code></li>
+                            <li>Mira la información: tamaño, permisos, fechas, inodo</li>
+                            <li>El inodo es como la "ficha" del archivo en el sistema</li>
+                        </ul>
+                    </li>
+                    <li><strong>Experimenta con enlaces:</strong>
+                        <ul>
+                            <li>Crea un hard link: <code>ln miarchivo.txt micopia.txt</code></li>
+                            <li>Verifica con <code>ls -li</code> (ambos tienen el mismo número de inodo)</li>
+                            <li>Crea un symbolic link: <code>ln -s miarchivo.txt milink.txt</code></li>
+                            <li>¿Cuál es la diferencia entre ambos tipos de enlaces?</li>
+                        </ul>
+                    </li>
+                    <li><strong>Juega con permisos:</strong>
+                        <ul>
+                            <li>Cambia permisos: <code>chmod 755 miarchivo.txt</code></li>
+                            <li>Verifica con <code>ls -l</code></li>
+                            <li>Intenta quitar permisos de lectura: <code>chmod 000 miarchivo.txt</code></li>
+                            <li>¿Puedes leer el archivo ahora?</li>
+                            <li>Devuelve los permisos: <code>chmod 644 miarchivo.txt</code></li>
+                        </ul>
+                    </li>
+                </ol>
+
+                <div class="callout success">
+                    <strong>Consejo:</strong> Los permisos son fundamentales para la seguridad. Practica en archivos de prueba, nunca en archivos importantes del sistema.
+                </div>
+            </div>
+        </section>
+
+        <!-- Actividad -->
+        <section id="actividad">
+            <h2>Actividad Práctica: Sistemas de Archivos</h2>
+
+            <section class="actividad">
+                <h3>Actividad 12: Exploración de Inodos</h3>
+                <p><strong>Tipo:</strong> Cierre para Fase 3 (E3)</p>
+                <p><strong>Objetivo:</strong> Entender la estructura física de los archivos.</p>
+                <p><strong>Pasos:</strong></p>
+                <ol>
+                    <li>Usa <code>ls -i</code> para ver el número de inodo de un archivo</li>
+                    <li>Usa <code>df -i</code> para ver cuántos inodos libres quedan en tu partición raíz</li>
+                    <li>Crea un "Hard Link" y un "Symbolic Link" y compara sus números de inodo</li>
+                </ol>
+                <p><strong>Entregable:</strong> Evidencia de la diferencia entre links para el Checkpoint E3 (25 de Mar).</p>
+            </section>
+        </section>
+
+        <section id="resumen">
+            <h2>Resumen</h2>
+            <table>
+                <tr><th>Concepto</th><th>Descripción</th></tr>
+                <tr><td>Inodo</td><td>Estructura con metadatos del archivo</td></tr>
+                <tr><td>Directorio</td><td>Tabla de nombres → inodos</td></tr>
+                <tr><td>Hard link</td><td>Múltiples nombres, mismo inodo</td></tr>
+                <tr><td>Symbolic link</td><td>Archivo que apunta a ruta</td></tr>
+                <tr><td>Permisos Unix</td><td>rwx para owner, group, others</td></tr>
+                <tr><td>EXT4</td><td>Sistema de archivos moderno Linux</td></tr>
+                <tr><td>NTFS</td><td>Sistema de archivos Windows</td></tr>
+            </table>
+
+            <h3>Próxima Clase</h3>
+            <p><strong>Clase 13: Implementación de Sistemas de Archivos</strong></p>
+            <ul>
+                <li>Estructura interna de sistemas de archivos</li>
+                <li>Journaling y recuperación</li>
+                <li>Montaje y desmontaje</li>
+                <li>RAID básico</li>
+            </ul>
+        </section>
+
+        <!-- Navigation between classes -->
+        <nav class="class-nav" aria-label="Navegación entre clases">
+            <a href="clase-11.html" class="class-nav-link prev">
+                <span class="class-nav-icon">←</span>
+                <div>
+                    <div class="nav-label">Clase Anterior</div>
+                    <div class="nav-title">Discos y E/S</div>
+                    <div class="class-nav-date">📅 18 Mar 2026</div>
+                </div>
+            </a>
+            <a href="clase-13.html" class="class-nav-link next">
+                <div>
+                    <div class="nav-label">Siguiente Clase</div>
+                    <div class="nav-title">Implementación de Sistemas de Archivos</div>
+                    <div class="class-nav-date">📅 08 Abr 2026</div>
+                </div>
+                <span class="class-nav-icon">→</span>
+            </a>
+        </nav>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>📅 18 de Marzo 2026 | Sesion Miercoles: 8:00-9:00 AM | Teoria: 30 min + Practica: 30 min</p>
+
+            <p style="margin-top: 10px;">
+                <a href="index.html">Inicio</a> |
+                <a href="cronograma.html">Cronograma</a> |
+                <a href="evaluaciones.html" style="color: #8b5cf6;">Evaluaciones</a> |
+                <a href="rubricas.html">Rubricas</a>
+            </p>
+        </div>
+    </footer>
+</body>
+</html>

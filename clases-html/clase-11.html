@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clase 11: Discos y E/S | IF0099 - Sistemas Operativos I</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #1e40af;
+            --accent: #059669;
+            --bg-light: #f8fafc;
+            --bg-code: #1e293b;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.7; color: var(--text-main); background: var(--bg-light); font-size: 16px; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        header { background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); color: white; padding: 3rem 0; margin-bottom: 2rem; }
+        header h1 { font-size: 2.2rem; margin-bottom: 0.5rem; font-weight: 700; }
+        header .subtitle { font-size: 1.1rem; opacity: 0.9; }
+        header .meta { margin-top: 1rem; font-size: 0.9rem; opacity: 0.8; }
+        nav { background: white; padding: 1.5rem 0; margin-bottom: 2rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        nav h2 { font-size: 1.1rem; color: var(--text-muted); margin-bottom: 1rem; padding: 0 20px; }
+        nav ul { list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.5rem; padding: 0 20px; }
+        nav a { color: var(--primary); text-decoration: none; padding: 0.5rem; display: block; border-radius: 4px; transition: background 0.2s; }
+        nav a:hover { background: var(--bg-light); }
+        section { background: white; padding: 2rem; margin-bottom: 2rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        section h2 { color: var(--primary); font-size: 1.8rem; margin-bottom: 1.5rem; padding-bottom: 0.5rem; border-bottom: 3px solid var(--accent); }
+        section h3 { color: var(--secondary); font-size: 1.4rem; margin: 2rem 0 1rem; }
+        p { margin-bottom: 1rem; }
+        pre { background: var(--bg-code); color: #e2e8f0; padding: 1.5rem; border-radius: 8px; overflow-x: auto; margin: 1.5rem 0; font-size: 0.9rem; line-height: 1.5; }
+        code { font-family: 'Consolas', 'Monaco', 'Courier New', monospace; background: var(--bg-light); color: var(--primary); padding: 0.2rem 0.4rem; border-radius: 4px; font-size: 0.9em; }
+        pre code { background: none; padding: 0; color: inherit; }
+        ul, ol { margin-left: 1.5rem; margin-bottom: 1rem; }
+        li { margin-bottom: 0.5rem; }
+        .callout { padding: 1.5rem; border-radius: 8px; margin: 1.5rem 0; border-left: 4px solid; }
+        .callout.info { background: #eff6ff; border-left-color: var(--primary); }
+        .callout.warning { background: #fef3c7; border-left-color: #f59e0b; }
+        .callout.success { background: #d1fae5; border-left-color: var(--accent); }
+        table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.95rem; }
+        th, td { padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid var(--border); }
+        th { background: var(--bg-light); font-weight: 600; color: var(--secondary); }
+        .actividad { background: var(--bg-light); border-left: 5px solid var(--accent); padding: 1.5rem; margin: 1.5rem 0; border-radius: 4px; }
+        .actividad h3 { color: var(--primary); margin-bottom: 1rem; }
+        .class-nav { display: flex; justify-content: space-between; align-items: stretch; gap: 1rem; margin: 2rem 0; }
+        .class-nav-link { flex: 1; display: flex; align-items: center; gap: 0.75rem; padding: 1.25rem 1.5rem; background: white; border: 2px solid var(--border); border-radius: 12px; text-decoration: none; color: var(--text-main); transition: all 0.3s ease; }
+        .class-nav-link:hover { border-color: var(--primary); box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15); transform: translateY(-2px); }
+        .class-nav-link.prev { border-left: 4px solid var(--primary); }
+        .class-nav-link.next { border-right: 4px solid var(--accent); text-align: right; margin-left: auto; }
+        .class-nav-link .nav-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); margin-bottom: 0.25rem; }
+        .class-nav-link .nav-title { font-size: 1rem; font-weight: 600; color: var(--primary); }
+        .class-nav-link.next .nav-title { color: var(--accent); }
+        .class-nav-icon { font-size: 1.5rem; line-height: 1; }
+        footer { background: var(--text-main); color: white; padding: 2rem 0; text-align: center; margin-top: 3rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        @media (max-width: 768px) { header h1 { font-size: 1.6rem; } section { padding: 1.5rem; } nav ul { grid-template-columns: 1fr; } }
+
+        .eval-alert {
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            border-left: 4px solid #3b82f6;
+            padding: 1.25rem 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .eval-alert-icon {
+            font-size: 1.75rem;
+            line-height: 1;
+        }
+
+        .eval-alert-content {
+            flex: 1;
+        }
+
+        .eval-alert-title {
+            font-weight: 700;
+            color: #1e40af;
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .eval-alert-text {
+            color: #1e3a8a;
+            font-size: 0.9rem;
+        }
+
+        .eval-alert-date {
+            background: #3b82f6;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+
+        .class-nav-date {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        .class-nav-link:hover .nav-title {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Clase 11: Discos y E/S</h1>
+            <p class="subtitle">IF0099 - Sistemas Operativos I | Unidad 7 - Entrada/Salida</p>
+            <p class="subtitle">Gestión de discos, particiones, sistemas de archivos básicos, E/S</p>
+            <p class="meta">📅 18 de Marzo 2026 | Sesion Miercoles: 6:00-8:00 AM | Teoria: 60 min + Practica: 60 min</p>
+        </div>
+    </header>
+
+
+    <div class="container">
+
+        <!-- Quick Navigation Bar -->
+        <div class="quick-nav" style="background: white; padding: 1rem; margin-bottom: 2rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <a href="index.html" style="color: var(--primary); text-decoration: none; font-weight: 500;">Inicio</a>
+                <span style="color: var(--text-muted);">|</span>
+                <span style="color: var(--text-main); font-weight: 600;">Discos y E/S</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <a href="cronograma.html" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: #10b981; color: white; text-decoration: none; border-radius: 6px; font-weight: 500;">Cronograma</a>
+                <a href="rubricas.html" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: #3b82f6; color: white; text-decoration: none; border-radius: 6px; font-weight: 500;">Rubricas</a>
+            </div>
+        </div>
+
+        <!-- Próxima Evaluación Alert -->
+        <a href="evaluaciones.html#e3" style="text-decoration: none; display: block;">
+            <div class="eval-alert" style="cursor: pointer; transition: transform 0.2s;">
+                <span class="eval-alert-icon">📌</span>
+                <div class="eval-alert-content">
+                    <div class="eval-alert-title">E3: FASE 3 - Checkpoint Optimización (25 Mar)</div>
+                    <div class="eval-alert-text">20% - Checkpoint integral (memoria, E/S, archivos, sincronización)</div>
+                </div>
+                <span class="eval-alert-date">📅 25 Mar</span>
+            </div>
+        </a>
+
+        <nav>
+            <h2>Contenido de la Clase</h2>
+            <ul>
+                <li><a href="#objetivos">Objetivos de Aprendizaje</a></li>
+                <li><a href="#hardware">1. Hardware de Discos</a></li>
+                <li><a href="#particiones">2. Particiones</a></li>
+                <li><a href="#es">3. Gestión de E/S</a></li>
+                <li><a href="#practica">4. Práctica en Linux</a></li>
+            </ul>
+        </nav>
+
+        <section id="objetivos">
+            <h2>Objetivos de Aprendizaje</h2>
+            <p><strong>Resultado de Aprendizaje (RA3):</strong> Administra la memoria, los procesos de entrada y salida, la comunicación entre procesos y la sincronización de los mismos (Alineado con Evaluación E3).</p>
+            <p>Al finalizar esta clase, serás capaz de:</p>
+            <ol>
+                <li><strong>Comprender</strong> la estructura física de los discos duros</li>
+                <li><strong>Explicar</strong> el concepto de particiones y esquemas de particionado</li>
+                <li><strong>Analizar</strong> el subsistema de E/S del SO</li>
+                <li><strong>Gestionar</strong> discos y particiones en Linux</li>
+            </ol>
+
+            <div class="callout success">
+                <p class="callout-title">🖥️ Laboratorio VirtualBox</p>
+                <p>En tu máquina de <strong>VirtualBox</strong>, analizaremos el rendimiento de los discos y cómo se gestionan las peticiones de entrada/salida a nivel de kernel.</p>
+            </div>
+        </section>
+
+
+        <section id="hardware">
+            <h2>1. Hardware de Discos</h2>
+            
+            <h3>Estructura de un Disco Duro (HDD)</h3>
+            <pre>
+Componentes principales:
+┌────────────────────────────────────────────┐
+│  Platos: Discos magnéticos que giran       │
+│  Velocidad típica: 5400-7200 RPM           │
+├────────────────────────────────────────────┤
+│  Cabezales: Lectura/escritura              │
+│  Flotan sobre capa de aire (nanómetros)    │
+├────────────────────────────────────────────┤
+│  Brazo actuador: Posiciona cabezales       │
+├────────────────────────────────────────────┤
+│  Controladora: Gestiona operaciones        │
+└────────────────────────────────────────────┘
+
+Geometría lógica:
+- Cilindros: Conjunto de pistas en mismo radio
+- Cabezas: Una por superficie (2 por plato)
+- Sectores: División angular (512 bytes o 4KB)
+- Pista: Círculo concéntrico en una superficie
+</pre>
+
+            <h3>Tiempos de Acceso</h3>
+            <table>
+                <tr><th>Tipo de tiempo</th><th>Descripción</th><th>Valor típico</th></tr>
+                <tr><td><strong>Seek time</strong></td><td>Mover cabezal al cilindro</td><td>3-10 ms</td></tr>
+                <tr><td><strong>Latency</strong></td><td>Girar hasta el sector</td><td>2-6 ms (media rotación)</td></tr>
+                <tr><td><strong>Transfer</strong></td><td>Leer datos</td><td>100-200 MB/s</td></tr>
+                <tr><td><strong>Total</strong></td><td>Suma de anteriores</td><td>8-15 ms</td></tr>
+            </table>
+
+            <div class="callout info">
+                <strong>SSD (Solid State Drive):</strong>
+                <ul>
+                    <li>Sin partes móviles (memoria flash)</li>
+                    <li>Tiempo de acceso: ~0.1 ms (100x más rápido)</li>
+                    <li>Velocidad: 500-7000 MB/s (NVMe)</li>
+                    <li>Vida útil limitada por ciclos de escritura</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="particiones">
+            <h2>2. Particiones</h2>
+            
+            <p>Las particiones dividen un disco en secciones independientes:</p>
+
+            <h3>Esquemas de Particionado</h3>
+            <table>
+                <tr><th>Esquema</th><th>Descripción</th><th>Límites</th></tr>
+                <tr><td><strong>MBR</strong></td><td>Master Boot Record</td><td>4 particiones primarias, 2TB máx</td></tr>
+                <tr><td><strong>GPT</strong></td><td>GUID Partition Table</td><td>128 particiones, 9.4 ZB máx</td></tr>
+            </table>
+
+            <h3>Tipos de Particiones MBR</h3>
+            <pre>
+MBR (512 bytes):
+- 446 bytes: Boot loader (código de arranque)
+- 64 bytes: Tabla de particiones (4 × 16 bytes)
+- 2 bytes: Firma (0xAA55)
+
+Tipos de partición:
+├─ Partición Primaria (hasta 4)
+│   └─ Contiene sistema de archivos directamente
+├─ Partición Extendida (solo 1)
+│   └─ Contiene particiones lógicas
+└─ Particiones Lógicas
+    └─ Dentro de extendida, ilimitadas en teoría
+
+Ejemplo de layout:
+┌─────────┬─────────┬────────────────────────────┐
+│Primaria │Primaria │ Partición Extendida         │
+│  /boot  │  swap   │ ┌────────┬────────┐        │
+│  500MB  │  2GB    │ │Lógica 1│Lógica 2│ ...    │
+│         │         │ │  /     │ /home  │        │
+│         │         │ │  20GB  │  50GB  │        │
+└─────────┴─────────┴─┴────────┴────────┴────────┘
+</pre>
+
+            <h3>Tipos de Sistemas de Archivos Linux</h3>
+            <div class="callout success">
+                <strong>IDs comunes en MBR:</strong>
+                <ul>
+                    <li>0x83 - Linux native (ext2/3/4)</li>
+                    <li>0x82 - Linux swap</li>
+                    <li>0x8e - Linux LVM</li>
+                    <li>0x07 - NTFS/HPFS</li>
+                    <li>0x0b/0x0c - FAT32</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="es">
+            <h2>3. Gestión de Entrada/Salida (E/S)</h2>
+            
+            <h3>Subsistema de E/S del SO</h3>
+            <p>El SO gestiona el acceso a dispositivos mediante:</p>
+            
+            <ul>
+                <li><strong>Device Drivers:</strong> Controladores específicos de hardware</li>
+                <li><strong>Buffering:</strong> Almacenamiento temporal de datos</li>
+                <li><strong>Caching:</strong> Mantener copias en memoria para acceso rápido</li>
+                <li><strong>Spooling:</strong> Cola de trabajos para dispositivos compartidos</li>
+            </ul>
+
+            <h3>Métodos de E/S</h3>
+            <table>
+                <tr><th>Método</th><th>Descripción</th><th>Eficiencia</th></tr>
+                <tr><td><strong>Programada</strong></td><td>CPU espera activa</td><td>Baja</td></tr>
+                <tr><td><strong>Por interrupción</strong></td><td>Dispositivo notifica a CPU</td><td>Media</td></tr>
+                <tr><td><strong>DMA</strong></td><td>Transferencia directa memoria-dispositivo</td><td>Alta</td></tr>
+            </table>
+
+            <h3>DMA (Direct Memory Access)</h3>
+            <pre>
+Sin DMA:
+CPU ──lee byte──> Dispositivo
+CPU ──escribe──> Memoria
+(repite para cada byte)
+
+Con DMA:
+CPU ──configura──> Controlador DMA
+DMA ──transfiere──> Memoria ↔ Dispositivo
+DMA ──interrumpe──> CPU (transferencia completa)
+
+Beneficio: CPU libre durante transferencia
+</pre>
+
+            <div class="callout warning">
+                <strong>Scheduling de disco:</strong> El SO reordena peticiones de E/S para minimizar movimiento del cabezal:
+                <ul>
+                    <li>FIFO: Orden de llegada</li>
+                    <li>SSTF: Shortest Seek Time First</li>
+                    <li>SCAN/Elevator: Va de extremo a extremo</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="practica">
+            <h2>4. Práctica en Linux</h2>
+
+            <div class="info-box" style="margin-bottom: 1.5rem; background: #eff6ff; border-left: 4px solid var(--primary); padding: 1.5rem; border-radius: 8px;">
+                <h3>📋 Laboratorio Complementario</h3>
+                <p>Para practicar la gestión de discos, particiones y sistemas de archivos, consulta el <strong><a href="../laboratorios-html/lab-05-sistemas-archivos.html" target="_blank">Laboratorio 5: Sistemas de Archivos Avanzados</a></strong>.</p>
+            </div>
+            
+            <h3>Comandos para gestión de discos:</h3>
+
+
+            <pre>
+# Listar discos y particiones
+lsblk
+fdisk -l
+
+# Ver uso de disco
+df -h
+
+# Ver información detallada de particiones
+sudo fdisk -l /dev/sda
+
+# Crear particiones (interactivo)
+sudo fdisk /dev/sdb
+
+# Versión moderna con GPT
+sudo gdisk /dev/sdb
+
+# Formatear una partición
+sudo mkfs.ext4 /dev/sdb1
+
+# Ver información de filesystem
+sudo dumpe2fs /dev/sda1 | head -20
+
+# Ver estadísticas de E/S
+iostat -x 1 5
+
+# Ver procesos usando E/S
+iotop
+</pre>
+
+            <h3>Ejercicios Prácticos de Almacenamiento:</h3>
+            <div class="actividad">
+                <h3>Ejercicio 1: Benchmarking de Disco (Fase 3 Prep)</h3>
+                <p><strong>Objetivo:</strong> Medir la velocidad real de E/S en tu VM</p>
+                <ol>
+                    <li>Instalar herramientas: <code>sudo apt update && sudo apt install sysstat iotop -y</code></li>
+                    <li>Prueba de escritura (crear archivo de 1GB): <code>dd if=/dev/zero of=/tmp/testfile bs=1G count=1 oflag=dsync</code></li>
+                    <li>Observa la velocidad reportada en MB/s. ¿Es HDD o SSD virtual?</li>
+                    <li>Prueba de lectura: <code>dd if=/tmp/testfile of=/dev/null bs=1G count=1</code></li>
+                    <li>Compara ambas velocidades.</li>
+                </ol>
+            </div>
+
+            <div class="actividad">
+                <h3>Ejercicio 2: Monitoreo en Tiempo Real</h3>
+                <p><strong>Objetivo:</strong> Detectar cuellos de botella de E/S</p>
+                <ol>
+                    <li>Abre dos terminales.</li>
+                    <li>En T1 ejecuta: <code>iostat -xz 1</code> (Fíjate en la columna %util)</li>
+                    <li>En T2 ejecuta una carga: <code>find / -name "test*" 2>/dev/null</code></li>
+                    <li>Observa cómo sube el %util en T1. ¿Qué disco está trabajando?</li>
+                    <li>Ejecuta <code>sudo iotop -o</code> para ver qué proceso exacto está leyendo/escribiendo.</li>
+                </ol>
+            </div>
+
+            <div class="actividad">
+                <h3>Ejercicio 3: Análisis de Sectores y Tamaño</h3>
+                <p><strong>Objetivo:</strong> Entender la geometría lógica</p>
+                <ol>
+                    <li>Ejecuta <code>sudo fdisk -l</code></li>
+                    <li>Busca la línea "Units: sectors of 1 * 512 = 512 bytes"</li>
+                    <li>Identifica el sector de inicio y fin de tu partición principal.</li>
+                    <li>Calcula: (Sector Fin - Sector Inicio) * 512 / 1024 / 1024 / 1024. ¿Coincide con los GB reportados?</li>
+                </ol>
+            </div>
+        </section>
+
+        <section id="practica-adicional">
+            <h2>Práctica Adicional (No Evaluativa)</h2>
+            
+            <div class="callout info" style="margin-bottom: 1.5rem;">
+                <strong>Esta sección es para practicar por tu cuenta.</strong> No es un entregable ni cuenta para la nota. ¡Úsala para reforzar lo aprendido!
+            </div>
+            
+            <div class="actividad">
+                <h3>Ejercicio de Refuerzo: Explorando Discos</h3>
+                <p><strong>Objetivo:</strong> Ver la información de discos y particiones en tu sistema.</p>
+                
+                <h4>Actividades sugeridas:</h4>
+                <ol>
+                    <li><strong>Lista tus discos:</strong>
+                        <ul>
+                            <li>Ejecuta <code>lsblk</code></li>
+                            <li>Verás todos los discos conectados (HDD, SSD, USB)</li>
+                            <li>Identifica cuál es tu disco principal (suele ser el más grande)</li>
+                        </ul>
+                    </li>
+                    <li><strong>Observa las particiones:</strong>
+                        <ul>
+                            <li>Ejecuta <code>sudo fdisk -l</code></li>
+                            <li>Verás información detallada de cada partición</li>
+                            <li>¿Cuántas particiones tiene tu disco?</li>
+                        </ul>
+                    </li>
+                    <li><strong>Compara tecnologías:</strong>
+                        <ul>
+                            <li>Busca en internet: "HDD vs SSD diferencias"</li>
+                            <li>Crea una tabla con 3 diferencias principales</li>
+                            <li>¿Cuál prefieres para tu sistema operativo? ¿Por qué?</li>
+                        </ul>
+                    </li>
+                </ol>
+
+                <div class="callout success">
+                    <strong>Consejo:</strong> Entender cómo funcionan los discos te ayuda a tomar mejores decisiones al comprar hardware o configurar sistemas.
+                </div>
+            </div>
+        </section>
+
+        <!-- Actividad -->
+        <section id="actividad">
+            <h2>Actividad Práctica: Monitoreo de E/S</h2>
+
+            <section class="actividad">
+                <h3>Actividad 11: Rendimiento de Disco</h3>
+                <p><strong>Tipo:</strong> Preparación para Fase 3 (E3)</p>
+                <p><strong>Objetivo:</strong> Medir la carga de entrada y salida en el sistema.</p>
+                <p><strong>Pasos:</strong></p>
+                <ol>
+                    <li>Instala herramientas: <code>sudo apt install sysstat</code></li>
+                    <li>Ejecuta <code>iostat -xz 1 5</code> para ver latencias de disco</li>
+                    <li>Usa <code>iotop</code> (requiere sudo) para ver qué procesos están escribiendo en disco</li>
+                </ol>
+                <p><strong>Entregable:</strong> Identificar el proceso con mayor carga de E/S para el Checkpoint E3.</p>
+            </section>
+        </section>
+
+        <section id="resumen">
+            <h2>Resumen</h2>
+            <table>
+                <tr><th>Concepto</th><th>Descripción</th></tr>
+                <tr><td>HDD</td><td>Disco magnético con platos y cabezales</td></tr>
+                <tr><td>SSD</td><td>Memoria flash sin partes móviles</td></tr>
+                <tr><td>MBR</td><td>Esquema antiguo, 4 particiones, 2TB límite</td></tr>
+                <tr><td>GPT</td><td>Esquema moderno, 128 particiones, ZB límite</td></tr>
+                <tr><td>EXT4</td><td>Sistema de archivos estándar Linux</td></tr>
+                <tr><td>DMA</td><td>Transferencia directa sin intervención de CPU</td></tr>
+            </table>
+
+            <h3>Próxima Clase</h3>
+            <p><strong>Clase 12: Sistemas de Archivos</strong></p>
+            <ul>
+                <li>Sistemas de archivos ext4 y NTFS</li>
+                <li>Inodos y estructura interna</li>
+                <li>Directorios y estructura jerárquica</li>
+                <li>Permisos y atributos</li>
+            </ul>
+        </section>
+
+        <!-- Navigation between classes -->
+        <nav class="class-nav" aria-label="Navegación entre clases">
+            <a href="clase-10.html" class="class-nav-link prev">
+                <span class="class-nav-icon">←</span>
+                <div>
+                    <div class="nav-label">Clase Anterior</div>
+                    <div class="nav-title">Memoria Virtual</div>
+                    <div class="class-nav-date">📅 11 Mar 2026</div>
+                </div>
+            </a>
+            <a href="clase-12.html" class="class-nav-link next">
+                <div>
+                    <div class="nav-label">Siguiente Clase</div>
+                    <div class="nav-title">Sistemas de Archivos</div>
+                    <div class="class-nav-date">📅 18 Mar 2026</div>
+                </div>
+                <span class="class-nav-icon">→</span>
+            </a>
+        </nav>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>📅 18 de Marzo 2026 | Sesion Miercoles: 6:00-8:00 AM | Teoria: 60 min + Practica: 60 min</p>
+
+            <p style="margin-top: 10px;">
+                <a href="index.html">Inicio</a> |
+                <a href="cronograma.html">Cronograma</a> |
+                <a href="evaluaciones.html" style="color: #8b5cf6;">Evaluaciones</a> |
+                <a href="rubricas.html">Rubricas</a>
+            </p>
+        </div>
+    </footer>
+</body>
+</html>

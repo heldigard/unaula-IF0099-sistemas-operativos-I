@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recursos Alternativos Gratuitos | IF0099 - Sistemas Operativos I</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #1e40af;
+            --accent: #059669;
+            --bg-light: #f8fafc;
+            --bg-code: #1e293b;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.7;
+            color: var(--text-main);
+            background: var(--bg-light);
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            color: white;
+            padding: 3rem 0;
+            margin-bottom: 2rem;
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        header .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        section {
+            background: white;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        section h2 {
+            color: var(--primary);
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid var(--accent);
+        }
+
+        section h3 {
+            color: var(--secondary);
+            font-size: 1.4rem;
+            margin: 2rem 0 1rem;
+        }
+
+        section h4 {
+            color: var(--text-main);
+            font-size: 1.1rem;
+            margin: 1.5rem 0 0.75rem;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 1rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.95rem;
+        }
+
+        th, td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            background: var(--bg-light);
+            font-weight: 600;
+            color: var(--secondary);
+        }
+
+        tr:hover {
+            background: var(--bg-light);
+        }
+
+        ul, ol {
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        .callout {
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            border-left: 4px solid;
+        }
+
+        .callout.info {
+            background: #eff6ff;
+            border-left-color: var(--primary);
+        }
+
+        .callout.warning {
+            background: #fef3c7;
+            border-left-color: #f59e0b;
+        }
+
+        .callout.success {
+            background: #d1fae5;
+            border-left-color: var(--accent);
+        }
+
+        .callout-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            background: var(--bg-light);
+            color: var(--primary);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        pre {
+            background: var(--bg-code);
+            color: #e2e8f0;
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+        }
+
+        .resource-card {
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .resource-card:hover {
+            border-color: var(--accent);
+            box-shadow: 0 4px 12px rgba(5, 150, 105, 0.15);
+        }
+
+        .resource-card h4 {
+            color: var(--accent);
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .resource-card .url {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-right: 0.5rem;
+        }
+
+        .badge-green { background: #d1fae5; color: #065f46; }
+        .badge-blue { background: #dbeafe; color: #1e40af; }
+        .badge-yellow { background: #fef3c7; color: #92400e; }
+        .badge-purple { background: #ede9fe; color: #5b21b6; }
+
+        footer {
+            background: var(--text-main);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        footer a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>🚀 Laboratorio y Recursos del Curso</h1>
+            <p class="subtitle">IF0099 - Sistemas Operativos I | Universidad Autónoma Latinoamericana</p>
+            <p class="subtitle" style="opacity: 0.8;">Configuración de entornos para prácticas de Linux y Windows</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Virtualización Local -->
+        <section style="border: 2px solid var(--accent); background: #f0fdf4;">
+            <h2 style="color: var(--secondary);">🌟 Opción 1 (Principal - Garantizada): Virtualización Local</h2>
+            <p>Esta es la opción <strong>recomendada y garantizada</strong> para todos los estudiantes. No depende de convenios institucionales ni verificaciones de correo.</p>
+            
+            <div class="grid-2">
+                <div class="resource-card" style="border-left: 5px solid var(--accent);">
+                    <h4><span class="badge badge-green">Principal</span> Oracle VirtualBox</h4>
+                    <p class="url"><a href="https://www.virtualbox.org/" target="_blank">https://www.virtualbox.org/</a></p>
+                    <p>Software gratuito para crear máquinas virtuales en tu propia computadora.</p>
+                    <ul>
+                        <li><strong>Ventaja:</strong> Funciona sin internet, control total del sistema.</li>
+                        <li><strong>Requisito:</strong> 8GB+ RAM recomendado, 20GB+ espacio en disco.</li>
+                    </ul>
+                </div>
+                <div class="resource-card">
+                    <h4>ISO Ubuntu Server 22.04 LTS</h4>
+                    <p class="url"><a href="https://ubuntu.com/download/server" target="_blank">https://ubuntu.com/download/server</a></p>
+                    <p>Imagen oficial de instalación. Versión 22.04 LTS con soporte hasta 2027.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Terminales Online -->
+        <section>
+            <h2>Opción 2 (Alternativa): Terminales Rápidas en Navegador</h2>
+            <p>Si tienes problemas técnicos momentáneos, usa estas terminales sin instalar nada.</p>
+
+            <div class="grid-2">
+                <div class="resource-card">
+                    <h4><span class="badge badge-green">Linux</span> Webminal</h4>
+                    <p class="url"><a href="https://www.webminal.org" target="_blank">https://www.webminal.org</a></p>
+                    <p>Terminal Linux real. Requiere registro rápido.</p>
+                </div>
+
+                <div class="resource-card">
+                    <h4><span class="badge badge-blue">Rápido</span> JSLinux</h4>
+                    <p class="url"><a href="https://bellard.org/jslinux/" target="_blank">https://bellard.org/jslinux/</a></p>
+                    <p>Emulador que arranca al instante. No guarda cambios.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Por Tipo de Ejercicio -->
+        <section>
+            <h2>¿Qué Recurso Usar Según el Ejercicio?</h2>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Tipo de Ejercicio</th>
+                        <th>Recurso Recomendado</th>
+                        <th>Comandos Disponibles</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Comandos básicos</strong> (ls, cd, mkdir, cp, mv)</td>
+                        <td>Webminal, JSLinux</td>
+                        <td><code>ls</code>, <code>cd</code>, <code>mkdir</code>, <code>cp</code>, <code>mv</code>, <code>rm</code>, <code>touch</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Permisos</strong> (chmod, chown)</td>
+                        <td>VirtualBox</td>
+                        <td><code>chmod</code>, <code>chown</code> (con root en VirtualBox)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Procesos</strong> (ps, top, kill)</td>
+                        <td>VirtualBox, Webminal</td>
+                        <td><code>ps</code>, <code>top</code>, <code>kill</code>, <code>htop</code> (requiere VM)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Memoria</strong> (free, vmstat)</td>
+                        <td>VirtualBox, Webminal</td>
+                        <td><code>free</code>, <code>vmstat</code>, <code>cat /proc/meminfo</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Servicios</strong> (systemctl)</td>
+                        <td>VirtualBox</td>
+                        <td><code>systemctl</code> (requiere root)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Red</strong> (netstat, ss, ifconfig)</td>
+                        <td>VirtualBox</td>
+                        <td><code>ss</code>, <code>ip</code>, <code>netstat</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Scripts bash</strong></td>
+                        <td>Webminal, JSLinux</td>
+                        <td>Scripts completos con <code>nano</code>, <code>vim</code></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Guía Rápida -->
+        <section>
+            <h2>Guía Rápida de Inicio</h2>
+
+            <h3>Opción 1: VirtualBox (Recomendada - Garantizada)</h3>
+            <pre><code>1. Descarga VirtualBox desde https://www.virtualbox.org/
+2. Descarga Ubuntu Server 22.04 ISO desde https://ubuntu.com/download/server
+3. Crea nueva VM en VirtualBox:
+   - Tipo: Linux, Versión: Ubuntu 64-bit
+   - RAM: 2048 MB (mínimo)
+   - Disco: 20 GB (disco virtual dinámico)
+4. Inicia la VM y selecciona la ISO de Ubuntu
+5. Sigue el asistente de instalación (selecciona "Install Ubuntu Server")
+6. ¡Listo! Tienes un servidor Linux completo</code></pre>
+
+            <h3>Opción 2: Webminal (Terminal Online - Sin instalación)</h3>
+            <pre><code>1. Ve a https://www.webminal.org
+2. Haz clic en "Register" (registro gratuito)
+3. Completa el registro con tu email
+4. Haz clic en "Start Terminal"
+5. ¡Listo! Terminal Linux en el navegador (limitada, sin root)</code></pre>
+
+            <h3>Opción 3: JSLinux (Emergencia - Sin registro)</h3>
+            <pre><code>1. Ve a https://bellard.org/jslinux/
+2. Selecciona "Alpine Linux" o "Fedora"
+3. Haz clic en "Boot"
+4. Espera 5-10 segundos a que cargue
+5. ¡Listo! Terminal temporal (los cambios no se guardan)</code></pre>
+        </section>
+
+        <!-- Limitaciones -->
+        <section>
+            <h2>Limitaciones a Considerar</h2>
+
+            <div class="callout warning">
+                <p class="callout-title">Importante</p>
+                <p>Algunos recursos tienen limitaciones. Ten en cuenta:</p>
+                <ul>
+                    <li><strong>Webminal:</strong> Sin acceso root, sesiones limitadas, algunos comandos restringidos</li>
+                    <li><strong>JSLinux:</strong> Los cambios se pierden al cerrar, sin persistencia</li>
+                    <li><strong>VirtualBox:</strong> Requiere computadora con 8GB+ RAM y 20GB+ espacio libre</li>
+                    <li><strong>Play with Docker:</strong> Sesiones de solo 4 horas</li>
+                </ul>
+            </div>
+
+            <div class="callout info">
+                <p class="callout-title">Recomendación</p>
+                <p><strong>VirtualBox es la única opción completa</strong> para todas las clases del curso. Las terminales online (Webminal, JSLinux) son útiles solo para practicar comandos básicos cuando no tienes acceso a tu VM.</p>
+            </div>
+        </section>
+
+        <!-- Navegación -->
+        <nav style="background: white; padding: 1.5rem 0; margin-bottom: 2rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); display: flex; justify-content: space-between; align-items: center;">
+            <a href="index.html" style="color: var(--primary); text-decoration: none; font-weight: 500; padding: 0.5rem 1rem;">← Volver al Inicio</a>
+            <div style="display: flex; gap: 1rem;">
+                <a href="cronograma.html" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: #10b981; color: white; text-decoration: none; border-radius: 6px; font-weight: 500;">📅 Cronograma</a>
+                <a href="clase-02.html" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: #3b82f6; color: white; text-decoration: none; border-radius: 6px; font-weight: 500;">📚 Ir a Clase 02</a>
+            </div>
+        </nav>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p><strong>IF0099 - Sistemas Operativos I</strong> • Recursos Alternativos Gratuitos</p>
+            <p>Actualizado: Febrero 2026</p>
+            <p style="margin-top: 10px;">
+                <a href="index.html">Inicio</a> |
+                <a href="cronograma.html">Cronograma</a> |
+                <a href="evaluaciones.html">Evaluaciones</a>
+            </p>
+        </div>
+    </footer>
+</body>
+</html>

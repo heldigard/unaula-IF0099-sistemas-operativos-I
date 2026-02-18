@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laboratorios - IF0099 Sistemas Operativos I</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #1e40af;
+            --accent: #059669;
+            --bg-light: #f8fafc;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: var(--text-main);
+            background: var(--bg-light);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 3rem 0;
+            margin-bottom: 2rem;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        header .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .nav-breadcrumb {
+            background: white;
+            padding: 1rem 0;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .nav-breadcrumb a {
+            color: var(--primary);
+            text-decoration: none;
+            margin: 0 0.5rem;
+            font-weight: 500;
+        }
+
+        .nav-breadcrumb a:hover {
+            text-decoration: underline;
+        }
+
+        .lab-section {
+            background: white;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .lab-section h2 {
+            color: var(--primary);
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid var(--accent);
+        }
+
+        .lab-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .lab-card {
+            background: var(--bg-light);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .lab-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .lab-number {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            width: fit-content;
+        }
+
+        .lab-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-main);
+            margin-bottom: 0.5rem;
+        }
+
+        .lab-description {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            flex-grow: 1;
+        }
+
+        .lab-meta {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border);
+            padding-top: 1rem;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .status-badge.available {
+            background: #f0fdf4;
+            color: var(--accent);
+        }
+
+        .info-box {
+            background: #eff6ff;
+            border-left: 4px solid var(--primary);
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 8px;
+        }
+
+        .warning-box {
+            background: #fffbeb;
+            border-left: 4px solid #f59e0b;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 8px;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 3rem 0;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            background: white;
+            border-top: 1px solid var(--border);
+        }
+
+        .footer a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            .lab-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>🔬 Laboratorios de Sistemas Operativos</h1>
+            <p class="subtitle">IF0099 - Universidad Autónoma Latinoamericana | 2026-I</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="nav-breadcrumb">
+            <a href="../index.html">Página Principal</a> |
+            <a href="../clases-html/index.html">Material de Clases</a> |
+            <a href="../clases-html/cronograma.html">Cronograma</a> |
+            <a href="../clases-html/evaluaciones.html">Evaluaciones</a>
+        </div>
+
+        <div class="info-box">
+            <h3>📘 Guía de Laboratorios Prácticos</h3>
+            <p style="margin-top: 0.5rem;">Esta sección centraliza todas las prácticas guiadas del semestre. Cada laboratorio está diseñado para ejecutarse de forma 100% local en tu computadora usando <strong>VirtualBox</strong>.</p>
+        </div>
+
+        <div class="warning-box">
+            <h3>⚠️ Requisitos Técnicos Mínimos</h3>
+            <ul>
+                <li>Computadora con soporte para virtualización (habilitado en BIOS).</li>
+                <li>Mínimo 8GB de RAM (4GB funcionales, pero lentos).</li>
+                <li>20GB de espacio libre en disco.</li>
+                <li>Software: VirtualBox 7.x + Ext Pack.</li>
+            </ul>
+        </div>
+
+        <!-- Bloque 1 -->
+        <div class="lab-section">
+            <h2>Módulo 1: Fundamentos y Gestión de Archivos</h2>
+            <div class="lab-grid">
+                <a href="lab-00-introduccion-simuladores.html" class="lab-card">
+                    <span class="lab-number">LAB 00</span>
+                    <h3 class="lab-title">VirtualBox + Ubuntu Server</h3>
+                    <p class="lab-description">Configuración inicial del entorno. Instalación de Ubuntu Server 22.04 LTS y conceptos de virtualización.</p>
+                    <div class="lab-meta">
+                        <span>⏱️ 120 min</span>
+                        <span class="status-badge available">Fundamental</span>
+                    </div>
+                </a>
+
+                <a href="lab-01-comandos-basicos.html" class="lab-card">
+                    <span class="lab-number">LAB 01</span>
+                    <h3 class="lab-title">Terminal y Navegación</h3>
+                    <p class="lab-description">Domina la CLI de Linux. Navegación, creación de archivos, edición con Nano/Vim y tuberías simples.</p>
+                    <div class="lab-meta">
+                        <span>⏱️ 90 min</span>
+                        <span class="status-badge available">Disponible</span>
+                    </div>
+                </a>
+
+                <a href="lab-02-permisos-usuarios.html" class="lab-card">
+                    <span class="lab-number">LAB 02</span>
+                    <h3 class="lab-title">Seguridad y Permisos</h3>
+                    <p class="lab-description">Gestión de usuarios y grupos. Modelo UGO, chmod numérico y simbólico, y chown.</p>
+                    <div class="lab-meta">
+                        <span>⏱️ 90 min</span>
+                        <span class="status-badge available">Disponible</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Bloque 2 -->
+        <div class="lab-section">
+            <h2>Módulo 2: Procesos y Recursos</h2>
+            <div class="lab-grid">
+                <a href="lab-03-gestion-procesos.html" class="lab-card">
+                    <span class="lab-number">LAB 03</span>
+                    <h3 class="lab-title">Gestión de Procesos</h3>
+                    <p class="lab-description">Control de señales, monitoreo con htop, jerarquía de procesos y prioridades (nice/renice).</p>
+                    <div class="lab-meta">
+                        <span>⏱️ 90 min</span>
+                        <span class="status-badge available">Disponible</span>
+                    </div>
+                </a>
+
+                <a href="lab-04-memoria-monitoreo.html" class="lab-card">
+                    <span class="lab-number">LAB 04</span>
+                    <h3 class="lab-title">Memoria y SWAP</h3>
+                    <p class="lab-description">Análisis de consumo de RAM, configuración de archivos de intercambio y monitoreo de rendimiento.</p>
+                    <div class="lab-meta">
+                        <span>⏱️ 90 min</span>
+                        <span class="status-badge available">Disponible</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Bloque 3 -->
+        <div class="lab-section">
+            <h2>Módulo 3: Sistemas de Archivos y Hardening</h2>
+            <div class="lab-grid">
+                <a href="lab-05-sistemas-archivos.html" class="lab-card">
+                    <span class="lab-number">LAB 05</span>
+                    <h3 class="lab-title">Discos y Particiones</h3>
+                    <p class="lab-description">Gestión de almacenamiento, montajes persistentes en fstab, inodos y tipos de FS (EXT4/NTFS).</p>
+                    <div class="lab-meta">
+                        <span>⏱️ 120 min</span>
+                        <span class="status-badge available">Disponible</span>
+                    </div>
+                </a>
+
+                <a href="lab-06-seguridad-hardening.html" class="lab-card">
+                    <span class="lab-number">LAB 06</span>
+                    <h3 class="lab-title">Auditoría y Hardening</h3>
+                    <p class="lab-description">Aseguramiento del sistema, auditoría de logs, ACLs avanzadas y reglas de firewall local.</p>
+                    <div class="lab-meta">
+                        <span>⏱️ 120 min</span>
+                        <span class="status-badge available">Disponible</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Recomendaciones Finales -->
+        <div class="info-box" style="background: #f0fdf4; border-left-color: var(--accent);">
+            <h3>🎯 Recomendaciones para el Éxito</h3>
+            <ol style="margin-left: 1.5rem; margin-top: 1rem;">
+                <li style="margin-bottom: 0.5rem;"><strong>Snapshots:</strong> Toma una captura de tu VM antes de realizar cambios críticos en permisos o sistemas de archivos.</li>
+                <li style="margin-bottom: 0.5rem;"><strong>Bitácora:</strong> Documenta cada comando ejecutado para tus entregas de Fase del Proyecto.</li>
+                <li style="margin-bottom: 0.5rem;"><strong>Red:</strong> Configura tu VM en modo "Adaptador Puente" (Bridge) si deseas acceder desde otros dispositivos en tu casa.</li>
+            </ol>
+        </div>
+
+        <div class="footer">
+            <p><strong>IF0099 - Sistemas Operativos I</strong> | 2026-I</p>
+            <p style="margin-top: 0.5rem;">
+                <a href="../index.html">Inicio</a> |
+                <a href="../clases-html/cronograma.html">Cronograma</a> |
+                <a href="../clases-html/evaluaciones.html">Evaluaciones</a> |
+                <a href="../clases-html/rubricas.html">Rúbricas</a>
+            </p>
+            <p style="margin-top: 1rem; color: #999;">Plan Educativo Libre de Nube | Enfoque 100% VirtualBox Local</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clase 13: Implementación de Sistemas de Archivos | IF0099 - Sistemas Operativos I</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #1e40af;
+            --accent: #059669;
+            --bg-light: #f8fafc;
+            --bg-code: #1e293b;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.7; color: var(--text-main); background: var(--bg-light); font-size: 16px; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        header { background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); color: white; padding: 3rem 0; margin-bottom: 2rem; }
+        header h1 { font-size: 2.2rem; margin-bottom: 0.5rem; font-weight: 700; }
+        header .subtitle { font-size: 1.1rem; opacity: 0.9; }
+        header .meta { margin-top: 1rem; font-size: 0.9rem; opacity: 0.8; }
+        nav { background: white; padding: 1.5rem 0; margin-bottom: 2rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        nav h2 { font-size: 1.1rem; color: var(--text-muted); margin-bottom: 1rem; padding: 0 20px; }
+        nav ul { list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.5rem; padding: 0 20px; }
+        nav a { color: var(--primary); text-decoration: none; padding: 0.5rem; display: block; border-radius: 4px; transition: background 0.2s; }
+        nav a:hover { background: var(--bg-light); }
+        section { background: white; padding: 2rem; margin-bottom: 2rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        section h2 { color: var(--primary); font-size: 1.8rem; margin-bottom: 1.5rem; padding-bottom: 0.5rem; border-bottom: 3px solid var(--accent); }
+        section h3 { color: var(--secondary); font-size: 1.4rem; margin: 2rem 0 1rem; }
+        p { margin-bottom: 1rem; }
+        pre { background: var(--bg-code); color: #e2e8f0; padding: 1.5rem; border-radius: 8px; overflow-x: auto; margin: 1.5rem 0; font-size: 0.9rem; line-height: 1.5; }
+        code { font-family: 'Consolas', 'Monaco', 'Courier New', monospace; background: var(--bg-light); color: var(--primary); padding: 0.2rem 0.4rem; border-radius: 4px; font-size: 0.9em; }
+        pre code { background: none; padding: 0; color: inherit; }
+        ul, ol { margin-left: 1.5rem; margin-bottom: 1rem; }
+        li { margin-bottom: 0.5rem; }
+        .callout { padding: 1.5rem; border-radius: 8px; margin: 1.5rem 0; border-left: 4px solid; }
+        .callout.info { background: #eff6ff; border-left-color: var(--primary); }
+        .callout.warning { background: #fef3c7; border-left-color: #f59e0b; }
+        .callout.success { background: #d1fae5; border-left-color: var(--accent); }
+        table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.95rem; }
+        th, td { padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid var(--border); }
+        th { background: var(--bg-light); font-weight: 600; color: var(--secondary); }
+        .actividad { background: var(--bg-light); border-left: 5px solid var(--accent); padding: 1.5rem; margin: 1.5rem 0; border-radius: 4px; }
+        .actividad h3 { color: var(--primary); margin-bottom: 1rem; }
+        .class-nav { display: flex; justify-content: space-between; align-items: stretch; gap: 1rem; margin: 2rem 0; }
+        .class-nav-link { flex: 1; display: flex; align-items: center; gap: 0.75rem; padding: 1.25rem 1.5rem; background: white; border: 2px solid var(--border); border-radius: 12px; text-decoration: none; color: var(--text-main); transition: all 0.3s ease; }
+        .class-nav-link:hover { border-color: var(--primary); box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15); transform: translateY(-2px); }
+        .class-nav-link.prev { border-left: 4px solid var(--primary); }
+        .class-nav-link.next { border-right: 4px solid var(--accent); text-align: right; margin-left: auto; }
+        .class-nav-link .nav-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); margin-bottom: 0.25rem; }
+        .class-nav-link .nav-title { font-size: 1rem; font-weight: 600; color: var(--primary); }
+        .class-nav-link.next .nav-title { color: var(--accent); }
+        .class-nav-icon { font-size: 1.5rem; line-height: 1; }
+        footer { background: var(--text-main); color: white; padding: 2rem 0; text-align: center; margin-top: 3rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        @media (max-width: 768px) { header h1 { font-size: 1.6rem; } section { padding: 1.5rem; } nav ul { grid-template-columns: 1fr; } }
+
+        .eval-alert {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-left: 4px solid #f59e0b;
+            padding: 1.25rem 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .eval-alert-icon {
+            font-size: 1.75rem;
+            line-height: 1;
+        }
+
+        .eval-alert-content {
+            flex: 1;
+        }
+
+        .eval-alert-title {
+            font-weight: 700;
+            color: #92400e;
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .eval-alert-text {
+            color: #78350f;
+            font-size: 0.9rem;
+        }
+
+        .eval-alert-date {
+            background: #f59e0b;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+
+        .class-nav-date {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        .class-nav-link:hover .nav-title {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Clase 13: Implementación de Sistemas de Archivos</h1>
+            <p class="subtitle">IF0099 - Sistemas Operativos I | Unidad 7 - Sistemas de Archivos</p>
+            <p class="subtitle">Estructura interna FS, journaling, montaje, RAID básico</p>
+            <p class="meta">📅 08 de Abril 2026 | Sesion Miercoles: 6:00-8:00 AM | Teoria: 60 min + Practica: 60 min</p>
+        </div>
+    </header>
+
+
+    <div class="container">
+
+        <!-- Quick Navigation Bar -->
+        <div class="quick-nav" style="background: white; padding: 1rem; margin-bottom: 2rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <a href="index.html" style="color: var(--primary); text-decoration: none; font-weight: 500;">Inicio</a>
+                <span style="color: var(--text-muted);">|</span>
+                <span style="color: var(--text-main); font-weight: 600;">Implementación de Sistemas de Archivos</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <a href="cronograma.html" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: #10b981; color: white; text-decoration: none; border-radius: 6px; font-weight: 500;">Cronograma</a>
+                <a href="rubricas.html" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: #3b82f6; color: white; text-decoration: none; border-radius: 6px; font-weight: 500;">Rubricas</a>
+            </div>
+        </div>
+
+        <!-- Próxima Evaluación Alert -->
+        <a href="evaluaciones.html#e5" style="text-decoration: none; display: block;">
+            <div class="eval-alert" style="cursor: pointer; transition: transform 0.2s;">
+                <span class="eval-alert-icon">📌</span>
+                <div class="eval-alert-content">
+                    <div class="eval-alert-title">E4: FASE 4 - Seguridad y Hardening (22 Abr)</div>
+                    <div class="eval-alert-text">15% - Servidores web funcionando (comprende conceptos fundamentales integrados)</div>
+                </div>
+                <span class="eval-alert-date">📅 22 Abr</span>
+            </div>
+        </a>
+
+        <nav>
+            <h2>Contenido de la Clase</h2>
+            <ul>
+                <li><a href="#objetivos">Objetivos de Aprendizaje</a></li>
+                <li><a href="#estructura">Estructura Interna FS</a></li>
+                <li><a href="#journaling">Journaling</a></li>
+                <li><a href="#montaje">Montaje y Desmontaje</a></li>
+                <li><a href="#raid">RAID Básico</a></li>
+                <li><a href="#practica">Práctica en Linux</a></li>
+                
+            </ul>
+        </nav>
+
+        <section id="objetivos">
+            <h2>Objetivos de Aprendizaje</h2>
+            <p><strong>Resultado de Aprendizaje (RA5):</strong> Comprende la funcionalidad de conceptos fundamentales integrados (Alineado con Evaluación E5).</p>
+            <p>Al finalizar esta clase, serás capaz de:</p>
+            <ol>
+                <li><strong>Comprender</strong> la estructura interna de un sistema de archivos</li>
+                <li><strong>Explicar</strong> el mecanismo de journaling y recuperación</li>
+                <li><strong>Gestionar</strong> el montaje y desmontaje de sistemas de archivos</li>
+                <li><strong>Diferenciar</strong> los niveles de RAID básicos</li>
+                <li><strong>Implementar</strong> configuraciones de almacenamiento</li>
+            </ol>
+
+            <div class="callout success">
+                <p class="callout-title">🖥️ Laboratorio VirtualBox</p>
+                <p>Para esta clase, configuraremos sistemas de archivos avanzados y journaling en discos adicionales agregados a tu máquina virtual en <strong>VirtualBox</strong>.</p>
+            </div>
+
+            <div class="callout info">
+                <p class="callout-title">Glosario de Implementación</p>
+                <ul>
+                    <li><strong>UUID (Universally Unique Identifier):</strong> Identificador único universal para dispositivos y particiones.</li>
+                    <li><strong>fstab (File System Table):</strong> Archivo de configuración que define cómo se montan los dispositivos al arrancar.</li>
+                    <li><strong>RAID:</strong> Matriz redundante de discos independientes, técnica para mejorar velocidad o seguridad.</li>
+                    <li><strong>Mount Point (Punto de Montaje):</strong> Directorio donde se "engancha" el contenido de un disco externo o partición.</li>
+                </ul>
+            </div>
+        </section>
+
+
+        <section id="estructura">
+            <h2>1. Estructura Interna de un Sistema de Archivos</h2>
+            
+            <h3>Layout General</h3>
+            <pre>
+Disco particionado con sistema de archivos:
+
+┌─────────────────────────────────────────────────────────────┐
+│  Sector 0: Boot Block (reservado para arranque)            │
+├─────────────────────────────────────────────────────────────┤
+│  Superblock: Metadatos del sistema de archivos             │
+│  - Tamaño del FS, bloques libres, inodos libres            │
+│  - Tamaño de bloque, versión, UUID                         │
+├─────────────────────────────────────────────────────────────┤
+│  Group Descriptor Table: Información de grupos de bloques  │
+├─────────────────────────────────────────────────────────────┤
+│  Block Bitmap: Mapa de bits de bloques libres/ocupados     │
+├─────────────────────────────────────────────────────────────┤
+│  Inode Bitmap: Mapa de bits de inodos libres/ocupados      │
+├─────────────────────────────────────────────────────────────┤
+│  Inode Table: Tabla de inodos                              │
+├─────────────────────────────────────────────────────────────┤
+│  Data Blocks: Bloques de datos de archivos y directorios   │
+└─────────────────────────────────────────────────────────────┘
+</pre>
+
+            <h3>Superblock</h3>
+            <table>
+                <tr><th>Campo</th><th>Descripción</th></tr>
+                <tr><td>s_inodes_count</td><td>Número total de inodos</td></tr>
+                <tr><td>s_blocks_count</td><td>Número total de bloques</td></tr>
+                <tr><td>s_free_blocks_count</td><td>Bloques libres</td></tr>
+                <tr><td>s_free_inodes_count</td><td>Inodos libres</td></tr>
+                <tr><td>s_first_data_block</td><td>Primer bloque de datos</td></tr>
+                <tr><td>s_block_size</td><td>Tamaño de bloque</td></tr>
+                <tr><td>s_magic</td><td>Firma mágica (0xEF53 para EXT4)</td></tr>
+                <tr><td>s_state</td><td>Estado: limpio o dañado</td></tr>
+                <tr><td>s_last_mounted</td><td>Último punto de montaje</td></tr>
+            </table>
+
+            <div class="callout warning">
+                <strong>Backup del Superblock:</strong> EXT4 mantiene copias de respaldo del superblock dispersas en el disco para recuperación.
+            </div>
+        </section>
+
+        <section id="journaling">
+            <h2>2. Journaling</h2>
+            
+            <div class="callout info">
+                <strong>¿Qué es el Journaling?</strong>
+                <p>Técnica que registra cambios pendientes antes de aplicarlos, permitiendo recuperación consistente tras fallos.</p>
+            </div>
+
+            <h3>Problema: Inconsistencia tras Fallo</h3>
+            <pre>
+Sin journaling - Operación de escritura:
+1. Asignar bloque de datos
+2. Escribir datos en bloque
+3. Actualizar inodo con nuevo bloque
+4. Actualizar bitmap de bloques
+
+Falla entre paso 2 y 3 → Bloque perdido (inodo no apunta a él)
+Falla entre paso 3 y 4 → Bloque asignado dos veces
+</pre>
+
+            <h3>El Journaling Resuelve Esto</h3>
+            <pre>
+Con journaling:
+1. Escribir operación completa en journal (commit record)
+2. Aplicar cambios al sistema de archivos
+3. Marcar operación como completada en journal
+
+Tras fallo:
+- Si hay commit sin completion → Reaplicar (redo)
+- Si no hay commit → Ignorar (no se aplicó nada)
+</pre>
+
+            <h3>Tipos de Journaling</h3>
+            <table>
+                <tr><th>Tipo</th><th>Registro</th><th>Seguridad</th><th>Rendimiento</th></tr>
+                <tr><td>Writeback</td><td>Solo metadatos</td><td>Baja</td><td>Máximo</td></tr>
+                <tr><td>Ordered</td><td>Metadatos + datos primero</td><td>Media</td><td>Bueno</td></tr>
+                <tr><td>Data</td><td>Metadatos + datos</td><td>Alta</td><td>Bajo</td></tr>
+            </table>
+
+            <h3>Proceso de Recuperación (fsck)</h3>
+            <ol>
+                <li>Verificar superblock y alternativas si está dañado</li>
+                <li>Verificar consistencia de group descriptors</li>
+                <li>Verificar bitmaps vs inodos reales</li>
+                <li>Verificar contadores de bloques en inodos</li>
+                <li>Reconstruir árbol de directorios</li>
+                <li>Verificar inodos huérfanos (lost+found)</li>
+            </ol>
+        </section>
+
+        <section id="montaje">
+            <h2>3. Montaje y Desmontaje de Sistemas de Archivos</h2>
+            
+            <h3>Concepto de Montaje</h3>
+            <p>El montaje conecta un sistema de archivos a la jerarquía de directorios del sistema operativo:</p>
+            <pre>
+Antes de montar:
+┌─────────────────────┐
+│ Directorio /mnt/usb │ ← Vacío
+└─────────────────────┘
+
+Montaje: mount /dev/sdb1 /mnt/usb
+
+Después de montar:
+┌─────────────────────┐
+│ Directorio /mnt/usb │ ← Contenido de /dev/sdb1
+│   ├── archivo1.txt  │
+│   ├── carpeta/      │
+│   └── ...           │
+└─────────────────────┘
+</pre>
+
+            <h3>Archivo /etc/fstab</h3>
+            <p>Configuración de montajes persistentes:</p>
+            <pre>
+# /etc/fstab - File System Table
+# <device>        <mount>    <type>  <options>       <dump>  <pass>
+UUID=abc123       /          ext4    defaults        0       1
+UUID=def456       /home      ext4    defaults        0       2
+/dev/sdb1         /mnt/data  ext4    rw,noatime      0       2
+/dev/sr0          /media/cdrom  iso9660  ro,noauto   0       0
+tmpfs             /tmp       tmpfs   defaults        0       0
+</pre>
+
+            <h3>Opciones Comunes de Montaje</h3>
+            <table>
+                <tr><th>Opción</th><th>Descripción</th></tr>
+                <tr><td>ro / rw</td><td>Solo lectura / Lectura-escritura</td></tr>
+                <tr><td>noatime</td><td>No actualizar tiempo de acceso (rendimiento)</td></tr>
+                <tr><td>sync / async</td><td>Síncrono / Asíncrono</td></tr>
+                <tr><td>auto / noauto</td><td>Montar en boot / No montar automáticamente</td></tr>
+                <tr><td>user / nouser</td><td>Permitir montaje a usuarios</td></tr>
+                <tr><td>exec / noexec</td><td>Permitir / Prohibir ejecución</td></tr>
+            </table>
+
+            <div class="callout success">
+                <strong>Comandos útiles:</strong>
+                <ul>
+                    <li><code>mount -a</code> - Montar todo desde fstab</li>
+                    <li><code>mount | grep /dev/sda</code> - Ver opciones de montaje</li>
+                    <li><code>umount /mnt/punto</code> - Desmontar</li>
+                    <li><code>fuser -m /mnt/punto</code> - Ver procesos usando el punto</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="raid">
+            <h2>4. RAID Básico</h2>
+            
+            <p>RAID (Redundant Array of Independent Disks) combina múltiples discos para mejorar rendimiento o redundancia:</p>
+
+            <h3>Niveles de RAID Básicos</h3>
+            
+            <h4>RAID 0 - Striping</h4>
+            <pre>
+Datos divididos entre discos:
+┌─────────────────┬─────────────────┐
+│   Disco 0       │   Disco 1       │
+│   [Bloque 0]    │   [Bloque 1]    │
+│   [Bloque 2]    │   [Bloque 3]    │
+│   [Bloque 4]    │   [Bloque 5]    │
+└─────────────────┴─────────────────┘
+Ventaja: Velocidad ×N
+Desventaja: Si falla un disco, se pierde todo
+</pre>
+
+            <h4>RAID 1 - Mirroring</h4>
+            <pre>
+Datos duplicados en ambos discos:
+┌─────────────────┬─────────────────┐
+│   Disco 0       │   Disco 1       │
+│   [Bloque 0]    │   [Bloque 0]    │
+│   [Bloque 1]    │   [Bloque 1]    │
+│   [Bloque 2]    │   [Bloque 2]    │
+└─────────────────┴─────────────────┘
+Ventaja: Tolerancia a fallos (un disco)
+Desventaja: Capacidad = ½ del total
+</pre>
+
+            <h4>RAID 5 - Striping con Paridad</h4>
+            <pre>
+Datos y paridad distribuidos:
+┌─────────────────┬─────────────────┬─────────────────┐
+│   Disco 0       │   Disco 1       │   Disco 2       │
+│   [Datos A]     │   [Datos B]     │   [Paridad AB]  │
+│   [Datos C]     │   [Paridad CD]  │   [Datos D]     │
+│   [Paridad EF]  │   [Datos E]     │   [Datos F]     │
+└─────────────────┴─────────────────┴─────────────────┘
+Ventaja: Balance rendimiento/redundancia
+Capacidad: (N-1) × tamaño menor disco
+</pre>
+
+            <h3>Comparación de Niveles RAID</h3>
+            <table>
+                <tr><th>RAID</th><th>Mín. Discos</th><th>Capacidad</th><th>Tolerancia</th><th>Uso típico</th></tr>
+                <tr><td>0</td><td>2</td><td>100%</td><td>Ninguna</td><td>Datos temporales</td></tr>
+                <tr><td>1</td><td>2</td><td>50%</td><td>1 disco</td><td>Sistemas críticos</td></tr>
+                <tr><td>5</td><td>3</td><td>(n-1)/n</td><td>1 disco</td><td>Servidores de archivos</td></tr>
+                <tr><td>6</td><td>4</td><td>(n-2)/n</td><td>2 discos</td><td>Almacenamiento masivo</td></tr>
+                <tr><td>10</td><td>4</td><td>50%</td><td>1 por mirror</td><td>Bases de datos</td></tr>
+            </table>
+
+            <div class="callout warning">
+                <strong>RAID no es backup:</strong> RAID protege contra fallo de disco, no contra:
+                <ul>
+                    <li>Borrado accidental de archivos</li>
+                    <li>Corrupción por malware</li>
+                    <li>Desastres físicos</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="practica">
+            <h2>5. Práctica en Linux</h2>
+            
+            <h3>Comandos para gestión avanzada:</h3>
+            <pre>
+# Ver información del superblock
+sudo dumpe2fs /dev/sda1 | head -50
+
+# Verificar sistema de archivos
+sudo e2fsck -n /dev/sda1    # Solo verificar (no modificar)
+sudo e2fsck -f /dev/sda1    # Forzar verificación
+
+# Cambiar opciones de montaje
+sudo tune2fs -o ^acl /dev/sda1  # Desactivar ACLs
+
+# Ver journal de un FS ext4
+sudo debugfs -R 'stat <12>' /dev/sda1
+
+# Crear sistema de archivos
+sudo mkfs.ext4 -L "MiDisco" /dev/sdb1
+
+# Ver particiones y UUIDs
+sudo blkid
+lsblk -f
+
+# Montar por UUID
+sudo mount UUID="abc123" /mnt/punto
+
+# Crear RAID (con mdadm)
+# RAID 1:
+sudo mdadm --create /dev/md0 --level=1 --raid-devices=2 /dev/sdb1 /dev/sdc1
+
+# Ver estado RAID
+cat /proc/mdstat
+
+# Guardar configuración RAID
+sudo mdadm --detail --scan >> /etc/mdadm/mdadm.conf
+</pre>
+
+            <h3>Ejercicio práctico:</h3>
+            <div class="actividad">
+                <h3>Ejercicio: Análisis de Sistema de Archivos</h3>
+                <ol>
+                    <li>Ver información del superblock con <code>dumpe2fs</code></li>
+                    <li>Examinar el archivo <code>/etc/fstab</code></li>
+                    <li>Listar puntos de montaje actuales con <code>mount</code></li>
+                    <li>Crear un punto de montaje temporal y montar/desmontar</li>
+                    <li>Diseñar un esquema RAID para un caso de uso específico</li>
+                </ol>
+            </div>
+        </section>
+
+        <section id="practica-adicional">
+            <h2>Práctica Adicional (No Evaluativa)</h2>
+            
+            <div class="callout info" style="margin-bottom: 1.5rem;">
+                <strong>Esta sección es para practicar por tu cuenta.</strong> No es un entregable ni cuenta para la nota. ¡Úsala para reforzar lo aprendido!
+            </div>
+            
+            <div class="actividad">
+                <h3>Ejercicio de Refuerzo: Explorando Sistemas de Archivos Avanzados</h3>
+                <p><strong>Objetivo:</strong> Entender conceptos avanzados de sistemas de archivos.</p>
+                
+                <h4>Actividades sugeridas:</h4>
+                <ol>
+                    <li><strong>Explora el superblock:</strong>
+                        <ul>
+                            <li>Si tienes acceso root: <code>sudo dumpe2fs /dev/sda1 | head -20</code></li>
+                            <li>OBS: Este comando muestra metadatos internos del sistema de archivos</li>
+                            <li>Busca: tamaño de bloque, número de inodos, UUID</li>
+                        </ul>
+                    </li>
+                    <li><strong>Entiende el journaling:</strong>
+                        <ul>
+                            <li>Investiga: "¿Qué es journaling en sistemas de archivos?"</li>
+                            <li>Es como un "diario" donde se anotan los cambios antes de hacerlos</li>
+                            <li>¿Por qué es importante si se corta la luz?</li>
+                        </ul>
+                    </li>
+                    <li><strong>Revisa tus montajes:</strong>
+                        <ul>
+                            <li>Ejecuta <code>cat /etc/fstab</code></li>
+                            <li>Cada línea representa un disco o partición que se monta al iniciar</li>
+                            <li>Identifica cuál es tu disco principal</li>
+                        </ul>
+                    </li>
+                    <li><strong>Aprende sobre RAID:</strong>
+                        <ul>
+                            <li>Busca: "RAID 0 vs RAID 1 vs RAID 5"</li>
+                            <li>Crea una tabla comparando velocidad y seguridad</li>
+                            <li>¿Cuál usarías para guardar fotos familiares?</li>
+                        </ul>
+                    </li>
+                </ol>
+
+                <div class="callout success">
+                    <strong>Consejo:</strong> Estos conceptos avanzados son fundamentales si algún día trabajas con servidores o administración de sistemas. Tómate tu tiempo para entenderlos.
+                </div>
+            </div>
+        </section>
+
+        <!-- Actividad -->
+        <section id="actividad">
+            <h2>Actividad Práctica: Persistencia de Montaje</h2>
+
+            <section class="actividad">
+                <h3>Actividad 13: Configuración de fstab</h3>
+                <p><strong>Tipo:</strong> Avance para Fase 5 (E5)</p>
+                <p><strong>Objetivo:</strong> Asegurar que los discos adicionales se monten automáticamente al reiniciar.</p>
+                <p><strong>Pasos:</strong></p>
+                <ol>
+                    <li>Usa <code>blkid</code> para encontrar el UUID de una partición</li>
+                    <li>Edita el archivo <code>/etc/fstab</code> (con cuidado y respaldo)</li>
+                    <li>Agrega la línea correspondiente para montar la partición en <code>/mnt/datos</code></li>
+                    <li>Prueba con <code>sudo mount -a</code> para verificar que no haya errores</li>
+                </ol>
+                <p><strong>Entregable:</strong> Captura de pantalla de tu archivo <code>/etc/fstab</code> configurado para tu informe de la Fase 5.</p>
+            </section>
+        </section>
+
+        <section id="resumen">
+            <h2>Resumen</h2>
+            <table>
+                <tr><th>Concepto</th><th>Descripción</th></tr>
+                <tr><td>Superblock</td><td>Metadatos principales del FS</td></tr>
+                <tr><td>Journaling</td><td>Registro de cambios para recuperación</td></tr>
+                <tr><td>Montaje</td><td>Conectar FS a jerarquía de directorios</td></tr>
+                <tr><td>fstab</td><td>Configuración de montajes persistentes</td></tr>
+                <tr><td>RAID 0</td><td>Striping - velocidad sin redundancia</td></tr>
+                <tr><td>RAID 1</td><td>Mirroring - redundancia completa</td></tr>
+                <tr><td>RAID 5</td><td>Striping con paridad distribuida</td></tr>
+            </table>
+
+            <h3>Próxima Clase</h3>
+            <p><strong>Clase 14: Servidor Web IIS</strong></p>
+
+            <ul>
+                <li>Autenticación y autorización</li>
+                <li>Control de acceso</li>
+                <li>Seguridad en Linux</li>
+                <li>SELinux y AppArmor</li>
+            </ul>
+        </section>
+
+        <!-- Navigation between classes -->
+        <nav class="class-nav" aria-label="Navegación entre clases">
+            <a href="clase-12.html" class="class-nav-link prev">
+                <span class="class-nav-icon">←</span>
+                <div>
+                    <div class="nav-label">Clase Anterior</div>
+                    <div class="nav-title">Sistemas de Archivos</div>
+                    <div class="class-nav-date">📅 18 Mar 2026</div>
+                </div>
+            </a>
+            <a href="clase-14.html" class="class-nav-link next">
+                <div>
+                    <div class="nav-label">Siguiente Clase</div>
+                    <div class="nav-title">Servidor Web IIS</div>
+                    <div class="class-nav-date">📅 08 Abr 2026</div>
+                </div>
+                <span class="class-nav-icon">→</span>
+            </a>
+        </nav>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>📅 08 de Abril 2026 | Sesion Miercoles: 6:00-8:00 AM | Teoria: 60 min + Practica: 60 min</p>
+
+            <p style="margin-top: 10px;">
+                <a href="index.html">Inicio</a> |
+                <a href="cronograma.html">Cronograma</a> |
+                <a href="evaluaciones.html" style="color: #8b5cf6;">Evaluaciones</a> |
+                <a href="rubricas.html">Rubricas</a>
+            </p>
+        </div>
+    </footer>
+</body>
+</html>
