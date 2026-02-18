@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guía del Proyecto | IF0099 - Sistemas Operativos I</title>
+    <title>Guía del Proyecto UCS | IF0099 - Sistemas Operativos I</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -90,17 +90,31 @@
             margin: 20px 0;
         }
         .success-box h4 { color: #065f46; margin-bottom: 10px; }
+        .warning-box {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-left: 4px solid #f59e0b;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .warning-box h4 { color: #92400e; margin-bottom: 10px; }
         .phase-card {
             background: #f8f9fa;
             border-radius: 12px;
             padding: 25px;
             margin: 20px 0;
-            border-left: 5px solid #8b5cf6;
+            border-left: 5px solid;
         }
+        .phase-card.e1 { border-left-color: #10b981; }
+        .phase-card.e2 { border-left-color: #3b82f6; }
+        .phase-card.e3 { border-left-color: #8b5cf6; }
+        .phase-card.e4 { border-left-color: #f59e0b; }
+        .phase-card.e5 { border-left-color: #ef4444; }
+        .phase-card.e6 { border-left-color: #1e3a5f; }
         .phase-card h4 {
-            color: #6d28d9;
             font-size: 1.3em;
             margin-bottom: 15px;
+            color: #1e3a5f;
         }
         .phase-meta {
             display: flex;
@@ -113,8 +127,17 @@
             padding: 8px 15px;
             border-radius: 6px;
             font-size: 0.9em;
+            border: 1px solid #e5e7eb;
         }
         .phase-meta-item strong { color: #1e3a5f; }
+        .phase-classes {
+            background: #eff6ff;
+            padding: 10px 15px;
+            border-radius: 6px;
+            margin: 10px 0;
+            font-size: 0.9em;
+        }
+        .phase-classes strong { color: #1e40af; }
         ul, ol { margin-left: 1.5rem; margin-bottom: 1rem; }
         li { margin-bottom: 0.5rem; }
         .entregable {
@@ -125,6 +148,34 @@
             border-left: 3px solid #10b981;
         }
         .entregable strong { color: #065f46; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 0.95rem;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        th {
+            background: #f9fafb;
+            font-weight: 600;
+            color: #374151;
+        }
+        tr:hover { background: #f9fafb; }
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-right: 5px;
+        }
+        .badge-ra { background: #e0e7ff; color: #3730a3; }
+        .badge-clase { background: #dcfce7; color: #166534; }
+        .badge-eval { background: #fef3c7; color: #92400e; }
         footer {
             background: white;
             border-radius: 15px;
@@ -140,13 +191,14 @@
 <body>
     <div class="container">
         <header>
-            <h1>📘 Guía del Proyecto</h1>
-            <p class="subtitle">Administración de Servidores Linux/Windows</p>
+            <h1>📘 Guía del Proyecto UCS</h1>
+            <p class="subtitle">Administración de Servidores Linux/Windows - Modelo PANDORA</p>
             <div class="project-badge">Proyecto Integrador - 6 Fases</div>
             
             <div class="nav-links">
                 <a href="concertacion.html">← Acta de Concertación</a>
-                <a href="evaluaciones.html">Evaluaciones</a>
+                <a href="evaluaciones.html">Evaluaciones Detalladas</a>
+                <a href="cronograma.html">Cronograma</a>
                 <a href="rubricas.html">Rúbricas</a>
             </div>
         </header>
@@ -155,13 +207,13 @@
             <h2>🏢 El Caso de Negocio: "UNAULA Cloud Services (UCS)"</h2>
             
             <div class="info-box">
-                <h4>Contexto</h4>
+                <h4>🎯 Contexto del Proyecto</h4>
                 <p>Usted ha sido contratado como <strong>Ingeniero de Infraestructura</strong> para la startup UCS. La empresa necesita desplegar un entorno de servidores locales robusto para hospedar las aplicaciones de sus clientes internos.</p>
                 <p><strong>Su misión:</strong> Construir desde cero un entorno de servidores (Linux y Windows) que sea monitoreable, optimizado, seguro y escalable, utilizando exclusivamente <strong>VirtualBox</strong> como plataforma de virtualización.</p>
             </div>
 
             <div class="success-box">
-                <h4>Requerimientos Técnicos Base</h4>
+                <h4>✅ Requerimientos Técnicos Base</h4>
                 <ul>
                     <li><strong>Hipervisor:</strong> VirtualBox 7.x</li>
                     <li><strong>Nodo Linux:</strong> Ubuntu Server 22.04 LTS (Sin GUI)</li>
@@ -169,153 +221,398 @@
                     <li><strong>Red:</strong> Configuración de Adaptador Puente (Bridge) para visibilidad externa</li>
                 </ul>
             </div>
+
+            <div class="warning-box">
+                <h4>📊 Modelo de Evaluación</h4>
+                <p>Este curso implementa un <strong>proyecto incremental de 6 fases</strong> donde cada evaluación corresponde a un resultado de aprendizaje PANDORA. Las evaluaciones son <strong>100% prácticas</strong> - no hay exámenes teóricos de memorización.</p>
+            </div>
         </section>
 
         <section class="section">
             <h2>🎯 Objetivo del Proyecto</h2>
             
             <div class="info-box">
-                <h4>Propósito</h4>
-                <p>Diseñar, implementar y asegurar una <strong>infraestructura de servidores híbrida</strong> (Linux + Windows) para una empresa ficticia, aplicando todos los conceptos del curso de forma incremental.</p>
+                <h4>🎯 Propósito</h4>
+                <p>Diseñar, implementar y asegurar una <strong>infraestructura de servidores híbrida</strong> (Linux + Windows) para una empresa ficticia, aplicando todos los conceptos del curso de forma incremental y demostrando competencias reales de administración de sistemas.</p>
             </div>
 
             <div class="success-box">
-                <h4>Producto Final</h4>
-                <p>Al finalizar el curso, tendrás un <strong>portafolio profesional</strong> con:</p>
+                <h4>🎓 Producto Final</h4>
+                <p>Al finalizar el curso, tendrás un <strong>portafolio profesional</strong> que demuestra:</p>
                 <ul>
                     <li>Servidores Linux y Windows configurados y funcionando</li>
-                    <li>Servicios web desplegados (Apache + IIS)</li>
-                    <li>Sistema de monitoreo en funcionamiento</li>
-                    <li>Documentación técnica completa</li>
-                    <li>Scripts de automatización funcionales</li>
+                    <li>Servicios web desplegados (Apache + IIS) con HTTPS</li>
+                    <li>Sistema de monitoreo automatizado en funcionamiento</li>
+                    <li>Almacenamiento redundante (RAID/Storage Spaces)</li>
+                    <li>Documentación técnica completa de infraestructura</li>
+                    <li>Scripts de automatización funcionales (Bash + PowerShell)</li>
+                    <li>Sistema asegurado con hardening aplicado</li>
                 </ul>
             </div>
         </section>
 
         <section class="section">
-            <h2>🗓️ Fases del Proyecto</h2>
+            <h2>🗓️ Las 6 Fases del Proyecto UCS</h2>
+            <p style="margin-bottom: 20px;">Cada fase corresponde a una evaluación y está alineada con un <strong>Resultado de Aprendizaje (RA)</strong> del sistema PANDORA:</p>
 
-            <div class="phase-card">
-                <h4>FASE 1: Diseño y Arquitectura (E1 - 15%)</h4>
+            <div class="phase-card e1">
+                <h4>🚀 FASE 1: Fundamentos y Arquitectura (E1) - 15%</h4>
                 <div class="phase-meta">
-                    <div class="phase-meta-item"><strong>Fecha:</strong> 25 Febrero</div>
-                    <div class="phase-meta-item"><strong>Formato:</strong> PDF (Máx 5 págs)</div>
+                    <div class="phase-meta-item"><strong>Fecha:</strong> 25 Febrero 2026</div>
+                    <div class="phase-meta-item"><strong>RA:</strong> RA1 - Identifica estructura y tipos de SO</div>
+                    <div class="phase-meta-item"><strong>Tipo:</strong> Informe PDF</div>
                 </div>
-                <p><strong>Objetivo:</strong> Diseñar la base lógica del sistema.</p>
+                <div class="phase-classes">
+                    <strong>Clases que alimentan esta fase:</strong> 
+                    <span class="badge badge-clase">C01</span> Intro al SO
+                    <span class="badge badge-clase">C02</span> Linux Terminal
+                    <span class="badge badge-clase">C04</span> Kernel & Shell
+                </div>
+                <p><strong>Objetivo:</strong> Establecer la base técnica del proyecto. Configurar el entorno de virtualización profesional donde las máquinas virtuales se vean entre sí.</p>
                 <div class="entregable">
-                    <strong>Checklist de Entrega:</strong>
+                    <strong>📋 Entregables Checklist:</strong>
                     <ul>
-                        <li>Diagrama de red local (IPs estáticas asignadas a cada VM)</li>
-                        <li>Tabla comparativa de Sistemas Operativos para el caso UCS</li>
-                        <li>Justificación de hardware asignado en VirtualBox (RAM, CPU, Disco)</li>
+                        <li>Diagrama de red local con IPs estáticas asignadas a cada VM</li>
+                        <li>Tabla comparativa de Sistemas Operativos (Linux vs Windows vs macOS)</li>
+                        <li>Justificación técnica de hardware asignado (RAM, CPU, Disco)</li>
                         <li>Instalación base documentada con captura de <code>uname -a</code> y <code>systeminfo</code></li>
+                        <li>Evidencia de conectividad (ping entre VMs funcionando)</li>
                     </ul>
                 </div>
             </div>
 
-            <div class="phase-card">
-                <h4>Fase 2: Monitoreo y Automatización (E2 - 15%)</h4>
+            <div class="phase-card e2">
+                <h4>⚙️ FASE 2: Procesos y Monitoreo (E2) - 15%</h4>
                 <div class="phase-meta">
-                    <div class="phase-meta-item"><strong>Fecha:</strong> 11 Marzo</div>
-                    <div class="phase-meta-item"><strong>Formato:</strong> Scripts + PDF (Máx 5 págs)</div>
+                    <div class="phase-meta-item"><strong>Fecha:</strong> 11 Marzo 2026</div>
+                    <div class="phase-meta-item"><strong>RA:</strong> RA2 - Gestiona procesos del SO</div>
+                    <div class="phase-meta-item"><strong>Tipo:</strong> Scripts + Video</div>
                 </div>
-                <p><strong>Objetivo:</strong> Implementar visibilidad operativa sobre el sistema.</p>
+                <div class="phase-classes">
+                    <strong>Clases que alimentan esta fase:</strong> 
+                    <span class="badge badge-clase">C05</span> Procesos Linux
+                    <span class="badge badge-clase">C06</span> Procesos Windows
+                    <span class="badge badge-clase">C07</span> Hilos y Sincronización
+                </div>
+                <p><strong>Objetivo:</strong> Implementar visibilidad operativa. Como ingeniero, no debes entrar a la VM para saber que algo falló; el sistema debe avisarte automáticamente.</p>
                 <div class="entregable">
-                    <strong>Checklist de Entrega:</strong>
+                    <strong>📋 Entregables Checklist:</strong>
                     <ul>
-                        <li>Script Bash (Linux) que reporte CPU, RAM y Procesos críticos</li>
-                        <li>Script PowerShell (Windows) que alerte sobre servicios detenidos</li>
-                        <li>Configuración de alias y atajos de terminal para administración rápida</li>
-                        <li>Video demostrando el monitoreo en tiempo real (Screencast)</li>
+                        <li>Script Bash (<code>monitor.sh</code>) que reporte CPU, RAM y alerte si CPU &gt; 80%</li>
+                        <li>Script PowerShell (<code>services.ps1</code>) que vigile el servicio Spooler y lo reinicie si se detiene</li>
+                        <li>Configuración de ejecución automática (systemd en Linux, Scheduled Task en Windows)</li>
+                        <li>Video demostrando el monitoreo en tiempo real (máx 5 min)</li>
+                        <li>Bitácora de pruebas con errores encontrados y soluciones</li>
                     </ul>
                 </div>
             </div>
 
-            <div class="phase-card">
-                <h4>Fase 3: Checkpoint Optimización (E3 - 20%)</h4>
+            <div class="phase-card e3">
+                <h4>🔬 FASE 3: Laboratorio de Optimización (E3) - 20%</h4>
                 <div class="phase-meta">
-                    <div class="phase-meta-item"><strong>Fecha:</strong> 25 Marzo</div>
-                    <div class="phase-meta-item"><strong>Tipo:</strong> Checkpoint Práctico</div>
-                    <div class="phase-meta-item"><strong>Eval:</strong> E3</div>
+                    <div class="phase-meta-item"><strong>Fecha:</strong> 25 Marzo 2026</div>
+                    <div class="phase-meta-item"><strong>RA:</strong> RA3 - Administra memoria, E/S, archivos</div>
+                    <div class="phase-meta-item"><strong>Tipo:</strong> Laboratorio Individual</div>
                 </div>
-                <p><strong>Objetivo:</strong> Evaluar comprensión de Memoria, E/S, Procesos y Sincronización antes de Semana Santa.</p>
+                <div class="phase-classes">
+                    <strong>Clases que alimentan esta fase:</strong> 
+                    <span class="badge badge-clase">C03</span> Cambio de Contexto
+                    <span class="badge badge-clase">C08</span> Gestión de Memoria
+                    <span class="badge badge-clase">C09</span> Paginación
+                    <span class="badge badge-clase">C10</span> Memoria Virtual
+                    <span class="badge badge-clase">C11</span> Discos y E/S
+                    <span class="badge badge-clase">C12</span> Sistemas de Archivos
+                </div>
+                <p><strong>Objetivo:</strong> Evaluar capacidad de resolver problemas de rendimiento bajo presión. Checkpoint práctico antes de Semana Santa.</p>
+                <div class="warning-box" style="margin: 15px 0;">
+                    <strong>⚠️ Importante:</strong> Es un <strong>laboratorio individual</strong> con 5 escenarios técnicos reales proporcionados el día de la sesión. No incluye temas avanzados de sistemas de archivos (RAID, Journaling) - esos van en Fase 5.
+                </div>
                 <div class="entregable">
-                    <strong>Alcance del Checkpoint:</strong>
+                    <strong>📋 Entregables Checklist:</strong>
                     <ul>
-                        <li><strong>Incluye:</strong> Memoria, Paginación, E/S, Procesos, Sincronización</li>
-                        <li><strong>Incluye:</strong> Sistemas de Archivos básico (C12: inodos, permisos, ext4/NTFS)</li>
-                        <li><strong>NO incluye:</strong> Journaling, RAID, fstab (se evalúa en Fase 5)</li>
-                        <li>Análisis de escenarios prácticos con enfoque en resolución de problemas</li>
-                        <li>Sin memorización - evalúa comprensión y aplicación</li>
+                        <li>PDF de Análisis Forense con 5 escenarios resueltos</li>
+                        <li>Cada escenario debe incluir: Problema identificado + Datos que lo prueban + Solución aplicada + Captura del resultado</li>
+                        <li>Ejemplos de escenarios: Memory Pressure (fugas de memoria), I/O Bottleneck (cuellos de botella), Forense de archivos (inodos huérfanos)</li>
                     </ul>
                 </div>
             </div>
 
-            <div class="phase-card">
-                <h4>Fase 4: Hardening y Seguridad (E4 - 15%)</h4>
+            <div class="phase-card e4">
+                <h4>🔒 FASE 4: Seguridad y Hardening (E4) - 15%</h4>
                 <div class="phase-meta">
-                    <div class="phase-meta-item"><strong>Fecha:</strong> 22 Abril</div>
-                    <div class="phase-meta-item"><strong>Tema:</strong> Aseguramiento UCS</div>
+                    <div class="phase-meta-item"><strong>Fecha:</strong> 22 Abril 2026</div>
+                    <div class="phase-meta-item"><strong>RA:</strong> RA4 - Evalúa seguridad de SO</div>
+                    <div class="phase-meta-item"><strong>Tipo:</strong> Software/Auditoría</div>
                 </div>
-                <p><strong>Objetivo:</strong> Convertir el sistema funcional en un sistema seguro.</p>
+                <div class="phase-classes">
+                    <strong>Clases que alimentan esta fase:</strong> 
+                    <span class="badge badge-clase">C15</span> Seguridad Linux
+                    <span class="badge badge-clase">C16</span> Seguridad Windows
+                    <span class="badge badge-clase">C17</span> Servidor Apache (puente de seguridad)
+                </div>
+                <p><strong>Objetivo:</strong> Transformar el sistema de "funcional" a "seguro y a prueba de ataques". Aplicar hardening en ambos sistemas operativos.</p>
                 <div class="entregable">
-                    <strong>Checklist de Entrega:</strong>
+                    <strong>📋 Entregables Checklist:</strong>
                     <ul>
-                        <li>Matriz de Riesgos (Manejo de contraseñas, accesos no autorizados, fallos de hardware)</li>
-                        <li>Configuración de ACLs granulares en directorios de datos</li>
-                        <li>Reglas de Firewall (iptables/ufw en Linux y Advanced Firewall en Windows)</li>
+                        <li>Matriz de Riesgos con mínimo 8 vulnerabilidades identificadas y su mitigación técnica</li>
+                        <li>Configuración de Firewall (UFW en Linux, Windows Firewall) con reglas específicas</li>
+                        <li>ACLs (Access Control Lists) granulares en directorios de datos</li>
                         <li>Evidencia de desactivación de servicios innecesarios</li>
+                        <li>Reporte de auditoría con capturas de configuraciones aplicadas</li>
                     </ul>
                 </div>
             </div>
 
-            <div class="phase-card">
-                <h4>Fase 5: Servicios Web Integrados (E5 - 15%) 🚀</h4>
+            <div class="phase-card e5">
+                <h4>🌐 FASE 5: Integración de Servicios (E5) - 15%</h4>
                 <div class="phase-meta">
-                    <div class="phase-meta-item"><strong>Fecha:</strong> 06 Mayo</div>
-                    <div class="phase-meta-item"><strong>Hito:</strong> Producción</div>
+                    <div class="phase-meta-item"><strong>Fecha:</strong> 06 Mayo 2026</div>
+                    <div class="phase-meta-item"><strong>RA:</strong> RA5 - Comprende integración de conceptos</div>
+                    <div class="phase-meta-item"><strong>Tipo:</strong> Software/Integración</div>
                 </div>
-                <p><strong>Objetivo:</strong> Poner a UCS a servir contenido web real.</p>
+                <div class="phase-classes">
+                    <strong>Clases que alimentan esta fase:</strong> 
+                    <span class="badge badge-clase">C13</span> RAID, Journaling, fstab
+                    <span class="badge badge-clase">C14</span> Servidor IIS
+                    <span class="badge badge-clase">C17</span> Apache y SSL
+                    <span class="badge badge-clase">C18</span> Interoperabilidad Híbrida
+                </div>
+                <p><strong>Objetivo:</strong> Puesta en marcha definitiva. Los nodos Linux y Windows deben colaborar para servir la aplicación web UCS, con almacenamiento redundante y monitoreo end-to-end.</p>
+                <div class="info-box" style="margin: 15px 0;">
+                    <strong>📌 Integración de Temas Avanzados:</strong> Esta fase incluye temas de sistemas de archivos avanzados de <strong>C13 (RAID, Journaling, fstab)</strong> junto con la integración de servicios web.
+                </div>
                 <div class="entregable">
-                    <strong>Checklist de Entrega:</strong>
+                    <strong>📋 Entregables Checklist:</strong>
                     <ul>
-                        <li>Servidor Apache con Virtual Host y HTTPS (Certificado auto-firmado)</li>
-                        <li>Servidor IIS con Application Pool dedicado y sitio funcional</li>
-                        <li>Persistencia de almacenamiento avanzada (Configuración de <code>/etc/fstab</code>)</li>
-                        <li>Dashboard de integración (un script final que valide que todo lo anterior sigue vivo)</li>
+                        <li>Servidor Apache (Linux) con Virtual Host y HTTPS (certificado SSL auto-firmado)</li>
+                        <li>Servidor IIS (Windows) con Application Pool dedicado y sitio funcional</li>
+                        <li>Almacenamiento redundante: <strong>RAID 1</strong> configurado en Linux + <strong>Storage Spaces</strong> en Windows</li>
+                        <li>Persistencia de montaje: Configuración de <code>/etc/fstab</code> para montajes automáticos</li>
+                        <li>Interoperabilidad: Compartición de recursos entre Linux y Windows (Samba/SMB)</li>
+                        <li>Dashboard de integración: Script que verifique que todo funciona</li>
+                        <li>Video de redundancia: Demostración de que el sistema sigue funcionando tras "fallar" un disco del RAID</li>
                     </ul>
                 </div>
             </div>
 
-            <div class="phase-card">
-                <h4>Fase 6: Sustentación y Portafolio Final (E6 - 20%) 🎓</h4>
+            <div class="phase-card e6">
+                <h4>🎓 FASE 6: Sustentación Final (E6) - 20%</h4>
                 <div class="phase-meta">
-                    <div class="phase-meta-item"><strong>Fecha:</strong> 27 Mayo</div>
-                    <div class="phase-meta-item"><strong>Formato:</strong> Portafolio Consolidado</div>
+                    <div class="phase-meta-item"><strong>Fecha:</strong> 27 Mayo 2026</div>
+                    <div class="phase-meta-item"><strong>RA:</strong> RA6 - Estudia interfaces del SO</div>
+                    <div class="phase-meta-item"><strong>Tipo:</strong> Presentación/Sustentación Oral</div>
                 </div>
-                <p><strong>Objetivo:</strong> Demostrar maestría sobre el sistema construido durante el semestre.</p>
+                <div class="phase-classes">
+                    <strong>Clases que alimentan esta fase:</strong> 
+                    <span class="badge badge-clase">C19</span> Documentación Técnica
+                    <span class="badge badge-clase">C20</span> SRE y QA
+                </div>
+                <p><strong>Objetivo:</strong> Defensa profesional de la ingeniería realizada durante el semestre. Demostrar dominio del sistema UCS completo ante el grupo.</p>
                 <div class="entregable">
-                    <strong>Componentes Finales:</strong>
+                    <strong>📋 Entregables Checklist:</strong>
                     <ul>
-                        <li><strong>Portafolio Ejecutivo:</strong> Un único PDF (máximo 15-20 págs) que recopile las Fases 1 a 5 ya corregidas.</li>
-                        <li><strong>Pitch Técnico:</strong> Presentación corta (máximo 8 diapositivas) enfocada en la demo funcional.</li>
-                        <li><strong>Sustentación:</strong> Defensa oral del proyecto ante el grupo (15-20 min).</li>
-                        <li><strong>Demo en Vivo:</strong> El docente solicitará cambios en tiempo real para verificar conocimientos.</li>
+                        <li><strong>Portafolio Ejecutivo:</strong> PDF único (máx 20 págs) consolidando Fases 1-5 con correcciones</li>
+                        <li><strong>Pitch Técnico:</strong> Presentación máximo 8 diapositivas (arquitectura, retos, seguridad, demo)</li>
+                        <li><strong>Live Demo:</strong> Demostración en vivo del sistema completo funcionando</li>
+                        <li><strong>Repositorio Git:</strong> Link a GitHub/GitLab con todo el código organizado</li>
+                        <li><strong>Manual Técnico:</strong> Guía para administrar el sistema</li>
+                        <li><strong>Manual de Operación:</strong> Procedimientos rutinarios</li>
+                    </ul>
+                </div>
+                <div class="info-box" style="margin-top: 15px;">
+                    <strong>⏱️ Estructura de la Sustentación (20-25 minutos):</strong>
+                    <ul style="margin-top: 10px;">
+                        <li>Pitch Técnico: 5 minutos</li>
+                        <li>Demo Servidores Web: 5 minutos</li>
+                        <li>Demo Monitoreo: 5 minutos</li>
+                        <li>Tareas en Vivo (solicitadas por docente): 5-8 minutos</li>
+                        <li>Preguntas y Defensa: 5 minutos</li>
                     </ul>
                 </div>
             </div>
-
         </section>
 
         <section class="section">
-            <h2>🧭 Especificación Operativa del Proyecto (Qué y Cómo)</h2>
+            <h2>🧭 Matriz de Trazabilidad: Clases → RAs → Evaluaciones</h2>
+            <p style="margin-bottom: 20px;">Esta tabla muestra cómo cada clase contribuye a un Resultado de Aprendizaje y a qué evaluación alimenta:</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Clase</th>
+                        <th>Tema</th>
+                        <th>RA</th>
+                        <th>Fase</th>
+                        <th>Evidencia Esperada</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>C01</strong></td>
+                        <td>¿Qué es un SO?</td>
+                        <td><span class="badge badge-ra">RA1</span></td>
+                        <td><span class="badge badge-eval">E1</span></td>
+                        <td>Fundamentos del caso y alcance técnico</td>
+                    </tr>
+                    <tr>
+                        <td><strong>C02</strong></td>
+                        <td>Linux Terminal</td>
+                        <td><span class="badge badge-ra">RA1</span></td>
+                        <td><span class="badge badge-eval">E1</span></td>
+                        <td>Comandos base y evidencia en VM</td>
+                    </tr>
+                    <tr>
+                        <td><strong>C03</strong></td>
+                        <td>Cambio de Contexto</td>
+                        <td><span class="badge badge-ra">RA3</span></td>
+                        <td><span class="badge badge-eval">E3</span></td>
+                        <td>Análisis de estados y scheduling</td>
+                    </tr>
+                    <tr>
+                        <td><strong>C04</strong></td>
+                        <td>Kernel & Shell</td>
+                        <td><span class="badge badge-ra">RA1</span></td>
+                        <td><span class="badge badge-eval">E1</span></td>
+                        <td>Kernel, Shell y System Calls</td>
+                    </tr>
+                    <tr>
+                        <td><strong>C05</strong></td>
+                        <td>Procesos Linux</td>
+                        <td><span class="badge badge-ra">RA2</span></td>
+                        <td><span class="badge badge-eval">E2</span></td>
+                        <td>Monitoreo y control Linux</td>
+                    </tr>
+                    <tr>
+                        <td><strong>C06</strong></td>
+                        <td>Procesos Windows</td>
+                        <td><span class="badge badge-ra">RA2</span></td>
+                        <td><span class="badge badge-eval">E2</span></td>
+                        <td>Gestión de servicios Windows</td>
+                    </tr>
+                    <tr>
+                        <td><strong>C07</strong></td>
+                        <td>Hilos y Sincronización</td>
+                        <td><span class="badge badge-ra">RA3</span></td>
+                        <td><span class="badge badge-eval">E3</span></td>
+                        <td>Condiciones de carrera y bloqueos</td>
+                    </tr>
+                    <tr>
+                        <td><strong>C08</strong></td>
+                        <td>Gestión de Memoria</td>
+                        <td><span class="badge badge-ra">RA3</span></td>
+                        <td><span class="badge badge-eval">E3</span></td>
+                        <td>Jerarquía y asignación de RAM</td>
+                    </tr>
+                    <tr>
+                        <td><strong>C09</strong></td>
+                        <td>Paginación</td>
+                        <td><span class="badge badge-ra">RA3</span></td>
+                        <td><span class="badge badge-eval">E3</span></td>
+                        <td>Tablas de páginas y MMU</td>
+                    </tr>
+                    <tr>
+                        <td><strong>C10</strong></td>
+                        <td>Memoria Virtual</td>
+                        <td><span class="badge badge-ra">RA3</span></td>
+                        <td><span class="badge badge-eval">E3</span></td>
+                        <td>Swapping y algoritmos de reemplazo</td>
+                    </tr>
+                    <tr>
+                        <td><strong>C11</strong></td>
+                        <td>Discos y E/S</td>
+                        <td><span class="badge badge-ra">RA3</span></td>
+                        <td><span class="badge badge-eval">E3</span></td>
+                        <td>Gestión de Discos y DMA</td>
+                    </tr>
+                    <tr>
+                        <td><strong>C12</strong></td>
+                        <td>Sistemas de Archivos</td>
+                        <td><span class="badge badge-ra">RA3</span></td>
+                        <td><span class="badge badge-eval">E3</span></td>
+                        <td>Inodos y permisos básicos</td>
+                    </tr>
+                    <tr>
+                        <td><strong>C13</strong></td>
+                        <td>RAID, Journaling, fstab</td>
+                        <td><span class="badge badge-ra">RA5</span></td>
+                        <td><span class="badge badge-eval">E5</span></td>
+                        <td>RAID configurado, fstab funcional</td>
+                    </tr>
+                    <tr>
+                        <td><strong>C14</strong></td>
+                        <td>Servidor IIS</td>
+                        <td><span class="badge badge-ra">RA5</span></td>
+                        <td><span class="badge badge-eval">E5</span></td>
+                        <td>Servicio web Windows funcionando</td>
+                    </tr>
+                    <tr>
+                        <td><strong>C15</strong></td>
+                        <td>Seguridad Linux</td>
+                        <td><span class="badge badge-ra">RA4</span></td>
+                        <td><span class="badge badge-eval">E4</span></td>
+                        <td>Hardening y ACLs Linux</td>
+                    </tr>
+                    <tr>
+                        <td><strong>C16</strong></td>
+                        <td>Seguridad Windows</td>
+                        <td><span class="badge badge-ra">RA4</span></td>
+                        <td><span class="badge badge-eval">E4</span></td>
+                        <td>Hardening y Auditoría Windows</td>
+                    </tr>
+                    <tr>
+                        <td><strong>C17</strong></td>
+                        <td>Apache y SSL</td>
+                        <td><span class="badge badge-ra">RA5</span></td>
+                        <td><span class="badge badge-eval">E5</span></td>
+                        <td>Servicio web Linux con HTTPS</td>
+                    </tr>
+                    <tr>
+                        <td><strong>C18</strong></td>
+                        <td>Interoperabilidad</td>
+                        <td><span class="badge badge-ra">RA5</span></td>
+                        <td><span class="badge badge-eval">E5</span></td>
+                        <td>SMB/CIFS funcionando</td>
+                    </tr>
+                    <tr>
+                        <td><strong>C19</strong></td>
+                        <td>Documentación</td>
+                        <td><span class="badge badge-ra">RA6</span></td>
+                        <td><span class="badge badge-eval">E6</span></td>
+                        <td>Manuales técnicos profesionales</td>
+                    </tr>
+                    <tr>
+                        <td><strong>C20</strong></td>
+                        <td>SRE y QA</td>
+                        <td><span class="badge badge-ra">RA6</span></td>
+                        <td><span class="badge badge-eval">E6</span></td>
+                        <td>Pruebas de estrés, pitch técnico</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="success-box" style="margin-top: 20px;">
+                <h4>✅ Validación de Coherencia</h4>
+                <ul>
+                    <li><strong>E1</strong> se apoya en C01, C02, C04 (Fundamentos)</li>
+                    <li><strong>E2</strong> se apoya en C05, C06, C07 (Procesos)</li>
+                    <li><strong>E3</strong> se apoya en C03, C08, C09, C10, C11, C12 (Memoria/E/S)</li>
+                    <li><strong>E4</strong> se apoya en C15, C16 (Seguridad)</li>
+                    <li><strong>E5</strong> se apoya en C13, C14, C17, C18 (Integración + Sist. Archivos avanzado)</li>
+                    <li><strong>E6</strong> integra C19, C20 y todo el conocimiento previo</li>
+                </ul>
+                <p style="margin-top: 10px;"><strong>La secuencia mantiene continuidad incremental</strong> y evidencia progresiva hasta la sustentación final.</p>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>🧭 Especificación Operativa del Proyecto</h2>
 
             <div class="info-box">
-                <h4>Regla de ejecución por fase</h4>
-                <p>Cada fase se evalúa con evidencia verificable en laboratorio. No basta con describir: se debe <strong>demostrar</strong> en Linux/Windows con comandos, scripts y resultados reproducibles.</p>
+                <h4>📌 Regla de ejecución por fase</h4>
+                <p>Cada fase se evalúa con <strong>evidencia verificable en laboratorio</strong>. No basta con describir: se debe <strong>demostrar</strong> en Linux/Windows con comandos, scripts y resultados reproducibles.</p>
             </div>
 
-            <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+            <table>
                 <thead>
                     <tr style="background: #1e3a5f; color: white;">
                         <th style="padding: 12px; text-align: left;">Fase</th>
@@ -351,7 +648,7 @@
                     </tr>
                     <tr>
                         <td style="padding: 12px; border-bottom: 1px solid #ddd;"><strong>E5</strong></td>
-                        <td style="padding: 12px; border-bottom: 1px solid #ddd;">Integrar Apache + IIS, almacenamiento avanzado (C13) y monitoreo end-to-end.</td>
+                        <td style="padding: 12px; border-bottom: 1px solid #ddd;">Integrar Apache + IIS, almacenamiento avanzado (RAID/fstab de C13) y monitoreo end-to-end.</td>
                         <td style="padding: 12px; border-bottom: 1px solid #ddd;">Servicios web accesibles, scripts, reporte de integración, video técnico.</td>
                         <td style="padding: 12px; border-bottom: 1px solid #ddd;">Prueba funcional de disponibilidad, seguridad y trazabilidad operativa.</td>
                     </tr>
@@ -364,8 +661,8 @@
                 </tbody>
             </table>
 
-            <div class="success-box">
-                <h4>Criterio mínimo de aprobación por fase</h4>
+            <div class="success-box" style="margin-top: 20px;">
+                <h4>✅ Criterio mínimo de aprobación por fase</h4>
                 <ul>
                     <li>Evidencia ejecutable y reproducible en laboratorio (no solo capturas).</li>
                     <li>Coherencia entre diseño, implementación y resultados observados.</li>
@@ -378,38 +675,38 @@
             <h2>📊 Evolución del Proyecto</h2>
             
             <div class="info-box">
-                <h4>Flujo de Trabajo</h4>
+                <h4>🔄 Flujo de Trabajo Incremental</h4>
                 <ol>
                     <li><strong>Fase 1 (E1):</strong> Diseñas la arquitectura → <em>Entregas: Diagrama + justificación</em></li>
-                    <li><strong>Fase 2 (E2):</strong> Implementas servicios → <em>Entregas: Scripts + video</em></li>
+                    <li><strong>Fase 2 (E2):</strong> Implementas monitoreo → <em>Entregas: Scripts + video</em></li>
                     <li><strong>Fase 3 (E3):</strong> Evaluación de conocimientos → <em>Checkpoint Optimización</em></li>
                     <li><strong>Fase 4 (E4):</strong> Aseguras el sistema → <em>Entregas: Hardening + auditoría</em></li>
-                    <li><strong>Fase 5 (E5):</strong> Integras servicios web → <em>Entregas: Proyecto integrado funcionando</em></li>
+                    <li><strong>Fase 5 (E5):</strong> Integras servicios web + RAID → <em>Entregas: Proyecto integrado funcionando</em></li>
                     <li><strong>Fase 6 (E6):</strong> Presentas todo → <em>Sustentación final en vivo</em></li>
                 </ol>
             </div>
 
             <div class="success-box">
-                <h4>Conexión entre Fases</h4>
+                <h4>🔗 Conexión entre Fases</h4>
                 <p>Cada fase <strong>construye</strong> sobre la anterior:</p>
                 <ul>
                     <li>Fase 2 implementa lo diseñado en Fase 1</li>
                     <li>Fase 3 valida conocimientos antes de continuar</li>
                     <li>Fase 4 protege lo construido en Fases 1-2</li>
-                    <li>Fase 5 integra TODO en un sistema funcional</li>
+                    <li>Fase 5 integra TODO en un sistema funcional + agrega RAID/fstab de C13</li>
                     <li>Fase 6 muestra el producto final profesional</li>
                 </ul>
             </div>
         </section>
 
         <section class="section">
-            <h2>✅ Cumplimiento de la Concertación</h2>
+            <h2>📅 Cumplimiento de la Concertación - Seguimientos Académicos</h2>
             
-            <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+            <table>
                 <thead>
                     <tr style="background: #1e3a5f; color: white;">
                         <th style="padding: 12px; text-align: left;">Seguimiento</th>
-                        <th style="padding: 12px; text-align: left;">Fecha</th>
+                        <th style="padding: 12px; text-align: left;">Fecha Límite</th>
                         <th style="padding: 12px; text-align: left;">Fases del Proyecto</th>
                         <th style="padding: 12px; text-align: left;">Acumulado</th>
                     </tr>
@@ -419,22 +716,31 @@
                         <td style="padding: 12px; border-bottom: 1px solid #ddd;"><strong>1° Seguimiento</strong></td>
                         <td style="padding: 12px; border-bottom: 1px solid #ddd;">27/03/2026</td>
                         <td style="padding: 12px; border-bottom: 1px solid #ddd;">Fase 1 (15%) + Fase 2 (15%) + Fase 3 (20%)</td>
-                        <td style="padding: 12px; border-bottom: 1px solid #ddd;">50%</td>
+                        <td style="padding: 12px; border-bottom: 1px solid #ddd;"><strong>50%</strong></td>
                     </tr>
                     <tr>
                         <td style="padding: 12px; border-bottom: 1px solid #ddd;"><strong>2° Seguimiento</strong></td>
                         <td style="padding: 12px; border-bottom: 1px solid #ddd;">15/05/2026</td>
                         <td style="padding: 12px; border-bottom: 1px solid #ddd;">Fase 4 (15%) + Fase 5 (15%)</td>
-                        <td style="padding: 12px; border-bottom: 1px solid #ddd;">80%</td>
+                        <td style="padding: 12px; border-bottom: 1px solid #ddd;"><strong>80%</strong></td>
                     </tr>
                     <tr>
                         <td style="padding: 12px; border-bottom: 1px solid #ddd;"><strong>3° Seguimiento</strong></td>
                         <td style="padding: 12px; border-bottom: 1px solid #ddd;">28/05/2026</td>
                         <td style="padding: 12px; border-bottom: 1px solid #ddd;">Fase 6 (20%) - Sustentación Final</td>
-                        <td style="padding: 12px; border-bottom: 1px solid #ddd;">100%</td>
+                        <td style="padding: 12px; border-bottom: 1px solid #ddd;"><strong>100%</strong></td>
                     </tr>
                 </tbody>
             </table>
+
+            <div class="warning-box" style="margin-top: 20px;">
+                <h4>⏰ Fechas Importantes</h4>
+                <ul>
+                    <li><strong>E1, E2, E3</strong> deben entregarse antes del <strong>27 de marzo</strong> (1° seguimiento)</li>
+                    <li><strong>E4, E5</strong> deben entregarse antes del <strong>15 de mayo</strong> (2° seguimiento)</li>
+                    <li><strong>E6</strong> (sustentación) es el <strong>27 de mayo</strong>, con límite de notas el 28 de mayo (3° seguimiento)</li>
+                </ul>
+            </div>
         </section>
 
         <section class="section">
@@ -442,23 +748,25 @@
             
             <div class="nav-links" style="justify-content: flex-start;">
                 <a href="concertacion.html">📋 Acta de Concertación</a>
+                <a href="evaluaciones-detallado.html">📝 Guía Detallada de Evaluaciones</a>
                 <a href="cronograma.html">📅 Cronograma Detallado</a>
-                <a href="evaluaciones.html">📝 Evaluaciones</a>
                 <a href="rubricas.html">📊 Rúbricas de Calificación</a>
             </div>
         </section>
 
         <footer>
             <p><strong>IF0099 - Sistemas Operativos I</strong></p>
-            <p>Proyecto Integrador: Administración de Servidores Linux/Windows</p>
+            <p>Proyecto Integrador UCS - Modelo PANDORA</p>
             <p style="margin-top: 15px;">
                 <a href="concertacion.html">Concertación</a> |
                 <a href="cronograma.html">Cronograma</a> |
-                <a href="evaluaciones.html">Evaluaciones</a> |
+                <a href="evaluaciones-detallado.html">Evaluaciones</a> |
                 <a href="rubricas.html">Rúbricas</a>
+            </p>
+            <p style="margin-top: 10px; font-size: 0.9em; color: #999;">
+                Sistema coherente con objetivos de aprendizaje PANDORA
             </p>
         </footer>
     </div>
 </body>
 </html>
-
