@@ -380,20 +380,25 @@ free -h
 echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab</code></pre>
 
                 <p><strong>Opción 2: Configurar swap en Windows:</strong></p>
-                <pre><code class="language-powershell"># Ver configuración actual
-cat /proc/sys/vm/swappiness
+                <pre><code class="language-powershell"># Ver configuración actual de memoria virtual
+wmic computersystem get TotalPhysicalMemory,TotalVirtualMemory
 
-# Cambiar temporalmente (hasta reinicio)
-sudo sysctl -w vm.swappiness=10
+# Ver uso actual de swap (paging file)
+Get-CimInstance Win32_PageFileUsage | Select-Object Name,CurrentUsage,PeakUsage
 
-# Verificar cambio
-sysctl vm.swappiness
+# Configurar tamaño del archivo de página (ejecutar como Admin)
+# Deshabilitar swap automático
+$computer = Get-WmiObject Win32_ComputerSystem -EnableAllPrivileges
+$computer.AutomaticManagedPagefile = $false
+$computer.Put()
 
-# Hacer permanente
-echo "vm.swappiness=10" | sudo tee -a /etc/sysctl.conf
+# Configurar tamaño fijo (ej: 4GB inicial, 8GB máximo)
+$pagefile = Get-WmiObject Win32_PageFileSetting
+$pagefile.InitialSize = 4096
+$pagefile.MaximumSize = 8192
+$pagefile.Put()
 
-# Aplicar configuración
-sudo sysctl -p</code></pre>
+# Reiniciar para aplicar cambios</code></pre>
 
                 <p><strong>Swap en SSD vs HDD:</strong></p>
                 <table style="margin: 1rem 0;">
