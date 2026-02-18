@@ -437,7 +437,7 @@
                 <h4>Entregables Requeridos (Fase 2)</h4>
                 <ul>
                     <li><strong>Script monitor.sh:</strong> Lista top 5 procesos por RAM, guarda en bitacora_procesos.txt con timestamp, reporta CPU y memoria.</li>
-                    <li><strong>Script gestionar_servicios.ps1:</strong> Verifica servicio Spooler, intenta iniciar si está detenido, verifica servicios críticos adicionales.</li>
+                    <li><strong>Script services.ps1:</strong> Verifica servicio Spooler, intenta iniciar si está detenido, verifica servicios críticos adicionales.</li>
                     <li><strong>Bitácora de Pruebas (PDF 5 pág):</strong> Código de scripts comentados, capturas de ejecución, análisis de estados R/S/Z, evidencia de cambio de prioridad nice.</li>
                     <li><strong>Video Demo (5 min):</strong> Screencast mostrando scripts funcionando y cambio de prioridad nice en tiempo real.</li>
                 </ul>
@@ -456,7 +456,7 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td class="criterio">Script Bash (monitor_procesos.sh)</td>
+                        <td class="criterio">Script Bash (monitor.sh)</td>
                         <td>Lista top 5 procesos por RAM, guarda en bitacora_procesos.txt con timestamp, reporta CPU y memoria, alerta si CPU >50%.</td>
                         <td>Script funciona pero falta timestamp, alerta de CPU o guardado en archivo.</td>
                         <td>Script con errores de sintaxis o funcionalidad incompleta.</td>
@@ -464,7 +464,7 @@
                         <td class="peso">30%</td>
                     </tr>
                     <tr>
-                        <td class="criterio">Script PowerShell (servicios.ps1)</td>
+                        <td class="criterio">Script PowerShell (services.ps1)</td>
                         <td>Verifica Spooler, intenta iniciar si está detenido, verifica servicios críticos adicionales (Windows Update, Firewall), genera reporte.</td>
                         <td>Verifica Spooler pero no inicia automáticamente o no verifica servicios adicionales.</td>
                         <td>Script con lógica incompleta o errores de ejecución.</td>
