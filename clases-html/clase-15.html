@@ -460,7 +460,7 @@
 
         <section id="objetivos">
             <h2>Objetivos de Aprendizaje</h2>
-            <p><strong>Resultado de Aprendizaje:</strong> Evalúa la seguridad de los sistemas operativos.</p>
+            <p><strong>Resultado de Aprendizaje (RA4):</strong> Evalúa la seguridad de los sistemas operativos (Alineado con Evaluación E4).</p>
             <p>Al finalizar esta clase, serás capaz de:</p>
             <ol>
                 <li><strong>Explicar</strong> el modelo de permisos UGO (User, Group, Others)</li>
@@ -470,6 +470,11 @@
                 <li><strong>Implementar</strong> ACLs para control de acceso granular</li>
                 <li><strong>Diseñar</strong> esquemas de permisos para empresas</li>
             </ol>
+
+            <div class="callout success">
+                <p class="callout-title">🖥️ Laboratorio VirtualBox</p>
+                <p>En tu máquina de <strong>VirtualBox</strong>, practicaremos el hardening del sistema configurando permisos avanzados y analizando logs de seguridad.</p>
+            </div>
 
             <div class="callout info">
                 <p class="callout-title">Glosario de Seguridad Linux</p>
@@ -927,6 +932,24 @@ getfacl confidencial.txt</code></pre>
                     <strong>Consejo:</strong> Los permisos son fundamentales para la seguridad. Practica en <code>/tmp</code> que es temporal y seguro para experimentar.
                 </div>
             </div>
+        </section>
+
+        <!-- Actividad -->
+        <section id="actividad">
+            <h2>Actividad Práctica: Hardening de Permisos</h2>
+
+            <section class="actividad">
+                <h3>Actividad 15: Listas de Control de Acceso (ACL)</h3>
+                <p><strong>Tipo:</strong> Avance para Fase 4 (E4)</p>
+                <p><strong>Objetivo:</strong> Aplicar permisos granulares que el modelo UGO estándar no permite.</p>
+                <p><strong>Pasos:</strong></p>
+                <ol>
+                    <li>Crea un archivo <code>proyecto_secreto.txt</code></li>
+                    <li>Dale permisos de lectura a un segundo usuario (que no sea el dueño ni del grupo) usando <code>setfacl -m u:nombre_usuario:r proyecto_secreto.txt</code></li>
+                    <li>Verifica con <code>getfacl proyecto_secreto.txt</code></li>
+                </ol>
+                <p><strong>Entregable:</strong> Evidencia de la ACL configurada para tu informe de seguridad de la Fase 4 (22 de Abr).</p>
+            </section>
         </section>
 
         <section id="resumen">

@@ -649,25 +649,104 @@
                 <li><a href="#objetivos">Objetivos de Aprendizaje</a></li>
                 <li><a href="#que-es-so">1. ¿Qué es un Sistema Operativo?</a></li>
                 <li><a href="#funciones">2. Funciones Principales</a></li>
-                <li><a href="#tipos-so">3. Tipos de SO</a></li>
-                <li><a href="#virtualbox-ubuntu">4. VirtualBox y Ubuntu Server (PRÁCTICA)</a></li>
-                <li><a href="#actividad">5. Actividad Práctica</a></li>
+                <li><a href="#entorno-trabajo">3. Configuración del Entorno (PRÁCTICA)</a></li>
+                <li><a href="#actividad">4. Actividad Práctica</a></li>
             </ul>
         </nav>
 
         <!-- Objetivos -->
         <section id="objetivos">
             <h2>Objetivos de Aprendizaje</h2>
-            <p><strong>Resultado de Aprendizaje:</strong> Identifica la estructura y los tipos de los sistemas operativos.</p>
+            <p><strong>Resultado de Aprendizaje (RA1):</strong> Identifica la estructura y los tipos de los sistemas operativos (Alineado con Evaluación E1).</p>
             <p>Al finalizar esta clase, serás capaz de:</p>
             <ul>
-                <li><strong>Definir</strong> qué es un Sistema Operativo y su función básica</li>
-                <li><strong>Identificar</strong> las cuatro funciones principales de un SO</li>
-                <li><strong>Comparar</strong> los tres tipos de arquitecturas de SO más comunes</li>
-                <li><strong>Instalar</strong> VirtualBox en tu computadora</li>
-                <li><strong>Crear</strong> una máquina virtual con Ubuntu Server 22.04 LTS</li>
-                <li><strong>Acceder</strong> a Ubuntu Server mediante línea de comandos</li>
+                <li><strong>Definir</strong> qué es un Sistema Operativo y su rol en la arquitectura de un computador</li>
+                <li><strong>Identificar</strong> las cuatro funciones críticas de gestión de un SO</li>
+                <li><strong>Configurar</strong> un entorno de máquina virtual con VirtualBox</li>
+                <li><strong>Crear</strong> y acceder a un servidor <strong>Ubuntu 22.04 LTS</strong> en la nube</li>
+                <li><strong>Preparar</strong> un entorno de respaldo local con VirtualBox</li>
             </ul>
+        </section>
+
+        <!-- Sección 3: Configuración del Entorno -->
+        <section id="entorno-trabajo">
+            <h2>3. Configuración del Entorno de Trabajo</h2>
+            <p>Para este curso, utilizaremos infraestrucura real en la nube para simular entornos profesionales.</p>
+
+            <h3>3.1 VirtualBox (Opción Principal - Garantizada)</h3>
+            <div class="callout success">
+                <p><strong>Esta es la opción recomendada y garantizada para todos los estudiantes.</strong> Funciona sin depender de convenios institucionales.</p>
+                <ol>
+                    <li>Descarga e instala <strong>VirtualBox</strong> desde <a href="https://www.virtualbox.org/" target="_blank">virtualbox.org</a>.</li>
+                    <li>Descarga la ISO de <strong>Ubuntu Server 22.04 LTS</strong> desde <a href="https://ubuntu.com/download/server" target="_blank">ubuntu.com</a>.</li>
+                    <li>Crea una nueva VM con al menos <strong>2GB de RAM</strong> y <strong>20GB de disco</strong>.</li>
+                    <li>Configura red en modo <strong>NAT</strong> o <strong>Bridge</strong> según tus necesidades.</li>
+                </ol>
+            </div>
+
+            <h3>3.2 Alternativas Online (Para casos de emergencia)</h3>
+            <div class="callout info">
+                <p class="callout-title">Sin necesidad de instalación</p>
+                <p>Si no puedes instalar VirtualBox temporalmente, estas opciones te permiten practicar comandos básicos desde el navegador:</p>
+                <ul>
+                    <li><strong>Webminal:</strong> Terminal Linux real. Requiere registro gratuito en <a href="https://www.webminal.org" target="_blank">webminal.org</a>.</li>
+                    <li><strong>JSLinux:</strong> Emulador instantáneo sin registro en <a href="https://bellard.org/jslinux/" target="_blank">bellard.org/jslinux</a>.</li>
+                </ul>
+                <p><strong>Nota:</strong> Estas terminales tienen limitaciones (sin acceso root, sesiones temporales). Para el curso completo se requiere VirtualBox.</p>
+            </div>
+
+            <div class="code-block terminal-block">
+                <div class="code-header">Comandos Iniciales post-instalación</div>
+                <pre><code class="language-bash"># 1. Actualizar el sistema (¡Fundamental!)
+sudo apt update && sudo apt upgrade -y
+
+# 2. Verificar versión instalada
+lsb_release -a
+
+# 3. Ver espacio en disco
+df -h</code></pre>
+            </div>
+        </section>
+
+        <!-- Sección 4: Actividad Práctica -->
+        <section id="actividad">
+            <h2>4. Actividad Práctica: Despliegue de Servidor</h2>
+
+            <div class="info-box" style="margin-bottom: 1.5rem;">
+                <h3>📋 Guía de Laboratorio</h3>
+                <p>Consulta el <strong><a href="recursos-alternativos.html">Manual de Recursos</a></strong> para ver el paso a paso detallado de instalación de VirtualBox.</p>
+            </div>
+
+            <section class="actividad">
+                <h3>Actividad 01: Tu primer servidor Linux</h3>
+                <p><strong>Tipo:</strong> Práctica para Evaluación E1</p>
+                <p><strong>Objetivo:</strong> Instalar y configurar un servidor Ubuntu 22.04 LTS usando VirtualBox.</p>
+                <p><strong>Entregable:</strong> Documento PDF con captura del comando <code>uname -a</code> ejecutado en tu servidor VirtualBox.</p>
+                <p><strong>Nota:</strong> VirtualBox es la única opción garantizada y requerida para el curso. Las terminales online son solo para práctica de comandos básicos.</p>
+            </section>
+
+            <h3>Rúbrica de Evaluación (Base para E1)</h3>
+            <table class="rubrica">
+                <thead>
+                    <tr>
+                        <th>Criterio</th>
+                        <th>Excelente</th>
+                        <th>Insuficiente</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Conectividad</strong></td>
+                        <td>Logra acceso vía SSH al servidor.</td>
+                        <td>No logra conectar al servidor.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Configuración</strong></td>
+                        <td>Sistema actualizado y documentado.</td>
+                        <td>Sistema sin actualizar.</td>
+                    </tr>
+                </tbody>
+            </table>
         </section>
 
         <!-- Sección 1: ¿Qué es un SO? -->
@@ -815,104 +894,9 @@
             </div>
         </section>
 
-        <!-- Sección 3: Tipos de SO -->
-        <section id="tipos-so">
-            <h2>3. Tipos de Arquitectura de Sistema Operativo</h2>
-
-            <p>Los SO se organizan internamente de diferentes maneras. Entender estas arquitecturas es fundamental para comprender cómo funciona cada sistema operativo.</p>
-
-            <h3>3.1 Tipos de Arquitectura</h3>
-
-            <p>Los sistemas operativos se organizan internamente de diferentes maneras:</p>
-
-            <table>
-                <thead>
-                    <tr>
-                        <th>Tipo</th>
-                        <th>Características</th>
-                        <th>Ventajas</th>
-                        <th>Ejemplos</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Monolítico</strong></td>
-                        <td>Todo el SO en un solo bloque en el kernel. Servicios corren en modo kernel.</td>
-                        <td>Rápido, eficiente, menos overhead</td>
-                        <td>Linux, MS-DOS</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Microkernel</strong></td>
-                        <td>Solo lo mínimo en kernel. Servicios corren en espacio de usuario.</td>
-                        <td>Más estable, seguro, modular</td>
-                        <td>MINIX, QNX</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Híbrido</strong></td>
-                        <td>Combina ambos enfoques según necesidades.</td>
-                        <td>Balance entre rendimiento y estabilidad</td>
-                        <td>Windows, macOS</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <div class="callout info">
-                <p class="callout-title">📚 Profundización</p>
-                <p>Estas arquitecturas se estudiarán en detalle en la <strong>Clase 04: Estructura del Sistema Operativo</strong>, donde analizaremos Kernel, Shell, System Calls y Modos de Operación.</p>
-            </div>
-
-            <div class="callout warning">
-                <p class="callout-title">🎯 ¿Qué usaremos en el curso?</p>
-                <p><strong>Ubuntu Server</strong> (Linux) que tiene arquitectura <strong>monolítica</strong>. Es rápido, eficiente y el estándar en servidores modernos.</p>
-            </div>
-
-            <h3>🛠️ Ejercicio Práctico: Clasificando Arquitecturas (5 min)</h3>
-            <div class="actividad">
-                <h4>Instrucciones</h4>
-                <p>Clasifica cada sistema operativo según su arquitectura:</p>
-                
-                <table style="margin-top: 1rem;">
-                    <thead>
-                        <tr>
-                            <th>Sistema Operativo</th>
-                            <th>¿Monolítico, Microkernel o Híbrido?</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>1. Ubuntu Linux</td>
-                            <td>□ Monolítico<br>□ Microkernel<br>□ Híbrido</td>
-                        </tr>
-                        <tr>
-                            <td>2. Windows 11</td>
-                            <td>□ Monolítico<br>□ Microkernel<br>□ Híbrido</td>
-                        </tr>
-                        <tr>
-                            <td>3. macOS</td>
-                            <td>□ Monolítico<br>□ Microkernel<br>□ Híbrido</td>
-                        </tr>
-                        <tr>
-                            <td>4. MINIX (usado para educación)</td>
-                            <td>□ Monolítico<br>□ Microkernel<br>□ Híbrido</td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <details style="margin-top: 1.5rem; background: #f0f9ff; padding: 1rem; border-radius: 8px;">
-                    <summary style="cursor: pointer; color: var(--primary); font-weight: 600;">📋 Ver Respuestas</summary>
-                    <ol style="margin-top: 1rem;">
-                        <li><strong>Monolítico</strong> - Todo el kernel en un solo bloque. Alto rendimiento.</li>
-                        <li><strong>Híbrido</strong> - Combina elementos de ambos enfoques.</li>
-                        <li><strong>Híbrido</strong> - Usa XNU (híbrido) basado en BSD + Mach.</li>
-                        <li><strong>Microkernel</strong> - Diseñado específicamente para educación en SO.</li>
-                    </ol>
-                </details>
-            </div>
-        </section>
-
-        <!-- Sección 4: Laboratorio Práctico -->
-        <section id="laboratorio">
-            <h2>4. Laboratorio Práctico: Tu Primer Servidor Linux</h2>
+        <!-- Sección 3: Laboratorio Práctico -->
+        <section id="virtualbox-ubuntu">
+            <h2>3. Laboratorio Práctico: Tu Primer Servidor Linux</h2>
             <p><strong>TIEMPO ESTIMADO: 60 minutos</strong></p>
 
             <div class="callout info">
@@ -921,7 +905,7 @@
                 <p>En clase realizaremos una instalación guiada rápida.</p>
             </div>
 
-            <h3>4.1 ¿Qué necesitas?</h3>
+            <h3>3.1 ¿Qué necesitas?</h3>
             <ul>
                 <li><strong>VirtualBox</strong> instalado (descargar antes de clase)</li>
                 <li><strong>ISO de Ubuntu Server 22.04 LTS</strong> (~3 GB)</li>
@@ -929,7 +913,7 @@
                 <li><strong>4 GB de RAM</strong> mínimo (8 GB recomendado)</li>
             </ul>
 
-            <h3>4.2 Resumen Rápido de Instalación</h3>
+            <h3>3.2 Resumen Rápido de Instalación</h3>
             <div class="code-block terminal-block">
                 <div class="code-header">Configuración Rápida de VM</div>
                 <pre><code class="language-bash"># 1. Crear VM en VirtualBox
@@ -949,7 +933,7 @@ Hostname: ubuntu-server-so01
 Seleccionar: Install OpenSSH server</code></pre>
             </div>
 
-            <h3>4.3 Primeros Comandos</h3>
+            <h3>3.3 Primeros Comandos</h3>
             <p>Una vez instalado, practica estos comandos básicos:</p>
             
             <div class="code-block terminal-block">
@@ -975,9 +959,9 @@ df -h
             </div>
         </section>
 
-        <!-- Sección 5: Actividad Práctica -->
+        <!-- Sección 4: Actividad Práctica -->
         <section id="actividad">
-            <h2>5. Actividad Práctica</h2>
+            <h2>4. Actividad Práctica</h2>
 
             <div class="info-box" style="margin-bottom: 1.5rem;">
                 <h3>📋 Laboratorio Complementario</h3>
@@ -1005,7 +989,7 @@ df -h
 
             <h3>Instrucciones</h3>
             <ol>
-                <li>Sigue los pasos de la sección 4.3 para crear tu máquina virtual</li>
+                <li>Sigue los pasos de la sección 3.2 para crear tu máquina virtual</li>
                 <li>Instala Ubuntu Server con las configuraciones indicadas</li>
                 <li>Inicia sesión y ejecuta los comandos básicos</li>
                 <li>Crea un snapshot llamado "Instalación limpia"</li>

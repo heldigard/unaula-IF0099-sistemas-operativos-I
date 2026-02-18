@@ -518,52 +518,18 @@
         <!-- Objetivos -->
         <section id="objetivos">
             <h2>Objetivos de Aprendizaje</h2>
-            <p><strong>Resultado de Aprendizaje:</strong> Gestiona los procesos que se llevan a cabo en los sistemas operativos.</p>
+            <p><strong>Resultado de Aprendizaje (RA2):</strong> Gestiona los procesos que se llevan a cabo en los sistemas operativos (Alineado con Evaluación E2).</p>
             <p>Al finalizar esta clase, serás capaz de:</p>
             <ol>
-                <li><strong>Usar</strong> Task Manager para monitorear procesos</li>
-                <li><strong>Utilizar</strong> Process Explorer para análisis avanzado</li>
-                <li><strong>Gestionar</strong> procesos con PowerShell</li>
-                <li><strong>Administrar</strong> servicios con PowerShell</li>
-                <li><strong>Crear</strong> servicios simples con sc.exe</li>
+                <li><strong>Monitorear</strong> procesos en <strong>Windows 10/11</strong> (tu computadora o VM en VirtualBox)</li>
+                <li><strong>Utilizar</strong> Process Explorer para análisis forense de procesos</li>
+                <li><strong>Gestionar</strong> procesos y servicios mediante PowerShell</li>
+                <li><strong>Automatizar</strong> tareas de servicios con <code>sc.exe</code></li>
             </ol>
 
-            <div class="callout info">
-                <p class="callout-title">Glosario de la Sesión</p>
-                <ul>
-                    <li><strong>WMI (Windows Management Instrumentation):</strong> Infraestructura para gestionar datos y operaciones en sistemas Windows.</li>
-                    <li><strong>DLL (Dynamic Link Library):</strong> Archivos de biblioteca que contienen código y datos que pueden ser usados por varios programas simultáneamente.</li>
-                    <li><strong>Cmdlet:</strong> Comando ligero utilizado en el entorno de PowerShell.</li>
-                    <li><strong>Thread (Hilo):</strong> La unidad más pequeña de ejecución dentro de un proceso.</li>
-                </ul>
-            </div>
-
-            <div class="callout success" style="background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%); border-left-color: #059669;">
-                <p class="callout-title" style="font-size: 1.1rem; color: #065f46;">Plan B: Recursos Alternativos Gratuitos</p>
-                <p>Esta clase es específica de Windows. Para practicar conceptos similares en Linux:</p>
-
-                <table style="margin-top: 1rem; background: white; border-radius: 8px;">
-                    <tr style="background: #d1fae5;">
-                        <th style="width: 30%;">Concepto Windows</th>
-                        <th style="width: 30%;">Equivalente Linux</th>
-                        <th style="width: 40%;">Dónde practicar</th>
-                    </tr>
-                    <tr>
-                        <td>Task Manager</td>
-                        <td><code>top</code>, <code>htop</code></td>
-                        <td><a href="https://www.webminal.org" target="_blank">Webminal</a></td>
-                    </tr>
-                    <tr>
-                        <td>PowerShell</td>
-                        <td>Bash</td>
-                        <td><a href="https://bellard.org/jslinux/" target="_blank">JSLinux</a></td>
-                    </tr>
-                    <tr>
-                        <td>sc.exe</td>
-                        <td><code>systemctl</code></td>
-                        <td><a href="https://www.oracle.com/cloud/free/" target="_blank">Oracle Cloud Free Tier</a></td>
-                    </tr>
-                </table>
+            <div class="callout success">
+                <p class="callout-title">🖥️ Laboratorio Windows</p>
+                <p>Para esta clase, usaremos <strong>Windows 10/11</strong> en tu computadora o una VM en VirtualBox. Practicaremos la gestión de procesos con Task Manager, Process Explorer y PowerShell local.</p>
             </div>
         </section>
 
@@ -1090,6 +1056,25 @@ start= disabled - Deshabilitado</code></pre>
         </section>
 
         <!-- Resumen -->
+        <!-- Actividad -->
+        <section id="actividad">
+            <h2>Actividad Práctica: Gestión de Procesos Windows</h2>
+
+            <section class="actividad">
+                <h3>Actividad 06: Servicios y PowerShell</h3>
+                <p><strong>Tipo:</strong> Avance para Fase 2 (E2)</p>
+                <p><strong>Objetivo:</strong> Gestionar servicios de Windows desde la línea de comandos.</p>
+                <p><strong>Pasos:</strong></p>
+                <ol>
+                    <li>Abre PowerShell como Administrador</li>
+                    <li>Usa <code>Get-Service</code> para listar los servicios detenidos</li>
+                    <li>Intenta iniciar y detener el servicio de Cola de Impresión (Spooler): <code>Stop-Service Spooler</code></li>
+                    <li>Usa <code>Get-Process | Sort-Object CPU -Descending | Select-Object -First 5</code></li>
+                </ol>
+                <p><strong>Entregable:</strong> Captura de los comandos de PowerShell para tu informe de la Fase 2.</p>
+            </section>
+        </section>
+
         <section id="resumen">
             <h2>Resumen de la Clase</h2>
 

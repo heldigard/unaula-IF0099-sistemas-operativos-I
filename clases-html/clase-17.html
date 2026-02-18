@@ -182,7 +182,7 @@
         <main>
             <section id="objetivos">
                 <h2>Objetivos de Aprendizaje</h2>
-                <p><strong>Resultado de Aprendizaje:</strong> comprende la funcionalidad de conceptos fundamentales integrados.</p>
+                <p><strong>Resultado de Aprendizaje (RA5):</strong> Comprende la funcionalidad de conceptos fundamentales integrados (Alineado con Evaluación E5).</p>
                 <div class="callout success">
                     <strong>Al finalizar esta clase, podrás:</strong>
                     <ul>
@@ -193,6 +193,11 @@
                         <li>Administrar servicios web en Linux</li>
                     </ul>
                 </div>
+
+            <div class="callout success">
+                <p class="callout-title">🖥️ Laboratorio VirtualBox</p>
+                <p>Configuraremos un servidor <strong>Apache</strong> completo en tu VM de <strong>VirtualBox</strong>, integrando todos los conocimientos de permisos, redes y servicios del semestre.</p>
+            </div>
 
                 <div class="callout info">
                     <p class="callout-title">Glosario Web</p>
@@ -493,16 +498,16 @@ curl -k https://site1.local</code></pre>
                 <h2>Actividad Práctica</h2>
 
                 <div class="info-box" style="margin-bottom: 1.5rem; background: #eff6ff; border-left: 4px solid var(--primary); padding: 1.5rem; border-radius: 8px;">
-                    <h3>📋 Laboratorio Complementario</h3>
-                    <p>Para practicar el despliegue de servidores en la nube y configuraciones reales de Apache, consulta el <strong><a href="../laboratorios-html/lab-aws-01-introduccion-ec2.html" target="_blank">Laboratorio AWS 01: Introducción a EC2</a></strong>.</p>
+                    <h3>📋 Guía de Laboratorio</h3>
+                    <p>Usa tu VM de <strong>VirtualBox</strong> con Ubuntu Server para realizar esta integración final.</p>
                 </div>
 
                 <div class="actividad">
 
-                    <h3>Actividad: Configuración Completa de Apache</h3>
+                    <h3>Actividad Final: Despliegue Integrado (Fase 5 - E5)</h3>
 
                     <h4>Objetivo</h4>
-                    <p>Configurar un servidor Apache con múltiples sitios web y HTTPS.</p>
+                    <p>Configurar el servidor web principal del proyecto, integrando seguridad y múltiples servicios.</p>
 
                     <h4>Requisitos</h4>
                     <ol class="checklist">
@@ -539,7 +544,24 @@ curl -k https://site1.local</code></pre>
                 </div>
             </section>
 
-            <section>
+            <!-- Actividad -->
+            <section id="actividad">
+                <h2>Actividad Práctica: Integración Final</h2>
+
+                <section class="actividad">
+                    <h3>Actividad 17: Servidor Apache Multi-sitio (Fase 5 - E5)</h3>
+                    <p><strong>Objetivo:</strong> Desplegar el servidor web principal del proyecto integrador.</p>
+                    <p><strong>Pasos:</strong></p>
+                    <ol>
+                        <li>Instala Apache: <code>sudo apt install apache2</code></li>
+                        <li>Configura un Virtual Host apuntando a un directorio propio</li>
+                        <li>Asegura el sitio habilitando el módulo <code>ssl</code> y configurando un certificado auto-firmado</li>
+                    </ol>
+                    <p><strong>Entregable:</strong> URL local del servidor funcionando y video demostrativo para la Fase 5 (06 de May).</p>
+                </section>
+            </section>
+
+            <section id="resumen">
                 <h2>Resumen</h2>
 
                 <div class="two-columns">

@@ -236,145 +236,52 @@
 <body>
     <header>
         <div class="container">
-            <h1>Plan B: Recursos Alternativos Gratuitos</h1>
+            <h1>🚀 Laboratorio y Recursos del Curso</h1>
             <p class="subtitle">IF0099 - Sistemas Operativos I | Universidad Autónoma Latinoamericana</p>
-            <p class="subtitle" style="opacity: 0.8;">Alternativas para practicar cuando no tengas acceso al laboratorio Docker</p>
+            <p class="subtitle" style="opacity: 0.8;">Configuración de entornos para prácticas de Linux y Windows</p>
         </div>
     </header>
 
     <div class="container">
-        <!-- Introducción -->
-        <section>
-            <h2>¿Qué es el Plan B?</h2>
-            <p>Si no puedes conectarte al laboratorio Docker del curso (por problemas de red, firewall, o conectividad), puedes usar cualquiera de estos recursos gratuitos para completar los ejercicios de la clase.</p>
-
-            <div class="callout success">
-                <p class="callout-title">Todos los recursos verificados</p>
-                <p>Esta lista fue actualizada en <strong>Febrero 2026</strong>. Todos los recursos han sido verificados y están funcionando correctamente.</p>
+        <!-- Virtualización Local -->
+        <section style="border: 2px solid var(--accent); background: #f0fdf4;">
+            <h2 style="color: var(--secondary);">🌟 Opción 1 (Principal - Garantizada): Virtualización Local</h2>
+            <p>Esta es la opción <strong>recomendada y garantizada</strong> para todos los estudiantes. No depende de convenios institucionales ni verificaciones de correo.</p>
+            
+            <div class="grid-2">
+                <div class="resource-card" style="border-left: 5px solid var(--accent);">
+                    <h4><span class="badge badge-green">Principal</span> Oracle VirtualBox</h4>
+                    <p class="url"><a href="https://www.virtualbox.org/" target="_blank">https://www.virtualbox.org/</a></p>
+                    <p>Software gratuito para crear máquinas virtuales en tu propia computadora.</p>
+                    <ul>
+                        <li><strong>Ventaja:</strong> Funciona sin internet, control total del sistema.</li>
+                        <li><strong>Requisito:</strong> 8GB+ RAM recomendado, 20GB+ espacio en disco.</li>
+                    </ul>
+                </div>
+                <div class="resource-card">
+                    <h4>ISO Ubuntu Server 22.04 LTS</h4>
+                    <p class="url"><a href="https://ubuntu.com/download/server" target="_blank">https://ubuntu.com/download/server</a></p>
+                    <p>Imagen oficial de instalación. Versión 22.04 LTS con soporte hasta 2027.</p>
+                </div>
             </div>
         </section>
 
         <!-- Terminales Online -->
         <section>
-            <h2>Terminales Linux en el Navegador</h2>
+            <h2>Opción 2 (Alternativa): Terminales Rápidas en Navegador</h2>
+            <p>Si tienes problemas técnicos momentáneos, usa estas terminales sin instalar nada.</p>
 
             <div class="grid-2">
                 <div class="resource-card">
-                    <h4><span class="badge badge-green">Recomendado</span> Webminal</h4>
+                    <h4><span class="badge badge-green">Linux</span> Webminal</h4>
                     <p class="url"><a href="https://www.webminal.org" target="_blank">https://www.webminal.org</a></p>
-                    <p><strong>Tipo:</strong> Terminal Linux real en el navegador</p>
-                    <p><strong>Requisito:</strong> Registro gratuito (email)</p>
-                    <p><strong>Ideal para:</strong> Todos los ejercicios del curso</p>
-                    <ul>
-                        <li>Sistema Linux completo con Ubuntu/Debian</li>
-                        <li>Puedes guardar archivos entre sesiones</li>
-                        <li>Soporta la mayoría de comandos del curso</li>
-                        <li>Sin necesidad de instalar nada</li>
-                    </ul>
+                    <p>Terminal Linux real. Requiere registro rápido.</p>
                 </div>
 
                 <div class="resource-card">
-                    <h4><span class="badge badge-blue">Sin Registro</span> JSLinux</h4>
+                    <h4><span class="badge badge-blue">Rápido</span> JSLinux</h4>
                     <p class="url"><a href="https://bellard.org/jslinux/" target="_blank">https://bellard.org/jslinux/</a></p>
-                    <p><strong>Tipo:</strong> Emulador Linux completo</p>
-                    <p><strong>Requisito:</strong> Ninguno</p>
-                    <p><strong>Ideal para:</strong> Práctica rápida sin registro</p>
-                    <ul>
-                        <li>Arranca en segundos</li>
-                        <li>Varios sistemas: Alpine, Fedora, Windows</li>
-                        <li>Perfecto para comandos básicos</li>
-                        <li>Los cambios no se guardan</li>
-                    </ul>
-                </div>
-
-                <div class="resource-card">
-                    <h4><span class="badge badge-yellow">Tutorial</span> Linux Survival</h4>
-                    <p class="url"><a href="https://linuxsurvival.com" target="_blank">https://linuxsurvival.com</a></p>
-                    <p><strong>Tipo:</strong> Tutorial interactivo con terminal simulada</p>
-                    <p><strong>Requisito:</strong> Ninguno</p>
-                    <p><strong>Ideal para:</strong> Aprender comandos básicos guiados</p>
-                    <ul>
-                        <li>Ejercicios paso a paso</li>
-                        <li>Explicaciones en cada comando</li>
-                        <li>Terminal simulada integrada</li>
-                        <li>Disponible en español</li>
-                    </ul>
-                </div>
-
-                <div class="resource-card">
-                    <h4><span class="badge badge-blue">Sin Registro</span> PracticeLinux</h4>
-                    <p class="url"><a href="https://www.practicelinux.com" target="_blank">https://www.practicelinux.com</a></p>
-                    <p><strong>Tipo:</strong> Terminal Linux en navegador</p>
-                    <p><strong>Requisito:</strong> Ninguno</p>
-                    <p><strong>Ideal para:</strong> Ejercicios rápidos</p>
-                    <ul>
-                        <li>Sin registro requerido</li>
-                        <li>Interfaz simple</li>
-                        <li>Comandos básicos disponibles</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
-        <!-- VMs Gratuitas -->
-        <section>
-            <h2>Máquinas Virtuales Gratuitas (Con Root)</h2>
-            <p>Para ejercicios que requieren permisos de administrador (<code>sudo</code>, <code>systemctl</code>, etc.):</p>
-
-            <div class="grid-2">
-                <div class="resource-card">
-                    <h4><span class="badge badge-purple">VM Completa</span> Oracle Cloud Free Tier</h4>
-                    <p class="url"><a href="https://www.oracle.com/cloud/free/" target="_blank">https://www.oracle.com/cloud/free/</a></p>
-                    <p><strong>Tipo:</strong> VM en la nube con acceso root completo</p>
-                    <p><strong>Requisito:</strong> Tarjeta de crédito para verificación (no se cobra)</p>
-                    <ul>
-                        <li>Hasta 4 VMs ARM con 24GB RAM total</li>
-                        <li>Acceso SSH completo con root</li>
-                        <li>Sistema operativo a elegir (Ubuntu, Oracle Linux)</li>
-                        <li>Ideal para <code>systemctl</code>, <code>docker</code>, <code>htop</code></li>
-                    </ul>
-                    <div class="callout warning" style="margin-top: 1rem; margin-bottom: 0;">
-                        <p style="font-size: 0.9rem; margin: 0;"><strong>Nota:</strong> La tarjeta es solo para verificación de identidad. No se realizan cargos si usas solo el Free Tier.</p>
-                    </div>
-                </div>
-
-                <div class="resource-card">
-                    <h4><span class="badge badge-purple">Estudiantes</span> Azure for Students</h4>
-                    <p class="url"><a href="https://azure.microsoft.com/free/students/" target="_blank">https://azure.microsoft.com/free/students/</a></p>
-                    <p><strong>Tipo:</strong> Crédito de $100 para servicios Azure</p>
-                    <p><strong>Requisito:</strong> Email institucional (.edu) - Sin tarjeta de crédito</p>
-                    <ul>
-                        <li>$100 de crédito inicial</li>
-                        <li>Crear VMs Linux con acceso root</li>
-                        <li>Servicios gratuitos por 12 meses</li>
-                        <li>Perfecto si tienes email @unaula.edu.co</li>
-                    </ul>
-                </div>
-
-                <div class="resource-card">
-                    <h4><span class="badge badge-purple">Estudiantes</span> FreeVPS.edu.pl</h4>
-                    <p class="url"><a href="https://freevps.edu.pl" target="_blank">https://freevps.edu.pl</a></p>
-                    <p><strong>Tipo:</strong> VPS gratuito para estudiantes</p>
-                    <p><strong>Requisito:</strong> Email .edu y participación en el foro</p>
-                    <ul>
-                        <li>4GB RAM, 4 vCPU</li>
-                        <li>50GB de almacenamiento</li>
-                        <li>Acceso root completo</li>
-                        <li>Requiere posts en el foro mensualmente</li>
-                    </ul>
-                </div>
-
-                <div class="resource-card">
-                    <h4><span class="badge badge-blue">Docker</span> Play with Docker</h4>
-                    <p class="url"><a href="https://labs.play-with-docker.com/" target="_blank">https://labs.play-with-docker.com/</a></p>
-                    <p><strong>Tipo:</strong> Sesiones de Alpine Linux con Docker</p>
-                    <p><strong>Requisito:</strong> Cuenta de Docker Hub (gratuita)</p>
-                    <ul>
-                        <li>Sesiones de 4 horas</li>
-                        <li>Acceso root temporal</li>
-                        <li>Perfecto para practicar Docker</li>
-                        <li>Terminal completa en navegador</li>
-                    </ul>
+                    <p>Emulador que arranca al instante. No guarda cambios.</p>
                 </div>
             </div>
         </section>
@@ -399,28 +306,28 @@
                     </tr>
                     <tr>
                         <td><strong>Permisos</strong> (chmod, chown)</td>
-                        <td>Webminal, Oracle Cloud</td>
-                        <td><code>chmod</code>, <code>chown</code> (limitado sin root)</td>
+                        <td>VirtualBox</td>
+                        <td><code>chmod</code>, <code>chown</code> (con root en VirtualBox)</td>
                     </tr>
                     <tr>
                         <td><strong>Procesos</strong> (ps, top, kill)</td>
-                        <td>Webminal, Oracle Cloud</td>
+                        <td>VirtualBox, Webminal</td>
                         <td><code>ps</code>, <code>top</code>, <code>kill</code>, <code>htop</code> (requiere VM)</td>
                     </tr>
                     <tr>
                         <td><strong>Memoria</strong> (free, vmstat)</td>
-                        <td>Webminal, Oracle Cloud</td>
+                        <td>VirtualBox, Webminal</td>
                         <td><code>free</code>, <code>vmstat</code>, <code>cat /proc/meminfo</code></td>
                     </tr>
                     <tr>
                         <td><strong>Servicios</strong> (systemctl)</td>
-                        <td>Oracle Cloud, Azure</td>
+                        <td>VirtualBox</td>
                         <td><code>systemctl</code> (requiere root)</td>
                     </tr>
                     <tr>
                         <td><strong>Red</strong> (netstat, ss, ifconfig)</td>
-                        <td>Oracle Cloud, Play with Docker</td>
-                        <td><code>ss</code>, <code>ip</code>, <code>netstat</code> (limitado)</td>
+                        <td>VirtualBox</td>
+                        <td><code>ss</code>, <code>ip</code>, <code>netstat</code></td>
                     </tr>
                     <tr>
                         <td><strong>Scripts bash</strong></td>
@@ -435,28 +342,30 @@
         <section>
             <h2>Guía Rápida de Inicio</h2>
 
-            <h3>Opción 1: Webminal (Más fácil)</h3>
+            <h3>Opción 1: VirtualBox (Recomendada - Garantizada)</h3>
+            <pre><code>1. Descarga VirtualBox desde https://www.virtualbox.org/
+2. Descarga Ubuntu Server 22.04 ISO desde https://ubuntu.com/download/server
+3. Crea nueva VM en VirtualBox:
+   - Tipo: Linux, Versión: Ubuntu 64-bit
+   - RAM: 2048 MB (mínimo)
+   - Disco: 20 GB (disco virtual dinámico)
+4. Inicia la VM y selecciona la ISO de Ubuntu
+5. Sigue el asistente de instalación (selecciona "Install Ubuntu Server")
+6. ¡Listo! Tienes un servidor Linux completo</code></pre>
+
+            <h3>Opción 2: Webminal (Terminal Online - Sin instalación)</h3>
             <pre><code>1. Ve a https://www.webminal.org
-2. Haz clic en "Register" (o usa tu cuenta existente)
+2. Haz clic en "Register" (registro gratuito)
 3. Completa el registro con tu email
 4. Haz clic en "Start Terminal"
-5. ¡Listo! Tienes una terminal Linux completa</code></pre>
+5. ¡Listo! Terminal Linux en el navegador (limitada, sin root)</code></pre>
 
-            <h3>Opción 2: JSLinux (Sin registro)</h3>
+            <h3>Opción 3: JSLinux (Emergencia - Sin registro)</h3>
             <pre><code>1. Ve a https://bellard.org/jslinux/
 2. Selecciona "Alpine Linux" o "Fedora"
 3. Haz clic en "Boot"
 4. Espera 5-10 segundos a que cargue
-5. ¡Listo! La terminal está lista para usar</code></pre>
-
-            <h3>Opción 3: Oracle Cloud Free Tier (Para root)</h3>
-            <pre><code>1. Ve a https://www.oracle.com/cloud/free/
-2. Crea una cuenta (requiere verificación con tarjeta)
-3. En el dashboard, crea una VM "Always Free"
-4. Elige Ubuntu 22.04 o similar
-5. Descarga la clave SSH y conéctate:
-   ssh -i key.pem ubuntu@<IP_PUBLICA>
-6. Usa sudo para comandos de administrador</code></pre>
+5. ¡Listo! Terminal temporal (los cambios no se guardan)</code></pre>
         </section>
 
         <!-- Limitaciones -->
@@ -469,14 +378,14 @@
                 <ul>
                     <li><strong>Webminal:</strong> Sin acceso root, sesiones limitadas, algunos comandos restringidos</li>
                     <li><strong>JSLinux:</strong> Los cambios se pierden al cerrar, sin persistencia</li>
-                    <li><strong>Oracle Cloud:</strong> Requiere tarjeta para verificación, límite de recursos</li>
+                    <li><strong>VirtualBox:</strong> Requiere computadora con 8GB+ RAM y 20GB+ espacio libre</li>
                     <li><strong>Play with Docker:</strong> Sesiones de solo 4 horas</li>
                 </ul>
             </div>
 
             <div class="callout info">
                 <p class="callout-title">Recomendación</p>
-                <p>Para la mayoría de ejercicios del curso, <strong>Webminal</strong> es suficiente. Para ejercicios que requieran <code>systemctl</code>, <code>docker</code>, o <code>sudo</code>, considera <strong>Oracle Cloud Free Tier</strong> o <strong>Azure for Students</strong>.</p>
+                <p><strong>VirtualBox es la única opción completa</strong> para todas las clases del curso. Las terminales online (Webminal, JSLinux) son útiles solo para practicar comandos básicos cuando no tienes acceso a tu VM.</p>
             </div>
         </section>
 

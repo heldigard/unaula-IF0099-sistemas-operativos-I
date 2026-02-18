@@ -510,64 +510,19 @@
         <!-- Objectives -->
         <section id="objetivos">
             <h2>Objetivos de Aprendizaje</h2>
-            <p><strong>Resultado de Aprendizaje:</strong> Identifica la estructura y los tipos de los sistemas operativos.</p>
+            <p><strong>Resultado de Aprendizaje (RA1):</strong> Identifica la estructura y los tipos de los sistemas operativos (Alineado con Evaluación E1).</p>
             <p>Al finalizar esta clase, serás capaz de:</p>
             <ul>
-                <li><strong>Navegar</strong> el sistema de archivos de Linux desde la terminal</li>
-                <li><strong>Crear, copiar, mover y eliminar</strong> archivos y directorios</li>
-                <li><strong>Visualizar</strong> el contenido de archivos de diferentes formas</li>
-                <li><strong>Entender y modificar</strong> permisos básicos de archivos</li>
-                <li><strong>Escribir scripts bash</strong> simples para automatizar tareas</li>
+                <li><strong>Navegar</strong> el sistema de archivos de Linux desde la terminal de tu <strong>VM en VirtualBox</strong></li>
+                <li><strong>Crear, copiar, mover y eliminar</strong> archivos y directorios de forma profesional</li>
+                <li><strong>Visualizar</strong> el contenido de archivos de configuración del sistema</li>
+                <li><strong>Entender y modificar</strong> permisos básicos de archivos (u, g, o)</li>
+                <li><strong>Escribir scripts bash</strong> simples para automatizar tareas en el servidor</li>
             </ul>
 
-            <div class="callout info">
-                <p class="callout-title">Glosario de la Sesión</p>
-                <ul>
-                    <li><strong>CLI (Command Line Interface):</strong> Interfaz de Línea de Comandos, donde interactuamos mediante texto.</li>
-                    <li><strong>GUI (Graphical User Interface):</strong> Interfaz Gráfica de Usuario, donde usamos mouse e iconos.</li>
-                    <li><strong>FS (File System):</strong> Sistema de Archivos, la forma en que el SO organiza los datos en el disco.</li>
-                    <li><strong>Shell:</strong> El intérprete de comandos que traduce nuestras órdenes al Kernel.</li>
-                </ul>
-            </div>
-
-            <div class="callout info">
-                <p class="callout-title">Prerrequisitos</p>
-                <p>Debes tener <strong>Ubuntu Server</strong> instalado en VirtualBox (Clase 01) o tener acceso a una terminal Linux.</p>
-            </div>
-
-            <div class="callout success" style="background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%); border-left-color: #059669;">
-                <p class="callout-title" style="font-size: 1.1rem; color: #065f46;">Plan B: Recursos Alternativos Gratuitos</p>
-                <p>Si no puedes conectarte al laboratorio Docker del curso, puedes usar estos recursos gratuitos verificados:</p>
-
-                <table style="margin-top: 1rem; background: white; border-radius: 8px;">
-                    <tr style="background: #d1fae5;">
-                        <th style="width: 25%;">Recurso</th>
-                        <th style="width: 35%;">Descripción</th>
-                        <th style="width: 40%;">Ideal para</th>
-                    </tr>
-                    <tr>
-                        <td><strong><a href="https://www.webminal.org" target="_blank">Webminal</a></strong></td>
-                        <td>Terminal Linux real en el navegador</td>
-                        <td>Todos los ejercicios de comandos</td>
-                    </tr>
-                    <tr>
-                        <td><strong><a href="https://bellard.org/jslinux/" target="_blank">JSLinux</a></strong></td>
-                        <td>Emulador Linux completo en navegador</td>
-                        <td>Práctica rápida sin registro</td>
-                    </tr>
-                    <tr>
-                        <td><strong><a href="https://linuxsurvival.com" target="_blank">Linux Survival</a></strong></td>
-                        <td>Tutorial interactivo con terminal simulada</td>
-                        <td>Aprender comandos básicos</td>
-                    </tr>
-                    <tr>
-                        <td><strong><a href="https://www.practicelinux.com" target="_blank">PracticeLinux</a></strong></td>
-                        <td>Terminal Linux sin registro</td>
-                        <td>Ejercicios rápidos</td>
-                    </tr>
-                </table>
-
-                <p style="margin-top: 1rem; font-size: 0.9rem; color: #047857;"><strong>Recomendado:</strong> Regístrate en <strong>Webminal</strong> para guardar tu progreso. Para VMs completas con root, considera <a href="https://www.oracle.com/cloud/free/" target="_blank">Oracle Cloud Free Tier</a> o <a href="https://azure.microsoft.com/free/students/" target="_blank">Azure for Students</a>.</p>
+            <div class="callout success">
+                <p class="callout-title">🌐 Conexión al Laboratorio</p>
+                <p>Para esta clase, utiliza tu máquina virtual creada en <strong>VirtualBox</strong>. Conéctate directamente en la ventana de la VM o usa SSH si configuraste red bridge.</p>
             </div>
         </section>
 
@@ -1094,7 +1049,7 @@ estudiante@ubuntu-server:~$ ls -la archivo.txt
             <h3>🛠️ Ejercicio Práctico Guiado: Jugando con Permisos (8 min)</h3>
 
             <div class="callout warning" style="background: #fef3c7; border-left-color: #f59e0b; padding: 0.75rem 1rem; margin-bottom: 1rem;">
-                <p style="font-size: 0.9rem; margin: 0;"><strong>Alternativa:</strong> Los permisos funcionan igual en <a href="https://www.webminal.org" target="_blank">Webminal</a>. Para usar <code>sudo</code>, necesitas una VM propia o <a href="https://www.oracle.com/cloud/free/" target="_blank">Oracle Cloud Free Tier</a>.</p>
+                <p style="font-size: 0.9rem; margin: 0;"><strong>Alternativa:</strong> Los permisos funcionan igual en <a href="https://www.webminal.org" target="_blank">Webminal</a>. Para usar <code>sudo</code> y todas las funciones completas, necesitas tu VM en VirtualBox.</p>
             </div>
 
             <div class="actividad">
@@ -1305,6 +1260,30 @@ ls -la proyecto/</code></pre>
                 <p class="callout-title">Tip</p>
                 <p>Si usas <code>mkdir -p</code>, no obtendrás error si el directorio ya existe. El flag <code>-p</code> crea directorios padre si es necesario.</p>
             </div>
+        </section>
+
+        <!-- Sección 4: Actividad Práctica -->
+        <section id="actividad">
+            <h2>4. Actividad Práctica: Exploración de la Terminal</h2>
+
+            <div class="info-box" style="margin-bottom: 1.5rem;">
+                <h3>📋 Guía de Laboratorio</h3>
+                <p>Usa tu VM de <strong>VirtualBox</strong> creada en la Clase 01 para realizar estos ejercicios.</p>
+            </div>
+
+            <section class="actividad">
+                <h3>Actividad 02: Gestión de Archivos y Permisos</h3>
+                <p><strong>Tipo:</strong> Avance para Fase 1 (E1)</p>
+                <p><strong>Objetivo:</strong> Demostrar dominio de la navegación y gestión de archivos básica en Linux.</p>
+                <p><strong>Pasos:</strong></p>
+                <ol>
+                    <li>Crea una carpeta llamada <code>laboratorio_so</code></li>
+                    <li>Dentro, crea un archivo <code>info.txt</code> con tu nombre y código</li>
+                    <li>Cambia los permisos de <code>info.txt</code> a <code>600</code> (solo lectura/escritura para el dueño)</li>
+                    <li>Mueve el archivo a <code>/tmp</code> y luego elimínalo</li>
+                </ol>
+                <p><strong>Entregable:</strong> Captura de pantalla de los comandos ejecutados para tu informe de la Fase 1.</p>
+            </section>
         </section>
 
         <!-- Práctica Adicional -->

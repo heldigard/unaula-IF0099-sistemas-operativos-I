@@ -477,7 +477,7 @@
 
         <section id="objetivos">
             <h2>Objetivos de Aprendizaje</h2>
-            <p><strong>Resultado de Aprendizaje:</strong> Administra la memoria, los procesos de entrada y salida, la comunicación entre procesos y la sincronización de los mismos.</p>
+            <p><strong>Resultado de Aprendizaje (RA3):</strong> Administra la memoria, los procesos de entrada y salida, la comunicación entre procesos y la sincronización de los mismos (Alineado con Evaluación E3).</p>
             <p>Al finalizar esta clase, serás capaz de:</p>
             <ol>
                 <li><strong>Explicar</strong> la diferencia entre memoria física y virtual</li>
@@ -488,14 +488,9 @@
                 <li><strong>Comparar</strong> la gestión de memoria entre Linux y Windows</li>
             </ol>
 
-            <div class="callout info">
-                <p class="callout-title">Conceptos Clave de Sesión</p>
-                <ul>
-                    <li><strong>Page Fault (Fallo de Página):</strong> Error generado cuando un proceso intenta acceder a una página que no está cargada en la RAM física.</li>
-                    <li><strong>Thrashing (Hiperpaginación):</strong> Situación donde el sistema pasa más tiempo moviendo páginas entre disco y RAM que ejecutando programas.</li>
-                    <li><strong>LRU (Least Recently Used):</strong> Algoritmo que reemplaza la página que no ha sido usada por el tiempo más largo.</li>
-                    <li><strong>OOM Killer (Out of Memory):</strong> Mecanismo del Kernel de Linux que termina procesos para liberar memoria cuando esta es críticamente baja.</li>
-                </ul>
+            <div class="callout success">
+                <p class="callout-title">🖥️ Laboratorio VirtualBox</p>
+                <p>Aprenderemos a configurar y optimizar el espacio de intercambio (SWAP) en tu servidor de <strong>VirtualBox</strong> para mejorar el manejo de memoria virtual.</p>
             </div>
         </section>
 
@@ -1191,6 +1186,26 @@ Get-Process | Sort-Object WorkingSet -Descending |
                     <strong>Consejo:</strong> La memoria virtual permite que tu computadora ejecute más programas de los que cabrían en la RAM física. Es como tener un escritorio pequeño pero usar el piso como espacio adicional.
                 </div>
             </div>
+        </section>
+
+        <!-- Actividad -->
+        <section id="actividad">
+            <h2>Actividad Práctica: Gestión de Swap</h2>
+
+            <section class="actividad">
+                <h3>Actividad 10: Configuración de Intercambio</h3>
+                <p><strong>Tipo:</strong> Preparación para Fase 3 (E3)</p>
+                <p><strong>Objetivo:</strong> Crear un archivo de swap para extender la memoria RAM.</p>
+                <p><strong>Pasos:</strong></p>
+                <ol>
+                    <li>Crea un archivo vacío de 512MB: <code>sudo fallocate -l 512M /swapfile_extra</code></li>
+                    <li>Dale permisos seguros: <code>sudo chmod 600 /swapfile_extra</code></li>
+                    <li>Formatéalo como swap: <code>sudo mkswap /swapfile_extra</code></li>
+                    <li>Actívalo: <code>sudo swapon /swapfile_extra</code></li>
+                    <li>Verifica con <code>swapon --show</code></li>
+                </ol>
+                <p><strong>Entregable:</strong> Captura de la nueva swap activa para el Checkpoint E3.</p>
+            </section>
         </section>
 
         <section id="resumen">

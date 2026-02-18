@@ -153,35 +153,27 @@
             <h2>Contenido de la Clase</h2>
             <ul>
                 <li><a href="#objetivos">Objetivos de Aprendizaje</a></li>
-                <li><a href="#hardware">Hardware de Discos</a></li>
-                <li><a href="#particiones">Particiones</a></li>
-                <li><a href="#sistemas">Sistemas de Archivos Básicos</a></li>
-                <li><a href="#es">Gestión de E/S</a></li>
-                <li><a href="#practica">Práctica en Linux</a></li>
-                
+                <li><a href="#hardware">1. Hardware de Discos</a></li>
+                <li><a href="#particiones">2. Particiones</a></li>
+                <li><a href="#es">3. Gestión de E/S</a></li>
+                <li><a href="#practica">4. Práctica en Linux</a></li>
             </ul>
         </nav>
 
         <section id="objetivos">
             <h2>Objetivos de Aprendizaje</h2>
-            <p><strong>Resultado de Aprendizaje:</strong> Administra la memoria, los procesos de entrada y salida, la comunicación entre procesos y la sincronización de los mismos.</p>
+            <p><strong>Resultado de Aprendizaje (RA3):</strong> Administra la memoria, los procesos de entrada y salida, la comunicación entre procesos y la sincronización de los mismos (Alineado con Evaluación E3).</p>
             <p>Al finalizar esta clase, serás capaz de:</p>
             <ol>
                 <li><strong>Comprender</strong> la estructura física de los discos duros</li>
                 <li><strong>Explicar</strong> el concepto de particiones y esquemas de particionado</li>
-                <li><strong>Diferenciar</strong> entre sistemas de archivos básicos</li>
                 <li><strong>Analizar</strong> el subsistema de E/S del SO</li>
                 <li><strong>Gestionar</strong> discos y particiones en Linux</li>
             </ol>
 
-            <div class="callout info">
-                <p class="callout-title">Glosario de Almacenamiento</p>
-                <ul>
-                    <li><strong>HDD / SSD:</strong> Hard Disk Drive (mecánico) / Solid State Drive (electrónico).</li>
-                    <li><strong>MBR / GPT:</strong> Esquemas de tabla de particiones (antiguo y moderno respectivamente).</li>
-                    <li><strong>E/S o I/O:</strong> Entrada y Salida de datos entre el sistema y el hardware.</li>
-                    <li><strong>DMA (Direct Memory Access):</strong> Acceso Directo a Memoria, permite al hardware transferir datos a la RAM sin usar el CPU.</li>
-                </ul>
+            <div class="callout success">
+                <p class="callout-title">🖥️ Laboratorio VirtualBox</p>
+                <p>En tu máquina de <strong>VirtualBox</strong>, analizaremos el rendimiento de los discos y cómo se gestionan las peticiones de entrada/salida a nivel de kernel.</p>
             </div>
         </section>
 
@@ -281,47 +273,8 @@ Ejemplo de layout:
             </div>
         </section>
 
-        <section id="sistemas">
-            <h2>3. Sistemas de Archivos Básicos</h2>
-            
-            <h3>EXT4 (Extended File System 4)</h3>
-            <table>
-                <tr><th>Característica</th><th>Descripción</th></tr>
-                <tr><td>Tamaño máximo archivo</td><td>16 TB</td></tr>
-                <tr><td>Tamaño máximo volumen</td><td>1 EB (exabyte)</td></tr>
-                <tr><td>Tamaño de bloque</td><td>1KB - 64KB</td></tr>
-                <tr><td>Características</td><td>Journaling, extents, defragmentación online</td></tr>
-            </table>
-
-            <h3>Estructura Básica de un Sistema de Archivos</h3>
-            <pre>
-Layout típico de un FS:
-┌───────────────┬───────────────┬─────────────────┬──────────────┐
-│  Boot Block   │  Superblock   │  Metadata       │  Data Blocks │
-│  (reservado)  │               │  (inodos, etc)  │              │
-└───────────────┴───────────────┴─────────────────┴──────────────┘
-
-Superblock contiene:
-- Tamaño del sistema de archivos
-- Número de bloques libres
-- Tamaño de bloque
-- Fecha de último montaje
-- Estado (limpio/sucio)
-</pre>
-
-            <h3>Comparación de Sistemas de Archivos</h3>
-            <table>
-                <tr><th>Sistema</th><th>Soporte</th><th>Journaling</th><th>Casos de uso</th></tr>
-                <tr><td>EXT4</td><td>Linux</td><td>Sí</td><td>Propósito general Linux</td></tr>
-                <tr><td>XFS</td><td>Linux</td><td>Sí</td><td>Archivos grandes, servidores</td></tr>
-                <tr><td>Btrfs</td><td>Linux</td><td>Sí</td><td>Avanzado (snapshots, RAID)</td></tr>
-                <tr><td>NTFS</td><td>Windows/Linux</td><td>Sí</td><td>Windows moderno</td></tr>
-                <tr><td>FAT32</td><td>Universal</td><td>No</td><td>USB, compatibilidad</td></tr>
-            </table>
-        </section>
-
         <section id="es">
-            <h2>4. Gestión de Entrada/Salida (E/S)</h2>
+            <h2>3. Gestión de Entrada/Salida (E/S)</h2>
             
             <h3>Subsistema de E/S del SO</h3>
             <p>El SO gestiona el acceso a dispositivos mediante:</p>
@@ -367,7 +320,7 @@ Beneficio: CPU libre durante transferencia
         </section>
 
         <section id="practica">
-            <h2>5. Práctica en Linux</h2>
+            <h2>4. Práctica en Linux</h2>
 
             <div class="info-box" style="margin-bottom: 1.5rem; background: #eff6ff; border-left: 4px solid var(--primary); padding: 1.5rem; border-radius: 8px;">
                 <h3>📋 Laboratorio Complementario</h3>
@@ -484,6 +437,24 @@ iotop
                     <strong>Consejo:</strong> Entender cómo funcionan los discos te ayuda a tomar mejores decisiones al comprar hardware o configurar sistemas.
                 </div>
             </div>
+        </section>
+
+        <!-- Actividad -->
+        <section id="actividad">
+            <h2>Actividad Práctica: Monitoreo de E/S</h2>
+
+            <section class="actividad">
+                <h3>Actividad 11: Rendimiento de Disco</h3>
+                <p><strong>Tipo:</strong> Preparación para Fase 3 (E3)</p>
+                <p><strong>Objetivo:</strong> Medir la carga de entrada y salida en el sistema.</p>
+                <p><strong>Pasos:</strong></p>
+                <ol>
+                    <li>Instala herramientas: <code>sudo apt install sysstat</code></li>
+                    <li>Ejecuta <code>iostat -xz 1 5</code> para ver latencias de disco</li>
+                    <li>Usa <code>iotop</code> (requiere sudo) para ver qué procesos están escribiendo en disco</li>
+                </ol>
+                <p><strong>Entregable:</strong> Identificar el proceso con mayor carga de E/S para el Checkpoint E3.</p>
+            </section>
         </section>
 
         <section id="resumen">
