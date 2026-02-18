@@ -3,12 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Evaluaciones del Curso | IF0099 - Sistemas Operativos I</title>
+    <title>Manual de Evaluaciones UCS | IF0099</title>
     <style>
         :root {
             --primary: #1e3a5f;
             --secondary: #2d5a87;
             --accent: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
             --bg-light: #f8fafc;
             --text-main: #1e293b;
             --border: #e2e8f0;
@@ -18,216 +20,277 @@
             font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
             line-height: 1.6;
             color: var(--text-main);
-            background: linear-gradient(135deg, #1e3a5f 0%, #2d5a87 100%);
-            min-height: 100vh;
+            background: #f1f5f9;
             padding: 2rem;
         }
-        .container { max-width: 1200px; margin: 0 auto; }
+        .container { max-width: 1100px; margin: 0 auto; }
         header {
             background: white;
             border-radius: 1.5rem;
             padding: 3rem;
             text-align: center;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-            margin-bottom: 2rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            margin-bottom: 3rem;
+            border-top: 8px solid var(--primary);
         }
-        h1 { color: var(--primary); font-size: 2.2rem; margin-bottom: 0.5rem; }
-        .subtitle { color: #64748b; font-size: 1.1rem; margin-bottom: 2rem; }
-        
-        .section {
+        h1 { color: var(--primary); font-size: 2.5rem; margin-bottom: 0.5rem; }
+        .subtitle { color: #64748b; font-size: 1.2rem; }
+
+        .phase-section {
             background: white;
             border-radius: 1.5rem;
             padding: 2.5rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        .phase-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 2rem;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 1rem;
         }
-        h2 { color: var(--primary); border-bottom: 3px solid var(--accent); padding-bottom: 0.5rem; margin-bottom: 1.5rem; font-size: 1.6rem; }
-        
-        table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.9rem; }
-        th, td { padding: 1rem; text-align: left; border-bottom: 1px solid var(--border); }
-        th { background: var(--bg-light); color: var(--primary); font-weight: 700; }
-        tr:hover { background: #f1f5f9; }
+        .phase-title { font-size: 1.8rem; color: var(--primary); font-weight: 800; }
+        .phase-badge {
+            background: var(--primary);
+            color: white;
+            padding: 0.5rem 1.2rem;
+            border-radius: 2rem;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
 
-        .eval-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 1.5rem;
-        }
-        .eval-card {
+        h3 { color: var(--secondary); margin: 1.5rem 0 1rem; font-size: 1.3rem; display: flex; align-items: center; gap: 0.5rem; }
+        
+        .step-card {
             background: var(--bg-light);
-            border: 1px solid var(--border);
             border-radius: 1rem;
             padding: 1.5rem;
-            border-left: 6px solid var(--primary);
+            margin-bottom: 1rem;
+            border-left: 4px solid var(--secondary);
         }
-        .eval-card.highlight { border-left-color: var(--accent); background: #f0fdf4; }
-        .eval-card h3 { color: var(--primary); margin-bottom: 0.5rem; display: flex; justify-content: space-between; align-items: center; }
-        .eval-card .pct { background: var(--primary); color: white; padding: 0.2rem 0.6rem; border-radius: 0.5rem; font-size: 0.8rem; }
-        .eval-card p { font-size: 0.9rem; color: #475569; margin-bottom: 1rem; }
-        .eval-card .meta { font-size: 0.8rem; font-weight: 600; color: #64748b; }
+        .step-num {
+            background: var(--secondary);
+            color: white;
+            width: 24px;
+            height: 24px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-size: 0.8rem;
+            margin-right: 0.5rem;
+        }
 
-        .instruction-box { background: #fffbeb; border: 1px solid #fef3c7; padding: 1.5rem; border-radius: 1rem; margin-top: 1rem; }
-        .instruction-box h4 { color: #92400e; margin-bottom: 0.5rem; font-size: 1rem; }
-        .instruction-box ul { padding-left: 1.2rem; font-size: 0.85rem; color: #92400e; }
+        .deliverable-box {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            padding: 1.5rem;
+            border-radius: 1rem;
+            margin-top: 2rem;
+        }
+        .deliverable-box h4 { color: #166534; margin-bottom: 1rem; }
+        .deliverable-list { list-style: none; }
+        .deliverable-list li { margin-bottom: 0.5rem; display: flex; align-items: flex-start; gap: 0.5rem; }
+        .deliverable-list li::before { content: "📁"; }
 
-        .nav-footer { display: flex; justify-content: center; gap: 1rem; margin-top: 3rem; }
-        .btn { padding: 0.75rem 1.5rem; border-radius: 0.75rem; text-decoration: none; font-weight: 700; transition: all 0.3s; }
-        .btn-white { background: white; color: var(--primary); }
-        .btn-white:hover { background: var(--bg-light); transform: translateY(-2px); }
+        .rubric-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            font-size: 0.85rem;
+        }
+        .rubric-table th { background: #f8fafc; color: var(--primary); text-align: left; padding: 0.75rem; border: 1px solid var(--border); }
+        .rubric-table td { padding: 0.75rem; border: 1px solid var(--border); }
 
-        .badge { display: inline-block; padding: 0.2rem 0.5rem; border-radius: 0.4rem; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; }
-        .badge-lx { background: #fef3c7; color: #92400e; }
-        .badge-wn { background: #dbeafe; color: #1e40af; }
+        .warning-tag {
+            background: #fffbeb;
+            color: #92400e;
+            padding: 1rem;
+            border-radius: 0.75rem;
+            border-left: 4px solid var(--warning);
+            margin: 1rem 0;
+            font-size: 0.9rem;
+        }
+
+        .nav-footer {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        .btn {
+            padding: 1rem 2rem;
+            border-radius: 1rem;
+            text-decoration: none;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { background: var(--secondary); transform: translateY(-2px); }
+        .btn-outline { background: white; color: var(--primary); border: 2px solid var(--primary); }
+
+        code { background: #e2e8f0; padding: 0.2rem 0.4rem; border-radius: 0.25rem; font-family: monospace; color: #e11d48; }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>Evaluación PANDORA</h1>
-            <p class="subtitle">Modelo de Evaluación por Resultados de Aprendizaje (RA)</p>
-            <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
-                <span class="badge" style="background: white; color: var(--primary); border: 1px solid var(--primary);">40% Teoría Aplicada</span>
-                <span class="badge" style="background: var(--accent); color: white;">60% Laboratorio Real</span>
-            </div>
+            <h1>Guía de Entregables UCS</h1>
+            <p class="subtitle">Detalle Paso a Paso de las 6 Fases Evaluativas | UNAULA 2026</p>
         </header>
 
-        <section class="section">
-            <h2>📊 Cuadro de Seguimiento</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Corte</th>
-                        <th>Fecha Límite</th>
-                        <th>Porcentaje Acumulado</th>
-                        <th>Fases Incluidas</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Primer Seguimiento</strong></td>
-                        <td>27 de Marzo</td>
-                        <td><strong>50%</strong></td>
-                        <td>Fase 1 (15%) + Fase 2 (15%) + Fase 3 (20%)</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Segundo Seguimiento</strong></td>
-                        <td>15 de Mayo</td>
-                        <td><strong>80%</strong></td>
-                        <td>Fase 4 (15%) + Fase 5 (15%)</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Tercer Seguimiento</strong></td>
-                        <td>28 de Mayo</td>
-                        <td><strong>100%</strong></td>
-                        <td>Fase 6 (20%) Sustentación Final</td>
-                    </tr>
-                </tbody>
-            </table>
+        <!-- E1 -->
+        <section class="phase-section" id="e1">
+            <div class="phase-header">
+                <h2 class="phase-title">Fase 1: Cimientos y Arquitectura</h2>
+                <span class="phase-badge">VALOR: 15%</span>
+            </div>
+            <p>El objetivo es establecer la base técnica del proyecto <strong>UNAULA Cloud Services (UCS)</strong>, garantizando que el entorno de virtualización sea profesional y las máquinas se vean entre sí.</p>
+            
+            <h3>🛠️ Paso a Paso:</h3>
+            <div class="step-card"><span class="step-num">1</span> Instale VirtualBox 7.x y despliegue dos nodos: Ubuntu Server 22.04 (Nodo LX) y Windows Server o Windows 10/11 Pro (Nodo WN).</div>
+            <div class="step-card"><span class="step-num">2</span> Configure la red en modo <strong>Adaptador Puente (Bridge)</strong>. Verifique conectividad mediante <code>ping</code> entre el Host y ambas VMs.</div>
+            <div class="step-card"><span class="step-num">3</span> Realice un inventario técnico de su hardware asignado (RAM, Cores, Almacenamiento).</div>
+
+            <div class="deliverable-box">
+                <h4>📦 Qué debe entregar (PDF):</h4>
+                <ul class="deliverable-list">
+                    <li><strong>Diagrama de Red UCS:</strong> Esquema visual mostrando IPs estáticas, puertas de enlace y nombres de host.</li>
+                    <li><strong>Evidencia Forense:</strong> Captura de <code>uname -a</code> (Linux) y <code>systeminfo</code> (Windows).</li>
+                    <li><strong>Tabla de Hardware:</strong> Listado comparativo del hardware virtual asignado vs. hardware real del host.</li>
+                </ul>
+            </div>
         </section>
 
-        <section class="section">
-            <h2>🎯 Detalle de las 6 Fases (E1-E6)</h2>
-            <div class="eval-grid">
-                <!-- E1 -->
-                <div class="eval-card">
-                    <h3>Fase 1: Arquitectura <span class="pct">15%</span></h3>
-                    <p>Diseño estructural del centro de datos UCS. Selección de OS y mapeo de hardware virtual.</p>
-                    <div class="meta">📅 25 Feb | RA1: Estructura</div>
-                    <div class="instruction-box">
-                        <h4>Entregables:</h4>
-                        <ul>
-                            <li>Diagrama de red (Bridge mode).</li>
-                            <li>Reporte de <code>uname -a</code> y <code>systeminfo</code>.</li>
-                            <li>Justificación técnica de recursos asignados.</li>
-                        </ul>
-                    </div>
-                </div>
+        <!-- E2 -->
+        <section class="phase-section" id="e2">
+            <div class="phase-header">
+                <h2 class="phase-title">Fase 2: Monitoreo y Automatización</h2>
+                <span class="phase-badge">VALOR: 15%</span>
+            </div>
+            <p>Implementar visibilidad operativa. Como ingeniero, no debe entrar a la VM para saber que algo falló; el sistema debe avisarle.</p>
+            
+            <h3>🛠️ Paso a Paso:</h3>
+            <div class="step-card"><span class="step-num">1</span> <strong>Linux:</strong> Desarrolle <code>monitor.sh</code>. El script debe ejecutarse cada N segundos, leer <code>/proc/stat</code> y alertar si el CPU supera el 80%.</div>
+            <div class="step-card"><span class="step-num">2</span> <strong>Windows:</strong> Desarrolle <code>services.ps1</code>. El script debe vigilar el servicio de "Cola de Impresión" (Spooler) y reiniciarlo automáticamente si se detiene.</div>
+            <div class="step-card"><span class="step-num">3</span> Integre ambos scripts en el arranque del sistema (systemd unit en Linux y Scheduled Task en Windows).</div>
 
-                <!-- E2 -->
-                <div class="eval-card">
-                    <h3>Fase 2: Monitoreo <span class="pct">15%</span></h3>
-                    <p>Automatización de la observabilidad mediante scripts Bash y PowerShell.</p>
-                    <div class="meta">📅 11 Mar | RA2: Procesos</div>
-                    <div class="instruction-box">
-                        <h4>Entregables:</h4>
-                        <ul>
-                            <li><code>monitor.sh</code> (CPU/RAM/Alertas).</li>
-                            <li><code>servicios.ps1</code> (Auto-restart de Spooler).</li>
-                            <li>Video demo de los scripts en acción.</li>
-                        </ul>
-                    </div>
-                </div>
+            <div class="deliverable-box">
+                <h4>📦 Qué debe entregar:</h4>
+                <ul class="deliverable-list">
+                    <li><strong>Código Fuente:</strong> Archivos <code>.sh</code> y <code>.ps1</code> limpios y comentados.</li>
+                    <li><strong>Video Técnico (Link):</strong> Video de máximo 5 min demostrando la ejecución de los scripts y la reacción ante una caída simulada.</li>
+                    <li><strong>Bitácora de Pruebas:</strong> PDF corto con la tabla de errores encontrados durante el desarrollo.</li>
+                </ul>
+            </div>
+        </section>
 
-                <!-- E3 -->
-                <div class="eval-card highlight">
-                    <h3>Fase 3: Optimización <span class="pct">20%</span></h3>
-                    <p>Laboratorio individual de resolución de 5 escenarios técnicos de alto nivel.</p>
-                    <div class="meta">📅 25 Mar | RA3: Rendimiento</div>
-                    <div class="instruction-box">
-                        <h4>Escenarios Real-World:</h4>
-                        <ul>
-                            <li>Diagnóstico de Memory Pressure (PerfMon/vmstat).</li>
-                            <li>Wait Chain Forensics (Deadlocks en hilos).</li>
-                            <li>Análisis de Inodos y enlaces físicos.</li>
-                        </ul>
-                    </div>
-                </div>
+        <!-- E3 -->
+        <section class="phase-section" id="e3" style="border: 2px solid var(--primary);">
+            <div class="phase-header">
+                <h2 class="phase-title">Fase 3: Laboratorio de Optimización</h2>
+                <span class="phase-badge" style="background: var(--secondary);">VALOR: 20%</span>
+            </div>
+            <p>Esta es la prueba de fuego de media mitad de semestre. Se evalúa su capacidad de resolver problemas de rendimiento bajo presión.</p>
+            
+            <div class="warning-tag">⚠️ Este laboratorio es <strong>Individual</strong> y se basa en 5 escenarios técnicos reales proporcionados por el docente el día de la sesión.</div>
 
-                <!-- E4 -->
-                <div class="eval-card">
-                    <h3>Fase 4: Hardening <span class="pct">15%</span></h3>
-                    <p>Aseguramiento integral de los nodos Linux y Windows.</p>
-                    <div class="meta">📅 22 Abr | RA4: Seguridad</div>
-                    <div class="instruction-box">
-                        <h4>Blindaje Requerido:</h4>
-                        <ul>
-                            <li>ACLs granulares (<code>setfacl</code> / NTFS).</li>
-                            <li>Firewall Hardening (UFW / Advanced Firewall).</li>
-                            <li>Matriz de riesgos de infraestructura.</li>
-                        </ul>
-                    </div>
-                </div>
+            <h3>🔎 Ejemplos de lo que se evaluará:</h3>
+            <ul>
+                <li><strong>Memory Pressure:</strong> Identificar qué proceso tiene un "Memory Leak" usando <code>resmon</code> y <code>vmstat</code>.</li>
+                <li><strong>I/O Bottleneck:</strong> Analizar por qué el servidor web está lento usando colas de disco (PerfMon) y latencia <code>await</code> (iostat).</li>
+                <li><strong>Forense de Archivos:</strong> Recuperar acceso a archivos con inodos huérfanos o links simbólicos rotos.</li>
+            </ul>
 
-                <!-- E5 -->
-                <div class="eval-card">
-                    <h3>Fase 5: Producción <span class="pct">15%</span></h3>
-                    <p>Integración final de servicios web y almacenamiento redundante.</p>
-                    <div class="meta">📅 06 May | RA5: Integración</div>
-                    <div class="instruction-box">
-                        <h4>Servicios Activos:</h4>
-                        <ul>
-                            <li>Apache (SSL/VHost) + IIS (AppPools).</li>
-                            <li>RAID 1 (Linux) + Storage Spaces (Windows).</li>
-                            <li>Interoperabilidad SMB/CIFS (C18).</li>
-                        </ul>
-                    </div>
-                </div>
+            <div class="deliverable-box">
+                <h4>📦 Qué debe entregar:</h4>
+                <ul class="deliverable-list">
+                    <li><strong>PDF de Análisis (Forense):</strong> Por cada escenario: Problema identificado + Datos que lo prueban + Solución aplicada + Captura del comando final.</li>
+                </ul>
+            </div>
+        </section>
 
-                <!-- E6 -->
-                <div class="eval-card highlight">
-                    <h3>Fase 6: Sustentación <span class="pct">20%</span></h3>
-                    <p>Defensa técnica oral y demostración en vivo del sistema UCS completo.</p>
-                    <div class="meta">📅 27 May | RA6: Interfaces</div>
-                    <div class="instruction-box">
-                        <h4>Componentes de Defensa:</h4>
-                        <ul>
-                            <li>Portafolio Ejecutivo (Consolidado F1-F5).</li>
-                            <li>Manuales y Documentación Técnica (C19).</li>
-                            <li>Live Demo y Stress Test (C20).</li>
-                        </ul>
-                    </div>
-                </div>
+        <!-- E4 -->
+        <section class="phase-section" id="e4">
+            <div class="phase-header">
+                <h2 class="phase-title">Fase 4: Hardening y Seguridad</h2>
+                <span class="phase-badge">VALOR: 15%</span>
+            </div>
+            <p>Transformar un sistema funcional en un sistema seguro (A prueba de ataques).</p>
+            
+            <h3>🛠️ Paso a Paso:</h3>
+            <div class="step-card"><span class="step-num">1</span> <strong>Linux:</strong> Cierre todos los puertos con UFW. Cambie el puerto SSH. Implemente ACLs granulares en <code>/var/www/ucs</code> para que solo el grupo <code>www-data</code> tenga acceso.</div>
+            <div class="step-card"><span class="step-num">2</span> <strong>Windows:</strong> Configure <code>secpol.msc</code> para forzar complejidad de contraseñas y bloqueo de cuenta. Audite el acceso al sistema mediante el Visor de Eventos.</div>
+            <div class="step-card"><span class="step-num">3</span> Construya la Matriz de Riesgos del sistema UCS.</div>
+
+            <div class="deliverable-box">
+                <h4>📦 Qué debe entregar (PDF):</h4>
+                <ul class="deliverable-list">
+                    <li><strong>Matriz de Riesgos:</strong> Identificación de 8 vulnerabilidades y su mitigación técnica.</li>
+                    <li><strong>Reporte de Auditoría:</strong> Capturas de <code>ufw status</code>, <code>getfacl</code> y las políticas locales de Windows aplicadas.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- E5 -->
+        <section class="phase-section" id="e5">
+            <div class="phase-header">
+                <h2 class="phase-title">Fase 5: Integración y Producción</h2>
+                <span class="phase-badge">VALOR: 15%</span>
+            </div>
+            <p>Puesta en marcha definitiva. Los nodos deben colaborar para servir la aplicación corporativa.</p>
+            
+            <h3>🛠️ Paso a Paso:</h3>
+            <div class="step-card"><span class="step-num">1</span> Despliegue <strong>Apache (Linux)</strong> con HTTPS y <strong>IIS (Windows)</strong> en puerto 8080. Ambos deben mostrar el portal UCS.</div>
+            <div class="step-card"><span class="step-num">2</span> Configure <strong>RAID 1 (Mirroring)</strong> en Linux y <strong>Storage Spaces</strong> en Windows para los datos del portal.</div>
+            <div class="step-card"><span class="step-num">3</span> Configure interoperabilidad: El Nodo Windows debe montar una carpeta compartida del Nodo Linux vía <strong>Samba</strong>.</div>
+
+            <div class="deliverable-box">
+                <h4>📦 Qué debe entregar:</h4>
+                <ul class="deliverable-list">
+                    <li><strong>URL/IPs del Sistema:</strong> Acceso funcional a los portales web (comprobado en clase).</li>
+                    <li><strong>Configuraciones Finales:</strong> Copia de los archivos <code>.conf</code> de Apache, <code>smb.conf</code> y <code>/etc/fstab</code>.</li>
+                    <li><strong>Evidencia de Redundancia:</strong> Video de 2 min mostrando que el sistema sigue vivo tras apagar un disco del RAID.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- E6 -->
+        <section class="phase-section" id="e6" style="background: #f8fafc; border: 2px dashed var(--primary);">
+            <div class="phase-header">
+                <h2 class="phase-title">Fase 6: Sustentación Final</h2>
+                <span class="phase-badge" style="background: var(--accent);">VALOR: 20%</span>
+            </div>
+            <p>Defensa profesional de la ingeniería realizada durante el semestre.</p>
+            
+            <h3>💎 Componentes de la Sustentación:</h3>
+            <div class="step-card"><strong>Portafolio Ejecutivo:</strong> Un único documento PDF que consolida todas las fases anteriores, con las correcciones sugeridas por el docente incorporadas.</div>
+            <div class="step-card"><strong>Pitch Técnico:</strong> Presentación de 8 diapositivas enfocadas en la arquitectura, retos de sincronización y estrategia de seguridad.</div>
+            <div class="step-card"><strong>Live Demo:</strong> El docente pedirá realizar un cambio en vivo (ej: "Matar el proceso Apache y mostrar cómo el monitor lo detecta").</div>
+
+            <div class="deliverable-box">
+                <h4>📦 Qué debe entregar:</h4>
+                <ul class="deliverable-list">
+                    <li><strong>Portafolio Final:</strong> El PDF "Libro Blanco" de su infraestructura.</li>
+                    <li><strong>Presentación:</strong> Archivo PPTX o PDF del Pitch.</li>
+                    <li><strong>Link al Repositorio:</strong> GitHub/GitLab con todo el código del semestre organizado.</li>
+                </ul>
             </div>
         </section>
 
         <div class="nav-footer">
-            <a href="index.html" class="btn btn-white">🏠 Volver al Inicio</a>
-            <a href="cronograma.html" class="btn btn-white">📅 Ver Cronograma</a>
-            <a href="proyecto.html" class="btn btn-white" style="background: var(--accent); color: white;">📘 Guía del Proyecto</a>
+            <a href="index.html" class="btn btn-outline">🏠 Inicio</a>
+            <a href="cronograma.html" class="btn btn-outline">📅 Cronograma</a>
+            <a href="proyecto.html" class="btn btn-primary">📘 Guía Proyecto</a>
         </div>
 
         <footer>
-            <p>IF0099 - Sistemas Operativos I | UNAULA 2026-I</p>
+            <p>IF0099 - Sistemas Operativos I | Universidad Autónoma Latinoamericana | 2026</p>
         </footer>
     </div>
 </body>
