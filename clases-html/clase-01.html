@@ -92,12 +92,32 @@
             <h2>2. Ubicación en la Arquitectura Computacional</h2>
             <p>El SO no es un programa cualquiera; es el cimiento sobre el que corre todo lo demás.</p>
             
-            <div class="ascii-diagram">
-    [ NIVEL 4 ]  Usuarios Finales (Tú, Clientes UCS)
-    [ NIVEL 3 ]  Aplicaciones (Navegador, VS Code, SQL Server)
-    [ NIVEL 2 ]  Middleware / Librerías (Win32, POSIX, .NET)
-    [ NIVEL 1 ]  SISTEMA OPERATIVO (Kernel - Ring 0)
-    [ NIVEL 0 ]  HARDWARE (CPU, RAM, Discos, NIC)</div>
+            <div style="text-align: center; margin: 2rem 0;">
+                <svg viewBox="0 0 600 300" xmlns="http://www.w3.org/2000/svg" style="max-width: 100%; height: auto;">
+                    <!-- Layers -->
+                    <rect x="50" y="240" width="500" height="40" rx="5" fill="#1e293b" />
+                    <text x="300" y="265" text-anchor="middle" fill="white" font-weight="bold">NIVEL 0: HARDWARE (CPU, RAM, DISCO)</text>
+                    
+                    <rect x="75" y="190" width="450" height="40" rx="5" fill="#2563eb" />
+                    <text x="300" y="215" text-anchor="middle" fill="white" font-weight="bold">NIVEL 1: SISTEMA OPERATIVO (KERNEL)</text>
+                    
+                    <rect x="100" y="140" width="400" height="40" rx="5" fill="#3b82f6" />
+                    <text x="300" y="165" text-anchor="middle" fill="white" font-weight="bold">NIVEL 2: MIDDLEWARE / LIBRERÍAS</text>
+                    
+                    <rect x="125" y="90" width="350" height="40" rx="5" fill="#60a5fa" />
+                    <text x="300" y="115" text-anchor="middle" fill="white" font-weight="bold">NIVEL 3: APLICACIONES DE USUARIO</text>
+                    
+                    <rect x="150" y="40" width="300" height="40" rx="5" fill="#93c5fd" />
+                    <text x="300" y="65" text-anchor="middle" fill="#1e3a8a" font-weight="bold">NIVEL 4: USUARIO FINAL</text>
+                    
+                    <!-- Arrows -->
+                    <path d="M 50 220 L 30 220 L 30 60 L 50 60" fill="none" stroke="#64748b" stroke-width="2" />
+                    <text x="20" y="145" text-anchor="middle" transform="rotate(-90, 20, 145)" fill="#64748b" font-size="12">ABSTRACCIÓN</text>
+                    
+                    <path d="M 550 60 L 570 60 L 570 220 L 550 220" fill="none" stroke="#64748b" stroke-width="2" />
+                    <text x="585" y="145" text-anchor="middle" transform="rotate(90, 585, 145)" fill="#64748b" font-size="12">GESTIÓN DE RECURSOS</text>
+                </svg>
+            </div>
 
             <div class="callout warning">
                 <h4>Privilegio de Ejecución</h4>

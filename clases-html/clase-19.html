@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clase 19: Infraestructura como Documentación | IF0099</title>
+    <!-- Prism.js CSS para syntax highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <style>
+        :root { --primary: #2563eb; --secondary: #1e40af; --accent: #059669; --bg-light: #f8fafc; --bg-code: #1e293b; --text-main: #1e293b; --text-muted: #64748b; --border: #e2e8f0; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.7; color: var(--text-main); background: var(--bg-light); font-size: 16px; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        header { background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); color: white; padding: 3rem 0; margin-bottom: 2rem; }
+        header h1 { font-size: 2.2rem; margin-bottom: 0.5rem; font-weight: 700; }
+        header .subtitle { font-size: 1.1rem; opacity: 0.9; }
+        header .meta { margin-top: 1rem; font-size: 0.9rem; opacity: 0.8; }
+        nav { background: white; padding: 1.5rem 0; margin-bottom: 2rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 100; }
+        nav ul { list-style: none; display: flex; flex-wrap: wrap; gap: 1.5rem; padding: 0 20px; justify-content: center; }
+        nav a { color: var(--primary); text-decoration: none; font-weight: 600; font-size: 0.95rem; }
+        section { background: white; padding: 2.5rem; margin-bottom: 2rem; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        section h2 { color: var(--primary); font-size: 1.8rem; margin-bottom: 1.5rem; padding-bottom: 0.5rem; border-bottom: 3px solid var(--accent); }
+        h3 { color: var(--secondary); font-size: 1.4rem; margin: 2rem 0 1rem; }
+        pre { background: var(--bg-code); color: #e2e8f0; padding: 1.5rem; border-radius: 8px; overflow-x: auto; margin: 1.5rem 0; font-size: 0.9rem; }
+        .callout { padding: 1.5rem; border-radius: 8px; margin: 1.5rem 0; border-left: 4px solid; }
+        .callout.info { background: #eff6ff; border-left-color: var(--primary); }
+        .card { background: var(--bg-light); padding: 1.5rem; border-radius: 8px; border: 1px solid var(--border); }
+        table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; }
+        th, td { padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid var(--border); }
+        th { background: var(--bg-light); font-weight: 600; }
+        .actividad { background: #f1f5f9; border-left: 5px solid var(--accent); padding: 2rem; margin: 2rem 0; border-radius: 8px; }
+        footer { background: var(--text-main); color: white; padding: 2rem 0; text-align: center; margin-top: 3rem; }
+        .eval-alert { background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-left: 4px solid #f59e0b; padding: 1.25rem 1.5rem; border-radius: 8px; margin-bottom: 2rem; display: flex; align-items: center; gap: 1rem; color: inherit; text-decoration: none; }
+        .class-nav { display: flex; justify-content: space-between; gap: 1rem; margin: 2rem 0; }
+        .class-nav-link { flex: 1; padding: 1.25rem 1.5rem; background: white; border: 2px solid var(--border); border-radius: 12px; text-decoration: none; color: var(--text-main); transition: all 0.3s; }
+        .class-nav-link:hover { border-color: var(--primary); transform: translateY(-2px); }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Clase 19: Infraestructura como Documentación</h1>
+            <p class="subtitle">IF0099 - Sistemas Operativos I | Unidad 9 - Estándares de Ingeniería</p>
+            <p class="meta">📅 13 de Mayo 2026 | Bloque: 6:00 - 8:00 AM | Teoría: 60 min + Práctica: 60 min</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Próxima Evaluación Alert -->
+        <a href="evaluaciones.html#e6" class="eval-alert">
+            <span style="font-size: 1.75rem;">📌</span>
+            <div class="eval-alert-content">
+                <div style="font-weight: 700; color: #92400e;">E6: FASE 6 - Sustentación Final (27 May)</div>
+                <div style="color: #78350f; font-size: 0.9rem;">20% - Preparación del portafolio consolidado y Pitch técnico del sistema UCS.</div>
+            </div>
+            <span style="background: #f59e0b; color: white; padding: 0.5rem 1rem; border-radius: 6px; font-weight: 600;">📅 27 May</span>
+        </a>
+
+        <nav>
+            <ul>
+                <li><a href="#manual-tecnico">1. El Manual Técnico</a></li>
+                <li><a href="#manual-operacion">2. Manual de Operación</a></li>
+                <li><a href="#markdown">3. Markdown y Repositorios</a></li>
+                <li><a href="#diagramacion">4. Diagramación Profesional</a></li>
+                <li><a href="#practica">5. Taller: Consolidación</a></li>
+            </ul>
+        </nav>
+
+        <section id="manual-tecnico">
+            <h2>1. El Manual Técnico: Para el próximo ingeniero</h2>
+            <p>Un ingeniero no solo construye; sabe explicar qué construyó para que otros puedan replicarlo o repararlo.</p>
+            <div class="card">
+                <h4>Estructura Sugerida:</h4>
+                <ul>
+                    <li><strong>Arquitectura Lógica:</strong> Diagrama de red y flujo de datos.</li>
+                    <li><strong>Matriz de Direccionamiento:</strong> IPs, Puertos y MACs.</li>
+                    <li><strong>Configuraciones de Kernel:</strong> Parámetros modificados en <code>sysctl</code> o Registro.</li>
+                    <li><strong>Seguridad:</strong> Políticas de hardening aplicadas.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="manual-operacion">
+            <h2>2. Manual de Operación: Para el usuario final</h2>
+            <p>Se enfoca en el "Cómo se usa". Es la guía rápida para que un operador de sistemas mantenga el servicio arriba.</p>
+            <ul>
+                <li><strong>Arranque y Parada:</strong> Comandos para iniciar Apache e IIS.</li>
+                <li><strong>Monitoreo:</strong> Cómo leer la salida de los scripts de la Fase 2.</li>
+                <li><strong>Troubleshooting Básico:</strong> Qué hacer si el sitio web muestra un error 500 o 503.</li>
+            </ul>
+        </section>
+
+        <section id="markdown">
+            <h2>3. Markdown: El Estándar de la Documentación</h2>
+            <p>Olvídese de Word. Los ingenieros modernos documentan en <strong>Markdown</strong> para que la documentación viva junto al código en el repositorio (GitHub/GitLab).</p>
+            <pre><code class="language-markdown"># Título del Proyecto UCS
+## Guía de Instalación
+1. Instalar dependencias:
+   `sudo apt install apache2`
+2. Clonar repo...</code></pre>
+        </section>
+
+        <section id="diagramacion">
+            <h2>4. Diagramación de Infraestructura</h2>
+            <p>Un buen diagrama ahorra mil palabras. Herramientas recomendadas:</p>
+            <ul>
+                <li><strong>Draw.io / Lucidchart:</strong> Diagramas de red tradicionales.</li>
+                <li><strong>Excalidraw:</strong> Estilo "pizarra blanca" para sustentaciones rápidas.</li>
+                <li><strong>Mermaid.js:</strong> Diagramas generados mediante código.</li>
+            </ul>
+        </section>
+
+        <section id="practica">
+            <h2>5. Actividad Práctica: El Repositorio Final</h2>
+            <div class="actividad">
+                <h3>Taller: Construcción del Portafolio Ejecutivo</h3>
+                <p><strong>Objetivo:</strong> Consolidar las 5 fases previas en un producto de entrega profesional.</p>
+                
+                <p><strong>Tarea 1: Estructura del Repositorio</strong></p>
+                <ol>
+                    <li>Cree una carpeta <code>/UCS_Final</code> en su equipo host.</li>
+                    <li>Subcarpetas: <code>/scripts</code>, <code>/config_files</code>, <code>/manuals</code>, <code>/evidence_screenshots</code>.</li>
+                </ol>
+
+                <p><strong>Tarea 2: Documento Maestro (Markdown)</strong></p>
+                <ol>
+                    <li>Cree un archivo <code>README.md</code> profesional.</li>
+                    <li>Incluya el diagrama de red final (híbrido) actualizado tras la Clase 18.</li>
+                    <li>Explique el valor de negocio de su solución UCS.</li>
+                </ol>
+
+                <p><strong>Tarea 3: QA Documental</strong></p>
+                <ol>
+                    <li>Verifique que todos los comandos listados en sus manuales realmente funcionen al copiarlos y pegarlos en una VM limpia.</li>
+                </ol>
+
+                <p><strong>Entregable:</strong> Estructura inicial de su repositorio y el borrador del diagrama de red final consolidado.</p>
+            </div>
+
+            <!-- CASOS LABORALES -->
+            <div class="actividad" style="background: #fff7ed; border-left-color: #ea580c; margin-top: 2rem;">
+                <h3>Casos Reales: Documentación en el Mundo Real</h3>
+                <div class="card" style="margin: 1rem 0; border-left: 4px solid #dc2626;">
+                    <h4 style="color: #991b1b;">Caso 1: El Servidor Sin Documentación</h4>
+                    <p><strong>Escenario:</strong> Un administrador se retira de la empresa y deja un servidor con configuraciones personalizadas. El nuevo administrador no sabe qué hace cada script en /opt/ ni por qué hay reglas de firewall específicas.</p>
+                    <p><strong>Lección:</strong> Cada script debe tener un README en su misma carpeta explicando:</p>
+                    <ul>
+                        <li>Qué hace el script</li>
+                        <li>Con qué permisos se ejecuta</li>
+                        <li>Con qué otros sistemas interactúa</li>
+                        <li>Quién lo mantiene</li>
+                    </ul>
+                </div>
+                <div class="card" style="margin: 1rem 0; border-left: 4px solid #059669;">
+                    <h4 style="color: #065f46;">Caso 2: El Diagrama de Red Desactualizado</h4>
+                    <p><strong>Escenario:</strong> El diagrama de red muestra un servidor en 192.168.1.50 pero ese servidor fue migrado a 192.168.1.75 hace 6 meses. Un proveedor externo intenta conectarse y no puede.</p>
+                    <p><strong>Solución - GitOps para documentación:</strong></p>
+                    <pre><code class="language-bash"># Usar Git para versionar la documentación
+cd /repo/infraestructura
+git pull origin main
+
+# Editar diagrama.drawio
+# Commit con mensaje descriptivo
+git add .
+git commit -m "Actualización: Servidor app migrado a 192.168.1.75"
+git push origin main</code></pre>
+                </div>
+                <div class="card" style="margin: 1rem 0; border-left: 4px solid #2563eb;">
+                    <h4 style="color: #1e40af;">Caso 3: El Manual de Operaciones Inutilizable</h4>
+                    <p><strong>Escenario:</strong> El manual dice "Ejecute el script de restart.sh" pero nadie sabe dónde está, con qué usuario ejecutarlo, ni qué hace el script cuando falla.</p>
+                    <p><strong>Estructura profesional de un manual:</strong></p>
+                    <pre><code class="language-markdown">## Procedimiento: Reiniciar Servicio Web
+
+### Ubicación del Script
+`/opt/ucs/scripts/restart_apache.sh`
+
+### Usuario Requerido
+`sudo -u www-data` (nunca como root)
+
+### Pasos
+1. Verificar estado actual: `systemctl status apache2`
+2. Ejecutar script: `bash /opt/ucs/scripts/restart_apache.sh`
+3. Verificar puertos: `netstat -tlnp | grep :80`
+
+### Qué Hacer Si Fallla
+- Ver logs: `tail -50 /var/log/apache2/error.log`
+- Verificar puertos ocupados: `lsof -i :80`
+- Contactar al equipo de seguridad si hay errores de permisos</code></pre>
+                </div>
+            </div>
+
+            <!-- EJERCICIO ADICIONAL -->
+            <div class="actividad" style="background: #f0fdf4; border-left-color: #16a34a; margin-top: 2rem;">
+                <h3>Ejercicio: Documentación del Sistema UCS</h3>
+                <p>Crea la siguiente documentación para tu proyecto:</p>
+                <ol>
+                    <li><strong>README.md:</strong> Explica en 500 palabras qué es el sistema UCS y qué problema resuelve.</li>
+                    <li><strong>Diagrama de arquitectura:</strong> Usa Draw.io o Excalidraw para mostrar los nodos Linux y Windows, IPs, servicios y flujos de datos.</li>
+                    <li><strong>Matriz de puertos:</strong> Crea una tabla con: Servicio, Puerto, Protocolo, Acceso (Interno/Externo).</li>
+                    <li><strong>Runbook:</strong> Documenta los 3 procedimientos más críticos (cómo reiniciar Apache, cómo verificar RAID, cómo hacer backup).</li>
+                </ol>
+            </div>
+
+            <!-- AUTO-EVALUACIÓN -->
+            <div class="actividad" style="background: #f1f5f9; border-left-color: #6366f1; margin-top: 2rem;">
+                <h3>Auto-Evaluación: Documentación</h3>
+                <p>Responde antes de avanzar:</p>
+                <ol>
+                    <li><strong>¿Por qué la documentación debe vivir junto al código en el repositorio Git?</strong></li>
+                    <li><strong>¿Qué información mínima debe tener un diagrama de red para ser útil?</strong></li>
+                    <li><strong>¿Qué es un "Runbook" y por qué es crítico en operaciones?</strong></li>
+                    <li><strong>¿Cómo evitas que la documentación se desactualice rápidamente?</strong></li>
+                </ol>
+            </div>
+        </section>
+
+        <nav class="class-nav">
+            <a href="clase-18.html" class="class-nav-link">← Clase 18: Interoperabilidad</a>
+            <a href="clase-20.html" class="class-nav-link" style="text-align: right;">Clase 20: Ingeniería QA & SRE →</a>
+        </nav>
+    </div>
+
+    <footer>
+        <p>IF0099 - Sistemas Operativos I | Universidad Autónoma Latinoamericana | 2026</p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markdown.min.js"></script>
+</body>
+</html>

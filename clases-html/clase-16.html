@@ -64,9 +64,10 @@
             <ul>
                 <li><a href="#acls">1. ACLs de NTFS</a></li>
                 <li><a href="#directivas">2. Directivas de Seguridad</a></li>
-                <li><a href="#auditoria">3. Auditoría de Eventos</a></li>
-                <li><a href="#comandos">4. Comandos de Auditoría</a></li>
-                <li><a href="#practica">5. Laboratorio de Blindaje</a></li>
+                <li><a href="#uac">3. UAC</a></li>
+                <li><a href="#auditoria">4. Auditoría de Eventos</a></li>
+                <li><a href="#comandos">5. Comandos de Auditoría</a></li>
+                <li><a href="#practica">6. Laboratorio de Blindaje</a></li>
             </ul>
         </nav>
 
@@ -101,8 +102,44 @@
             </ul>
         </section>
 
+        <section id="uac">
+            <h2>3. UAC (User Account Control): El Guardián de Windows</h2>
+            <p>UAC es el mecanismo de seguridad que pide confirmación antes de realizar acciones privilegiadas. Es la versión Windows de "mínimo privilegio".</p>
+
+            <div class="comparison">
+                <div class="card">
+                    <h4>¿Cómo funciona UAC?</h4>
+                    <p>Cuando un proceso necesita privilegios de administrador:</p>
+                    <ol>
+                        <li>Windows crea un <strong>Token de Filtrado</strong> sin privilegios elevados.</li>
+                        <li>Si la aplicación pide admin, UAC muestra una <strong>promesa de consentimiento</strong>.</li>
+                        <li>Si el usuario aprueba, el proceso obtiene un <strong>Token Elevado</strong>.</li>
+                    </ol>
+                    <pre><code class="language-powershell"># Ver estado de UAC
+Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" | Select-Object EnableLUA
+
+# Ver nivel de notificación UAC
+# (1=Always, 2=WhenAppsTry, 3=SameDesktop, 4=Silent)
+(Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System").ConsentPromptBehaviorAdmin</code></pre>
+                </div>
+                <div class="card">
+                    <h4>UAC en el Entorno Corporativo</h4>
+                    <p>En un dominio (Active Directory), UAC se configura vía GPO:</p>
+                    <ul>
+                        <li><strong>Admin Approval Mode</strong>: Requiere aprobación para roles admin.</li>
+                        <li><strong>Elevation Prompt</strong>: Comportamiento de la ventana.</li>
+                        <li><strong>Secure Desktop</strong>: Pantalla oscurecida durante el consentimiento.</li>
+                    </ul>
+                    <div class="callout info">
+                        <h4>Consejo Profesional</h4>
+                        <p><strong>NUNCA deshabilites UAC</strong> en servidores. Si lo делаешь, cualquier malware tendrá permisos totales instantáneamente.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <section id="auditoria">
-            <h2>3. Auditoría y Visor de Eventos</h2>
+            <h2>4. Auditoría y Visor de Eventos</h2>
             <p>La seguridad profesional requiere rastro. Windows puede grabar en el **Visor de Eventos** (Log de Seguridad) cada vez que alguien abre un archivo sensible.</p>
             <div class="callout warning">
                 <h4>Evento 4625: El Delator</h4>
@@ -111,7 +148,7 @@
         </section>
 
         <section id="comandos">
-            <h2>4. Comandos de Auditoría y Hardening</h2>
+            <h2>5. Comandos de Auditoría y Hardening</h2>
             
             <div class="comparison">
                 <div class="column-card">
@@ -141,7 +178,7 @@ Select-Object DisplayName, Action</code></pre>
         </section>
 
         <section id="practica">
-            <h2>5. Actividad Práctica: Blindaje Windows (Insumo E4)</h2>
+            <h2>6. Actividad Práctica: Blindaje Windows (Insumo E4)</h2>
             <div class="actividad">
                 <h3>Laboratorio: Asegurando el Nodo Windows UCS</h3>
                 <p><strong>Objetivo:</strong> Configurar políticas de seguridad de nivel empresarial.</p>

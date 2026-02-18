@@ -33,6 +33,9 @@
         .ascii-diagram { font-family: monospace; background: #1e293b; color: #94a3b8; padding: 1.5rem; border-radius: 8px; white-space: pre; overflow-x: auto; font-size: 0.85rem; line-height: 1.2; margin: 1.5rem 0; border: 1px solid #334155; }
         footer { background: var(--text-main); color: white; padding: 2rem 0; text-align: center; margin-top: 3rem; }
         .eval-alert { background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-left: 4px solid #f59e0b; padding: 1.25rem 1.5rem; border-radius: 8px; margin-bottom: 2rem; display: flex; align-items: center; gap: 1rem; color: inherit; text-decoration: none; }
+        .class-nav { display: flex; justify-content: space-between; align-items: stretch; gap: 1rem; margin: 2rem 0; }
+        .class-nav-link { flex: 1; display: flex; align-items: center; gap: 0.75rem; padding: 1.25rem 1.5rem; background: white; border: 2px solid var(--border); border-radius: 12px; text-decoration: none; color: var(--text-main); transition: all 0.3s ease; }
+        .class-nav-link:hover { border-color: var(--primary); box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15); transform: translateY(-2px); }
     </style>
 </head>
 <body>
@@ -70,14 +73,44 @@
             <h2>1. La Pirámide de Almacenamiento</h2>
             <p>La memoria no es uniforme. El SO debe equilibrar velocidad y costo moviendo datos entre niveles.</p>
             
-            <div class="ascii-diagram">
-    [ Registros CPU ]  ◄── 1 ciclo (nS)
-          ↓
-    [ Memoria Caché ]  ◄── L1, L2, L3 (MBs)
-          ↓
-    [ Memoria RAM ]    ◄── Principal (Volátil)
-          ↓
-    [ Disco SSD/NVMe ] ◄── TBs (Persistente)</div>
+            <div style="text-align: center; margin: 2rem 0;">
+                <svg viewBox="0 0 600 350" xmlns="http://www.w3.org/2000/svg" style="max-width: 500px; height: auto;">
+                    <!-- Pyramid levels -->
+                    <path d="M 300 20 L 100 320 L 500 320 Z" fill="#f8fafc" stroke="#64748b" stroke-width="2" />
+                    
+                    <!-- Level 1: Registers -->
+                    <path d="M 260 80 L 340 80" stroke="#cbd5e1" stroke-width="1" />
+                    <text x="300" y="65" text-anchor="middle" font-size="12" font-weight="bold" fill="#1e3a8a">REGISTROS</text>
+                    
+                    <!-- Level 2: Cache -->
+                    <path d="M 220 140 L 380 140" stroke="#cbd5e1" stroke-width="1" />
+                    <text x="300" y="125" text-anchor="middle" font-size="12" font-weight="bold" fill="#1e40af">CACHÉ (L1, L2, L3)</text>
+                    
+                    <!-- Level 3: RAM -->
+                    <path d="M 180 200 L 420 200" stroke="#cbd5e1" stroke-width="1" />
+                    <text x="300" y="185" text-anchor="middle" font-size="12" font-weight="bold" fill="#2563eb">RAM (PRINCIPAL)</text>
+                    
+                    <!-- Level 4: SSD/Disk -->
+                    <path d="M 140 260 L 460 260" stroke="#cbd5e1" stroke-width="1" />
+                    <text x="300" y="245" text-anchor="middle" font-size="12" font-weight="bold" fill="#3b82f6">SSD / NVMe</text>
+                    
+                    <!-- Base: HDD/Archive -->
+                    <text x="300" y="305" text-anchor="middle" font-size="12" font-weight="bold" fill="#60a5fa">HDD / ARCHIVO</text>
+                    
+                    <!-- Left Arrow: Speed -->
+                    <path d="M 50 320 L 50 20" fill="none" stroke="#059669" stroke-width="3" marker-end="url(#arrow-green)" />
+                    <text x="40" y="170" text-anchor="middle" transform="rotate(-90, 40, 170)" fill="#059669" font-weight="bold">MÁS RÁPIDO</text>
+                    
+                    <!-- Right Arrow: Capacity/Cost -->
+                    <path d="M 550 20 L 550 320" fill="none" stroke="#ef4444" stroke-width="3" marker-end="url(#arrow-red)" />
+                    <text x="565" y="170" text-anchor="middle" transform="rotate(90, 565, 170)" fill="#ef4444" font-weight="bold">MÁS CAPACIDAD</text>
+                    
+                    <defs>
+                        <marker id="arrow-green" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#059669"/></marker>
+                        <marker id="arrow-red" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#ef4444"/></marker>
+                    </defs>
+                </svg>
+            </div>
 
             <div class="callout info">
                 <h4>Principio de Localidad</h4>

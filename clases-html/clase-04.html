@@ -149,6 +149,33 @@
                 <h4>Extensibilidad Profesional: LKM</h4>
                 <p>En Linux moderno, no tienes que recompilar el kernel para agregar un driver. Los <strong>LKM (Loadable Kernel Modules)</strong> permiten insertar código en el espacio de kernel en caliente. Puedes auditarlos con <code>lsmod</code>.</p>
             </div>
+
+            <h3>2.1 Anillos de Protección (Hardware Security)</h3>
+            <p>La estabilidad del SO depende de la separación de privilegios forzada por el procesador:</p>
+            <div style="text-align: center; margin: 2rem 0;">
+                <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" style="max-width: 300px; height: auto;">
+                    <!-- Ring 3 -->
+                    <circle cx="200" cy="200" r="180" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2" />
+                    <text x="200" y="50" text-anchor="middle" font-size="14" font-weight="bold" fill="#64748b">RING 3: MODO USUARIO</text>
+                    <text x="200" y="70" text-anchor="middle" font-size="10" fill="#94a3b8">Apps (Chrome, Office, Scripts)</text>
+                    
+                    <!-- Ring 1 & 2 -->
+                    <circle cx="200" cy="200" r="130" fill="none" stroke="#e2e8f0" stroke-width="1" stroke-dasharray="5,5" />
+                    
+                    <!-- Ring 0 -->
+                    <circle cx="200" cy="200" r="80" fill="#dbeafe" stroke="#2563eb" stroke-width="3" />
+                    <text x="200" y="195" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e40af">RING 0</text>
+                    <text x="200" y="215" text-anchor="middle" font-size="12" font-weight="bold" fill="#1e40af">KERNEL</text>
+                    
+                    <!-- Trap/Syscall -->
+                    <path d="M 200 120 L 200 100" fill="none" stroke="#ef4444" stroke-width="2" marker-end="url(#arrow-red)" />
+                    <text x="210" y="115" font-size="10" fill="#ef4444" font-weight="bold">System Call</text>
+                    
+                    <defs>
+                        <marker id="arrow-red" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#ef4444"/></marker>
+                    </defs>
+                </svg>
+            </div>
         </section>
 
         <section id="tuning">
@@ -253,6 +280,18 @@ sudo sysctl -w net.ipv4.ip_forward=1</code></pre>
                 <h3>Ejercicio: Compilación de Kernel (Avanzado)</h3>
                 <p>Investiga: ¿Por qué en producción NUNCA se recompila el kernel? ¿Qué alternativas existen para agregar funcionalidad sin recompilar?</p>
                 <p><strong>Pista:</strong> Busca información sobre "Loadable Kernel Modules" (LKM).</p>
+            </div>
+
+            <!-- AUTO-EVALUACIÓN -->
+            <div class="actividad" style="background: #f1f5f9; border-left-color: #6366f1; margin-top: 2rem;">
+                <h3>Auto-Evaluación: Arquitectura del Sistema Operativo</h3>
+                <p>Responde antes de avanzar:</p>
+                <ol>
+                    <li><strong>¿Cuál es la diferencia entre un kernel monolítico y un microkernel?</strong></li>
+                    <li><strong>¿Por qué Windows NT usa una arquitectura híbrida?</strong></li>
+                    <li><strong>¿Qué son los anillos de protección (rings) y por qué el kernel opera en Ring 0?</strong></li>
+                    <li><strong>¿Qué función cumple el Boot Loader (GRUB) en el proceso de arranque?</strong></li>
+                </ol>
             </div>
         </section>
 
