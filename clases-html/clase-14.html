@@ -373,32 +373,19 @@ $cert = New-SelfSignedCertificate `
                 <h2>Actividad Práctica: Despliegue de IIS</h2>
 
                 <div class="actividad">
-                    <h3>Actividad 14: Configuración Completa de IIS (Fase 5 - E5)</h3>
+                    <h3>Actividad 14: Insumo para Evaluación E5</h3>
 
-                    <p><strong>Objetivo:</strong> Configurar un servidor web funcional en Windows con seguridad básica.</p>
+                    <p><strong>Objetivo:</strong> Configurar el servidor web IIS en un puerto personalizado.</p>
 
-                    <h4>Requisitos</h4>
+                    <h4>Pasos Técnicos</h4>
                     <ol class="checklist">
-                        <li><input type="checkbox"> Instalar IIS usando PowerShell: <code>Install-WindowsFeature -name Web-Server</code></li>
-                        <li><input type="checkbox"> Crear sitio web en <code>C:\inetpub\wwwroot</code></li>
-                        <li><input type="checkbox"> Configurar Application Pool dedicado</li>
-                        <li><input type="checkbox"> Configurar HTTPS con certificado self-signed</li>
-                        <li><input type="checkbox"> Verificar acceso desde el host (navegador)</li>
+                        <li><input type="checkbox"> Instalar IIS vía PowerShell o Server Manager.</li>
+                        <li><input type="checkbox"> Crear una carpeta <code>C:\www\ucs_site</code> y poner un <code>index.html</code>.</li>
+                        <li><input type="checkbox"> En IIS Manager, cambiar el binding del sitio para que escuche en el puerto <strong>8080</strong>.</li>
+                        <li><input type="checkbox"> Abrir el puerto 8080 en el Firewall de Windows para permitir tráfico local.</li>
                     </ol>
 
-                    <p><strong>Entregable:</strong> Captura de pantalla del navegador mostrando el sitio y evidencia de la configuración en IIS Manager para tu informe de la Fase 5.</p>
-
-                    <h4>Rubrica de Evaluación</h4>
-                    <table>
-                        <thead><tr><th>Criterio</th><th>Puntos</th></tr></thead>
-                        <tbody>
-                            <tr><td>IIS instalado y operativo</td><td>20</td></tr>
-                            <tr><td>Sitio y AppPool configurados</td><td>30</td></tr>
-                            <tr><td>HTTPS funcionando con certificado</td><td>30</td></tr>
-                            <tr><td>Evidencias claras documentadas</td><td>20</td></tr>
-                            <tr><td><strong>Total</strong></td><td><strong>100</strong></td></tr>
-                        </tbody>
-                    </table>
+                    <p><strong>Importante:</strong> La evidencia de acceso al sitio por el puerto 8080 es obligatoria para la Fase 5 (E5).</p>
                 </div>
             </section>
 

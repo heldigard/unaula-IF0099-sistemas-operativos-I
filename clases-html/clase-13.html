@@ -515,17 +515,16 @@ sudo mdadm --detail --scan >> /etc/mdadm/mdadm.conf
             <h2>Actividad Práctica: Persistencia de Montaje</h2>
 
             <section class="actividad">
-                <h3>Actividad 13: Configuración de fstab</h3>
-                <p><strong>Tipo:</strong> Avance para Fase 5 (E5)</p>
-                <p><strong>Objetivo:</strong> Asegurar que los discos adicionales se monten automáticamente al reiniciar.</p>
-                <p><strong>Pasos:</strong></p>
+                <h3>Actividad 13: Insumo para Evaluación E5</h3>
+                <p><strong>Objetivo:</strong> Configurar persistencia de discos (fstab).</p>
+                <p><strong>Tarea:</strong></p>
                 <ol>
-                    <li>Usa <code>blkid</code> para encontrar el UUID de una partición</li>
-                    <li>Edita el archivo <code>/etc/fstab</code> (con cuidado y respaldo)</li>
-                    <li>Agrega la línea correspondiente para montar la partición en <code>/mnt/datos</code></li>
-                    <li>Prueba con <code>sudo mount -a</code> para verificar que no haya errores</li>
+                    <li>En VirtualBox, apaga tu VM Linux y agrega un nuevo Disco Virtual de 2GB.</li>
+                    <li>Inicia la VM y formatea el nuevo disco (ej: <code>/dev/sdb</code>) como <strong>EXT4</strong>.</li>
+                    <li>Crea el punto de montaje <code>/mnt/ucs_datos</code>.</li>
+                    <li>Edita <code>/etc/fstab</code> para que el disco se monte automáticamente al bootear.</li>
                 </ol>
-                <p><strong>Entregable:</strong> Captura de pantalla de tu archivo <code>/etc/fstab</code> configurado para tu informe de la Fase 5.</p>
+                <p><strong>Importante:</strong> Esta configuración técnica es un requisito crítico de la Fase 5 (E5).</p>
             </section>
         </section>
 

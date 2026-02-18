@@ -595,37 +595,16 @@
         <!-- EVALUACIÓN 4 -->
         <section class="section" id="eval4">
             <div class="eval-header">
-                <h3>E4 - Fase 4: Seguridad en SO</h3>
+                <h3>E4 - Fase 4: Seguridad y Hardening</h3>
                 <span class="badge-pct">15%</span>
             </div>
 
-            <div class="eval-info">
-<div class="eval-info-item">
-                    <strong>Fecha de Entrega</strong>
-                    22 de abril de 2026
-                </div>
-                <div class="eval-info-item">
-                    <strong>Formato</strong>
-                    Reporte + Scripts + Capturas
-                </div>
-                <div class="eval-info-item">
-                    <strong>Grupos</strong>
-                    Parejas (2 estudiantes)
-                </div>
-                <div class="eval-info-item">
-                    <strong>Sustentación</strong>
-                    10 minutos (obligatoria)
-                </div>
-            </div>
-
             <div class="entregables-box">
-                <h4>Entregables Requeridos</h4>
+                <h4>Entregables Requeridos (Fase 4)</h4>
                 <ul>
-                    <li>Reporte técnico PDF con análisis de seguridad</li>
-                    <li>Matriz de riesgos (mínimo 8 riesgos identificados)</li>
-                    <li>Recomendaciones de hardening (5 Linux + 5 Windows)</li>
-                    <li>Capturas de auditoría realizada</li>
-                    <li>Scripts de configuración utilizados</li>
+                    <li><strong>Bitácora de Hardening:</strong> PDF (máx. 5 páginas) con reglas de Firewall + ACLs.</li>
+                    <li><strong>Matriz de Riesgos:</strong> Identificación de 8 riesgos UCS y mitigación.</li>
+                    <li><strong>Scripts de Seguridad:</strong> Automatización de permisos base.</li>
                 </ul>
             </div>
 
@@ -642,51 +621,155 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td class="criterio">Permisos Linux Avanzados</td>
-                        <td>Configura SUID, SGID, ACLs y atributos extendidos correctamente</td>
-                        <td>Configura adecuadamente permisos avanzados</td>
-                        <td>Configuración básica de permisos</td>
-                        <td>No configura permisos avanzados</td>
-                        <td class="peso">25%</td>
+                        <td class="criterio">Hardening Red</td>
+                        <td>Firewall configurado con política "Drop by default", permitiendo solo SSH y HTTP.</td>
+                        <td>Firewall activo pero permite más puertos de los necesarios.</td>
+                        <td>Firewall activo con reglas básicas incompletas.</td>
+                        <td>Firewall inactivo o sin configuración.</td>
+                        <td class="peso">30%</td>
                     </tr>
                     <tr>
-                        <td class="criterio">Gestión de Usuarios</td>
-                        <td>Usa useradd, grupos, /etc/passwd, sudo correctamente con políticas</td>
-                        <td>Gestiona adecuadamente usuarios y grupos</td>
-                        <td>Gestión básica</td>
-                        <td>No gestiona usuarios/grupos</td>
-                        <td class="peso">20%</td>
-                    </tr>
-                    <tr>
-                        <td class="criterio">Hardening y Auditoría</td>
-                        <td>Aplica hardening completo: SSH, servicios, firewall, auditoría con auditd</td>
-                        <td>Aplica adecuadamente medidas de hardening básicas</td>
-                        <td>Aplicación básica de seguridad</td>
-                        <td>No aplica hardening</td>
-                        <td class="peso">20%</td>
+                        <td class="criterio">Control de Acceso</td>
+                        <td>Implementa ACLs granulares (RA4) en directorios compartidos demostrando getfacl.</td>
+                        <td>Configura permisos UGO básicos sin llegar a ACLs granulares.</td>
+                        <td>Permisos configurados con errores de seguridad (ej: 777).</td>
+                        <td>No aplica control de acceso.</td>
+                        <td class="peso">30%</td>
                     </tr>
                     <tr>
                         <td class="criterio">Matriz de Riesgos</td>
-                        <td>Identifica 8+ riesgos con análisis completo de probabilidad e impacto</td>
-                        <td>Identifica 6-7 riesgos con análisis adecuado</td>
-                        <td>Identifica 4-5 riesgos básicos</td>
-                        <td>Menos de 4 riesgos</td>
-                        <td class="peso">15%</td>
+                        <td>Identifica 8 riesgos técnicos reales de su sistema y propone mitigaciones precisas.</td>
+                        <td>Identifica menos de 8 riesgos o las mitigaciones son vagas.</td>
+                        <td>Matriz de riesgos superficial o genérica.</td>
+                        <td>No presenta matriz de riesgos.</td>
+                        <td class="peso">30%</td>
                     </tr>
                     <tr>
-                        <td class="criterio">Reporte Técnico</td>
-                        <td>Análisis profundo con recomendaciones de seguridad detalladas</td>
-                        <td>Análisis adecuado con recomendaciones básicas</td>
-                        <td>Análisis superficial</td>
-                        <td>Sin análisis o incorrecto</td>
+                        <td class="criterio">Scripts de Seg.</td>
+                        <td>Script automatiza la creación de usuarios y asignación de permisos correctamente.</td>
+                        <td>Script funcional pero con errores menores o poca documentación.</td>
+                        <td>Script no automatiza lo solicitado.</td>
+                        <td>Sin script.</td>
                         <td class="peso">10%</td>
                     </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- EVALUACIÓN 5 -->
+        <section class="section" id="eval5">
+            <div class="eval-header">
+                <h3>E5 - Fase 5: Integración de Servicios</h3>
+                <span class="badge-pct">15%</span>
+            </div>
+
+            <div class="entregables-box">
+                <h4>Entregables Requeridos (Fase 5)</h4>
+                <ul>
+                    <li><strong>Reporte de Integración:</strong> PDF (máx. 5 páginas) + Dashboard de Salud.</li>
+                    <li><strong>Servicios Operativos:</strong> Apache (HTTPS) + IIS (8080).</li>
+                    <li><strong>Persistencia:</strong> Configuración de <code>fstab</code> con segundo disco.</li>
+                </ul>
+            </div>
+
+            <table class="rubrica-table">
+                <thead>
                     <tr>
-                        <td class="criterio">Sustentación</td>
-                        <td>Presentación clara, respuestas profundas, defensa del trabajo</td>
-                        <td>Buena presentación y respuestas</td>
-                        <td>Presentación básica</td>
-                        <td>Sustentación deficiente</td>
+                        <th>Criterio</th>
+                        <th class="level-excelente">Excelente (4)</th>
+                        <th class="level-bueno">Bueno (3)</th>
+                        <th class="level-satisfactorio">Satisfactorio (2)</th>
+                        <th class="level-insuficiente">Insuficiente (1)</th>
+                        <th>Peso</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="criterio">Servidores Web</td>
+                        <td>Apache (Linux) e IIS (Windows) funcionando con sitios personalizados y HTTPS.</td>
+                        <td>Ambos funcionan pero uno de ellos no tiene HTTPS o puerto correcto.</td>
+                        <td>Solo un servidor web funciona correctamente.</td>
+                        <td>Servidores no operativos.</td>
+                        <td class="peso">40%</td>
+                    </tr>
+                    <tr>
+                        <td class="criterio">Persistencia FS</td>
+                        <td>Segundo disco montado vía fstab correctamente tras reinicio (RA5).</td>
+                        <td>Disco montado manualmente pero no persiste al reiniciar.</td>
+                        <td>Disco formateado pero no montado.</td>
+                        <td>No implementa segundo disco.</td>
+                        <td class="peso">30%</td>
+                    </tr>
+                    <tr>
+                        <td class="criterio">Dashboard Salud</td>
+                        <td>Script integral reporta salud de servicios, CPU, RAM y red de forma impecable.</td>
+                        <td>Script funciona pero el reporte es desordenado o incompleto.</td>
+                        <td>Script con fallos de ejecución.</td>
+                        <td>Sin dashboard.</td>
+                        <td class="peso">30%</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- EVALUACIÓN 6 -->
+        <section class="section" id="eval6">
+            <div class="eval-header">
+                <h3>E6 - Fase 6: Sustentación y Portafolio Final</h3>
+                <span class="badge-pct">20%</span>
+            </div>
+
+            <div class="entregables-box">
+                <h4>Entregables Finales (Fase 6)</h4>
+                <ul>
+                    <li><strong>Portafolio Ejecutivo:</strong> PDF (máx. 20 páginas) recopilando Fases 1 a 5.</li>
+                    <li><strong>Pitch Final:</strong> Presentación (máx. 8 diapositivas) para sustentación.</li>
+                    <li><strong>Demo en Vivo:</strong> Validación de conocimientos en tiempo real.</li>
+                </ul>
+            </div>
+
+            <table class="rubrica-table">
+                <thead>
+                    <tr>
+                        <th>Criterio</th>
+                        <th class="level-excelente">Excelente (4)</th>
+                        <th class="level-bueno">Bueno (3)</th>
+                        <th class="level-satisfactorio">Satisfactorio (2)</th>
+                        <th class="level-insuficiente">Insuficiente (1)</th>
+                        <th>Peso</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="criterio">Integración Total</td>
+                        <td>El sistema UCS funciona como una unidad coherente, segura y optimizada.</td>
+                        <td>El sistema funciona pero hay fallos menores en la integración entre fases.</td>
+                        <td>Sistema con fallos funcionales importantes.</td>
+                        <td>Sistema no operativo.</td>
+                        <td class="peso">30%</td>
+                    </tr>
+                    <tr>
+                        <td class="criterio">Defensa Técnica</td>
+                        <td>Responde preguntas del docente con alta precisión y solidez teórica/práctica.</td>
+                        <td>Responde correctamente pero con algunas dudas técnicas.</td>
+                        <td>Respuestas superficiales o evasivas.</td>
+                        <td>No responde o respuestas erróneas.</td>
+                        <td class="peso">30%</td>
+                    </tr>
+                    <tr>
+                        <td class="criterio">Resiliencia (Demo)</td>
+                        <td>Maneja cambios en vivo (detener servicios, logs) demostrando control del SO.</td>
+                        <td>Realiza la demo pero se bloquea ante cambios solicitados por el docente.</td>
+                        <td>Demo muy rígida o poco demostrativa.</td>
+                        <td>Falla en la demo en vivo.</td>
+                        <td class="peso">30%</td>
+                    </tr>
+                    <tr>
+                        <td class="criterio">Calidad Portafolio</td>
+                        <td>Documento profesional, sin errores, consolidado y visualmente excelente.</td>
+                        <td>Documento completo pero con errores de formato o redacción.</td>
+                        <td>Documento incompleto o desordenado.</td>
+                        <td>Sin portafolio.</td>
                         <td class="peso">10%</td>
                     </tr>
                 </tbody>
