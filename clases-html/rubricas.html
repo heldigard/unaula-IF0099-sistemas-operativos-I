@@ -335,13 +335,11 @@
             </div>
 
             <div class="entregables-box">
-                <h4>Entregables Requeridos</h4>
+                <h4>Entregables Requeridos (Fase 1)</h4>
                 <ul>
-                    <li>Documento PDF (máx. 10 páginas) con análisis comparativo</li>
-                    <li>Presentación PowerPoint (5-10 diapositivas)</li>
-                    <li>Scripts de exploración del kernel</li>
-                    <li>Capturas de comandos ejecutados</li>
-                    <li>Referencias bibliográficas (mínimo 5)</li>
+                    <li><strong>Bitácora Técnica:</strong> PDF (máx. 5 páginas) con comparativa de arquitecturas (Monolítico vs Híbrido) + Evidencias de instalación.</li>
+                    <li><strong>Pitch de Diseño:</strong> Presentación (máx. 8 diapositivas) del ecosistema UCS.</li>
+                    <li><strong>Capturas base:</strong> Comandos <code>uname -a</code> y <code>systeminfo</code>.</li>
                 </ul>
             </div>
 
@@ -358,52 +356,36 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td class="criterio">Identificación de Componentes</td>
-                        <td>Identifica correctamente TODOS los componentes usando comandos reales (uname, lsmod, /proc)</td>
-                        <td>Identifica la mayoría de componentes con comandos adecuados</td>
-                        <td>Identifica algunos componentes básicos</td>
-                        <td>No identifica correctamente los componentes</td>
-                        <td class="peso">25%</td>
+                        <td class="criterio">Análisis Arquitectónico</td>
+                        <td>Justifica profundamente la elección de SO para UCS usando conceptos de Clase 04 (Monolítico/Híbrido).</td>
+                        <td>Describe las arquitecturas sin una justificación profunda para el caso UCS.</td>
+                        <td>Menciona las arquitecturas pero con errores conceptuales.</td>
+                        <td>No identifica las arquitecturas de los sistemas instalados.</td>
+                        <td class="peso">30%</td>
                     </tr>
                     <tr>
-                        <td class="criterio">Clasificación de SO</td>
-                        <td>Clasifica correctamente SO por tipo, uso y estructura con ejemplos actuales</td>
-                        <td>Clasifica correctamente la mayoría de tipos</td>
-                        <td>Clasificación básica con algunos errores</td>
-                        <td>No clasifica correctamente</td>
-                        <td class="peso">25%</td>
+                        <td class="criterio">Instalación y Mapeo</td>
+                        <td>VMs operativas con hardware optimizado en VirtualBox y tabla de abstracción completa.</td>
+                        <td>VMs funcionando pero con hardware asignado al azar o sin tabla de mapeo.</td>
+                        <td>Solo una VM funciona o la documentación es deficiente.</td>
+                        <td>No presenta VMs funcionales.</td>
+                        <td class="peso">30%</td>
                     </tr>
                     <tr>
-                        <td class="criterio">Análisis Comparativo</td>
-                        <td>Comparación profunda de al menos 3 SO con tabla comparativa completa</td>
-                        <td>Comparación adecuada de 2-3 SO</td>
-                        <td>Comparación superficial de 1-2 SO</td>
-                        <td>No hay comparación o es muy básica</td>
+                        <td class="criterio">Diagrama de Red</td>
+                        <td>Mapa de red impecable mostrando IPs, Host y Guests con modo Bridge/NAT justificado.</td>
+                        <td>Diagrama de red básico sin detalle de IPs o modo de red.</td>
+                        <td>Esquema confuso o incompleto.</td>
+                        <td>No presenta diagrama de red.</td>
                         <td class="peso">20%</td>
                     </tr>
                     <tr>
-                        <td class="criterio">Exploración Práctica</td>
-                        <td>Usa comandos avanzados para explorar kernel, procesos, memoria</td>
-                        <td>Usa adecuadamente comandos básicos</td>
-                        <td>Uso básico de algunos comandos</td>
-                        <td>No usa comandos del sistema</td>
-                        <td class="peso">15%</td>
-                    </tr>
-                    <tr>
-                        <td class="criterio">Presentación y Formato</td>
-                        <td>Presentación profesional, bien estructurada, con capturas de evidencias</td>
-                        <td>Presentación adecuada con menores errores de formato</td>
-                        <td>Formato básico con errores de presentación</td>
-                        <td>Formato inadecuado, sin estructura clara</td>
-                        <td class="peso">10%</td>
-                    </tr>
-                    <tr>
-                        <td class="criterio">Sustentación Oral</td>
-                        <td>Explicación clara, respuestas acertadas, dominio del tema</td>
-                        <td>Buena explicación con respuestas adecuadas</td>
-                        <td>Explicación básica con dudas</td>
-                        <td>No sustenta o sustentación deficiente</td>
-                        <td class="peso">5%</td>
+                        <td class="criterio">Pitch Técnico</td>
+                        <td>Explicación ejecutiva, clara y limitada a 8 diapositivas con alta calidad visual.</td>
+                        <td>Presentación adecuada pero excede el límite de diapositivas o falta claridad.</td>
+                        <td>Presentación muy cargada de texto o desorganizada.</td>
+                        <td>No sustenta el diseño.</td>
+                        <td class="peso">20%</td>
                     </tr>
                 </tbody>
             </table>
@@ -436,14 +418,11 @@
             </div>
 
             <div class="entregables-box">
-                <h4>Entregables Requeridos</h4>
+                <h4>Entregables Requeridos (Fase 2)</h4>
                 <ul>
-                    <li>Script bash <code>monitor_procesos.sh</code> funcional</li>
-                    <li>Script PowerShell <code>gestionar_servicios.ps1</code> funcional</li>
-                    <li>Informe técnico PDF con análisis</li>
-                    <li>Video demostración (5-10 minutos)</li>
-                    <li>Capturas de ejecución de todos los comandos</li>
-                    <li>README.md con instrucciones de uso</li>
+                    <li><strong>Scripts:</strong> <code>monitor.sh</code> (RAM) y <code>servicios.ps1</code> (Spooler) comentados.</li>
+                    <li><strong>Bitácora de Pruebas:</strong> PDF (máx. 5 páginas) con análisis de estados de procesos.</li>
+                    <li><strong>Video Demo:</strong> Máximo 5 minutos mostrando los scripts en acción.</li>
                 </ul>
             </div>
 
@@ -460,52 +439,36 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td class="criterio">Script Linux</td>
-                        <td>Script bash funcional con TODAS las funciones, bien comentado, maneja errores</td>
-                        <td>Script funcional con menores problemas</td>
-                        <td>Script básico con funcionalidad limitada</td>
-                        <td>Script no funcional o ausente</td>
-                        <td class="peso">25%</td>
+                        <td class="criterio">Automatización (Scripts)</td>
+                        <td>Scripts funcionales que automatizan tareas reales, manejan errores y están documentados.</td>
+                        <td>Scripts funcionan pero con lógica débil o sin comentarios claros.</td>
+                        <td>Solo uno de los scripts funciona o tienen errores de sintaxis.</td>
+                        <td>Scripts no funcionales.</td>
+                        <td class="peso">40%</td>
                     </tr>
                     <tr>
-                        <td class="criterio">Script Windows</td>
-                        <td>Script PowerShell funcional, maneja servicios correctamente, bien estructurado</td>
-                        <td>Script funcional con menores problemas</td>
-                        <td>Script básico con funcionalidad limitada</td>
-                        <td>Script no funcional o ausente</td>
-                        <td class="peso">25%</td>
+                        <td class="criterio">Análisis de Procesos</td>
+                        <td>Identifica y explica correctamente estados R, S, Z en su sistema UCS (RA2).</td>
+                        <td>Identifica los estados pero la explicación es teórica, no aplicada a su sistema.</td>
+                        <td>Confusión entre los estados de los procesos.</td>
+                        <td>No identifica procesos ni estados.</td>
+                        <td class="peso">30%</td>
                     </tr>
                     <tr>
-                        <td class="criterio">Gestión de Procesos</td>
-                        <td>Demuestra dominio de ps, top, kill, nice, renice con ejemplos avanzados</td>
-                        <td>Uso adecuado de comandos básicos</td>
-                        <td>Uso básico de algunos comandos</td>
-                        <td>No sabe usar los comandos</td>
+                        <td class="criterio">Control de Prioridades</td>
+                        <td>Demuestra dominio total de nice/renice impactando la observabilidad del sistema.</td>
+                        <td>Usa los comandos pero no explica su impacto técnico.</td>
+                        <td>Uso incorrecto de prioridades.</td>
+                        <td>No aplica control de prioridades.</td>
                         <td class="peso">20%</td>
                     </tr>
                     <tr>
-                        <td class="criterio">Capturas y Evidencias</td>
-                        <td>Capturas completas y claras de TODAS las ejecuciones</td>
-                        <td>Evidencias adecuadas de la mayoría</td>
-                        <td>Evidencias parciales</td>
-                        <td>Sin evidencias</td>
-                        <td class="peso">15%</td>
-                    </tr>
-                    <tr>
-                        <td class="criterio">Video Demostración</td>
-                        <td>Video claro (5-10 min) explicando cada parte de los scripts</td>
-                        <td>Video adecuado con explicación básica</td>
-                        <td>Video básico</td>
-                        <td>Sin video</td>
+                        <td class="criterio">Video y Evidencia</td>
+                        <td>Demostración técnica fluida que valida el funcionamiento real de los entregables.</td>
+                        <td>Video excesivamente largo o con explicaciones confusas.</td>
+                        <td>Calidad de video deficiente o incompleto.</td>
+                        <td>Sin evidencia en video.</td>
                         <td class="peso">10%</td>
-                    </tr>
-                    <tr>
-                        <td class="criterio">Sustentación</td>
-                        <td>Demostración fluida, explica decisiones de diseño, responde preguntas</td>
-                        <td>Buena demostración con explicación adecuada</td>
-                        <td>Demostración básica</td>
-                        <td>No demuestra o demostración fallida</td>
-                        <td class="peso">5%</td>
                     </tr>
                 </tbody>
             </table>

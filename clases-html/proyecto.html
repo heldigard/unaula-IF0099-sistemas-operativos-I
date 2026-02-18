@@ -152,6 +152,26 @@
         </header>
 
         <section class="section">
+            <h2>🏢 El Caso de Negocio: "UNAULA Cloud Services (UCS)"</h2>
+            
+            <div class="info-box">
+                <h4>Contexto</h4>
+                <p>Usted ha sido contratado como <strong>Ingeniero de Infraestructura</strong> para la startup UCS. La empresa necesita desplegar un entorno de servidores locales robusto para hospedar las aplicaciones de sus clientes internos.</p>
+                <p><strong>Su misión:</strong> Construir desde cero un entorno de servidores (Linux y Windows) que sea monitoreable, optimizado, seguro y escalable, utilizando exclusivamente <strong>VirtualBox</strong> como plataforma de virtualización.</p>
+            </div>
+
+            <div class="success-box">
+                <h4>Requerimientos Técnicos Base</h4>
+                <ul>
+                    <li><strong>Hipervisor:</strong> VirtualBox 7.x</li>
+                    <li><strong>Nodo Linux:</strong> Ubuntu Server 22.04 LTS (Sin GUI)</li>
+                    <li><strong>Nodo Windows:</strong> Windows 10/11 Pro o Windows Server 2022</li>
+                    <li><strong>Red:</strong> Configuración de Adaptador Puente (Bridge) para visibilidad externa</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="section">
             <h2>🎯 Objetivo del Proyecto</h2>
             
             <div class="info-box">
@@ -176,41 +196,37 @@
             <h2>🗓️ Fases del Proyecto</h2>
 
             <div class="phase-card">
-                <h4>FASE 1: Fundamentos y Arquitectura (E1 - 15%)</h4>
+                <h4>FASE 1: Diseño y Arquitectura (E1 - 15%)</h4>
                 <div class="phase-meta">
                     <div class="phase-meta-item"><strong>Fecha:</strong> 25 Febrero</div>
-                    <div class="phase-meta-item"><strong>Tipo:</strong> Proyecto (avance incremental)</div>
-                    <div class="phase-meta-item"><strong>Eval:</strong> E1</div>
+                    <div class="phase-meta-item"><strong>Formato:</strong> PDF (Máx 5 págs)</div>
                 </div>
-                <p><strong>Objetivo:</strong> Definir la arquitectura tecnológica de la empresa.</p>
+                <p><strong>Objetivo:</strong> Diseñar la base lógica del sistema.</p>
                 <div class="entregable">
-                    <strong>Entregables:</strong>
+                    <strong>Checklist de Entrega:</strong>
                     <ul>
-                        <li>Análisis de necesidades de la empresa ficticia</li>
-                        <li>Comparativa de arquitecturas SO (monolítico vs microkernel)</li>
-                        <li>Selección de Ubuntu Server + Windows (10/11 o Server)</li>
-                        <li>Diagrama de arquitectura de red</li>
-                        <li>Lista de servicios y requisitos</li>
+                        <li>Diagrama de red local (IPs estáticas asignadas a cada VM)</li>
+                        <li>Tabla comparativa de Sistemas Operativos para el caso UCS</li>
+                        <li>Justificación de hardware asignado en VirtualBox (RAM, CPU, Disco)</li>
+                        <li>Instalación base documentada con captura de <code>uname -a</code> y <code>systeminfo</code></li>
                     </ul>
                 </div>
             </div>
 
             <div class="phase-card">
-                <h4>Fase 2: Gestión de Procesos y Servicios (E2 - 15%)</h4>
+                <h4>Fase 2: Monitoreo y Automatización (E2 - 15%)</h4>
                 <div class="phase-meta">
                     <div class="phase-meta-item"><strong>Fecha:</strong> 11 Marzo</div>
-                    <div class="phase-meta-item"><strong>Tipo:</strong> Proyecto (avance incremental)</div>
-                    <div class="phase-meta-item"><strong>Eval:</strong> E2</div>
+                    <div class="phase-meta-item"><strong>Formato:</strong> Scripts + PDF (Máx 5 págs)</div>
                 </div>
-                <p><strong>Objetivo:</strong> Implementar procesos críticos y servicios base.</p>
+                <p><strong>Objetivo:</strong> Implementar visibilidad operativa sobre el sistema.</p>
                 <div class="entregable">
-                    <strong>Entregables:</strong>
+                    <strong>Checklist de Entrega:</strong>
                     <ul>
-                        <li>Scripts de monitoreo (Bash + PowerShell)</li>
-                        <li>Configuración de servicios esenciales</li>
-                        <li>Gestión de prioridades y políticas</li>
-                        <li>Matriz de procesos y servicios</li>
-                        <li>Video demostración (5-7 min)</li>
+                        <li>Script Bash (Linux) que reporte CPU, RAM y Procesos críticos</li>
+                        <li>Script PowerShell (Windows) que alerte sobre servicios detenidos</li>
+                        <li>Configuración de alias y atajos de terminal para administración rápida</li>
+                        <li>Video demostrando el monitoreo en tiempo real (Screencast)</li>
                     </ul>
                 </div>
             </div>
@@ -236,64 +252,59 @@
             </div>
 
             <div class="phase-card">
-                <h4>Fase 4: Seguridad y Hardening (E4 - 15%)</h4>
+                <h4>Fase 4: Hardening y Seguridad (E4 - 15%)</h4>
                 <div class="phase-meta">
                     <div class="phase-meta-item"><strong>Fecha:</strong> 22 Abril</div>
-                    <div class="phase-meta-item"><strong>Tipo:</strong> Proyecto (avance incremental)</div>
-                    <div class="phase-meta-item"><strong>Eval:</strong> E4</div>
+                    <div class="phase-meta-item"><strong>Tema:</strong> Aseguramiento UCS</div>
                 </div>
-                <p><strong>Objetivo:</strong> Proteger la infraestructura implementada.</p>
+                <p><strong>Objetivo:</strong> Convertir el sistema funcional en un sistema seguro.</p>
                 <div class="entregable">
-                    <strong>Entregables:</strong>
+                    <strong>Checklist de Entrega:</strong>
                     <ul>
-                        <li>Matriz de riesgos (8+ identificados)</li>
-                        <li>Scripts de hardening automatizado</li>
-                        <li>Configuración de firewall básico</li>
-                        <li>Auditoría de seguridad</li>
-                        <li>Recomendaciones de mitigación</li>
+                        <li>Matriz de Riesgos (Manejo de contraseñas, accesos no autorizados, fallos de hardware)</li>
+                        <li>Configuración de ACLs granulares en directorios de datos</li>
+                        <li>Reglas de Firewall (iptables/ufw en Linux y Advanced Firewall en Windows)</li>
+                        <li>Evidencia de desactivación de servicios innecesarios</li>
                     </ul>
                 </div>
             </div>
 
             <div class="phase-card">
-                <h4>Fase 5: Proyecto Integrador (E5 - 15%) 🚀</h4>
+                <h4>Fase 5: Servicios Web Integrados (E5 - 15%) 🚀</h4>
                 <div class="phase-meta">
                     <div class="phase-meta-item"><strong>Fecha:</strong> 06 Mayo</div>
-                    <div class="phase-meta-item"><strong>Tipo:</strong> Proyecto</div>
-                    <div class="phase-meta-item"><strong>Eval:</strong> E5</div>
+                    <div class="phase-meta-item"><strong>Hito:</strong> Producción</div>
                 </div>
-                <p><strong>Objetivo:</strong> Integrar todo: servidores web + monitoreo.</p>
+                <p><strong>Objetivo:</strong> Poner a UCS a servir contenido web real.</p>
                 <div class="entregable">
-                    <strong>Entregables:</strong>
+                    <strong>Checklist de Entrega:</strong>
                     <ul>
-                        <li><strong>Servidores web funcionando:</strong> Apache (Linux) + IIS (Windows local o VM)</li>
-                        <li><strong>Scripts integrales:</strong> Monitor de sistema completo</li>
-                        <li><strong>Sistema de monitoreo:</strong> CPU, memoria, disco, red, servicios y disponibilidad web</li>
-                        <li><strong>Documentación:</strong> Integración de Fases 1-4 + aplicación de C13 (journaling, RAID conceptual, fstab)</li>
-                        <li><strong>Video:</strong> Demostración del sistema (8-12 min)</li>
+                        <li>Servidor Apache con Virtual Host y HTTPS (Certificado auto-firmado)</li>
+                        <li>Servidor IIS con Application Pool dedicado y sitio funcional</li>
+                        <li>Persistencia de almacenamiento avanzada (Configuración de <code>/etc/fstab</code>)</li>
+                        <li>Dashboard de integración (un script final que valide que todo lo anterior sigue vivo)</li>
                     </ul>
                 </div>
             </div>
 
             <div class="phase-card">
-                <h4>Fase 6: Sustentación Final (E6 - 20%) 🎓</h4>
+                <h4>Fase 6: Sustentación y Portafolio Final (E6 - 20%) 🎓</h4>
                 <div class="phase-meta">
                     <div class="phase-meta-item"><strong>Fecha:</strong> 27 Mayo</div>
-                    <div class="phase-meta-item"><strong>Tipo:</strong> Proyecto Final</div>
-                    <div class="phase-meta-item"><strong>Eval:</strong> E6</div>
+                    <div class="phase-meta-item"><strong>Formato:</strong> Portafolio Consolidado</div>
                 </div>
-                <p><strong>Objetivo:</strong> Presentar el proyecto completo funcionando.</p>
+                <p><strong>Objetivo:</strong> Demostrar maestría sobre el sistema construido durante el semestre.</p>
                 <div class="entregable">
-                    <strong>Entregables:</strong>
+                    <strong>Componentes Finales:</strong>
                     <ul>
-                        <li><strong>Sistema funcionando:</strong> Demostración en vivo (20-30 min)</li>
-                        <li><strong>Documentación técnica:</strong> Manual completo del sistema</li>
-                        <li><strong>Presentación:</strong> 15-20 diapositivas</li>
-                        <li><strong>Portafolio:</strong> Evidencias de todo el proceso</li>
-                        <li><strong>Sustentación:</strong> Defensa del proyecto + preguntas</li>
+                        <li><strong>Portafolio Ejecutivo:</strong> Un único PDF (máximo 15-20 págs) que recopile las Fases 1 a 5 ya corregidas.</li>
+                        <li><strong>Pitch Técnico:</strong> Presentación corta (máximo 8 diapositivas) enfocada en la demo funcional.</li>
+                        <li><strong>Sustentación:</strong> Defensa oral del proyecto ante el grupo (15-20 min).</li>
+                        <li><strong>Demo en Vivo:</strong> El docente solicitará cambios en tiempo real para verificar conocimientos.</li>
                     </ul>
                 </div>
             </div>
+
         </section>
 
         <section class="section">
