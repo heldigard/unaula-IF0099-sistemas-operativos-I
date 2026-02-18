@@ -3,1434 +3,272 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clase 04: Estructura del Sistema Operativo | IF0099 - Sistemas Operativos I</title>
+    <title>Clase 04: Estructura y Configuración del Kernel | IF0099</title>
     <!-- Prism.js CSS para syntax highlighting -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
     <style>
-        :root {
-            --primary: #2563eb;
-            --secondary: #1e40af;
-            --accent: #059669;
-            --bg-light: #f8fafc;
-            --bg-code: #1e293b;
-            --text-main: #1e293b;
-            --text-muted: #64748b;
-            --border: #e2e8f0;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            line-height: 1.7;
-            color: var(--text-main);
-            background: var(--bg-light);
-            font-size: 16px;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        header {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            color: white;
-            padding: 3rem 0;
-            margin-bottom: 2rem;
-        }
-
-        header h1 {
-            font-size: 2.2rem;
-            margin-bottom: 0.5rem;
-            font-weight: 700;
-        }
-
-        header .subtitle {
-            font-size: 1.1rem;
-            opacity: 0.9;
-        }
-
-        header .meta {
-            margin-top: 1rem;
-            font-size: 0.9rem;
-            opacity: 0.8;
-        }
-
-        nav {
-            background: white;
-            padding: 1.5rem 0;
-            margin-bottom: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-
-        nav h2 {
-            font-size: 1.1rem;
-            color: var(--text-muted);
-            margin-bottom: 1rem;
-            padding: 0 20px;
-        }
-
-        nav ul {
-            list-style: none;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 0.5rem;
-            padding: 0 20px;
-        }
-
-        nav a {
-            color: var(--primary);
-            text-decoration: none;
-            padding: 0.5rem;
-            display: block;
-            border-radius: 4px;
-            transition: background 0.2s;
-        }
-
-        nav a:hover {
-            background: var(--bg-light);
-        }
-
-        section {
-            background: white;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-
-        section h2 {
-            color: var(--primary);
-            font-size: 1.8rem;
-            margin-bottom: 1.5rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 3px solid var(--accent);
-        }
-
-        section h3 {
-            color: var(--secondary);
-            font-size: 1.4rem;
-            margin: 2rem 0 1rem;
-        }
-
-        section h4 {
-            color: var(--text-main);
-            font-size: 1.1rem;
-            margin: 1.5rem 0 0.75rem;
-            font-weight: 600;
-        }
-
-        p {
-            margin-bottom: 1rem;
-        }
-
-        figure {
-            margin: 2rem 0;
-            text-align: center;
-        }
-
-        figure img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-
-        figcaption {
-            margin-top: 0.75rem;
-            color: var(--text-muted);
-            font-style: italic;
-            font-size: 0.95rem;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 1.5rem 0;
-            font-size: 0.95rem;
-        }
-
-        th, td {
-            padding: 0.75rem 1rem;
-            text-align: left;
-            border-bottom: 1px solid var(--border);
-        }
-
-        th {
-            background: var(--bg-light);
-            font-weight: 600;
-            color: var(--secondary);
-        }
-
-        tr:hover {
-            background: var(--bg-light);
-        }
-
-        pre {
-            background: var(--bg-code);
-            color: #e2e8f0;
-            padding: 1.5rem;
-            border-radius: 8px;
-            overflow-x: auto;
-            margin: 1.5rem 0;
-            font-size: 0.9rem;
-            line-height: 1.5;
-        }
-
-        code {
-            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
-        }
-
-        p code, li code, td code {
-            background: var(--bg-light);
-            color: var(--primary);
-            padding: 0.2rem 0.4rem;
-            border-radius: 4px;
-            font-size: 0.9em;
-        }
-
-        pre code {
-            background: none;
-            padding: 0;
-            color: inherit;
-        }
-
-        ul, ol {
-            margin-left: 1.5rem;
-            margin-bottom: 1rem;
-        }
-
-        li {
-            margin-bottom: 0.5rem;
-        }
-
-        .callout {
-            padding: 1.5rem;
-            border-radius: 8px;
-            margin: 1.5rem 0;
-            border-left: 4px solid;
-        }
-
-        .callout.info {
-            background: #eff6ff;
-            border-left-color: var(--primary);
-        }
-
-        .callout.warning {
-            background: #fef3c7;
-            border-left-color: #f59e0b;
-        }
-
-        .callout.success {
-            background: #d1fae5;
-            border-left-color: var(--accent);
-        }
-
-        .ascii-diagram {
-            font-family: 'Consolas', 'Monaco', monospace;
-            font-size: 0.85rem;
-            line-height: 1.2;
-            background: var(--bg-light);
-            padding: 1rem;
-            border-radius: 4px;
-            overflow-x: auto;
-            white-space: pre;
-        }
-
-        .comparison {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-            margin: 2rem 0;
-        }
-
-        .comparison > div {
-            background: var(--bg-light);
-            padding: 1.5rem;
-            border-radius: 8px;
-        }
-
-        .gantt {
-            display: flex;
-            align-items: center;
-            margin: 2rem 0;
-            font-family: 'Consolas', 'Monaco', monospace;
-            font-size: 0.8rem;
-        }
-
-        .gantt-bar {
-            height: 30px;
-            background: var(--primary);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 4px;
-            margin: 0 2px;
-        }
-
-        .gantt-id {
-            width: 80px;
-            text-align: right;
-            padding-right: 10px;
-        }
-
-        .gantt-timeline {
-            flex: 1;
-            display: flex;
-            height: 30px;
-        }
-
-        .gantt-empty {
-            flex: 1;
-            border-bottom: 1px solid var(--border);
-        }
-
-        footer {
-            background: var(--text-main);
-            color: white;
-            padding: 2rem 0;
-            text-align: center;
-            margin-top: 3rem;
-        }
-
-        footer a {
-            color: var(--accent);
-            text-decoration: none;
-        }
-
-        /* Navigation between classes */
-        .class-nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: stretch;
-            gap: 1rem;
-            margin: 2rem 0;
-        }
-
-        .class-nav-link {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            padding: 1.25rem 1.5rem;
-            background: white;
-            border: 2px solid var(--border);
-            border-radius: 12px;
-            text-decoration: none;
-            color: var(--text-main);
-            transition: all 0.3s ease;
-        }
-
-        .class-nav-link:hover {
-            border-color: var(--primary);
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
-            transform: translateY(-2px);
-        }
-
-        .class-nav-link.prev {
-            border-left: 4px solid var(--primary);
-        }
-
-        .class-nav-link.next {
-            border-right: 4px solid var(--accent);
-            text-align: right;
-            margin-left: auto;
-        }
-
-        .class-nav-link .nav-label {
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: var(--text-muted);
-            margin-bottom: 0.25rem;
-        }
-
-        .class-nav-link .nav-title {
-            font-size: 1rem;
-            font-weight: 600;
-            color: var(--primary);
-        }
-
-        .class-nav-link.next .nav-title {
-            color: var(--accent);
-        }
-
-        .class-nav-icon {
-            font-size: 1.5rem;
-            line-height: 1;
-        }
-
-        .class-nav-placeholder {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 1.25rem;
-            background: var(--bg-light);
-            border: 2px dashed var(--border);
-            border-radius: 12px;
-            color: var(--text-muted);
-            font-size: 0.9rem;
-        }
-
-        .scroll-top {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            background: var(--primary);
-            color: white;
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            opacity: 0;
-            transition: opacity 0.3s;
-            text-decoration: none;
-            font-size: 1.5rem;
-        }
-
-        .scroll-top.visible {
-            opacity: 1;
-        }
-
-        .scroll-top:hover {
-            background: var(--secondary);
-        }
-
-        .actividad {
-            background: var(--bg-light);
-            border-left: 5px solid var(--accent);
-            padding: 1.5rem;
-            margin: 1.5rem 0;
-            border-radius: 4px;
-        }
-
-        .actividad h3 {
-            color: var(--primary);
-            margin-bottom: 1rem;
-        }
-
-        .actividad p {
-            margin-bottom: 0.75rem;
-        }
-
-        .actividad strong {
-            color: var(--secondary);
-        }
-
-        .evaluacion {
-            background: #fef3c7;
-            border-left: 5px solid #f59e0b;
-            padding: 1.5rem;
-            margin: 1.5rem 0;
-            border-radius: 8px;
-        }
-
-        .evaluacion h3 {
-            color: #b45309;
-            margin-bottom: 1rem;
-        }
-
-        .evaluacion .porcentaje {
-            font-size: 2rem;
-            font-weight: 700;
-            color: #d97706;
-            margin: 0.5rem 0;
-        }
-
-        @media (max-width: 768px) {
-            header h1 {
-                font-size: 1.6rem;
-            }
-
-            section {
-                padding: 1.5rem;
-            }
-
-            nav ul {
-                grid-template-columns: 1fr;
-            }
-
-            .comparison {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* Code blocks with syntax highlighting */
-        pre {
-            background: #1e1e1e !important;
-            border-radius: 8px;
-            padding: 1.5rem;
-            margin: 1.5rem 0;
-            overflow-x: auto;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        pre code {
-            font-family: 'Fira Code', 'Consolas', 'Monaco', 'Courier New', monospace;
-            font-size: 0.9rem;
-            line-height: 1.6;
-            color: #d4d4d4;
-        }
-
-        /* Inline code */
-        code:not(pre code) {
-            background: #e2e8f0;
-            color: #c026d3;
-            padding: 0.2rem 0.5rem;
-            border-radius: 4px;
-            font-family: 'Fira Code', 'Consolas', 'Monaco', monospace;
-            font-size: 0.9em;
-        }
-
-        .code-header {
-            background: #2d2d2d;
-            color: #9cdcfe;
-            padding: 0.5rem 1rem;
-            border-radius: 8px 8px 0 0;
-            font-family: 'Fira Code', monospace;
-            font-size: 0.85rem;
-        }
-
-        .code-block {
-            border-radius: 8px;
-            overflow: hidden;
-            margin: 1.5rem 0;
-        }
-
-        .code-block pre {
-            margin: 0;
-            border-radius: 0;
-        }
-
-        .terminal-block pre {
-            background: #0c0c0c !important;
-            border: 1px solid #333;
-        }
-
-        .terminal-block .code-header {
-            background: #1a1a1a;
-            color: #22c55e;
-        }
-
-        .eval-alert {
-            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-            border-left: 4px solid #f59e0b;
-            padding: 1.25rem 1.5rem;
-            border-radius: 8px;
-            margin-bottom: 2rem;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .eval-alert-icon {
-            font-size: 1.75rem;
-            line-height: 1;
-        }
-
-        .eval-alert-content {
-            flex: 1;
-        }
-
-        .eval-alert-title {
-            font-weight: 700;
-            color: #92400e;
-            font-size: 1rem;
-            margin-bottom: 0.25rem;
-        }
-
-        .eval-alert-text {
-            color: #78350f;
-            font-size: 0.9rem;
-        }
-
-        .eval-alert-date {
-            background: #f59e0b;
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 6px;
-            font-weight: 600;
-            font-size: 0.9rem;
-            white-space: nowrap;
-        }
-
-        .class-nav-date {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            margin-top: 0.25rem;
-        }
-
-        .class-nav-link:hover .nav-title {
-            text-decoration: underline;
-        }
+        :root { --primary: #2563eb; --secondary: #1e40af; --accent: #059669; --bg-light: #f8fafc; --bg-code: #1e293b; --text-main: #1e293b; --text-muted: #64748b; --border: #e2e8f0; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.7; color: var(--text-main); background: var(--bg-light); font-size: 16px; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        header { background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); color: white; padding: 3rem 0; margin-bottom: 2rem; }
+        header h1 { font-size: 2.2rem; margin-bottom: 0.5rem; font-weight: 700; }
+        header .subtitle { font-size: 1.1rem; opacity: 0.9; }
+        header .meta { margin-top: 1rem; font-size: 0.9rem; opacity: 0.8; }
+        nav { background: white; padding: 1.5rem 0; margin-bottom: 2rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 100; }
+        nav ul { list-style: none; display: flex; flex-wrap: wrap; gap: 1.5rem; padding: 0 20px; justify-content: center; }
+        nav a { color: var(--primary); text-decoration: none; font-weight: 600; font-size: 0.95rem; }
+        section { background: white; padding: 2.5rem; margin-bottom: 2rem; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        section h2 { color: var(--primary); font-size: 1.8rem; margin-bottom: 1.5rem; padding-bottom: 0.5rem; border-bottom: 3px solid var(--accent); }
+        h3 { color: var(--secondary); font-size: 1.4rem; margin: 2rem 0 1rem; }
+        pre { background: var(--bg-code); color: #e2e8f0; padding: 1.5rem; border-radius: 8px; overflow-x: auto; margin: 1.5rem 0; font-size: 0.9rem; }
+        .callout { padding: 1.5rem; border-radius: 8px; margin: 1.5rem 0; border-left: 4px solid; }
+        .callout.info { background: #eff6ff; border-left-color: var(--primary); }
+        .callout.warning { background: #fef3c7; border-left-color: #f59e0b; }
+        .comparison { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 1.5rem; margin: 2rem 0; }
+        .card { background: var(--bg-light); padding: 1.5rem; border-radius: 8px; border: 1px solid var(--border); }
+        table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.95rem; }
+        th, td { padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid var(--border); }
+        th { background: var(--bg-light); font-weight: 600; }
+        .actividad { background: #f1f5f9; border-left: 5px solid var(--accent); padding: 2rem; margin: 2rem 0; border-radius: 8px; }
+        footer { background: var(--text-main); color: white; padding: 2rem 0; text-align: center; margin-top: 3rem; }
+        .eval-alert { background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-left: 4px solid #f59e0b; padding: 1.25rem 1.5rem; border-radius: 8px; margin-bottom: 2rem; display: flex; align-items: center; gap: 1rem; color: inherit; text-decoration: none; }
+        .quick-nav { background: white; padding: 1rem; margin-bottom: 2rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+        .home-link { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: var(--primary); color: white; text-decoration: none; border-radius: 6px; font-weight: 500; }
+        .class-nav { display: flex; justify-content: space-between; align-items: stretch; gap: 1rem; margin: 2rem 0; }
+        .class-nav-link { flex: 1; display: flex; align-items: center; gap: 0.75rem; padding: 1.25rem 1.5rem; background: white; border: 2px solid var(--border); border-radius: 12px; text-decoration: none; color: var(--text-main); transition: all 0.3s ease; }
+        .class-nav-link:hover { border-color: var(--primary); box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15); transform: translateY(-2px); }
+        .class-nav-link.next { border-right: 4px solid var(--accent); text-align: right; margin-left: auto; }
+        .class-nav-link .nav-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); margin-bottom: 0.25rem; }
+        .class-nav-link .nav-title { font-size: 1rem; font-weight: 600; color: var(--primary); }
     </style>
 </head>
 <body>
     <header>
         <div class="container">
-            <h1>Clase 04: Estructura del Sistema Operativo</h1>
-            <p class="subtitle">IF0099 - Sistemas Operativos I | Unidad 1 - Sistemas Operativos</p>
-            <p class="subtitle">Kernel, Shell, System Calls y Modos de Operación</p>
-            <p class="meta">📅 11 de Febrero 2026 | Sesion Miercoles: 8:00-9:00 AM | Teoria: 30 min + Practica: 30 min</p>
+            <h1>Clase 04: Estructura y Configuración del Kernel</h1>
+            <p class="subtitle">IF0099 - Sistemas Operativos I | Unidad 1 - Arquitectura Profesional</p>
+            <p class="meta">📅 11 de Febrero 2026 | Bloque: 8:00 - 9:00 AM | Teoría: 30 min + Práctica: 30 min</p>
         </div>
     </header>
 
-
     <div class="container">
-
-        <!-- Quick Navigation Bar -->
-        <div class="quick-nav" style="background: white; padding: 1rem; margin-bottom: 2rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
+        <div class="quick-nav">
             <div style="display: flex; align-items: center; gap: 1rem;">
                 <a href="index.html" style="color: var(--primary); text-decoration: none; font-weight: 500;">Inicio</a>
-                <span style="color: var(--text-muted);">|</span>
-                <span style="color: var(--text-main); font-weight: 600;">Estructura del Sistema Operativo</span>
+                <span style="color: var(--text-muted);">›</span>
+                <span style="font-weight: 600;">Clase 04</span>
             </div>
-            <div style="display: flex; align-items: center; gap: 0.5rem;">
-                <a href="cronograma.html" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: #10b981; color: white; text-decoration: none; border-radius: 6px; font-weight: 500;">Cronograma</a>
-                <a href="rubricas.html" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: #3b82f6; color: white; text-decoration: none; border-radius: 6px; font-weight: 500;">Rubricas</a>
+            <div style="display: flex; gap: 0.5rem;">
+                <a href="cronograma.html" class="home-link" style="background: #10b981;">📅 Cronograma</a>
+                <a href="evaluaciones.html" class="home-link" style="background: #8b5cf6;">📝 Evaluaciones</a>
             </div>
         </div>
 
-        <!-- Próxima Evaluación Alert -->
-        <a href="evaluaciones.html#e1" style="text-decoration: none; display: block;">
-            <div class="eval-alert" style="cursor: pointer; transition: transform 0.2s;">
-                <span class="eval-alert-icon">📌</span>
-                <div class="eval-alert-content">
-                    <div class="eval-alert-title">E1: FASE 1 - Fundamentos y Arquitectura (25 Feb)</div>
-                    <div class="eval-alert-text">15% - Configuración inicial del proyecto (identifica estructura y tipos de SO)</div>
-                </div>
-                <span class="eval-alert-date">📅 25 Feb</span>
+        <a href="evaluaciones.html#e1" class="eval-alert">
+            <span style="font-size: 1.75rem;">📌</span>
+            <div class="eval-alert-content">
+                <div style="font-weight: 700; color: #92400e;">E1: FASE 1 - Fundamentos y Arquitectura (25 Feb)</div>
+                <div style="color: #78350f; font-size: 0.9rem;">15% - Mapeo de componentes y diagnóstico estructural del Kernel.</div>
             </div>
+            <span style="background: #f59e0b; color: white; padding: 0.5rem 1rem; border-radius: 6px; font-weight: 600;">📅 25 Feb</span>
         </a>
 
         <nav>
-            <h2>Contenido de la Clase</h2>
             <ul>
-                <li><a href="#objetivos">Objetivos de Aprendizaje</a></li>
-                <li><a href="#componentes">1. Componentes del SO (Kernel y Shell)</a></li>
-                <li><a href="#arquitecturas">2. Tipos de Arquitectura</a></li>
-                <li><a href="#syscalls">3. System Calls y Modos de Operación</a></li>
-                <li><a href="#laboratorio">4. Laboratorio: Explorando el Sistema</a></li>
-                <li><a href="#practica">5. Actividad Práctica</a></li>
+                <li><a href="#kernel-shell">1. El Binomio del Sistema</a></li>
+                <li><a href="#arquitecturas">2. Modelos de Kernel</a></li>
+                <li><a href="#tuning">3. Tuning del Kernel</a></li>
+                <li><a href="#syscalls">4. System Calls</a></li>
+                <li><a href="#boot">5. Proceso de Boot</a></li>
+                <li><a href="#practica">6. Laboratorio Forense</a></li>
             </ul>
         </nav>
 
-        <section id="objetivos">
-            <h2>Objetivos de Aprendizaje</h2>
-            <p><strong>Resultado de Aprendizaje (RA1):</strong> Identifica la estructura y los tipos de los sistemas operativos (Alineado con Evaluación E1).</p>
-            <p>Al finalizar esta clase, serás capaz de:</p>
-            <ol>
-                <li><strong>Mapear</strong> los componentes principales de un Sistema Operativo moderno</li>
-                <li><strong>Explicar</strong> la diferencia entre Kernel y Shell</li>
-                <li><strong>Comparar</strong> los tres tipos de arquitecturas de SO (Monolítico, Microkernel, Híbrido)</li>
-                <li><strong>Describir</strong> qué son las System Calls y su impacto en la seguridad</li>
-                <li><strong>Analizar</strong> la arquitectura de capas de tu <strong>VM en VirtualBox</strong></li>
-            </ol>
-
-            <div class="callout success">
-                <p class="callout-title">🎯 Meta Evaluación E1 (25 Feb)</p>
-                <p>Esta clase cierra los temas para la primera evaluación. Debes ser capaz de identificar si el kernel de Linux en tu VM es monolítico y cómo interactúas con él vía syscalls.</p>
-            </div>
-        </section>
-
-        <section id="componentes">
-            <h2>1. Componentes del Sistema Operativo</h2>
-
-            <h3>1.1 Kernel - El Núcleo del Sistema</h3>
-            <p>El <strong>Kernel</strong> es el componente central del Sistema Operativo. Es el software que tiene control total sobre todo lo que sucede en el sistema.</p>
-
-            <div class="callout info">
-                <p class="callout-title">¿Por qué se llama "Kernel"?</p>
-                <p>La palabra viene del alemán "Kern" que significa "núcleo" o "semilla". Así como una semilla contiene toda la información para que una planta crezca, el Kernel contiene todo lo necesario para que el sistema funcione.</p>
-            </div>
-
-            <h4>Funciones del Kernel</h4>
-            <ul>
-                <li><strong>Gestión de procesos:</strong> Crear, schedule y terminar procesos</li>
-                <li><strong>Gestión de memoria:</strong> Asignar y liberar RAM</li>
-                <li><strong>Gestión de E/S:</strong> Controlar dispositivos</li>
-                <li><strong>Gestión de archivos:</strong> Organizar y acceder a datos</li>
-                <li><strong>Seguridad:</strong> Proteger recursos y procesos</li>
-            </ul>
-
-            <h3>1.2 Shell - La Interfaz de Comandos</h3>
-            <p>La <strong>Shell</strong> es un programa que permite interactuar con el Kernel. Es un intérprete de comandos que traduce lo que escribes en llamadas al sistema.</p>
-
-            <table>
-                <thead>
-                    <tr>
-                        <th>Sistema</th>
-                        <th>Shell</th>
-                        <th>Características</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Linux</strong></td>
-                        <td>bash, zsh, fish</td>
-                        <td>Scripting, pipes, redirección</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Windows</strong></td>
-                        <td>PowerShell, cmd</td>
-                        <td>Objetos, .NET integrado</td>
-                    </tr>
-                    <tr>
-                        <td><strong>macOS</strong></td>
-                        <td>zsh (default), bash</td>
-                        <td>Unix-like, herramientas BSD</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <h4>Analogía de la Shell</h4>
-            <div class="ascii-diagram">
-Usuario → Shell (traductor) → Kernel (ejecuta) → Hardware
-
-Sin Shell:
-Usuario ❌ No puede hablar con Kernel
-
-Con Shell:
-Usuario "abre archivo.txt"
-Shell traduce → open("archivo.txt")
-Kernel abre archivo → Hardware lee disco
+        <section id="kernel-shell">
+            <h2>1. El Binomio Fundamental: Kernel y Shell</h2>
+            <p>El Sistema Operativo se divide en capas de abstracción. Como administrador, interactúas con la Shell, pero tus servicios dependen del Kernel.</p>
+            
+            <div class="comparison">
+                <div class="card">
+                    <h4>El Kernel (Núcleo)</h4>
+                    <p>Software que reside permanentemente en RAM. Es el único con permiso para ejecutar instrucciones de hardware directas.</p>
+                    <ul>
+                        <li><strong>Identificación (LX)</strong>: El archivo <code>/boot/vmlinuz</code>.</li>
+                        <li><strong>Identificación (WN)</strong>: El binario <code>ntoskrnl.exe</code>.</li>
+                        <li><strong>Misión</strong>: Gestión de interrupciones, memoria y drivers.</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4>La Shell (Cáscara)</h4>
+                    <p>El programa que envuelve al kernel. Traduce el lenguaje humano a llamadas que el kernel entiende.</p>
+                    <ul>
+                        <li><strong>Interfaces</strong>: CLI (Bash, PowerShell) y GUI (Desktop Explorer).</li>
+                        <li><strong>Misión</strong>: Interpretar comandos y lanzar procesos.</li>
+                    </ul>
+                </div>
             </div>
         </section>
 
         <section id="arquitecturas">
-            <h2>2. Tipos de Arquitectura de Sistema Operativo</h2>
-
-            <p>Los sistemas operativos se organizan internamente de diferentes maneras:</p>
-
+            <h2>2. Arquitecturas de Diseño de Sistemas Operativos</h2>
+            <p>La forma en que se construyen los cimientos determina si el servidor es rápido o si es "indestructible".</p>
+            
             <table>
                 <thead>
                     <tr>
-                        <th>Tipo</th>
-                        <th>Características</th>
-                        <th>Ventajas</th>
-                        <th>Ejemplos</th>
+                        <th>Modelo</th>
+                        <th>Descripción Técnica</th>
+                        <th>Ejemplo</th>
+                        <th>Uso Profesional</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <td><strong>Monolítico</strong></td>
-                        <td>Todo el SO corre en un solo bloque en el espacio del kernel.</td>
-                        <td>Máximo rendimiento, comunicación rápida entre módulos.</td>
-                        <td>Linux, MS-DOS, Android</td>
+                        <td>Todos los servicios (Red, FS, CPU) corren en el mismo bloque de memoria del kernel.</td>
+                        <td>Linux</td>
+                        <td>Máximo rendimiento (Cloud Servers).</td>
                     </tr>
                     <tr>
                         <td><strong>Microkernel</strong></td>
-                        <td>Solo lo mínimo (gestión de hilos, memoria) en el kernel. Servicios corren en espacio de usuario.</td>
-                        <td>Alta estabilidad y seguridad (si un servicio falla, el kernel sigue vivo).</td>
-                        <td>MINIX, QNX, L4</td>
+                        <td>Solo lo mínimo en el kernel. Los drivers son procesos normales.</td>
+                        <td>QNX</td>
+                        <td>Sistemas de alta seguridad (Aviación).</td>
                     </tr>
                     <tr>
                         <td><strong>Híbrido</strong></td>
-                        <td>Combina ambos enfoques: una estructura de microkernel pero con algunos servicios en espacio de kernel por rendimiento.</td>
-                        <td>Balance entre rendimiento y estabilidad.</td>
-                        <td>Windows NT, macOS (XNU)</td>
+                        <td>Estructura modular pero cargando módulos críticos en Ring 0 por velocidad.</td>
+                        <td>Windows NT</td>
+                        <td>Estaciones de trabajo corporativas.</td>
                     </tr>
                 </tbody>
             </table>
 
             <div class="callout success">
-                <p class="callout-title">Dato Curioso</p>
-                <p>Linux es monolítico, pero usa "módulos cargables" (LKM) que permiten añadir drivers sin reiniciar, dándole una flexibilidad similar a los sistemas modulares.</p>
+                <h4>Extensibilidad Profesional: LKM</h4>
+                <p>En Linux moderno, no tienes que recompilar el kernel para agregar un driver. Los <strong>LKM (Loadable Kernel Modules)</strong> permiten insertar código en el espacio de kernel en caliente. Puedes auditarlos con <code>lsmod</code>.</p>
+            </div>
+        </section>
+
+        <section id="tuning">
+            <h2>3. Tuning del Kernel: sysctl y Registro</h2>
+            <p>En el mundo laboral, los ingenieros ajustan el comportamiento del kernel sin reiniciar el servidor para optimizar el rendimiento.</p>
+            
+            <div class="comparison">
+                <div class="column-card">
+                    <h4>Kernel Tuning en Linux (sysctl)</h4>
+                    <p>Linux permite modificar parámetros en el sistema de archivos virtual <code>/proc/sys/</code>.</p>
+                    <pre><code class="language-bash"># Ver el límite de archivos abiertos
+sysctl fs.file-max
+
+# Habilitar el reenvío de IP (para routers/VPN)
+sudo sysctl -w net.ipv4.ip_forward=1</code></pre>
+                </div>
+                <div class="column-card">
+                    <h4>Kernel Tuning en Windows (Registry)</h4>
+                    <p>Windows usa la base de datos jerárquica del <strong>Registro</strong> (HKEY_LOCAL_MACHINE\SYSTEM).</p>
+                    <p>Ejemplo: Ajustar el <code>NonPagedPoolSize</code> para mejorar la gestión de memoria de red.</p>
+                </div>
             </div>
         </section>
 
         <section id="syscalls">
-            <h2>3. System Calls y Modos de Operación</h2>
-
-            <h3>3.1 System Calls - Llamadas al Sistema</h3>
-            <p>Las <strong>System Calls</strong> son la puerta de entrada al Kernel. Son funciones que permiten a los programas solicitar servicios que requieren privilegios especiales.</p>
-
-            <h4>Categorías de System Calls</h4>
+            <h2>4. System Calls: La API del Sistema Operativo</h2>
+            <p>Una aplicación <strong>NUNCA</strong> toca el hardware. Pide permiso al Kernel mediante una System Call.</p>
+            
             <table>
                 <thead>
-                    <tr>
-                        <th>Categoría</th>
-                        <th>Linux</th>
-                        <th>Windows</th>
-                        <th>Propósito</th>
-                    </tr>
+                    <tr><th>Operación</th><th>Llamada Linux (POSIX)</th><th>Llamada Windows (Win32)</th></tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td><strong>Control de procesos</strong></td>
-                        <td>fork(), exec(), exit()</td>
-                        <td>CreateProcess, ExitProcess</td>
-                        <td>Crear/terminar procesos</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Manipulación archivos</strong></td>
-                        <td>open(), read(), write()</td>
-                        <td>CreateFile, ReadFile</td>
-                        <td>Operaciones I/O</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Gestión memoria</strong></td>
-                        <td>mmap(), brk()</td>
-                        <td>VirtualAlloc</td>
-                        <td>Asignar memoria</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Comunicaciones</strong></td>
-                        <td>socket(), bind(), listen()</td>
-                        <td>WSAStartup, socket</td>
-                        <td>Comunicación en red</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <h3>3.2 Modo Usuario vs Modo Kernel</h3>
-            <p>Los procesadores modernos tienen al menos dos modos de operación:</p>
-
-            <div class="comparison">
-                <div>
-                    <h4>🔓 Modo Usuario</h4>
-                    <p>Donde corren las aplicaciones:</p>
-                    <ul>
-                        <li>Acceso limitado a hardware</li>
-                        <li>No puede ejecutar instrucciones privilegiadas</li>
-                        <li>Acceso restringido a memoria</li>
-                        <li>Navegadores, editores, juegos</li>
-                    </ul>
-                </div>
-                <div>
-                    <h4>🔒 Modo Kernel</h4>
-                    <p>Donde corre el Sistema Operativo:</p>
-                    <ul>
-                        <li>Acceso completo al hardware</li>
-                        <li>Puede ejecutar cualquier instrucción</li>
-                        <li>Acceso a toda la memoria</li>
-                        <li>Kernel, drivers de dispositivo</li>
-                    </ul>
-                </div>
-            </div>
-
-            <h4>Transición entre Modos</h4>
-            <div class="ascii-diagram">
-┌─────────────────────────────────────────────────────┐
-│                    MODO USUARIO                      │
-│  (Navegador, Word, Spotify, etc.)                    │
-│                                                       │
-│  Usuario ejecuta: open("archivo.txt")                │
-│           ↓                                           │
-│  ─────────────────────────────────────                │
-│           │ System Call (TRAP)                        │
-│           ▼                                           │
-│  ─────────────────────────────────────                │
-│                                                       │
-│                    MODO KERNEL                        │
-│  (Kernel verifica permisos y ejecuta)                 │
-│           │                                           │
-│           ▼                                           │
-│  ─────────────────────────────────────                │
-│           │ Retorno al modo usuario                   │
-│           ▼                                           │
-│  Usuario continúa ejecución                           │
-└─────────────────────────────────────────────────────┘
-            </div>
-
-            <div class="callout warning">
-                <p class="callout-title">¿Por qué dos modos?</p>
-                <p>Si todos los programas corrieran en modo kernel, cualquier programa podría leer tus contraseñas de la memoria o causar que todo el sistema crashee. La separación protege la integridad del sistema.</p>
-            </div>
-
-            <h3>3.3 Arquitectura en Capas</h3>
-            <p>Un Sistema Operativo está organizado en capas jerárquicas:</p>
-
-            <figure>
-                <img src="../assets/infografias/so-capas-sistema.png" alt="Diagrama de capas del sistema informático">
-                <figcaption>Figura 1: Arquitectura de capas de un Sistema Operativo</figcaption>
-            </figure>
-
-            <table>
-                <thead>
-                    <tr>
-                        <th>Capa</th>
-                        <th>Descripción</th>
-                        <th>Ejemplos</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Aplicaciones</strong></td>
-                        <td>Programas de usuario</td>
-                        <td>Navegadores, editores, juegos</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Librerías</strong></td>
-                        <td>Funciones reutilizables</td>
-                        <td>libc, .NET Framework</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Shell</strong></td>
-                        <td>Intérprete de comandos</td>
-                        <td>bash, PowerShell</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Kernel</strong></td>
-                        <td>Núcleo del sistema</td>
-                        <td>Gestión procesos, memoria, E/S</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Hardware</strong></td>
-                        <td>Componentes físicos</td>
-                        <td>CPU, RAM, disco, red</td>
-                    </tr>
+                    <tr><td>Crear Proceso</td><td><code>fork()</code></td><td><code>CreateProcess()</code></td></tr>
+                    <tr><td>Escribir Archivo</td><td><code>write()</code></td><td><code>WriteFile()</code></td></tr>
+                    <tr><td>Pedir RAM</td><td><code>mmap()</code></td><td><code>VirtualAlloc()</code></td></tr>
                 </tbody>
             </table>
         </section>
 
-        <section id="que-es">
-            <h2>1. Componentes del Sistema Operativo</h2>
+        <section id="boot">
+            <h2>5. El Proceso de Boot (Arranque)</h2>
+            <p>Entender el arranque es vital para reparar servidores que no inician.</p>
+            <ol>
+                <li><strong>POST</strong>: El hardware se autoverifica.</li>
+                <li><strong>BIOS/UEFI</strong>: Localiza el sector de arranque (MBR/GPT).</li>
+                <li><strong>Boot Loader (GRUB / Windows Boot Mgr)</strong>: Carga el Kernel en RAM.</li>
+                <li><strong>Kernel Init</strong>: Detecta hardware real y monta el disco raíz (<code>/</code>).</li>
+                <li><strong>Init (PID 1)</strong>: Arranca servicios esenciales (SSH, Red, GUI).</li>
+            </ol>
+        </section>
 
-            <h3>1.1 Kernel - El Núcleo del Sistema</h3>
-            <p>El <strong>Kernel</strong> es el componente central del Sistema Operativo. Es el software que tiene control total sobre todo lo que sucede en el sistema.</p>
-
-            <div class="callout info">
-                <p class="callout-title">¿Por qué se llama "Kernel"?</p>
-                <p>La palabra viene del alemán "Kern" que significa "núcleo" o "semilla". Así como una semilla contiene toda la información para que una planta crezca, el Kernel contiene todo lo necesario para que el sistema funcione.</p>
-            </div>
-
-            <h4>Funciones del Kernel</h4>
-            <ul>
-                <li><strong>Gestión de procesos:</strong> Crear, schedule y terminar procesos</li>
-                <li><strong>Gestión de memoria:</strong> Asignar y liberar RAM</li>
-                <li><strong>Gestión de E/S:</strong> Controlar dispositivos</li>
-                <li><strong>Gestión de archivos:</strong> Organizar y acceder a datos</li>
-                <li><strong>Seguridad:</strong> Proteger recursos y procesos</li>
-            </ul>
-
-            <h3>1.2 Shell - La Interfaz de Comandos</h3>
-            <p>La <strong>Shell</strong> es un programa que permite interactuar con el Kernel. Es un intérprete de comandos que traduce lo que escribes en llamadas al sistema.</p>
-
-            <table>
-                <thead>
-                    <tr>
-                        <th>Sistema</th>
-                        <th>Shell</th>
-                        <th>Características</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Linux</strong></td>
-                        <td>bash, zsh, fish</td>
-                        <td>Scripting, pipes, redirección</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Windows</strong></td>
-                        <td>PowerShell, cmd</td>
-                        <td>Objetos, .NET integrado</td>
-                    </tr>
-                    <tr>
-                        <td><strong>macOS</strong></td>
-                        <td>zsh (default), bash</td>
-                        <td>Unix-like, herramientas BSD</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <h4>Analogía de la Shell</h4>
-            <div class="ascii-diagram">
-Usuario → Shell (traductor) → Kernel (ejecuta) → Hardware
-
-Sin Shell:
-Usuario ❌ No puede hablar con Kernel
-
-Con Shell:
-Usuario "abre archivo.txt"
-Shell traduce → open("archivo.txt")
-Kernel abre archivo → Hardware lee disco
-            </div>
-
-            <h3>1.3 System Calls - Llamadas al Sistema</h3>
-            <p>Las <strong>System Calls</strong> son la puerta de entrada al Kernel. Son funciones que permiten a los programas solicitar servicios que requieren privilegios especiales.</p>
-
-            <h4>Categorías de System Calls</h4>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Categoría</th>
-                        <th>Linux</th>
-                        <th>Windows</th>
-                        <th>Propósito</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Control de procesos</strong></td>
-                        <td>fork(), exec(), exit()</td>
-                        <td>CreateProcess, ExitProcess</td>
-                        <td>Crear/terminar procesos</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Manipulación archivos</strong></td>
-                        <td>open(), read(), write()</td>
-                        <td>CreateFile, ReadFile</td>
-                        <td>Operaciones I/O</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Gestión memoria</strong></td>
-                        <td>mmap(), brk()</td>
-                        <td>VirtualAlloc</td>
-                        <td>Asignar memoria</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Comunicaciones</strong></td>
-                        <td>socket(), bind(), listen()</td>
-                        <td>WSAStartup, socket</td>
-                        <td>Comunicación en red</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <h3>1.4 Modo Usuario vs Modo Kernel</h3>
-            <p>Los procesadores modernos tienen al menos dos modos de operación:</p>
-
-            <div class="comparison">
-                <div>
-                    <h4>🔓 Modo Usuario</h4>
-                    <p>Donde corren las aplicaciones:</p>
-                    <ul>
-                        <li>Acceso limitado a hardware</li>
-                        <li>No puede ejecutar instrucciones privilegiadas</li>
-                        <li>Acceso restringido a memoria</li>
-                        <li>Navegadores, editores, juegos</li>
-                    </ul>
-                </div>
-                <div>
-                    <h4>🔒 Modo Kernel</h4>
-                    <p>Donde corre el Sistema Operativo:</p>
-                    <ul>
-                        <li>Acceso completo al hardware</li>
-                        <li>Puede ejecutar cualquier instrucción</li>
-                        <li>Acceso a toda la memoria</li>
-                        <li>Kernel, drivers de dispositivo</li>
-                    </ul>
-                </div>
-            </div>
-
-            <h4>Transición entre Modos</h4>
-            <div class="ascii-diagram">
-┌─────────────────────────────────────────────────────┐
-│                    MODO USUARIO                      │
-│  (Navegador, Word, Spotify, etc.)                    │
-│                                                       │
-│  Usuario ejecuta: open("archivo.txt")                │
-│           ↓                                           │
-│  ─────────────────────────────────────                │
-│           │ System Call (TRAP)                        │
-│           ▼                                           │
-│  ─────────────────────────────────────                │
-│                                                       │
-│                    MODO KERNEL                        │
-│  (Kernel verifica permisos y ejecuta)                 │
-│           │                                           │
-│           ▼                                           │
-│  ─────────────────────────────────────                │
-│           │ Retorno al modo usuario                   │
-│           ▼                                           │
-│  Usuario continúa ejecución                           │
-└─────────────────────────────────────────────────────┘
-            </div>
-
-            <div class="callout warning">
-                <p class="callout-title">¿Por qué dos modos?</p>
-                <p>Si todos los programas corrieran en modo kernel, cualquier programa podría:</p>
-                <ul>
-                    <li>Leer tu contraseña de la memoria</li>
-                    <li>Formatear tu disco duro</li>
-                    <li>Interceptar tus pulsaciones de teclado</li>
-                    <li>Causar que todo el sistema crashee</li>
-                </ul>
-                <p>La separación de modos protege al sistema y a los usuarios.</p>
-            </div>
-
-            <h3>1.5 Arquitectura en Capas</h3>
-            <p>Un Sistema Operativo está organizado en capas jerárquicas:</p>
-
-            <figure>
-                <img src="../assets/infografias/so-capas-sistema.png" alt="Diagrama de capas del sistema informático">
-                <figcaption>Figura 1: Arquitectura de capas de un Sistema Operativo</figcaption>
-            </figure>
-
-            <table>
-                <thead>
-                    <tr>
-                        <th>Capa</th>
-                        <th>Descripción</th>
-                        <th>Ejemplos</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Aplicaciones</strong></td>
-                        <td>Programas de usuario</td>
-                        <td>Navegadores, editores, juegos</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Librerías</strong></td>
-                        <td>Funciones reutilizables</td>
-                        <td>libc, .NET Framework</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Shell</strong></td>
-                        <td>Intérprete de comandos</td>
-                        <td>bash, PowerShell</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Kernel</strong></td>
-                        <td>Núcleo del sistema</td>
-                        <td>Gestión procesos, memoria, E/S</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Hardware</strong></td>
-                        <td>Componentes físicos</td>
-                        <td>CPU, RAM, disco, red</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <h3>1.6 Comandos Prácticos para Explorar el SO</h3>
-
-            <h4>En Linux (Ubuntu Server)</h4>
-            <div class="code-block terminal-block">
-                <div class="code-header">Terminal - Explorando el Sistema</div>
-                <pre><code class="language-bash"># Ver información del kernel
-uname -a
-
-# Ver módulos del kernel cargados
-lsmod
-
-# Ver system calls disponibles
-man syscalls
-
-# Ver procesos en ejecución
-ps aux
-
-# Ver espacio de usuario vs kernel
-strace ls 2>&1 | head -20</code></pre>
-            </div>
-
-            <h4>En Windows Server</h4>
-            <div class="code-block terminal-block">
-                <div class="code-header">PowerShell - Explorando el Sistema</div>
-                <pre><code class="language-powershell"># Ver información del sistema
-Get-ComputerInfo | Select-Object OsName, WindowsVersion
-
-# Ver procesos
-Get-Process | Select-Object -First 10
-
-# Ver servicios
-Get-Service | Where-Object {$_.Status -eq "Running"} | Select-Object -First 10</code></pre>
-            </div>
-
-            <div class="callout info">
-                <p class="callout-title">💡 Tip</p>
-                <p>Estos comandos te permiten ver la estructura interna del SO en acción. Úsalos para completar tu entregable.</p>
-            </div>
-
-            <h3>1.7 Laboratorio Práctico: Explorando el Sistema Operativo (20 min)</h3>
-            
-            <div class="callout info" style="margin-bottom: 1.5rem;">
-                <strong>Objetivo:</strong> Ver en acción los componentes del SO que acabamos de aprender. No te preocupes si no entiendes todo de inmediato.
-            </div>
-
-            <div class="callout success" style="margin: 1.5rem 0;">
-                <strong>Antes de empezar:</strong> Solo necesitas una terminal Linux. Puedes usar tu VM, Webminal, o JSLinux. Todos los comandos son seguros de ejecutar.
-            </div>
-
-            <h4>Ejercicio 1: Conociendo al Kernel (5 min)</h4>
-            <p>Vamos a ver qué kernel está corriendo tu sistema:</p>
-            
-            <div class="code-block terminal-block">
-                <div class="code-header">Terminal - Información del Kernel</div>
-                <pre><code class="language-bash"># Ver información del kernel
-uname -a
-
-# Ver solo la versión
-uname -r
-
-# Ver el tipo de sistema
-uname -m
-
-# ¿Qué ves?
-# Linux = El kernel
-# 5.x.x = La versión
-# x86_64 = Arquitectura de 64 bits</code></pre>
-            </div>
-
-            <div class="callout success" style="margin: 1rem 0;">
-                <strong>¿Qué significa esto?</strong><br>
-                Estos comandos preguntan al kernel "¿quién eres?" y "¿qué versión eres?". Es como revisar la placa de un carro para saber el modelo y año.
-            </div>
-
-            <h4>Ejercicio 2: Ver las System Calls en acción (5 min)</h4>
-            <p>Vamos a espiar qué le pide un programa al kernel cuando corre:</p>
-            
-            <div class="code-block terminal-block">
-                <div class="code-header">Terminal - Rastreando System Calls</div>
-                <pre><code class="language-bash"># Ejecutar strace (espía de system calls) con ls
-# El comando "-c" cuenta cuántas veces se llamó cada función
-strace -c ls /tmp
-
-# Observa la tabla que aparece al final
-# Las columnas son: 
-# - % time = tiempo gastado en esa llamada
-# - seconds = segundos totales
-# - usecs/call = microsegundos por llamada
-# - calls = número de veces que se llamó
-# - syscall = nombre de la función</code></pre>
-            </div>
-
-            <div class="callout info" style="margin: 1rem 0;">
-                <strong>Analogía:</strong> Imagina que <code>ls</code> es un cliente en un restaurante y el kernel es la cocina. <code>strace</code> es como tener un micrófono que graba cada vez que el cliente pide algo al mesero. "Por favor, abra la puerta del refrigerador" (open), "Muéstrame el menú" (read), "Cierre la puerta" (close).
-            </div>
-
-            <h4>Ejercicio 3: Ver los módulos del kernel (5 min)</h4>
-            <p>Linux carga "módulos" (drivers) según necesita. Vamos a verlos:</p>
-            
-            <div class="code-block terminal-block">
-                <div class="code-header">Terminal - Explorando Módulos</div>
-                <pre><code class="language-bash"># Ver módulos cargados (solo los primeros 10 para no saturar)
-lsmod | head -10
-
-# Contar cuántos módulos hay en total
-lsmod | wc -l
-
-# Ver módulos relacionados con red (conexión internet)
-lsmod | grep net | head -5
-
-# Ver módulos de almacenamiento (discos duros)
-lsmod | grep -E "scsi|sata|nvme" | head -5</code></pre>
-            </div>
-
-            <div class="callout success" style="margin: 1rem 0;">
-                <strong>¿Qué son estos módulos?</strong><br>
-                Son como "apps" que el kernel instala para hablar con el hardware. Por ejemplo, un módulo para tu tarjeta de red, otro para tu disco duro, otro para el sonido, etc. Linux tiene muchos módulos porque puede correr en muchos tipos diferentes de computadoras.
-            </div>
-
-            <h4>Ejercicio 4: Comparar comandos Linux vs Windows (5 min)</h4>
-            <p>Si tienes acceso a una computadora Windows (tu máquina host, una tablet, o pregunta a un compañero), prueba esto:</p>
-            
-            <div class="code-block terminal-block">
-                <div class="code-header">Comparativa Sencilla</div>
-                <pre><code class="language-bash"># === EN LINUX ===
-uname -a              # Info del sistema
-ls                    # Listar archivos
-pwd                   # Ver directorio actual
-cat /etc/os-release   # Ver distro Linux
-
-# === EN WINDOWS (PowerShell) ===
-systeminfo            # Info del sistema
-dir                   # Listar archivos
-cd                    # Ver directorio actual
-Get-ComputerInfo | Select OsName  # Ver versión Windows</code></pre>
-            </div>
-
-            <div class="callout warning" style="margin: 1rem 0;">
-                <strong>Observación:</strong> Aunque los comandos son diferentes, hacen lo mismo. Los dos sistemas tienen un kernel, shell, y system calls. La diferencia es cómo están organizados internamente y cómo los comandos se escriben.
-            </div>
-
-            <div class="callout info" style="margin: 1.5rem 0;">
-                <strong>Esta sección es para practicar por tu cuenta.</strong> No es un entregable ni cuenta para la nota. ¡Elige una actividad que te interese y explora!
-            </div>
-
+        <section id="practica">
+            <h2>6. Actividad Práctica: Análisis Forense de Estructura</h2>
             <div class="actividad">
-                <h3>📋 Práctica Adicional (No Evaluativa)</h3>
-                <p><strong>Tiempo sugerido:</strong> 30-60 minutos</p>
-                <p>Puedes usar tu máquina virtual de Ubuntu Server o cualquier terminal Linux disponible.</p>
-                
-                <h4>Elige una opción que te llame la atención:</h4>
-
+                <h3>Laboratorio de Diagnóstico (Insumo E1)</h3>
+                <p><strong>Tarea 1: Rastreo de System Calls (Linux)</strong></p>
                 <ol>
-                    <li><strong>Opción A - Explorar System Calls:</strong>
-                        <ul>
-                            <li>Ejecuta <code>strace -c ls /tmp</code> y observa la salida</li>
-                            <li>¿Cuáles son las 5 operaciones más frecuentes?</li>
-                            <li>Investiga qué hace cada una (puedes usar <code>man openat</code>, etc.)</li>
-                            <li>Bonus: Ejecuta <code>lsmod | head -10</code> y revisa qué módulos tiene tu sistema</li>
-                        </ul>
-                    </li>
-                    <li><strong>Opción B - Dibuja la Arquitectura:</strong>
-                        <ul>
-                            <li>En una hoja de papel (o herramienta digital), dibuja las capas: Hardware → Kernel → Shell → Aplicaciones</li>
-                            <li>Marca con colores dónde está el Modo Usuario y el Modo Kernel</li>
-                            <li>Indica en qué punto ocurren las System Calls</li>
-                            <li>No tiene que ser perfecto, la idea es que visualices el concepto</li>
-                        </ul>
-                    </li>
-                    <li><strong>Opción C - Compara Sistemas:</strong>
-                        <ul>
-                            <li>Si tienes acceso a Windows, compara 3 aspectos con Linux:</li>
-                            <li>¿Cómo se abre una terminal en cada uno?</li>
-                            <li>¿Qué comando muestra información del sistema? (<code>uname -a</code> vs <code>systeminfo</code>)</li>
-                            <li>¿Cómo se listan archivos? (<code>ls</code> vs <code>dir</code>)</li>
-                        </ul>
-                    </li>
+                    <li>Ejecute <code>strace -c ls /etc</code>.</li>
+                    <li>Identifique cuál es la syscall más usada (usualmente <code>openat</code>).</li>
+                    <li>Investigue: ¿Por qué el comando <code>ls</code> hace una llamada <code>openat</code> para listar una carpeta?</li>
                 </ol>
 
-                <div class="callout success">
-                    <strong>Recuerda:</strong> Esto es para tu aprendizaje. No hay nota ni fecha límite. ¡Explora a tu ritmo!
+                <p><strong>Tarea 2: Auditoría de Drivers (Windows)</strong></p>
+                <ol>
+                    <li>Abra PowerShell como Administrador.</li>
+                    <li>Use <code>driverquery /V | Select-Object -First 10</code>.</li>
+                    <li>Identifique un driver con extensión <code>.sys</code> y busque su fabricante.</li>
+                </ol>
+
+                <p><strong>Tarea 3: Mensajes del Kernel (Boot Logs)</strong></p>
+                <ol>
+                    <li>En Linux, ejecute <code>dmesg | head -n 50</code>.</li>
+                    <li>Identifique el momento exacto donde el kernel detectó su CPU y el modelo detectado.</li>
+                </ol>
+
+                <p><strong>Entregable:</strong> Documente en su informe de Fase 1 una captura de <code>strace</code> comentando al menos 2 llamadas al sistema y su función probable.</p>
+            </div>
+
+            <!-- CASOS LABORALES -->
+            <div class="actividad" style="background: #fff7ed; border-left-color: #ea580c; margin-top: 2rem;">
+                <h3>Casos Reales: El Kernel en Producción</h3>
+                <div class="card" style="margin: 1rem 0; border-left: 4px solid #dc2626;">
+                    <h4 style="color: #991b1b;">Caso 1: Servidor que No Bootea</h4>
+                    <p><strong>Escenario:</strong> Un servidor Linux no inicia después de una actualización del kernel. Se queda en "Loading...".</p>
+                    <p><strong>Diagnóstico:</strong></p>
+                    <ol>
+                        <li>Acceder al menú de GRUB y seleccionar kernel anterior</li>
+                        <li>Verificar si el archivo <code>/boot/vmlinuz</code> existe</li>
+                        <li>Revisar <code>dmesg</code> para ver errores de carga</li>
+                    </ol>
                 </div>
+                <div class="card" style="margin: 1rem 0; border-left: 4px solid #059669;">
+                    <h4 style="color: #065f46;">Caso 2: Módulo de Kernel que Causa Kernel Panic</h4>
+                    <p><strong>Escenario:</strong> Después de instalar un driver propietario (NVIDIA), el servidor muestra "Kernel panic - not syncing".</p>
+                    <p><strong>Solución:</strong> Acceder en modo recovery, desinstalar el driver con <code>modprobe -r nvidia</code></p>
+                </div>
+            </div>
+
+            <!-- EJERCICIO ADICIONAL -->
+            <div class="actividad" style="background: #f0fdf4; border-left-color: #16a34a; margin-top: 2rem;">
+                <h3>Ejercicio: Compilación de Kernel (Avanzado)</h3>
+                <p>Investiga: ¿Por qué en producción NUNCA se recompila el kernel? ¿Qué alternativas existen para agregar funcionalidad sin recompilar?</p>
+                <p><strong>Pista:</strong> Busca información sobre "Loadable Kernel Modules" (LKM).</p>
             </div>
         </section>
 
-        <!-- Actividad -->
-        <section id="actividad">
-            <h2>Actividad Práctica: Arquitectura del Sistema</h2>
-
-            <section class="actividad">
-                <h3>Actividad 04: Identificación de Capas</h3>
-                <p><strong>Tipo:</strong> Cierre de Fase 1 (E1)</p>
-                <p><strong>Objetivo:</strong> Diferenciar entre hardware, kernel y shell en tu entorno de VirtualBox.</p>
-                <p><strong>Pasos:</strong></p>
-                <ol>
-                    <li>Ejecuta <code>lscpu</code> para ver las características del hardware gestionado por el SO</li>
-                    <li>Usa <code>uname -r</code> para identificar la versión exacta del kernel</li>
-                    <li>Ejecuta <code>echo $SHELL</code> para ver qué intérprete de comandos estás usando</li>
-                    <li>Usa <code>strace ls</code> para observar las llamadas al sistema (syscalls) que hace el comando ls</li>
-                </ol>
-                <p><strong>Entregable:</strong> Incluir estas capturas en tu entrega final de la Fase 1 (25 de Feb).</p>
-            </section>
-        </section>
-
-        <section id="resumen">
-            <h2>📚 Resumen de la Clase</h2>
-
-            <h3>Conceptos Clave</h3>
-            <ul>
-                <li><strong>Kernel:</strong> El núcleo del SO que gestiona hardware y recursos</li>
-                <li><strong>Shell:</strong> Interfaz de usuario para interactuar con el kernel</li>
-                <li><strong>System Calls:</strong> Puertas de entrada al kernel modo protegido</li>
-                <li><strong>Modo Kernel vs Usuario:</strong> Protección de memoria y operaciones críticas</li>
-                <li><strong>Arquitectura:</strong> Monolítico (Linux), Microkernel (Minix), Híbrido (Windows)</li>
-            </ul>
-
-            <h3>Comandos Prácticos</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Comando</th>
-                        <th>Propósito</th>
-                        <th>Ejemplo</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><code>uname -a</code></td>
-                        <td>Ver info del kernel</td>
-                        <td>Kernel version, architecture</td>
-                    </tr>
-                    <tr>
-                        <td><code>lsmod</code></td>
-                        <td>Listar módulos cargados</td>
-                        <td>Drivers del kernel activos</td>
-                    </tr>
-                    <tr>
-                        <td><code>strace ls</code></td>
-                        <td>Rastrear system calls</td>
-                        <td>Ver qué llama un comando</td>
-                    </tr>
-                    <tr>
-                        <td><code>Get-ComputerInfo</code></td>
-                        <td>Info de sistema Windows</td>
-                        <td>Kernel version, OS</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <h3>Para la Próxima Clase</h3>
-            <div class="callout info">
-                <p><strong>Clase 05:</strong> Procesos en Linux - Gestión y Monitoreo</p>
-                <p>Llevaremos la teoría de procesos a la práctica con <code>ps</code>, <code>top</code>, <code>htop</code>, <code>kill</code> y <code>systemctl</code>.</p>
-            </div>
-        </section>
-
-        <!-- Navigation between classes -->
-        <nav class="class-nav" aria-label="Navegación entre clases">
-            <a href="clase-03.html" class="class-nav-link prev">
-                <span class="class-nav-icon">←</span>
-                <div>
-                    <div class="nav-label">Clase Anterior</div>
-                    <div class="nav-title">Cambio de Contexto</div>
-                    <div class="class-nav-date">📅 11 Feb 2026</div>
-                </div>
-            </a>
-            <a href="clase-05.html" class="class-nav-link next">
-                <div>
-                    <div class="nav-label">Siguiente Clase</div>
-                    <div class="nav-title">Procesos en Linux</div>
-                    <div class="class-nav-date">📅 18 Feb 2026</div>
-                </div>
-                <span class="class-nav-icon">→</span>
-            </a>
+        <nav class="class-nav">
+            <a href="index.html" class="class-nav-link" style="background: #e0e7ff;">🏠 Índice de Clases</a>
+            <a href="clase-03.html" class="class-nav-link">← Clase 03: Gestión de Procesos</a>
+            <a href="clase-05.html" class="class-nav-link" style="text-align: right;">Clase 05: Procesos Linux →</a>
         </nav>
     </div>
 
-    
-    
     <footer>
-        <div class="container">
-            <p>📅 11 de Febrero 2026 | Sesion Miercoles: 8:00-9:00 AM | Teoria: 30 min + Practica: 30 min</p>
-
-            <p style="margin-top: 10px;">
-                <a href="index.html" style="color: #10b981;">Inicio</a> |
-                <a href="cronograma.html" style="color: #10b981;">Cronograma</a> |
-                <a href="evaluaciones.html" style="color: #8b5cf6;">Evaluaciones</a> |
-                <a href="rubricas.html" style="color: #3b82f6;">Rubricas</a>
-            </p>
-        </div>
+        <p>IF0099 - Sistemas Operativos I | Universidad Autónoma Latinoamericana | 2026</p>
     </footer>
 
-
-
-    <a href="#" class="scroll-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); return false;">↑</a>
-
-    <script>
-        const scrollTopBtn = document.querySelector('.scroll-top');
-        window.addEventListener('scroll', () => {
-            if (window.pageYOffset > 300) {
-                scrollTopBtn.classList.add('visible');
-            } else {
-                scrollTopBtn.classList.remove('visible');
-            }
-        });
-
-        document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-            });
-        });
-    </script>
-
-    <!-- Prism.js para syntax highlighting -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            Prism.highlightAll();
-        });
-    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-powershell.min.js"></script>
 </body>
 </html>

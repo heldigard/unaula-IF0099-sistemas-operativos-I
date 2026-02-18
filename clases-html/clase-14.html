@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clase 14: Servidor Web IIS | IF0099 - Sistemas Operativos I</title>
+    <title>Clase 14: Servidor Web IIS | IF0099</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
     <style>
         :root { --primary: #2563eb; --secondary: #1e40af; --accent: #059669; --bg-light: #f8fafc; --bg-code: #1e293b; --text-main: #1e293b; --text-muted: #64748b; --border: #e2e8f0; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -11,451 +12,156 @@
         .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
         header { background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); color: white; padding: 3rem 0; margin-bottom: 2rem; }
         header h1 { font-size: 2.2rem; margin-bottom: 0.5rem; font-weight: 700; }
-        header .subtitle { font-size: 1.1rem; opacity: 0.9; }
         header .meta { margin-top: 1rem; font-size: 0.9rem; opacity: 0.8; }
-        nav { background: white; padding: 1.5rem 0; margin-bottom: 2rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
-        nav h2 { font-size: 1.1rem; color: var(--text-muted); margin-bottom: 1rem; padding: 0 20px; }
-        nav ul { list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.5rem; padding: 0 20px; }
-        nav a { color: var(--primary); text-decoration: none; padding: 0.5rem; display: block; border-radius: 4px; transition: background 0.2s; }
-        nav a:hover { background: var(--bg-light); }
-        section { background: white; padding: 2rem; margin-bottom: 2rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        nav { background: white; padding: 1.5rem 0; margin-bottom: 2rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 100; }
+        nav ul { list-style: none; display: flex; flex-wrap: wrap; gap: 1.5rem; padding: 0 20px; justify-content: center; }
+        nav a { color: var(--primary); text-decoration: none; font-weight: 600; font-size: 0.95rem; }
+        section { background: white; padding: 2.5rem; margin-bottom: 2rem; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
         section h2 { color: var(--primary); font-size: 1.8rem; margin-bottom: 1.5rem; padding-bottom: 0.5rem; border-bottom: 3px solid var(--accent); }
-        section h3 { color: var(--secondary); font-size: 1.4rem; margin: 2rem 0 1rem; }
-        section h4 { color: var(--text-main); font-size: 1.1rem; margin: 1.5rem 0 0.75rem; font-weight: 600; }
-        p { margin-bottom: 1rem; }
-        table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.95rem; }
-        th, td { padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid var(--border); }
-        th { background: var(--bg-light); font-weight: 600; color: var(--secondary); }
-        tr:hover { background: var(--bg-light); }
-        pre { background: var(--bg-code); color: #e2e8f0; padding: 1.5rem; border-radius: 8px; overflow-x: auto; margin: 1.5rem 0; font-size: 0.9rem; line-height: 1.5; }
-        code { font-family: 'Consolas', 'Monaco', 'Courier New', monospace; }
-        p code, li code { background: var(--bg-light); color: var(--primary); padding: 0.2rem 0.4rem; border-radius: 4px; font-size: 0.9em; }
-        pre code { background: none; padding: 0; color: inherit; }
-        ul, ol { margin-left: 1.5rem; margin-bottom: 1rem; }
-        li { margin-bottom: 0.5rem; }
+        h3 { color: var(--secondary); font-size: 1.4rem; margin: 2rem 0 1rem; }
+        pre { background: var(--bg-code); color: #e2e8f0; padding: 1.5rem; border-radius: 8px; overflow-x: auto; margin: 1.5rem 0; font-size: 0.9rem; }
         .callout { padding: 1.5rem; border-radius: 8px; margin: 1.5rem 0; border-left: 4px solid; }
         .callout.info { background: #eff6ff; border-left-color: var(--primary); }
         .callout.warning { background: #fef3c7; border-left-color: #f59e0b; }
-        .callout.success { background: #d1fae5; border-left-color: var(--accent); }
+        .comparison { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 1.5rem; margin: 2rem 0; }
+        .card { background: var(--bg-light); padding: 1.5rem; border-radius: 8px; border: 1px solid var(--border); }
+        table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; }
+        th, td { padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid var(--border); }
+        th { background: var(--bg-light); font-weight: 600; }
+        .actividad { background: #f1f5f9; border-left: 5px solid var(--accent); padding: 2rem; margin: 2rem 0; border-radius: 8px; }
         footer { background: var(--text-main); color: white; padding: 2rem 0; text-align: center; margin-top: 3rem; }
-        footer a { color: var(--accent); text-decoration: none; }
-        /* Navigation between classes */
-        .class-nav { display: flex; justify-content: space-between; align-items: stretch; gap: 1rem; margin: 2rem 0; }
-        .class-nav-link { flex: 1; display: flex; align-items: center; gap: 0.75rem; padding: 1.25rem 1.5rem; background: white; border: 2px solid var(--border); border-radius: 12px; text-decoration: none; color: var(--text-main); transition: all 0.3s ease; }
-        .class-nav-link:hover { border-color: var(--primary); box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15); transform: translateY(-2px); }
-        .class-nav-link.prev { border-left: 4px solid var(--primary); }
-        .class-nav-link.next { border-right: 4px solid var(--accent); text-align: right; margin-left: auto; }
-        .class-nav-link .nav-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); margin-bottom: 0.25rem; }
-        .class-nav-link .nav-title { font-size: 1rem; font-weight: 600; color: var(--primary); }
-        .class-nav-link.next .nav-title { color: var(--accent); }
-        .class-nav-icon { font-size: 1.5rem; line-height: 1; }
-        .class-nav-placeholder { flex: 1; display: flex; align-items: center; justify-content: center; padding: 1.25rem; background: var(--bg-light); border: 2px dashed var(--border); border-radius: 12px; color: var(--text-muted); font-size: 0.9rem; }
-        .two-columns { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 1.5rem 0; }
-        .column-card { background: var(--bg-light); padding: 1.5rem; border-radius: 8px; }
-        .column-card h4 { color: var(--secondary); margin-top: 0; }
-        .actividad { background: var(--bg-light); border-left: 5px solid var(--accent); padding: 1.5rem; margin: 1.5rem 0; border-radius: 4px; }
-        .actividad h3 { color: var(--primary); margin-bottom: 1rem; }
-        .checklist { list-style: none; padding-left: 0; }
-        .checklist li { padding: 0.5rem 0; display: flex; align-items: flex-start; gap: 0.75rem; }
-        .checklist li input[type="checkbox"] { margin-top: 0.25rem; width: 18px; height: 18px; }
-        .ascii-diagram { font-family: 'Consolas', monospace; font-size: 0.85rem; line-height: 1.2; background: var(--bg-light); padding: 1rem; border-radius: 4px; overflow-x: auto; white-space: pre; }
-        @media (max-width: 768px) { .two-columns { grid-template-columns: 1fr; } header h1 { font-size: 1.6rem; } section { padding: 1.5rem; } nav ul { grid-template-columns: 1fr; } }
-
-        .eval-alert {
-            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-            border-left: 4px solid #f59e0b;
-            padding: 1.25rem 1.5rem;
-            border-radius: 8px;
-            margin-bottom: 2rem;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .eval-alert-icon {
-            font-size: 1.75rem;
-            line-height: 1;
-        }
-
-        .eval-alert-content {
-            flex: 1;
-        }
-
-        .eval-alert-title {
-            font-weight: 700;
-            color: #92400e;
-            font-size: 1rem;
-            margin-bottom: 0.25rem;
-        }
-
-        .eval-alert-text {
-            color: #78350f;
-            font-size: 0.9rem;
-        }
-
-        .eval-alert-date {
-            background: #f59e0b;
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 6px;
-            font-weight: 600;
-            font-size: 0.9rem;
-            white-space: nowrap;
-        }
-
-        .class-nav-date {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            margin-top: 0.25rem;
-        }
-
-        .class-nav-link:hover .nav-title {
-            text-decoration: underline;
-        }
+        .eval-alert { background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-left: 4px solid #f59e0b; padding: 1.25rem 1.5rem; border-radius: 8px; margin-bottom: 2rem; display: flex; align-items: center; gap: 1rem; color: inherit; text-decoration: none; }
     </style>
 </head>
 <body>
-    <div class="container">
     <header>
         <div class="container">
             <h1>Clase 14: Servidor Web IIS</h1>
-            <p class="subtitle">IF0099 - Sistemas Operativos I | Servicios de Red | Clase 14</p>
-            <p class="subtitle">UNAULA - Ingeniería Informática - 2026-I</p>
-            <p class="meta">📅 22 de Abril 2026 | Sesion Miercoles: 6:00-8:00 AM | Teoria: 60 min + Practica: 60 min</p>
+            <p class="subtitle">IF0099 - Sistemas Operativos I | Unidad 8 - Servicios de Aplicación</p>
+            <p class="meta">📅 22 de Abril 2026 | Bloque: 6:00 - 8:00 AM | Teoría: 60 min + Práctica: 60 min</p>
         </div>
     </header>
 
-
-        
-        <!-- Quick Navigation Bar -->
-        <div class="quick-nav" style="background: white; padding: 1rem; margin-bottom: 2rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
-            <div style="display: flex; align-items: center; gap: 1rem;">
-                <a href="index.html" style="color: var(--primary); text-decoration: none; font-weight: 500;">Inicio</a>
-                <span style="color: var(--text-muted);">|</span>
-                <span style="color: var(--text-main); font-weight: 600;">Servidor Web IIS</span>
-            </div>
-            <div style="display: flex; align-items: center; gap: 0.5rem;">
-                <a href="cronograma.html" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: #10b981; color: white; text-decoration: none; border-radius: 6px; font-weight: 500;">Cronograma</a>
-                <a href="rubricas.html" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: #3b82f6; color: white; text-decoration: none; border-radius: 6px; font-weight: 500;">Rubricas</a>
-            </div>
-        </div>
-
+    <div class="container">
         <!-- Próxima Evaluación Alert -->
-        <a href="evaluaciones.html#e5" style="text-decoration: none; display: block;">
-            <div class="eval-alert" style="cursor: pointer; transition: transform 0.2s;">
-                <span class="eval-alert-icon">📌</span>
-                <div class="eval-alert-content">
-                    <div class="eval-alert-title">E5: FASE 5 - Integración de Servicios (06 May)</div>
-                    <div class="eval-alert-text">15% - Servidores web funcionando (comprende conceptos fundamentales integrados)</div>
-                </div>
-                <span class="eval-alert-date">📅 06 May</span>
+        <a href="evaluaciones.html#e5" class="eval-alert">
+            <span style="font-size: 1.75rem;">📌</span>
+            <div class="eval-alert-content">
+                <div style="font-weight: 700; color: #92400e;">E5: FASE 5 - Integración de Servicios (06 May)</div>
+                <div style="color: #78350f; font-size: 0.9rem;">15% - Despliegue de aplicaciones web corporativas en infraestructura Windows.</div>
             </div>
+            <span style="background: #f59e0b; color: white; padding: 0.5rem 1rem; border-radius: 6px; font-weight: 600;">📅 06 May</span>
         </a>
 
         <nav>
-            <h2>Contenido de la Clase</h2>
             <ul>
-                <li><a href="#objetivos">Objetivos</a></li>
-                <li><a href="#teoria">Teoría: IIS y Arquitectura</a></li>
-                <li><a href="#instalacion">Instalación de IIS</a></li>
-                <li><a href="#configuracion">Configuración Básica</a></li>
-                <li><a href="#sitio-web">Crear Sitio Web</a></li>
-                <li><a href="#https">HTTPS en IIS</a></li>
-                <li><a href="#comparativa">Apache vs IIS</a></li>
-                <li><a href="#actividad">Actividad Práctica</a></li>
+                <li><a href="#arquitectura">1. Arquitectura de IIS</a></li>
+                <li><a href="#pools">2. Application Pools</a></li>
+                <li><a href="#automatizacion">3. Automatización (PowerShell)</a></li>
+                <li><a href="#comandos">4. Comandos de Diagnóstico</a></li>
+                <li><a href="#practica">5. Laboratorio de Puesta en Marcha</a></li>
             </ul>
         </nav>
 
-        <main>
-            <section id="objetivos">
-                <h2>Objetivos de Aprendizaje</h2>
-                <p><strong>Resultado de Aprendizaje (RA5):</strong> Comprende la funcionalidad de conceptos fundamentales integrados (Alineado con Evaluación E5).</p>
-                <div class="callout success">
-                    <strong>Al finalizar esta clase, podrás:</strong>
-                    <ul>
-                        <li>Comprender la arquitectura de IIS (Internet Information Services)</li>
-                        <li>Instalar IIS en Windows Server usando PowerShell</li>
-                        <li>Configurar sitios web y Application Pools</li>
-                        <li>Implementar HTTPS con certificado self-signed</li>
-                        <li>Comparar IIS con Apache HTTP Server</li>
-                    </ul>
-                </div>
-
-            <div class="callout success">
-                <p class="callout-title">🖥️ Laboratorio Windows</p>
-                <p>En esta sesión configuraremos <strong>IIS</strong> en tu entorno Windows local o en una máquina virtual de <strong>VirtualBox</strong>.</p>
+        <section id="arquitectura">
+            <h2>1. ¿Qué es IIS (Internet Information Services)?</h2>
+            <p>Es el servidor web nativo de Windows Server. Su gran diferencia con otros servidores es que utiliza un driver de kernel dedicado llamado <strong>HTTP.SYS</strong> para manejar las conexiones.</p>
+            
+            <div class="callout info">
+                <h4>El rol de HTTP.SYS (Ring 0)</h4>
+                <p>Este driver reside en el modo privilegiado. Él se encarga de escuchar los puertos 80 y 443, poner las peticiones en cola y entregarlas al proceso de usuario correspondiente. Esto permite que el servidor web sea extremadamente estable.</p>
             </div>
+        </section>
 
-                <div class="callout info">
-                    <p class="callout-title">Glosario de Servicios Microsoft</p>
-                    <ul>
-                        <li><strong>IIS:</strong> Internet Information Services (Servidor Web de Microsoft).</li>
-                        <li><strong>HTTP.SYS:</strong> Driver del kernel de Windows que gestiona el tráfico HTTP.</li>
-                        <li><strong>ASP.NET:</strong> Framework de Microsoft para desarrollo de aplicaciones web.</li>
-                        <li><strong>Application Pool:</strong> Contenedor que aísla procesos de aplicaciones web para mayor seguridad y estabilidad.</li>
-                    </ul>
-                </div>
-            </section>
+        <section id="pools">
+            <h2>2. Application Pools: El muro de contención</h2>
+            <p>En el mundo real, no corremos todos los sitios web en el mismo proceso. IIS usa <strong>Application Pools</strong> para el aislamiento.</p>
+            <ul>
+                <li><strong>Aislamiento de Seguridad</strong>: Cada pool puede correr con un usuario diferente.</li>
+                <li><strong>Aislamiento de Fallos</strong>: Si el proceso del Sitio A crashea, el Sitio B sigue vivo.</li>
+                <li><strong>Reciclado</strong>: El SO puede reiniciar procesos automáticamente si consumen demasiada RAM.</li>
+            </ul>
+        </section>
 
-
-            <section id="teoria">
-                <h2>Teoría: IIS y Arquitectura</h2>
-
-                <h3>¿Qué es IIS?</h3>
-                <p><strong>Internet Information Services (IIS)</strong> es el servidor web de Microsoft para Windows Server. Es una plataforma extensible y modular para hospedar sitios web y servicios.</p>
-
-                <div class="two-columns">
-                    <div class="column-card">
-                        <h4>Características Principales</h4>
-                        <ul>
-                            <li>Servidor web nativo de Windows</li>
-                            <li>Integración con Active Directory</li>
-                            <li>Soporte para ASP.NET, PHP, Python</li>
-                            <li>Interfaz gráfica (IIS Manager)</li>
-                            <li>PowerShell para automatización</li>
-                            <li>FTP, SMTP, WebDAV integrados</li>
-                        </ul>
-                    </div>
-
-                    <div class="column-card">
-                        <h4>Casos de Uso</h4>
-                        <ul>
-                            <li>Aplicaciones ASP.NET Core</li>
-                            <li>Intranets corporativas</li>
-                            <li>Web APIs REST</li>
-                            <li>Hosting de aplicaciones empresariales</li>
-                            <li>Sitios web con integración Windows</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <h3>Arquitectura de IIS</h3>
-                <div class="ascii-diagram">
-<pre>
-┌─────────────────────────────────────────────────────────┐
-│                 ARQUITECTURA DE IIS                      │
-├─────────────────────────────────────────────────────────┤
-│  ┌───────────────────────────────────────────────────┐ │
-│  │              CLIENTE (Navegador)                   │ │
-│  └─────────────────────┬─────────────────────────────┘ │
-│                        ↓ HTTP Request                  │
-│  ┌───────────────────────────────────────────────────┐ │
-│  │            Protocolo HTTP.SYS (Kernel)             │ │
-│  │       - Escucha en puertos 80/443                 │ │
-│  │       - Enrutamiento a Application Pools          │ │
-│  └─────────────────────┬─────────────────────────────┘ │
-│                        ↓                                │
-│  ┌───────────────────────────────────────────────────┐ │
-│  │            WWW Service (W3WP.exe)                  │ │
-│  │       - Worker Process                            │ │
-│  │       - Application Domain                        │ │
-│  └─────────────────────┬─────────────────────────────┘ │
-│                        ↓                                │
-│  ┌───────────────────────────────────────────────────┐ │
-│  │              Application Code                      │ │
-│  │       - ASP.NET, PHP, CGI, Static                 │ │
-│  └───────────────────────────────────────────────────┘ │
-└─────────────────────────────────────────────────────────┘
-</pre>
-                </div>
-
-                <h3>Componentes Clave</h3>
-
-                <h4>1. HTTP.SYS</h4>
-                <ul>
-                    <li>Driver del kernel que escucha solicitudes HTTP</li>
-                    <li>Maneja colas de solicitudes</li>
-                    <li>Procesa respuestas de caché</li>
-                    <li>Proporciona seguridad a nivel de kernel</li>
-                </ul>
-
-                <h4>2. Application Pools</h4>
-                <ul>
-                    <li>Aíslan aplicaciones entre sí</li>
-                    <li>Cada pool tiene su propio worker process (w3wp.exe)</li>
-                    <li>Permiten configuración independiente</li>
-                    <li>Previenen que una aplicación afecte a otras</li>
-                </ul>
-
-                <h4>3. Sitios Web vs Aplicaciones</h4>
-                <table>
-                    <thead>
-                        <tr><th>Concepto</th><th>Descripción</th><th>Analogía</th></tr>
-                    </thead>
-                    <tbody>
-                        <tr><td>Sitio Web</td><td>Contenedor con bindings únicos (IP:puerto)</td><td>Casa</td></tr>
-                        <tr><td>Aplicación</td><td>Sub-contenedor dentro de un sitio</td><td>Habitación</td></tr>
-                        <tr><td>Directorio Virtual</td><td>Puntero a ruta física fuera del sitio</td><td>Ventana</td></tr>
-                    </tbody>
-                </table>
-            </section>
-
-            <section id="instalacion">
-                <h2>Instalación de IIS</h2>
-
-                <div class="callout warning">
-                    <strong>Requisitos previos:</strong>
-                    <ul>
-                        <li>VM con Windows Server 2022</li>
-                        <li>Usuario con privilegios de Administrador</li>
-                        <li>Conexión a Internet</li>
-                    </ul>
-                </div>
-
-                <h3>Instalación con PowerShell (Recomendado)</h3>
-                <pre><code># Instalar IIS con roles básicos
+        <section id="automatizacion">
+            <h2>3. Automatización con PowerShell</h2>
+            <p>Para el proyecto UCS, configuraremos el servidor usando el módulo <code>WebAdministration</code>.</p>
+            <pre><code class="language-powershell"># Instalar el rol completo
 Install-WindowsFeature -name Web-Server -IncludeManagementTools
 
-# Verificar instalación
-Get-WindowsFeature -Name Web-Server</code></pre>
+# Crear el sitio web del proyecto
+New-Website -Name "UCS_Portal" -PhysicalPath "C:\www\ucs" -Port 8080
 
-                <h3>Verificar instalación</h3>
-                <pre><code># Verificar que IIS está corriendo
-Get-Service W3SVC
+# Crear un pool dedicado
+New-WebAppPool -Name "UCS_Pool"
+Set-ItemProperty "IIS:\Sites\UCS_Portal" -name applicationPool -value "UCS_Pool"</code></pre>
+        </section>
 
-# Probar desde el navegador
-# http://localhost (deberías ver "IIS Windows Server" page)</code></pre>
+        <section id="comandos">
+            <h2>4. Comandos de Diagnóstico y Control</h2>
+            
+            <div class="comparison">
+                <div class="column-card">
+                    <h4>Mundo Windows (PowerShell)</h4>
+                    <pre><code class="language-powershell"># Ver sitios activos
+Get-Website
 
-                <div class="callout success">
-                    <strong>Ubicación de archivos:</strong>
-                    <ul>
-                        <li><code>C:\inetpub\wwwroot</code> - Document root por defecto</li>
-                        <li><code>C:\Windows\System32\inetsrv\config</code> - Configuración</li>
-                        <li><code>C:\inetpub\logs\LogFiles</code> - Logs</li>
-                    </ul>
+# Ver estado de los pools
+Get-WebAppPoolState
+
+# Reiniciar IIS completo
+iisreset /restart
+
+# Probar acceso local
+Invoke-WebRequest http://localhost:8080</code></pre>
                 </div>
-            </section>
+                <div class="column-card">
+                    <h4>Consola Clásica (AppCmd)</h4>
+                    <pre><code class="language-bash"># Listar procesos de worker (w3wp.exe)
+appcmd list wp
 
-            <section id="sitio-web">
-                <h2>Crear un Sitio Web</h2>
+# Ver sitios corriendo
+appcmd list site
 
-                <h3>Crear con PowerShell</h3>
-                <pre><code># Crear directorio
-New-Item -Path "C:\inetpub\Site1" -ItemType Directory -Force
+# Reiniciar un sitio específico
+appcmd stop site "UCS_Portal"
+appcmd start site "UCS_Portal"</code></pre>
+                </div>
+            </div>
+        </section>
 
-# Crear archivo HTML
-Set-Content -Path "C:\inetpub\Site1\index.html" -Value @"
-&lt;h1&gt;Bienvenido a Site 1 en IIS&lt;/h1&gt;
-"@
-
-# Crear App Pool
-New-WebAppPool -Name "Site1Pool" -Force
-
-# Crear sitio web
-New-Website -Name "Site1" `
-    -PhysicalPath "C:\inetpub\Site1" `
-    -ApplicationPool "Site1Pool" `
-    -Port 8080 `
-    -Force</code></pre>
-            </section>
-
-            <section id="https">
-                <h2>Configurar HTTPS en IIS</h2>
-
-                <h3>Crear certificado self-signed</h3>
-                <pre><code># Crear certificado
-$cert = New-SelfSignedCertificate `
-    -DnsName "site1.local" `
-    -CertStoreLocation "cert:\LocalMachine\My"</code></pre>
-
-                <h3>Asignar al sitio (IIS Manager)</h3>
+        <section id="practica">
+            <h2>5. Actividad Práctica: Despliegue IIS (Insumo E5)</h2>
+            <div class="actividad">
+                <h3>Laboratorio: El Portal Administrativo UCS</h3>
+                <p><strong>Objetivo:</strong> Montar la infraestructura web en el nodo Windows del proyecto.</p>
+                
+                <p><strong>Pasos a realizar:</strong></p>
                 <ol>
-                    <li>Abrir IIS Manager</li>
-                    <li>Seleccionar Site1</li>
-                    <li>Clic en "Bindings..."</li>
-                    <li>Add → Type: https, Port: 4433</li>
-                    <li>Seleccionar certificado site1.local</li>
+                    <li>Habilite IIS en su VM de Windows Server.</li>
+                    <li>Cree la carpeta raíz: <code>C:\inetpub\wwwroot\ucs_admin</code>.</li>
+                    <li><strong>Seguridad</strong>: Asigne permisos de "Solo Lectura" al usuario local <code>IIS_IUSRS</code> sobre esa carpeta.</li>
+                    <li><strong>Configuración</strong>: Cambie el puerto por defecto a <strong>8080</strong> para evitar conflictos con el nodo Linux.</li>
+                    <li><strong>Firewall</strong>: Abra el puerto 8080 en el Firewall de Windows usando PowerShell:
+                        <pre><code class="language-powershell">New-NetFirewallRule -DisplayName "UCS Web Port" -Direction Inbound -LocalPort 8080 -Protocol TCP -Action Allow</code></pre>
+                    </li>
                 </ol>
-            </section>
 
-            <!-- Actividad -->
-            <section id="actividad">
-                <h2>Actividad Práctica: Despliegue de IIS</h2>
+                <p><strong>Entregable:</strong> Una captura de pantalla de su navegador mostrando el mensaje "UCS Windows Node Active" accediendo por el puerto 8080.</p>
+            </div>
+        </section>
 
-                <div class="actividad">
-                    <h3>Actividad 14: Insumo para Evaluación E5</h3>
-
-                    <p><strong>Objetivo:</strong> Configurar el servidor web IIS en un puerto personalizado.</p>
-
-                    <h4>Pasos Técnicos</h4>
-                    <ol class="checklist">
-                        <li><input type="checkbox"> Instalar IIS vía PowerShell o Server Manager.</li>
-                        <li><input type="checkbox"> Crear una carpeta <code>C:\www\ucs_site</code> y poner un <code>index.html</code>.</li>
-                        <li><input type="checkbox"> En IIS Manager, cambiar el binding del sitio para que escuche en el puerto <strong>8080</strong>.</li>
-                        <li><input type="checkbox"> Abrir el puerto 8080 en el Firewall de Windows para permitir tráfico local.</li>
-                    </ol>
-
-                    <p><strong>Importante:</strong> La evidencia de acceso al sitio por el puerto 8080 es obligatoria para la Fase 5 (E5).</p>
-                </div>
-            </section>
-
-            <section>
-                <h2>Resumen</h2>
-
-                <div class="callout success">
-                    <strong>Próxima clase:</strong> Permisos y Seguridad en Linux
-
-                </div>
-            </section>
-
-            <!-- Videos Recomendados -->
-            <section id="videos">
-                <h2>Videos Recomendados</h2>
-
-                <div class="callout info">
-                    <h3>📹 Video 1: Configurar SERVIDOR WEB con IIS en WINDOWS SERVER 2022</h3>
-                    <p>Duración: ~25 minutos | Nivel: Principiante | Idioma: Español</p>
-                    <p>Instalación y configuración completa de IIS en Windows Server 2022.</p>
-                    <p><a href="https://www.youtube.com/watch?v=FV9GCf1S6N8" target="_blank">📺 Ver en YouTube</a></p>
-                </div>
-
-                <div class="callout info">
-                    <h3>📹 Video 2: Instalar y Configurar IIS - Windows Server Web Server</h3>
-                    <p>Duración: ~20 minutos | Nivel: Intermedio | Idioma: Español</p>
-                    <p>Guía paso a paso para instalar y configurar IIS con PowerShell y GUI.</p>
-                    <p><a href="https://www.youtube.com/watch?v=bvZLRRn5obQ" target="_blank">📺 Ver en YouTube</a></p>
-                </div>
-            </section>
-        </main>
-
-        <!-- Navigation between classes -->
-        <nav class="class-nav" aria-label="Navegación entre clases">
-            <a href="clase-13.html" class="class-nav-link prev">
-                <span class="class-nav-icon">←</span>
-                <div>
-                    <div class="nav-label">Clase Anterior</div>
-                    <div class="nav-title">Implementación de Sistemas de Archivos</div>
-                    <div class="class-nav-date">📅 08 Abr 2026</div>
-                </div>
-            </a>
-            <a href="clase-15.html" class="class-nav-link next">
-                <div>
-                    <div class="nav-label">Siguiente Clase</div>
-                    <div class="nav-title">Permisos y Seguridad en Linux</div>
-                    <div class="class-nav-date">📅 15 Abr 2026</div>
-                </div>
-                <span class="class-nav-icon">→</span>
-            </a>
+        <nav class="class-nav" style="display: flex; justify-content: space-between; gap: 1rem; margin: 2rem 0;">
+            <a href="clase-13.html" style="flex: 1; padding: 1.25rem 1.5rem; background: white; border: 2px solid var(--border); border-radius: 12px; text-decoration: none; color: var(--text-main); transition: all 0.3s;" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border)'">← Clase 13: Implementación de FS</a>
+            <a href="clase-15.html" style="flex: 1; padding: 1.25rem 1.5rem; background: white; border: 2px solid var(--border); border-radius: 12px; text-decoration: none; color: var(--text-main); transition: all 0.3s; text-align: right;" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border)'">Clase 15: Seguridad Linux →</a>
         </nav>
+    </div>
 
-        
-    
-    
     <footer>
-        <div class="container">
-            <p>📅 22 de Abril 2026 | Sesion Miercoles: 6:00-8:00 AM | Teoria: 60 min + Practica: 60 min</p>
-
-            <p style="margin-top: 10px;">
-                <a href="index.html" style="color: #10b981;">Inicio</a> |
-                <a href="cronograma.html" style="color: #10b981;">Cronograma</a> |
-                <a href="evaluaciones.html" style="color: #8b5cf6;">Evaluaciones</a> |
-                <a href="rubricas.html" style="color: #3b82f6;">Rubricas</a>
-            </p>
-        </div>
+        <p>IF0099 - Sistemas Operativos I | Universidad Autónoma Latinoamericana | 2026</p>
     </footer>
 
-
-
-    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-powershell.min.js"></script>
 </body>
 </html>

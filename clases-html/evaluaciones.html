@@ -690,31 +690,31 @@
                         <td class="eval-code">E1</td>
                         <td>Capacidad de diseñar una arquitectura coherente con un caso real.</td>
                         <td>Definir plataforma Linux/Windows, justificarla y modelar servicios.</td>
-                        <td>Diagrama, matriz de servicios y justificación técnica sustentada.</td>
+                        <td>Diagrama de red, tabla de hardware virtual y reporte de <code>uname/systeminfo</code>.</td>
                     </tr>
                     <tr>
                         <td class="eval-code">E2</td>
                         <td>Gestión de procesos/servicios y observabilidad básica.</td>
                         <td>Construir y ejecutar scripts Bash/PowerShell con lectura de métricas.</td>
-                        <td>Scripts funcionales + bitácora de pruebas + demo corta.</td>
+                        <td>Scripts <code>monitor.sh</code>/<code>servicios.ps1</code> + capturas de <code>htop</code> y <strong>Process Explorer</strong>.</td>
                     </tr>
                     <tr>
                         <td class="eval-code">E3</td>
                         <td>Resolución técnica de escenarios de rendimiento y concurrencia.</td>
                         <td>Resolver 5 escenarios prácticos de memoria, E/S, sincronización y FS básico en su VM.</td>
-                        <td>PDF con capturas, comandos ejecutados y análisis técnico de cada escenario.</td>
+                        <td>PDF con análisis técnico basado en <strong>PerfMon</strong>, <code>vmstat</code>, <code>iostat</code> y <strong>Wait Chain</strong>.</td>
                     </tr>
                     <tr>
                         <td class="eval-code">E4</td>
                         <td>Capacidad de asegurar un sistema operativo en operación.</td>
                         <td>Aplicar hardening, permisos y control de acceso en Linux/Windows.</td>
-                        <td>Matriz de riesgos + configuraciones activas + evidencias de auditoría.</td>
+                        <td>Matriz de riesgos + evidencia de <code>setfacl</code> (Linux) y <code>secpol.msc</code> (Windows).</td>
                     </tr>
                     <tr>
                         <td class="eval-code">E5</td>
                         <td>Integración de servicios y operación de plataforma híbrida.</td>
                         <td>Integrar Apache + IIS, FS avanzado (C13) y monitoreo integral.</td>
-                        <td>Servicios accesibles, scripts ejecutables y video técnico de integración.</td>
+                        <td>Servicios web accesibles (puertos 80/8080), RAID/Storage Spaces funcional y script de integración.</td>
                     </tr>
                     <tr>
                         <td class="eval-code">E6</td>
@@ -1114,27 +1114,11 @@ ALERTA: Proceso mysql consumiendo >50% CPU
                         <li>Escribir explicación técnica de qué significa cada estado (1 párrafo cada uno)</li>
                     </ol>
 
-                    <h5 style="color: #1e3a5f; margin: 15px 0 10px 0;">PASO 4: Control de Prioridades (Nice)</h5>
+                    <h5 style="color: #1e3a5f; margin: 15px 0 10px 0;">PASO 4: Control de Prioridades (Laboratorio Híbrido)</h5>
                     <ol class="content-list">
-                        <li>Abrir terminal y ejecutar:
-                            <ul>
-                                <li><code>sleep 300 &</code> (ejecuta en background por 5 min)</li>
-                                <li>Obtener PID: <code>echo $!</code></li>
-                            </ul>
-                        </li>
-                        <li>Cambiar prioridad a 15 (menor prioridad):
-                            <ul>
-                                <li><code>sudo renice 15 -p [PID]</code></li>
-                            </ul>
-                        </li>
-                        <li>Verificar cambio con:
-                            <ul>
-                                <li><code>top -p [PID]</code> o <code>htop</code></li>
-                                <li>Columna NI debe mostrar 15</li>
-                            </ul>
-                        </li>
-                        <li>Capturar pantalla antes y después del cambio</li>
-                        <li>Escribir explicación de cómo afecta el valor nice al scheduling del CPU</li>
+                        <li><strong>En Linux:</strong> Inicie un proceso en background (<code>sleep 300 &</code>) y use <code>sudo renice 15 -p [PID]</code> para bajar su prioridad. Verifique en <code>htop</code> la columna <strong>NI</strong>.</li>
+                        <li><strong>En Windows:</strong> Use PowerShell para iniciar un proceso con prioridad baja: <code>Start-Process notepad.exe -PriorityClass BelowNormal</code>.</li>
+                        <li><strong>Evidencia:</strong> Capturar el cambio de prioridad en el <strong>Task Manager</strong> (Windows) y en <code>htop</code> (Linux).</li>
                     </ol>
 
                     <h5 style="color: #1e3a5f; margin: 15px 0 10px 0;">PASO 5: Documentar Bitácora de Pruebas</h5>
@@ -1285,47 +1269,30 @@ ALERTA: Proceso mysql consumiendo >50% CPU
 
                     <h5 style="color: #1e3a5f; margin: 15px 0 10px 0;">PASO A PASO - CÓMO REALIZAR EL LABORATORIO</h5>
                     <ol class="content-list">
-                        <li><strong>Descargar la guía:</strong> El 18 de Marzo se publica el PDF con los 5 escenarios detallados</li>
-                        <li><strong>Trabajar en su VM:</strong> Ejecute los comandos en su Ubuntu Server del proyecto</li>
-                        <li><strong>Capturar evidencias:</strong> Cada escenario requiere screenshots de comandos ejecutados</li>
-                        <li><strong>Escribir análisis:</strong> Para cada escenario, explique QUÉ hizo, POR QUÉ lo hizo y QUÉ resultado obtuvo</li>
-                        <li><strong>Generar PDF:</strong> Compile todo en un PDF con: Portada, Índice, 5 escenarios (cada uno con: problema, comandos, capturas, análisis), Conclusiones</li>
-                        <li><strong>Entregar:</strong> Subir a la plataforma antes del 25 de Marzo a las 8:00 AM</li>
+                        <li><strong>Descargar la guía:</strong> El 18 de Marzo se publica el PDF con los requerimientos técnicos de los 5 escenarios.</li>
+                        <li><strong>Entorno Híbrido:</strong> Los escenarios 1 y 4 se resuelven en la VM Linux; los escenarios 2 y 5 en el entorno Windows; el 3 es conceptual/aplicado.</li>
+                        <li><strong>Capturar evidencias:</strong> Use herramientas profesionales (Resource Monitor, PerfMon, htop, vmstat). No se aceptan fotos de celular.</li>
+                        <li><strong>Análisis Técnico:</strong> Para cada escenario, explique el diagnóstico basado en los datos obtenidos (ej: "¿Por qué la cola de disco es >2?").</li>
+                        <li><strong>Entregar:</strong> Subir el PDF consolidado antes del 25 de Marzo a las 8:00 AM.</li>
                     </ol>
 
-                    <h5 style="color: #1e3a5f; margin: 15px 0 10px 0;">COMANDOS A DOMINAR</h5>
+                    <h5 style="color: #1e3a5f; margin: 15px 0 10px 0;">HERRAMIENTAS A DOMINAR</h5>
                     <div class="two-columns">
                         <ul class="content-list">
-                            <li><strong>Memoria:</strong>
+                            <li><strong>Entorno Linux:</strong>
                                 <ul>
-                                    <li><code>free -h</code> - Ver uso de memoria</li>
-                                    <li><code>vmstat 1 5</code> - Estadísticas de memoria virtual</li>
-                                    <li><code>swapon --show</code> - Ver configuración swap</li>
-                                    <li><code>top</code> o <code>htop</code> - Procesos en tiempo real</li>
+                                    <li><code>htop / top</code> - Procesos y CPU</li>
+                                    <li><code>free -h</code> y <code>vmstat</code> - Memoria</li>
+                                    <li><code>iostat -xz 1</code> - Latencia de disco</li>
+                                    <li><code>ls -li</code> y <code>stat</code> - Inodos</li>
                                 </ul>
                             </li>
-                            <li><strong>E/S:</strong>
+                            <li><strong>Entorno Windows:</strong>
                                 <ul>
-                                    <li><code>iostat -x 1 5</code> - Estadísticas de E/S</li>
-                                    <li><code>df -h</code> - Uso de disco</li>
-                                    <li><code>du -sh *</code> - Tamaño de directorios</li>
-                                </ul>
-                            </li>
-                        </ul>
-                        <ul class="content-list">
-                            <li><strong>Archivos:</strong>
-                                <ul>
-                                    <li><code>ls -li</code> - Ver inodos</li>
-                                    <li><code>chmod 750 dir/</code> - Permisos</li>
-                                    <li><code>ln</code> vs <code>ln -s</code> - Enlaces</li>
-                                    <li><code>stat archivo</code> - Información completa</li>
-                                </ul>
-                            </li>
-                            <li><strong>Procesos:</strong>
-                                <ul>
-                                    <li><code>ps aux --sort=-%mem</code> - Top por memoria</li>
-                                    <li><code>nice -n 10 comando</code> - Cambiar prioridad</li>
-                                    <li><code>kill -9 PID</code> - Matar proceso</li>
+                                    <li><strong>Resource Monitor</strong> (resmon) - Memoria y Red</li>
+                                    <li><strong>Performance Monitor</strong> (perfmon) - Contadores</li>
+                                    <li><strong>Process Explorer</strong> - Threads y Locks</li>
+                                    <li><strong>Disk Management</strong> - Cuotas y NTFS</li>
                                 </ul>
                             </li>
                         </ul>
@@ -1804,38 +1771,11 @@ sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
                         <li>Verificar acceso: <code>http://localhost:8080</code></li>
                     </ol>
 
-                    <h5 style="color: #1e3a5f; margin: 15px 0 10px 0;">PASO 3: Almacenamiento Persistente (fstab)</h5>
+                    <h5 style="color: #1e3a5f; margin: 15px 0 10px 0;">PASO 3: Almacenamiento Profesional Híbrido</h5>
                     <ol class="content-list">
-                        <li>Agregar segundo disco en VirtualBox:
-                            <ul>
-                                <li>Apagar VM Linux</li>
-                                <li>Configuración → Almacenamiento → Agregar disco duro</li>
-                                <li>Tamaño: 10GB, tipo VDI, dinámico</li>
-                            </ul>
-                        </li>
-                        <li>Identificar disco nuevo:
-                            <pre style="background: #f5f5f5; padding: 10px; border-radius: 4px; font-size: 0.9em;">sudo fdisk -l
-# Buscar algo como /dev/sdb</pre>
-                        </li>
-                        <li>Formatear como EXT4:
-                            <pre style="background: #f5f5f5; padding: 10px; border-radius: 4px; font-size: 0.9em;">sudo mkfs.ext4 /dev/sdb
-sudo mkdir -p /var/www/html/datos</pre>
-                        </li>
-                        <li>Obtener UUID:
-                            <pre style="background: #f5f5f5; padding: 10px; border-radius: 4px; font-size: 0.9em;">sudo blkid /dev/sdb</pre>
-                        </li>
-                        <li>Editar fstab:
-                            <pre style="background: #f5f5f5; padding: 10px; border-radius: 4px; font-size: 0.9em;">sudo nano /etc/fstab
-
-# Agregar línea:
-UUID=[UUID_obtenido] /var/www/html/datos ext4 defaults 0 2</pre>
-                        </li>
-                        <li>Probar montaje:
-                            <pre style="background: #f5f5f5; padding: 10px; border-radius: 4px; font-size: 0.9em;">sudo mount -a
-df -h
-# Debe mostrar /dev/sdb montado en /var/www/html/datos</pre>
-                        </li>
-                        <li>Reiniciar VM y verificar que se monta automáticamente</li>
+                        <li><strong>En Linux (Persistencia):</strong> Agregue un disco de 5GB, formatéelo y asegure el montaje automático editando <code>/etc/fstab</code> usando el <strong>UUID</strong> del dispositivo.</li>
+                        <li><strong>En Windows (Redundancia):</strong> Use <strong>Espacios de Almacenamiento</strong> para crear una unidad lógica de 5GB con resistencia tipo "Reflejo" (Mirror) usando dos discos virtuales pequeños.</li>
+                        <li><strong>Evidencia:</strong> Captura de <code>df -h</code> en Linux tras reinicio y captura del "Grupo de Almacenamiento" en Windows.</li>
                     </ol>
 
                     <h5 style="color: #1e3a5f; margin: 15px 0 10px 0;">PASO 4: Dashboard de Integración</h5>

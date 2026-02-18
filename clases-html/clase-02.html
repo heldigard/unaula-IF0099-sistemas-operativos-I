@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clase 02: CLI - Bash & PowerShell Essentials | IF0099 - Sistemas Operativos I</title>
+    <title>Clase 02: CLI - Bash & PowerShell Essentials | IF0099</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
     <style>
         :root { --primary: #2563eb; --secondary: #1e40af; --accent: #059669; --bg-light: #f8fafc; --bg-code: #1e293b; --text-main: #1e293b; --text-muted: #64748b; --border: #e2e8f0; }
@@ -12,133 +12,211 @@
         .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
         header { background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); color: white; padding: 3rem 0; margin-bottom: 2rem; }
         header h1 { font-size: 2.2rem; margin-bottom: 0.5rem; font-weight: 700; }
-        header .subtitle { font-size: 1.1rem; opacity: 0.9; }
         header .meta { margin-top: 1rem; font-size: 0.9rem; opacity: 0.8; }
-        nav { background: white; padding: 1.5rem 0; margin-bottom: 2rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
-        nav ul { list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.5rem; padding: 0 20px; }
-        nav a { color: var(--primary); text-decoration: none; padding: 0.5rem; display: block; border-radius: 4px; transition: background 0.2s; }
-        nav a:hover { background: var(--bg-light); }
-        section { background: white; padding: 2rem; margin-bottom: 2rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        nav { background: white; padding: 1.5rem 0; margin-bottom: 2rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 100; }
+        nav ul { list-style: none; display: flex; flex-wrap: wrap; gap: 1.5rem; padding: 0 20px; justify-content: center; }
+        nav a { color: var(--primary); text-decoration: none; font-weight: 600; font-size: 0.95rem; }
+        section { background: white; padding: 2.5rem; margin-bottom: 2rem; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
         section h2 { color: var(--primary); font-size: 1.8rem; margin-bottom: 1.5rem; padding-bottom: 0.5rem; border-bottom: 3px solid var(--accent); }
         h3 { color: var(--secondary); font-size: 1.4rem; margin: 2rem 0 1rem; }
-        pre { background: var(--bg-code); color: #e2e8f0; padding: 1.5rem; border-radius: 8px; overflow-x: auto; margin: 1.5rem 0; font-size: 0.9rem; line-height: 1.5; }
-        code { font-family: 'Consolas', monospace; }
+        pre { background: var(--bg-code); color: #e2e8f0; padding: 1.5rem; border-radius: 8px; overflow-x: auto; margin: 1.5rem 0; font-size: 0.9rem; }
         .callout { padding: 1.5rem; border-radius: 8px; margin: 1.5rem 0; border-left: 4px solid; }
         .callout.info { background: #eff6ff; border-left-color: var(--primary); }
         .callout.success { background: #d1fae5; border-left-color: var(--accent); }
+        .comparison { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 1.5rem; margin: 2rem 0; }
+        .card { background: var(--bg-light); padding: 1.5rem; border-radius: 8px; border: 1px solid var(--border); }
         table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; }
         th, td { padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid var(--border); }
-        th { background: var(--bg-light); font-weight: 600; color: var(--secondary); }
-        .actividad { background: var(--bg-light); border-left: 5px solid var(--accent); padding: 1.5rem; margin: 1.5rem 0; border-radius: 4px; }
+        th { background: var(--bg-light); font-weight: 600; }
+        .actividad { background: #f1f5f9; border-left: 5px solid var(--accent); padding: 2rem; margin: 2rem 0; border-radius: 8px; }
         footer { background: var(--text-main); color: white; padding: 2rem 0; text-align: center; margin-top: 3rem; }
-        footer a { color: var(--accent); text-decoration: none; }
-        .eval-alert { background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-left: 4px solid #f59e0b; padding: 1.25rem 1.5rem; border-radius: 8px; margin-bottom: 2rem; display: flex; align-items: center; gap: 1rem; }
-        .eval-alert-title { font-weight: 700; color: #92400e; }
-        .class-nav { display: flex; justify-content: space-between; gap: 1rem; margin: 2rem 0; }
-        .class-nav-link { flex: 1; padding: 1.25rem 1.5rem; background: white; border: 2px solid var(--border); border-radius: 12px; text-decoration: none; color: var(--text-main); }
+        .eval-alert { background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-left: 4px solid #f59e0b; padding: 1.25rem 1.5rem; border-radius: 8px; margin-bottom: 2rem; display: flex; align-items: center; gap: 1rem; color: inherit; text-decoration: none; }
+        .class-nav { display: flex; justify-content: space-between; align-items: stretch; gap: 1rem; margin: 2rem 0; }
+        .class-nav-link { flex: 1; display: flex; align-items: center; gap: 0.75rem; padding: 1.25rem 1.5rem; background: white; border: 2px solid var(--border); border-radius: 12px; text-decoration: none; color: var(--text-main); transition: all 0.3s ease; }
+        .class-nav-link:hover { border-color: var(--primary); box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15); transform: translateY(-2px); }
+        .class-nav-link.next { border-right: 4px solid var(--accent); text-align: right; margin-left: auto; }
+        .class-nav-link .nav-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); margin-bottom: 0.25rem; }
+        .class-nav-link .nav-title { font-size: 1rem; font-weight: 600; color: var(--primary); }
     </style>
 </head>
 <body>
     <header>
         <div class="container">
             <h1>Clase 02: CLI - Bash & PowerShell Essentials</h1>
-            <p class="subtitle">IF0099 - Sistemas Operativos I | Unidad 1 - Terminales Profesionales</p>
-            <p class="meta">📅 04 de Febrero 2026 | Sesion Miercoles: 8:00-9:00 AM | Teoria: 30 min + Practica: 30 min</p>
+            <p class="subtitle">IF0099 - Sistemas Operativos I | Unidad 1 - El Poder de la Terminal</p>
+            <p class="meta">📅 04 de Febrero 2026 | Bloque: 8:00 - 9:00 AM | Teoría: 30 min + Práctica: 30 min</p>
         </div>
     </header>
 
     <div class="container">
         <!-- Próxima Evaluación Alert -->
-        <a href="evaluaciones.html#e1" style="text-decoration: none; display: block;">
-            <div class="eval-alert">
-                <span style="font-size: 1.75rem;">📌</span>
-                <div class="eval-alert-content">
-                    <div class="eval-alert-title">E1: FASE 1 - Fundamentos y Arquitectura (25 Feb)</div>
-                    <div style="color: #78350f; font-size: 0.9rem;">15% - Configuración inicial y dominio de comandos base.</div>
-                </div>
-                <span style="background: #f59e0b; color: white; padding: 0.5rem 1rem; border-radius: 6px; font-weight: 600;">📅 25 Feb</span>
+        <a href="evaluaciones.html#e1" class="eval-alert">
+            <span style="font-size: 1.75rem;">📌</span>
+            <div class="eval-alert-content">
+                <div style="font-weight: 700; color: #92400e;">E1: FASE 1 - Fundamentos y Arquitectura (25 Feb)</div>
+                <div style="color: #78350f; font-size: 0.9rem;">15% - Dominio de terminales para la configuración base del proyecto UCS.</div>
             </div>
+            <span style="background: #f59e0b; color: white; padding: 0.5rem 1rem; border-radius: 6px; font-weight: 600;">📅 25 Feb</span>
         </a>
 
         <nav>
-            <h2>Contenido</h2>
             <ul>
-                <li><a href="#bash">1. Bash (Linux)</a></li>
-                <li><a href="#powershell">2. PowerShell (Windows)</a></li>
-                <li><a href="#comparativa">3. Tabla Comparativa Profesional</a></li>
-                <li><a href="#practica">4. Actividad Híbrida</a></li>
+                <li><a href="#bash">1. Linux Bash (Texto)</a></li>
+                <li><a href="#powershell">2. Windows PowerShell (Objetos)</a></li>
+                <li><a href="#tuberias">3. Tuberías y Redirección</a></li>
+                <li><a href="#usuarios">4. Gestión de Identidades</a></li>
+                <li><a href="#practica">5. Laboratorio Híbrido</a></li>
             </ul>
         </nav>
 
         <section id="bash">
-            <h2>1. El Estándar de la Nube: Bash</h2>
-            <p>Bash (Bourne Again SHell) es la interfaz por defecto en casi todas las distribuciones Linux.</p>
+            <h2>1. El Estándar de la Nube: Linux Bash</h2>
+            <p>Bash (Bourne Again SHell) es la interfaz estándar para administrar servidores Linux. Su filosofía central es: <strong>"Todo es un flujo de texto"</strong>.</p>
+            
             <div class="callout info">
-                <strong>Filosofía Linux:</strong> Todo es un archivo. Bash manipula texto para configurar el sistema.
+                <h4>Filosofía Linux: Todo es un archivo</h4>
+                <p>Configurar un servidor en Linux es simplemente editar un archivo de texto en <code>/etc</code>. Por eso, dominar comandos de manipulación de texto como <code>cat</code>, <code>grep</code>, <code>nano</code> y <code>sed</code> es vital para un administrador cloud.</p>
             </div>
+
             <pre><code class="language-bash"># Navegación y Archivos
-ls -la          # Listar con detalles y ocultos
-cd /etc         # Ir a configuración
-pwd             # ¿Dónde estoy?
-mkdir portal    # Crear carpeta
-touch index.html # Crear archivo vacío</code></pre>
+ls -la          # Listar con permisos y ocultos
+cd /var/log     # Ir a la carpeta de logs
+pwd             # ¿Dónde estoy parado?
+mkdir -p ucs/v1 # Crear carpetas anidadas
+touch info.txt  # Crear archivo vacío
+cat /etc/os-release # Ver info de la distribución</code></pre>
         </section>
 
         <section id="powershell">
-            <h2>2. El Estándar Corporativo: PowerShell</h2>
-            <p>PowerShell no solo procesa texto, procesa <strong>Objetos .NET</strong>. Es fundamental para administrar Windows Server y Azure.</p>
+            <h2>2. El Estándar Corporativo: Windows PowerShell</h2>
+            <p>A diferencia de Bash, PowerShell no procesa texto; procesa <strong>Objetos .NET</strong>. Es el motor detrás de la administración de Windows Server y Azure.</p>
+            
             <div class="callout success">
-                <strong>Ventaja:</strong> Al devolver objetos, puedes acceder a propiedades (como el tamaño de un archivo) sin usar filtros de texto complejos como <code>awk</code> o <code>sed</code>.
+                <h4>La Ventaja del Objeto</h4>
+                <p>Si le pides a Bash el tamaño de un archivo, te devuelve una cadena de caracteres "10MB". Si le pides a PowerShell un archivo, te devuelve un objeto con la propiedad <code>.Length</code> que puedes usar para cálculos matemáticos sin necesidad de recortar texto.</p>
             </div>
-            <pre><code class="language-powershell"># Navegación y Archivos (PowerShell)
+
+            <pre><code class="language-powershell"># Comandos equivalentes (Verbos-Sustantivos)
 Get-ChildItem               # Equivalente a ls
-Set-Location C:\Windows     # Equivalente a cd
-Get-Location                # Equivalente a pwd
-New-Item -Type Directory -Name "Web" # Crear carpeta
-New-Item -Type File -Name "data.txt" # Crear archivo</code></pre>
+Set-Location C:\            # Equivalente a cd
+Get-Process | Select -First 5 # Ver procesos como objetos
+$disco = Get-PSDrive C      # Guardar objeto disco en una variable</code></pre>
         </section>
 
-        <section id="comparativa">
-            <h2>3. Tabla Comparativa para el Mundo Laboral</h2>
+        <section id="tuberias">
+            <h2>3. Tuberías (Piping) y Redirección</h2>
+            <p>El símbolo <code>|</code> permite enviar la salida de un comando como entrada del siguiente. Es la base de la automatización compleja.</p>
+            
+            <div class="comparison">
+                <div class="card">
+                    <h4>Filtrado en Linux (Texto)</h4>
+                    <pre><code class="language-bash"># Buscar errores en logs ignorando mayúsculas
+cat /var/log/syslog | grep "error" -i
+
+# Contar líneas de un archivo
+cat index.html | wc -l</code></pre>
+                </div>
+                <div class="card">
+                    <h4>Filtrado en Windows (Objetos)</h4>
+                    <pre><code class="language-powershell"># Buscar servicios detenidos
+Get-Service | Where-Object {$_.Status -eq "Stopped"}
+
+# Ver solo nombre y estado de servicios
+Get-Service | Select-Object Name, Status</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <section id="usuarios">
+            <h2>4. Gestión de Identidades vía CLI</h2>
+            <p>Un servidor profesional debe ser multiusuario y seguro desde la terminal.</p>
+            
             <table>
                 <thead>
-                    <tr>
-                        <th>Acción</th>
-                        <th>Bash (Linux)</th>
-                        <th>PowerShell (Windows)</th>
-                    </tr>
+                    <tr><th>Acción Administrativa</th><th>Comando Linux (Bash)</th><th>Comando Windows (PS)</th></tr>
                 </thead>
                 <tbody>
-                    <tr><td>Listar procesos</td><td><code>ps aux</code></td><td><code>Get-Process</code></td></tr>
-                    <tr><td>Ver IP</td><td><code>ip addr</code></td><td><code>Get-NetIPAddress</code></td></tr>
-                    <tr><td>Ver uso disco</td><td><code>df -h</code></td><td><code>Get-PSDrive C</code></td></tr>
-                    <tr><td>Ver logs</td><td><code>journalctl -xe</code></td><td><code>Get-EventLog -LogName System</code></td></tr>
-                    <tr><td>Detener proceso</td><td><code>kill [PID]</code></td><td><code>Stop-Process -Id [PID]</code></td></tr>
+                    <tr><td>Crear Usuario</td><td><code>sudo useradd -m ucs_user</code></td><td><code>New-LocalUser -Name "ucs_user"</code></td></tr>
+                    <tr><td>Cambiar Clave</td><td><code>sudo passwd ucs_user</code></td><td><code>Set-LocalUser -Name "ucs_user" -Password...</code></td></tr>
+                    <tr><td>Crear Grupo</td><td><code>sudo groupadd admins</code></td><td><code>New-LocalGroup -Name "admins"</code></td></tr>
+                    <tr><td>Meter a Grupo</td><td><code>sudo usermod -aG admins user</code></td><td><code>Add-LocalGroupMember -Group "admins" -Member "user"</code></td></tr>
                 </tbody>
             </table>
         </section>
 
         <section id="practica">
-            <h2>4. Actividad Práctica Híbrida</h2>
+            <h2>5. Laboratorio Híbrido: Dominio de la CLI (Insumo E1)</h2>
             <div class="actividad">
-                <h3>Reto de Comandos Cruzados</h3>
-                <p><strong>Tarea Linux:</strong> En su VM Ubuntu, cree un script llamado <code>init.sh</code> que cree una carpeta <code>/var/www/ucs</code>, le asigne permisos 755 y cree un archivo <code>index.html</code>.</p>
-                <p><strong>Tarea Windows:</strong> En su Windows host (o VM), abra PowerShell como Administrador y ejecute: <code>Get-Service | Where-Object {$_.Status -eq "Running"} | Select-Object -First 5</code>. Documente qué servicios encontró.</p>
-                <p><strong>Entregable:</strong> Capture ambas pantallas demostrando que entiende cómo realizar la misma tarea de inspección en ambos mundos.</p>
+                <h3>Actividad: Reto de Administración Cruzada</h3>
+                <p><strong>Objetivo:</strong> Realizar tareas administrativas idénticas en ambos ecosistemas para el proyecto UCS.</p>
+                
+                <p><strong>Tarea 1: Inventario de Red</strong></p>
+                <ul>
+                    <li><strong>Linux</strong>: Ejecute <code>ip addr</code>. Identifique su dirección IP privada y la interfaz de red (ej: eth0).</li>
+                    <li><strong>Windows</strong>: Ejecute <code>Get-NetIPAddress -AddressFamily IPv4</code> en PowerShell.</li>
+                </ul>
+
+                <p><strong>Tarea 2: Automatización de Archivos</strong></p>
+                <ul>
+                    <li><strong>Linux</strong>: Cree un script <code>setup.sh</code> que cree la carpeta <code>/tmp/ucs_data</code> y dentro un archivo <code>nota.txt</code> con su nombre.</li>
+                    <li><strong>Windows</strong>: Haga lo mismo en <code>C:\Temp\ucs_data</code> usando <code>New-Item</code> en un script <code>.ps1</code>.</li>
+                </ul>
+
+                <p><strong>Tarea 3: El Poder de la Ayuda</strong></p>
+                <ul>
+                    <li>Linux: Use <code>man top</code> para saber cómo ordenar procesos por memoria (tecla M).</li>
+                    <li>Windows: Use <code>Get-Help Get-Service -Examples</code> para ver cómo filtrar servicios por nombre.</li>
+                </ul>
+
+                <p><strong>Entregable:</strong> Una tabla comparativa en su informe de Fase 1 con los comandos usados para ver IPs, crear carpetas y gestionar usuarios en ambos mundos, incluyendo capturas de éxito.</p>
+            </div>
+
+            <!-- CASOS LABORALES -->
+            <div class="actividad" style="background: #fff7ed; border-left-color: #ea580c; margin-top: 2rem;">
+                <h3>Casos Reales: CLI en el Trabajo Diario</h3>
+                <p>La terminal es la herramienta principal de todo administrador de sistemas. Estos son escenarios reales:</p>
+
+                <div class="card" style="margin: 1rem 0; border-left: 4px solid #059669;">
+                    <h4 style="color: #065f46;">Caso 1: Servidor que No Responde por SSH</h4>
+                    <p><strong>Escenario:</strong> Intentar conectarte a un servidor por SSH y no responde.</p>
+                    <p><strong>Diagnóstico:</strong> <code>systemctl status sshd</code>, <code>netstat -tulpn | grep :22</code></p>
+                </div>
+
+                <div class="card" style="margin: 1rem 0; border-left: 4px solid #dc2626;">
+                    <h4 style="color: #991b1b;">Caso 2: Disco Lleno en Producción</h4>
+                    <p><strong>Escenario:</strong> Servidor muestra "No space left on device".</p>
+                    <p><strong>Diagnóstico:</strong> <code>df -h</code>, <code>du -sh /* | sort -rh | head -10</code></p>
+                </div>
+
+                <div class="card" style="margin: 1rem 0; border-left: 4px solid #2563eb;">
+                    <h4 style="color: #1e40af;">Caso 3: Buscar Config en 50 Servidores</h4>
+                    <p><strong>Solución:</strong> <code>grep -r "database" /etc/</code> o con Ansible</p>
+                </div>
+            </div>
+
+            <!-- EJERCICIO ADICIONAL -->
+            <div class="actividad" style="background: #f0fdf4; border-left-color: #16a34a; margin-top: 2rem;">
+                <h3>Ejercicio: Script de Automatización Completo</h3>
+                <p><strong>Crea <code>setup_webserver.sh</code></strong> que: actualice el sistema, instale Apache/PHP/MySQL, cree usuario webadmin, configure el firewall, cree directorio /var/www/html/miapp, y genere un log.</p>
+                <p><strong>Entregable:</strong> Script completo + captura de Apache funcionando.</p>
             </div>
         </section>
 
         <nav class="class-nav">
-            <a href="clase-01.html" class="class-nav-link">← Clase 01: Intro SO</a>
-            <a href="clase-03.html" class="class-nav-link" style="text-align: right;">Clase 03: Cambio de Contexto →</a>
+            <a href="index.html" class="class-nav-link" style="background: #e0e7ff;">🏠 Índice de Clases</a>
+            <a href="clase-01.html" class="class-nav-link">← Clase 01: El Rol del SO</a>
+            <a href="clase-03.html" class="class-nav-link" style="text-align: right;">Clase 03: Gestión de Procesos →</a>
         </nav>
     </div>
 
     <footer>
         <div class="container">
-            <p>IF0099 - Sistemas Operativos I | UNAULA 2026</p>
-            <p><a href="index.html">Inicio</a> | <a href="cronograma.html">Cronograma</a></p>
+            <p>IF0099 - Sistemas Operativos I | Universidad Autónoma Latinoamericana | 2026</p>
         </div>
     </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-powershell.min.js"></script>
 </body>
 </html>

@@ -3,1152 +3,260 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clase 01: ¿Qué es un Sistema Operativo? | IF0099 - Sistemas Operativos I</title>
-
-    <!-- Prism.js CSS para syntax highlighting -->
+    <title>Clase 01: El Rol del Sistema Operativo | IF0099</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
-
     <style>
-        :root {
-            --primary: #2563eb;
-            --secondary: #1e40af;
-            --accent: #059669;
-            --bg-light: #f8fafc;
-            --bg-code: #1e293b;
-            --text-main: #1e293b;
-            --text-muted: #64748b;
-            --border: #e2e8f0;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            line-height: 1.7;
-            color: var(--text-main);
-            background: var(--bg-light);
-            font-size: 16px;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        /* Header */
-        header {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            color: white;
-            padding: 3rem 0;
-            margin-bottom: 2rem;
-        }
-
-        header h1 {
-            font-size: 2.2rem;
-            margin-bottom: 0.5rem;
-            font-weight: 700;
-        }
-
-        header .subtitle {
-            font-size: 1.1rem;
-            opacity: 0.9;
-        }
-
-        header .meta {
-            margin-top: 1rem;
-            font-size: 0.9rem;
-            opacity: 0.8;
-        }
-
-        /* Navigation */
-        nav {
-            background: white;
-            padding: 1.5rem 0;
-            margin-bottom: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-
-        nav h2 {
-            font-size: 1.1rem;
-            color: var(--text-muted);
-            margin-bottom: 1rem;
-            padding: 0 20px;
-        }
-
-        nav ul {
-            list-style: none;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 0.5rem;
-            padding: 0 20px;
-        }
-
-        nav a {
-            color: var(--primary);
-            text-decoration: none;
-            padding: 0.5rem;
-            display: block;
-            border-radius: 4px;
-            transition: background 0.2s;
-        }
-
-        nav a:hover {
-            background: var(--bg-light);
-        }
-
-        /* Sections */
-        section {
-            background: white;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-
-        section h2 {
-            color: var(--primary);
-            font-size: 1.8rem;
-            margin-bottom: 1.5rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 3px solid var(--accent);
-        }
-
-        section h3 {
-            color: var(--secondary);
-            font-size: 1.4rem;
-            margin: 2rem 0 1rem;
-        }
-
-        section h4 {
-            color: var(--text-main);
-            font-size: 1.1rem;
-            margin: 1.5rem 0 0.75rem;
-            font-weight: 600;
-        }
-
-        p {
-            margin-bottom: 1rem;
-        }
-
-        /* Tables */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 1.5rem 0;
-            font-size: 0.95rem;
-        }
-
-        th, td {
-            padding: 0.75rem 1rem;
-            text-align: left;
-            border-bottom: 1px solid var(--border);
-        }
-
-        th {
-            background: var(--bg-light);
-            font-weight: 600;
-            color: var(--secondary);
-        }
-
-        tr:hover {
-            background: var(--bg-light);
-        }
-
-        /* Code blocks */
-        pre {
-            background: var(--bg-code);
-            color: #e2e8f0;
-            padding: 1.5rem;
-            border-radius: 8px;
-            overflow-x: auto;
-            margin: 1.5rem 0;
-            font-size: 0.9rem;
-            line-height: 1.5;
-        }
-
-        code {
-            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
-        }
-
-        p code, li code, td code {
-            background: var(--bg-light);
-            color: var(--primary);
-            padding: 0.2rem 0.4rem;
-            border-radius: 4px;
-            font-size: 0.9em;
-        }
-
-        pre code {
-            background: none;
-            padding: 0;
-            color: inherit;
-        }
-
-        /* Lists */
-        ul, ol {
-            margin-left: 1.5rem;
-            margin-bottom: 1rem;
-        }
-
-        li {
-            margin-bottom: 0.5rem;
-        }
-
-        /* Callout boxes */
-        .callout {
-            padding: 1.5rem;
-            border-radius: 8px;
-            margin: 1.5rem 0;
-            border-left: 4px solid;
-        }
-
-        .callout.info {
-            background: #eff6ff;
-            border-left-color: var(--primary);
-        }
-
-        .callout.warning {
-            background: #fef3c7;
-            border-left-color: #f59e0b;
-        }
-
-        .callout.success {
-            background: #d1fae5;
-            border-left-color: var(--accent);
-        }
-
-        .callout-title {
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-
-        /* Details */
-        details {
-            background: var(--bg-light);
-            padding: 1rem;
-            border-radius: 8px;
-            margin: 1rem 0;
-        }
-
-        summary {
-            cursor: pointer;
-            font-weight: 600;
-            color: var(--primary);
-        }
-
-        summary:hover {
-            text-decoration: underline;
-        }
-
-        details[open] summary {
-            margin-bottom: 1rem;
-        }
-
-        /* Footer */
-        footer {
-            background: var(--text-main);
-            color: white;
-            padding: 2rem 0;
-            text-align: center;
-            margin-top: 3rem;
-        }
-
-        footer a {
-            color: var(--accent);
-            text-decoration: none;
-        }
-
-        /* Navigation between classes */
-        .class-nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: stretch;
-            gap: 1rem;
-            margin: 2rem 0;
-        }
-
-        .class-nav-link {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            padding: 1.25rem 1.5rem;
-            background: white;
-            border: 2px solid var(--border);
-            border-radius: 12px;
-            text-decoration: none;
-            color: var(--text-main);
-            transition: all 0.3s ease;
-        }
-
-        .class-nav-link:hover {
-            border-color: var(--primary);
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
-            transform: translateY(-2px);
-        }
-
-        .class-nav-link.prev {
-            border-left: 4px solid var(--primary);
-        }
-
-        .class-nav-link.next {
-            border-right: 4px solid var(--accent);
-            text-align: right;
-            margin-left: auto;
-        }
-
-        .class-nav-link .nav-label {
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: var(--text-muted);
-            margin-bottom: 0.25rem;
-        }
-
-        .class-nav-link .nav-title {
-            font-size: 1rem;
-            font-weight: 600;
-            color: var(--primary);
-        }
-
-        .class-nav-link.next .nav-title {
-            color: var(--accent);
-        }
-
-        .class-nav-icon {
-            font-size: 1.5rem;
-            line-height: 1;
-        }
-
-        .class-nav-placeholder {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 1.25rem;
-            background: var(--bg-light);
-            border: 2px dashed var(--border);
-            border-radius: 12px;
-            color: var(--text-muted);
-            font-size: 0.9rem;
-        }
-
-        .class-nav-date {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            margin-top: 0.25rem;
-        }
-
-        .class-nav-link:hover .nav-title {
-            text-decoration: underline;
-        }
-
-        /* Quick navigation bar */
-        .quick-nav {
-            background: white;
-            padding: 1rem;
-            margin-bottom: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-
-        .quick-nav-left {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .quick-nav-right {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .breadcrumb-link {
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 500;
-        }
-
-        .breadcrumb-link:hover {
-            text-decoration: underline;
-        }
-
-        .separator {
-            color: var(--text-muted);
-        }
-
-        .current-page {
-            color: var(--text-main);
-            font-weight: 600;
-        }
-
-        .home-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.5rem 1rem;
-            background: var(--primary);
-            color: white;
-            text-decoration: none;
-            border-radius: 6px;
-            font-weight: 500;
-            transition: background 0.2s;
-        }
-
-        .home-link:hover {
-            background: var(--secondary);
-        }
-
-        /* Evaluation alert */
-        .eval-alert {
-            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-            border-left: 4px solid #f59e0b;
-            padding: 1.25rem 1.5rem;
-            border-radius: 8px;
-            margin-bottom: 2rem;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .eval-alert-icon {
-            font-size: 1.75rem;
-            line-height: 1;
-        }
-
-        .eval-alert-content {
-            flex: 1;
-        }
-
-        .eval-alert-title {
-            font-weight: 700;
-            color: #92400e;
-            font-size: 1rem;
-            margin-bottom: 0.25rem;
-        }
-
-        .eval-alert-text {
-            color: #78350f;
-            font-size: 0.9rem;
-        }
-
-        .eval-alert-date {
-            background: #f59e0b;
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 6px;
-            font-weight: 600;
-            font-size: 0.9rem;
-            white-space: nowrap;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            header h1 {
-                font-size: 1.6rem;
-            }
-
-            section {
-                padding: 1.5rem;
-            }
-
-            nav ul {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* Difficulty badges */
-        .difficulty {
-            display: inline-block;
-            padding: 0.25rem 0.75rem;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 600;
-        }
-
-        .difficulty.easy { background: #d1fae5; color: #065f46; }
-        .difficulty.medium { background: #fef3c7; color: #92400e; }
-        .difficulty.hard { background: #fee2e2; color: #991b1b; }
-
-        /* Actividad box */
-        .actividad {
-            background: var(--bg-light);
-            border-left: 5px solid var(--accent);
-            padding: 1.5rem;
-            margin: 1.5rem 0;
-            border-radius: 4px;
-        }
-
-        .actividad h3 {
-            color: var(--primary);
-            margin-bottom: 1rem;
-        }
-
-        .actividad p {
-            margin-bottom: 0.75rem;
-        }
-
-        .actividad strong {
-            color: var(--secondary);
-        }
-
-        /* Rubrica table */
-        .rubrica th {
-            background: var(--primary);
-            color: white;
-        }
-
-        .rubrica tr:hover {
-            background: transparent;
-        }
-
-        /* Checklist */
-        .checklist {
-            list-style: none;
-            padding-left: 0;
-        }
-
-        .checklist li {
-            padding: 0.5rem 0;
-            display: flex;
-            align-items: flex-start;
-            gap: 0.75rem;
-        }
-
-        .checklist li input[type="checkbox"] {
-            margin-top: 0.25rem;
-            width: 18px;
-            height: 18px;
-        }
-
-        /* Code blocks with syntax highlighting */
-        pre {
-            background: #1e1e1e !important;
-            border-radius: 8px;
-            padding: 1.5rem;
-            margin: 1.5rem 0;
-            overflow-x: auto;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        pre code {
-            font-family: 'Fira Code', 'Consolas', 'Monaco', 'Courier New', monospace;
-            font-size: 0.9rem;
-            line-height: 1.6;
-            color: #d4d4d4;
-        }
-
-        /* Inline code */
-        code:not(pre code) {
-            background: #e2e8f0;
-            color: #c026d3;
-            padding: 0.2rem 0.5rem;
-            border-radius: 4px;
-            font-family: 'Fira Code', 'Consolas', 'Monaco', monospace;
-            font-size: 0.9em;
-        }
-
-        /* Code block header with filename/language */
-        .code-header {
-            background: #2d2d2d;
-            color: #9cdcfe;
-            padding: 0.5rem 1rem;
-            border-radius: 8px 8px 0 0;
-            font-family: 'Fira Code', monospace;
-            font-size: 0.85rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .code-header::before {
-            content: "●●●";
-            color: #ff5f56;
-            letter-spacing: 2px;
-        }
-
-        .code-block {
-            border-radius: 8px;
-            overflow: hidden;
-            margin: 1.5rem 0;
-        }
-
-        .code-block pre {
-            margin: 0;
-            border-radius: 0;
-        }
-
-        /* Terminal specific styling */
-        .terminal-block pre {
-            background: #0c0c0c !important;
-            border: 1px solid #333;
-        }
-
-        .terminal-block .code-header {
-            background: #1a1a1a;
-            color: #22c55e;
-        }
-
-        .terminal-block .code-header::before {
-            content: "$";
-            color: #22c55e;
-        }
+        :root { --primary: #2563eb; --secondary: #1e40af; --accent: #059669; --bg-light: #f8fafc; --bg-code: #1e293b; --text-main: #1e293b; --text-muted: #64748b; --border: #e2e8f0; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.7; color: var(--text-main); background: var(--bg-light); font-size: 16px; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        header { background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); color: white; padding: 3rem 0; margin-bottom: 2rem; }
+        header h1 { font-size: 2.2rem; margin-bottom: 0.5rem; font-weight: 700; }
+        header .meta { margin-top: 1rem; font-size: 0.9rem; opacity: 0.8; }
+        nav { background: white; padding: 1.5rem 0; margin-bottom: 2rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 100; }
+        nav ul { list-style: none; display: flex; flex-wrap: wrap; gap: 1.5rem; padding: 0 20px; justify-content: center; }
+        nav a { color: var(--primary); text-decoration: none; font-weight: 600; font-size: 0.95rem; }
+        section { background: white; padding: 2.5rem; margin-bottom: 2rem; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        section h2 { color: var(--primary); font-size: 1.8rem; margin-bottom: 1.5rem; padding-bottom: 0.5rem; border-bottom: 3px solid var(--accent); }
+        h3 { color: var(--secondary); font-size: 1.4rem; margin: 2rem 0 1rem; }
+        pre { background: var(--bg-code); color: #e2e8f0; padding: 1.5rem; border-radius: 8px; overflow-x: auto; margin: 1.5rem 0; font-size: 0.9rem; }
+        .callout { padding: 1.5rem; border-radius: 8px; margin: 1.5rem 0; border-left: 4px solid; }
+        .callout.info { background: #eff6ff; border-left-color: var(--primary); }
+        .callout.warning { background: #fef3c7; border-left-color: #f59e0b; }
+        .callout.success { background: #d1fae5; border-left-color: var(--accent); }
+        .comparison { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 1.5rem; margin: 2rem 0; }
+        .card { background: var(--bg-light); padding: 1.5rem; border-radius: 8px; border: 1px solid var(--border); }
+        table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; }
+        th, td { padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid var(--border); }
+        th { background: var(--bg-light); font-weight: 600; }
+        .actividad { background: #f1f5f9; border-left: 5px solid var(--accent); padding: 2rem; margin: 2rem 0; border-radius: 8px; }
+        .ascii-diagram { font-family: monospace; background: #1e293b; color: #94a3b8; padding: 1.5rem; border-radius: 8px; white-space: pre; overflow-x: auto; font-size: 0.85rem; line-height: 1.2; margin: 1.5rem 0; border: 1px solid #334155; }
+        footer { background: var(--text-main); color: white; padding: 2rem 0; text-align: center; margin-top: 3rem; }
+        .eval-alert { background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-left: 4px solid #f59e0b; padding: 1.25rem 1.5rem; border-radius: 8px; margin-bottom: 2rem; display: flex; align-items: center; gap: 1rem; color: inherit; text-decoration: none; }
+        .class-nav { display: flex; justify-content: space-between; align-items: stretch; gap: 1rem; margin: 2rem 0; }
+        .class-nav-link { flex: 1; display: flex; align-items: center; gap: 0.75rem; padding: 1.25rem 1.5rem; background: white; border: 2px solid var(--border); border-radius: 12px; text-decoration: none; color: var(--text-main); transition: all 0.3s ease; }
+        .class-nav-link:hover { border-color: var(--primary); box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15); transform: translateY(-2px); }
+        .class-nav-link.next { border-right: 4px solid var(--accent); text-align: right; margin-left: auto; }
+        .class-nav-link .nav-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); margin-bottom: 0.25rem; }
+        .class-nav-link .nav-title { font-size: 1rem; font-weight: 600; color: var(--primary); }
     </style>
 </head>
 <body>
     <header>
         <div class="container">
-            <h1>Clase 01: ¿Qué es un Sistema Operativo?</h1>
-            <p class="subtitle">IF0099 - Sistemas Operativos I | Unidad 1 - Introducción</p>
-            <p class="meta">📅 04 de Febrero 2026 | Sesion Miercoles: 6:00-8:00 AM | Teoria: 60 min + Practica: 60 min</p>
+            <h1>Clase 01: El Rol del Sistema Operativo</h1>
+            <p class="subtitle">IF0099 - Sistemas Operativos I | Unidad 1 - Fundamentos Profesionales</p>
+            <p class="meta">📅 04 de Febrero 2026 | Bloque: 6:00 - 8:00 AM | Teoría: 60 min + Práctica: 60 min</p>
         </div>
     </header>
 
     <div class="container">
-        <!-- Quick Navigation Bar -->
-        <div class="quick-nav">
-            <div class="quick-nav-left">
-                <a href="index.html" class="breadcrumb-link">Inicio</a>
-                <span class="separator">›</span>
-                <span class="current-page">Clase 01</span>
-            </div>
-            <div class="quick-nav-right">
-                <a href="cronograma.html" class="home-link" style="background: #10b981;">📅 Cronograma</a>
-                <a href="rubricas.html" class="home-link" style="background: #3b82f6;">📋 Rúbricas</a>
-            </div>
-        </div>
-
         <!-- Próxima Evaluación Alert -->
-        <a href="evaluaciones.html#e1" style="text-decoration: none; display: block;">
-            <div class="eval-alert" style="cursor: pointer; transition: transform 0.2s;">
-                <span class="eval-alert-icon">📌</span>
-                <div class="eval-alert-content">
-                    <div class="eval-alert-title">E1: FASE 1 - Fundamentos y Arquitectura (25 Feb)</div>
-                    <div class="eval-alert-text">15% - Configuración inicial del proyecto (identifica estructura y tipos de SO)</div>
-                </div>
-                <span class="eval-alert-date">📅 25 Feb</span>
+        <a href="evaluaciones.html#e1" class="eval-alert">
+            <span style="font-size: 1.75rem;">📌</span>
+            <div class="eval-alert-content">
+                <div style="font-weight: 700; color: #92400e;">E1: FASE 1 - Fundamentos y Arquitectura (25 Feb)</div>
+                <div style="color: #78350f; font-size: 0.9rem;">15% - Configuración inicial del proyecto UCS e identificación de estructuras de SO.</div>
             </div>
+            <span style="background: #f59e0b; color: white; padding: 0.5rem 1rem; border-radius: 6px; font-weight: 600;">📅 25 Feb</span>
         </a>
 
-        <!-- Navigation -->
         <nav>
-            <h2>Contenido de la Clase</h2>
             <ul>
-                <li><a href="#objetivos">Objetivos de Aprendizaje</a></li>
-                <li><a href="#que-es-so">1. ¿Qué es un Sistema Operativo?</a></li>
-                <li><a href="#funciones">2. Funciones Principales</a></li>
-                <li><a href="#entorno-trabajo">3. Configuración del Entorno (PRÁCTICA)</a></li>
-                <li><a href="#actividad">4. Actividad Práctica</a></li>
+                <li><a href="#definicion">1. Definición</a></li>
+                <li><a href="#arquitectura">2. Capas del Sistema</a></li>
+                <li><a href="#kernel">3. El Corazón: El Kernel</a></li>
+                <li><a href="#hibrido">4. El Proyecto UCS</a></li>
+                <li><a href="#comandos">5. Comandos de Auditoría</a></li>
+                <li><a href="#practica">6. Laboratorio Inicial</a></li>
             </ul>
         </nav>
 
-        <!-- Objetivos -->
-        <section id="objetivos">
-            <h2>Objetivos de Aprendizaje</h2>
-            <p><strong>Resultado de Aprendizaje (RA1):</strong> Identifica la estructura y los tipos de los sistemas operativos (Alineado con Evaluación E1).</p>
-            <p>Al finalizar esta clase, serás capaz de:</p>
-            <ul>
-                <li><strong>Definir</strong> qué es un Sistema Operativo y su rol en la arquitectura de un computador</li>
-                <li><strong>Identificar</strong> las cuatro funciones críticas de gestión de un SO</li>
-                <li><strong>Configurar</strong> un entorno de máquina virtual con VirtualBox</li>
-                <li><strong>Crear</strong> y acceder a un servidor <strong>Ubuntu 22.04 LTS</strong> en la nube</li>
-                <li><strong>Preparar</strong> un entorno de respaldo local con VirtualBox</li>
-            </ul>
-        </section>
-
-        <!-- Sección 3: Configuración del Entorno -->
-        <section id="entorno-trabajo">
-            <h2>3. Configuración del Entorno de Trabajo</h2>
-            <p>Para este curso, utilizaremos infraestrucura real en la nube para simular entornos profesionales.</p>
-
-            <h3>3.1 VirtualBox (Opción Principal - Garantizada)</h3>
-            <div class="callout success">
-                <p><strong>Esta es la opción recomendada y garantizada para todos los estudiantes.</strong> Funciona sin depender de convenios institucionales.</p>
-                <ol>
-                    <li>Descarga e instala <strong>VirtualBox</strong> desde <a href="https://www.virtualbox.org/" target="_blank">virtualbox.org</a>.</li>
-                    <li>Descarga la ISO de <strong>Ubuntu Server 22.04 LTS</strong> desde <a href="https://ubuntu.com/download/server" target="_blank">ubuntu.com</a>.</li>
-                    <li>Crea una nueva VM con al menos <strong>2GB de RAM</strong> y <strong>20GB de disco</strong>.</li>
-                    <li>Configura red en modo <strong>NAT</strong> o <strong>Bridge</strong> según tus necesidades.</li>
-                </ol>
-            </div>
-
-            <h3>3.2 Alternativas Online (Para casos de emergencia)</h3>
-            <div class="callout info">
-                <p class="callout-title">Sin necesidad de instalación</p>
-                <p>Si no puedes instalar VirtualBox temporalmente, estas opciones te permiten practicar comandos básicos desde el navegador:</p>
-                <ul>
-                    <li><strong>Webminal:</strong> Terminal Linux real. Requiere registro gratuito en <a href="https://www.webminal.org" target="_blank">webminal.org</a>.</li>
-                    <li><strong>JSLinux:</strong> Emulador instantáneo sin registro en <a href="https://bellard.org/jslinux/" target="_blank">bellard.org/jslinux</a>.</li>
-                </ul>
-                <p><strong>Nota:</strong> Estas terminales tienen limitaciones (sin acceso root, sesiones temporales). Para el curso completo se requiere VirtualBox.</p>
-            </div>
-
-            <div class="code-block terminal-block">
-                <div class="code-header">Comandos Iniciales post-instalación</div>
-                <pre><code class="language-bash"># 1. Actualizar el sistema (¡Fundamental!)
-sudo apt update && sudo apt upgrade -y
-
-# 2. Verificar versión instalada
-lsb_release -a
-
-# 3. Ver espacio en disco
-df -h</code></pre>
-            </div>
-        </section>
-
-        <!-- Sección 4: Actividad Práctica -->
-        <section id="actividad">
-            <h2>4. Actividad Práctica: Despliegue de Servidor</h2>
-
-            <div class="info-box" style="margin-bottom: 1.5rem;">
-                <h3>📋 Guía de Laboratorio</h3>
-                <p>Consulta el <strong><a href="recursos-alternativos.html">Manual de Recursos</a></strong> para ver el paso a paso detallado de instalación de VirtualBox.</p>
-            </div>
-
-            <section class="actividad">
-                <h3>Actividad 01: Tu primer servidor Linux</h3>
-                <p><strong>Tipo:</strong> Práctica para Evaluación E1</p>
-                <p><strong>Objetivo:</strong> Instalar y configurar un servidor Ubuntu 22.04 LTS usando VirtualBox.</p>
-                <p><strong>Entregable:</strong> Documento PDF con captura del comando <code>uname -a</code> ejecutado en tu servidor VirtualBox.</p>
-                <p><strong>Nota:</strong> VirtualBox es la única opción garantizada y requerida para el curso. Las terminales online son solo para práctica de comandos básicos.</p>
-            </section>
-
-            <h3>Rúbrica de Evaluación (Base para E1)</h3>
-            <table class="rubrica">
-                <thead>
-                    <tr>
-                        <th>Criterio</th>
-                        <th>Excelente</th>
-                        <th>Insuficiente</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Conectividad</strong></td>
-                        <td>Logra acceso vía SSH al servidor.</td>
-                        <td>No logra conectar al servidor.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Configuración</strong></td>
-                        <td>Sistema actualizado y documentado.</td>
-                        <td>Sistema sin actualizar.</td>
-                    </tr>
-                </tbody>
-            </table>
-        </section>
-
-        <!-- Sección 1: ¿Qué es un SO? -->
-        <section id="que-es-so">
+        <section id="definicion">
             <h2>1. ¿Qué es un Sistema Operativo?</h2>
-
-            <h3>Definición Simple</h3>
-            <p>Un <strong>Sistema Operativo (SO)</strong> es el software que gestiona el hardware de tu computadora y provee servicios para los programas. Sin él, tu computadora sería un conjunto de componentes inútiles.</p>
-
-            <div class="callout info">
-                <p class="callout-title">Glosario de Abreviaciones</p>
-                <ul>
-                    <li><strong>SO:</strong> Sistema Operativo.</li>
-                    <li><strong>RAM (Random Access Memory):</strong> Memoria de acceso aleatorio, donde se guardan los datos que se están usando en el momento.</li>
-                    <li><strong>CPU (Central Processing Unit):</strong> Unidad Central de Procesamiento, el "cerebro" que ejecuta las instrucciones.</li>
-                    <li><strong>I/O o E/S (Entrada/Salida):</strong> Comunicación entre el SO y el hardware externo (teclado, disco, red).</li>
-                    <li><strong>VM (Virtual Machine):</strong> Máquina Virtual, un software que simula una computadora real dentro de otra.</li>
-                    <li><strong>CLI (Command Line Interface):</strong> Interfaz de Línea de Comandos, interacción con el SO mediante comandos de texto.</li>
-                    <li><strong>GUI (Graphical User Interface):</strong> Interfaz Gráfica de Usuario, interacción con el SO mediante ventanas y menús visuales.</li>
-                    <li><strong>API (Application Programming Interface):</strong> Interfaz de Programación de Aplicaciones, conjunto de funciones que permiten a programas interactuar con el SO.</li>
-                </ul>
-            </div>
-
-            <div class="callout info">
-                <p class="callout-title">Definición Clave</p>
-                <p><strong>Sistema Operativo = Software que gestiona hardware + provee servicios a programas</strong></p>
-            </div>
-
-            <h3>¿Por qué es necesario?</h3>
-            <p>Imagina que tu computadora es una fábrica:</p>
-            <ul>
-                <li><strong>Hardware</strong> = Máquinas, edificios, herramientas</li>
-                <li><strong>Programas</strong> = Trabajadores que producen cosas</li>
-                <li><strong>Sistema Operativo</strong> = El gerente que organiza todo</li>
-            </ul>
-
-            <p>Sin el gerente (SO), los trabajadores (programas) pelearían por las máquinas (hardware), causando caos y colapsos.</p>
-
-            <h3>Ejemplos de Sistemas Operativos Profesionales</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>SO</th>
-                        <th>Kernel</th>
-                        <th>Filosofía</th>
-                        <th>Uso Principal</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Windows 11/Server</strong></td>
-                        <td>Hybrid Kernel (NT)</td>
-                        <td>Cerrado, orientado a GUI y compatibilidad</td>
-                        <td>Corporativo, Directorio Activo, Gaming</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Linux (Ubuntu/RHEL)</strong></td>
-                        <td>Monolithic Kernel</td>
-                        <td>Open Source, "Todo es un archivo"</td>
-                        <td>Servidores Web, Nube, Supercomputación</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <div class="code-block terminal-block">
-                <div class="code-header">Identificación del SO (Vida Real)</div>
-                <pre><code class="language-bash"># En Linux:
-uname -a
-
-# En Windows (PowerShell):
-systeminfo | findstr /B /C:"OS Name" /C:"OS Version"</code></pre>
-            </div>
-        </section>
-
-        <!-- Sección 2: Funciones Principales -->
-        <section id="funciones">
-            <h2>2. Funciones Principales del Sistema Operativo</h2>
-
-            <p>El SO realiza cuatro funciones fundamentales:</p>
-
-            <table>
-                <thead>
-                    <tr>
-                        <th>Función</th>
-                        <th>Descripción</th>
-                        <th>Ejemplo</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Gestión de Procesos</strong></td>
-                        <td>Administra qué programas se ejecutan y cuándo</td>
-                        <td>Permite que Chrome, Word y Spotify corran al mismo tiempo</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Gestión de Memoria</strong></td>
-                        <td>Controla el uso de la RAM</td>
-                        <td>Asigna memoria a programas y la libera cuando terminan</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Gestión de Archivos</strong></td>
-                        <td>Organiza cómo se guardan y recuperan los datos</td>
-                        <td>Carpetas, archivos, permisos de lectura/escritura</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Gestión de Entrada/Salida</strong></td>
-                        <td>Controla dispositivos como teclado, mouse, disco</td>
-                        <td>Lee lo que escribes, guarda archivos, muestra en pantalla</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <div class="callout success">
-                <p class="callout-title">Analogía Simple</p>
-                <p><strong>Procesos</strong> = Clientes en un restaurante | <strong>Memoria</strong> = Mesas disponibles | <strong>Archivos</strong> = Pedidos en cocina | <strong>E/S</strong> = Camareros tomando pedidos</p>
-            </div>
-
-            <h3>🛠️ Ejercicio Práctico: Identificando Funciones del SO (10 min)</h3>
-            <div class="actividad">
-                <h4>Instrucciones</h4>
-                <p>Lee cada escenario y determina <strong>qué función del SO está actuando</strong>:</p>
-                
-                <table style="margin-top: 1rem;">
-                    <thead>
-                        <tr>
-                            <th># Escenario</th>
-                            <th>Tu Respuesta</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>1. Abres Spotify y Chrome al mismo tiempo. Ambos funcionan sin problemas.</td>
-                            <td>□ Gestión de Procesos<br>□ Gestión de Memoria<br>□ Gestión de Archivos<br>□ Gestión de E/S</td>
-                        </tr>
-                        <tr>
-                            <td>2. Guardas un documento de Word en tu carpeta "Documentos".</td>
-                            <td>□ Gestión de Procesos<br>□ Gestión de Memoria<br>□ Gestión de Archivos<br>□ Gestión de E/S</td>
-                        </tr>
-                        <tr>
-                            <td>3. Tu juego cierra Chrome automáticamente para liberar RAM.</td>
-                            <td>□ Gestión de Procesos<br>□ Gestión de Memoria<br>□ Gestión de Archivos<br>□ Gestión de E/S</td>
-                        </tr>
-                        <tr>
-                            <td>4. Conectas un USB y el sistema lo reconoce inmediatamente.</td>
-                            <td>□ Gestión de Procesos<br>□ Gestión de Memoria<br>□ Gestión de Archivos<br>□ Gestión de E/S</td>
-                        </tr>
-                        <tr>
-                            <td>5. Formateas tu disco duro y creas nuevas particiones.</td>
-                            <td>□ Gestión de Procesos<br>□ Gestión de Memoria<br>□ Gestión de Archivos<br>□ Gestión de E/S</td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <details style="margin-top: 1.5rem; background: #f0f9ff; padding: 1rem; border-radius: 8px;">
-                    <summary style="cursor: pointer; color: var(--primary); font-weight: 600;">📋 Ver Respuestas</summary>
-                    <ol style="margin-top: 1rem;">
-                        <li><strong>Gestión de Procesos</strong> - El SO administra múltiples programas ejecutándose simultáneamente.</li>
-                        <li><strong>Gestión de Archivos</strong> - Organiza y almacena datos en el sistema de archivos.</li>
-                        <li><strong>Gestión de Memoria</strong> - Libera RAM asignando y desasignando espacio a procesos.</li>
-                        <li><strong>Gestión de E/S</strong> - Controla dispositivos de entrada/salida como USB.</li>
-                        <li><strong>Gestión de Archivos</strong> - Organiza el almacenamiento físico en el disco.</li>
-                    </ol>
-                </details>
-            </div>
-
-            <div class="info-box" style="margin-top: 2rem;">
-                <h4>📺 Recurso Visual Recomendado</h4>
-                <p>Si quieres una explicación visual y sencilla de qué es un SO y cómo actúa como cerebro de la computadora, te recomendamos este video:</p>
-                <div style="text-align: center; margin-top: 1rem;">
-                    <a href="https://www.youtube.com/watch?v=NBOdGiWAjis" target="_blank" style="display: inline-block; padding: 10px 20px; background: #ef4444; color: white; text-decoration: none; border-radius: 5px; font-weight: bold;">
-                        ▶️ Ver Video: ¿Qué es un Sistema Operativo?
-                    </a>
+            <p>Es el software maestro que gestiona el hardware y actúa como intermediario entre el usuario y la máquina. Un SO profesional tiene dos responsabilidades fundamentales:</p>
+            
+            <div class="comparison">
+                <div class="card">
+                    <h4>Gestor de Recursos (System View)</h4>
+                    <p>Es el "gerente" del computador. Decide qué proceso usa la CPU, cuánta RAM recibe una app y quién puede escribir en el disco. Su meta es la <strong>Eficiencia</strong>.</p>
+                </div>
+                <div class="card">
+                    <h4>Máquina Extendida (User View)</h4>
+                    <p>Es una "capa de confort". Oculta la complejidad física (voltajes, sectores, interrupciones) tras una interfaz limpia (GUI/CLI). Su meta es la <strong>Abstracción</strong>.</p>
                 </div>
             </div>
         </section>
 
-        <!-- Sección 3: Laboratorio Práctico -->
-        <section id="virtualbox-ubuntu">
-            <h2>3. Laboratorio Práctico: Tu Primer Servidor Linux</h2>
-            <p><strong>TIEMPO ESTIMADO: 60 minutos</strong></p>
-
-            <div class="callout info">
-                <p class="callout-title">📖 Guía Detallada en Lab 00</p>
-                <p>La instalación completa de VirtualBox y Ubuntu Server está en el <a href="../laboratorios-html/lab-00-introduccion-simuladores.html"><strong>Laboratorio 0: VirtualBox + Ubuntu Server</strong></a>.</p>
-                <p>En clase realizaremos una instalación guiada rápida.</p>
-            </div>
-
-            <h3>3.1 ¿Qué necesitas?</h3>
-            <ul>
-                <li><strong>VirtualBox</strong> instalado (descargar antes de clase)</li>
-                <li><strong>ISO de Ubuntu Server 22.04 LTS</strong> (~3 GB)</li>
-                <li><strong>25 GB de espacio libre</strong> en disco</li>
-                <li><strong>4 GB de RAM</strong> mínimo (8 GB recomendado)</li>
-            </ul>
-
-            <h3>3.2 Resumen Rápido de Instalación</h3>
-            <div class="code-block terminal-block">
-                <div class="code-header">Configuración Rápida de VM</div>
-                <pre><code class="language-bash"># 1. Crear VM en VirtualBox
-Nombre: Ubuntu-Server-SO01
-Tipo: Linux / Ubuntu (64-bit)
-RAM: 2048 MB
-Disco: 20 GB (VDI, dinámico)
-
-# 2. Configurar
-CPU: 2 núcleos
-Red: Adaptador Puente
-ISO: Montar ISO de Ubuntu Server
-
-# 3. Instalar Ubuntu Server
-Usuario: estudiante
-Hostname: ubuntu-server-so01
-Seleccionar: Install OpenSSH server</code></pre>
-            </div>
-
-            <h3>3.3 Primeros Comandos</h3>
-            <p>Una vez instalado, practica estos comandos básicos:</p>
+        <section id="arquitectura">
+            <h2>2. Ubicación en la Arquitectura Computacional</h2>
+            <p>El SO no es un programa cualquiera; es el cimiento sobre el que corre todo lo demás.</p>
             
-            <div class="code-block terminal-block">
-                <div class="code-header">Comandos Esenciales</div>
-                <pre><code class="language-bash"># Actualizar el sistema
-sudo apt update && sudo apt upgrade -y
-
-# Ver información del sistema
-uname -a
-lsb_release -a
-
-# Ver recursos
-free -h
-df -h
-
-# Crear snapshot en VirtualBox (IMPORTANTE)
-# VM → Snapshots → Take Snapshot → "Instalación Limpia"</code></pre>
-            </div>
+            <div class="ascii-diagram">
+    [ NIVEL 4 ]  Usuarios Finales (Tú, Clientes UCS)
+    [ NIVEL 3 ]  Aplicaciones (Navegador, VS Code, SQL Server)
+    [ NIVEL 2 ]  Middleware / Librerías (Win32, POSIX, .NET)
+    [ NIVEL 1 ]  SISTEMA OPERATIVO (Kernel - Ring 0)
+    [ NIVEL 0 ]  HARDWARE (CPU, RAM, Discos, NIC)</div>
 
             <div class="callout warning">
-                <p class="callout-title">⚠️ Importante: Crear Snapshot</p>
-                <p>Siempre crea un snapshot después de la instalación. Esto te permite volver al estado inicial si algo sale mal.</p>
+                <h4>Privilegio de Ejecución</h4>
+                <p>El SO corre en el nivel de privilegio más alto del procesador (Ring 0). Si una aplicación intentara tocar el hardware directamente sin pedir permiso al SO, el procesador generaría una excepción y mataría la aplicación para proteger el equipo.</p>
             </div>
         </section>
 
-        <!-- Sección 4: Actividad Práctica -->
-        <section id="actividad">
-            <h2>4. Actividad Práctica</h2>
-
-            <div class="info-box" style="margin-bottom: 1.5rem;">
-                <h3>📋 Laboratorio Complementario</h3>
-                <p>Para una guía paso a paso detallada de la instalación de VirtualBox y Ubuntu Server, consulta el <strong><a href="../laboratorios-html/lab-00-introduccion-simuladores.html" target="_blank">Laboratorio 0: VirtualBox + Ubuntu Server</a></strong>.</p>
-            </div>
-
-            <section class="actividad">
-                <h3>Actividad 01: Instalación de Ubuntu Server en VirtualBox</h3>
-                <p><strong>Tipo:</strong> Práctica obligatoria</p>
-                <p><strong>Tiempo estimado:</strong> 60 minutos</p>
-                <p><strong>Entregable:</strong> Evidencias de instalación + VM funcionando</p>
-                <p><strong>Fecha de entrega:</strong> Próxima clase</p>
-            </section>
-
-            <h3>Objetivo</h3>
-            <p>Instalar VirtualBox y crear una máquina virtual con Ubuntu Server 22.04 LTS completamente funcional.</p>
-
-            <h3>Requisitos</h3>
-            <ul class="checklist">
-                <li><input type="checkbox"> VirtualBox instalado en tu computadora</li>
-                <li><input type="checkbox"> ISO de Ubuntu Server 22.04 LTS descargado</li>
-                <li><input type="checkbox"> Mínimo 20 GB de espacio libre en disco</li>
-                <li><input type="checkbox"> Mínimo 4 GB de RAM (8 GB recomendado)</li>
-            </ul>
-
-            <h3>Instrucciones</h3>
-            <ol>
-                <li>Sigue los pasos de la sección 3.2 para crear tu máquina virtual</li>
-                <li>Instala Ubuntu Server con las configuraciones indicadas</li>
-                <li>Inicia sesión y ejecuta los comandos básicos</li>
-                <li>Crea un snapshot llamado "Instalación limpia"</li>
-                <li>Toma capturas de pantalla de cada paso importante</li>
-            </ol>
-
-            <h3>Entregables</h3>
+        <section id="kernel">
+            <h2>3. El Corazón del Sistema: El Kernel</h2>
+            <p>El Kernel (Núcleo) es la parte del SO que reside permanentemente en la memoria RAM principal.</p>
+            
             <table>
                 <thead>
-                    <tr>
-                        <th>Entregable</th>
-                        <th>Descripción</th>
-                    </tr>
+                    <tr><th>Tipo de Kernel</th><th>Características</th><th>Ejemplo Real</th></tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td><strong>Capturas de pantalla</strong></td>
-                        <td>Las capturas deben mostrar: VM creada en VirtualBox, proceso de instalación, pantalla de login, comandos ejecutados</td>
+                        <td><strong>Monolítico</strong></td>
+                        <td>Todos los servicios (Red, FS, Drivers) corren en el espacio del kernel. Muy rápido pero menos tolerante a fallos.</td>
+                        <td>Linux, FreeBSD</td>
                     </tr>
                     <tr>
-                        <td><strong>VM funcionando</strong></td>
-                        <td>Video o capturas mostrando que la VM inicia correctamente y puedes ejecutar comandos</td>
+                        <td><strong>Microkernel</strong></td>
+                        <td>Solo lo esencial en el kernel. Los drivers corren como procesos de usuario. Muy estable pero más lento.</td>
+                        <td>QNX (Usado en autos y aviones)</td>
                     </tr>
                     <tr>
-                        <td><strong>Archivo de evidencias</strong></td>
-                        <td>Documento PDF con todas las capturas organizadas y explicadas</td>
+                        <td><strong>Híbrido</strong></td>
+                        <td>Estructura modular cargando servicios críticos en Ring 0 para ganar velocidad.</td>
+                        <td>Windows NT (Kernel de Win 10/11)</td>
                     </tr>
                 </tbody>
             </table>
+        </section>
 
-            <h3>Rúbrica de Evaluación</h3>
-            <table class="rubrica">
-                <thead>
-                    <tr>
-                        <th>Criterio</th>
-                        <th>Excelente (100%)</th>
-                        <th>Bueno (75%)</th>
-                        <th>Suficiente (50%)</th>
-                        <th>Insuficiente (0%)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>VM creada correctamente</strong></td>
-                        <td>VM con nombre correcto, RAM adecuada, disco de 20GB</td>
-                        <td>VM creada pero con configuración mínima</td>
-                        <td>VM creada pero falta configuración importante</td>
-                        <td>VM no creada o no funciona</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Ubuntu Server instalado</strong></td>
-                        <td>Instalación completa, sin errores, usuario creado</td>
-                        <td>Instalación completa con errores menores</td>
-                        <td>Instalación incompleta</td>
-                        <td>No hay instalación</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Comandos básicos ejecutados</strong></td>
-                        <td>Todos los comandos de la sección ejecutados correctamente</td>
-                        <td>Comandos básicos ejecutados</td>
-                        <td>Solo algunos comandos ejecutados</td>
-                        <td>No hay evidencia de comandos</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Evidencias presentadas</strong></td>
-                        <td>Documento bien organizado con todas las capturas</td>
-                        <td>Documento con capturas pero sin organización</td>
-                        <td>Capturas incompletas</td>
-                        <td>No hay evidencias</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Snapshot creado</strong></td>
-                        <td>Snapshot con nombre y descripción correctos</td>
-                        <td>Snapshot creado pero sin descripción</td>
-                        <td>Snapshot creado incorrectamente</td>
-                        <td>No hay snapshot</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <div class="callout warning">
-                <p class="callout-title">Consejos para un Excelente</p>
-                <ul>
-                    <li>Organiza tus capturas en orden cronológico</li>
-                    <li>Añade breves explicaciones a cada captura</li>
-                    <li>Verifica que la VM funcione antes de entregar</li>
-                    <li>Incluye captura del snapshot creado</li>
-                </ul>
+        <section id="hibrido">
+            <h2>4. El Ecosistema UCS (UNAULA Cloud Services)</h2>
+            <p>A lo largo de este curso, no solo estudiaremos teoría; construiremos un centro de datos virtual.</p>
+            <div class="callout info">
+                <h4>Filosofía del Proyecto</h4>
+                <p>Aprenderemos operando un <strong>Nodo Linux (Ubuntu)</strong> para la automatización y un <strong>Nodo Windows (Server)</strong> para servicios corporativos. Al final del curso, ambos deben hablarse y servir una aplicación web segura.</p>
             </div>
         </section>
 
-        <!-- Videos Recomendados -->
-        <section id="videos">
-            <h2>Videos Recomendados</h2>
+        <section id="comandos">
+            <h2>5. Comandos Profesionales de Auditoría de Hardware</h2>
+            <p>Un ingeniero debe conocer el silicio que gestiona antes de instalar cualquier software.</p>
+            
+            <div class="comparison">
+                <div class="column-card">
+                    <h4>Inspección en Linux (Bash)</h4>
+                    <pre><code class="language-bash"># Datos del Kernel y Hostname
+uname -a
 
-            <div class="callout info">
-                <h3>📹 Video 1: ¿Qué es un Sistema Operativo?</h3>
-                <p><strong>Sistemas Operativos 2024-08-08: Introducción</strong></p>
-                <p>Duración: ~45 minutos | Nivel: Universitario | Idioma: Español</p>
-                <p>Cubre los conceptos fundamentales de sistemas operativos, historia, y propósitos.</p>
-                <p><a href="https://www.youtube.com/watch?v=RwAgQBVKnMI" target="_blank">📺 Ver en YouTube</a></p>
-            </div>
+# Ver detalles de la CPU (Cores, Cache)
+lscpu
 
-            <div class="callout info">
-                <h3>📹 Video 2: Instalar Ubuntu Server en VirtualBox</h3>
-                <p><strong>INSTALAR Ubuntu 24.04 en VirtualBox 2024</strong></p>
-                <p>Duración: ~20 minutos | Nivel: Principiante | Idioma: Español</p>
-                <p>Tutorial paso a paso en español para instalar Ubuntu Server 24.04 LTS en VirtualBox.</p>
-                <p><a href="https://www.youtube.com/watch?v=qH9JuCjCKow" target="_blank">📺 Ver en YouTube</a></p>
-            </div>
+# Ver memoria RAM física y usada
+free -h
 
-            <div class="callout info">
-                <h3>📹 Video 3: Introducción a los Sistemas Operativos</h3>
-                <p><strong>Sistemas Operativos 2024-02-01: Introducción</strong></p>
-                <p>Duración: ~50 minutos | Nivel: Universitario | Idioma: Español</p>
-                <p>Explicación en español sobre qué es un sistema operativo, sus componentes y funciones.</p>
-                <p><a href="https://www.youtube.com/watch?v=hSEnJZ0rJCQ" target="_blank">📺 Ver en YouTube</a></p>
+# Listar discos y particiones
+lsblk</code></pre>
+                </div>
+                <div class="column-card">
+                    <h4>Inspección en Windows (PowerShell)</h4>
+                    <pre><code class="language-powershell"># Reporte técnico completo
+systeminfo
+
+# Ver BIOS y Manufacturador
+Get-CimInstance Win32_BIOS
+
+# Ver procesadores lógicos
+Get-CimInstance Win32_Processor | Select-Object Name, NumberOfCores
+
+# Info de placa base
+wmic baseboard get product</code></pre>
+                </div>
             </div>
         </section>
 
-        <!-- Navigation between classes -->
-        <nav class="class-nav" aria-label="Navegación entre clases">
-            <div class="class-nav-placeholder">
-                <span>📍 Esta es la primera clase</span>
+        <section id="practica">
+            <h2>6. Laboratorio 01: Despliegue de Infraestructura (Insumo E1)</h2>
+            <div class="actividad">
+                <h3>Actividad Técnica: El Cimiento del Proyecto UCS</h3>
+                <p><strong>Objetivo:</strong> Configurar el entorno de virtualización profesional.</p>
+                <ol>
+                    <li>Instale <strong>VirtualBox 7.x</strong> en su equipo personal.</li>
+                    <li>Cree su primer Nodo: Instale <strong>Ubuntu Server 22.04 LTS</strong> (Sin interfaz gráfica).</li>
+                    <li><strong>Auditoría Inicial</strong>: Ejecute <code>uname -a</code> en su VM y <code>systeminfo</code> en su Windows host.</li>
+                    <li>Identifique: ¿Qué versión de Kernel usa Ubuntu? ¿Qué Service Pack o Build tiene su Windows?</li>
+                </ol>
+                <p><strong>Entregable:</strong> Documento PDF con capturas de ambos comandos para su informe de la Fase 1.</p>
             </div>
-            <a href="clase-02.html" class="class-nav-link next">
+
+            <!-- ENFOQUE LABORAL -->
+            <div class="actividad" style="background: #fff7ed; border-left-color: #ea580c; margin-top: 2rem;">
+                <h3>El Rol del Administrador de Sistemas en el Mundo Real</h3>
+                <p>Entender qué es un SO no es solo teoría: es la base de tu carrera profesional.</p>
+
+                <div class="card" style="margin: 1rem 0; border-left: 4px solid #2563eb;">
+                    <h4 style="color: #1e40af;">¿Qué hace un Administrador de Sistemas?</h4>
+                    <p>Un SysAdmin (Administrador de Sistemas) es el profesional responsable de que los servidores funcionen 24/7. Sus responsabilidades incluyen:</p>
+                    <ul>
+                        <li><strong>Infraestructura:</strong> Instalar, configurar y mantener servidores (físicos y virtuales)</li>
+                        <li><strong>Seguridad:</strong> Aplicar parches, configurar firewalls, gestionar usuarios y permisos</li>
+                        <li><strong>Monitoreo:</strong> Vigilar rendimiento, capacidad y disponibilidad</li>
+                        <li><strong>Respaldo:</strong> Implementar y probar estrategias de recovery</li>
+                        <li><strong>Documentación:</strong> Mantener procedimientos actualizados para todo</li>
+                    </ul>
+                </div>
+
+                <div class="card" style="margin: 1rem 0; border-left: 4px solid #059669;">
+                    <h4 style="color: #065f46;">Certificaciones que Valoran tu Perfil</h4>
+                    <p>Las siguientes certificaciones validan las habilidades que aprenderás en este curso:</p>
+                    <table>
+                        <thead>
+                            <tr><th>Certificación</th><th>Proveedor</th><th>Enfoque</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>CompTIA Linux+</td><td>CompTIA</td><td>Fundamentos Linux</td></tr>
+                            <tr><td>AWS SysOps</td><td>Amazon</td><td>Cloud Administration</td></tr>
+                            <tr><td>RHCSA</td><td>Red Hat</td><td>Administración Red Hat</td></tr>
+                            <tr><td>MCSA Windows Server</td><td>Microsoft</td><td>Administración Windows</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="card" style="margin: 1rem 0; border-left: 4px solid #dc2626;">
+                    <h4 style="color: #991b1b;">Salario Promedio en Colombia (2026)</h4>
+                    <p>Según datos del sector, los rangos salariales para administradores de sistemas en Colombia son:</p>
+                    <ul>
+                        <li><strong>Junior (0-2 años):</strong> $2.500.000 - $4.000.000 COP/mes</li>
+                        <li><strong>Semi-Senior (2-4 años):</strong> $4.000.000 - $7.000.000 COP/mes</li>
+                        <li><strong>Senior (4+ años):</strong> $7.000.000 - $15.000.000 COP/mes</li>
+                        <li><strong>Especialista Cloud/DevOps:</strong> $8.000.000 - $20.000.000 COP/mes</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- AUTO-EVALUACIÓN -->
+            <div class="actividad" style="background: #f0fdf4; border-left-color: #16a34a; margin-top: 2rem;">
+                <h3>Auto-Evaluación: Conceptos Fundamentales</h3>
+                <p>Responde antes de avanzar a la siguiente clase:</p>
+                <ol>
+                    <li><strong>¿Por qué un SO se considera un "gestor de recursos"?</strong></li>
+                    <li><strong>¿Qué es el Kernel y en qué nivel de privilegio opera?</strong></li>
+                    <li><strong>¿Cuál es la diferencia entre un kernel monolítico y uno microkernel?</strong></li>
+                    <li><strong>¿Por qué un usuario normal no puede acceder directamente al hardware?</strong></li>
+                    <li><strong>Nombra 3 ejemplos de sistemas operativos y su tipo de kernel.</strong></li>
+                </ol>
+            </div>
+        </section>
+
+        <nav class="class-nav">
+            <a href="index.html" class="class-nav-link" style="background: #e0e7ff;">🏠 Índice de Clases</a>
+            <a href="clase-02.html" class="class-nav-link next" style="text-align: right;">
                 <div>
                     <div class="nav-label">Siguiente Clase</div>
-                    <div class="nav-title">Linux Terminal - Comandos Esenciales</div>
-                    <div class="class-nav-date">📅 04 Feb 2026</div>
+                    <div class="nav-title">Clase 02: CLI - Bash & PowerShell</div>
                 </div>
                 <span class="class-nav-icon">→</span>
             </a>
@@ -1157,41 +265,12 @@ df -h
 
     <footer>
         <div class="container">
-            <p>📅 04 de Febrero 2026 | Sesion Miercoles: 6:00-8:00 AM | Teoria: 60 min + Practica: 60 min</p>
-            <p style="margin-top: 10px;">
-                <a href="index.html" style="color: #10b981;">Inicio</a> |
-                <a href="cronograma.html" style="color: #10b981;">Cronograma</a> |
-                <a href="evaluaciones.html" style="color: #8b5cf6;">Evaluaciones</a> |
-                <a href="rubricas.html" style="color: #3b82f6;">Rúbricas</a>
-            </p>
-            <p><a href="#" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); return false;">Volver arriba ↑</a></p>
+            <p>IF0099 - Sistemas Operativos I | Universidad Autónoma Latinoamericana | 2026</p>
         </div>
     </footer>
 
-    <script>
-        // Smooth scrolling for navigation links
-        document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
-    </script>
-
-    <!-- Prism.js para syntax highlighting -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
-    <script>
-        // Inicializar Prism.js después de cargar la página
-        document.addEventListener('DOMContentLoaded', function() {
-            Prism.highlightAll();
-        });
-    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-powershell.min.js"></script>
 </body>
 </html>
