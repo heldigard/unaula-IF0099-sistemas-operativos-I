@@ -3,994 +3,353 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clase 03: Cambio de Contexto y Concurrencia | IF0099 - Sistemas Operativos I</title>
+    <title>Clase 03: Gestión de Procesos y Cambio de Contexto | IF0099</title>
     <!-- Prism.js CSS para syntax highlighting -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
     <style>
-        :root {
-            --primary: #2563eb;
-            --secondary: #1e40af;
-            --accent: #059669;
-            --bg-light: #f8fafc;
-            --bg-code: #1e293b;
-            --text-main: #1e293b;
-            --text-muted: #64748b;
-            --border: #e2e8f0;
-        }
-
+        :root { --primary: #2563eb; --secondary: #1e40af; --accent: #059669; --bg-light: #f8fafc; --bg-code: #1e293b; --text-main: #1e293b; --text-muted: #64748b; --border: #e2e8f0; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            line-height: 1.7;
-            color: var(--text-main);
-            background: var(--bg-light);
-            font-size: 16px;
-        }
-
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.7; color: var(--text-main); background: var(--bg-light); font-size: 16px; }
         .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
-
-        header {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            color: white;
-            padding: 3rem 0;
-            margin-bottom: 2rem;
-        }
-
-        header h1 {
-            font-size: 2.2rem;
-            margin-bottom: 0.5rem;
-        }
-
-        header .subtitle {
-            opacity: 0.9;
-            font-size: 1.1rem;
-        }
-
-        nav {
-            background: white;
-            border-bottom: 1px solid var(--border);
-            padding: 1rem 0;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        nav ul {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-            list-style: none;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        nav a {
-            color: var(--text-muted);
-            text-decoration: none;
-            font-weight: 500;
-            padding: 0.5rem 1rem;
-            border-radius: 6px;
-            transition: all 0.2s;
-        }
-
-        nav a:hover {
-            color: var(--primary);
-            background: #eff6ff;
-        }
-
-        main { padding: 2rem 0; }
-
-        section {
-            background: white;
-            border-radius: 12px;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-
-        h2 {
-            color: var(--primary);
-            font-size: 1.8rem;
-            margin-bottom: 1.5rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 2px solid var(--border);
-        }
-
-        h3 {
-            color: var(--secondary);
-            font-size: 1.3rem;
-            margin: 2rem 0 1rem;
-        }
-
-        h4 {
-            color: var(--text-main);
-            font-size: 1.1rem;
-            margin: 1.5rem 0 0.5rem;
-        }
-
-        p { margin-bottom: 1rem; }
-
-        ul, ol {
-            margin: 1rem 0 1rem 1.5rem;
-        }
-
-        li { margin-bottom: 0.5rem; }
-
-        pre {
-            background: var(--bg-code);
-            border-radius: 8px;
-            padding: 1.5rem;
-            overflow-x: auto;
-            margin: 1.5rem 0;
-        }
-
-        code {
-            font-family: 'Fira Code', 'Consolas', monospace;
-            font-size: 0.9rem;
-        }
-
-        .code-inline {
-            background: #e2e8f0;
-            padding: 0.2rem 0.5rem;
-            border-radius: 4px;
-            font-size: 0.9em;
-        }
-
-        .note {
-            background: #fef3c7;
-            border-left: 4px solid #f59e0b;
-            padding: 1rem;
-            border-radius: 0 8px 8px 0;
-            margin: 1.5rem 0;
-        }
-
-        .warning {
-            background: #fee2e2;
-            border-left: 4px solid #ef4444;
-            padding: 1rem;
-            border-radius: 0 8px 8px 0;
-            margin: 1.5rem 0;
-        }
-
-        .info {
-            background: #dbeafe;
-            border-left: 4px solid #3b82f6;
-            padding: 1rem;
-            border-radius: 0 8px 8px 0;
-            margin: 1.5rem 0;
-        }
-
-        .success {
-            background: #d1fae5;
-            border-left: 4px solid #10b981;
-            padding: 1rem;
-            border-radius: 0 8px 8px 0;
-            margin: 1.5rem 0;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 1.5rem 0;
-        }
-
-        th, td {
-            padding: 0.75rem 1rem;
-            text-align: left;
-            border-bottom: 1px solid var(--border);
-        }
-
-        th {
-            background: #f1f5f9;
-            font-weight: 600;
-            color: var(--secondary);
-        }
-
-        tr:hover { background: #f8fafc; }
-
-        .diagram {
-            background: #f8fafc;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 2rem;
-            margin: 1.5rem 0;
-            text-align: center;
-        }
-
-        .diagram svg {
-            max-width: 100%;
-            height: auto;
-        }
-
-        .card-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.5rem;
-            margin: 1.5rem 0;
-        }
-
-        .card {
-            background: #f8fafc;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 1.5rem;
-        }
-
-        .card h4 {
-            color: var(--primary);
-            margin-top: 0;
-        }
-
-        .badge {
-            display: inline-block;
-            padding: 0.25rem 0.75rem;
-            border-radius: 999px;
-            font-size: 0.85rem;
-            font-weight: 500;
-            margin-right: 0.5rem;
-        }
-
-        .badge-blue { background: #dbeafe; color: #1e40af; }
-        .badge-green { background: #d1fae5; color: #065f46; }
-        .badge-yellow { background: #fef3c7; color: #92400e; }
-        .badge-red { background: #fee2e2; color: #991b1b; }
-
-        .timeline {
-            position: relative;
-            padding-left: 2rem;
-            margin: 2rem 0;
-        }
-
-        .timeline::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            width: 2px;
-            background: var(--border);
-        }
-
-        .timeline-item {
-            position: relative;
-            padding-bottom: 1.5rem;
-        }
-
-        .timeline-item::before {
-            content: '';
-            position: absolute;
-            left: -2rem;
-            top: 0.25rem;
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: var(--primary);
-            transform: translateX(-4px);
-        }
-
-        footer {
-            background: #1e293b;
-            color: white;
-            padding: 2rem 0;
-            text-align: center;
-            margin-top: 3rem;
-        }
-
-        footer a { color: #60a5fa; }
-
-        @media (max-width: 768px) {
-            header h1 { font-size: 1.6rem; }
-            section { padding: 1.5rem; }
-            nav ul { flex-direction: column; gap: 0.5rem; }
-        }
-
-        /* Alertas de Evaluación */
-        .eval-alert {
-            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-            border-left: 4px solid #f59e0b;
-            padding: 1.25rem 1.5rem;
-            border-radius: 8px;
-            margin-bottom: 2rem;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            text-decoration: none;
-            color: inherit;
-        }
-
-        .eval-alert-icon {
-            font-size: 1.75rem;
-            line-height: 1;
-        }
-
-        .eval-alert-content {
-            flex: 1;
-        }
-
-        .eval-alert-title {
-            font-weight: 700;
-            color: #92400e;
-            font-size: 1rem;
-            margin-bottom: 0.25rem;
-        }
-
-        .eval-alert-text {
-            color: #78350f;
-            font-size: 0.9rem;
-        }
-
-        .eval-alert-date {
-            background: #f59e0b;
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 6px;
-            font-weight: 600;
-            font-size: 0.9rem;
-            white-space: nowrap;
-        }
+        header { background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); color: white; padding: 3rem 0; margin-bottom: 2rem; }
+        header h1 { font-size: 2.2rem; margin-bottom: 0.5rem; font-weight: 700; }
+        header .meta { margin-top: 1rem; font-size: 0.9rem; opacity: 0.8; }
+        nav { background: white; padding: 1.5rem 0; margin-bottom: 2rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 100; }
+        nav ul { list-style: none; display: flex; flex-wrap: wrap; gap: 1.5rem; padding: 0 20px; justify-content: center; }
+        nav a { color: var(--primary); text-decoration: none; font-weight: 600; font-size: 0.95rem; }
+        section { background: white; padding: 2.5rem; margin-bottom: 2rem; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        section h2 { color: var(--primary); font-size: 1.8rem; margin-bottom: 1.5rem; padding-bottom: 0.5rem; border-bottom: 3px solid var(--accent); }
+        h3 { color: var(--secondary); font-size: 1.4rem; margin: 2rem 0 1rem; }
+        pre { background: var(--bg-code); color: #e2e8f0; padding: 1.5rem; border-radius: 8px; overflow-x: auto; margin: 1.5rem 0; font-size: 0.9rem; }
+        .callout { padding: 1.5rem; border-radius: 8px; margin: 1.5rem 0; border-left: 4px solid; }
+        .callout.info { background: #eff6ff; border-left-color: var(--primary); }
+        .callout.warning { background: #fef3c7; border-left-color: #f59e0b; }
+        .callout.success { background: #d1fae5; border-left-color: var(--accent); }
+        .comparison { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin: 2rem 0; }
+        .card { background: var(--bg-light); padding: 1.5rem; border-radius: 8px; border: 1px solid var(--border); }
+        table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; }
+        th, td { padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid var(--border); }
+        th { background: var(--bg-light); font-weight: 600; }
+        .actividad { background: #f1f5f9; border-left: 5px solid var(--accent); padding: 2rem; margin: 2rem 0; border-radius: 8px; }
+        .ascii-diagram { font-family: monospace; background: #1e293b; color: #94a3b8; padding: 1.5rem; border-radius: 8px; white-space: pre; overflow-x: auto; font-size: 0.85rem; line-height: 1.2; margin: 1.5rem 0; border: 1px solid #334155; }
+        footer { background: var(--text-main); color: white; padding: 2rem 0; text-align: center; margin-top: 3rem; }
+        .eval-alert { background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-left: 4px solid #f59e0b; padding: 1.25rem 1.5rem; border-radius: 8px; margin-bottom: 2rem; display: flex; align-items: center; gap: 1rem; color: inherit; text-decoration: none; }
+        .class-nav { display: flex; justify-content: space-between; align-items: stretch; gap: 1rem; margin: 2rem 0; }
+        .class-nav-link { flex: 1; display: flex; align-items: center; gap: 0.75rem; padding: 1.25rem 1.5rem; background: white; border: 2px solid var(--border); border-radius: 12px; text-decoration: none; color: var(--text-main); transition: all 0.3s ease; }
+        .class-nav-link:hover { border-color: var(--primary); box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15); transform: translateY(-2px); }
+        .class-nav-link.next { border-right: 4px solid var(--accent); text-align: right; margin-left: auto; }
+        .class-nav-link .nav-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); margin-bottom: 0.25rem; }
+        .class-nav-link .nav-title { font-size: 1rem; font-weight: 600; color: var(--primary); }
     </style>
 </head>
 <body>
     <header>
         <div class="container">
-            <h1>Clase 03: Cambio de Contexto y Concurrencia</h1>
-            <p class="subtitle">IF0099 - Sistemas Operativos I | Universidad Autónoma Latinoamericana</p>
-            <p class="meta">📅 11 de Febrero 2026 | Sesion Miercoles: 6:00-8:00 AM | Teoria: 60 min + Practica: 60 min</p>
+            <h1>Clase 03: Gestión de Procesos y Cambio de Contexto</h1>
+            <p class="subtitle">IF0099 - Sistemas Operativos I | Unidad 3 - El Corazón del SO</p>
+            <p class="meta">📅 11 de Febrero 2026 | Bloque: 6:00 - 8:00 AM | Teoría: 60 min + Práctica: 60 min</p>
         </div>
     </header>
 
-    <nav>
-        <ul>
-            <li><a href="#objetivos">Objetivos</a></li>
-            <li><a href="#cambio-contexto">Cambio de Contexto</a></li>
-            <li><a href="#pcb">PCB</a></li>
-            <li><a href="#estados">Estados del Proceso</a></li>
-            <li><a href="#algoritmos">Algoritmos de Planificación</a></li>
-            <li><a href="#practica">Práctica</a></li>
-            <li><a href="cronograma.html">Cronograma</a></li>
-        </ul>
-    </nav>
+    <div class="container">
+        <!-- Próxima Evaluación Alert -->
+        <a href="evaluaciones.html#e1" class="eval-alert">
+            <span style="font-size: 1.75rem;">📌</span>
+            <div class="eval-alert-content">
+                <div style="font-weight: 700; color: #92400e;">E1: FASE 1 - Fundamentos y Arquitectura (25 Feb)</div>
+                <div style="color: #78350f; font-size: 0.9rem;">15% - Mapeo de componentes y diagnóstico estructural del Kernel.</div>
+            </div>
+            <span style="background: #f59e0b; color: white; padding: 0.5rem 1rem; border-radius: 6px; font-weight: 600;">📅 25 Feb</span>
+        </a>
 
-    <main class="container">
-        <section id="objetivos">
-            <h2>Objetivos de Aprendizaje</h2>
-            <p><strong>Resultado de Aprendizaje (RA1):</strong> Identifica la estructura y los tipos de los sistemas operativos (Alineado con Evaluación E1).</p>
+        <nav>
             <ul>
-                <li>Comprender el concepto de <strong>cambio de contexto</strong> y su importancia en el rendimiento</li>
-                <li>Identificar la estructura del <strong>PCB (Process Control Block)</strong> y su rol en la gestión de recursos</li>
-                <li>Analizar el <strong>modelo de estados de un proceso</strong> y sus transiciones críticas</li>
-                <li>Comparar los principales <strong>algoritmos de planificación</strong> de CPU</li>
-                <li>Visualizar métricas de procesos en tu <strong>VM de VirtualBox</strong></li>
+                <li><a href="#proceso">1. Concepto de Proceso</a></li>
+                <li><a href="#pcb">2. PCB y Memoria</a></li>
+                <li><a href="#estados">3. Modelo de Estados</a></li>
+                <li><a href="#contexto">4. Cambio de Contexto</a></li>
+                <li><a href="#planificacion">5. Planificación</a></li>
+                <li><a href="#practica">6. Laboratorio Híbrido</a></li>
+            </ul>
+        </nav>
+
+        <section id="proceso">
+            <h2>1. El Concepto de Proceso</h2>
+            <p>Un <strong>proceso</strong> es un programa en ejecución. Es la unidad de trabajo fundamental en cualquier sistema operativo moderno. Un solo programa (ej: Google Chrome) puede engendrar múltiples procesos.</p>
+            
+            <h3>1.1 Programa vs Proceso</h3>
+            <ul>
+                <li><strong>Programa:</strong> Entidad pasiva, un archivo ejecutable almacenado en el disco (ej: <code>chrome.exe</code>).</li>
+                <li><strong>Proceso:</strong> Entidad activa, con un contador de programa (PC) que indica la siguiente instrucción y un conjunto de recursos asignados.</li>
             </ul>
 
-            <div class="callout success">
-                <p class="callout-title">🌐 Recursos de Práctica</p>
-                <p>Puedes observar estos conceptos en tiempo real en tu servidor en <strong>VirtualBox</strong> ejecutando herramientas de monitoreo básicas.</p>
+            <div class="callout info">
+                <h4>Hilos (Threads)</h4>
+                <p>Un proceso puede tener múltiples hilos de ejecución. Mientras que el proceso es el dueño de los recursos (RAM, archivos), los hilos son los ejecutores reales de las tareas en paralelo.</p>
             </div>
-        </section>
-
-        <section id="cambio-contexto">
-            <h2>Cambio de Contexto</h2>
-
-            <h3>¿Qué es el Cambio de Contexto?</h3>
-            <p>El <strong>cambio de contexto</strong> (context switch) es el proceso mediante el cual el sistema operativo transfiere el control de la CPU de un proceso a otro. Este es un mecanismo fundamental que permite la <strong>multiprogramación</strong> y el funcionamiento eficiente de los sistemas operativos modernos.</p>
-
-            <div class="info">
-                <strong>Analogía:</strong> Imagina un professor con múltiples estudiantes preguntando. El professor atiende a un estudiante (proceso en ejecución), anota dónde se quedó (guarda estado), y atiende al siguiente (cambio de contexto). Cuando vuelve al primer estudiante, continúa desde donde lo dejó.
-            </div>
-
-            <div class="callout success" style="margin: 1.5rem 0;">
-                <strong>¿Por qué esto importa?</strong><br>
-                Sin cambio de contexto, tu computadora solo podría hacer UNA cosa a la vez. No podrías tener el navegador abierto mientras escuchas música y descargas un archivo. El cambio de contexto hace que todo parezca suceder "al mismo tiempo".
-            </div>
-
-            <h3>Componentes del Cambio de Contexto</h3>
-            <ul>
-                <li><strong>Salvado del estado:</strong> Guardar registros, contador de programa, puntero de pila</li>
-                <li><strong>Actualización del PCB:</strong> Guardar información del proceso que cede la CPU</li>
-                <li><strong>Selección del nuevo proceso:</strong> El scheduler elige el siguiente proceso</li>
-                <li><strong>Carga del estado:</strong> Restaurar registros y contador del nuevo proceso</li>
-                <li><strong>Actualización de estructuras:</strong> Modificar tablas de memoria y descriptores</li>
-            </ul>
-
-            <div class="note">
-                <strong>Tiempo de Cambio de Contexto:</strong> El cambio de contexto no es "gratis". El sistema operativo debe invertir tiempo de CPU en realizar este intercambio. Este tiempo depende de la arquitectura del hardware y de la eficiencia del kernel.
-            </div>
-
-            <h3>Costos del Cambio de Contexto</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Componente</th>
-                        <th>Descripción</th>
-                        <th>Impacto</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Salvado de registros</td>
-                        <td>Almacenar estado actual de CPU</td>
-                        <td>Alto</td>
-                    </tr>
-                    <tr>
-                        <td>Actualización de tablas</td>
-                        <td>Cambiar punteros de memoria virtual</td>
-                        <td>Medio</td>
-                    </tr>
-                    <tr>
-                        <td>Invalidación de caché</td>
-                        <td>Limpiar caché de CPU</td>
-                        <td>Alto</td>
-                    </tr>
-                    <tr>
-                        <td>Cambio de privilegio</td>
-                        <td> kernel → usuario</td>
-                        <td>Bajo</td>
-                    </tr>
-                </tbody>
-            </table>
         </section>
 
         <section id="pcb">
-            <h2>PCB (Process Control Block)</h2>
+            <h2>2. El PCB y la Estructura de Memoria</h2>
+            <p>Para gestionar los procesos, el Kernel mantiene una "hoja de vida" de cada uno llamada <strong>Process Control Block (PCB)</strong>.</p>
+            
+            <h3>2.1 Anatomía del PCB Profesional</h3>
+            <table>
+                <thead>
+                    <tr><th>Campo</th><th>Función Técnica</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><strong>PID</strong></td><td>ID único del proceso para el sistema.</td></tr>
+                    <tr><td><strong>Estado</strong></td><td>Nuevo, Listo, Ejecución, Espera, Terminado.</td></tr>
+                    <tr><td><strong>PC</strong></td><td>Dirección de la siguiente instrucción en RAM.</td></tr>
+                    <tr><td><strong>Registros</strong></td><td>Copia de los registros de CPU (EAX, EBX, etc.) cuando el proceso se pausa.</td></tr>
+                    <tr><td><strong>Límites</strong></td><td>Base y Límite de la memoria asignada para evitar intrusiones.</td></tr>
+                </tbody>
+            </table>
 
-            <p>El <strong>PCB</strong> es la estructura de datos principal que representa un proceso en el sistema operativo. Contiene toda la información necesaria para gestionar un proceso.</p>
-
-            <div class="diagram">
-                <svg width="600" height="400" viewBox="0 0 600 400">
-                    <!-- PCB Box -->
-                    <rect x="50" y="20" width="500" height="360" fill="white" stroke="#2563eb" stroke-width="3" rx="10"/>
-                    <text x="300" y="50" text-anchor="middle" font-size="18" font-weight="bold" fill="#1e40af">PCB - Process Control Block</text>
-
-                    <!-- Sections -->
-                    <rect x="70" y="70" width="220" height="100" fill="#dbeafe" stroke="#3b82f6" rx="5"/>
-                    <text x="180" y="90" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e40af">Información de Identificación</text>
-                    <text x="180" y="115" text-anchor="middle" font-size="11" fill="#374151">PID, PPID</text>
-                    <text x="180" y="130" text-anchor="middle" font-size="11" fill="#374151">Nombre del proceso</text>
-                    <text x="180" y="145" text-anchor="middle" font-size="11" fill="#374151">Usuario propietario</text>
-                    <text x="180" y="160" text-anchor="middle" font-size="11" fill="#374151">Estado del proceso</text>
-
-                    <rect x="310" y="70" width="220" height="100" fill="#d1fae5" stroke="#10b981" rx="5"/>
-                    <text x="420" y="90" text-anchor="middle" font-size="14" font-weight="bold" fill="#065f46">Información de CPU</text>
-                    <text x="420" y="115" text-anchor="middle" font-size="11" fill="#374151">Contador de programa (PC)</text>
-                    <text x="420" y="130" text-anchor="middle" font-size="11" fill="#374151">Registros de CPU</text>
-                    <text x="420" y="145" text-anchor="middle" font-size="11" fill="#374151">Puntero de pila (SP)</text>
-                    <text x="420" y="160" text-anchor="middle" font-size="11" fill="#374151">Prioridad</text>
-
-                    <rect x="70" y="190" width="220" height="100" fill="#fef3c7" stroke="#f59e0b" rx="5"/>
-                    <text x="180" y="210" text-anchor="middle" font-size="14" font-weight="bold" fill="#92400e">Gestión de Memoria</text>
-                    <text x="180" y="235" text-anchor="middle" font-size="11" fill="#374151">Tabla de páginas</text>
-                    <text x="180" y="250" text-anchor="middle" font-size="11" fill="#374151">Límites de memoria</text>
-                    <text x="180" y="265" text-anchor="middle" font-size="11" fill="#374151">Segmento de código</text>
-                    <text x="180" y="280" text-anchor="middle" font-size="11" fill="#374151">Segmento de datos</text>
-
-                    <rect x="310" y="190" width="220" height="100" fill="#fce7f3" stroke="#ec4899" rx="5"/>
-                    <text x="420" y="210" text-anchor="middle" font-size="14" font-weight="bold" fill="#9d174d">Información de E/S</text>
-                    <text x="420" y="235" text-anchor="middle" font-size="11" fill="#374151">Archivos abiertos</text>
-                    <text x="420" y="250" text-anchor="middle" font-size="11" fill="#374151">Dispositivos asignados</text>
-                    <text x="420" y="265" text-anchor="middle" font-size="11" fill="#374151">Señales pendientes</text>
-                    <text x="420" y="280" text-anchor="middle" font-size="11" fill="#374151">Contadores de E/S</text>
-
-                    <rect x="70" y="310" width="460" height="50" fill="#e0e7ff" stroke="#6366f1" rx="5"/>
-                    <text x="300" y="330" text-anchor="middle" font-size="14" font-weight="bold" fill="#4338ca">Información de Scheduling</text>
-                    <text x="300" y="350" text-anchor="middle" font-size="11" fill="#374151">Estado | Prioridad | Tiempo de CPU | Tiempo de llegada | Quantum</text>
+            <h3>2.2 El Proceso en la RAM</h3>
+            <div style="text-align: center; margin: 2rem 0;">
+                <svg viewBox="0 0 400 450" xmlns="http://www.w3.org/2000/svg" style="max-width: 300px; height: auto;">
+                    <rect x="50" y="10" width="300" height="430" fill="none" stroke="#cbd5e1" stroke-width="2" />
+                    
+                    <!-- Stack -->
+                    <rect x="60" y="20" width="280" height="60" rx="5" fill="#fee2e2" stroke="#ef4444" stroke-width="2" />
+                    <text x="200" y="55" text-anchor="middle" fill="#991b1b" font-weight="bold">STACK (PILA)</text>
+                    <path d="M 200 85 L 200 120" fill="none" stroke="#ef4444" stroke-width="2" marker-end="url(#arrow-red)" />
+                    
+                    <!-- Free Space -->
+                    <text x="200" y="180" text-anchor="middle" fill="#94a3b8" font-style="italic">Espacio Libre</text>
+                    
+                    <!-- Heap -->
+                    <path d="M 200 275 L 200 240" fill="none" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrow-blue)" />
+                    <rect x="60" y="280" width="280" height="60" rx="5" fill="#dbeafe" stroke="#3b82f6" stroke-width="2" />
+                    <text x="200" y="315" text-anchor="middle" fill="#1e40af" font-weight="bold">HEAP (MONTÍCULO)</text>
+                    
+                    <!-- Data -->
+                    <rect x="60" y="350" width="280" height="40" rx="5" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" />
+                    <text x="200" y="375" text-anchor="middle" fill="#92400e" font-weight="bold">DATA (ESTÁTICOS)</text>
+                    
+                    <!-- Text -->
+                    <rect x="60" y="400" width="280" height="30" rx="5" fill="#dcfce7" stroke="#10b981" stroke-width="2" />
+                    <text x="200" y="420" text-anchor="middle" fill="#065f46" font-weight="bold" font-size="12">TEXT (CÓDIGO - R/O)</text>
+                    
+                    <!-- Directions -->
+                    <text x="360" y="30" font-size="10" fill="#64748b" transform="rotate(90, 360, 30)">Dir. Alta</text>
+                    <text x="360" y="430" font-size="10" fill="#64748b" transform="rotate(90, 360, 430)">Dir. Baja</text>
+                    
+                    <defs>
+                        <marker id="arrow-red" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+                            <path d="M0,0 L0,6 L9,3 z" fill="#ef4444" />
+                        </marker>
+                        <marker id="arrow-blue" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+                            <path d="M0,0 L0,6 L9,3 z" fill="#3b82f6" />
+                        </marker>
+                    </defs>
                 </svg>
-            </div>
-
-            <h3>Campos del PCB</h3>
-            <div class="card-grid">
-                <div class="card">
-                    <h4>Identificación</h4>
-                    <ul>
-                        <li><strong>PID:</strong> Identificador único del proceso</li>
-                        <li><strong>PPID:</strong> PID del proceso padre</li>
-                        <li>Usuario propietario</li>
-                    </ul>
-                </div>
-                <div class="card">
-                    <h4>Estado de CPU</h4>
-                    <ul>
-                        <li>Contador de programa</li>
-                        <li>Registros generales</li>
-                        <li>Puntero de pila</li>
-                        <li>Flags de estado</li>
-                    </ul>
-                </div>
-                <div class="card">
-                    <h4>Gestión de Memoria</h4>
-                    <ul>
-                        <li>Tabla de páginas</li>
-                        <li>Límites de segmentos</li>
-                        <li>Tabla de descriptores</li>
-                    </ul>
-                </div>
-                <div class="card">
-                    <h4>Información de E/S</h4>
-                    <ul>
-                        <li>Lista de archivos abiertos</li>
-                        <li>Dispositivos asignados</li>
-                        <li>Estado de E/S</li>
-                    </ul>
-                </div>
             </div>
         </section>
 
         <section id="estados">
-            <h2>Estados del Proceso</h2>
-
-            <p>Un proceso puede estar en diferentes estados durante su ciclo de vida. El modelo más común es el de <strong>5 estados</strong>.</p>
-
-            <div class="diagram">
-                <svg width="700" height="450" viewBox="0 0 700 450">
-                    <!-- States boxes -->
-                    <rect x="50" y="150" width="140" height="80" fill="#dbeafe" stroke="#2563eb" stroke-width="3" rx="10"/>
-                    <text x="120" y="185" text-anchor="middle" font-size="16" font-weight="bold" fill="#1e40af">NUEVO</text>
-                    <text x="120" y="205" text-anchor="middle" font-size="11" fill="#64748b">Creando proceso</text>
-
-                    <rect x="270" y="150" width="140" height="80" fill="#d1fae5" stroke="#10b981" stroke-width="3" rx="10"/>
-                    <text x="340" y="185" text-anchor="middle" font-size="16" font-weight="bold" fill="#065f46">LISTO</text>
-                    <text x="340" y="205" text-anchor="middle" font-size="11" fill="#64748b">Esperando CPU</text>
-
-                    <rect x="490" y="150" width="140" height="80" fill="#fef3c7" stroke="#f59e0b" stroke-width="3" rx="10"/>
-                    <text x="560" y="185" text-anchor="middle" font-size="16" font-weight="bold" fill="#92400e">EJECUTANDO</text>
-                    <text x="560" y="205" text-anchor="middle" font-size="11" fill="#64748b">Con CPU</text>
-
-                    <rect x="270" y="300" width="140" height="80" fill="#fee2e2" stroke="#ef4444" stroke-width="3" rx="10"/>
-                    <text x="340" y="335" text-anchor="middle" font-size="16" font-weight="bold" fill="#991b1b">BLOQUEADO</text>
-                    <text x="340" y="355" text-anchor="middle" font-size="11" fill="#64748b">E/S o evento</text>
-
-                    <rect x="490" y="300" width="140" height="80" fill="#f3e8ff" stroke="#9333ea" stroke-width="3" rx="10"/>
-                    <text x="560" y="335" text-anchor="middle" font-size="16" font-weight="bold" fill="#7e22ce">TERMINADO</text>
-                    <text x="560" y="355" text-anchor="middle" font-size="11" fill="#64748b">Finalizado</text>
-
-                    <!-- Arrows -->
+            <h2>3. Ciclo de Vida del Proceso</h2>
+            <p>Un proceso cambia de estado constantemente. El éxito de un administrador de sistemas es identificar procesos en estados anómalos.</p>
+            
+            <div style="text-align: center; margin: 2rem 0;">
+                <svg viewBox="0 0 800 300" xmlns="http://www.w3.org/2000/svg" style="max-width: 100%; height: auto;">
+                    <!-- States -->
+                    <circle cx="100" cy="150" r="40" fill="#f1f5f9" stroke="#64748b" stroke-width="2" />
+                    <text x="100" y="155" text-anchor="middle" font-weight="bold" font-size="12">NUEVO</text>
+                    
+                    <circle cx="300" cy="150" r="40" fill="#dbeafe" stroke="#2563eb" stroke-width="2" />
+                    <text x="300" y="155" text-anchor="middle" font-weight="bold" font-size="12">LISTO</text>
+                    
+                    <circle cx="500" cy="150" r="40" fill="#d1fae5" stroke="#059669" stroke-width="2" />
+                    <text x="500" y="155" text-anchor="middle" font-weight="bold" font-size="12">EJECUCIÓN</text>
+                    
+                    <circle cx="700" cy="150" r="40" fill="#fee2e2" stroke="#ef4444" stroke-width="2" />
+                    <text x="700" y="155" text-anchor="middle" font-weight="bold" font-size="12">TERMINADO</text>
+                    
+                    <circle cx="400" cy="250" r="40" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" />
+                    <text x="400" y="255" text-anchor="middle" font-weight="bold" font-size="12">BLOQUEADO</text>
+                    
+                    <!-- Transitions -->
+                    <path d="M 140 150 L 260 150" stroke="#64748b" stroke-width="2" marker-end="url(#arrow-gray)" />
+                    <text x="200" y="140" text-anchor="middle" font-size="10" fill="#64748b">Admitido</text>
+                    
+                    <path d="M 340 140 L 460 140" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)" />
+                    <text x="400" y="130" text-anchor="middle" font-size="10" fill="#2563eb">Despacho</text>
+                    
+                    <path d="M 460 160 L 340 160" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)" />
+                    <text x="400" y="180" text-anchor="middle" font-size="10" fill="#2563eb">Interrupción</text>
+                    
+                    <path d="M 540 150 L 660 150" stroke="#059669" stroke-width="2" marker-end="url(#arrow-green)" />
+                    <text x="600" y="140" text-anchor="middle" font-size="10" fill="#059669">Salida</text>
+                    
+                    <path d="M 500 190 L 440 240" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrow-orange)" />
+                    <text x="500" y="230" text-anchor="middle" font-size="10" fill="#f59e0b">Espera E/S</text>
+                    
+                    <path d="M 360 240 L 300 190" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrow-orange)" />
+                    <text x="300" y="230" text-anchor="middle" font-size="10" fill="#f59e0b">E/S Lista</text>
+                    
                     <defs>
-                        <marker id="arrowblue" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
-                            <path d="M0,0 L0,6 L9,3 z" fill="#2563eb"/>
-                        </marker>
+                        <marker id="arrow-gray" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#64748b"/></marker>
+                        <marker id="arrow-blue" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#2563eb"/></marker>
+                        <marker id="arrow-green" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#059669"/></marker>
+                        <marker id="arrow-orange" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#f59e0b"/></marker>
                     </defs>
-
-                    <!-- Nuevo -> Listo -->
-                    <path d="M120 230 Q120 270 275 190" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrowblue)"/>
-                    <text x="180" y="260" font-size="10" fill="#2563eb">admitido</text>
-
-                    <!-- Listo -> Ejecutando -->
-                    <path d="M340 150 L340 150" fill="none" stroke="#10b981" stroke-width="2"/>
-                    <line x1="340" y1="230" x2="490" y2="190" stroke="#10b981" stroke-width="2" marker-end="url(#arrowblue)"/>
-                    <text x="400" y="200" font-size="10" fill="#10b981">dispatch</text>
-
-                    <!-- Ejecutando -> Listo -->
-                    <line x1="490" y1="230" x2="340" y2="270" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrowblue)"/>
-                    <text x="390" y="290" font-size="10" fill="#f59e0b">preempt</text>
-
-                    <!-- Ejecutando -> Bloqueado -->
-                    <line x1="560" y1="230" x2="560" y2="300" stroke="#ef4444" stroke-width="2" marker-end="url(#arrowblue)"/>
-                    <text x="575" y="270" font-size="10" fill="#ef4444">espera E/S</text>
-
-                    <!-- Bloqueado -> Listo -->
-                    <path d="M340 300 L275 220" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrowblue)"/>
-                    <text x="250" y="270" font-size="10" fill="#2563eb">E/S completa</text>
-
-                    <!-- Ejecutando -> Terminado -->
-                    <line x1="630" y1="190" x2="630" y2="300" stroke="#9333ea" stroke-width="2" marker-end="url(#arrowblue)"/>
-                    <text x="645" y="250" font-size="10" fill="#9333ea">exit</text>
                 </svg>
             </div>
 
-            <h3>Estados del Modelo de 5 Estados</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Estado</th>
-                        <th>Descripción</th>
-                        <th>Causa</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><span class="badge badge-blue">NUEVO</span></td>
-                        <td>Proceso siendo creado</td>
-                        <td> fork(), CreateProcess()</td>
-                    </tr>
-                    <tr>
-                        <td><span class="badge badge-green">LISTO</span></td>
-                        <td>Esperando asignación de CPU</td>
-                        <td>Listo para ejecutar</td>
-                    </tr>
-                    <tr>
-                        <td><span class="badge badge-yellow">EJECUTANDO</span></td>
-                        <td>Instrucciones ejecutándose</td>
-                        <td>Tiene la CPU asignada</td>
-                    </tr>
-                    <tr>
-                        <td><span class="badge badge-red">BLOQUEADO</span></td>
-                        <td>Esperando evento/E-S</td>
-                        <td>read(), wait()</td>
-                    </tr>
-                    <tr>
-                        <td><span class="badge badge-blue">TERMINADO</span></td>
-                        <td>Proceso finalizado</td>
-                        <td>exit(), return</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <div class="note">
-                <strong>Estado de "Suspensión":</strong> En sistemas modernos, existe un estado adicional de "suspendido" donde el proceso puede ser movido a memoria swap para liberar RAM.
+            <h3>Estados en Linux y Windows</h3>
+            <div class="comparison">
+                <div class="card">
+                    <h4>Linux (comando <code>ps</code>)</h4>
+                    <ul>
+                        <li><strong>R (Running)</strong>: Ejecutando o listo para ejecutar.</li>
+                        <li><strong>S (Interruptible Sleep)</strong>: Esperando un evento.</li>
+                        <li><strong>D (Uninterruptible Sleep)</strong>: Esperando I/O (Disco lento).</li>
+                        <li><strong>Z (Zombie)</strong>: Proceso muerto no recolectado por el padre.</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4>Windows (Task Manager)</h4>
+                    <ul>
+                        <li><strong>Running</strong>: Activo en CPU.</li>
+                        <li><strong>Wait</strong>: Esperando recurso o señal.</li>
+                        <li><strong>Suspended</strong>: Pausado por el sistema para ahorrar energía.</li>
+                    </ul>
+                </div>
             </div>
         </section>
 
-        <section id="algoritmos">
-            <h2>Algoritmos de Planificación de CPU</h2>
-
-            <p>El <strong>scheduler</strong> (planificador) decide qué proceso de la cola de "listos" debe ejecutarse next. Existen diferentes algoritmos con distintas propiedades.</p>
-
-            <h3>Comparativa de Algoritmos</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Algoritmo</th>
-                        <th>Tipo</th>
-                        <th>Ventaja</th>
-                        <th>Desventaja</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>FCFS</strong> (First Come, First Served)</td>
-                        <td>No expulsivo</td>
-                        <td>Simple, justo</td>
-                        <td>Efecto convoy</td>
-                    </tr>
-                    <tr>
-                        <td><strong>SJF</strong> (Shortest Job First)</td>
-                        <td>No expulsivo</td>
-                        <td>Tiempo de espera mínimo</td>
-                        <td>Inanición de procesos largos</td>
-                    </tr>
-                    <tr>
-                        <td><strong>SRTF</strong> (Shortest Remaining Time)</td>
-                        <td>Expulsivo</td>
-                        <td>Respuesta rápida</td>
-                        <td>Inanición</td>
-                    </tr>
-                    <tr>
-                        <td><strong>RR</strong> (Round Robin)</td>
-                        <td>Expulsivo</td>
-                        <td>、公平, responsivo</td>
-                        <td>Overhead de cambios</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Por Prioridad</strong></td>
-                        <td>Expulsivo/No</td>
-                        <td>Importancia</td>
-                        <td>Inanición</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <h3>FCFS - First Come, First Served</h3>
-            <p>El proceso que llega primero se ejecuta primero. Es el algoritmo más simple.</p>
-            <pre><code class="language-text">Proceso | Tiempo de ráfaga | Tiempo de espera
---------|------------------|-----------------
-  P1    |       24        |        0
-  P2    |        3        |       24
-  P3    |        3        |       27
-
-Tiempo de espera promedio: (0 + 24 + 27) / 3 = 17 ms</code></pre>
-
-            <h3>SJF - Shortest Job First</h3>
-            <p>Selecciona el proceso con menor tiempo de ráfaga de CPU.</p>
-            <pre><code class="language-text">Proceso | Tiempo de ráfaga | Tiempo de espera
---------|------------------|-----------------
-  P1    |        6        |        3
-  P2    |        8        |        9
-  P3    |        7        |        0
-  P4    |        3        |        7
-
-Tiempo de espera promedio: (3 + 9 + 0 + 7) / 4 = 4.75 ms
-(Mínimo posible)</code></pre>
-
-            <h3>RR - Round Robin</h3>
-            <p>Cada proceso obtiene un <strong>quantum</strong> de tiempo fijo. Si no termina, vuelve a la cola.</p>
-            <pre><code class="language-text">Quantum = 4 ms
-
-Proceso | Tiempo de ráfaga | Tiempo de espera
---------|------------------|-----------------
-  P1    |       10        |        0
-  P2    |        5        |        4
-  P3    |        8        |        7
-
-Secuencia: P1(4) → P2(4) → P3(4) → P1(4) → P2(1) → P3(4) → P1(2)</code></pre>
-
-            <div class="success">
-                <strong>Ejemplo Interactivo:</strong> Ejecuta el siguiente comando para ver los procesos en estado "listos" y sus prioridades en Linux:
-                <pre><code class="language-bash">ps -eo pid,ppid,stat,pri,ni,cmd --sort=pri</code></pre>
+        <section id="contexto">
+            <h2>4. El Cambio de Contexto (Context Switch)</h2>
+            <p>Es la operación mediante la cual el Kernel guarda el estado del Proceso A y carga el del Proceso B. Es lo que permite que sientas que 50 apps corren al tiempo en un solo núcleo.</p>
+            
+            <div class="callout warning">
+                <h4>El Problema del Overhead</h4>
+                <p>Durante un cambio de contexto, el procesador no hace nada útil para el usuario. Es puro gasto administrativo. Si tienes demasiados procesos (thrashing), el servidor se bloquea. Esto se mide en Linux con <code>vmstat 1</code> (columna <code>cs</code>).</p>
             </div>
+        </section>
+
+        <section id="planificacion">
+            <h2>5. Planificación de CPU (Scheduling)</h2>
+            <p>El <strong>Scheduler</strong> es el algoritmo que decide quién entra a la CPU. En la vida real, los sistemas operativos usan <strong>Prioridades Dinámicas</strong>.</p>
+            
+            <h3>5.1 Algoritmos Clásicos vs Vida Real</h3>
+            <ul>
+                <li><strong>FCFS (First-Come, First-Served):</strong> El primero que llega se atiende. Simple pero ineficiente (Efecto Convoy).</li>
+                <li><strong>Round Robin (RR):</strong> Cada proceso recibe un "Quantum" de tiempo (ej: 10ms). Es el estándar para sistemas interactivos.</li>
+                <li><strong>Multi-Level Feedback Queues:</strong> Estándar de Windows y Linux. Los procesos que interactúan con el usuario (Word, Chrome) suben de prioridad.</li>
+            </ul>
         </section>
 
         <section id="practica">
-            <h2>Práctica Guiada: Jugando con Procesos (30 min)</h2>
-            
-            <div class="callout info" style="margin-bottom: 1.5rem;">
-                <strong>Objetivo:</strong> Ver los conceptos teóricos en acción. No te preocupes si no entiendes todo de inmediato, la idea es familiarizarte con los comandos.
-            </div>
-
-            <div class="callout success" style="margin: 1.5rem 0;">
-                <strong>Consejo antes de empezar:</strong> Abre DOS terminales. En una ejecutarás comandos y en la otra observarás los resultados. Esto hará todo más fácil de entender.
-            </div>
-
-            <h3>Ejercicio 1: Ver procesos corriendo (5 min)</h3>
-            <p>Vamos a ver qué procesos están ejecutándose en tu sistema ahora mismo:</p>
-            
-            <pre><code class="language-bash"># Ver los procesos principales (solo los 10 que más CPU usan)
-ps aux --sort=-%cpu | head -10
-
-# Ver procesos de tu usuario
-ps aux | grep $USER | head -10</code></pre>
-
-            <div class="callout success" style="margin: 1rem 0;">
-                <strong>¿Qué ves?</strong> Cada línea es un proceso. Busca:<br>
-                - <strong>PID</strong>: El número de identificación (como una cédula)<br>
-                - <strong>%CPU</strong>: Cuánto procesador está usando<br>
-                - <strong>COMMAND</strong>: Qué programa es
-            </div>
-
-            <h3>Ejercicio 2: Crear y observar un proceso (5 min)</h3>
-            <p>Vamos a crear un proceso simple y ver cómo cambia de estado:</p>
-            
-            <h4>Paso 1: Crear un proceso "dormilón"</h4>
-            <pre><code class="language-bash"># Ejecutar sleep (duerme por 300 segundos = 5 minutos)
-sleep 300 &
-
-# Verás algo como: [1] 1234
-# [1] = número del trabajo
-# 1234 = PID del proceso
-
-# Guarda ese número (tu PID será diferente)</code></pre>
-
-            <h4>Paso 2: Verificar que existe</h4>
-            <pre><code class="language-bash"># Buscar tu proceso sleep
-ps aux | grep sleep
-
-# Deberías ver algo como:
-# usuario  1234  0.0  0.0   7200   800 pts/0    S    10:00   0:00 sleep 300
-# 
-# La "S" significa que está "Sleeping" (dormido, esperando)</code></pre>
-
-            <h4>Paso 3: Detener el proceso (como pausar un video)</h4>
-            <pre><code class="language-bash"># Detener el proceso (usa tu número de PID)
-kill -STOP 1234
-
-# Verificar que está detenido
-ps aux | grep sleep
-
-# Ahora debería mostrar "T" (Stopped) en lugar de "S"
-# usuario  1234  0.0  0.0   7200   800 pts/0    T    10:00   0:00 sleep 300</code></pre>
-
-            <h4>Paso 4: Reanudar el proceso (como darle play)</h4>
-            <pre><code class="language-bash"># Reanudar el proceso
-kill -CONT 1234
-
-# Verificar que volvió a "S" (sleeping)
-ps aux | grep sleep</code></pre>
-
-            <h4>Paso 5: Terminar el proceso</h4>
-            <pre><code class="language-bash"># Matar el proceso
-kill 1234
-
-# Verificar que desapareció
-ps aux | grep sleep
-# Solo debería mostrar el propio comando "grep"</code></pre>
-
-            <div class="callout warning" style="margin: 1rem 0;">
-                <strong>¿Lo lograste?</strong> Si el proceso no aparece o los comandos no funcionan, no te preocupes. Pregunta al profesor o intenta de nuevo.
-            </div>
-
-            <h3>Ejercicio 3: Observar el administrador de tareas (5 min)</h3>
-            <pre><code class="language-bash"># Ejecutar top (el administrador de tareas de Linux)
-top
-
-# Verás una pantalla que se actualiza cada pocos segundos
-# Muestra qué procesos están usando más CPU y memoria
-
-# Dentro de top, prueba estas teclas:
-# 'q' - Salir de top
-# 'M' - Ordenar por uso de memoria
-# 'P' - Ordenar por uso de CPU (vuelve al orden normal)
-
-# Observa cómo los números cambian - eso es el cambio de contexto en acción</code></pre>
-
-            <h3>Ejercicio 4: Ver árbol de procesos (5 min)</h3>
-            <p>Los procesos tienen "familias". Vamos a ver la jerarquía:</p>
-            
-            <pre><code class="language-bash"># Ver árbol de procesos (versión simple)
-pstree | head -20
-
-# Esto muestra qué procesos iniciaron otros procesos
-# Por ejemplo: systemd (el abuelo) → sshd (el padre) → bash (el hijo)
-
-# Ver tu shell actual y su familia
-echo "Mi PID es: $$"
-pstree -p | grep $$
-
-# Busca tu PID en la salida y mira quién está "arriba" de ti</code></pre>
-
-            <div class="callout info" style="margin: 1rem 0;">
-                <strong>Analogía familiar:</strong> Igual que tú tienes padres, abuelos y bisabuelos, los procesos también tienen una familia. El proceso más antiguo suele ser <code>init</code> o <code>systemd</code> (PID 1).
-            </div>
-
-            <h3>Ejercicio 5: Limpieza (2 min)</h3>
-            <p>Si creaste procesos que siguen corriendo, vamos a limpiar:</p>
-            
-            <pre><code class="language-bash"># Matar todos los procesos sleep que puedas tener
-killall sleep 2>/dev/null
-
-# Verificar que no quedaron procesos zombies
-ps aux | grep Z
-# No debería mostrar nada (o solo el grep mismo)</code></pre>
-
-            <div class="success" style="margin: 1.5rem 0;">
-                <strong>¡Felicitaciones!</strong> Has practicado:<br>
-                ✅ Ver procesos con <code>ps</code><br>
-                ✅ Crear y controlar procesos con <code>kill</code><br>
-                ✅ Observar estados de proceso (S, T)<br>
-                ✅ Usar <code>top</code> como administrador de tareas<br>
-                ✅ Ver jerarquía de procesos con <code>pstree</code>
-            </div>
-
-            <div class="callout warning" style="margin: 1rem 0;">
-                <strong>No te preocupes si...</strong><br>
-                - Algunos comandos no te funcionaron<br>
-                - No entiendes todo todavía<br>
-                - Los números de PID eran diferentes<br><br>
-                Esto es normal. La práctica hace al maestro, y estos conceptos los veremos varias veces durante el curso.
-            </div>
-        </section>
-
-        <section id="practica-adicional">
-            <h2>Práctica Adicional (No Evaluativa)</h2>
-            
-            <div class="callout info" style="margin-bottom: 1.5rem;">
-                <strong>Esta sección es para practicar por tu cuenta.</strong> No es un entregable ni cuenta para la nota. ¡Úsala para reforzar lo aprendido!
-            </div>
-            
+            <h2>6. Laboratorio Híbrido: Comandos de Procesos</h2>
             <div class="actividad">
-                <h3>Ejercicio de Refuerzo: Explorando Procesos</h3>
-                <p><strong>Objetivo:</strong> Observar procesos en tu sistema y entender su jerarquía.</p>
-                
-                <p><strong>Actividades sugeridas:</strong></p>
+                <h3>Tarea 1: Forense en Linux (Nodo Ubuntu)</h3>
+                <pre><code class="language-bash"># 1. Ver los 5 procesos que más RAM consumen
+ps aux --sort=-%mem | head -n 6
+
+# 2. Ver la jerarquía de procesos (quién engendró a quién)
+pstree -p | head -n 10
+
+# 3. Ver los hilos individuales de un proceso (ej: sshd)
+ps -eLf | grep sshd
+
+# 4. Ver el PCB real en texto plano
+cat /proc/self/status</code></pre>
+
+                <h3>Tarea 2: Forense en Windows (Host/Server)</h3>
+                <pre><code class="language-powershell"># 1. Listar procesos por uso de CPU en PowerShell
+Get-Process | Sort-Object CPU -Descending | Select-Object -First 10
+
+# 2. Ver hilos de un proceso específico
+(Get-Process chrome)[0].Threads.Count
+
+# 3. Identificar el dueño de un proceso
+Get-Process -IncludeUserName | Select-Object Name, UserName -First 10</code></pre>
+
+                <h3>Tarea 3: El reto del Context Switch</h3>
                 <ol>
-                    <li><strong>Crear diferentes procesos:</strong>
-                        <ul>
-                            <li>Abre una terminal y ejecuta: <code>yes > /dev/null &</code> (consume CPU)</li>
-                            <li>En otra terminal ejecuta: <code>sleep 300 &</code> (está en espera)</li>
-                            <li>Observa ambos con: <code>ps -eo pid,ppid,stat,cmd | grep -E "yes|sleep"</code></li>
-                        </ul>
-                    </li>
-                    <li><strong>Descubre la jerarquía:</strong>
-                        <ul>
-                            <li>Ejecuta <code>pstree -p</code> y busca tu shell actual</li>
-                            <li>¿Qué proceso inició tu shell? (hint: revisa la columna PPID)</li>
-                            <li>¿Y quién inició ese proceso?</li>
-                        </ul>
-                    </li>
-                    <li><strong>Observa el administrador de tareas:</strong>
-                        <ul>
-                            <li>Ejecuta <code>top</code> y observa qué procesos usan más CPU</li>
-                            <li>Presiona <code>q</code> para salir</li>
-                            <li>¿Reconoces algún proceso?</li>
-                        </ul>
-                    </li>
+                    <li>En Windows, abra <strong>Resource Monitor</strong> (<code>resmon</code>) → Pestaña CPU. Observe la columna "Threads".</li>
+                    <li>En Linux, ejecute <code>vmstat 1 10</code>. Anote el número de la columna <code>cs</code>.</li>
+                    <li>Abra 30 pestañas en su navegador rápidamente. ¿A cuánto subió el valor de <code>cs</code>?</li>
                 </ol>
 
-                <div class="callout success">
-                    <strong>Consejo:</strong> No te preocupes si no entiendes todo de inmediato. La idea es familiarizarte con los comandos. Puedes detener los procesos de prueba con <code>kill [PID]</code> cuando termines.
+                <p><strong>Entregable:</strong> Documente en su portafolio técnico: ¿Por qué un servidor con 100% de CPU pero baja tasa de cambios de contexto es preferible a uno con 50% de CPU y una tasa de cambios de contexto millonaria?</p>
+            </div>
+
+            <!-- EJERCICIOS ADICIONALES: Enfoque Laboral -->
+            <div class="actividad" style="background: #fff7ed; border-left-color: #ea580c; margin-top: 2rem;">
+                <h3>Casos Reales del Mundo Laboral</h3>
+                <p>Estos escenarios están basados en problemas reales que enfrentan los administradores de sistemas en producción.</p>
+
+                <div class="card" style="margin: 1rem 0; border-left: 4px solid #059669;">
+                    <h4 style="color: #065f46;">Caso 1: El Servidor "Lento" (High Context Switching)</h4>
+                    <p><strong>Escenario:</strong> Un servidor de base de datos PostgreSQL muestra 50% de uso de CPU pero las aplicaciones que lo consultan responden extremadamene lento. Al revisar con <code>vmstat 1</code> observas 15,000 cambios de contexto por segundo.</p>
+                    <p><strong>Tu análisis como administrador:</strong></p>
+                    <ol>
+                        <li>¿Qué indica una tasa alta de context switch combinada con CPU baja?</li>
+                        <li>¿Cómo verificarías si hay demasiados procesos pequeños competiendo por CPU?</li>
+                        <li>¿Qué comando usarías para ver los procesos con más hilos?</li>
+                    </ol>
+                    <p><strong>Solución sugerida:</strong> Reducir el número de conexiones usando un pool de conexiones (pgBouncer) o aumentar el valor de "nice" para procesos batch.</p>
+                </div>
+
+                <div class="card" style="margin: 1rem 0; border-left: 4px solid #dc2626;">
+                    <h4 style="color: #991b1b;">Caso 2: El Proceso Zombie que No Muere</h4>
+                    <p><strong>Escenario:</strong> Al ejecutar <code>ps aux</code> ves un proceso con estado <strong>Z (Zombie)</strong> que tiene un PID específico. El proceso padre sigue activo.</p>
+                    <p><strong>Tu análisis como administrador:</strong></p>
+                    <ol>
+                        <li>¿Qué es un proceso zombie y por qué se produce?</li>
+                        <li>¿Por qué no puedes matar un proceso zombie con <code>kill -9</code>?</li>
+                        <li>¿Cómo encontrarías el proceso padre del zombie?</li>
+                    </ol>
+                    <p><strong>Solución sugerida:</strong> Matar el proceso padre con <code>kill -CHLD [PPID]</code> o reiniciar el servicio padre.</p>
+                </div>
+
+                <div class="card" style="margin: 1rem 0; border-left: 4px solid #2563eb;">
+                    <h4 style="color: #1e40af;">Caso 3: Prioridad Invertida en Producción</h4>
+                    <p><strong>Escenario:</strong> Un backup automático (<code>tar</code>) está consumiendo 100% de un núcleo de CPU mientras tu aplicación web responde en 10 segundos cuando normalmente responde en 200ms.</p>
+                    <p><strong>Tu análisis como administrador:</strong></p>
+                    <ol>
+                        <li>¿Por qué el proceso de backup tiene tanta prioridad?</li>
+                        <li>¿Cómo bajerías su prioridad sin detener el backup?</li>
+                        <li>¿Qué comando usarías para un proceso que ya está corriendo?</li>
+                    </ol>
+                    <p><strong>Solución sugerida:</strong> Usar <code>renice +19 -p [PID]</code> para minimizar su prioridad CPU.</p>
                 </div>
             </div>
-        </section>
 
-        <!-- Actividad -->
-        <section id="actividad">
-            <h2>Actividad Práctica: Estados de Procesos</h2>
-
-            <section class="actividad">
-                <h3>Actividad 03: Análisis de PCB y Estados</h3>
-                <p><strong>Tipo:</strong> Avance para Fase 1 (E1)</p>
-                <p><strong>Objetivo:</strong> Identificar la información que el SO guarda de un proceso.</p>
-                <p><strong>Pasos:</strong></p>
+            <!-- AUTO-EVALUACIÓN -->
+            <div class="actividad" style="background: #f0fdf4; border-left-color: #16a34a; margin-top: 2rem;">
+                <h3>Auto-Evaluación: Conceptos Clave</h3>
+                <p>Responde estas preguntas antes de continuar. Si no sabes alguna, ¡revisa la sección correspondiente!</p>
                 <ol>
-                    <li>Usa el comando <code>ps -eo pid,ppid,state,comm</code> para ver los procesos y su estado actual</li>
-                    <li>Identifica un proceso en estado 'S' (Interruptible sleep) y uno en 'R' (Running)</li>
-                    <li>Explora el directorio <code>/proc/[PID]</code> de un proceso activo y lista su contenido</li>
+                    <li><strong>¿Cuál es la diferencia entre un programa y un proceso?</strong> (Pista: uno es pasivo y el otro activo)</li>
+                    <li><strong>¿Qué información guarda el PCB?</strong> (Pista: incluye PID, estado, PC, registros)</li>
+                    <li><strong>¿Por qué el cambio de contexto tiene "overhead"?</strong> (Pista: el CPU no hace trabajo útil durante el cambio)</li>
+                    <li><strong>¿Qué scheduler usa Linux actualmente?</strong> (Pista: tiene "feedback" en su nombre)</li>
+                    <li><strong>¿Cómo identificas un proceso zombie en Linux?</strong> (Pista: busca la letra Z en <code>ps</code>)</li>
                 </ol>
-                <p><strong>Entregable:</strong> Documentar en tu informe de Fase 1 qué información encontraste en <code>/proc/[PID]/status</code>.</p>
-            </section>
-        </section>
-
-        <section id="resumen">
-            <h2>Resumen de la Clase</h2>
-            <div class="card-grid">
-                <div class="card">
-                    <h4>Cambio de Contexto</h4>
-                    <p>Proceso de transferir el control de CPU entre procesos. Incluye salvado/carga de estado y actualización de estructuras del kernel.</p>
-                </div>
-                <div class="card">
-                    <h4>PCB</h4>
-                    <p>Estructura de datos que contiene toda la información de un proceso: identificación, estado de CPU, memoria y E/S.</p>
-                </div>
-                <div class="card">
-                    <h4>Estados del Proceso</h4>
-                    <p>Nuevo → Listo → Ejecutando → Bloqueado → Terminado. Las transiciones ocurren por eventos del sistema.</p>
-                </div>
-                <div class="card">
-                    <h4>Algoritmos de Planificación</h4>
-                    <p>FCFS, SJF, SRTF, Round Robin, Prioridades. Cada uno tiene trade-offs entre throughput, latencia y fairness.</p>
-                </div>
-            </div>
-            
-            <div class="info" style="margin-top: 2rem;">
-                <h4>Comandos Aprendidos Hoy</h4>
-                <ul>
-                    <li><code>ps -eo pid,ppid,stat,pri,cmd</code> - Ver PCB de procesos</li>
-                    <li><code>pstree -p</code> - Jerarquía de procesos</li>
-                    <li><code>top</code> - Monitor en tiempo real</li>
-                    <li><code>kill -STOP/-CONT</code> - Controlar estados</li>
-                    <li><code>renice</code> - Cambiar prioridad</li>
-                </ul>
             </div>
         </section>
 
-        <!-- Próxima Evaluación Alert -->
-        <a href="evaluaciones.html#e1" style="text-decoration: none; display: block; margin-top: 2rem;">
-            <div class="eval-alert" style="cursor: pointer; transition: transform 0.2s;">
-                <span class="eval-alert-icon">📌</span>
-                <div class="eval-alert-content">
-                    <div class="eval-alert-title">E1: FASE 1 - Fundamentos y Arquitectura (25 Feb)</div>
-                    <div class="eval-alert-text">15% - Configuración inicial del proyecto (identifica estructura y tipos de SO)</div>
-                </div>
-                <span class="eval-alert-date">📅 25 Feb</span>
-            </div>
-        </a>
-
-        <!-- Class Navigation -->
-        <nav class="container class-nav" style="margin-top: 2rem; margin-bottom: 2rem;">
-            <a href="clase-02.html" class="class-nav-link prev">
-                <span class="class-nav-icon">←</span>
-                <div>
-                    <div class="nav-label">Clase Anterior</div>
-                    <div class="nav-title">Linux Terminal</div>
-                    <div class="class-nav-date">📅 04 Feb 2026</div>
-                </div>
-            </a>
-            <a href="clase-04.html" class="class-nav-link next">
-                <div>
-                    <div class="nav-label">Siguiente Clase</div>
-                    <div class="nav-title">Estructura del SO</div>
-                    <div class="class-nav-date">📅 11 Feb 2026</div>
-                </div>
-                <span class="class-nav-icon">→</span>
-            </a>
+        <nav class="class-nav">
+            <a href="index.html" class="class-nav-link" style="background: #e0e7ff;">🏠 Índice de Clases</a>
+            <a href="clase-02.html" class="class-nav-link">← Clase 02: CLI Essentials</a>
+            <a href="clase-04.html" class="class-nav-link" style="text-align: right;">Clase 04: Estructura del SO →</a>
         </nav>
-    </main>
+    </div>
 
     <footer>
         <div class="container">
-            <p><strong>IF0099 - Sistemas Operativos I</strong> • Clase 03: Cambio de Contexto y Concurrencia</p>
-            <p>📅 11 de Febrero 2026 | Sesion Miercoles: 6:00-8:00 AM | Teoria: 60 min + Practica: 60 min</p>
-            <p style="margin-top: 10px;">
-                <a href="index.html" style="color: #10b981;">Inicio</a> |
-                <a href="cronograma.html" style="color: #10b981;">Cronograma</a> |
-                <a href="evaluaciones.html" style="color: #8b5cf6;">Evaluaciones</a> |
-                <a href="rubricas.html" style="color: #3b82f6;">Rúbricas</a>
-            </p>
-            <p><a href="#" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); return false;">Volver arriba ↑</a></p>
+            <p>IF0099 - Sistemas Operativos I | Universidad Autónoma Latinoamericana | 2026</p>
         </div>
     </footer>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-powershell.min.js"></script>
 </body>
 </html>

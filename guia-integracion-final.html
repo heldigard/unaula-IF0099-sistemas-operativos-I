@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía de Integración Final | IF0099 - Sistemas Operativos I</title>
+    <style>
+        :root {
+            --primary: #6366f1;
+            --secondary: #4f46e5;
+            --accent: #10b981;
+            --bg-light: #f8fafc;
+            --bg-code: #1e293b;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.7; color: var(--text-main); background: var(--bg-light); font-size: 16px; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        header { background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); color: white; padding: 3rem 0; margin-bottom: 2rem; }
+        header h1 { font-size: 2.2rem; margin-bottom: 0.5rem; font-weight: 700; }
+        header .subtitle { font-size: 1.1rem; opacity: 0.9; }
+        nav { background: white; padding: 1.5rem 0; margin-bottom: 2rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        nav ul { list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 0.5rem; padding: 0 20px; }
+        nav a { color: var(--primary); text-decoration: none; padding: 0.5rem; display: block; border-radius: 4px; transition: background 0.2s; }
+        nav a:hover { background: var(--bg-light); }
+        section { background: white; padding: 2rem; margin-bottom: 2rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        section h2 { color: var(--primary); font-size: 1.8rem; margin-bottom: 1.5rem; padding-bottom: 0.5rem; border-bottom: 3px solid var(--accent); }
+        h3 { color: var(--secondary); margin: 1.5rem 0 1rem; }
+        pre { background: var(--bg-code); color: #e2e8f0; padding: 1.5rem; border-radius: 8px; overflow-x: auto; margin: 1.5rem 0; font-size: 0.9rem; }
+        code { font-family: monospace; background: #f1f5f9; color: var(--primary); padding: 0.2rem 0.4rem; border-radius: 4px; }
+        .callout { padding: 1.5rem; border-radius: 8px; margin: 1.5rem 0; border-left: 4px solid; }
+        .callout.info { background: #eff6ff; border-left-color: var(--primary); }
+        .callout.warning { background: #fef3c7; border-left-color: #f59e0b; }
+        .callout.success { background: #d1fae5; border-left-color: var(--accent); }
+        .checklist { list-style: none; }
+        .checklist li { margin-bottom: 1rem; padding-left: 2rem; position: relative; }
+        .checklist li::before { content: '✔️'; position: absolute; left: 0; }
+        footer { background: var(--text-main); color: white; padding: 2rem 0; text-align: center; margin-top: 3rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>🛠️ Guía de Integración Final (Fase 5)</h1>
+            <p class="subtitle">IF0099 - Sistemas Operativos I | Semanas 12 y 13</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <nav>
+            <ul>
+                <li><a href="#infraestructura">1. Infraestructura Híbrida</a></li>
+                <li><a href="#almacenamiento">2. Persistencia y Almacenamiento</a></li>
+                <li><a href="#servicios-web">3. Servicios Web (Apache & IIS)</a></li>
+                <li><a href="#dashboard">4. Dashboard de Salud</a></li>
+                <li><a href="#entrega">5. Requisitos de Entrega E5</a></li>
+            </ul>
+        </nav>
+
+        <section id="infraestructura">
+            <h2>1. Configuración de la Infraestructura Híbrida</h2>
+            <p>En esta fase, tus dos máquinas virtuales deben trabajar como un único sistema corporativo (UCS).</p>
+            <div class="callout info">
+                <strong>Requisito de Red:</strong> Ambas VMs deben tener IPs estáticas en el mismo segmento y poder hacerse <code>ping</code> mutuamente.
+            </div>
+            <h3>Checklist de Conectividad</h3>
+            <ul class="checklist">
+                <li>Linux (Ubuntu Server): <code>192.168.1.X</code> (ejemplo)</li>
+                <li>Windows (10/11/Server): <code>192.168.1.Y</code></li>
+                <li>Firewalls configurados para permitir tráfico en puertos 80, 443, 8080 y ICMP (Ping).</li>
+            </ul>
+        </section>
+
+        <section id="almacenamiento">
+            <h2>2. Persistencia y Almacenamiento Avanzado</h2>
+            <p>Debes demostrar que el sistema es capaz de manejar fallos de disco y mantener la información persistente.</p>
+            <h3>Tareas Técnicas:</h3>
+            <ol>
+                <li><strong>RAID 1 (Espejo):</strong> Configurar un arreglo RAID 1 en Linux con dos discos virtuales adicionales de 1GB cada uno.</li>
+                <li><strong>Punto de Montaje:</strong> Montar el RAID en <code>/var/www/html/datos_empresa</code>.</li>
+                <li><strong>Persistencia fstab:</strong> Configurar el UUID del RAID en <code>/etc/fstab</code> para que se monte automáticamente al reiniciar.</li>
+            </ol>
+            <pre><code># Ejemplo de línea en /etc/fstab
+UUID=your-uuid-here  /var/www/html/datos_empresa  ext4  defaults,noatime  0  2</code></pre>
+        </section>
+
+        <section id="servicios-web">
+            <h2>3. Servicios Web (Apache & IIS)</h2>
+            <p>UCS debe servir contenido desde ambas plataformas simultáneamente.</p>
+            <div class="callout success">
+                <strong>Escenario:</strong> El cliente accede al portal principal en Linux y a una aplicación administrativa en Windows.
+            </div>
+            <h3>Configuración Apache (Linux)</h3>
+            <ul>
+                <li><strong>Virtual Host:</strong> Configurar <code>ucs.local</code> apuntando a tu contenido.</li>
+                <li><strong>HTTPS:</strong> Generar certificado auto-firmado y habilitar el módulo SSL.</li>
+            </ul>
+            <h3>Configuración IIS (Windows)</h3>
+            <ul>
+                <li><strong>Puerto 8080:</strong> Cambiar el binding para que IIS no choque con otros servicios si fuera necesario.</li>
+                <li><strong>Application Pool:</strong> Crear un pool dedicado llamado "UCS_Pool" con identidad de servicio específica.</li>
+            </ul>
+        </section>
+
+        <section id="dashboard">
+            <h2>4. Dashboard de Salud (Script de Integración)</h2>
+            <p>Crea un script final en Bash (<code>check_ucs.sh</code>) que valide todo el sistema en un segundo:</p>
+            <pre><code>#!/bin/bash
+echo "--- UCS HEALTH CHECK ---"
+# Validar si Apache corre
+systemctl is-active --quiet apache2 && echo "[OK] Apache Funcionando" || echo "[FAIL] Apache Caído"
+# Validar si el RAID está montado
+mountpoint -q /var/www/html/datos_empresa && echo "[OK] RAID Persistente" || echo "[FAIL] RAID No Montado"
+# Validar visibilidad de Windows
+ping -c 1 192.168.1.Y > /dev/null && echo "[OK] Nodo Windows Visible" || echo "[FAIL] Nodo Windows Inaccesible"</code></pre>
+        </section>
+
+        <section id="entrega">
+            <h2>5. Requisitos de Entrega E5 (06 Mayo)</h2>
+            <div class="callout warning">
+                <strong>Valor: 15% del curso.</strong> Se evalúa la funcionalidad real, no solo la teoría.
+            </div>
+            <h3>Entregables:</h3>
+            <ol>
+                <li><strong>Video Técnico (Máx 7 min):</strong> Demostrando el acceso a los sitios web, el montaje del RAID tras un reinicio y la ejecución del script de salud.</li>
+                <li><strong>Scripts:</strong> Repositorio con los archivos de configuración de Apache, fstab y el script de salud.</li>
+                <li><strong>Documento de Integración:</strong> Breve PDF con el diagrama de red final y la tabla de direccionamiento.</li>
+            </ol>
+        </section>
+
+        <footer>
+            <div class="container">
+                <p>IF0099 - Sistemas Operativos I | UNAULA 2026</p>
+                <p><a href="index.html">Volver al Inicio</a> | <a href="cronograma.html">Cronograma</a></p>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>

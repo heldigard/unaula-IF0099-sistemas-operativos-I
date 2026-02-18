@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clase 20: Ingeniería de Confiabilidad (SRE) y QA | IF0099</title>
+    <!-- Prism.js CSS para syntax highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <style>
+        :root { --primary: #2563eb; --secondary: #1e40af; --accent: #059669; --bg-light: #f8fafc; --bg-code: #1e293b; --text-main: #1e293b; --text-muted: #64748b; --border: #e2e8f0; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.7; color: var(--text-main); background: var(--bg-light); font-size: 16px; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        header { background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); color: white; padding: 3rem 0; margin-bottom: 2rem; }
+        header h1 { font-size: 2.2rem; margin-bottom: 0.5rem; font-weight: 700; }
+        header .subtitle { font-size: 1.1rem; opacity: 0.9; }
+        header .meta { margin-top: 1rem; font-size: 0.9rem; opacity: 0.8; }
+        nav { background: white; padding: 1.5rem 0; margin-bottom: 2rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 100; }
+        nav ul { list-style: none; display: flex; flex-wrap: wrap; gap: 1.5rem; padding: 0 20px; justify-content: center; }
+        nav a { color: var(--primary); text-decoration: none; font-weight: 600; font-size: 0.95rem; }
+        section { background: white; padding: 2.5rem; margin-bottom: 2rem; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        section h2 { color: var(--primary); font-size: 1.8rem; margin-bottom: 1.5rem; padding-bottom: 0.5rem; border-bottom: 3px solid var(--accent); }
+        h3 { color: var(--secondary); font-size: 1.4rem; margin: 2rem 0 1rem; }
+        pre { background: var(--bg-code); color: #e2e8f0; padding: 1.5rem; border-radius: 8px; overflow-x: auto; margin: 1.5rem 0; font-size: 0.9rem; }
+        .callout { padding: 1.5rem; border-radius: 8px; margin: 1.5rem 0; border-left: 4px solid; }
+        .callout.info { background: #eff6ff; border-left-color: var(--primary); }
+        .callout.warning { background: #fef3c7; border-left-color: #f59e0b; }
+        .comparison { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 1.5rem; margin: 2rem 0; }
+        .card { background: var(--bg-light); padding: 1.5rem; border-radius: 8px; border: 1px solid var(--border); }
+        table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; }
+        th, td { padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid var(--border); }
+        th { background: var(--bg-light); font-weight: 600; }
+        .actividad { background: #f1f5f9; border-left: 5px solid var(--accent); padding: 2rem; margin: 2rem 0; border-radius: 8px; }
+        footer { background: var(--text-main); color: white; padding: 2rem 0; text-align: center; margin-top: 3rem; }
+        .eval-alert { background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-left: 4px solid #f59e0b; padding: 1.25rem 1.5rem; border-radius: 8px; margin-bottom: 2rem; display: flex; align-items: center; gap: 1rem; color: inherit; text-decoration: none; }
+        .class-nav { display: flex; justify-content: space-between; gap: 1rem; margin: 2rem 0; }
+        .class-nav-link { flex: 1; padding: 1.25rem 1.5rem; background: white; border: 2px solid var(--border); border-radius: 12px; text-decoration: none; color: var(--text-main); transition: all 0.3s; }
+        .class-nav-link:hover { border-color: var(--primary); transform: translateY(-2px); }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Clase 20: Ingeniería de Confiabilidad (SRE) y QA</h1>
+            <p class="subtitle">IF0099 - Sistemas Operativos I | Unidad 9 - Control de Calidad</p>
+            <p class="meta">📅 20 de Mayo 2026 | Bloque: 6:00 - 8:00 AM | Teoría: 60 min + Práctica: 60 min</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Próxima Evaluación Alert -->
+        <a href="evaluaciones.html#e6" class="eval-alert">
+            <span style="font-size: 1.75rem;">📌</span>
+            <div class="eval-alert-content">
+                <div style="font-weight: 700; color: #92400e;">E6: FASE 6 - Sustentación Final (PRÓXIMA SEMANA)</div>
+                <div style="color: #78350f; font-size: 0.9rem;">20% - Defensa técnica y demostración funcional del sistema UCS.</div>
+            </div>
+            <span style="background: #f59e0b; color: white; padding: 0.5rem 1rem; border-radius: 6px; font-weight: 600;">📅 27 May</span>
+        </a>
+
+        <nav>
+            <ul>
+                <li><a href="#sre">1. Fundamentos de SRE</a></li>
+                <li><a href="#stress">2. Pruebas de Estrés</a></li>
+                <li><a href="#qa">3. QA del Sistema Operativo</a></li>
+                <li><a href="#pitch">4. El Pitch Técnico</a></li>
+                <li><a href="#practica">5. Simulacro Final</a></li>
+            </ul>
+        </nav>
+
+        <section id="sre">
+            <h2>1. SRE: Site Reliability Engineering</h2>
+            <p>La ingeniería de confiabilidad es la disciplina que aplica principios de ingeniería de software a problemas de operaciones de sistemas.</p>
+            <div class="callout info">
+                <h4>Métricas Clave (SLAs / SLIs)</h4>
+                <ul>
+                    <li><strong>Disponibilidad (Uptime)</strong>: Porcentaje del tiempo que el servicio web está arriba.</li>
+                    <li><strong>Latencia</strong>: Tiempo de respuesta promedio de Apache/IIS.</li>
+                    <li><strong>Tasa de Errores</strong>: Porcentaje de peticiones que fallan (Error 500).</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="stress">
+            <h2>2. Pruebas de Estrés: Llevando el SO al Límite</h2>
+            <p>¿Qué pasa con la RAM si llegan 1000 usuarios a la vez? ¿Cómo reacciona el kernel?</p>
+            
+            <div class="comparison">
+                <div class="card">
+                    <h4>Herramientas Linux</h4>
+                    <ul>
+                        <li><strong>stress-ng:</strong> Carga artificial de CPU y RAM.</li>
+                        <li><strong>Apache Benchmark (ab):</strong> Genera miles de peticiones HTTP.</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4>Herramientas Windows</h4>
+                    <ul>
+                        <li><strong>CPUSTRES:</strong> (Sysinternals) Controla la carga por hilo individual.</li>
+                        <li><strong>Performance Monitor:</strong> Graba el impacto en disco durante el pico.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="qa">
+            <h2>3. QA del Sistema Operativo</h2>
+            <p>Antes de la sustentación, debe validar la integridad de su infraestructura:</p>
+            <ol>
+                <li><strong>Prueba de Reinicio (Cold Boot):</strong> ¿Suben los servicios automáticamente? ¿El RAID se monta solo?</li>
+                <li><strong>Prueba de Conectividad:</strong> ¿El Nodo Windows puede ver el portal de Linux? ¿Las IPs son estáticas?</li>
+                <li><strong>Prueba de Seguridad:</strong> ¿El puerto 22 está realmente bloqueado desde afuera?</li>
+            </ol>
+        </section>
+
+        <section id="pitch">
+            <h2>4. El Pitch Técnico Profesional</h2>
+            <p>Usted tiene 20 minutos para vender su semestre de trabajo. No lea diapositivas; demuestre dominio técnico.</p>
+            <div class="card" style="border-left: 5px solid var(--accent);">
+                <h4>Estructura de la Sustentación:</h4>
+                <ul>
+                    <li><strong>Slide 1-2:</strong> Arquitectura Híbrida (Diagrama).</li>
+                    <li><strong>Slide 3-4:</strong> Desafíos técnicos superados (ej: Deadlocks o RAID).</li>
+                    <li><strong>Slide 5-8:</strong> DEMO EN VIVO (Lo más importante).</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="practica">
+            <h2>5. Actividad Práctica: Simulacro de Desastres</h2>
+            <div class="actividad">
+                <h3>Taller de Pre-Sustentación</h3>
+                <p><strong>Objetivo:</strong> Preparar el sistema para las preguntas de parrilla del docente.</p>
+                
+                <p><strong>Tarea 1: Stress Test (Linux)</strong></p>
+                <ol>
+                    <li>Instale stress-ng: <code>sudo apt install stress-ng</code>.</li>
+                    <li>Lanza carga de memoria: <code>stress-ng --vm 2 --vm-bytes 1G --timeout 60s</code>.</li>
+                    <li>Observe en <code>htop</code> cómo el SO gestiona la presión de RAM. ¿Se activó el Swap?</li>
+                </ol>
+
+                <p><strong>Tarea 2: HTTP Benchmark</strong></p>
+                <ol>
+                    <li>Desde Linux, ataque su servidor Windows: <code>ab -n 1000 -c 10 http://[IP_WINDOWS]:8080/</code>.</li>
+                    <li>Vea cuántas peticiones por segundo soporta su IIS virtualizado.</li>
+                </ol>
+
+                <p><strong>Tarea 3: QA Final Checklist</strong></p>
+                <ul>
+                    <li>Verifique que <code>/etc/fstab</code> tiene el UUID correcto.</li>
+                    <li>Verifique que las llaves SSH funcionan sin contraseña (Hardening).</li>
+                    <li>Limpie archivos temporales y logs de prueba para entregar un sistema "limpio".</li>
+                </ul>
+
+                <p><strong>Entregable:</strong> Un video corto (máx 3 min) donde demuestre que tras reiniciar ambas VMs, los servidores web Apache e IIS están en línea sin intervención manual.</p>
+            </div>
+
+            <!-- CASOS LABORALES -->
+            <div class="actividad" style="background: #fff7ed; border-left-color: #ea580c; margin-top: 2rem;">
+                <h3>Casos Reales: SRE y QA en Producción</h3>
+                <div class="card" style="margin: 1rem 0; border-left: 4px solid #dc2626;">
+                    <h4 style="color: #991b1b;">Caso 1: El Servidor que Caía a las 2 AM</h4>
+                    <p><strong>Escenario:</strong> Un servidor de base de datos MySQL caía cada noche a las 2:00 AM exactamente. Los logs no mostraban errores. Era un job de backup que consumía toda la RAM.</p>
+                    <p><strong>Cómo se resolvió:</strong></p>
+                    <pre><code class="language-bash"># Linux: Monitoreo con htop top
+htop
+
+# Ver consumo de memoria por proceso
+ps aux --sort=-%mem | head -10
+
+# Ver logs de cron
+sudo tail -f /var/log/cron
+
+# Crear alerta
+grep "OOM" /var/log/syslog</code></pre>
+                    <p><strong>Lección:</strong> Siempre programa trabajos pesados (backups) en horas de baja actividad y configura monitoreo de memoria.</p>
+                </div>
+                <div class="card" style="margin: 1rem 0; border-left: 4px solid #059669;">
+                    <h4 style="color: #065f46;">Caso 2: IIS Muere tras Actualización de Windows</h4>
+                    <p><strong>Escenario:</strong> Después de instalar actualizaciones de Windows Server, IIS no iniciaba. Error 503 en el sitio web.</p>
+                    <p><strong>Diagnóstico:</strong></p>
+                    <pre><code class="language-powershell"># Ver estado de IIS
+Get-Service W3SVC
+
+# Ver logs de error
+Get-Content C:\Windows\System32\LogFiles\HTTPERR\*.log -Tail 50
+
+# Ver eventos
+Get-EventLog -LogName System -Source IIS* -Newest 20</code></pre>
+                    <p><strong>Solución:</strong></p>
+                    <pre><code class="language-powershell"># Reiniciar IIS
+iisreset
+
+# Si persiste, verificar Application Pools
+Get-WebAppPoolState
+
+# Reconstruir configuración si es necesario
+aspnet_regiis -ua
+aspnet_regiis -i</code></pre>
+                </div>
+                <div class="card" style="margin: 1rem 0; border-left: 4px solid #2563eb;">
+                    <h4 style="color: #1e40af;">Caso 3: La Prueba de Carga que Derribó el Prod</h4>
+                    <p><strong>Escenario:</strong> Un tester corrió Apache Benchmark contra el servidor de producción (no de prueba) pensando que era QA. El servidor se sobrecargó.</p>
+                    <p><strong>Prevención:</strong></p>
+                    <ul>
+                        <li><strong>Entornos separados:</strong> NUNCA ejecutes pruebas de estrés en producción.</li>
+                        <li><strong>Rate limiting:</strong> Configura límites en Apache para prevenir DDoS accidentales.</li>
+                        <li><strong>Alertas:</strong> Configura alertas cuando CPU > 90% o memoria > 85%.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- EJERCICIO ADICIONAL -->
+            <div class="actividad" style="background: #f0fdf4; border-left-color: #16a34a; margin-top: 2rem;">
+                <h3>Ejercicio: Monitoreo y Alertas</h3>
+                <p>Configura un sistema de monitoreo básico:</p>
+                <ol>
+                    <li><strong>Linux:</strong> Crea un script que verifique si Apache está corriendo y envíe alerta por correo si no.</li>
+                    <li><strong>Windows:</strong> Configura un Health Check en IIS que verifique la conectividad a la base de datos.</li>
+                    <li><strong> ambos:</strong> Configura una tarea programada (cron/scheduler) que ejecute el monitoreo cada 5 minutos.</li>
+                    <li><strong>Documenta:</strong> Qué hacer cuando llega una alerta de "servicio caído".</li>
+                </ol>
+            </div>
+
+            <!-- AUTO-EVALUACIÓN -->
+            <div class="actividad" style="background: #f1f5f9; border-left-color: #6366f1; margin-top: 2rem;">
+                <h3>Auto-Evaluación: SRE y Sustentación</h3>
+                <p>Responde antes de la sustentación:</p>
+                <ol>
+                    <li><strong>¿Cuál es la diferencia entre un SLI y un SLA?</strong></li>
+                    <li><strong>¿Qué herramientas de Linux usas para hacer una prueba de estrés de CPU?</strong></li>
+                    <li><strong>¿Por qué es importante probar el reinicio completo (cold boot) antes de entregar un servidor?</strong></li>
+                    <li><strong>Nombra 3 métricas que deberías monitorear en un servidor web en producción.</strong></li>
+                </ol>
+            </div>
+        </section>
+
+        <nav class="class-nav">
+            <a href="clase-19.html" class="class-nav-link">← Clase 19: Documentación</a>
+            <div class="card" style="text-align: center; background: #d1fae5; border-color: #10b981;">
+                <strong>🎓 ¡LISTOS PARA LA DEFENSA!</strong><br>
+                Nos vemos el 27 de mayo en la sustentación final.
+            </div>
+        </nav>
+    </div>
+
+    <footer>
+        <p>IF0099 - Sistemas Operativos I | Universidad Autónoma Latinoamericana | 2026</p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+</body>
+</html>

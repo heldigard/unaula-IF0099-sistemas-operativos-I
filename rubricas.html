@@ -299,7 +299,7 @@
                 <ul class="toc-list">
 <li><a href="#eval1">E1 - Fase 1: Fundamentos y Arquitectura (15%) | 25 Feb</a></li>
                     <li><a href="#eval2">E2 - Fase 2: Procesos y Monitoreo (15%) | 11 Mar</a></li>
-                    <li><a href="#eval3">E3 - Checkpoint Optimización (20%) | 25 Mar</a></li>
+                    <li><a href="#eval3">E3 - Laboratorio de Optimización (20%) | 25 Mar</a></li>
                     <li><a href="#eval4">E4 - Fase 4: Seguridad en SO (15%) | 22 Abr</a></li>
                     <li><a href="#eval5">E5 - Fase 5: Integración de Servicios (15%) | 6 May</a></li>
                     <li><a href="#eval6">E6 - Sustentación Final (20%) | 27 May</a></li>
@@ -337,9 +337,9 @@
             <div class="entregables-box">
                 <h4>Entregables Requeridos (Fase 1)</h4>
                 <ul>
-                    <li><strong>Bitácora Técnica:</strong> PDF (máx. 5 páginas) con comparativa de arquitecturas (Monolítico vs Híbrido) + Evidencias de instalación.</li>
-                    <li><strong>Pitch de Diseño:</strong> Presentación (máx. 8 diapositivas) del ecosistema UCS.</li>
-                    <li><strong>Capturas base:</strong> Comandos <code>uname -a</code> y <code>systeminfo</code>.</li>
+                    <li><strong>Bitácora Técnica (PDF 5 pág):</strong> Comparativa Monolítico vs Híbrido (2 pág) + Capturas de instalación (uname -a, systeminfo, lscpu, free) + Tabla de hardware virtualizado.</li>
+                    <li><strong>Diagrama de Red:</strong> Mapa con Host, VMs, IPs estáticas, modo Bridge.</li>
+                    <li><strong>Pitch de Diseño (PPTX 8 diapos):</strong> Arquitectura UCS, justificación técnica, stack tecnológico.</li>
                 </ul>
             </div>
 
@@ -356,36 +356,52 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td class="criterio">Análisis Arquitectónico</td>
-                        <td>Justifica profundamente la elección de SO para UCS usando conceptos de Clase 04 (Monolítico/Híbrido).</td>
-                        <td>Describe las arquitecturas sin una justificación profunda para el caso UCS.</td>
-                        <td>Menciona las arquitecturas pero con errores conceptuales.</td>
-                        <td>No identifica las arquitecturas de los sistemas instalados.</td>
-                        <td class="peso">30%</td>
+                        <td class="criterio">VMs Configuradas</td>
+                        <td>Ambas VMs funcionando (Ubuntu Server + Windows), IPs estáticas configuradas, modo Bridge, recursos asignados (RAM, CPU, Disco).</td>
+                        <td>VMs funcionan pero sin IPs estáticas o recursos mal asignados.</td>
+                        <td>Solo una VM funciona o ambas con problemas de red.</td>
+                        <td>VMs no funcionales o no presentadas.</td>
+                        <td class="peso">25%</td>
                     </tr>
                     <tr>
-                        <td class="criterio">Instalación y Mapeo</td>
-                        <td>VMs operativas con hardware optimizado en VirtualBox y tabla de abstracción completa.</td>
-                        <td>VMs funcionando pero con hardware asignado al azar o sin tabla de mapeo.</td>
-                        <td>Solo una VM funciona o la documentación es deficiente.</td>
-                        <td>No presenta VMs funcionales.</td>
-                        <td class="peso">30%</td>
+                        <td class="criterio">Documentación Instalación</td>
+                        <td>Capturas de uname -a, systeminfo, lscpu, free -h. Información completa y legible.</td>
+                        <td>Capturas de uname y systeminfo pero faltan lscpu/free o ilegibles.</td>
+                        <td>Algunas capturas faltan o son incompletas.</td>
+                        <td>No hay evidencia de comandos ejecutados.</td>
+                        <td class="peso">20%</td>
+                    </tr>
+                    <tr>
+                        <td class="criterio">Análisis Arquitectónico</td>
+                        <td>Comparativa técnica de 2 páginas: Linux Monolítico vs Windows Híbrido, cita componentes (Kernel, HAL, Shell), incluye diagramas.</td>
+                        <td>Comparativa presente pero superficial o sin citar componentes específicos.</td>
+                        <td>Menciona arquitecturas pero con errores conceptuales.</td>
+                        <td>No incluye análisis arquitectónico.</td>
+                        <td class="peso">25%</td>
                     </tr>
                     <tr>
                         <td class="criterio">Diagrama de Red</td>
-                        <td>Mapa de red impecable mostrando IPs, Host y Guests con modo Bridge/NAT justificado.</td>
-                        <td>Diagrama de red básico sin detalle de IPs o modo de red.</td>
-                        <td>Esquema confuso o incompleto.</td>
-                        <td>No presenta diagrama de red.</td>
-                        <td class="peso">20%</td>
+                        <td>Mapa completo: Host con IP real, VMs con IPs asignadas, VirtualBox como capa, flechas de conectividad, modo Bridge indicado.</td>
+                        <td>Diagrama básico con IPs pero sin mostrar Host o modo de red.</td>
+                        <td>Diagrama incompleto o confuso, IPs no claras.</td>
+                        <td>No presenta diagrama.</td>
+                        <td class="peso">15%</td>
+                    </tr>
+                    <tr>
+                        <td class="criterio">Tabla de Hardware</td>
+                        <td>Tabla comparativa: Recurso | Hardware Real | VM Linux | VM Windows (CPU, RAM, Disco).</td>
+                        <td>Tabla presente pero incompleta o sin comparar con hardware real.</td>
+                        <td>Tabla básica con pocos recursos.</td>
+                        <td>No incluye tabla de mapeo.</td>
+                        <td class="peso">10%</td>
                     </tr>
                     <tr>
                         <td class="criterio">Pitch Técnico</td>
-                        <td>Explicación ejecutiva, clara y limitada a 8 diapositivas con alta calidad visual.</td>
-                        <td>Presentación adecuada pero excede el límite de diapositivas o falta claridad.</td>
-                        <td>Presentación muy cargada de texto o desorganizada.</td>
-                        <td>No sustenta el diseño.</td>
-                        <td class="peso">20%</td>
+                        <td>Presentación de máx 8 diapositivas: portada, arquitectura, tecnologías, justificación, conclusiones. Visual profesional.</td>
+                        <td>Presentación de 8 diapos pero contenido muy denso o excede límite.</td>
+                        <td>Presentación excede 8 diapositivas o desorganizada.</td>
+                        <td>No presenta pitch o incompleto.</td>
+                        <td class="peso">5%</td>
                     </tr>
                 </tbody>
             </table>
@@ -420,9 +436,10 @@
             <div class="entregables-box">
                 <h4>Entregables Requeridos (Fase 2)</h4>
                 <ul>
-                    <li><strong>Scripts:</strong> <code>monitor.sh</code> (RAM) y <code>servicios.ps1</code> (Spooler) comentados.</li>
-                    <li><strong>Bitácora de Pruebas:</strong> PDF (máx. 5 páginas) con análisis de estados de procesos.</li>
-                    <li><strong>Video Demo:</strong> Máximo 5 minutos mostrando los scripts en acción.</li>
+                    <li><strong>Script monitor_procesos.sh:</strong> Lista top 5 procesos por RAM, guarda en bitacora_procesos.txt con timestamp, reporta CPU y memoria.</li>
+                    <li><strong>Script gestionar_servicios.ps1:</strong> Verifica servicio Spooler, intenta iniciar si está detenido, verifica servicios críticos adicionales.</li>
+                    <li><strong>Bitácora de Pruebas (PDF 5 pág):</strong> Código de scripts comentados, capturas de ejecución, análisis de estados R/S/Z, evidencia de cambio de prioridad nice.</li>
+                    <li><strong>Video Demo (5 min):</strong> Screencast mostrando scripts funcionando y cambio de prioridad nice en tiempo real.</li>
                 </ul>
             </div>
 
@@ -439,35 +456,43 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td class="criterio">Automatización (Scripts)</td>
-                        <td>Scripts funcionales que automatizan tareas reales, manejan errores y están documentados.</td>
-                        <td>Scripts funcionan pero con lógica débil o sin comentarios claros.</td>
-                        <td>Solo uno de los scripts funciona o tienen errores de sintaxis.</td>
-                        <td>Scripts no funcionales.</td>
-                        <td class="peso">40%</td>
-                    </tr>
-                    <tr>
-                        <td class="criterio">Análisis de Procesos</td>
-                        <td>Identifica y explica correctamente estados R, S, Z en su sistema UCS (RA2).</td>
-                        <td>Identifica los estados pero la explicación es teórica, no aplicada a su sistema.</td>
-                        <td>Confusión entre los estados de los procesos.</td>
-                        <td>No identifica procesos ni estados.</td>
+                        <td class="criterio">Script Bash (monitor_procesos.sh)</td>
+                        <td>Lista top 5 procesos por RAM, guarda en bitacora_procesos.txt con timestamp, reporta CPU y memoria, alerta si CPU >50%.</td>
+                        <td>Script funciona pero falta timestamp, alerta de CPU o guardado en archivo.</td>
+                        <td>Script con errores de sintaxis o funcionalidad incompleta.</td>
+                        <td>Script no funciona o no presentado.</td>
                         <td class="peso">30%</td>
                     </tr>
                     <tr>
-                        <td class="criterio">Control de Prioridades</td>
-                        <td>Demuestra dominio total de nice/renice impactando la observabilidad del sistema.</td>
-                        <td>Usa los comandos pero no explica su impacto técnico.</td>
-                        <td>Uso incorrecto de prioridades.</td>
-                        <td>No aplica control de prioridades.</td>
+                        <td class="criterio">Script PowerShell (servicios.ps1)</td>
+                        <td>Verifica Spooler, intenta iniciar si está detenido, verifica servicios críticos adicionales (Windows Update, Firewall), genera reporte.</td>
+                        <td>Verifica Spooler pero no inicia automáticamente o no verifica servicios adicionales.</td>
+                        <td>Script con lógica incompleta o errores de ejecución.</td>
+                        <td>Script no funciona o no presentado.</td>
+                        <td class="peso">25%</td>
+                    </tr>
+                    <tr>
+                        <td class="criterio">Análisis Estados de Procesos</td>
+                        <td>Capturas de ps aux mostrando procesos en estado R, S, Z. Explicación técnica correcta de cada estado.</td>
+                        <td>Muestra estados pero explicación incompleta o confusión entre estados.</td>
+                        <td>Identifica estados pero sin capturas de su sistema o explicación errónea.</td>
+                        <td>No identifica estados de procesos.</td>
                         <td class="peso">20%</td>
                     </tr>
                     <tr>
-                        <td class="criterio">Video y Evidencia</td>
-                        <td>Demostración técnica fluida que valida el funcionamiento real de los entregables.</td>
-                        <td>Video excesivamente largo o con explicaciones confusas.</td>
-                        <td>Calidad de video deficiente o incompleto.</td>
-                        <td>Sin evidencia en video.</td>
+                        <td class="criterio">Control Prioridades (nice)</td>
+                        <td>Lanza proceso sleep, cambia nice a 15, demuestra cambio con top/htop, capturas antes/después, explica impacto.</td>
+                        <td>Cambia prioridad pero sin explicar impacto técnico o sin capturas.</td>
+                        <td>Uso incorrecto de nice/renice o no demuestra el cambio.</td>
+                        <td>No aplica control de prioridades.</td>
+                        <td class="peso">15%</td>
+                    </tr>
+                    <tr>
+                        <td class="criterio">Video Demo (5 min)</td>
+                        <td>Video fluido mostrando scripts ejecutándose, cambio de prioridad en vivo, explicaciones claras.</td>
+                        <td>Video muestra funcionalidad pero excede tiempo o explicaciones confusas.</td>
+                        <td>Video incompleto o calidad deficiente, falta algún componente.</td>
+                        <td>Sin video o no demuestra funcionamiento.</td>
                         <td class="peso">10%</td>
                     </tr>
                 </tbody>
@@ -477,119 +502,129 @@
         <!-- EVALUACIÓN 3 -->
         <section class="section" id="eval3">
             <div class="eval-header" style="background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);">
-                <h3>E3 - Checkpoint Optimización</h3>
+                <h3>E3 - Laboratorio de Optimización</h3>
                 <span class="badge-pct" style="background: #3b82f6;">20%</span>
             </div>
 
             <div class="eval-info">
                 <div class="eval-info-item">
-                    <strong>Fecha</strong>
-                    25 de marzo de 2026
+                    <strong>Fecha de Entrega</strong>
+                    25 de marzo de 2026 (8:00 AM)
                 </div>
                 <div class="eval-info-item">
                     <strong>Modalidad</strong>
-                    Individual, presencial. <span style="color: #059669; font-weight: bold;">Se permite el uso de apuntes, clases y acceso a la VM.</span>
+                    Individual, en casa con su VM. <span style="color: #059669; font-weight: bold;">1 semana para completar.</span>
                 </div>
                 <div class="eval-info-item">
                     <strong>Enfoque</strong>
-                    Resolución de problemas y análisis de escenarios. <span style="color: #dc2626; font-weight: bold;">Prohibido el aprendizaje de memoria.</span>
+                    5 escenarios prácticos con capturas y análisis técnico.
                 </div>
                 <div class="eval-info-item">
                     <strong>Contenido</strong>
-                    Unidades 1 a 4 (Fundamentos, Procesos, Memoria, E/S y Sincronización)
+                    C08-C12 (Memoria, E/S, Sincronización, FS básico)
                 </div>
             </div>
 
             <div class="entregables-box">
-                <h4>Estructura del Checkpoint Práctico</h4>
+                <h4>Entregable Requerido</h4>
                 <ul>
-                    <li><strong>Sección A:</strong> Selección múltiple (20 pts - 20%)</li>
-                    <li><strong>Sección B:</strong> Verdadero/Falso con justificación (15 pts - 15%)</li>
-                    <li><strong>Sección C:</strong> Preguntas abiertas (25 pts - 25%)</li>
-                    <li><strong>Sección D:</strong> Problemas de planificación CPU (20 pts - 20%)</li>
-                    <li><strong>Sección E:</strong> Análisis de escenarios prácticos (20 pts - 20%)</li>
+                    <li><strong>PDF del Laboratorio (máx. 15 páginas):</strong> 5 escenarios resueltos con capturas de pantalla, comandos ejecutados y análisis técnico.</li>
+                </ul>
+                <p style="margin-top: 10px; color: #0369a1;"><strong>Alcance:</strong> C08-C12 (Memoria, Paginación, E/S, Sincronización, FS básico). <strong>NO incluye:</strong> Journaling, RAID, fstab.</p>
+            </div>
+
+            <h4 style="margin-top:20px; color:#1e3a5f;">Criterios de Evaluación por Escenario</h4>
+            <table class="rubrica-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Escenario</th>
+                        <th class="level-excelente">Excelente (20 pts)</th>
+                        <th class="level-bueno">Bueno (15 pts)</th>
+                        <th class="level-satisfactorio">Satisfactorio (10 pts)</th>
+                        <th class="level-insuficiente">Insuficiente (5 pts)</th>
+                        <th>Puntos</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>1</strong></td>
+                        <td class="criterio">Diagnóstico de Memoria</td>
+                        <td>Ejecuta free, vmstat, top correctamente. Identifica proceso culpable. Propone 3 soluciones justificadas técnicamente.</td>
+                        <td>Ejecuta comandos y diagnostica pero soluciones incompletas o poco justificadas.</td>
+                        <td>Ejecuta algunos comandos pero diagnóstico incorrecto o sin soluciones.</td>
+                        <td>No ejecuta comandos o diagnóstico erróneo.</td>
+                        <td class="peso">20</td>
+                    </tr>
+                    <tr>
+                        <td><strong>2</strong></td>
+                        <td class="criterio">Análisis de E/S</td>
+                        <td>Ejecuta iostat y df. Identifica cuellos de botella. Propone optimizaciones concretas y viables.</td>
+                        <td>Analiza E/S pero optimizaciones genéricas o sin evidencia de análisis.</td>
+                        <td>Ejecuta comandos pero interpretación incompleta de resultados.</td>
+                        <td>No analiza E/S o interpretación errónea.</td>
+                        <td class="peso">20</td>
+                    </tr>
+                    <tr>
+                        <td><strong>3</strong></td>
+                        <td class="criterio">Sincronización</td>
+                        <td>Diseña solución con semáforos/mutex. Pseudo-código correcto. Explica prevención de deadlock. Script de prueba funciona.</td>
+                        <td>Propone solución válida pero pseudo-código incompleto o sin script de prueba.</td>
+                        <td>Intenta solución pero con errores conceptuales o incompleta.</td>
+                        <td>No propone solución o completamente errónea.</td>
+                        <td class="peso">20</td>
+                    </tr>
+                    <tr>
+                        <td><strong>4</strong></td>
+                        <td class="criterio">Planificación CPU</td>
+                        <td>Diagramas Gantt correctos para FCFS y RR. Cálculos de tiempo espera y turnaround precisos. Justifica mejor algoritmo.</td>
+                        <td>Resuelve 1 algoritmo correctamente o errores menores en cálculos.</td>
+                        <td>Diagramas incompletos o errores graves en cálculos.</td>
+                        <td>No resuelve problemas o diagramas inexistentes.</td>
+                        <td class="peso">20</td>
+                    </tr>
+                    <tr>
+                        <td><strong>5</strong></td>
+                        <td class="criterio">Sistemas de Archivos</td>
+                        <td>Crea directorio con permisos 750, archivo con SUID. Explica cada permiso y qué es un inodo. Capturas de ls -li.</td>
+                        <td>Configura permisos pero explicación incompleta o sin capturas.</td>
+                        <td>Configuración parcial de permisos o errores en comandos.</td>
+                        <td>No configura permisos o configuración errónea.</td>
+                        <td class="peso">20</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div style="background: #f0f9ff; border: 1px solid #bae6fd; padding: 15px; border-radius: 8px; margin-top: 20px;">
+                <h4 style="color: #0369a1; margin-bottom: 10px;">Formato del PDF Entregable</h4>
+                <ul style="margin-left: 20px; color: #1e3a5f;">
+                    <li><strong>Portada:</strong> Nombre del estudiante, código, fecha, nombre del laboratorio</li>
+                    <li><strong>Índice:</strong> Lista de los 5 escenarios con número de página</li>
+                    <li><strong>Cada escenario debe incluir:</strong>
+                        <ul style="margin-top: 5px;">
+                            <li>Planteamiento del problema</li>
+                            <li>Comandos ejecutados</li>
+                            <li>Capturas de pantalla (legibles)</li>
+                            <li>Análisis técnico (qué hizo, por qué, qué resultado obtuvo)</li>
+                        </ul>
+                    </li>
+                    <li><strong>Conclusiones:</strong> Breve reflexión sobre lo aprendido</li>
+                    <li><strong>Máximo 15 páginas</strong></li>
                 </ul>
             </div>
 
-            <h4 style="margin-top:20px; color:#1e3a5f;">Sección Teórica (40%)</h4>
-            <table class="rubrica-table">
-                <thead>
-                    <tr>
-                        <th>Criterio</th>
-                        <th class="level-excelente">Excelente</th>
-                        <th class="level-bueno">Bueno</th>
-                        <th class="level-satisfactorio">Satisfactorio</th>
-                        <th class="level-insuficiente">Insuficiente</th>
-                        <th>Peso</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="criterio">Conceptos de Procesos</td>
-                        <td>Explica PCB, estados, transiciones con ejemplos claros</td>
-                        <td>Explica adecuadamente la mayoría</td>
-                        <td>Explicación básica</td>
-                        <td>No comprende conceptos básicos</td>
-                        <td class="peso">30%</td>
-                    </tr>
-                    <tr>
-                        <td class="criterio">Planificación de CPU</td>
-                        <td>Resuelve problemas con diagramas de Gantt completos y análisis</td>
-                        <td>Resuelve correctamente con explicaciones básicas</td>
-                        <td>Resuelve parcialmente o con errores</td>
-                        <td>No resuelve los problemas</td>
-                        <td class="peso">40%</td>
-                    </tr>
-                    <tr>
-                        <td class="criterio">Sincronización</td>
-                        <td>Explica sección crítica, semáforos, mutex correctamente</td>
-                        <td>Explicación adecuada de conceptos</td>
-                        <td>Explicación básica con errores</td>
-                        <td>Conceptos erróneos</td>
-                        <td class="peso">30%</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <h4 style="margin-top:20px; color:#1e3a5f;">Sección Práctica (60%)</h4>
-            <table class="rubrica-table">
-                <thead>
-                    <tr>
-                        <th>Criterio</th>
-                        <th class="level-excelente">Excelente</th>
-                        <th class="level-bueno">Bueno</th>
-                        <th class="level-satisfactorio">Satisfactorio</th>
-                        <th class="level-insuficiente">Insuficiente</th>
-                        <th>Peso</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="criterio">Comandos Linux</td>
-                        <td>Identifica correctamente ps, top, kill, nice, renice, systemctl</td>
-                        <td>Identifica adecuadamente la mayoría</td>
-                        <td>Identifica algunos básicos</td>
-                        <td>No conoce los comandos</td>
-                        <td class="peso">40%</td>
-                    </tr>
-                    <tr>
-                        <td class="criterio">Comandos Windows</td>
-                        <td>Identifica Get-Process, Get-Service, Stop-Process correctamente</td>
-                        <td>Identifica adecuadamente la mayoría</td>
-                        <td>Identifica algunos básicos</td>
-                        <td>No conoce los comandos</td>
-                        <td class="peso">30%</td>
-                    </tr>
-                    <tr>
-                        <td class="criterio">Análisis de Salidas</td>
-                        <td>Interpreta correctamente salidas y predice comportamientos</td>
-                        <td>Interpreta adecuadamente la mayoría</td>
-                        <td>Interpreta parcialmente</td>
-                        <td>No interpreta las salidas</td>
-                        <td class="peso">30%</td>
-                    </tr>
-                </tbody>
-            </table>
+            <div style="background: #fef3c7; border: 1px solid #fde68a; padding: 15px; border-radius: 8px; margin-top: 20px;">
+                <h4 style="color: #92400e; margin-bottom: 10px;">Comandos a Dominar</h4>
+                <ul style="margin-left: 20px; color: #78350f;">
+                    <li><code>free -h</code> - Ver uso de memoria</li>
+                    <li><code>vmstat 1 5</code> - Estadísticas memoria virtual</li>
+                    <li><code>iostat -x</code> - Estadísticas E/S</li>
+                    <li><code>df -h</code> - Uso de disco</li>
+                    <li><code>top</code> / <code>htop</code> - Procesos en tiempo real</li>
+                    <li><code>ls -li</code> - Ver inodos</li>
+                    <li><code>chmod</code> - Cambiar permisos</li>
+                </ul>
+            </div>
         </section>
 
         <!-- EVALUACIÓN 4 -->
@@ -602,9 +637,12 @@
             <div class="entregables-box">
                 <h4>Entregables Requeridos (Fase 4)</h4>
                 <ul>
-                    <li><strong>Bitácora de Hardening:</strong> PDF (máx. 5 páginas) con reglas de Firewall + ACLs.</li>
-                    <li><strong>Matriz de Riesgos:</strong> Identificación de 8 riesgos UCS y mitigación.</li>
-                    <li><strong>Scripts de Seguridad:</strong> Automatización de permisos base.</li>
+                    <li><strong>Firewall Linux (UFW):</strong> Política DENY incoming, permite solo SSH (22) y HTTP (80/443).</li>
+                    <li><strong>Firewall Windows:</strong> Perfil activo, bloquear todo entrante, permitir RDP si aplica.</li>
+                    <li><strong>ACLs Linux:</strong> Directorio /datos/compartido con ACLs granulares, captura de getfacl.</li>
+                    <li><strong>Políticas Windows:</strong> Configuración via secpol.msc (cambio contraseña cada 30 días, complejidad mínima).</li>
+                    <li><strong>Matriz de Riesgos:</strong> 8 vulnerabilidades técnicas reales del sistema con mitigaciones específicas.</li>
+                    <li><strong>Bitácora de Hardening (PDF 5 pág):</strong> Reglas firewall, ACLs configuradas, matriz de riesgos.</li>
                 </ul>
             </div>
 
@@ -621,36 +659,52 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td class="criterio">Hardening Red</td>
-                        <td>Firewall configurado con política "Drop by default", permitiendo solo SSH y HTTP.</td>
-                        <td>Firewall activo pero permite más puertos de los necesarios.</td>
-                        <td>Firewall activo con reglas básicas incompletas.</td>
+                        <td class="criterio">Firewall Linux (UFW)</td>
+                        <td>Política default deny incoming, reglas para SSH (22), HTTP (80) y HTTPS (443), ufw enable activo.</td>
+                        <td>Firewall activo pero permite puertos adicionales innecesarios.</td>
+                        <td>Firewall configurado pero sin política default deny o reglas incompletas.</td>
                         <td>Firewall inactivo o sin configuración.</td>
-                        <td class="peso">30%</td>
+                        <td class="peso">25%</td>
                     </tr>
                     <tr>
-                        <td class="criterio">Control de Acceso</td>
-                        <td>Implementa ACLs granulares (RA4) en directorios compartidos demostrando getfacl.</td>
-                        <td>Configura permisos UGO básicos sin llegar a ACLs granulares.</td>
-                        <td>Permisos configurados con errores de seguridad (ej: 777).</td>
-                        <td>No aplica control de acceso.</td>
-                        <td class="peso">30%</td>
+                        <td class="criterio">Firewall Windows</td>
+                        <td>Perfil activo, bloquea todo entrante, permite solo servicios necesarios, configurado via PowerShell/netsh.</td>
+                        <td>Firewall activo pero configuración básica o permite tráfico no necesario.</td>
+                        <td>Firewall activo pero sin reglas específicas configuradas.</td>
+                        <td>Firewall desactivado o sin configurar.</td>
+                        <td class="peso">15%</td>
+                    </tr>
+                    <tr>
+                        <td class="criterio">ACLs Linux</td>
+                        <td>Directorio /datos/compartido creado, ACLs configuradas con setfacl, usuario específico con permisos limitados, captura de getfacl mostrando configuración.</td>
+                        <td>ACLs configuradas pero sin granularidad completa o sin captura de getfacl.</td>
+                        <td>Permisos UGO básicos sin ACLs granulares o configuración incorrecta.</td>
+                        <td>Sin control de acceso implementado.</td>
+                        <td class="peso">20%</td>
+                    </tr>
+                    <tr>
+                        <td class="criterio">Políticas Windows</td>
+                        <td>secpol.msc configurado: edad máxima 30 días, complejidad habilitada, longitud mínima 8 caracteres, historial de 5 contraseñas.</td>
+                        <td>Políticas configuradas pero incompletas (falta algún parámetro).</td>
+                        <td>Configuración básica de políticas pero no todas las requeridas.</td>
+                        <td>Sin políticas de seguridad configuradas.</td>
+                        <td class="peso">15%</td>
                     </tr>
                     <tr>
                         <td class="criterio">Matriz de Riesgos</td>
-                        <td>Identifica 8 riesgos técnicos reales de su sistema y propone mitigaciones precisas.</td>
-                        <td>Identifica menos de 8 riesgos o las mitigaciones son vagas.</td>
-                        <td>Matriz de riesgos superficial o genérica.</td>
-                        <td>No presenta matriz de riesgos.</td>
-                        <td class="peso">30%</td>
+                        <td>8 vulnerabilidades técnicas específicas del sistema UCS identificadas, mitigaciones precisas y técnicamente viables.</td>
+                        <td>6-7 vulnerabilidades identificadas o mitigaciones vagas/genéricas.</td>
+                        <td>4-5 vulnerabilidades o matriz superficial sin especificidad técnica.</td>
+                        <td>Menos de 4 vulnerabilidades o sin matriz.</td>
+                        <td class="peso">20%</td>
                     </tr>
                     <tr>
-                        <td class="criterio">Scripts de Seg.</td>
-                        <td>Script automatiza la creación de usuarios y asignación de permisos correctamente.</td>
-                        <td>Script funcional pero con errores menores o poca documentación.</td>
-                        <td>Script no automatiza lo solicitado.</td>
-                        <td>Sin script.</td>
-                        <td class="peso">10%</td>
+                        <td class="criterio">Bitácora de Hardening</td>
+                        <td>PDF completo: reglas firewall documentadas, capturas de ACLs, matriz de riesgos, evidencias de configuración.</td>
+                        <td>Bitácora presente pero falta documentación de algún componente.</td>
+                        <td>Bitácora incompleta o desorganizada, faltan evidencias.</td>
+                        <td>Sin bitácora o documentación deficiente.</td>
+                        <td class="peso">5%</td>
                     </tr>
                 </tbody>
             </table>
@@ -663,153 +717,29 @@
                 <span class="badge-pct">15%</span>
             </div>
 
-            <div class="entregables-box">
-                <h4>Entregables Requeridos (Fase 5)</h4>
-                <ul>
-                    <li><strong>Reporte de Integración:</strong> PDF (máx. 5 páginas) + Dashboard de Salud.</li>
-                    <li><strong>Servicios Operativos:</strong> Apache (HTTPS) + IIS (8080).</li>
-                    <li><strong>Persistencia:</strong> Configuración de <code>fstab</code> con segundo disco.</li>
-                </ul>
-            </div>
-
-            <table class="rubrica-table">
-                <thead>
-                    <tr>
-                        <th>Criterio</th>
-                        <th class="level-excelente">Excelente (4)</th>
-                        <th class="level-bueno">Bueno (3)</th>
-                        <th class="level-satisfactorio">Satisfactorio (2)</th>
-                        <th class="level-insuficiente">Insuficiente (1)</th>
-                        <th>Peso</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="criterio">Servidores Web</td>
-                        <td>Apache (Linux) e IIS (Windows) funcionando con sitios personalizados y HTTPS.</td>
-                        <td>Ambos funcionan pero uno de ellos no tiene HTTPS o puerto correcto.</td>
-                        <td>Solo un servidor web funciona correctamente.</td>
-                        <td>Servidores no operativos.</td>
-                        <td class="peso">40%</td>
-                    </tr>
-                    <tr>
-                        <td class="criterio">Persistencia FS</td>
-                        <td>Segundo disco montado vía fstab correctamente tras reinicio (RA5).</td>
-                        <td>Disco montado manualmente pero no persiste al reiniciar.</td>
-                        <td>Disco formateado pero no montado.</td>
-                        <td>No implementa segundo disco.</td>
-                        <td class="peso">30%</td>
-                    </tr>
-                    <tr>
-                        <td class="criterio">Dashboard Salud</td>
-                        <td>Script integral reporta salud de servicios, CPU, RAM y red de forma impecable.</td>
-                        <td>Script funciona pero el reporte es desordenado o incompleto.</td>
-                        <td>Script con fallos de ejecución.</td>
-                        <td>Sin dashboard.</td>
-                        <td class="peso">30%</td>
-                    </tr>
-                </tbody>
-            </table>
-        </section>
-
-        <!-- EVALUACIÓN 6 -->
-        <section class="section" id="eval6">
-            <div class="eval-header">
-                <h3>E6 - Fase 6: Sustentación y Portafolio Final</h3>
-                <span class="badge-pct">20%</span>
-            </div>
-
-            <div class="entregables-box">
-                <h4>Entregables Finales (Fase 6)</h4>
-                <ul>
-                    <li><strong>Portafolio Ejecutivo:</strong> PDF (máx. 20 páginas) recopilando Fases 1 a 5.</li>
-                    <li><strong>Pitch Final:</strong> Presentación (máx. 8 diapositivas) para sustentación.</li>
-                    <li><strong>Demo en Vivo:</strong> Validación de conocimientos en tiempo real.</li>
-                </ul>
-            </div>
-
-            <table class="rubrica-table">
-                <thead>
-                    <tr>
-                        <th>Criterio</th>
-                        <th class="level-excelente">Excelente (4)</th>
-                        <th class="level-bueno">Bueno (3)</th>
-                        <th class="level-satisfactorio">Satisfactorio (2)</th>
-                        <th class="level-insuficiente">Insuficiente (1)</th>
-                        <th>Peso</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="criterio">Integración Total</td>
-                        <td>El sistema UCS funciona como una unidad coherente, segura y optimizada.</td>
-                        <td>El sistema funciona pero hay fallos menores en la integración entre fases.</td>
-                        <td>Sistema con fallos funcionales importantes.</td>
-                        <td>Sistema no operativo.</td>
-                        <td class="peso">30%</td>
-                    </tr>
-                    <tr>
-                        <td class="criterio">Defensa Técnica</td>
-                        <td>Responde preguntas del docente con alta precisión y solidez teórica/práctica.</td>
-                        <td>Responde correctamente pero con algunas dudas técnicas.</td>
-                        <td>Respuestas superficiales o evasivas.</td>
-                        <td>No responde o respuestas erróneas.</td>
-                        <td class="peso">30%</td>
-                    </tr>
-                    <tr>
-                        <td class="criterio">Resiliencia (Demo)</td>
-                        <td>Maneja cambios en vivo (detener servicios, logs) demostrando control del SO.</td>
-                        <td>Realiza la demo pero se bloquea ante cambios solicitados por el docente.</td>
-                        <td>Demo muy rígida o poco demostrativa.</td>
-                        <td>Falla en la demo en vivo.</td>
-                        <td class="peso">30%</td>
-                    </tr>
-                    <tr>
-                        <td class="criterio">Calidad Portafolio</td>
-                        <td>Documento profesional, sin errores, consolidado y visualmente excelente.</td>
-                        <td>Documento completo pero con errores de formato o redacción.</td>
-                        <td>Documento incompleto o desordenado.</td>
-                        <td>Sin portafolio.</td>
-                        <td class="peso">10%</td>
-                    </tr>
-                </tbody>
-            </table>
-        </section>
-
-        <!-- EVALUACIÓN 5 -->
-        <section class="section" id="eval5">
-            <div class="eval-header">
-                <h3>E5 - Fase 5: Integración de Servicios Web y Monitoreo</h3>
-                <span class="badge-pct">15%</span>
-            </div>
-
             <div class="eval-info">
                 <div class="eval-info-item">
-                    <strong>Fecha de Entrega</strong>
+                    <strong>Fecha</strong>
                     6 de mayo de 2026
                 </div>
                 <div class="eval-info-item">
                     <strong>Formato</strong>
-                    Scripts + Informe + Video
+                    Servicios funcionales + Video técnico
                 </div>
                 <div class="eval-info-item">
-                    <strong>Grupos</strong>
-                    Parejas (2 estudiantes)
-                </div>
-                <div class="eval-info-item">
-                    <strong>Sustentación</strong>
-                    Demostración en vivo (10-15 min)
+                    <strong>Modalidad</strong>
+                    Entrega documentada + Demo en clase
                 </div>
             </div>
 
             <div class="entregables-box">
-                <h4>Entregables Requeridos</h4>
+                <h4>Entregables Requeridos (Fase 5)</h4>
                 <ul>
-                    <li>Scripts bash: monitor_sistema.sh, ipc_demo.sh, gestion_archivos.sh</li>
-                    <li>Scripts PowerShell: gestion_servidores.ps1, configurar_tareas.ps1</li>
-                    <li>Informe técnico con arquitectura</li>
-                    <li>Video demostración (8-12 minutos)</li>
-                    <li>Capturas de reportes HTML</li>
+                    <li><strong>Servidor Apache (Linux):</strong> VirtualHost configurado, HTTPS con certificado auto-firmado, sitio accesible.</li>
+                    <li><strong>Servidor IIS (Windows):</strong> Sitio en puerto 8080, Application Pool dedicado.</li>
+                    <li><strong>Almacenamiento Persistente:</strong> Segundo disco agregado a VM Linux, formateado EXT4, montaje automático vía <code>/etc/fstab</code>.</li>
+                    <li><strong>Dashboard de Salud:</strong> Script que verifique servicios, CPU, RAM, espacio en disco.</li>
+                    <li><strong>Video Técnico:</strong> Máximo 5 min mostrando: Apache HTTP/HTTPS, IIS, reinicio con montaje automático.</li>
                 </ul>
             </div>
 
@@ -826,52 +756,44 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td class="criterio">Scripts Linux</td>
-                        <td>Implementa monitor_sistema.sh, ipc_demo.sh y gestion_archivos.sh correctamente</td>
-                        <td>Implementa 2 de 3 scripts con funcionalidad completa</td>
-                        <td>Implementa 1 script correctamente</td>
-                        <td>No implementa scripts correctamente</td>
-                        <td class="peso">30%</td>
-                    </tr>
-                    <tr>
-                        <td class="criterio">Scripts Windows</td>
-                        <td>Implementa gestion_servidores.ps1 y configurar_tareas.ps1 correctamente</td>
-                        <td>Implementa 1 script completo y otro parcial</td>
-                        <td>Implementa 1 script básico</td>
-                        <td>No implementa scripts correctamente</td>
+                        <td class="criterio">Apache Linux</td>
+                        <td>VirtualHost configurado, HTTPS funcionando con cert auto-firmado, sitio personalizado accesible desde navegador.</td>
+                        <td>Apache funciona en HTTP pero HTTPS tiene errores o certificado no válido.</td>
+                        <td>Apache instalado pero no accesible o sin VirtualHost.</td>
+                        <td>Apache no instalado o no funciona.</td>
                         <td class="peso">25%</td>
                     </tr>
                     <tr>
-                        <td class="criterio">Integración de Conceptos</td>
-                        <td>Integra procesos, memoria, archivos y servicios de forma excepcional</td>
-                        <td>Integra adecuadamente los conceptos fundamentales</td>
-                        <td>Integración básica de conceptos</td>
-                        <td>No integra los conceptos</td>
-                        <td class="peso">15%</td>
+                        <td class="criterio">IIS Windows</td>
+                        <td>IIS instalado, sitio en puerto 8080, Application Pool dedicado, accesible desde navegador.</td>
+                        <td>IIS funciona pero sin Application Pool dedicado o en puerto incorrecto.</td>
+                        <td>IIS instalado pero sitio no accesible.</td>
+                        <td>IIS no instalado o no funciona.</td>
+                        <td class="peso">20%</td>
                     </tr>
                     <tr>
-                        <td class="criterio">Informe Técnico</td>
-                        <td>Arquitectura excelente con diagramas y comparativas detalladas</td>
-                        <td>Informe adecuado con arquitectura clara</td>
-                        <td>Informe básico</td>
-                        <td>Sin informe o incorrecto</td>
-                        <td class="peso">15%</td>
+                        <td class="criterio">Persistencia (fstab)</td>
+                        <td>Segundo disco montado automáticamente tras reinicio, configuración correcta en /etc/fstab.</td>
+                        <td>Disco montado pero requiere comando manual mount -a tras reinicio.</td>
+                        <td>Disco formateado pero no montado o fstab con errores.</td>
+                        <td>No implementa segundo disco.</td>
+                        <td class="peso">25%</td>
+                    </tr>
+                    <tr>
+                        <td class="criterio">Dashboard de Salud</td>
+                        <td>Script funcional que reporta: disponibilidad puertos 80/443, CPU, RAM, espacio disco.</td>
+                        <td>Script funciona pero no verifica todos los servicios o reporte incompleto.</td>
+                        <td>Script con errores de ejecución o verifica solo 1-2 aspectos.</td>
+                        <td>Sin dashboard o no funciona.</td>
+                        <td class="peso">20%</td>
                     </tr>
                     <tr>
                         <td class="criterio">Video Demostración</td>
-                        <td>Video claro (8-12 min) explicando todo con profundidad técnica</td>
-                        <td>Video adecuado con explicación clara</td>
-                        <td>Video básico</td>
-                        <td>Sin video o deficiente</td>
+                        <td>Video claro de máx 5 min mostrando todo funcionando y prueba de reinicio con montaje automático.</td>
+                        <td>Video muestra servicios pero no incluye prueba de reinicio o fstab.</td>
+                        <td>Video incompleto o excede tiempo, muestra solo parte del sistema.</td>
+                        <td>Sin video o calidad deficiente.</td>
                         <td class="peso">10%</td>
-                    </tr>
-                    <tr>
-                        <td class="criterio">Sustentación</td>
-                        <td>Presentación clara, respuestas profundas, defensa del trabajo</td>
-                        <td>Buena presentación y respuestas</td>
-                        <td>Presentación básica</td>
-                        <td>Sustentación deficiente</td>
-                        <td class="peso">5%</td>
                     </tr>
                 </tbody>
             </table>
@@ -879,9 +801,9 @@
 
         <!-- EVALUACIÓN 6 -->
         <section class="section" id="eval6">
-            <div class="eval-header" style="background: linear-gradient(135deg, #7c3aed 0%, #8b5cf6 100%);">
-                <h3>E6 - Sustentación Final</h3>
-                <span class="badge-pct" style="background: #8b5cf6;">20%</span>
+            <div class="eval-header">
+                <h3>E6 - Fase 6: Sustentación Final</h3>
+                <span class="badge-pct">20%</span>
             </div>
 
             <div class="eval-info">
@@ -891,132 +813,92 @@
                 </div>
                 <div class="eval-info-item">
                     <strong>Duración</strong>
-                    20-30 minutos de presentación
+                    20-25 minutos totales
                 </div>
                 <div class="eval-info-item">
                     <strong>Modalidad</strong>
-                    Grupal (máx. 2 estudiantes)
-                </div>
-                <div class="eval-info-item">
-                    <strong>Formato</strong>
-                    Sustentación con demostración en vivo
+                    Demo en vivo + Defensa oral
                 </div>
             </div>
 
             <div class="entregables-box">
-                <h4>Estructura de la Sustentación</h4>
+                <h4>Entregables Finales (Fase 6)</h4>
                 <ul>
-                    <li><strong>Presentación (5 min):</strong> Introducción y arquitectura del sistema (20 pts)</li>
-                    <li><strong>Demo Servidores (10 min):</strong> Demostración en vivo de servidores web funcionando (30 pts)</li>
-                    <li><strong>Demo Monitoreo (5 min):</strong> Scripts de monitoreo y alertas en ejecución (25 pts)</li>
-                    <li><strong>Defensa (10 min):</strong> Preguntas y respuestas sobre implementación (25 pts)</li>
+                    <li><strong>Portafolio Ejecutivo:</strong> PDF (máx. 20 páginas) con Fases 1-5 corregidas y consolidadas.</li>
+                    <li><strong>Pitch Técnico:</strong> Presentación de máx 8 diapositivas (arquitectura, demo, conclusiones).</li>
+                    <li><strong>Manual de Operación:</strong> PDF (máx. 3 páginas) con comandos esenciales y procedimientos.</li>
+                    <li><strong>Sustentación en Vivo:</strong> Demo del sistema funcionando (15-20 min) + defensa técnica.</li>
                 </ul>
             </div>
 
-            <h4 style="margin-top:20px; color:#1e3a5f;">Demostración en Vivo (60%)</h4>
             <table class="rubrica-table">
                 <thead>
                     <tr>
                         <th>Criterio</th>
-                        <th class="level-excelente">Excelente</th>
-                        <th class="level-bueno">Bueno</th>
-                        <th class="level-satisfactorio">Satisfactorio</th>
-                        <th class="level-insuficiente">Insuficiente</th>
+                        <th class="level-excelente">Excelente (4)</th>
+                        <th class="level-bueno">Bueno (3)</th>
+                        <th class="level-satisfactorio">Satisfactorio (2)</th>
+                        <th class="level-insuficiente">Insuficiente (1)</th>
                         <th>Peso</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td class="criterio">Funcionamiento del Sistema</td>
-                        <td>El sistema completo funciona correctamente sin errores</td>
-                        <td>El sistema funciona con menores problemas</td>
-                        <td>Funcionamiento parcial con errores menores</td>
-                        <td>El sistema no funciona o tiene fallas graves</td>
-                        <td class="peso">35%</td>
+                        <td class="criterio">Demo Servidores Web</td>
+                        <td>Muestra Apache e IIS accesibles desde navegador, HTTPS funcionando, sin errores.</td>
+                        <td>Servidores funcionan pero uno tiene problemas menores (sin HTTPS o puerto).</td>
+                        <td>Solo un servidor funciona o ambos con problemas de acceso.</td>
+                        <td>Servidores no demostrables o no funcionan.</td>
+                        <td class="peso">30%</td>
                     </tr>
                     <tr>
-                        <td class="criterio">Demostración Servidor Web</td>
-                        <td>Servidor Apache/IIS accesible, configurado correctamente, sitio funcionando</td>
-                        <td>Servidor configurado y funcionando con menores ajustes</td>
-                        <td>Servidor configurado pero con problemas de acceso</td>
-                        <td>Servidor no configurado o no accesible</td>
+                        <td class="criterio">Demo Monitoreo y Scripts</td>
+                        <td>Ejecuta scripts de Fase 2 y Dashboard de Fase 5 en vivo, muestra bitácoras reales.</td>
+                        <td>Ejecuta scripts pero algunos no generan output esperado o tienen errores menores.</td>
+                        <td>Muestra scripts pero no ejecuta en vivo o ejecución fallida.</td>
+                        <td>No demuestra scripts o no funcionan.</td>
                         <td class="peso">25%</td>
                     </tr>
                     <tr>
-                        <td class="criterio">Scripts de Monitoreo</td>
-                        <td>Scripts ejecutándose, generando reportes y alertas correctamente</td>
-                        <td>Scripts funcionando con menores ajustes necesarios</td>
-                        <td>Scripts básicos funcionando parcialmente</td>
-                        <td>Scripts no funcionales o ausentes</td>
-                        <td class="peso">25%</td>
+                        <td class="criterio">Reto Técnico en Vivo</td>
+                        <td>Realiza cambio solicitado por docente (ej: agregar usuario, cambiar permiso) sin dificultad.</td>
+                        <td>Realiza el cambio pero con ayuda o demora excesiva.</td>
+                        <td>Intenta el cambio pero no lo logra completar.</td>
+                        <td>No puede realizar cambios en vivo.</td>
+                        <td class="peso">20%</td>
                     </tr>
                     <tr>
-                        <td class="criterio">Integración de Componentes</td>
-                        <td>Todos los componentes (Linux, Windows, servicios) integrados perfectamente</td>
-                        <td>Integración adecuada con menores ajustes</td>
-                        <td>Integración básica con problemas de comunicación</td>
-                        <td>No hay integración entre componentes</td>
+                        <td class="criterio">Defensa Técnica</td>
+                        <td>Responde preguntas sobre arquitectura, decisiones técnicas y comandos con precisión.</td>
+                        <td>Responde correctamente a la mayoría pero con algunas dudas.</td>
+                        <td>Respuestas superficiales o no justifica decisiones técnicas.</td>
+                        <td>No responde o respuestas erróneas.</td>
                         <td class="peso">15%</td>
+                    </tr>
+                    <tr>
+                        <td class="criterio">Documentación</td>
+                        <td>Portafolio completo (20 pág), pitch (8 diapos), manual (3 pág), todo profesional y sin errores.</td>
+                        <td>Documentación completa pero con errores menores de formato o redacción.</td>
+                        <td>Documentación incompleta o desorganizada.</td>
+                        <td>Falta documentación importante.</td>
+                        <td class="peso">10%</td>
                     </tr>
                 </tbody>
             </table>
 
-            <h4 style="margin-top:20px; color:#1e3a5f;">Presentación y Defensa (40%)</h4>
-            <table class="rubrica-table">
-                <thead>
-                    <tr>
-                        <th>Criterio</th>
-                        <th class="level-excelente">Excelente</th>
-                        <th class="level-bueno">Bueno</th>
-                        <th class="level-satisfactorio">Satisfactorio</th>
-                        <th class="level-insuficiente">Insuficiente</th>
-                        <th>Peso</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="criterio">Calidad de la Presentación</td>
-                        <td>Presentación clara, estructurada, dominio del tema demostrado</td>
-                        <td>Buena presentación con explicaciones adecuadas</td>
-                        <td>Presentación básica con algunas dudas</td>
-                        <td>Presentación deficiente o desorganizada</td>
-                        <td class="peso">20%</td>
-                    </tr>
-                    <tr>
-                        <td class="criterio">Documentación Técnica</td>
-                        <td>Documentación completa, actualizada y bien estructurada</td>
-                        <td>Documentación adecuada con menores omisiones</td>
-                        <td>Documentación básica con omisiones importantes</td>
-                        <td>Sin documentación o muy deficiente</td>
-                        <td class="peso">10%</td>
-                    </tr>
-                    <tr>
-                        <td class="criterio">Respuestas a Preguntas</td>
-                        <td>Responde con precisión técnica, demuestra profundo conocimiento</td>
-                        <td>Responde adecuadamente la mayoría de preguntas</td>
-                        <td>Responde básicamente con algunas dudas</td>
-                        <td>No puede responder o respuestas incorrectas</td>
-                        <td class="peso">30%</td>
-                    </tr>
-                    <tr>
-                        <td class="criterio">Demostración en Vivo</td>
-                        <td>Demostración fluida, maneja imprevistos, explica cada paso</td>
-                        <td>Buena demostración con explicaciones claras</td>
-                        <td>Demostración básica con dependencia de notas</td>
-                        <td>Demostración fallida o incompleta</td>
-                        <td class="peso">25%</td>
-                    </tr>
-                    <tr>
-                        <td class="criterio">Trabajo en Equipo</td>
-                        <td>Participación equitativa, coordinación excelente entre integrantes</td>
-                        <td>Buena coordinación entre los integrantes</td>
-                        <td>Participación desbalanceada pero funcional</td>
-                        <td>Participación deficiente o desbalanceada</td>
-                        <td class="peso">15%</td>
-                    </tr>
-                </tbody>
-            </table>
+            <div style="background: #f0f9ff; border: 1px solid #bae6fd; padding: 15px; border-radius: 8px; margin-top: 20px;">
+                <h4 style="color: #0369a1; margin-bottom: 10px;">Estructura de la Sustentación (20-25 min)</h4>
+                <ol style="margin-left: 20px; color: #1e3a5f;">
+                    <li><strong>Presentación (3-5 min):</strong> Explicar arquitectura del sistema y decisiones técnicas clave.</li>
+                    <li><strong>Demo Servidores (8-10 min):</strong> Mostrar Apache e IIS funcionando desde navegador, incluir HTTPS.</li>
+                    <li><strong>Demo Monitoreo (3-5 min):</strong> Ejecutar scripts de monitoreo y mostrar bitácoras.</li>
+                    <li><strong>Reto Técnico (5 min):</strong> El docente solicita un cambio en tiempo real.</li>
+                    <li><strong>Defensa (3-5 min):</strong> Responder preguntas técnicas sobre implementación.</li>
+                </ol>
+            </div>
         </section>
+
+
 
         <!-- Políticas y Escala -->
         <section class="section">

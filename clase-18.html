@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clase 18: Interoperabilidad Híbrida | IF0099</title>
+    <!-- Prism.js CSS para syntax highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <style>
+        :root { --primary: #2563eb; --secondary: #1e40af; --accent: #059669; --bg-light: #f8fafc; --bg-code: #1e293b; --text-main: #1e293b; --text-muted: #64748b; --border: #e2e8f0; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.7; color: var(--text-main); background: var(--bg-light); font-size: 16px; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        header { background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); color: white; padding: 3rem 0; margin-bottom: 2rem; }
+        header h1 { font-size: 2.2rem; margin-bottom: 0.5rem; font-weight: 700; }
+        header .subtitle { font-size: 1.1rem; opacity: 0.9; }
+        header .meta { margin-top: 1rem; font-size: 0.9rem; opacity: 0.8; }
+        nav { background: white; padding: 1.5rem 0; margin-bottom: 2rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 100; }
+        nav ul { list-style: none; display: flex; flex-wrap: wrap; gap: 1.5rem; padding: 0 20px; justify-content: center; }
+        nav a { color: var(--primary); text-decoration: none; font-weight: 600; font-size: 0.95rem; }
+        section { background: white; padding: 2.5rem; margin-bottom: 2rem; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        section h2 { color: var(--primary); font-size: 1.8rem; margin-bottom: 1.5rem; padding-bottom: 0.5rem; border-bottom: 3px solid var(--accent); }
+        h3 { color: var(--secondary); font-size: 1.4rem; margin: 2rem 0 1rem; }
+        pre { background: var(--bg-code); color: #e2e8f0; padding: 1.5rem; border-radius: 8px; overflow-x: auto; margin: 1.5rem 0; font-size: 0.9rem; }
+        .callout { padding: 1.5rem; border-radius: 8px; margin: 1.5rem 0; border-left: 4px solid; }
+        .callout.info { background: #eff6ff; border-left-color: var(--primary); }
+        .callout.warning { background: #fef3c7; border-left-color: #f59e0b; }
+        .comparison { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 1.5rem; margin: 2rem 0; }
+        .card { background: var(--bg-light); padding: 1.5rem; border-radius: 8px; border: 1px solid var(--border); }
+        table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; }
+        th, td { padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid var(--border); }
+        th { background: var(--bg-light); font-weight: 600; }
+        .actividad { background: #f1f5f9; border-left: 5px solid var(--accent); padding: 2rem; margin: 2rem 0; border-radius: 8px; }
+        footer { background: var(--text-main); color: white; padding: 2rem 0; text-align: center; margin-top: 3rem; }
+        .eval-alert { background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-left: 4px solid #f59e0b; padding: 1.25rem 1.5rem; border-radius: 8px; margin-bottom: 2rem; display: flex; align-items: center; gap: 1rem; color: inherit; text-decoration: none; }
+        .class-nav { display: flex; justify-content: space-between; gap: 1rem; margin: 2rem 0; }
+        .class-nav-link { flex: 1; padding: 1.25rem 1.5rem; background: white; border: 2px solid var(--border); border-radius: 12px; text-decoration: none; color: var(--text-main); transition: all 0.3s; }
+        .class-nav-link:hover { border-color: var(--primary); transform: translateY(-2px); }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Clase 18: Interoperabilidad Híbrida</h1>
+            <p class="subtitle">IF0099 - Sistemas Operativos I | Unidad 8 - Integración</p>
+            <p class="meta">📅 06 de Mayo 2026 | Bloque: 6:00 - 8:00 AM | Teoría: 60 min + Práctica: 60 min</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Próxima Evaluación Alert -->
+        <a href="evaluaciones.html#e5" class="eval-alert">
+            <span style="font-size: 1.75rem;">📌</span>
+            <div class="eval-alert-content">
+                <div style="font-weight: 700; color: #92400e;">E5: FASE 5 - Integración de Servicios (HOY)</div>
+                <div style="color: #78350f; font-size: 0.9rem;">15% - Entrega oficial de la integración de nodos y servicios web.</div>
+            </div>
+            <span style="background: #f59e0b; color: white; padding: 0.5rem 1rem; border-radius: 6px; font-weight: 600;">📅 06 May</span>
+        </a>
+
+        <nav>
+            <ul>
+                <li><a href="#smb">1. SMB/CIFS</a></li>
+                <li><a href="#nfs">2. NFS en Linux</a></li>
+                <li><a href="#samba">3. Implementación con Samba</a></li>
+                <li><a href="#permisos">4. Mapeo de Permisos</a></li>
+                <li><a href="#practica">5. Laboratorio: Carpeta Híbrida</a></li>
+            </ul>
+        </nav>
+
+        <section id="smb">
+            <h2>1. El Protocolo SMB/CIFS</h2>
+            <p><strong>SMB (Server Message Block)</strong> es el lenguaje nativo de Windows para compartir archivos e impresoras. En el mundo Linux, usamos una implementación llamada <strong>Samba</strong> para hablar este mismo lenguaje.</p>
+            
+            <div class="callout info">
+                <h4>Casos Profesionales</h4>
+                <ul>
+                    <li>Servidores de archivos empresariales (NAS).</li>
+                    <li>Autenticación integrada con Active Directory.</li>
+                    <li>Transferencia de backups entre nodos Linux y Windows.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="nfs">
+            <h2>2. NFS (Network File System)</h2>
+            <p>Es el estándar de facto para compartir archivos entre sistemas Unix/Linux. Es mucho más rápido que SMB para pequeñas lecturas constantes (como archivos de código).</p>
+            <table>
+                <thead>
+                    <tr><th>Protocolo</th><th>Origen</th><th>Uso Ideal</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><strong>SMB</strong></td><td>Windows</td><td>Redes de oficina, usuarios humanos.</td></tr>
+                    <tr><td><strong>NFS</strong></td><td>Unix</td><td>Clusters de servidores, computación de alto rendimiento.</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="samba">
+            <h2>3. Implementación: Samba en Ubuntu</h2>
+            <p>Para que nuestro Nodo Windows pueda leer datos del Nodo Linux, debemos configurar un servidor Samba.</p>
+            
+            <pre><code class="language-bash"># Instalación
+sudo apt install samba -y
+
+# Configuración de un recurso compartido (/etc/samba/smb.conf)
+[ucs_files]
+   path = /srv/ucs_storage
+   read only = no
+   browsable = yes
+   guest ok = no
+
+# Crear usuario de red (Debe ser usuario local primero)
+sudo smbpasswd -a estudiante</code></pre>
+        </section>
+
+        <section id="permisos">
+            <h2>4. El reto del mapeo de identidades</h2>
+            <p>Windows usa SIDs (Security Identifiers) y Linux usa UIDs (User IDs). Cuando un archivo pasa de un sistema a otro, el SO debe traducir los permisos.</p>
+            <div class="callout warning">
+                <h4>Pérdida de Atributos</h4>
+                <p>Si mueves un archivo de Linux (EXT4) a un compartido Windows (NTFS) vía SMB, los permisos especiales como SUID o Sticky Bit se perderán porque NTFS no los soporta de la misma manera.</p>
+            </div>
+        </section>
+
+        <section id="practica">
+            <h2>5. Actividad Práctica: La Carpeta Compartida UCS</h2>
+            <div class="actividad">
+                <h3>Laboratorio: Interoperabilidad de Nodos</h3>
+                <p><strong>Objetivo:</strong> Compartir una carpeta desde Linux y mapearla como unidad de red en Windows.</p>
+                
+                <p><strong>Tarea 1: Servidor Samba (Linux)</strong></p>
+                <ol>
+                    <li>Cree la carpeta <code>/srv/compartido_ucs</code>.</li>
+                    <li>Configure Samba para compartir esa carpeta.</li>
+                    <li>Reinicie el servicio: <code>sudo systemctl restart smbd</code>.</li>
+                    <li>Permita el puerto 445 en el firewall: <code>sudo ufw allow samba</code>.</li>
+                </ol>
+
+                <p><strong>Tarea 2: Cliente Windows</strong></p>
+                <ol>
+                    <li>Desde su nodo Windows, abra el Explorador de Archivos.</li>
+                    <li>En la barra de direcciones escriba: <code>\\[IP_LINUX]\ucs_files</code>.</li>
+                    <li>Autentíquese con las credenciales creadas en <code>smbpasswd</code>.</li>
+                    <li><strong>Mapeo</strong>: Clic derecho en la carpeta → "Conectar a unidad de red". Asígnele la letra <strong>S:</strong>.</li>
+                </ol>
+
+                <p><strong>Entregable:</strong> Una captura de pantalla de su explorador de Windows mostrando la unidad S: montada y con un archivo creado desde Linux visible dentro.</p>
+            </div>
+
+            <!-- CASOS LABORALES -->
+            <div class="actividad" style="background: #fff7ed; border-left-color: #ea580c; margin-top: 2rem;">
+                <h3>Casos Reales: Problemas de Interoperabilidad en Producción</h3>
+                <div class="card" style="margin: 1rem 0; border-left: 4px solid #dc2626;">
+                    <h4 style="color: #991b1b;">Caso 1: Windows No Accede al Recurso Samba</h4>
+                    <p><strong>Escenario:</strong> El servidor Samba está corriendo pero desde Windows aparece "Windows no puede acceder a \\192.168.x.x\recurso".</p>
+                    <p><strong>Diagnóstico:</strong></p>
+                    <pre><code class="language-bash"># Verificar que Samba está escuchando en el puerto correcto
+sudo netstat -tlnp | grep smb
+
+# Probar conectividad desde Linux a Linux
+smbclient -L //192.168.x.x -U estudiante
+
+# Ver logs de autenticación
+sudo tail -f /var/log/samba/log.smbd</code></pre>
+                    <p><strong>Solución:</strong></p>
+                    <pre><code class="language-bash"># 1. Verificar firewall
+sudo ufw status
+sudo ufw allow 445/tcp
+sudo ufw allow 139/tcp
+
+# 2. Reiniciar Samba
+sudo systemctl restart smbd nmbd
+
+# 3. Verificar que el usuario existe en el sistema Y en Samba
+sudo pdbedit -L</code></pre>
+                </div>
+                <div class="card" style="margin: 1rem 0; border-left: 4px solid #059669;">
+                    <h4 style="color: #065f46;">Caso 2: NFS Monta pero Permission Denied</h4>
+                    <p><strong>Escenario:</strong> El cliente Linux monta el export NFS pero al acceder dice "Permission denied".</p>
+                    <p><strong>Diagnóstico:</strong></p>
+                    <pre><code class="language-bash"># En el SERVIDOR: Ver exports activos
+sudo exportfs -v
+
+# En el CLIENTE: Ver permisos de montaje
+mount | grep nfs
+ls -ld /mnt/nfs_point
+
+# Verificar UID del usuario en ambos lados
+id usuario</code></pre>
+                    <p><strong>Solución:</strong></p>
+                    <pre><code class="language-bash"># En el servidor: Editar /etc/exports para permitir acceso
+# Usar opción no_root_squash SI es necesario (con precaución)
+/srv/nfs    192.168.1.0/24(rw,sync,no_subtree_check,no_root_squash)
+
+# Luego recargar exports
+sudo exportfs -ra</code></pre>
+                </div>
+                <div class="card" style="margin: 1rem 0; border-left: 4px solid #2563eb;">
+                    <h4 style="color: #1e40af;">Caso 3: Mapeo de Unidades Windows No Persiste tras Reinicio</h4>
+                    <p><strong>Escenario:</strong> El usuario mapea la unidad S: pero tras reiniciar Windows debe volver a hacerlo manualmente.</p>
+                    <p><strong>Solución - Opción 1: Script de inicio</strong></p>
+                    <pre><code class="language-powershell"># Crear script de conexión automática
+# Guardar como conectar_ucs.ps1
+$netUse = @"
+net use S: \\192.168.1.100\ucs_files /user:estudiante "contraseña" /persistent:yes
+"@
+Invoke-Expression $netUse
+
+# Programar en Task Scheduler para ejecutarse al inicio</code></pre>
+                    <p><strong>Solución - Opción 2: Política de Grupo (Dominio)</strong></p>
+                    <pre><code class="language-powershell"># En Windows Server con GPO
+# User Configuration > Windows Settings > Scripts (Logon/Logoff)
+# Agregar script de conexión mapeo</code></pre>
+                </div>
+            </div>
+
+            <!-- EJERCICIO ADICIONAL -->
+            <div class="actividad" style="background: #f0fdf4; border-left-color: #16a34a; margin-top: 2rem;">
+                <h3>Ejercicio: Configuración de Seguridad SMB</h3>
+                <p>Investiga y configura:</p>
+                <ol>
+                    <li>¿Cómo cifrar las comunicaciones SMB (SMB3 encryption) para evitar sniffing en la red?</li>
+                    <li>Configura Samba para requerir autenticaciónSigned-SMB para prevenir ataques man-in-the-middle.</li>
+                    <li>¿Qué es el parámetro <code>min protocol</code> en smb.conf y por qué deberías evitar SMBv1 por seguridad?</li>
+                </ol>
+            </div>
+
+            <!-- AUTO-EVALUACIÓN -->
+            <div class="actividad" style="background: #f1f5f9; border-left-color: #6366f1; margin-top: 2rem;">
+                <h3>Auto-Evaluación: Interoperabilidad</h3>
+                <p>Responde antes de avanzar:</p>
+                <ol>
+                    <li><strong>¿Cuál es la diferencia principal entre SMB y NFS en términos de rendimiento y uso?</strong></li>
+                    <li><strong>¿Por qué un archivo copiado de Linux a Windows vía Samba puede perder permisos especiales como SUID?</strong></li>
+                    <li><strong>¿Qué comando Linux muestra los recursos compartidos disponibles en un servidor SMB?</strong></li>
+                    <li><strong>¿Por qué es peligroso usar no_root_squash en NFS sin entender las implicaciones de seguridad?</strong></li>
+                </ol>
+            </div>
+        </section>
+
+        <nav class="class-nav">
+            <a href="clase-17.html" class="class-nav-link">← Clase 17: Servidor Apache</a>
+            <a href="clase-19.html" class="class-nav-link" style="text-align: right;">Clase 19: Infraestructura como Doc →</a>
+        </nav>
+    </div>
+
+    <footer>
+        <p>IF0099 - Sistemas Operativos I | Universidad Autónoma Latinoamericana | 2026</p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+</body>
+</html>
